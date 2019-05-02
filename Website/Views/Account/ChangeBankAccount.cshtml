@@ -1,0 +1,53 @@
+﻿@model ChangeBankAccountViewModel
+@{
+    ViewBag.Title = "Cài đặt";
+}
+
+
+
+<h2>@ViewBag.Title</h2>
+
+<partial name="_SettingNavPartial" model="2" />
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+
+        <form method="post" asp-action="ChangeBankAccount" enctype="multipart/form-data">
+
+            <alert></alert>
+
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input type="text" class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Number"></label>
+                <input type="text" class="form-control" asp-for="Number" />
+                <span asp-validation-for="Number"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Bank"></label>
+                <input type="text" class="form-control" asp-for="Bank" />
+                <span asp-validation-for="Bank"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Branch"></label>
+                <input type="text" class="form-control" asp-for="Branch" />
+                <span asp-validation-for="Branch"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Đồng ý" class="btn btn-primary">
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+

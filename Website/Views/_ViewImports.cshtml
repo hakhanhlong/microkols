@@ -1,0 +1,14 @@
+﻿@inherits Website.Code.AppBasePage<TModel>
+@using Website
+@using Website.Models
+@using Website.ViewModels
+@using Website.Code
+@using Common.Extensions;
+@using Website.Code.Extensions
+@using Microsoft.Extensions.Options
+
+@inject IOptions<AppOptions> AppOptions
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@addTagHelper "Website.Code.TagHelpers.*, Website"
+@addTagHelper "Website.Code.TagHelpers.PagerHelper, Website"

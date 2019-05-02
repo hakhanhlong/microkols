@@ -1,0 +1,20 @@
+﻿@import "../lib/bootstrap/dist/scss/bootstrap.scss";
+
+.btn-facebook {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+
+    &:hover {
+        color: #fff;
+        background-color: #2d4373;
+        border-color: rgba(0,0,0,0.2)
+    }
+}
+
+.input-validation-error{
+    border-color:$danger;
+}
+.field-validation-error {
+    color: $danger;
+}

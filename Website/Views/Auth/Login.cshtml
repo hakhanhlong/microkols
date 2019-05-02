@@ -1,0 +1,83 @@
+﻿@model LoginViewModel
+
+@{
+    ViewBag.Title = "Đăng nhập";
+
+}
+
+@section scripts{
+  
+}
+
+<div class="container">
+
+    <div class="row">
+
+
+        <div class="col-md-6 offset-3">
+
+
+            <h1 class="h3 text-center font-weight-normal">Đăng nhập</h1>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <alert></alert>
+
+
+            <form asp-action="Login" method="post">
+
+                <div class="form-group">
+
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+
+
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                </div>
+
+
+
+                <div class="form-group ">
+                    <div class="form-check">
+                        <input class="form-check-input" asp-for="Remember" type="checkbox" value="true">
+                        <label asp-for="Remember" class="control-label"></label>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block ">
+                        Đăng nhập
+                    </button>
+                </div>
+
+                <p>
+                    <a class="text-primary" href="@Url.Action("ForgotPassword")"> Quên mật khẩu? <i class="fal fa-angle-right"></i></a>
+                </p>
+            </form>
+
+
+            <partial name="_SocialLoginPartial" />
+
+           
+            <p>
+                Bạn chưa có tài khoản?    <a class="text-primary" href="@Url.Action("Register")">
+                    Đăng ký tài khoản ngay <i class="fal fa-angle-right"></i>
+                </a>
+            </p>
+            <p>
+                Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="@Url.Action("PrivacyPolicy","Home")">điều khoản sử dụng</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+
+

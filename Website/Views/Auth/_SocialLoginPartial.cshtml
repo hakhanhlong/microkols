@@ -1,0 +1,10 @@
+﻿<div class="py-5">
+    <button type="button" class="btn btn-block btn-facebook" data-target="#frmFbLogin">
+        <i class="fab fa-facebook"></i> Đăng nhập qua Facebook
+    </button>
+
+    <form action="@Url.Action("GetUserInfo")" id="frmFbLogin" method="post">
+        <input type="hidden" name="provider" value="Facebook" />
+        <input type="hidden" name="token" value=""/>
+    </form>
+</div>

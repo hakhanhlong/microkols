@@ -1,0 +1,73 @@
+﻿@model ChangeInformationViewModel
+@{
+    ViewBag.Title = "Cài đặt";
+}
+
+
+
+<h2>@ViewBag.Title</h2>
+
+<partial name="_SettingNavPartial" model="0" />
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+
+        <form method="post" asp-action="ChangeInfo" enctype="multipart/form-data">
+
+            <alert></alert>
+
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input type="text" class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Birthday"></label>
+
+                <input type="text" class="form-control form-datepicker" asp-for="Birthday" />
+                <span asp-validation-for="Birthday"></span>
+            </div>
+
+            @{
+                var genderArr = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>();
+            }
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+                <select name="Gender" id="Gender" class="form-control">
+                    @foreach (var item in genderArr)
+                    {
+                        <!option value="@item" @(Model != null && item == Model.Gender ? "selected=selected" : "")>
+                            @item.ToDisplayName()
+                        </!option>
+                    }
+                </select>
+                <span asp-validation-for="Gender"></span>
+            </div>
+            @{
+                var maritalStatusArr = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.MaritalStatus>();
+            }
+            <div class="form-group">
+                <label asp-for="MaritalStatus"></label>
+                <select name="MaritalStatus" id="MaritalStatus" class="form-control">
+                    @foreach (var item in maritalStatusArr)
+                    {
+                        <!option value="@item" @(Model != null && item == Model.MaritalStatus ? "selected=selected" : "")>
+                            @item.ToDisplayName()
+                        </!option>
+                    }
+                </select>
+                <span asp-validation-for="MaritalStatus"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Đồng ý" class="btn btn-primary">
+            </div>
+        </form>
+
+
+
+    </div>
+
+</div>
+

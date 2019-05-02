@@ -1,0 +1,56 @@
+﻿<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Micro KOLs</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-flex">
+
+                <ul class="navbar-nav  mr-auto ">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                </ul>
+                @if (User.Identity.IsAuthenticated)
+                {
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link">
+                         <i class="fal fa-bell"></i>
+                         </a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" asp-action="ChangeContact" asp-controller="Account" data-toggle="dropdown">@CurrentUser.Name</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" asp-action="ChangeContact" asp-controller="Account"><i class="fal fa-cogs"></i> Cấu hình</a>
+                            <a class="dropdown-item" asp-action="Lougout" asp-controller="Auth"> <i class="fal fa-sign-out"></i> Thoát</a>
+                        </div>
+                    </li>
+                </ul>
+
+                }
+                else
+                {
+                    <ul class="navbar-nav ">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Auth" asp-action="Login">Đăng nhập</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Auth" asp-action="Login">Đăng ký</a></li>
+                    </ul>
+
+                }
+
+
+            </div>
+        </div>
+    </nav>
+</header>
