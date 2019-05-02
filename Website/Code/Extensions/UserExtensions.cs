@@ -18,6 +18,7 @@ namespace Website.Code.Extensions
             var remoteIpAddress = httpContext.Connection.RemoteIpAddress;
             var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
             return SecurityHelper.MD5Hash(remoteIpAddress + userAgent);
+
         }
 
 
