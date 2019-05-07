@@ -6,11 +6,11 @@ namespace Core.Entities
 {
     public class Notification : BaseEntity
     {
-        public DataType DataType { get; set; }
-        public int DataId { get; set; }
+        public EntityType EntityType { get; set; }
+        public int EntityId { get; set; }
         public NotificationType Type { get; set; }
-        public string RefData { get; set; }
-        public int RefId { get; set; }
+        public string Data { get; set; }
+        public int DataId { get; set; }
         public string Message { get; set; }
         public string Image { get; set; }
         public string Title { get; set; }

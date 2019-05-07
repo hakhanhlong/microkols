@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
-    public enum DataType
+    public enum EntityType
     {
         System = 0,
         Account = 1,

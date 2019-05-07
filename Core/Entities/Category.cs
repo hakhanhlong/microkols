@@ -14,7 +14,5 @@ namespace Core.Entities
         public IEnumerable<AccountCategory> AccountCategory => _AccountCategory.AsReadOnly();
 
 
-        private List<CampaignCategory> _CampaignCategory = new List<CampaignCategory>();
-        public IEnumerable<CampaignCategory> CampaignCategory => _CampaignCategory.AsReadOnly();
     }
 }

@@ -6,8 +6,8 @@ namespace Core.Entities
 {
     public class Wallet : BaseEntity
     {
-        public DataType DataType { get; set; }
-        public int DataId { get; set; }
+        public EntityType EntityType { get; set; }
+        public int EntityId { get; set; }
         public int Balance { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
