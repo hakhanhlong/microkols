@@ -80,9 +80,9 @@ namespace Website.Services
                         Phone = string.Empty,
                         Avatar = string.Empty,
                         Salt = SecurityHelper.GenerateSalt(),
-                        CityId = 1,
+                        CityId = null,
                         Deleted = false,
-                        DistrictId = 1,
+                        DistrictId = null,
                     };
                     await _accountRepository.AddAsync(account);
                 }

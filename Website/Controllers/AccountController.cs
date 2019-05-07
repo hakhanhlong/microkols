@@ -10,6 +10,7 @@ using Website.ViewModels;
 
 namespace Website.Controllers
 {
+    [Authorize(Roles ="Account")]
     public class AccountController : BaseController
     {
 

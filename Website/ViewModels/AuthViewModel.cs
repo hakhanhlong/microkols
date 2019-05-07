@@ -17,11 +17,20 @@ namespace Website.ViewModels
             Id = account.Id;
             Name = account.Name;
             Username = account.Email;
+            Type = EntityType.Account;
             Roles = new List<string>() { "Account" };
         }
-
+        public AuthViewModel(Agency agency)
+        {
+            Id = agency.Id;
+            Name = agency.Name;
+            Username = agency.Username;
+            Type = EntityType.Agency;
+            Roles = new List<string>() { "Agency" };
+        }
         public List<string> Roles { get; set; } = new List<string>();
         public int Id { get; set; }
+        public EntityType Type { get; set; }
         public string Username { get; set; }
         public string Name { get; set; }
 

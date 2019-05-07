@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Website.Code;
+using Website.Code.Binders;
 using Website.Code.Helpers;
 using Website.Interfaces;
 using Website.Services;
@@ -46,10 +47,9 @@ namespace Website
                 options.AccessDeniedPath = "/AccessDenied/";
                 options.LoginPath = "/Auth/Login/";
                 options.LogoutPath = "/Auth/Logout/";
-                options.Cookie.Name = "DataHomeCookie";
+                options.Cookie.Name = "MicroKolCookie";
                 options.Cookie.Path = "/";
                 options.Cookie.HttpOnly = true;
-
                 options.Cookie.SameSite = SameSiteMode.None;
 
             });
@@ -60,18 +60,21 @@ namespace Website
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped<IAccountRepository, AccountRepository>();
-
+            services.AddScoped<IAgencyRepository, AgencyRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISharedService, SharedService>();
-
+            services.AddScoped<IAgencyService, AgencyService>();
 
 
             services.AddSingleton<IFileHelper, FileHelper>();
 
 
             services.AddSession();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new ModelBinderProvider());
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

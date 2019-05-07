@@ -12,8 +12,9 @@ namespace Website.Controllers
     public class AuthController : BaseController
     {
         private readonly IAccountService _accountService;
+        private readonly IAgencyService _agencyService;
         private readonly ISharedService _sharedService;
-        public AuthController(IAccountService accountService, ISharedService sharedService)
+        public AuthController(IAccountService accountService, ISharedService sharedService, IAgencyService agencyService)
         {
 
             _accountService = accountService;
@@ -23,6 +24,7 @@ namespace Website.Controllers
         }
 
 
+        #region Account
 
         #region Login
         [Route("~/dang-nhap")]
@@ -89,5 +91,66 @@ namespace Website.Controllers
 
         #endregion
 
+        #endregion
+
+        #region Agency
+
+        #region Login
+        public IActionResult AgencyLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AgencyLogin(LoginViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var auth = await _accountService.GetAuth(model);
+
+                if (auth != null)
+                {
+                    await SignIn(auth);
+                    if (!string.IsNullOrEmpty(returnurl)) return Redirect(returnurl);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                this.AddAlertDanger("Tên đăng nhập hoặc mật khẩu không đúng");
+            }
+            return View(model);
+        }
+
+
+
+        #endregion
+
+        #region Register
+        public IActionResult AgencyRegister()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AgencyRegister(CreateAgencyViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var id = await _agencyService.CreateAgency(model);
+
+                if (id>0)
+                {
+                    this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Vui lòng chờ ban quản trị duyệt");
+                    return RedirectToAction("AgencyRegister");
+                }
+                this.AddAlertDanger("Tên đăng nhập đã tồn tại");
+            }
+            return View(model);
+        }
+
+
+
+        #endregion
+
+        #endregion
     }
 }
