@@ -29,11 +29,20 @@ namespace Infrastructure.Data
         public virtual DbSet<CampaignAccount> CampaignAccount { get; set; }
         public virtual DbSet<CampaignOption> CampaignOption { get; set; }
         public virtual DbSet<CampaignType> CampaignType { get; set; }
+
+
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<District> District { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
 
+
+        public virtual DbSet<Setting> Setting { get; set; }
+
+
+        public virtual DbSet<Transaction> Transaction { get; set; }
+        public virtual DbSet<TransactionHistory> TransactionHistory { get; set; }
+        public virtual DbSet<Wallet> Wallet { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -44,18 +53,19 @@ namespace Infrastructure.Data
 
             builder.Entity<Agency>(ConfigureAgency);
 
-
             builder.Entity<Campaign>(ConfigureCampaign);
             builder.Entity<CampaignAccount>(ConfigureCampaignAccount);
             builder.Entity<CampaignOption>(ConfigureCampaignOption);
             builder.Entity<CampaignType>(ConfigureCampaignType);
-            
 
 
             builder.Entity<Category>(ConfigureCategory);
-
-
             builder.Entity<Notification>(ConfigureNotification);
+            builder.Entity<Setting>(ConfigureSetting);
+
+            builder.Entity<Transaction>(ConfigureTransaction);
+            builder.Entity<TransactionHistory>(ConfigureTransactionHistory);
+            builder.Entity<Wallet>(ConfigureWallet);
         }
 
 
@@ -83,8 +93,6 @@ namespace Infrastructure.Data
 
             //builder.Property(e => e.Provider).HasConversion(v => v.ToString(), v => (AccountProviderType)Enum.Parse(typeof(AccountProviderProvider), v));
         }
-
-
         private void ConfigureAgency(EntityTypeBuilder<Agency> builder)
         {
             builder.HasQueryFilter(p => !p.Deleted);
@@ -125,7 +133,7 @@ namespace Infrastructure.Data
             builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignOption).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
 
         }
-        
+
         private void ConfigureCampaignType(EntityTypeBuilder<CampaignType> builder)
         {
 
@@ -137,6 +145,29 @@ namespace Infrastructure.Data
 
         }
 
+        private void ConfigureSetting(EntityTypeBuilder<Setting> builder)
+        {
+            builder.Property(e => e.Name).HasConversion(v => v.ToString(), v => (SettingName)Enum.Parse(typeof(SettingName), v));
+
+        }
+
+
+        private void ConfigureTransaction(EntityTypeBuilder<Transaction> builder)
+        {
+
+            builder.Metadata.FindNavigation(nameof(Core.Entities.Transaction.TransactionHistory)).SetPropertyAccessMode(PropertyAccessMode.Field);
+        }
+        private void ConfigureTransactionHistory(EntityTypeBuilder<TransactionHistory> builder)
+        {
+            builder.HasOne(m => m.Transaction).WithMany(m => m.TransactionHistory).HasForeignKey(m => m.TransactionId).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(m => m.Wallet).WithMany(m => m.TransactionHistory).HasForeignKey(m => m.WalletId).OnDelete(DeleteBehavior.ClientSetNull);
+
+        }
+        private void ConfigureWallet(EntityTypeBuilder<Wallet> builder)
+        {
+            builder.Metadata.FindNavigation(nameof(Core.Entities.Wallet.TransactionHistory)).SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        }
 
 
     }

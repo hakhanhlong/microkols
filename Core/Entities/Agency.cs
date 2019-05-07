@@ -11,6 +11,7 @@ namespace Core.Entities
         public string Salt { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Image { get; set; }
 
 
         private List<Campaign> _Campaign = new List<Campaign>();

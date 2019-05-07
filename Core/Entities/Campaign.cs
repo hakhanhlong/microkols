@@ -4,8 +4,6 @@ using System.Text;
 
 namespace Core.Entities
 {
-
-
     public class Campaign : BaseEntityWithMeta
     {
         public int AgencyId { get; set; }
@@ -17,16 +15,14 @@ namespace Core.Entities
         public int CampaignTypeId { get; set; }
         public CampaignType CampaignType { get; set; }
 
-        public int Price { get; set; }        
-        public int ServiceCharge { get; set; }
-        public int ExtraCharge { get; set; }
-
+        public int CampaignTypeCharge { get; set; }        
+        public int ServiceChargePercent { get; set; }
+        public int ExtraChargePercent { get; set; }
 
         public CampaignStatus Status { get; set; }
 
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
-
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
         public IEnumerable<CampaignOption> CampaignOption => _CampaignOption.AsReadOnly();
