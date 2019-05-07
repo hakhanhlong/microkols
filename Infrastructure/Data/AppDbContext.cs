@@ -27,7 +27,8 @@ namespace Infrastructure.Data
         public virtual DbSet<Agency> Agency { get; set; }
         public virtual DbSet<Campaign> Campaign { get; set; }
         public virtual DbSet<CampaignAccount> CampaignAccount { get; set; }
-        public virtual DbSet<CampaignCategory> CampaignCategory { get; set; }
+        public virtual DbSet<CampaignOption> CampaignOption { get; set; }
+        public virtual DbSet<CampaignType> CampaignType { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<City> City { get; set; }
         public virtual DbSet<District> District { get; set; }
@@ -46,7 +47,10 @@ namespace Infrastructure.Data
 
             builder.Entity<Campaign>(ConfigureCampaign);
             builder.Entity<CampaignAccount>(ConfigureCampaignAccount);
-            builder.Entity<CampaignCategory>(ConfigureCampaignCategory);
+            builder.Entity<CampaignOption>(ConfigureCampaignOption);
+            builder.Entity<CampaignType>(ConfigureCampaignType);
+            
+
 
             builder.Entity<Category>(ConfigureCategory);
 
@@ -91,9 +95,7 @@ namespace Infrastructure.Data
         {
 
             builder.HasQueryFilter(p => !p.Deleted);
-
             builder.Metadata.FindNavigation(nameof(Core.Entities.Category.AccountCategory)).SetPropertyAccessMode(PropertyAccessMode.Field);
-            builder.Metadata.FindNavigation(nameof(Core.Entities.Category.CampaignCategory)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
 
         }
@@ -106,7 +108,7 @@ namespace Infrastructure.Data
 
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
-            builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignCategory)).SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignOption)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
         }
         private void ConfigureCampaignAccount(EntityTypeBuilder<CampaignAccount> builder)
@@ -117,12 +119,16 @@ namespace Infrastructure.Data
             builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignAccount).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
 
         }
-        private void ConfigureCampaignCategory(EntityTypeBuilder<CampaignCategory> builder)
+        private void ConfigureCampaignOption(EntityTypeBuilder<CampaignOption> builder)
         {
-            builder.HasKey(m => new { m.CategoryId, m.CampaignId });
 
-            builder.HasOne(m => m.Category).WithMany(m => m.CampaignCategory).HasForeignKey(m => m.CategoryId).OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignCategory).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignOption).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
+
+        }
+        
+        private void ConfigureCampaignType(EntityTypeBuilder<CampaignType> builder)
+        {
+
 
         }
 

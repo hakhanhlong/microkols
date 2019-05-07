@@ -5,4 +5,10 @@ using System.Threading.Tasks;
 
 namespace Core.Entities
 {
+    public enum DataType
+    {
+        System = 0,
+        Account = 1,
+        Agency = 2
+    }
 }

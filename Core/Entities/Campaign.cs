@@ -4,13 +4,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class CampaignOption : BaseEntity
-    {
-        public int CampaignId { get; set; }
-        public Campaign Campaign { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
-    }
+
 
     public class Campaign : BaseEntityWithMeta
     {
@@ -21,13 +15,25 @@ namespace Core.Entities
         public string Data { get; set; }
         public string Image { get; set; }
         public int CampaignTypeId { get; set; }
+        public CampaignType CampaignType { get; set; }
+
+        public int Price { get; set; }        
+        public int ServiceCharge { get; set; }
+        public int ExtraCharge { get; set; }
+
+
         public CampaignStatus Status { get; set; }
+
+        public DateTime? DateStart { get; set; }
+        public DateTime? DateEnd { get; set; }
+
+
+        private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
+        public IEnumerable<CampaignOption> CampaignOption => _CampaignOption.AsReadOnly();
 
         private List<CampaignAccount> _CampaignAccount = new List<CampaignAccount>();
         public IEnumerable<CampaignAccount> CampaignAccount => _CampaignAccount.AsReadOnly();
 
-        private List<CampaignCategory> _CampaignCategory = new List<CampaignCategory>();
-        public IEnumerable<CampaignCategory> CampaignCategory => _CampaignCategory.AsReadOnly();
     }
 
     public enum CampaignStatus

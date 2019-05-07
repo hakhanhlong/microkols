@@ -10,14 +10,17 @@ namespace Core.Entities
     }
 
 
-    public class BaseEntityWithMeta : BaseEntity
+    public class BaseEntityWithMeta : BaseEntityWithDate
     {
 
         public bool Published { get; set; }
         public bool Deleted { get; set; }
-        //public string MetaTitle { get; set; }
-        //public string MetaDescription { get; set; }
-        //public string MetaKeywords { get; set; }
+    }
+
+    public class BaseEntityWithDate : BaseEntity
+    {
+
+     
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string UserCreated { get; set; }

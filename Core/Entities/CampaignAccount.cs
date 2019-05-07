@@ -21,6 +21,7 @@ namespace Core.Entities
 
     public enum CampaignAccountStatus
     {
-
+        Request = 0,
+        Joined = 1
     }
 }
