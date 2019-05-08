@@ -19,6 +19,7 @@ namespace Website.Controllers
 
             _accountService = accountService;
             _sharedService = sharedService;
+            _agencyService = agencyService;
 
 
         }
@@ -102,11 +103,11 @@ namespace Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgencyLogin(LoginViewModel model, string returnurl = "")
+        public async Task<IActionResult> AgencyLogin(AgencyLoginViewModel model, string returnurl = "")
         {
             if (ModelState.IsValid)
             {
-                var auth = await _accountService.GetAuth(model);
+                var auth = await _agencyService.GetAuth(model);
 
                 if (auth != null)
                 {
@@ -137,7 +138,7 @@ namespace Website.Controllers
             {
                 var id = await _agencyService.CreateAgency(model);
 
-                if (id>0)
+                if (id > 0)
                 {
                     this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Vui lòng chờ ban quản trị duyệt");
                     return RedirectToAction("AgencyRegister");
@@ -152,14 +153,12 @@ namespace Website.Controllers
         #endregion
 
 
-         public async Task<IActionResult> VerifyAgencyUsername(string username)
+        public async Task<IActionResult> VerifyAgencyUsername(string username)
         {
-            if (!await _agencyService.VerifyUsername(username))
-            {
-                return Json(true);
-            }
+            var r = await _agencyService.VerifyUsername(username);
 
-            return Json(true);
+            return Json(r);
+
         }
 
         #endregion

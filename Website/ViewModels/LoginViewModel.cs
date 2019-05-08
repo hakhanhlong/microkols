@@ -12,8 +12,8 @@ namespace Website.ViewModels
     {
      
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên đăng nhập")]
-        [EmailAddress]
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Email không đúng")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -26,6 +26,22 @@ namespace Website.ViewModels
         public bool Remember { get; set; }
     }
 
+    public class AgencyLoginViewModel
+    {
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên đăng nhập")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Mật khẩu")]
+        public string Password { get; set; }
+
+
+        [Display(Name = "Ghi nhớ")]
+        public bool Remember { get; set; }
+    }
 
     public class LoginProviderViewModel
     {

@@ -40,7 +40,7 @@ namespace Website.Services
 
 
         #region Auth
-        public async Task<AuthViewModel> GetAuth(LoginViewModel model)
+        public async Task<AuthViewModel> GetAuth(AgencyLoginViewModel model)
         {
             var agency = await _agencyRepository.GetPublishedAgency(model.Username);
             if (agency != null)
