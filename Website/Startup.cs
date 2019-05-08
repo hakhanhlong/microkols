@@ -18,6 +18,7 @@ using Website.Code.Binders;
 using Website.Code.Helpers;
 using Website.Interfaces;
 using Website.Services;
+using Website.Middlewares;
 
 namespace Website
 {
@@ -56,18 +57,7 @@ namespace Website
 
             var connection = Configuration.GetConnectionString("AppContext");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
-            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
-
-            services.AddScoped<IAccountRepository, AccountRepository>();
-            services.AddScoped<IAgencyRepository, AgencyRepository>();
-
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<ISharedService, SharedService>();
-            services.AddScoped<IAgencyService, AgencyService>();
-
-
-            services.AddSingleton<IFileHelper, FileHelper>();
+            services.AddAppServices();
 
 
             services.AddSession();
@@ -90,6 +80,8 @@ namespace Website
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseAppMiddlewares();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

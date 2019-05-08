@@ -1,0 +1,26 @@
+﻿
+@if (ViewBag.Success != null)
+{
+   
+    <p class="text-success text-center">
+        <strong>
+            @ViewBag.Success
+        </strong>
+    </p>
+}
+
+
+@if (ViewBag.Error != null)
+{
+    <p class="text-danger text-center">
+        <strong>
+            @ViewBag.Error
+        </strong>
+    </p>
+}
+
+<hr />
+<div class="text-right">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+
+</div>

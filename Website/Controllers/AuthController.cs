@@ -28,14 +28,14 @@ namespace Website.Controllers
         #region Account
 
         #region Login
-        [Route("~/dang-nhap")]
+        //[Route("~/dang-nhap")]
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("~/dang-nhap")]
+        //[Route("~/dang-nhap")]
         public async Task<IActionResult> Login(LoginViewModel model, string returnurl = "")
         {
             if (ModelState.IsValid)
@@ -56,7 +56,7 @@ namespace Website.Controllers
 
 
         [Authorize]
-        [Route("~/thoat")]
+        //[Route("~/thoat")]
         public async Task<IActionResult> Logout()
         {
             await SignOut();

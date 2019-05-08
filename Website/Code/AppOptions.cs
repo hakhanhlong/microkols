@@ -28,7 +28,7 @@ namespace Website.Code
 
             
         }
-
+        public List<BankAccountOption> BankAccounts { get; set; }
         public SmtpOptions SmtpServer { get; set; }
     }
     public class SmtpOptions
@@ -38,6 +38,16 @@ namespace Website.Code
         public bool EnableSsl { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
+    }
+
+    public class BankAccountOption
+    {
+        public string BankCode { get; set; }
+        public string BankImage { get; set; }
+        public string BankName { get; set; }
+        public string BankBranch { get; set; }
+        public string AccountNumber { get; set; }
+        public string AccountName { get; set; }
     }
 
 }

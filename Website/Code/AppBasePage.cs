@@ -18,7 +18,7 @@ namespace Website.Code
 
         protected AuthViewModel CurrentUser => User.Identity.IsAuthenticated ? AuthViewModel.GetModel(User) : null;
 
-        
-        
+        public Core.Models.SettingModel AppSettings => (Core.Models.SettingModel)Context.Items[AppConstants.APP_SETTING_KEY];
+
     }
 }

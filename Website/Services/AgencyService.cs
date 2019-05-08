@@ -18,11 +18,13 @@ namespace Website.Services
     {
         private readonly ILogger<AgencyService> _logger;
         private readonly IAgencyRepository _agencyRepository;
-        public AgencyService(ILoggerFactory loggerFactory,
+        private readonly IWalletRepository _walletRepository;
+        public AgencyService(ILoggerFactory loggerFactory, IWalletRepository walletRepository,
           IAgencyRepository agencyRepository)
         {
             _logger = loggerFactory.CreateLogger<AgencyService>();
             _agencyRepository = agencyRepository;
+            _walletRepository = walletRepository;
 
         }
 
@@ -36,8 +38,6 @@ namespace Website.Services
         {
             return (agency == null) ? null : new AgencyViewModel(agency);
         }
-
-
 
         #region Auth
         public async Task<AuthViewModel> GetAuth(AgencyLoginViewModel model)
@@ -76,6 +76,7 @@ namespace Website.Services
             {
                 var agency = model.GetEntity();
                 await _agencyRepository.AddAsync(agency);
+                await _walletRepository.CreateWallet(EntityType.Agency, agency.Id);
                 return agency.Id;
             }
             return -1;

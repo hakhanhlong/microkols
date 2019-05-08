@@ -27,6 +27,19 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+
+                            <a class="nav-link" data-toggle="dropdown">
+                                <i class="fal fa-wallet"></i>
+
+                                <span class="wallet-balance text-danger pl-2"></span> VNĐ
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item wallet-recharge"> Nạp tiền</a>
+                            </div>
+
+                            
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link">
                                 <i class="fal fa-bell"></i>

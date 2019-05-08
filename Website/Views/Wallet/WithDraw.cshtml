@@ -1,0 +1,73 @@
+﻿@inject Microsoft.Extensions.Options.IOptions<Website.Code.AppOptions> appOptions
+@model WithDrawViewModel
+
+@{ 
+    var amount = (long)ViewBag.Amount;
+}
+@*<div id="withDrawmodal">
+    <form method="post" action="javascript" id="frmWithDraw" data-action="@Url.Action("WithDraw","Wallet")">
+
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger wrapper" })
+            <div class="form-group">
+
+                <label class="col-md-3 control-label">Số tiền trong ví</label>
+                <div class="col-md-9" style="padding-top:11px;">
+                    <span class="text-success">@amount.ToPrice()</span>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Amount, new { @class = "col-md-3 control-label" })
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(model => model.Amount)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note, new { @class = "col-md-3 control-label" })
+                <div class="col-md-9">
+                    @Html.TextAreaFor(model => model.Note, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Note)
+                </div>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div class="text-right">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            <input type="submit" value="Yêu cầu rút tiền" class="btn btn-primary">
+        </div>
+    </form>
+    <script type="text/javascript">
+        $().ready(function () {
+            $.validator.unobtrusive.parse($('#frmWithDraw'));
+
+
+
+
+            $('#frmWithDraw').submit(function (e) {
+                e.preventDefault();
+
+                var isvalid = $(this).valid();
+                if (isvalid) {
+
+                    var url = $(this).data('action');
+                    var data = $(this).serialize();
+
+                    $('#withDrawmodal').html('<p class="text-center"><i class="fa fa-spin fa-spinner"></i> </p>');
+                    $.post(url, data, function (html) {
+                        $('#withDrawmodal').html(html);
+                    });
+                }
+
+            });
+
+        });
+    </script>
+</div>*@

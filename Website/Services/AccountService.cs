@@ -19,13 +19,15 @@ namespace Website.Services
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
+        private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
-          IAccountRepository accountRepository,
+          IAccountRepository accountRepository, IWalletRepository walletRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
             _accountRepository = accountRepository;
             _accountProviderRepository = accountProviderRepository;
+            _walletRepository = walletRepository;
 
         }
 
@@ -85,7 +87,9 @@ namespace Website.Services
                         DistrictId = null,
                     };
                     await _accountRepository.AddAsync(account);
+                    await _walletRepository.CreateWallet(EntityType.Account, account.Id);
                 }
+
 
                 accountprovider = new AccountProvider()
                 {
@@ -94,18 +98,14 @@ namespace Website.Services
                     Name = model.Name,
                     Provider = model.Provider,
                     ProviderId = model.ProviderId,
-
                 };
                 await _accountProviderRepository.AddAsync(accountprovider);
-
                 return GetAuth(account);
             }
             else
             {
                 return await GetAuth(accountprovider.AccountId);
             }
-
-
         }
 
         public async Task<AuthViewModel> GetAuth(int id)

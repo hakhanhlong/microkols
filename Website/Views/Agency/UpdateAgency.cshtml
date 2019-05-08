@@ -13,7 +13,7 @@
     <div class="tab-pane fade show active">
 
 
-        <form method="post" asp-action="ChangeInfo" enctype="multipart/form-data">
+        <form method="post" asp-action="UpdateAgency" enctype="multipart/form-data">
 
             <alert></alert>
 
@@ -28,11 +28,6 @@
                 <label asp-for="Description"></label>
                 <textarea type="text" class="form-control" asp-for="Description"></textarea>
                 <span asp-validation-for="Description"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input type="text" class="form-control" asp-for="Name" />
-                <span asp-validation-for="Name"></span>
             </div>
             <div class="form-group">
 

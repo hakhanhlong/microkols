@@ -1,0 +1,65 @@
+﻿@inject Microsoft.Extensions.Options.IOptions<Website.Code.AppOptions> appOptions
+
+@{
+    var rechargemodel = (RechargeViewModel)ViewBag.RechargeModel;
+}
+
+
+
+<div>
+
+
+    @*<p>
+        Bạn đã làm yêu cầu nạp @rechargemodel.AmountInt.ToPrice() vào ví.
+
+    </p>
+    <p>Vui lòng thanh toán theo nội dung sau để Adathang xác nhận giao dịch cho bạn</p>
+
+    @if (rechargemodel.Method == TransactionMethod.NapTienVaoVi_TrucTiep)
+    {
+        <p>
+            Đến kho Adathang theo địa chỉ <strong>@AppSettings.Address</strong> số điện thoại <strong> @AppSettings.Phone</strong>.
+            Khi đến vui lòng thông báo với kế toán theo nội dung
+            <strong class="text-danger">nạp tiền tài khoản @CurrentUser.Username hoặc @CurrentUser.Code</strong>
+            nhân viên Adathang sẽ hỗ trợ bạn
+        </p>
+    }
+    else
+    {
+        var banks = appOptions.Value.Banks;
+
+        var bank = banks.FirstOrDefault(m => m.Code.ToLower() == rechargemodel.BankType.ToString().ToLower());
+        if (bank != null)
+        {
+
+            <p>
+                Chuyển khoản số tiền <strong class="text-danger">@rechargemodel.AmountInt.ToPrice()</strong>  theo ngân hàng sau với nội dung
+
+                <strong>nạp tiền tài khoản @CurrentUser.Code</strong>
+
+            </p>
+            <p><img class="img-responsive" src="@bank.Image" /></p>
+            <p style="font-size:120%">@bank.Name</p>
+
+            <p>Tài khoản: <strong class="text-success">@bank.AccountName</strong> </p>
+            <p>Số tài khoản: <strong class="text-danger">@bank.AccountNumber</strong> </p>
+            <p>Chi nhánh:  <i>@bank.Location</i> </p>
+            <p>Nội dung chuyển khoản: <strong>TK @CurrentUser.Code </strong></p>
+
+        }
+    }
+
+    <p>
+        <strong>
+
+            Số tiền sẽ được chuyển vào ví của bạn trong vòng 15 – 30 phút ( trong giờ hành chính).
+            Ngoài giờ hành chính vui lòng chờ sang đầu giờ ngày làm việc tiếp theo
+        </strong>
+    </p>*@
+
+</div>
+
+<hr />
+<div class="text-right">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+</div>

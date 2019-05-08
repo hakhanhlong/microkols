@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using Common.Extensions;
 namespace Website.ViewModels
 {
     public class AuthViewModel
@@ -18,6 +18,7 @@ namespace Website.ViewModels
             Name = account.Name;
             Username = account.Email;
             Type = EntityType.Account;
+            Avatar = account.Avatar;
             Roles = new List<string>() { "Account" };
         }
         public AuthViewModel(Agency agency)
@@ -26,12 +27,14 @@ namespace Website.ViewModels
             Name = agency.Name;
             Username = agency.Username;
             Type = EntityType.Agency;
+            Avatar = agency.Image;
             Roles = new List<string>() { "Agency" };
         }
         public List<string> Roles { get; set; } = new List<string>();
         public int Id { get; set; }
         public EntityType Type { get; set; }
         public string Username { get; set; }
+        public string Avatar { get; set; }
         public string Name { get; set; }
 
         public List<Claim> GetClaims()
@@ -41,6 +44,8 @@ namespace Website.ViewModels
             claims.Add(new Claim(ClaimTypes.NameIdentifier, Id.ToString()));
             claims.Add(new Claim(ClaimTypes.GivenName, Name));
             claims.Add(new Claim(ClaimTypes.Name, Username));
+            claims.Add(new Claim("Avatar", Avatar));
+            claims.Add(new Claim("Type", Type.ToString()));
             foreach (var role in Roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -52,12 +57,21 @@ namespace Website.ViewModels
             var id = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value);
             var username = principal.FindFirst(ClaimTypes.Name).Value;
             var name = principal.FindFirst(ClaimTypes.GivenName).Value;
+
+            var avatar = principal.FindFirst("Avatar").Value;
+            var type = principal.FindFirst("Type").Value;
+       
+
+
+
             return new AuthViewModel()
             {
                 Id = id,
                 Name = name,
                 Username = username,
-                Roles = new List<string>() // not get roles 
+                Avatar = avatar,
+                Type = type.ToEnum<EntityType>(),
+                Roles = new List<string>() // not get roles ,
             };
         }
 

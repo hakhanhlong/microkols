@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using Core.Models;
 using Core.Specifications;
 using System;
 using System.Collections.Generic;
@@ -18,17 +19,21 @@ namespace Website.Services
         private readonly IAsyncRepository<Banner> _bannerRepository;
         private readonly IAsyncRepository<Category> _categoryRepository;
 
+        private readonly ISettingRepository _settingRepository;
+
         public SharedService(
             IAsyncRepository<Category> categoryRepository,
-            IAsyncRepository<Banner> _bannerRepository,
+            IAsyncRepository<Banner> bannerRepository,
              IAsyncRepository<City> cityRepository,
-             IAsyncRepository<District> districtRepository)
+             IAsyncRepository<District> districtRepository,
+             ISettingRepository settingRepository)
         {
             
             _cityRepository = cityRepository;
             _districtRepository = districtRepository;
             _categoryRepository = categoryRepository;
-
+            _bannerRepository = bannerRepository;
+            _settingRepository = settingRepository;
 
         }
 
@@ -81,6 +86,11 @@ namespace Website.Services
             var districts = await _districtRepository.ListAsync(filter);
 
             return EntityViewModel.GetList(districts);
+        }
+
+        public async Task<SettingModel> GetSetting()
+        {
+            return await _settingRepository.GetSetting();
         }
 
         #endregion

@@ -13,6 +13,9 @@ namespace Core.Entities
     public enum SettingName
     {
         ServiceCharge,
-        ExtraOptionCharge
+        ExtraOptionCharge,
+        Phone,
+        Address,
+        
     }
 }

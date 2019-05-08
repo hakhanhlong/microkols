@@ -9,7 +9,8 @@ namespace Website.Code
 {
     public class AppConstants
     {
-    
+
+        public static string APP_SETTING_KEY { get; set; } = "APP_SETTING_KEY";
         public static string MASTER_PASSWORD { get; set; } = "hoangquy@kol@321";
 
     }

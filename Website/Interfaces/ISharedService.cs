@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Models;
 using Website.ViewModels;
 
 namespace Website.Interfaces
@@ -13,5 +14,6 @@ namespace Website.Interfaces
         Task<EntityViewModel> GetCity(int id);
         Task<EntityViewModel> GetDistrict(int id);
         Task<List<EntityViewModel>> GetDistricts(int cityid);
+        Task<SettingModel> GetSetting();
     }
 }
