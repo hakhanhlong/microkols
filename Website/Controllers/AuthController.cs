@@ -151,6 +151,17 @@ namespace Website.Controllers
 
         #endregion
 
+
+         public async Task<IActionResult> VerifyAgencyUsername(string username)
+        {
+            if (!await _agencyService.VerifyUsername(username))
+            {
+                return Json(true);
+            }
+
+            return Json(true);
+        }
+
         #endregion
     }
 }

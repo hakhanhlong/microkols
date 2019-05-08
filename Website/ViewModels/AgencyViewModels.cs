@@ -2,6 +2,7 @@
 using Common.Helpers;
 using Core.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -36,16 +37,38 @@ namespace Website.ViewModels
             Description = entity.Description;
             Image = entity.Image;
         }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên doanh nghiệp")]
         public string Name { get; set; }
+
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
+
+        [Display(Name = "Ảnh đại diện")]
         public string Image { get; set; }
     }
 
     public class CreateAgencyViewModel : UpdateAgencyViewModel
     {
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Mật khẩu", Prompt = "Mật khẩu")]
+        [DataType(DataType.Password)]
+        [StringLength(20, ErrorMessage = "{0} Có độ dài từ {2} - {1} ký tự.", MinimumLength = 6)]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Xác nhận mật khẩu", Prompt = "Xác nhận mật khẩu")]
+        [DataType(DataType.Password)]
+        [StringLength(20, ErrorMessage = "{0} Có độ dài từ {2} - {1} ký tự.", MinimumLength = 6)]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên đăng nhập")]
+        [Remote("VerifyAgencyUsername", "Auth", ErrorMessage = "{0} đã tồn tại")]
         public string Username { get; set; }
+
+
         public Agency GetEntity()
         {
             var salt = SecurityHelper.GenerateSalt();

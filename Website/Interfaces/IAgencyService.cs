@@ -18,5 +18,9 @@ namespace Website.Interfaces
         Task<UpdateAgencyViewModel> GetUpdateAgency(int id);
         Task<bool> UpdateAgency(int id, UpdateAgencyViewModel model, string username);
 
+        Task<bool> ChangePassword(int id, ChangePasswordViewModel model, string username);
+
+        Task<bool> VerifyUsername(string username);
+
     }
 }

@@ -12,8 +12,7 @@ namespace Website.ViewModels
     {
      
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = " Email")]
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "Hãy nhập đúng định dạng Email")]
+        [Display(Name = "Tên đăng nhập")]
         [EmailAddress]
         public string Username { get; set; }
 

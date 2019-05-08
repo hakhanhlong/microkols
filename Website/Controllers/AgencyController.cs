@@ -14,13 +14,13 @@ namespace Website.Controllers
     public class AgencyController : BaseController
     {
 
-        private readonly IAgencyService _accountService;
+        private readonly IAgencyService _agencyService;
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
-        public AgencyController(IAgencyService accountService, ISharedService sharedService, IFileHelper fileHelper)
+        public AgencyController(IAgencyService agencyService, ISharedService sharedService, IFileHelper fileHelper)
         {
 
-            _accountService = accountService;
+            _agencyService = agencyService;
             _sharedService = sharedService;
             _fileHelper = fileHelper;
 
@@ -32,7 +32,7 @@ namespace Website.Controllers
         #region UpdateAgency
         public async Task<IActionResult> UpdateAgency()
         {
-            var model = await _accountService.GetUpdateAgency(CurrentUser.Id);
+            var model = await _agencyService.GetUpdateAgency(CurrentUser.Id);
             return View(model);
         }
         [HttpPost]
@@ -41,10 +41,33 @@ namespace Website.Controllers
             if (ModelState.IsValid)
             {
                 model.Image = _fileHelper.MoveTempFile(model.Image, "agency");
-                var r = await _accountService.UpdateAgency(CurrentUser.Id, model, CurrentUser.Username);
+                var r = await _agencyService.UpdateAgency(CurrentUser.Id, model, CurrentUser.Username);
 
                 this.AddAlert(r);
                 return RedirectToAction("UpdateAgency");
+            }
+            return View(model);
+        }
+        #endregion
+
+
+
+        #region ChangePassword
+        public async Task<IActionResult> ChangePassword()
+        {
+            var model = new ChangePasswordViewModel();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _agencyService.ChangePassword(CurrentUser.Id, model, CurrentUser.Username);
+
+                this.AddAlert(r);
+                return RedirectToAction("ChangeIDCard");
+
             }
             return View(model);
         }

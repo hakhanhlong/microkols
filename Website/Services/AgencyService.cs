@@ -124,5 +124,34 @@ namespace Website.Services
         }
 
 
+
+
+        #region ChangePassword
+        public async Task<bool> ChangePassword(int id, ChangePasswordViewModel model, string username)
+        {
+            var entity = await _agencyRepository.GetByIdAsync(id, false);
+
+            if (entity != null)
+            {
+                var oldpw = Common.Helpers.SecurityHelper.HashPassword(entity.Salt, model.OldPassword);
+                if (oldpw.Contains(entity.Password))
+                {
+                    var newpw = SecurityHelper.HashPassword(entity.Salt, model.NewPassword);
+
+                    entity.Password = newpw;
+                    entity.DateModified = DateTime.Now;
+                    entity.UserModified = username;
+                    await _agencyRepository.UpdateAsync(entity);
+
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        #endregion
+
+
     }
 }
