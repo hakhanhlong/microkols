@@ -9,20 +9,40 @@
             <div class="navbar-collapse collapse d-flex">
 
                 <ul class="navbar-nav  mr-auto ">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categories</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
+
+
                     <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (CurrentUser.Type == Core.Entities.EntityType.Agency)
+                        {
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark" asp-controller="AgencyCampaign" asp-action="Index" data-toggle="dropdown">
+                                    Chiến dịch
+                                    <i class="fal fa-angle-down"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Index">Chiến dịch</a>
+                                    <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Create">Thêm chiến dịch</a>
+                                </div>
+                            </li>
+                        }
+                    }
+
+                    @*<li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
+                    </li>*@
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
@@ -38,7 +58,7 @@
                                 <a class="dropdown-item wallet-recharge"> Nạp tiền</a>
                             </div>
 
-                            
+
                         </li>
                         <li class="nav-item">
                             <a class="nav-link">

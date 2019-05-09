@@ -5,7 +5,7 @@ var AppSettings = {
         Username: '',
         Name: ''
     },
-}
+};
 
 
 var AppConstants = {
@@ -45,7 +45,7 @@ var AppCommon = {
         xhr.open('POST', AppUrls.ImageMultipleUpload);
 
         xhr.onload = function () {
-            if (xhr.status != 200) {
+            if (xhr.status !== 200) {
                 failure('HTTP Error: ' + xhr.status);
                 return;
             }
@@ -65,4 +65,4 @@ var AppCommon = {
             $('.wallet-balance').html(val);
         });
     }
-}
+};

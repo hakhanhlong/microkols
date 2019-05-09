@@ -24,8 +24,6 @@ var App = (function () {
                 if (response.status === 'connected') {
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
-                } else {
-
                 }
             }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
         });
@@ -45,10 +43,11 @@ var App = (function () {
                     $(target).trigger("change");
                     $(preview).attr('src', datas[0].url);
                 }
-            })
+            });
 
         });
 
+        $('.form-select2').select2({ theme: "bootstrap4" });
 
         $('.form-datepicker').daterangepicker({
             singleDatePicker: true,

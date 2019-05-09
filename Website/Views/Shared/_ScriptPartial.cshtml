@@ -22,6 +22,7 @@
 <script src="~/lib/daterangepicker/moment.min.js"></script>
 <partial name="_ValidationScriptsPartial" />
 <script src="~/lib/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>
 <script src="~/lib/daterangepicker/daterangepicker.js"></script>
 <script src="~/js/app.common.js" asp-append-version="true"></script>
 <script src="~/js/app.module.js" asp-append-version="true"></script>
@@ -31,7 +32,7 @@
 {
     <script type="text/javascript">
             AppSettings.IsAuthenticated = true;
-            AppSettings.CurrentUser.Username = '@CurrentUser.Username';            
+            AppSettings.CurrentUser.Username = '@CurrentUser.Username';
             AppSettings.CurrentUser.Name = '@CurrentUser.Name';
     </script>
 

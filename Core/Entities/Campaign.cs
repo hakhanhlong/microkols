@@ -34,6 +34,7 @@ namespace Core.Entities
 
     public enum CampaignStatus
     {
-
+        Created,
+        Processing, 
     }
 }

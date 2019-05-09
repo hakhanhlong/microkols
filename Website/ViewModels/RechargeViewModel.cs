@@ -1,4 +1,5 @@
 ﻿
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,28 +11,28 @@ namespace Website.ViewModels
     public class RechargeViewModel
     {
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Range(1000,100000000000,ErrorMessage = "{0} không đúng")]
+        [Range(1000, 100000000000, ErrorMessage = "{0} không đúng")]
         [Display(Name = "Số tiền")]
-        public string Amount { get; set; }
-
-        //public int AmountInt
-        //{
-        //    get
-        //    {
-        //        var amount = 0;
-        //        int.TryParse(Amount.Replace(".", "").Replace(",", ""), out amount);
-        //        return amount;
-        //    }
-        //}
+        public int Amount { get; set; }
 
         [Display(Name = "Hình thức")]
-        public int Method { get; set; }
-
+        public string Method { get; set; }
 
         [Display(Name = "Ghi chú")]
         public string Note { get; set; }
-        [Display(Name = "Ngân hàng")]
-        public int BankType { get; set; }
 
+        [Display(Name = "Ngân hàng")]
+        public string Bank { get; set; }
+
+
+
+        public string GetTransactionData()
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(new TransactionDataRechargeModel()
+            {
+                Bank = Bank,
+                Method = Method,
+            });
+        }
     }
 }

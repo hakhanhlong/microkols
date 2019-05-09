@@ -15,18 +15,20 @@ namespace Core.Entities
         public string Data { get; set; }
         public string Note { get; set; }
 
-
         private List<TransactionHistory> _TransactionHistory = new List<TransactionHistory>();
         public IEnumerable<TransactionHistory> TransactionHistory => _TransactionHistory.AsReadOnly();
     }
     public enum TransactionStatus
     {
-
+        Created,
+        Processing,
+        Canceled,
+        Completed, 
     }
     public enum TransactionType
     {
-        NapTienViKhachHang,
-        NapTienViDoanhNghiep
-       
+        NapTien,
+        RutTien
     }
+   
 }

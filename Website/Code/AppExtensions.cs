@@ -31,14 +31,19 @@ namespace Website.Code
             services.AddScoped<IAgencyRepository, AgencyRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<ISettingRepository, SettingRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<ICampaignRepository, CampaignRepository>();
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISharedService, SharedService>();
             services.AddScoped<IAgencyService, AgencyService>();
             services.AddScoped<IWalletService, WalletService>();
-            
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<ICampaignService, CampaignService>();
+
 
             services.AddSingleton<IFileHelper, FileHelper>();
+            services.AddTransient<AppSettingsMiddleware>();
         }
     }
 

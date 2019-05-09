@@ -8,6 +8,9 @@ namespace Core.Models
 {
     public class SettingModel
     {
+        private int _serviceCharge = 0;
+        private int _extraOptionCharge = 0;
+
         public SettingModel()
         {
 
@@ -15,13 +18,16 @@ namespace Core.Models
 
         public SettingModel(IEnumerable<Setting> settings)
         {
-            ServiceCharge = int.Parse(settings.FirstOrDefault(m => m.Name == SettingName.ServiceCharge)?.Value);
-            ExtraOptionCharge = int.Parse(settings.FirstOrDefault(m => m.Name == SettingName.ExtraOptionCharge)?.Value);
+            int.TryParse(settings.FirstOrDefault(m => m.Name == SettingName.ServiceCharge)?.Value, out _serviceCharge);
+            int.TryParse(settings.FirstOrDefault(m => m.Name == SettingName.ExtraOptionCharge)?.Value, out _extraOptionCharge);
 
-            Phone = settings.FirstOrDefault(m => m.Name == SettingName.ServiceCharge)?.Value
+            Phone = settings.FirstOrDefault(m => m.Name == SettingName.ServiceCharge)?.Value;
+
+            Address = settings.FirstOrDefault(m => m.Name == SettingName.ServiceCharge)?.Value;
         }
-        public int ServiceCharge { get; set; } = 0;
-        public int ExtraOptionCharge { get; set; } = 0;
+        public int ServiceCharge { get => _serviceCharge; set => _serviceCharge = value; }
+        public int ExtraOptionCharge { get => _extraOptionCharge; set => _extraOptionCharge = value; }
+
         public string Phone { get; set; }
 
         public string Address { get; set; }

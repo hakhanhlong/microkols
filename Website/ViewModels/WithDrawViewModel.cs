@@ -17,12 +17,5 @@ namespace Website.ViewModels
     }
 
 
-    public class OrderWithDrawViewModel
-    {
-        public int OrderId { get; set; }
-
-        [Display(Name = "Ghi chú")]
-        public string Note { get; set; }
-        public int Amount { get; set; }
-    }
+  
 }

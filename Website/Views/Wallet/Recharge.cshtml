@@ -1,12 +1,15 @@
-﻿@inject Microsoft.Extensions.Options.IOptions<Website.Code.AppOptions> appOptions
+﻿@inject IOptionsMonitor<Website.Code.AppOptions> OptionsAccessor
+
 @model RechargeViewModel
 
-
+@{
+    var _options = OptionsAccessor.CurrentValue;
+    var bankAccounts = _options.BankAccounts;
+}
 
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-
-        <form method="post" action="javascript:;" data-action="@Url.Action("CreateModal")" id="frmCreateMessage">
+        <form method="post" action="javascript:;" data-action="@Url.Action("Recharge","Wallet")" id="frmRecharge">
             <div class="modal-header">
                 <h5 class="modal-title">Nạp tiền </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -22,17 +25,42 @@
 
                 <div class="form-group">
                     <label asp-for="Method"></label> <br />
-
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" value="1" id="Method1" name="Method" class="custom-control-input">
+                        <input type="radio" checked value="Trực tiếp" id="Method1" name="Method" class="custom-control-input">
                         <label class="custom-control-label" for="Method1">Trực tiếp</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" value="2" id="Method2" name="Method" class="custom-control-input">
+                        <input type="radio" value="Chuyển khoản" id="Method2" name="Method" class="custom-control-input">
                         <label class="custom-control-label" for="Method2">Chuyển khoản</label>
                     </div>
                     <span asp-validation-for="Method" class="text-danger"></span>
                 </div>
+              <div id="bankWrap" class="d-none">
+                    <div class="form-group">
+                        <label asp-for="Bank"></label>
+                        <select name="Bank" class="form-control" id="Bank">
+                            <option>Chọn ngân hàng</option>
+                            @foreach (var bankAccount in bankAccounts)
+                            {
+                                <option value="@bankAccount.BankCode">@bankAccount.BankName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Bank" class="text-danger"></span>
+                    </div>
+
+                    @for (var i = 0; i < bankAccounts.Count; i++)
+                    {
+                        var bank = bankAccounts[i];
+                        <div id="bankinfo@(bank.BankCode)" class="bankinfo d-none">
+                            <p><b>@bank.BankName</b></p>
+                            <p>Tài khoản: <span class="text-success">@bank.AccountName</span> </p>
+                            <p>Số tài khoản: <span class="text-danger">@bank.AccountNumber</span> </p>
+                            <p>Chi nhánh: <i>@bank.BankBranch</i></p>
+                        </div>
+
+                    }
+                </div>
+               
                 <div class="form-group">
                     <label asp-for="Note"></label>
                     <textarea asp-for="Note" class="form-control"></textarea>
@@ -44,164 +72,9 @@
                 <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
             </div>
         </form>
-
-
-
-
     </div>
 </div>
 
-
-
-@*@{
-        var banks = appOptions.Value.Banks;
-        var arrmethod = new List<TransactionMethod>() { TransactionMethod.NapTienVaoVi_TrucTiep, TransactionMethod.NapTienVaoVi_ChuyenKhoan };
-    }
-
-    <div id="rechargemodal">
-        <form method="post" action="javascript" id="frmRecharge" data-action="@Url.Action("Recharge","Wallet")">
-
-
-            <div class="form-horizontal">
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger wrapper" })
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Amount, new { @class = "col-md-3 control-label"  })
-                    <div class="col-md-9">
-                        <input type="text" asp-for="Amount" class="form-control"  autocomplete="off"/>
-                        @Html.ValidationMessageFor(model => model.Amount)
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Method, new { @class = "col-md-3 control-label" })
-                    <div class="col-md-9">
-                        @{
-
-                        }
-                        <select name="Method" class="form-control" id="Method">
-                            @foreach (var item in arrmethod)
-                            {
-                                <option value="@item">@item.ToText()</option>
-                            }
-                        </select>
-
-                        @Html.ValidationMessageFor(model => model.Method)
-                    </div>
-                </div>
-
-
-
-                <div id="bankwrap">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.BankType, new { @class = "col-md-3 control-label" })
-                        <div class="col-md-9">
-                            @{
-
-                                var arrbank2 = Website.Code.Helpers.TransactionBankTypeHelper.GetTransactionBankTypes();
-
-                                <select name="BankType" class="form-control" id="BankType">
-                                    @foreach (var item in arrbank2)
-                                    {
-                                        if (item != TransactionBankType.KhongChon)
-                                        {
-                                            <option value="@item">@item.ToText()</option>
-                                        }
-                                    }
-                                </select>
-                            }
-                            @Html.ValidationMessageFor(model => model.BankType)
-
-
-                            @for (var i = 0; i < banks.Count; i++)
-                            {
-                                var bank = banks[i];
-
-                                <div id="bankinfo@(bank.Code)" class="bankinfo" style="padding-top:15px">
-                                    <p><b>@bank.Name</b></p>
-                                    <p>Tài khoản: <span class="text-success">@bank.AccountName</span> </p>
-                                    <p>Số tài khoản: <span class="text-danger">@bank.AccountNumber</span> </p>
-                                    <p>Chi nhánh: <i>@bank.Location</i></p>
-                                </div>
-
-                            }
-
-
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Note, new { @class = "col-md-3 control-label" })
-                    <div class="col-md-9">
-                        @Html.TextAreaFor(model => model.Note, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Note)
-                    </div>
-                </div>
-
-            </div>
-
-            <hr />
-
-            <div class="text-right">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-                <input type="submit" value="Nạp tiền" class="btn btn-primary">
-            </div>
-        </form>
-        <script type="text/javascript">
-            $().ready(function () {
-                $.validator.unobtrusive.parse($('#frmRecharge'));
-
-
-
-
-                $('#frmRecharge').submit(function (e) {
-                    e.preventDefault();
-
-                    var isvalid = $(this).valid();
-                    if (isvalid) {
-
-                        var url = $(this).data('action');
-                        var data = $(this).serialize();
-
-
-                        $('#rechargemodal').html('<p class="text-center"><i class="fa fa-spin fa-spinner"></i> </p>');
-                        $.post(url, data, function (html) {
-                            $('#rechargemodal').html(html);
-                        });
-                    }
-
-
-                });
-
-                function handlerbank() {
-
-                    $(".bankinfo").hide();
-                    var val = $('#BankType').val();
-
-                    $('#bankinfo' + val).show();
-                }
-                function handler() {
-                    var val = $('#Method').val();
-                    if (val == 'NapTienVaoVi_ChuyenKhoan') {
-                        $('#bankwrap').show();
-                    } else {
-                        $('#bankwrap').hide();
-                    }
-
-                }
-                $('#Method').change(function () {
-
-                    handler();
-                });
-
-                $('#BankType').change(function () {
-                    handlerbank();
-                });
-
-                handler();
-                handlerbank();
-            });
-        </script>
-    </div>*@
+<script type="text/javascript">
+    AppWallet.HandlerRecharge();
+</script>

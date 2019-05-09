@@ -18,7 +18,6 @@ using Website.Code.Binders;
 using Website.Code.Helpers;
 using Website.Interfaces;
 using Website.Services;
-using Website.Middlewares;
 
 namespace Website
 {

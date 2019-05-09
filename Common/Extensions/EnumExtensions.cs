@@ -32,5 +32,14 @@ namespace Common.Extensions
             var attribute = value.GetAttribute<DisplayNameAttribute>();
             return attribute == null ? value.ToString() : attribute.DisplayName;
         }
+
+        public static string ToPriceText(this int price, string currency = "đ")
+        {
+            return $"{price.ToString("n0")} {currency}";
+        }
+        public static string ToPriceText(this long price, string currency = "đ")
+        {
+            return $"{price.ToString("n0")} {currency}";
+        }
     }
 }
