@@ -22,10 +22,16 @@ namespace Website.Controllers
 
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? campaignTypeId, string kw, int page = 1,int pagesize = 20)
         {
-            return View();
+            var model = await _campaignService.GetCampaignsByAgency(CurrentUser.Id, campaignTypeId, kw, page, pagesize);
+            ViewBag.CampaignTypes = await _campaignService.GetCampaignTypes();
+            ViewBag.Kw = kw;
+            ViewBag.campaignTypeId = campaignTypeId;
+            return View(model);
         }
+
+        #region Create
 
         public async Task<IActionResult> Create()
         {
@@ -47,7 +53,6 @@ namespace Website.Controllers
             await ViewbagData();
             return View(model);
         }
-
         private async Task ViewbagData()
         {
             ViewBag.Categories = await _sharedService.GetCategories();
@@ -55,6 +60,16 @@ namespace Website.Controllers
             ViewBag.Cities = await _sharedService.GetCities();
         }
 
+
+        #endregion
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _campaignService.GetCampaignByAgency(CurrentUser.Id, id);
+            if (model == null) return NotFound();
+            await ViewbagData();
+            return View(model);
+        }
 
 
     }

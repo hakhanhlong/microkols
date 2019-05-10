@@ -1,7 +1,84 @@
-﻿
+﻿@model ListCampaignViewModel
 @{
     ViewData["Title"] = "Danh sách chiến dịch";
+    var campaignTypes = (List<CampaignTypeViewModel>)ViewBag.CampaignTypes;
+
+    var kw = (string)ViewBag.Kw;
+    var campaignTypeId = (int?)ViewBag.campaignTypeId;
 }
 
-<h1  class="h3">@ViewData["Title"]</h1>
+<h1 class="h3">@ViewData["Title"]</h1>
+
+
+
+<div class="row mb-3 justify-content-between">
+    <div class="col-6">
+
+        <div class="btn-group" role="group">
+
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fal fa-plus"></i>
+                Thêm chiến dịch mới
+            </a>
+        </div>
+
+    </div>
+    <div class="col-6">
+        <form method="get" asp-action="Index">
+            <div class="form-row">
+                <div class="col-auto w-25">
+                    <select class="form-control" name="campaignTypeId">
+                        <option value="">Tất cả loại</option>
+                        @foreach (var campaignType in campaignTypes)
+                        {
+                            <!option value="@campaignType.Id" @(campaignTypeId == campaignType.Id ? "selected" : "")>@campaignType.Name</!option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+
+                    <div class="input-group">
+
+                        <input type="text" name="kw" class="form-control" value="@kw" placeholder="Tìm kiếm">
+
+                        <div class="input-group-append">
+
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="fal fa-search"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </form>
+
+    </div>
+</div>
+
+@foreach (var item in Model.Campaigns)
+{
+    <div class="media mb-2 border-bottom">        
+        <div class="media-body">
+            <h5 class="mt-0">
+                <a asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+            </h5>
+            <p>
+                @item.Status.ToBadge()
+            </p>
+            <p>
+                @item.Description
+            </p>
+            
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="col-auto">
+        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-campaignTypeId="@campaignTypeId" ></pager>
+    </div>
+</div>
+
 
