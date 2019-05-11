@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Core.Entities
@@ -15,7 +16,7 @@ namespace Core.Entities
         public int CampaignTypeId { get; set; }
         public CampaignType CampaignType { get; set; }
 
-        public int CampaignTypeCharge { get; set; }        
+        public int CampaignTypeCharge { get; set; }
         public int ServiceChargePercent { get; set; }
         public int ExtraChargePercent { get; set; }
 
@@ -34,7 +35,17 @@ namespace Core.Entities
 
     public enum CampaignStatus
     {
+        [DisplayName("Khởi tạo")]
         Created,
-        Processing, 
+        [DisplayName("Đã thanh toán")]
+        Payed,
+        [DisplayName("Đang xử lý")]
+        Processing,
+        [DisplayName("Đã bắt đầu")]
+        Started,
+        [DisplayName("Đã kết thúc")]
+        Ended,
+        [DisplayName("Hủy")]
+        Canceled
     }
 }

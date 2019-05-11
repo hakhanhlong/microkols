@@ -1,0 +1,85 @@
+﻿@model CampaignDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Title;
+    var categories = (List<CategoryViewModel>)ViewBag.Categories;
+    var cities = (List<EntityViewModel>)ViewBag.Cities;
+
+}
+<h1 class="mt-0 h4">@Model.Title</h1>
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div>
+            @Model.Status.ToBadge()
+        </div>
+        <div>
+            @Model.Description
+        </div>
+        @if (Model.DateStart.HasValue)
+        {
+            <div>
+                Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
+            </div>
+        }
+
+        <div>
+          Loại  @Model.CampaignType.Name
+        </div>
+     
+    </div>
+    <div class="col-md-6">
+
+        <h6>Tiêu chí</h6>
+        <ul>
+            @if (Model.Gender.HasValue)
+            {
+                <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
+            }
+            @if (Model.CityId.HasValue)
+            {
+                var city = cities.FirstOrDefault(m => m.Id == Model.CityId.Value);
+                if (city != null)
+                {
+                    <li>Khu vực: <strong>@city.Name</strong></li>
+                }
+            }
+            @if (Model.AgeStart.HasValue)
+            {
+                <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
+            }
+
+            @if (Model.CategoryIds.Count > 0)
+            {
+                var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+
+                <li>
+                    Lĩnh vực quan tâm/thế mạnh:
+                    @foreach (var cat in cats)
+                    {
+                        <strong>@cat.Name</strong>
+                    }
+                </li>
+            }
+
+        </ul>
+    </div>
+</div>
+
+<ul class="nav  nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" >Thành viên tham gia</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link">Thành viên tham gia</a>
+    </li>
+
+</ul>
+
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+    </div>
+
+</div>

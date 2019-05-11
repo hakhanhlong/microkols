@@ -113,6 +113,7 @@ namespace Infrastructure.Data
             builder.HasQueryFilter(p => !p.Deleted);
 
             builder.HasOne(m => m.Agency).WithMany(m => m.Campaign).HasForeignKey(m => m.AgencyId).OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(m => m.CampaignType).WithMany(m => m.Campaign).HasForeignKey(m => m.CampaignTypeId).OnDelete(DeleteBehavior.ClientSetNull);
 
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
@@ -136,6 +137,7 @@ namespace Infrastructure.Data
 
         private void ConfigureCampaignType(EntityTypeBuilder<CampaignType> builder)
         {
+            builder.Metadata.FindNavigation(nameof(Core.Entities.CampaignType.Campaign)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
 
         }
