@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Website.Code.Helpers;
 using Website.Interfaces;
 using Website.ViewModels;
 
@@ -14,13 +15,14 @@ namespace Website.Controllers
         private readonly IAccountService _accountService;
         private readonly IAgencyService _agencyService;
         private readonly ISharedService _sharedService;
-        public AuthController(IAccountService accountService, ISharedService sharedService, IAgencyService agencyService)
+        private readonly IFacebookHelper _facebookHelper;
+        public AuthController(IAccountService accountService, ISharedService sharedService, IAgencyService agencyService, IFacebookHelper facebookHelper)
         {
 
             _accountService = accountService;
             _sharedService = sharedService;
             _agencyService = agencyService;
-
+            _facebookHelper = facebookHelper;
 
         }
 
@@ -55,14 +57,7 @@ namespace Website.Controllers
         }
 
 
-        [Authorize]
-        //[Route("~/thoat")]
-        public async Task<IActionResult> Logout()
-        {
-            await SignOut();
-            return RedirectToAction("Login");
-        }
-
+      
         #endregion
 
 
@@ -70,7 +65,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> GetUserInfo(string provider, string token)
         {
-            var loginInfo = provider == "Facebook" ? await Code.Helpers.SocialHelper.VerifyFacebookTokenAsync(token) :
+            var loginInfo = provider == "Facebook" ? await _facebookHelper.GetLoginProviderAsync(token) :
                  await Code.Helpers.SocialHelper.VerifyGoogleTokenAsync(token);
             if (loginInfo == null)
             {
@@ -93,6 +88,9 @@ namespace Website.Controllers
         #endregion
 
         #endregion
+
+
+       
 
         #region Agency
 
@@ -152,7 +150,6 @@ namespace Website.Controllers
 
         #endregion
 
-
         public async Task<IActionResult> VerifyAgencyUsername(string username)
         {
             var r = await _agencyService.VerifyUsername(username);
@@ -161,6 +158,22 @@ namespace Website.Controllers
 
         }
 
+
         #endregion
+
+
+        [Authorize]
+        //[Route("~/thoat")]
+        public async Task<IActionResult> Logout()
+        {
+            var type = CurrentUser.Type;
+            await SignOut();
+
+            if (type == Core.Entities.EntityType.Agency)
+            {
+                return RedirectToAction("AgencyLogin");
+            }
+            return RedirectToAction("Login");
+        }
     }
 }

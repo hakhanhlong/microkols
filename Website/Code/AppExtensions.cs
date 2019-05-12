@@ -43,6 +43,8 @@ namespace Website.Code
 
 
             services.AddSingleton<IFileHelper, FileHelper>();
+            services.AddSingleton<IFacebookClient, FacebookClient>();
+            services.AddSingleton<IFacebookHelper, FacebookHelper>();
             services.AddTransient<AppSettingsMiddleware>();
         }
     }

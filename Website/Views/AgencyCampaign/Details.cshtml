@@ -11,23 +11,27 @@
 <div class="row">
     <div class="col-md-6">
 
-        <div>
-            @Model.Status.ToBadge()
-        </div>
-        <div>
-            @Model.Description
-        </div>
         @if (Model.DateStart.HasValue)
         {
             <div>
                 Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
             </div>
         }
+        <div>
+            @Model.Status.ToBadge()
+        </div>
+        <div>
+            <strong> @Model.CampaignType.Name</strong>
+        </div>
 
         <div>
-          Loại  @Model.CampaignType.Name
+            @Model.Price.ToPriceText()
         </div>
-     
+        <div>
+            @Model.Description
+        </div>
+
+
     </div>
     <div class="col-md-6">
 
@@ -67,12 +71,20 @@
     </div>
 </div>
 
+<div class="well">
+  
+</div>
+
 <ul class="nav  nav-tabs">
+
     <li class="nav-item">
-        <a class="nav-link active" >Thành viên tham gia</a>
+        <a class="nav-link active">Tổng hợp chi phí</a>
     </li>
     <li class="nav-item">
         <a class="nav-link">Thành viên tham gia</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link">Thành viên phù hợp</a>
     </li>
 
 </ul>
@@ -80,6 +92,16 @@
 <div class="tab-content mt-3">
     <div class="tab-pane fade show active">
 
+        <table>
+            <tr>
+                <th>Thông tin</th>
+
+                <th>Chi phí</th>
+            </tr>
+            <tr>
+
+            </tr>
+        </table>
     </div>
 
 </div>

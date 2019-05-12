@@ -65,7 +65,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await _campaignService.GetCampaignByAgency(CurrentUser.Id, id);
+            var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
             if (model == null) return NotFound();
             await ViewbagData();
             return View(model);

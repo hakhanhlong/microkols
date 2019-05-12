@@ -22,8 +22,10 @@ namespace Website.Services
         private readonly IAsyncRepository<CampaignType> _campaignTypeRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly ISettingRepository _settingRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public CampaignService(ICampaignRepository campaignRepository,
+            ITransactionRepository transactionRepository,
             IWalletRepository walletRepository,
             IAsyncRepository<CampaignType> campaignTypeRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
@@ -34,6 +36,7 @@ namespace Website.Services
             _campaignRepository = campaignRepository;
             _walletRepository = walletRepository;
             _settingRepository = settingRepository;
+            _transactionRepository = transactionRepository;
         }
 
         #region Campaign
@@ -58,14 +61,15 @@ namespace Website.Services
             };
         }
 
-        public async Task<CampaignDetailsViewModel> GetCampaignByAgency(int agencyid, int id)
+        public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id)
         {
             var filter = new CampaignByAgencySpecification(agencyid,id);
 
             var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
             if (campaign != null)
             {
-                return new CampaignDetailsViewModel(campaign);
+                var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
+                return new CampaignDetailsViewModel(campaign, transactions);
             }
             return null;
         }

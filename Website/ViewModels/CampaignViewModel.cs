@@ -167,7 +167,6 @@ namespace Website.ViewModels
             }
 
             CategoryIds = categoryids;
-            Price = campaign.ToCharge(campaign.CampaignOption);
 
         }
 
@@ -191,7 +190,6 @@ namespace Website.ViewModels
         public CampaignTypeViewModel CampaignType { get; set; }
         public CampaignStatus Status { get; set; }
 
-        public long Price { get; set; }
 
     }
 
@@ -224,10 +222,16 @@ namespace Website.ViewModels
 
     public class CampaignDetailsViewModel : CampaignViewModel
     {
-        public CampaignDetailsViewModel(Campaign campaign) : base(campaign)
+        public CampaignDetailsViewModel(Campaign campaign,IEnumerable<Transaction> transactions) : base(campaign)
         {
-
+            Price = campaign.ToCharge(campaign.CampaignOption);
+            PaidPrice = campaign.ToPaidPrice(transactions);
         }
+
+        public long Price { get; set; }
+        public long PaidPrice { get; set; }
+        public List<TransactionViewModel> Transactions { get; set; }
+
     }
 
 

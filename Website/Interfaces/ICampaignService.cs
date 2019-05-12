@@ -11,7 +11,7 @@ namespace Website.Interfaces
     {
         Task<List<CampaignTypeViewModel>> GetCampaignTypes();
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
-        Task<CampaignDetailsViewModel> GetCampaignByAgency(int agencyid, int id);
+        Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetCampaignsByAgency(int agencyid, int? campaignTypeId, string keyword, int page, int pagesize);
     }
 }

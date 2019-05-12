@@ -18,5 +18,10 @@ namespace Core.Extensions
             var result = campaignTypeCharge + countOption* extraChargePercent * campaignTypeCharge/100;
             return result* serviceChargePercent/100 + result;
         }
+
+        public static long ToPaidPrice(this Campaign campaign, IEnumerable<Transaction> transactions)
+        {
+            return transactions.Where(m => m.RefId == campaign.Id && m.Status== TransactionStatus.Completed).Select(m => m.Amount).DefaultIfEmpty(0).Sum();
+        }
     }
 }
