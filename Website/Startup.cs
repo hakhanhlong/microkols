@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Interfaces;
+using Hangfire;
+using Hangfire.SqlServer;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -56,7 +58,13 @@ namespace Website
 
             var connection = Configuration.GetConnectionString("AppContext");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+
+            var hangfireConnectionString = Configuration.GetConnectionString("AppHangfireContext");
+            services.AddHangfire(options => options.UseSqlServerStorage(hangfireConnectionString));
+
+
             services.AddAppServices();
+
 
 
             services.AddSession();
@@ -88,6 +96,9 @@ namespace Website
 
             app.UseAuthentication();
             app.UseSession();
+
+            app.UseHangfireServer();
+
 
             app.UseMvc(routes =>
             {
