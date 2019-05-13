@@ -48,7 +48,7 @@ namespace Website.Services
             return CampaignTypeViewModel.GetList(types);
         }
 
-        public async Task<ListCampaignViewModel> GetCampaignsByAgency(int agencyid,int? campaignTypeId ,string keyword, int page, int pagesize)
+        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid,int? campaignTypeId ,string keyword, int page, int pagesize)
         {
             var filter = new CampaignByAgencySpecification(agencyid, campaignTypeId, keyword);
             var campaigns = await _campaignRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);

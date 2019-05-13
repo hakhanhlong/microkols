@@ -9,6 +9,11 @@ using System.Threading.Tasks;
 
 namespace Website.ViewModels
 {
+    public class ListAccountViewModel
+    {
+        public List<AccountViewModel> Accounts { get; set; }
+        public PagerViewModel Pager { get; set; }
+    }
     public class AccountViewModel
     {
         public AccountViewModel()
@@ -21,6 +26,11 @@ namespace Website.ViewModels
             Email = customer.Email;
             Name = customer.Name;
             Avatar = customer.Avatar;
+        }
+
+        public static List<AccountViewModel> GetList(IEnumerable<Account> accounts)
+        {
+            return accounts.Select(m => new AccountViewModel(m)).ToList();
         }
         public int Id { get; set; }
         public string Email { get; set; }

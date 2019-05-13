@@ -24,7 +24,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index(int? campaignTypeId, string kw, int page = 1,int pagesize = 20)
         {
-            var model = await _campaignService.GetCampaignsByAgency(CurrentUser.Id, campaignTypeId, kw, page, pagesize);
+            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, campaignTypeId, kw, page, pagesize);
             ViewBag.CampaignTypes = await _campaignService.GetCampaignTypes();
             ViewBag.Kw = kw;
             ViewBag.campaignTypeId = campaignTypeId;
