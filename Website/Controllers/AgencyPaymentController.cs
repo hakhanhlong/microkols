@@ -23,8 +23,10 @@ namespace Website.Controllers
         {
             var campaign = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
             ViewBag.Amount = await _walletService.GetAmount(CurrentUser);
-
+            ViewBag.Campaign = campaign;
             return PartialView();
         }
+
+
     }
 }
