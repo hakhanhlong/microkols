@@ -28,9 +28,10 @@ namespace Core.Entities
     }
     public enum TransactionType
     {
-        NapTien,
-        RutTien,
-        ThanhtoanCampaign
+        WalletRecharge,
+        WalletWithdraw,
+        CampaignServiceCharge,
+        CampaignAccountCharge,
     }
    
 }

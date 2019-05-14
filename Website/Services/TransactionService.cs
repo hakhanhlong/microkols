@@ -40,7 +40,7 @@ namespace Website.Services
             if (wallet == null) return -1;
             var code = $"{StringHelper.GetHexTime()}_{entityType}{entityId}";
 
-            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.NapTien,
+            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.WalletRecharge,
                 model.GetTransactionData(),model.Note, username  );
             return transactionId;
 
@@ -56,7 +56,7 @@ namespace Website.Services
 
 
 
-            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.RutTien,
+            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.WalletWithdraw,
               string.Empty, model.Note, username);
             return transactionId;
 

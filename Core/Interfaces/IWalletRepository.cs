@@ -10,7 +10,7 @@ namespace Core.Interfaces
 {
     public interface IWalletRepository : IRepository<Wallet>, IAsyncRepository<Wallet>
     {
-
+        Task<int> GetSystemId();
         Task<long> GetBalance(EntityType entityType, int entityId);
         Task<Wallet> GetWallet(EntityType entityType, int entityId);
         Task<long> Exchange(int walletid, int value, string username);
