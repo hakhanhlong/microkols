@@ -239,9 +239,34 @@
                             @RenderSection("Subheaders", required: false)
                         </div>
                     </div>
+                    <div class="align-items-center mt-3">
+                        <div class="mr-auto">
+
+                            @if (TempData["MessageSuccess"] != null)
+                            {
+                                <div class="alert alert-success" role="alert">
+                                    <strong>
+                                        Success!
+                                    </strong>
+                                    @TempData["MessageSuccess"]
+                                </div>
+                            }
+                            @if (TempData["MessageError"] != null)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>
+                                        Error!
+                                    </strong>
+                                    @TempData["MessageError"]
+                                </div>
+                            }
+
+
+                        </div>
+                    </div>
                 </div>
                 <!-- END: Subheader -->
-                <div class="m-content">
+                <div class="m-content" style="padding-top:5px;">
                     @RenderBody()
                 </div>
             </div>

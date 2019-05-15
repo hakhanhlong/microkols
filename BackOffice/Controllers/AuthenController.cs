@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BackOffice.Security;
 using BackOffice.Security.Models;
@@ -68,6 +69,33 @@ namespace BackOffice.Controllers
         public IActionResult ChangePassword()
         {            
             return View();
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel details)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userManager.FindByIdAsync(userId);
+                var result = await _userManager.ChangePasswordAsync(user, details.OldPassword, details.NewPassword);
+                if (!result.Succeeded)
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        TempData["MessageError"] += string.Format("Code {0}: {1}", error.Code, error.Description);
+                    }                    
+                }
+                else
+                {
+                    TempData["MessageSuccess"] = "Change password success!";
+                }
+            }
+        
+            return View(details);
         }
     }
 }

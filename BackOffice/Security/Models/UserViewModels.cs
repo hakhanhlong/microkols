@@ -18,4 +18,22 @@ namespace BackOffice.Security.Models
         public string Password { get; set; }
 
     }
+
+    public class ChangePasswordModel
+    {
+        [Required]
+        [UIHint("password")]
+        public string OldPassword { get; set; }
+
+
+        [Required]
+        [UIHint("password")]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [UIHint("password")]
+        [Compare("NewPassword")]
+        public string ConfirmNewPassword { get; set; }
+
+    }
 }
