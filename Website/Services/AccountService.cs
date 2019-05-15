@@ -11,6 +11,8 @@ using Website.Interfaces;
 using Website.ViewModels;
 using Common.Helpers;
 using Common.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Extensions;
 
 namespace Website.Services
 {
@@ -43,7 +45,20 @@ namespace Website.Services
         }
 
 
+        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, string order, int page, int pagesize)
+        {
 
+            var query = await _accountRepository.Query(categoryid, gender, cityid, agestart, ageend);
+
+            var total = await query.CountAsync();
+            var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+
+            return new ListAccountViewModel()
+            {
+                Accounts = AccountViewModel.GetList(accounts),
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+        }
         #region Auth
         public async Task<AuthViewModel> GetAuth(LoginViewModel model)
         {
@@ -121,6 +136,10 @@ namespace Website.Services
 
 
         #endregion
+
+
+
+
 
 
         #region ChangeContact

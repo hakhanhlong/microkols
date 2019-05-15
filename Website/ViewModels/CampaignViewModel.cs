@@ -19,16 +19,9 @@ namespace Website.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Thông tin sản phẩm hoặc dịch vụ")]
         public string Description { get; set; }
-
-
-
-
-
     }
     public class CreateCampaignViewModel : BaseCampaignViewModel
     {
-
-
         public Campaign GetEntity(int agencyid, CampaignType campaignType, Core.Models.SettingModel setting, string username)
         {
             var start = DateStart.ToViDate();
@@ -167,7 +160,6 @@ namespace Website.ViewModels
             }
 
             CategoryIds = categoryids;
-            Price = campaign.ToCharge(campaign.CampaignOption);
 
         }
 
@@ -191,7 +183,6 @@ namespace Website.ViewModels
         public CampaignTypeViewModel CampaignType { get; set; }
         public CampaignStatus Status { get; set; }
 
-        public long Price { get; set; }
 
     }
 
@@ -201,34 +192,7 @@ namespace Website.ViewModels
         public PagerViewModel Pager { get; set; }
     }
 
-    public class CampaignAccountViewModel
-    {
-        public CampaignAccountViewModel(CampaignAccount campaignAccount)
-        {
-            Account = new AccountViewModel(campaignAccount.Account);
-            Status = campaignAccount.Status;
-            Data = campaignAccount.Data;
-            DateCreated = campaignAccount.DateCreated;
-        }
-        public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
-        {
-            return campaignAccounts.Select(m => new CampaignAccountViewModel(m)).ToList();
-        }
-
-
-        public AccountViewModel Account { get; set; }
-        public CampaignAccountStatus Status { get; set; }
-        public string Data { get; set; }
-        public DateTime DateCreated { get; set; }
-    }
-
-    public class CampaignDetailsViewModel : CampaignViewModel
-    {
-        public CampaignDetailsViewModel(Campaign campaign) : base(campaign)
-        {
-
-        }
-    }
+   
 
 
 }

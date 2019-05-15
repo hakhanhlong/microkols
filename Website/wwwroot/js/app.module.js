@@ -75,12 +75,12 @@ var AppNotification = (function () {
 
             $('.notif-count').html(count);
 
-            if (count != currentcount) {
+            if (count !== currentcount) {
                 getNotificationDropdown();
             }
         });
 
-        if ($('.notif-uncheck').length == 0) {
+        if ($('.notif-uncheck').length === 0) {
             $('.notif-checkedall').hide();
         }
 
@@ -125,6 +125,21 @@ var AppNotification = (function () {
 
 var AppWallet = (function () {
 
+
+    function init() {
+        $('.wallet-recharge').click(function (e) {
+            e.preventDefault();
+
+            AppBsModal.Init();
+            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge);
+        });
+
+        $('.wallet-widthdraw').click(function (e) {
+            e.preventDefault();
+
+        });
+    }
+
     function handlerRecharge() {
         $.validator.unobtrusive.parse($('#frmRecharge'));
         $('#frmRecharge').submit(function (e) {
@@ -166,7 +181,29 @@ var AppWallet = (function () {
     }
 
 
+
+
+
+
     return {
+        Init: init,
         HandlerRecharge: handlerRecharge
     };
+})();
+
+
+var AppPayment = (function () {
+
+    function init() {
+        $('.btn-apayment').click(function (e) {
+            e.preventDefault();
+            var campaignid = $(this).data('campaignid');
+            AppBsModal.Init();
+            AppBsModal.OpenRemoteModal(AppConstants.UrlAgencyPayment(campaignid));
+        });
+    }
+    return {
+        Init: init
+    };
+
 })();

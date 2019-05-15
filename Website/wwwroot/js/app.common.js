@@ -11,9 +11,10 @@ var AppSettings = {
 var AppConstants = {
     UrlUploadFile: "/home/uploadimage",
     UrlGetAmount: "/wallet/GetAmount",
-    UrlRequestRecharge: "/wallet/Recharge",
-    UrlRequestWithdraw: "/wallet/Withdraw",
+    UrlRecharge: "/wallet/Recharge",
+    UrlWithdraw: "/wallet/Withdraw",
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
+    UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'
 
 };

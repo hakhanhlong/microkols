@@ -22,8 +22,10 @@ namespace Website.Services
         private readonly IAsyncRepository<CampaignType> _campaignTypeRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly ISettingRepository _settingRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public CampaignService(ICampaignRepository campaignRepository,
+            ITransactionRepository transactionRepository,
             IWalletRepository walletRepository,
             IAsyncRepository<CampaignType> campaignTypeRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
@@ -34,18 +36,14 @@ namespace Website.Services
             _campaignRepository = campaignRepository;
             _walletRepository = walletRepository;
             _settingRepository = settingRepository;
+            _transactionRepository = transactionRepository;
         }
 
-        #region Campaign
+        #region Campaign By Agency
 
-        public async Task<List<CampaignTypeViewModel>> GetCampaignTypes()
-        {
-            var filter = new CampaignTypePublishedSpecification();
-            var types = await _campaignTypeRepository.ListAsync(filter);
-            return CampaignTypeViewModel.GetList(types);
-        }
 
-        public async Task<ListCampaignViewModel> GetCampaignsByAgency(int agencyid,int? campaignTypeId ,string keyword, int page, int pagesize)
+
+        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int? campaignTypeId, string keyword, int page, int pagesize)
         {
             var filter = new CampaignByAgencySpecification(agencyid, campaignTypeId, keyword);
             var campaigns = await _campaignRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);
@@ -58,19 +56,19 @@ namespace Website.Services
             };
         }
 
-        public async Task<CampaignDetailsViewModel> GetCampaignByAgency(int agencyid, int id)
+        public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id)
         {
-            var filter = new CampaignByAgencySpecification(agencyid,id);
-
+            var filter = new CampaignByAgencySpecification(agencyid, id);
             var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
             if (campaign != null)
             {
-                return new CampaignDetailsViewModel(campaign);
+                var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
+                    campaign.CampaignAccount, transactions);
             }
             return null;
         }
-
-
+        
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
@@ -143,5 +141,12 @@ namespace Website.Services
 
         #endregion
 
+
+        public async Task<List<CampaignTypeViewModel>> GetCampaignTypes()
+        {
+            var filter = new CampaignTypePublishedSpecification();
+            var types = await _campaignTypeRepository.ListAsync(filter);
+            return CampaignTypeViewModel.GetList(types);
+        }
     }
 }

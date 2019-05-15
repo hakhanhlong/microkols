@@ -19,8 +19,7 @@ namespace Website.Services
 
         private readonly IWalletRepository _walletRepository;
 
-        public WalletService(
-        IWalletRepository walletRepository)
+        public WalletService(IWalletRepository walletRepository)
         {
             _walletRepository = walletRepository;
         }

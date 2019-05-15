@@ -15,11 +15,6 @@ namespace Core.Specifications
 
         }
 
-
-      
-
-
-
     }
 
 }

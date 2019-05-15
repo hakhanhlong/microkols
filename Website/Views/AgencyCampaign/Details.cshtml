@@ -11,25 +11,29 @@
 <div class="row">
     <div class="col-md-6">
 
-        <div>
-            @Model.Status.ToBadge()
-        </div>
-        <div>
-            @Model.Description
-        </div>
         @if (Model.DateStart.HasValue)
         {
-            <div>
+            <p>
                 Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
-            </div>
+            </p>
         }
+        <p>
+            Trạng thái:  @Model.Status.ToBadge()
+        </p>
+        <p>
+            Loại chiến dịch: <strong> @Model.CampaignType.Name</strong>
+        </p>
+        <p>
+            Mô tả:  @Model.Description
+        </p>
 
-        <div>
-          Loại  @Model.CampaignType.Name
-        </div>
-     
+
     </div>
     <div class="col-md-6">
+
+        <p>Tổng chi phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span> </p>
+        <p>Đã thanh toán: <span class="text-danger">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </p>
+
 
         <h6>Tiêu chí</h6>
         <ul>
@@ -67,12 +71,31 @@
     </div>
 </div>
 
+@if (Model.Payment.IsValidServiceCharge)
+{
+
+    <div class="well">
+        <p>
+            Bạn chưa thanh toán phí dịch vụ. Vui lòng thanh toán phí dịch vụ để tiếp tục
+        </p>
+        <p class="text-center">
+            <button class="btn  btn-primary btn-payment">Thanh toán ngay</button>
+        </p>
+
+        
+    </div>
+}
+
 <ul class="nav  nav-tabs">
+
     <li class="nav-item">
-        <a class="nav-link active" >Thành viên tham gia</a>
+        <a class="nav-link active">Tổng hợp chi phí</a>
     </li>
     <li class="nav-item">
         <a class="nav-link">Thành viên tham gia</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link">Thành viên phù hợp</a>
     </li>
 
 </ul>
@@ -80,6 +103,14 @@
 <div class="tab-content mt-3">
     <div class="tab-pane fade show active">
 
+        <table>
+            <tr>
+                <th>Thông tin</th>
+
+                <th>Chi phí</th>
+            </tr>
+            <tr></tr>
+        </table>
     </div>
 
 </div>

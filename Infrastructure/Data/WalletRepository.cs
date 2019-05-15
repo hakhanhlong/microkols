@@ -51,7 +51,15 @@ namespace Infrastructure.Data
             return entity.Id;
         }
 
-
+        public async Task<int> GetSystemId()
+        {
+            var entity = await GetWallet(EntityType.System, 0);
+            if(entity!= null)
+            {
+                return entity.Id;
+            }
+            return 0;
+        }
 
         public async Task<long> Exchange(int walletid, int value, string username)
         {

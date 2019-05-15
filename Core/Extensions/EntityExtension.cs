@@ -7,16 +7,47 @@ namespace Core.Extensions
 {
     public static class EntityExtension
     {
-        public static long ToCharge(this Campaign campaign, IEnumerable<CampaignOption> options)
+        public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignOption> options)
         {
-            return GetCampaignCharge(campaign.CampaignTypeCharge, campaign.ServiceChargePercent, campaign.ExtraChargePercent, options.Count());
+            return GetCampaignServiceCharge(campaign.CampaignTypeCharge, campaign.ServiceChargePercent, campaign.ExtraChargePercent, options.Count());
+        }
+
+        public static long GetCampaignServiceCharge(int campaignTypeCharge, int serviceChargePercent,
+            int extraChargePercent, int countOption)
+        {
+            var result = campaignTypeCharge + countOption * extraChargePercent * campaignTypeCharge / 100;
+            return result * serviceChargePercent / 100 + result;
         }
 
 
-        public static long GetCampaignCharge(int campaignTypeCharge, int serviceChargePercent, int extraChargePercent, int countOption )
+        public static long ToTotalPaidAmount(this Campaign campaign, IEnumerable<Transaction> transactions)
         {
-            var result = campaignTypeCharge + countOption* extraChargePercent * campaignTypeCharge/100;
-            return result* serviceChargePercent/100 + result;
+            long accountPaid = 0;
+            long servicePaid = 0;
+            return campaign.ToTotalPaidAmount(transactions, out servicePaid, out accountPaid);
+        }
+        public static long ToTotalPaidAmount(this Campaign campaign, IEnumerable<Transaction> transactions, out long servicePaidAmount, out long accountPaidAmount)
+        {
+            var completedTransactions = transactions.Where(m => m.RefId == campaign.Id && m.Status == TransactionStatus.Completed);
+
+            long totalPaid = 0;
+            long accountPaid = 0;
+            long servicePaid = 0;
+            foreach (var transaction in completedTransactions)
+            {
+                totalPaid += transaction.Amount;
+                if (transaction.Type == TransactionType.CampaignServiceCharge)
+                {
+                    accountPaid += transaction.Amount;
+                }
+                else if (transaction.Type == TransactionType.CampaignAccountCharge)
+                {
+                    servicePaid += transaction.Amount;
+                }
+            }
+            servicePaidAmount = servicePaid;
+            accountPaidAmount = accountPaid;
+            return totalPaid;
         }
     }
 }
