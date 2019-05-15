@@ -4,7 +4,7 @@ var App = (function () {
     function init() {
         if (AppSettings.IsAuthenticated) {
             AppCommon.bindingWalletBalance();
-            handlerWallet();
+            AppWallet.Init();
         }
 
 
@@ -58,7 +58,6 @@ var App = (function () {
             }
         }, function (start, end, label) {
             var years = moment().diff(start, 'years');
-            //alert("You are " + years + " years old!");
         });
 
         //$('.form-datepicker').daterangepicker({
@@ -83,27 +82,8 @@ var App = (function () {
             }, 500);
         }
 
-
-
     }
 
-
-
-    function handlerWallet() {
-        $('.wallet-recharge').click(function (e) {
-            e.preventDefault();
-
-            AppBsModal.Init();
-            AppBsModal.OpenRemoteModal(AppConstants.UrlRequestRecharge)
-        });
-
-        $('.wallet-widthdraw').click(function (e) {
-            e.preventDefault();
-            
-        });
-
-
-    }
 
     function filldistrict() {
         var cityid = $('#CityId').val();

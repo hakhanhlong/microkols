@@ -15,6 +15,9 @@ namespace Website.ViewModels
         public string Message { get; set; }
 
     }
+
+
+
     #region Payment Campaign
 
 
@@ -26,16 +29,16 @@ namespace Website.ViewModels
     }
     public class PaymentCampaignViewModel
     {
-        public PaymentCampaignViewModel(Campaign campaign)
-        {
-            Amount = campaign.ToCharge(campaign.CampaignOption);
-            CampaignId = campaign.Id;
-            CampaignTitle = campaign.Title;
-        }
+        //public PaymentCampaignViewModel(Campaign campaign)
+        //{
+        //    Amount = campaign.ToCharge(campaign.CampaignOption);
+        //    CampaignId = campaign.Id;
+        //    CampaignTitle = campaign.Title;
+        //}
 
-        public string CampaignTitle { get; set; }
-        public int CampaignId { get; set; }
-        public double Amount { get; set; }
+        //public string CampaignTitle { get; set; }
+        //public int CampaignId { get; set; }
+        //public double Amount { get; set; }
 
     }
 

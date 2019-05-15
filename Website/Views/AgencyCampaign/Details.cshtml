@@ -13,27 +13,27 @@
 
         @if (Model.DateStart.HasValue)
         {
-            <div>
+            <p>
                 Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
-            </div>
+            </p>
         }
-        <div>
-            @Model.Status.ToBadge()
-        </div>
-        <div>
-            <strong> @Model.CampaignType.Name</strong>
-        </div>
-
-        <div>
-            @Model.Price.ToPriceText()
-        </div>
-        <div>
-            @Model.Description
-        </div>
+        <p>
+            Trạng thái:  @Model.Status.ToBadge()
+        </p>
+        <p>
+            Loại chiến dịch: <strong> @Model.CampaignType.Name</strong>
+        </p>
+        <p>
+            Mô tả:  @Model.Description
+        </p>
 
 
     </div>
     <div class="col-md-6">
+
+        <p>Tổng chi phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span> </p>
+        <p>Đã thanh toán: <span class="text-danger">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </p>
+
 
         <h6>Tiêu chí</h6>
         <ul>
@@ -71,9 +71,20 @@
     </div>
 </div>
 
-<div class="well">
-  
-</div>
+@if (Model.Payment.IsValidServiceCharge)
+{
+
+    <div class="well">
+        <p>
+            Bạn chưa thanh toán phí dịch vụ. Vui lòng thanh toán phí dịch vụ để tiếp tục
+        </p>
+        <p class="text-center">
+            <button class="btn  btn-primary btn-payment">Thanh toán ngay</button>
+        </p>
+
+        
+    </div>
+}
 
 <ul class="nav  nav-tabs">
 
@@ -98,9 +109,7 @@
 
                 <th>Chi phí</th>
             </tr>
-            <tr>
-
-            </tr>
+            <tr></tr>
         </table>
     </div>
 
