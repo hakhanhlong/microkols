@@ -40,7 +40,7 @@ namespace Website.Services
             var wallet = await _walletRepository.GetWallet(entityType, entityId);
             if (wallet == null) return -1;
             var systemid = await _walletRepository.GetSystemId();
-            var transactionId = await _transactionRepository.CreateTransaction( wallet.Id, systemid, model.Amount, TransactionType.WalletRecharge,
+            var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id,model.Amount, TransactionType.WalletRecharge,
                 model.GetTransactionData(),model.Note, username  );
             return transactionId;
 

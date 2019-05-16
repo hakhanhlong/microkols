@@ -11,6 +11,9 @@ namespace Core.Interfaces
     public interface ITransactionRepository : IRepository<Transaction>, IAsyncRepository<Transaction>
     {
         Task<int> CreateTransaction(int senderid, int receiverid, long amount,
-           TransactionType type, string data, string note, string username);
+             TransactionType type, string note, string data, string username, int refId = 0, string refData = "");
+
+        Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username);
+        Task UpdateTransactionHistory(int transactionid, int walletid, long amount, long balance, string note);
     }
 }

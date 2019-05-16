@@ -31,9 +31,9 @@ namespace Website.Controllers
         [HttpPost]
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
-
-            ViewBag.Message = "hi hi";
-            return PartialView("ModalMessage");
+            var paymentResult = await _paymentService.CreatePayment(CurrentUser.Id, model, CurrentUser.Username);
+            ViewBag.PaymentResult = paymentResult;
+            return PartialView("ModalPaymentMessage");
         }
 
 

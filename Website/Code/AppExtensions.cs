@@ -40,8 +40,9 @@ namespace Website.Code
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
-
+            
             services.AddSingleton<IFileHelper, FileHelper>();
             services.AddSingleton<IFacebookClient, FacebookClient>();
             services.AddSingleton<IFacebookHelper, FacebookHelper>();

@@ -30,7 +30,7 @@ var AppBsModal = (function () {
     function init(backdrop) {
         removeModal();
         
-        if (backdrop == undefined) {
+        if (backdrop === undefined) {
             backdrop = true;
         }
         var html = '<div id="appbsmodal" class="modal" data-backdrop="' + backdrop +'"></div>';
@@ -184,11 +184,6 @@ var AppWallet = (function () {
         }
     }
 
-
-
-
-
-
     return {
         Init: init,
         HandlerRecharge: handlerRecharge
@@ -222,9 +217,16 @@ var AppPayment = (function () {
             }
         });
     }
+    function handlerMessage() {
+        $('.btn-reload').click(function (e) {
+            window.location = window.location;
+        });
+
+    }
     return {
         Init: init,
-        HandlerPayment: handlerPayment
+        HandlerPayment: handlerPayment,
+        HandlerMessage: handlerMessage
 
     };
 

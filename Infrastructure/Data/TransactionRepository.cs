@@ -20,15 +20,15 @@ namespace Infrastructure.Data
 
         }
 
-        public async Task<int> CreateTransaction(int senderid, int receiverid , long amount, 
-            TransactionType type, string data, string note, string username)
+        public async Task<int> CreateTransaction(int senderid, int receiverid, long amount,
+            TransactionType type, string note, string data, string username, int refId = 0, string refData = "")
         {
             var code = $"{(int)type}{Common.Helpers.StringHelper.GetHexTime()}";
             var transaction = new Transaction()
             {
                 Amount = amount,
                 Code = code,
-                Data = data,
+                RefData = refData,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
                 Note = note,
@@ -38,14 +38,46 @@ namespace Infrastructure.Data
                 Type = type,
                 UserCreated = username,
                 UserModified = username,
+                RefId = refId,
+                AdminNote = string.Empty,
+                Data = data
             };
             await _dbContext.Transaction.AddAsync(transaction);
             await _dbContext.SaveChangesAsync();
             return transaction.Id;
 
         }
-    
 
 
+        public async Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username)
+        {
+            var transaction = await _dbContext.Transaction.FindAsync(id);
+            if (transaction != null)
+            {
+                transaction.Status = status;
+                transaction.DateModified = DateTime.Now;
+                transaction.UserModified = username;
+                transaction.AdminNote = note;
+
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task UpdateTransactionHistory(int transactionid, int walletid, long amount, long balance, string note)
+        {
+            var transactionHistory = new TransactionHistory()
+            {
+                Amount = amount,
+                Balance = balance,
+                DateCreated = DateTime.Now,
+                Note = note,
+                TransactionId = transactionid,
+                WalletId = walletid
+            };
+            await _dbContext.TransactionHistory.AddAsync(transactionHistory);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

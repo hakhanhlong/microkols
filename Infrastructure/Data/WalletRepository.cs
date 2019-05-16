@@ -21,7 +21,24 @@ namespace Infrastructure.Data
         }
         public async Task<Wallet> GetWallet(EntityType entityType, int entityId)
         {
-            return await _dbContext.Wallet.FirstOrDefaultAsync(m => m.EntityType == entityType && m.EntityId == entityId);
+            var entity =  await _dbContext.Wallet.FirstOrDefaultAsync(m => m.EntityType == entityType && m.EntityId == entityId);
+            if(entity== null)
+            {
+                entity = new Wallet()
+                {
+                    Balance = 0,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    EntityId = entityId,
+                    EntityType = entityType,
+                    UserCreated = "system",
+                    UserModified = "system"
+                };
+                await _dbContext.Wallet.AddAsync(entity);
+                await _dbContext.SaveChangesAsync();
+
+            }
+            return entity;
         }
         public async Task<int> GetWalletId(EntityType entityType, int entityId)
         {

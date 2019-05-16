@@ -8,6 +8,7 @@ namespace Website.Interfaces
 {
    public  interface IPaymentService
     {
+        Task<PaymentResultViewModel> CreatePayment(int agencyId, CreateCampaignPaymentViewModel model, string username);
 
     }
 }
