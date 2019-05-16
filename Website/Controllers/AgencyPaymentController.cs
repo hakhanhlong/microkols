@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Interfaces;
-
+using Website.ViewModels;
 namespace Website.Controllers
 {
     [Authorize(Roles = "Agency")]
@@ -13,18 +13,27 @@ namespace Website.Controllers
     {
         private readonly IWalletService _walletService;
         private readonly ICampaignService _campaignService;
-        public AgencyPaymentController(IWalletService walletService, ICampaignService campaignService)
+        private readonly IPaymentService _paymentService;
+        public AgencyPaymentController(IWalletService walletService, ICampaignService campaignService, IPaymentService paymentService)
         {
             _campaignService = campaignService;
             _walletService = walletService;
+            _paymentService = paymentService;
         }
 
         public async Task<IActionResult> CampaignPayment(int campaignid)
         {
-            var campaign = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
+            var payment = await _campaignService.GetCampaignPaymentByAgency(CurrentUser.Id, campaignid);
             ViewBag.Amount = await _walletService.GetAmount(CurrentUser);
-            ViewBag.Campaign = campaign;
+            ViewBag.Payment = payment;
             return PartialView();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
+        {
+
+            ViewBag.Message = "hi hi";
+            return PartialView("ModalMessage");
         }
 
 

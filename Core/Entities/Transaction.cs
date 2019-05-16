@@ -7,9 +7,9 @@ namespace Core.Entities
     public class Transaction : BaseEntityWithDate
     {
         public string Code { get; set; }
-        public int SenderId { get; set; }        
+        public int SenderId { get; set; }
         public int ReceiverId { get; set; }
-        public int Amount { get; set; }
+        public long Amount { get; set; }
         public TransactionType Type { get; set; }
         public TransactionStatus Status { get; set; }
         public string Data { get; set; }
@@ -24,14 +24,15 @@ namespace Core.Entities
         Created,
         Processing,
         Canceled,
-        Completed, 
+        Completed,
     }
     public enum TransactionType
     {
-        WalletRecharge,
-        WalletWithdraw,
-        CampaignServiceCharge,
-        CampaignAccountCharge,
+        Undefined = -1,
+        WalletRecharge = 1,
+        WalletWithdraw = 2,
+        CampaignServiceCharge = 3,
+        CampaignAccountCharge = 4,
     }
-   
+
 }

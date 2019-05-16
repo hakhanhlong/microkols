@@ -27,9 +27,13 @@ var AppBsModal = (function () {
             }
         });
     }
-    function init() {
+    function init(backdrop) {
         removeModal();
-        var html = '<div id="appbsmodal" class="modal"></div>';
+        
+        if (backdrop == undefined) {
+            backdrop = true;
+        }
+        var html = '<div id="appbsmodal" class="modal" data-backdrop="' + backdrop +'"></div>';
         $('body').append(html);
         $(selectorId).on('hidden.bs.modal', function (e) {
             removeModal();
@@ -195,15 +199,33 @@ var AppWallet = (function () {
 var AppPayment = (function () {
 
     function init() {
-        $('.btn-apayment').click(function (e) {
+        $('.btn-payment').click(function (e) {
             e.preventDefault();
-            var campaignid = $(this).data('campaignid');
-            AppBsModal.Init();
+            var campaignid = $(this).data('id');
+            AppBsModal.Init('static');
             AppBsModal.OpenRemoteModal(AppConstants.UrlAgencyPayment(campaignid));
         });
     }
+
+    function handlerPayment() {
+        $.validator.unobtrusive.parse($('#frmPayment'));
+        $('#frmPayment').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html);
+                });
+            }
+        });
+    }
     return {
-        Init: init
+        Init: init,
+        HandlerPayment: handlerPayment
+
     };
 
 })();

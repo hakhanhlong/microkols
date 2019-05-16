@@ -1,4 +1,88 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CreateCampaignPaymentViewModel
+
+@{
+    var payment = (CampaignPaymentModel)ViewBag.Payment;
+    var amount = (int)ViewBag.Amount;
+}
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Thanh toán </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        @if (payment == null)
+        {
+            <div class="modal-body">
+                <div class="alert alert-danger">Thông tin giao dịch không đúng</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        }
+        else
+        {
+            <form method="post" action="javascript:;" data-action="@Url.Action("CampaignPayment","AgencyPayment")" id="frmPayment">
+
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-4">Số tiền trong ví</label>
+                        <div class="col-8 text-success">
+                            @amount.ToPriceText()
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="form-group row">
+                        <label class="col-4">Chiến dịch</label>
+                        <div class="col-8">
+                            @payment.CampaignTitle
+                        </div>
+                    </div>
+
+                    @if (payment.IsValidServiceCharge)
+                    {
+                        <div class="form-group row">
+                            <label class="col-4">Phí dịch vụ</label>
+                            <div class="col-8 text-danger">
+                                @payment.ServiceChargeValue.ToPriceText()
+                            </div>
+                        </div>
+                    }
+                    @if (payment.IsValidAccountCharge)
+                    {
+                        <div class="form-group row">
+                            <label class="col-4">Phí thành viên</label>
+                            <div class="col-8 text-danger">
+                                @payment.AccountChargeValue.ToPriceText()
+                            </div>
+                        </div>
+                    }
+
+
+                    <div class="form-group row">
+                        <label asp-for="Note" class="col-4 col-form-label"></label>
+                        <div class="col-8">
+
+                            <textarea asp-for="Note" class="form-control"></textarea>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                    <input type="hidden" asp-for="CampaignId" />
+                    <input type="submit" value="Xác nhận thanh toán" class="btn btn-submit btn-primary" />
+                </div>
+            </form>
+        }
+
+    </div>
+</div>
+<script type="text/javascript">
+    AppPayment.HandlerPayment();
+</script>

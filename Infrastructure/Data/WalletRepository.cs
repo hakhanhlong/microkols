@@ -23,7 +23,11 @@ namespace Infrastructure.Data
         {
             return await _dbContext.Wallet.FirstOrDefaultAsync(m => m.EntityType == entityType && m.EntityId == entityId);
         }
-
+        public async Task<int> GetWalletId(EntityType entityType, int entityId)
+        {
+            var entity = await GetWallet(entityType, entityId);
+            return entity != null ? entity.Id : 0;
+        }
         public async Task<long> GetBalance(EntityType entityType, int entityId)
         {
             var entity = await GetWallet(entityType, entityId);
@@ -53,15 +57,11 @@ namespace Infrastructure.Data
 
         public async Task<int> GetSystemId()
         {
-            var entity = await GetWallet(EntityType.System, 0);
-            if(entity!= null)
-            {
-                return entity.Id;
-            }
-            return 0;
+            return await GetWalletId(EntityType.System, 0);
+            
         }
 
-        public async Task<long> Exchange(int walletid, int value, string username)
+        public async Task<long> Exchange(int walletid, long value, string username)
         {
             long newamount = 0;
             var entity = await _dbContext.Wallet.FindAsync(walletid);

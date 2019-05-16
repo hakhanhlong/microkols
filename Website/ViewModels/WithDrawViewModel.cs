@@ -10,7 +10,7 @@ namespace Website.ViewModels
     {
         [Display(Name="Số tiền")]
         [Required]
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         [Display(Name="Thông tin tài khoản nhận tiền")]
         public string Note { get; set; }

@@ -21,27 +21,6 @@ namespace Website.ViewModels
     #region Payment Campaign
 
 
-    public class CreateServiceChargeViewModel
-    {
-
-        public int CampaignId { get; set; }
-        public string Note { get; set; }
-    }
-    public class PaymentCampaignViewModel
-    {
-        //public PaymentCampaignViewModel(Campaign campaign)
-        //{
-        //    Amount = campaign.ToCharge(campaign.CampaignOption);
-        //    CampaignId = campaign.Id;
-        //    CampaignTitle = campaign.Title;
-        //}
-
-        //public string CampaignTitle { get; set; }
-        //public int CampaignId { get; set; }
-        //public double Amount { get; set; }
-
-    }
-
     #endregion
 
 }

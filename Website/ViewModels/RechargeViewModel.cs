@@ -13,7 +13,7 @@ namespace Website.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Range(1000, 100000000000, ErrorMessage = "{0} không đúng")]
         [Display(Name = "Số tiền")]
-        public int Amount { get; set; }
+        public long Amount { get; set; }
 
         [Display(Name = "Hình thức")]
         public string Method { get; set; }

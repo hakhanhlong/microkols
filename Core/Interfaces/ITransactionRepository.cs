@@ -10,7 +10,7 @@ namespace Core.Interfaces
 {
     public interface ITransactionRepository : IRepository<Transaction>, IAsyncRepository<Transaction>
     {
-        Task<int> CreateTransaction(int senderid, int receiverid, string code, int amount,
+        Task<int> CreateTransaction(int senderid, int receiverid, long amount,
            TransactionType type, string data, string note, string username);
     }
 }

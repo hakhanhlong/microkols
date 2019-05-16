@@ -1,6 +1,7 @@
 ﻿
 using Core.Entities;
 using Core.Interfaces;
+using Core.Models;
 using Core.Specifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -68,7 +69,12 @@ namespace Website.Services
             }
             return null;
         }
-        
+
+        public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
+        {
+            return await _campaignRepository.GetCampaignPaymentByAgency(agencyid, id);
+        }
+
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {

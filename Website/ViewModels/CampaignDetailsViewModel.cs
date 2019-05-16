@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Extensions;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +15,11 @@ namespace Website.ViewModels
             IEnumerable<CampaignAccount> campaignAccounts, 
             IEnumerable<Transaction> transactions) : base(campaign)
         {
-            Payment = new CampaignPaymentViewModel(campaign,  campaignOptions, campaignAccounts, transactions);
+            Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
             Transactions = TransactionViewModel.GetList(transactions);
         }
 
-        public CampaignPaymentViewModel Payment { get; set; }
+        public CampaignPaymentModel Payment { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }
 
 

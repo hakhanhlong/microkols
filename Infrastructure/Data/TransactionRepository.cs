@@ -20,9 +20,10 @@ namespace Infrastructure.Data
 
         }
 
-        public async Task<int> CreateTransaction(int senderid, int receiverid, string code, int amount, 
+        public async Task<int> CreateTransaction(int senderid, int receiverid , long amount, 
             TransactionType type, string data, string note, string username)
         {
+            var code = $"{(int)type}{Common.Helpers.StringHelper.GetHexTime()}";
             var transaction = new Transaction()
             {
                 Amount = amount,
