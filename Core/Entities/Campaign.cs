@@ -20,6 +20,9 @@ namespace Core.Entities
         public int ServiceChargePercent { get; set; }
         public int ExtraChargePercent { get; set; }
 
+
+
+
         public CampaignStatus Status { get; set; }
 
         public DateTime? DateStart { get; set; }
