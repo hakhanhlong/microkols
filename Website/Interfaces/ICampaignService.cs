@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace Website.Interfaces
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int? campaignTypeId, string keyword, int page, int pagesize);
+
+        Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
     }
 }

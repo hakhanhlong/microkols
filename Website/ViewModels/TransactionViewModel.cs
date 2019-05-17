@@ -32,7 +32,7 @@ namespace Website.ViewModels
         public string Code { get; set; }
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
-        public int Amount { get; set; }
+        public long Amount { get; set; }
         public TransactionType Type { get; set; }
         public TransactionStatus Status { get; set; }
         public string Data { get; set; }

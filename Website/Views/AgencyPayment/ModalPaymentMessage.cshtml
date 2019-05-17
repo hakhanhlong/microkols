@@ -1,0 +1,40 @@
+﻿@{
+    var paymentResult = (PaymentResultViewModel)ViewBag.PaymentResult;
+}
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Thanh toán </h5>
+        </div>
+
+        <div class="modal-body">
+            @if (paymentResult.Status == Core.Entities.TransactionStatus.Completed)
+            {
+                <div class="alert alert-success">
+                    <p>Thanh toán @paymentResult.Type.ToDisplayName() thành công</p>
+                    <p>Số tiền thanh toán: <span class="text-success">@paymentResult.Amount.ToPriceText()</span></p>
+                    @if (paymentResult.Type == Core.Entities.TransactionType.CampaignAccountCharge)
+                    {
+                        <p>Số tiền còn lại trong ví: <span class="text-danger">@paymentResult.SenderBalance.ToPriceText()</span> </p>
+                    }
+                </div>
+
+            }
+            else if (paymentResult.Status == Core.Entities.TransactionStatus.Error)
+            {
+
+                <div class="alert alert-danger">
+                    @paymentResult.ErrorMessage Mã lối: @((int)paymentResult.ErrorCode)
+                </div>
+            }
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark btn-reload">Đóng</button>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    AppPayment.HandlerMessage();
+</script>

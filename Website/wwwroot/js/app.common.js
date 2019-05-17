@@ -3,7 +3,8 @@ var AppSettings = {
     IsAuthenticated: false,
     CurrentUser: {
         Username: '',
-        Name: ''
+        Name: '',
+        Type:-1
     },
 };
 

@@ -8,6 +8,8 @@ namespace Core.Entities
 {
     public class Account : BaseEntity
     {
+        public AccountType? AccountType { get; set; }
+        public string AccountTypeData { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }
@@ -54,7 +56,22 @@ namespace Core.Entities
         public IEnumerable<AccountProvider> AccountProvider => _AccountProvider.AsReadOnly();
     }
 
-
+    public enum AccountType
+    {
+        [DisplayName("Hot Teen")]
+        HotTeen,
+        [DisplayName("Hot Mom")]
+        HotMom,
+        [DisplayName("Hot Facebooker")]
+        HotFacebooker,
+        [DisplayName("Kols")]
+        Kols,
+    }
+    public class AccountTypeHotMomData
+    {
+        public Gender Gender { get; set; }
+        public int Age { get; set; }
+    }
 
     public enum Gender
     {

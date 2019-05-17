@@ -5,6 +5,11 @@ var App = (function () {
         if (AppSettings.IsAuthenticated) {
             AppCommon.bindingWalletBalance();
             AppWallet.Init();
+
+            if (AppSettings.CurrentUser.Type == 2) {
+                AppPayment.Init();
+            }
+            
         }
 
 

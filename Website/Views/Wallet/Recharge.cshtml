@@ -1,10 +1,7 @@
-﻿@inject IOptionsMonitor<Website.Code.AppOptions> OptionsAccessor
-
-@model RechargeViewModel
+﻿@model RechargeViewModel
 
 @{
-    var _options = OptionsAccessor.CurrentValue;
-    var bankAccounts = _options.BankAccounts;
+    var bankAccounts = AppOptions.Value.BankAccounts;
 }
 
 <div class="modal-dialog modal-dialog-centered">

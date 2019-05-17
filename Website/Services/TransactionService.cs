@@ -35,12 +35,12 @@ namespace Website.Services
 
         public async Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username)
         {
+            //chua viet can than can review lai -- chi khoi tao transaction - Admin duyet
 
             var wallet = await _walletRepository.GetWallet(entityType, entityId);
             if (wallet == null) return -1;
-            var code = $"{StringHelper.GetHexTime()}_{entityType}{entityId}";
-
-            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.WalletRecharge,
+            var systemid = await _walletRepository.GetSystemId();
+            var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id,model.Amount, TransactionType.WalletRecharge,
                 model.GetTransactionData(),model.Note, username  );
             return transactionId;
 
@@ -49,14 +49,13 @@ namespace Website.Services
 
         public async Task<int> CreateTransaction(EntityType entityType, int entityId, WithDrawViewModel model, string username)
         {
-
+            //chua viet can than can review lai -- chi khoi tao transaction - Admin duyet
             var wallet = await _walletRepository.GetWallet(entityType, entityId);
             if (wallet == null) return -1;
-            var code = $"{StringHelper.GetHexTime()}_{entityType}{entityId}";
 
+            var systemid = await _walletRepository.GetSystemId();
 
-
-            var transactionId = await _transactionRepository.CreateTransaction(0, wallet.Id, code, model.Amount, TransactionType.WalletWithdraw,
+            var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletWithdraw,
               string.Empty, model.Note, username);
             return transactionId;
 

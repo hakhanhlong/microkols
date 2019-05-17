@@ -4,14 +4,16 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190515222030_UpdateCampaignTypeCharge")]
+    partial class UpdateCampaignTypeCharge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -440,9 +442,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AdminNote");
-
-                    b.Property<long>("Amount");
+                    b.Property<int>("Amount");
 
                     b.Property<string>("Code");
 
@@ -455,8 +455,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Note");
 
                     b.Property<int>("ReceiverId");
-
-                    b.Property<string>("RefData");
 
                     b.Property<int?>("RefId");
 
@@ -481,9 +479,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("Amount");
+                    b.Property<int>("Amount");
 
-                    b.Property<long>("Balance");
+                    b.Property<int>("Balance");
 
                     b.Property<DateTime>("DateCreated");
 

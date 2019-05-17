@@ -12,8 +12,8 @@ namespace Core.Entities
         public int WalletId { get; set; }
         public Wallet Wallet { get; set; }
         
-        public int Amount { get; set; }
-        public int Balance { get; set; }
+        public long Amount { get; set; }
+        public long Balance { get; set; }
         public string Note { get; set; }
         public DateTime DateCreated { get; set; }
     }
