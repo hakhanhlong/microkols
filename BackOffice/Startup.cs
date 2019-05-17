@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BackOffice.Security;
 using BackOffice.Security.Data;
+using Infrastructure.Data;
 
 namespace BackOffice
 {
@@ -35,6 +36,10 @@ namespace BackOffice
             });
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Database:MicroKOLsSecurity:ConnectionString"]));
+
+            var connection = Configuration.GetConnectionString("AppContext");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
             
