@@ -1,10 +1,10 @@
 ﻿@model ListCampaignViewModel
 @{
     ViewData["Title"] = "Danh sách chiến dịch";
-    var campaignTypes = (List<CampaignTypeViewModel>)ViewBag.CampaignTypes;
+    var campaignTypes = StringHelper.GetEnumArray<CampaignType>();
 
     var kw = (string)ViewBag.Kw;
-    var campaignTypeId = (int?)ViewBag.campaignTypeId;
+    var type = (CampaignType?)ViewBag.type;
 }
 
 <h1 class="h3">@ViewData["Title"]</h1>
@@ -31,7 +31,7 @@
                         <option value="">Tất cả loại</option>
                         @foreach (var campaignType in campaignTypes)
                         {
-                            <!option value="@campaignType.Id" @(campaignTypeId == campaignType.Id ? "selected" : "")>@campaignType.Name</!option>
+                            <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
                         }
                     </select>
                 </div>
@@ -77,7 +77,7 @@
 
 <div class="row">
     <div class="col-auto">
-        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-campaignTypeId="@campaignTypeId" ></pager>
+        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type" ></pager>
     </div>
 </div>
 

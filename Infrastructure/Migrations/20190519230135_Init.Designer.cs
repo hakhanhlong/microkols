@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190507035148_Init")]
+    [Migration("20190519230135_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Salt");
 
+                    b.Property<int?>("Type");
+
+                    b.Property<string>("TypeData");
+
                     b.Property<string>("UserCreated");
 
                     b.Property<string>("UserModified");
@@ -103,6 +107,23 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("AccountCategory");
+                });
+
+            modelBuilder.Entity("Core.Entities.AccountPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountId");
+
+                    b.Property<int>("Price");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountPrice");
                 });
 
             modelBuilder.Entity("Core.Entities.AccountProvider", b =>
@@ -204,11 +225,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AccountExtraPercent");
+
+                    b.Property<int>("AccountPrice");
+
                     b.Property<int>("AgencyId");
-
-                    b.Property<int>("CampaignTypeCharge");
-
-                    b.Property<int>("CampaignTypeId");
 
                     b.Property<string>("Data");
 
@@ -224,17 +245,25 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("ExtraChargePercent");
+                    b.Property<bool>("EnabledAccountExtra");
+
+                    b.Property<int>("ExtraOptionChargePercent");
 
                     b.Property<string>("Image");
 
                     b.Property<bool>("Published");
 
+                    b.Property<string>("Requirement");
+
                     b.Property<int>("ServiceChargePercent");
+
+                    b.Property<int>("ServicePrice");
 
                     b.Property<int>("Status");
 
                     b.Property<string>("Title");
+
+                    b.Property<int>("Type");
 
                     b.Property<string>("UserCreated");
 
@@ -243,8 +272,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AgencyId");
-
-                    b.HasIndex("CampaignTypeId");
 
                     b.ToTable("Campaign");
                 });
@@ -255,13 +282,25 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("AccountId");
 
-                    b.Property<string>("Data");
+                    b.Property<int>("AccountCharge");
+
+                    b.Property<int>("AccountChargeTimes");
 
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<int>("ExtraAccountCharge");
+
+                    b.Property<string>("RefData");
+
+                    b.Property<string>("RefId");
+
+                    b.Property<string>("RefUrl");
+
                     b.Property<int>("Status");
+
+                    b.Property<int>("Type");
 
                     b.Property<string>("UserCreated");
 
@@ -293,35 +332,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("CampaignOption");
                 });
 
-            modelBuilder.Entity("Core.Entities.CampaignType", b =>
+            modelBuilder.Entity("Core.Entities.CampaignTypePrice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Data");
+                    b.Property<int>("AccountExtraPricePercent");
 
-                    b.Property<DateTime>("DateCreated");
+                    b.Property<int>("AccountPrice");
 
-                    b.Property<DateTime>("DateModified");
+                    b.Property<int>("ServicePrice");
 
-                    b.Property<bool>("Deleted");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<int>("Price");
-
-                    b.Property<bool>("Published");
-
-                    b.Property<string>("UserCreated");
-
-                    b.Property<string>("UserModified");
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CampaignType");
+                    b.ToTable("CampaignTypePrice");
                 });
 
             modelBuilder.Entity("Core.Entities.Category", b =>
@@ -438,7 +465,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount");
+                    b.Property<string>("AdminNote");
+
+                    b.Property<long>("Amount");
 
                     b.Property<string>("Code");
 
@@ -451,6 +480,10 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Note");
 
                     b.Property<int>("ReceiverId");
+
+                    b.Property<string>("RefData");
+
+                    b.Property<int?>("RefId");
 
                     b.Property<int>("SenderId");
 
@@ -473,9 +506,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Amount");
+                    b.Property<long>("Amount");
 
-                    b.Property<int>("Balance");
+                    b.Property<long>("Balance");
 
                     b.Property<DateTime>("DateCreated");
 
@@ -500,7 +533,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Balance");
+                    b.Property<long>("Balance");
 
                     b.Property<DateTime>("DateCreated");
 
@@ -553,11 +586,6 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.Entities.Agency", "Agency")
                         .WithMany("Campaign")
                         .HasForeignKey("AgencyId");
-
-                    b.HasOne("Core.Entities.CampaignType", "CampaignType")
-                        .WithMany("Campaign")
-                        .HasForeignKey("CampaignTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Core.Entities.CampaignAccount", b =>

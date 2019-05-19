@@ -22,7 +22,7 @@ namespace Website.ViewModels
     }
     public class CreateCampaignViewModel : BaseCampaignViewModel
     {
-        public Campaign GetEntity(int agencyid, CampaignType campaignType, Core.Models.SettingModel setting, string username)
+        public Campaign GetEntity(int agencyid, CampaignTypePrice campaignTypePrice, Core.Models.SettingModel setting, string username)
         {
             var start = DateStart.ToViDate();
             var end = DateEnd.ToViDate();
@@ -32,33 +32,47 @@ namespace Website.ViewModels
                 {
                     DateCreated = DateTime.Now,
                     AgencyId = agencyid,
-                    CampaignTypeId = campaignType.Id,
-                    CampaignTypeCharge = campaignType.Price,
                     DateEnd = end,
                     DateStart = start,
                     Data = string.Empty,
                     DateModified = DateTime.Now,
                     Deleted = false,
                     Description = Description,
-                    ExtraChargePercent = setting.ExtraOptionCharge,
                     ServiceChargePercent = setting.ServiceCharge,
                     Image = string.Empty,
                     Published = true,
                     Status = CampaignStatus.Created,
                     Title = Title,
                     UserCreated = username,
-                    UserModified = username
+                    UserModified = username,
+                    ExtraOptionChargePercent = setting.ExtraOptionCharge,
+                    AccountExtraPercent = campaignTypePrice.AccountExtraPricePercent,
+                    ServicePrice = campaignTypePrice.ServicePrice,
+                    AccountPrice = campaignTypePrice.AccountPrice,
+                    EnabledAccountExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledAccountExtra : false,
+                    Requirement = Type == CampaignType.CustomService ? Requirement: string.Empty,
+                    Type  = Type
+
+
+
                 };
 
             }
             return null;
         }
 
+        [Display(Name = "Số lượng người bạn cần")]
+        public int NumberOfAccount { get; set; }
+
+        [Display(Name = "Chi phí cho mỗi người")]
+        public int? AccountPrice { get; set; }
+
+        [Display(Name = "Yêu cầu cụ thể chiến dịch")]
+        public string Requirement { get; set; }
 
 
         [Display(Name = "Loại chiến dịch")]
-        public int CampaignTypeId { get; set; }
-
+        public CampaignType Type { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Bắt đầu")]
@@ -92,8 +106,13 @@ namespace Website.ViewModels
         [Display(Name = "Khu vực")]
         public bool EnabledCity { get; set; } = false;
 
+
+        [Display(Name = "Đính kèm ảnh cá nhân")]
+        public bool EnabledAccountExtra { get; set; } = false;
+
         [Display(Name = "Chọn khu vực")]
         public int? CityId { get; set; }
+
     }
 
     public class CampaignViewModel : BaseCampaignViewModel
@@ -108,7 +127,7 @@ namespace Website.ViewModels
             Id = campaign.Id;
             Title = campaign.Title;
             Description = campaign.Description;
-            CampaignType = new CampaignTypeViewModel(campaign.CampaignType);
+            Type = campaign.Type;
             Status = campaign.Status;
 
             DateStart = campaign.DateStart;
@@ -180,7 +199,7 @@ namespace Website.ViewModels
         public int? CityId { get; set; }
         public List<int> CategoryIds { get; set; }
 
-        public CampaignTypeViewModel CampaignType { get; set; }
+        public CampaignType Type { get; set; }
         public CampaignStatus Status { get; set; }
 
 
@@ -192,7 +211,7 @@ namespace Website.ViewModels
         public PagerViewModel Pager { get; set; }
     }
 
-   
+
 
 
 }

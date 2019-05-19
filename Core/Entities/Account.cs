@@ -1,15 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Core.Entities
 {
     public class Account : BaseEntity
     {
-        public AccountType? AccountType { get; set; }
-        public string AccountTypeData { get; set; }
+
+        // Người dùng thường -> AccountType = null
+        public AccountType? Type { get; set; }
+
+        public string TypeData { get; set; }
+
+        [NotMapped]
+        public object TypeDataObj
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(TypeData) && Type.HasValue)
+                {
+                    if (Type.Value == AccountType.HotMom)
+                    {
+                        return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(TypeData);
+                    }
+
+                }
+
+                return null;
+            }
+        }
+
+
         public string Email { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }

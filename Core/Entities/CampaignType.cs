@@ -1,20 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Core.Entities
 {
-    public class CampaignType : BaseEntityWithMeta
+    public class CampaignTypePrice : BaseEntity
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int Price { get; set; }
-        public int ServiceCharge { get; set; }
-        public int AccountCharge { get; set; }
-        public string Data { get; set; }
+        public CampaignType Type { get; set; }
+        public int ServicePrice { get; set; }
+        public int AccountPrice { get; set; }
+        public int AccountExtraPricePercent { get; set; }
 
+    }
 
-        private List<Campaign> _Campaign = new List<Campaign>();
-        public IEnumerable<Campaign> Campaign => _Campaign.AsReadOnly();
+    public enum CampaignType
+    {
+        [DisplayName("Chia sẻ thông điệp, không cần viết caption")]
+        ShareContent,
+        [DisplayName("Chia sẻ thông điệp, viết thêm caption")]
+        ShareContentWithCaption,
+        [DisplayName("Thay hình Avatar")]
+        ChangeAvatar,
+        [DisplayName("Viết comment seeding cho chiến dịch")]
+        PostComment,
+        [DisplayName("Đăng ký tham dự sự kiện")]
+        JoinEvent,
+        [DisplayName("Share link livestream chương trình")]
+        ShareStreamUrl,
+        [DisplayName("Yêu cầu khác")]
+        CustomService
+    }
+    public static class CampaignTypeExentions {
+        public static string ToPriceLabel(this CampaignType type)
+        {
+            if(type== CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)
+            {
+                return "/người/lần";
+            }
+
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "/người/tuần";
+            }
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            {
+                return "/người/lần";
+            }
+            return type.ToString();
+        }
     }
 }

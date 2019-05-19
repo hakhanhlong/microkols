@@ -20,7 +20,7 @@ namespace Website.Services
 
         private readonly ICampaignRepository _campaignRepository;
         private readonly IWalletRepository _walletRepository;
-        private readonly IAsyncRepository<CampaignType> _campaignTypeRepository;
+        private readonly IAsyncRepository<CampaignTypePrice> _campaignTypePriceRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly ISettingRepository _settingRepository;
         private readonly ITransactionRepository _transactionRepository;
@@ -28,11 +28,11 @@ namespace Website.Services
         public CampaignService(ICampaignRepository campaignRepository,
             ITransactionRepository transactionRepository,
             IWalletRepository walletRepository,
-            IAsyncRepository<CampaignType> campaignTypeRepository,
+            IAsyncRepository<CampaignTypePrice> campaignTypePriceRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
              ISettingRepository settingRepository)
         {
-            _campaignTypeRepository = campaignTypeRepository;
+            _campaignTypePriceRepository = campaignTypePriceRepository;
             _campaignOptionRepository = campaignOptionRepository;
             _campaignRepository = campaignRepository;
             _walletRepository = walletRepository;
@@ -44,9 +44,9 @@ namespace Website.Services
 
 
 
-        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int? campaignTypeId, string keyword, int page, int pagesize)
+        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, string keyword, int page, int pagesize)
         {
-            var filter = new CampaignByAgencySpecification(agencyid, campaignTypeId, keyword);
+            var filter = new CampaignByAgencySpecification(agencyid, type, keyword);
             var campaigns = await _campaignRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);
             var total = await _campaignRepository.CountAsync(filter);
 
@@ -78,14 +78,14 @@ namespace Website.Services
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
-            var campaignType = await _campaignTypeRepository.GetByIdAsync(model.CampaignTypeId);
-            if (campaignType == null)
+            var campaignTypePrice = await _campaignTypePriceRepository.GetSingleBySpecAsync(new CampaignTypePriceSpecification(model.Type));
+            if (campaignTypePrice == null)
             {
                 return -1;
             }
             var settings = await _settingRepository.GetSetting();
             var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var campaign = model.GetEntity(agencyid, campaignType, settings, username);
+            var campaign = model.GetEntity(agencyid, campaignTypePrice, settings, username);
             if (campaign == null)
             {
                 return -1;
@@ -148,11 +148,10 @@ namespace Website.Services
         #endregion
 
 
-        public async Task<List<CampaignTypeViewModel>> GetCampaignTypes()
+        public async Task<List<CampaignTypePriceViewModel>> GetCampaignTypePrices()
         {
-            var filter = new CampaignTypePublishedSpecification();
-            var types = await _campaignTypeRepository.ListAsync(filter);
-            return CampaignTypeViewModel.GetList(types);
+            var list = await _campaignTypePriceRepository.ListAllAsync();
+            return CampaignTypePriceViewModel.GetList(list);
         }
     }
 }

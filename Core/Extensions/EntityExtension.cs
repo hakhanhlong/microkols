@@ -9,13 +9,13 @@ namespace Core.Extensions
     {
         public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignOption> options)
         {
-            return GetCampaignServiceCharge(campaign.CampaignTypeCharge, campaign.ServiceChargePercent, campaign.ExtraChargePercent, options.Count());
+            return GetCampaignServiceCharge(campaign.ServicePrice, campaign.ServiceChargePercent, campaign.ExtraOptionChargePercent, options.Count());
         }
 
-        public static long GetCampaignServiceCharge(int campaignTypeCharge, int serviceChargePercent,
+        public static long GetCampaignServiceCharge(int servicePrice, int serviceChargePercent,
             int extraChargePercent, int countOption)
         {
-            var result = campaignTypeCharge + countOption * extraChargePercent * campaignTypeCharge / 100;
+            var result = servicePrice + countOption * extraChargePercent * servicePrice / 100;
             return result * serviceChargePercent / 100 + result;
         }
 

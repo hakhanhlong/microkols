@@ -24,11 +24,14 @@ namespace Infrastructure.Data
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<AccountCategory> AccountCategory { get; set; }
         public virtual DbSet<AccountProvider> AccountProvider { get; set; }
+        public virtual DbSet<AccountPrice> AccountPrice { get; set; }
+
+        public virtual DbSet<CampaignTypePrice> CampaignTypePrice { get; set; }
+
         public virtual DbSet<Agency> Agency { get; set; }
         public virtual DbSet<Campaign> Campaign { get; set; }
         public virtual DbSet<CampaignAccount> CampaignAccount { get; set; }
         public virtual DbSet<CampaignOption> CampaignOption { get; set; }
-        public virtual DbSet<CampaignType> CampaignType { get; set; }
 
 
         public virtual DbSet<Category> Category { get; set; }
@@ -56,7 +59,6 @@ namespace Infrastructure.Data
             builder.Entity<Campaign>(ConfigureCampaign);
             builder.Entity<CampaignAccount>(ConfigureCampaignAccount);
             builder.Entity<CampaignOption>(ConfigureCampaignOption);
-            builder.Entity<CampaignType>(ConfigureCampaignType);
 
 
             builder.Entity<Category>(ConfigureCategory);
@@ -72,7 +74,6 @@ namespace Infrastructure.Data
         private void ConfigureAccount(EntityTypeBuilder<Account> builder)
         {
             builder.HasQueryFilter(p => !p.Deleted);
-
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Account.AccountCategory)).SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.Metadata.FindNavigation(nameof(Core.Entities.Account.AccountProvider)).SetPropertyAccessMode(PropertyAccessMode.Field);
@@ -113,7 +114,6 @@ namespace Infrastructure.Data
             builder.HasQueryFilter(p => !p.Deleted);
 
             builder.HasOne(m => m.Agency).WithMany(m => m.Campaign).HasForeignKey(m => m.AgencyId).OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(m => m.CampaignType).WithMany(m => m.Campaign).HasForeignKey(m => m.CampaignTypeId).OnDelete(DeleteBehavior.ClientSetNull);
 
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
@@ -135,10 +135,8 @@ namespace Infrastructure.Data
 
         }
 
-        private void ConfigureCampaignType(EntityTypeBuilder<CampaignType> builder)
+        private void ConfigureCampaignType(EntityTypeBuilder<CampaignTypePrice> builder)
         {
-            builder.Metadata.FindNavigation(nameof(Core.Entities.CampaignType.Campaign)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
 
         }
 

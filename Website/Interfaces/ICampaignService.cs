@@ -10,10 +10,10 @@ namespace Website.Interfaces
 {
     public interface ICampaignService
     {
-        Task<List<CampaignTypeViewModel>> GetCampaignTypes();
+        Task<List<CampaignTypePriceViewModel>> GetCampaignTypePrices();
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
-        Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int? campaignTypeId, string keyword, int page, int pagesize);
+        Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, string keyword, int page, int pagesize);
 
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
     }
