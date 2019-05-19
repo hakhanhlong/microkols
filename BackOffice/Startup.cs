@@ -42,6 +42,8 @@ namespace BackOffice
 
             services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
+
+            services.AddAppServices();
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
