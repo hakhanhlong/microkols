@@ -12,7 +12,5 @@ namespace Core.Entities
 
         private List<AccountCategory> _AccountCategory = new List<AccountCategory>();
         public IEnumerable<AccountCategory> AccountCategory => _AccountCategory.AsReadOnly();
-
-
     }
 }

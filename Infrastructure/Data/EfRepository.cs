@@ -144,6 +144,38 @@ namespace Infrastructure.Data
             return query.GetPaged(page, pagesize);
         }
 
+
+        public List<T> ListPaging(string sortOrder, int page = 1, int pagesize = 20)
+        {
+
+            var query = _dbContext.Set<T>().AsQueryable();
+            bool descending = false;
+
+            if (string.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "Id_desc";
+            }
+
+            if (sortOrder.EndsWith("_desc"))
+            {
+                sortOrder = sortOrder.Substring(0, sortOrder.Length - 5);
+                descending = true;
+            }
+
+            if (descending)
+            {
+                query = query.OrderByDescending(e => EF.Property<object>(e, sortOrder));
+            }
+            else
+            {
+                query = query.OrderBy(e => EF.Property<object>(e, sortOrder));
+            }
+
+
+            // return the result of the query using the specification's criteria expression
+            return query.GetPaged(page, pagesize);
+        }
+
         public async Task<List<T>> ListPagedAsync(ISpecification<T> spec, string sortOrder, int page = 1, int pagesize = 20, bool disableTracking = true)
         {
 
