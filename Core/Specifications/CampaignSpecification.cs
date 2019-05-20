@@ -8,21 +8,19 @@ namespace Core.Specifications
 {
     public class CampaignByAgencySpecification : BaseSpecification<Campaign>
     {
-        public CampaignByAgencySpecification(int agencyid, int? campaignTypeId, string keyword)
-            : base(m => m.AgencyId == agencyid && m.Published && (!campaignTypeId.HasValue || m.CampaignTypeId == campaignTypeId) &&
+        public CampaignByAgencySpecification(int agencyid, CampaignType? type, string keyword)
+            : base(m => m.AgencyId == agencyid && m.Published && (!type.HasValue || m.Type == type) &&
 
             (string.IsNullOrEmpty(keyword) || m.Title.Contains(keyword))
             )
         {
             AddInclude(m => m.CampaignOption);
-            AddInclude(m => m.CampaignType);
             AddInclude(m => m.CampaignAccount);
         }
         public CampaignByAgencySpecification(int agencyid, int id)
            : base(m => m.AgencyId == agencyid && m.Published && m.Id == id)
         {
             AddInclude(m => m.CampaignOption);
-            AddInclude(m => m.CampaignType);
             AddInclude(m => m.CampaignAccount);
         }
     }

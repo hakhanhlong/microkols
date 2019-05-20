@@ -13,7 +13,6 @@ namespace Website.ViewModels
         {
             Account = new AccountViewModel(campaignAccount.Account);
             Status = campaignAccount.Status;
-            Data = campaignAccount.Data;
             DateCreated = campaignAccount.DateCreated;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
@@ -24,7 +23,6 @@ namespace Website.ViewModels
 
         public AccountViewModel Account { get; set; }
         public CampaignAccountStatus Status { get; set; }
-        public string Data { get; set; }
         public DateTime DateCreated { get; set; }
     }
 

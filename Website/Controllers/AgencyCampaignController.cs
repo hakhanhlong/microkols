@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Interfaces;
@@ -22,12 +23,11 @@ namespace Website.Controllers
 
 
 
-        public async Task<IActionResult> Index(int? campaignTypeId, string kw, int page = 1,int pagesize = 20)
+        public async Task<IActionResult> Index(CampaignType? type, string kw, int page = 1,int pagesize = 20)
         {
-            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, campaignTypeId, kw, page, pagesize);
-            ViewBag.CampaignTypes = await _campaignService.GetCampaignTypes();
+            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, page, pagesize);
             ViewBag.Kw = kw;
-            ViewBag.campaignTypeId = campaignTypeId;
+            ViewBag.type = type;
             return View(model);
         }
 
@@ -56,7 +56,7 @@ namespace Website.Controllers
         private async Task ViewbagData()
         {
             ViewBag.Categories = await _sharedService.GetCategories();
-            ViewBag.CampaignTypes = await _campaignService.GetCampaignTypes();
+            ViewBag.CampaignTypePrices = await _campaignService.GetCampaignTypePrices();
             ViewBag.Cities = await _sharedService.GetCities();
         }
 
