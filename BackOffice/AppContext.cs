@@ -1,4 +1,6 @@
-﻿using Core.Interfaces;
+﻿using BackOffice.Business;
+using BackOffice.Business.Interfaces;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +18,14 @@ namespace BackOffice
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IAgencyRepository, AgencyRepository>();
+
+
+            //business
+            services.AddScoped<IAgencyBusiness, AgencyBusiness>();
+
+
+
         }
     }
 }

@@ -34,5 +34,11 @@ namespace Infrastructure.Data
         {
             return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username);
         }
+
+
+        public int CountAll()
+        {
+            return _dbContext.Agency.Count();
+        }
     }
 }

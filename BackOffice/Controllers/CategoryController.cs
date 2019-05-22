@@ -15,7 +15,7 @@ namespace BackOffice.Controllers
     public class CategoryController : Controller
     {
 
-        ICategoryRepository _ICategoryRepository;
+        private ICategoryRepository _ICategoryRepository;
         public CategoryController(ICategoryRepository __ICategoryRepository)
         {
             _ICategoryRepository = __ICategoryRepository;
