@@ -35,5 +35,11 @@ namespace Infrastructure.Data
             return null;
 
         }
+
+        public int CountAll()
+        {
+            return _dbContext.Campaign.Count();
+        }
+
     }
 }

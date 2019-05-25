@@ -17,9 +17,7 @@ namespace Infrastructure.Data
     {
 
         public AgencyRepository(AppDbContext dbContext) : base(dbContext)
-        {
-
-        }
+        {}
 
         public async Task<Agency> GetPublishedAgency(int id)
         {

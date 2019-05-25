@@ -38,7 +38,6 @@ namespace BackOffice.Business
             var total = _IAgencyRepository.CountAll();
 
 
-
             return new ListAgencyViewModel()
             {
                 Agencies = agencies.Select(a=> new AgencyViewModel(a)).ToList(),
