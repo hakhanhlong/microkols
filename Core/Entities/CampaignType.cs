@@ -5,15 +5,6 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class CampaignTypePrice : BaseEntity
-    {
-        public CampaignType Type { get; set; }
-        public int ServicePrice { get; set; }
-        public int AccountPrice { get; set; }
-        public int AccountExtraPricePercent { get; set; }
-
-    }
-
     public enum CampaignType
     {
         [DisplayName("Chia sẻ thông điệp, không cần viết caption")]
@@ -48,11 +39,12 @@ namespace Core.Entities
             {
                 return "/người/lần";
             }
-            if(type== CampaignType.CustomService)
+            if (type == CampaignType.CustomService || type == CampaignType.JoinEvent)
             {
                 return "";
             }
             return type.ToString();
         }
     }
+
 }

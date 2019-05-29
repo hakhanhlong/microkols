@@ -24,48 +24,41 @@ namespace Website.ViewModels
     {
         public Campaign GetEntity(int agencyid, CampaignTypePrice campaignTypePrice, Core.Models.SettingModel setting, string username)
         {
-            var start = DateStart.ToViDate();
-            var end = DateEnd.ToViDate();
-            if (start.HasValue && end.HasValue)
+
+
+            return new Campaign()
             {
-                return new Campaign()
-                {
-                    DateCreated = DateTime.Now,
-                    AgencyId = agencyid,
-                    DateEnd = end,
-                    DateStart = start,
-                    Data = string.Empty,
-                    DateModified = DateTime.Now,
-                    Deleted = false,
-                    Description = Description,
-                    ServiceChargePercent = setting.ServiceCharge,
-                    Image = string.Empty,
-                    Published = true,
-                    Status = CampaignStatus.Created,
-                    Title = Title,
-                    UserCreated = username,
-                    UserModified = username,
-                    ExtraOptionChargePercent = setting.ExtraOptionCharge,
-                    AccountExtraPercent = campaignTypePrice.AccountExtraPricePercent,
-                    ServicePrice = campaignTypePrice.ServicePrice,
-                    AccountPrice = campaignTypePrice.AccountPrice,
-                    EnabledAccountExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledAccountExtra : false,
-                    Requirement = Type == CampaignType.CustomService ? Requirement: string.Empty,
-                    Type  = Type
+                DateCreated = DateTime.Now,
+                AgencyId = agencyid,
 
+                Data = string.Empty,
+                DateModified = DateTime.Now,
+                Deleted = false,
+                Description = Description,
+                ServiceChargePercent = setting.ServiceCharge,
+                Image = string.Empty,
+                Published = true,
+                Status = CampaignStatus.Created,
+                Title = Title,
+                UserCreated = username,
+                UserModified = username,
+                ExtraOptionChargePercent = setting.ExtraOptionCharge,
+                AccountExtraPercent = campaignTypePrice.AccountExtraPricePercent,
+                ServicePrice = campaignTypePrice.ServicePrice,
+                AccountPrice = campaignTypePrice.AccountPrice,
+                EnabledAccountExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledAccountExtra : false,
+                Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
+                Type = Type
 
+            };
 
-                };
-
-            }
-            return null;
         }
 
         [Display(Name = "Số lượng người bạn cần")]
         public int NumberOfAccount { get; set; }
 
         [Display(Name = "Bạn cần MicroKOL chiến dịch")]
-        public AccountType AccountType { get; set; }
+        public List<AccountType> AccountType { get; set; }
 
         [Display(Name = "Chi phí cho mỗi người")]
         public int? AccountPrice { get; set; }
@@ -77,13 +70,7 @@ namespace Website.ViewModels
         [Display(Name = "Loại chiến dịch")]
         public CampaignType Type { get; set; }
 
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Bắt đầu")]
-        public string DateStart { get; set; }
 
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Kết thúc")]
-        public string DateEnd { get; set; }
 
         [Display(Name = "Giới tính")]
         public bool EnabledGender { get; set; } = false;

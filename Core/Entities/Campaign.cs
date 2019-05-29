@@ -23,8 +23,6 @@ namespace Core.Entities
         // Lay o settings
         public int ExtraOptionChargePercent { get; set; }
 
-
-
         public CampaignType Type { get; set; }
         public int ServicePrice { get; set; }
         public int AccountPrice { get; set; }
