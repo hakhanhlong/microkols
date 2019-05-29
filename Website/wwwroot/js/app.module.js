@@ -190,7 +190,6 @@ var AppWallet = (function () {
     };
 })();
 
-
 var AppPayment = (function () {
 
     function init() {
@@ -221,13 +220,11 @@ var AppPayment = (function () {
         $('.btn-reload').click(function (e) {
             window.location = window.location;
         });
-
     }
     return {
         Init: init,
         HandlerPayment: handlerPayment,
         HandlerMessage: handlerMessage
-
     };
 
 })();

@@ -209,5 +209,23 @@ namespace Website.ViewModels
         public string ImageBack { get; set; }
     }
 
+    public class ChangeAccountTypeViewModel
+    {
+        public ChangeAccountTypeViewModel()
+        {
 
+        }
+        public ChangeAccountTypeViewModel(Account entity)
+        {
+            Type = entity.Type;
+            if(entity.Type== AccountType.HotMom)
+            {
+                HotMomData = (List<AccountTypeHotMomData>)entity.TypeDataObj;
+            }
+
+        }
+        public AccountType Type { get; set; }
+
+        public List<AccountTypeHotMomData> HotMomData { get; set; } = new List<AccountTypeHotMomData>();
+    }
 }

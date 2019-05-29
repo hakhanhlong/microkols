@@ -1,0 +1,102 @@
+﻿@model ChangeAccountTypeViewModel
+@{
+    ViewBag.Title = "Cài đặt";
+
+    var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>();
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/template">
+        <select class="form-control" name="HotMomData.Gender">
+            <option value="@Gender.Male">@Gender.Male.ToDisplayName()</option>
+            <option value="@Gender.Female">@Gender.Female.ToDisplayName()</option>
+        </select>
+
+        <input type="number" name="HotMomData.Age" class="form-control" />
+    </script>
+    <script type="text/template" id="modelHotMomData">
+        @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HotMomData))
+    </script>
+}
+
+<h2>@ViewBag.Title</h2>
+
+<partial name="_SettingNavPartial" model="5" />
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+        <form method="post" asp-action="ChangeAccountType" enctype="multipart/form-data">
+
+            <alert></alert>
+
+            <div class="form-group">
+                <label asp-for="Type"></label>
+                @foreach (var accountType in accountTypeArr)
+                {
+                    var radioId = $"radio{accountType}";
+                    var attrChecked = accountType == Model.Type ? "checked" : "";
+
+
+                    <div>
+
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="@radioId" value="@accountType" name="Type" @attrChecked class="custom-control-input">
+                            <label class="custom-control-label" for="@radioId">@accountType.ToDisplayName()</label>
+                        </div>
+                        <div class="ml-3 pl-5">
+
+                            @if (accountType == AccountType.HotMom)
+                            {
+
+                                <div id="dataHotMom" class="d-none">
+                                   
+                                    <h6 class="mb-2">
+                                        Danh sách con cái
+                                    </h6>
+                                    <div class="mb-2">
+                                        <button v-on:click="createItem()" type="button" class="btn btn-primary btn-sm">
+                                            <span class="fal fa-plus"></span> Thêm con cái
+                                        </button>
+                                    </div>
+                                    <div class="d-flex mb-2" v-for="(item,idx) in childrens">
+
+                                        <div class="mr-auto form-inline">
+
+                                            <select class="form-control" v-bind:name="'HotMomData['+idx+'].Gender'" v-model="item.Gender" >
+                                                <option value="1">@Gender.Male.ToDisplayName()</option>
+                                                <option value="2">@Gender.Female.ToDisplayName()</option>
+                                            </select>
+
+                                            <input type="number" placeholder="Tuổi" class="form-control mx-sm-2" v-bind:name="'HotMomData['+idx+'].Age'" v-model="item.Age"/>
+                                            <select class="form-control" name="HotMomData.AgeType" v-bind:name="'HotMomData['+idx+'].AgeType'" v-model="item.AgeType">
+                                                <option value="1">Tháng</option>
+                                                <option value="2">Tuổi</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+
+                }
+                <span asp-validation-for="Type"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Đồng ý" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
+</div>

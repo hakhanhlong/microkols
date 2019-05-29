@@ -165,11 +165,11 @@ namespace Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgencyRegister(CreateAgencyViewModel model, string returnurl = "")
+        public async Task<IActionResult> AgencyRegister(RegisterAgencyViewModel model, string returnurl = "")
         {
             if (ModelState.IsValid)
             {
-                var id = await _agencyService.CreateAgency(model);
+                var id = await _agencyService.Register(model);
 
                 if (id > 0)
                 {

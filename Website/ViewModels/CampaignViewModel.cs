@@ -17,7 +17,7 @@ namespace Website.ViewModels
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Thông tin sản phẩm hoặc dịch vụ")]
+        [Display(Name = "Yêu cầu của chiến dịch")]
         public string Description { get; set; }
     }
     public class CreateCampaignViewModel : BaseCampaignViewModel
@@ -63,6 +63,9 @@ namespace Website.ViewModels
 
         [Display(Name = "Số lượng người bạn cần")]
         public int NumberOfAccount { get; set; }
+
+        [Display(Name = "Bạn cần MicroKOL chiến dịch")]
+        public AccountType AccountType { get; set; }
 
         [Display(Name = "Chi phí cho mỗi người")]
         public int? AccountPrice { get; set; }

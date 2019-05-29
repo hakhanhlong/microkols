@@ -15,6 +15,10 @@ namespace Website.Interfaces
         Task<bool> ChangeIDCard(int id, ChangeIDCardViewModel model, string username);
         Task<bool> ChangeInformation(int id, ChangeInformationViewModel model, string username);
         Task<bool> ChangePassword(int id, ChangePasswordViewModel model, string username);
+
+        Task<ChangeAccountTypeViewModel> GetChangeAccountType(int id);
+        Task<bool> ChangeAccountType(int id, ChangeAccountTypeViewModel model, string username);
+
         Task<ForgotPasswordResultViewModel> ForgotPassword(string email);
         Task<AccountViewModel> GetAccount(int id);
 

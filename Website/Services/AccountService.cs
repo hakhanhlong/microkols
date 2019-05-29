@@ -13,6 +13,7 @@ using Common.Helpers;
 using Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Extensions;
+using Newtonsoft.Json;
 
 namespace Website.Services
 {
@@ -409,6 +410,46 @@ namespace Website.Services
 
         #endregion
 
+        #region ChangeAccountType
+
+        public async Task<ChangeAccountTypeViewModel> GetChangeAccountType(int id)
+        {
+            var entity = await _accountRepository.GetByIdAsync(id);
+
+            if (entity != null)
+            {
+                return new ChangeAccountTypeViewModel(entity);
+            }
+            return null;
+        }
+
+        public async Task<bool> ChangeAccountType(int id, ChangeAccountTypeViewModel model, string username)
+        {
+            var entity = await _accountRepository.GetByIdAsync(id, false);
+
+            if (entity != null)
+            {
+                entity.Type = model.Type;
+                if(model.Type== AccountType.HotMom)
+                {
+                    entity.TypeData = JsonConvert.SerializeObject(model.HotMomData);
+                }
+                
+                entity.DateModified = DateTime.Now;
+                entity.UserModified = username;
+
+                await _accountRepository.UpdateAsync(entity);
+                return true;
+            }
+            return false;
+
+        }
+
+
+        #endregion
+
+
+        
 
 
         #region Helper

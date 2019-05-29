@@ -154,6 +154,32 @@ namespace Website.Controllers
 
         #endregion
 
+        #region ChangeAccountType
+
+
+        public async Task<IActionResult> ChangeAccountType()
+        {
+            var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeAccountType(ChangeAccountTypeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _accountService.ChangeAccountType(CurrentUser.Id, model, CurrentUser.Username);
+
+                if (r)
+                {
+                    await ReSignIn(CurrentUser.Id);
+                    this.AddAlert(true);
+                    return RedirectToAction("ChangeAccountType");
+                }
+            }
+            return View(model);
+        }
+
+        #endregion
 
         #region Helper
         private async Task ReSignIn(int id)

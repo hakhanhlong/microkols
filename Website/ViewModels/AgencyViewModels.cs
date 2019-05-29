@@ -49,7 +49,7 @@ namespace Website.ViewModels
         public string Image { get; set; }
     }
 
-    public class CreateAgencyViewModel : UpdateAgencyViewModel
+    public class RegisterAgencyViewModel : UpdateAgencyViewModel
     {
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Mật khẩu", Prompt = "Mật khẩu")]

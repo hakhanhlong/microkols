@@ -69,7 +69,7 @@ namespace Website.Services
 
         #endregion
 
-        public async Task<int> CreateAgency(CreateAgencyViewModel model)
+        public async Task<int> Register(RegisterAgencyViewModel model)
         {
             var isvalid = await VerifyUsername(model.Username);
             if (isvalid)

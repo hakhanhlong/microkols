@@ -32,20 +32,16 @@ var AppCommon = {
                 $('#stickyFooterActions').fadeOut();
             }
         });
-
         $('#scrollToTop').click(function () {
             $('html, body').animate({ scrollTop: 0 }, 800);
-
         });
 
     },
     uploadTempImage: function (files, path, callback) {
         var xhr, formData;
-
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
         xhr.open('POST', AppUrls.ImageMultipleUpload);
-
         xhr.onload = function () {
             if (xhr.status !== 200) {
                 failure('HTTP Error: ' + xhr.status);
@@ -58,8 +54,6 @@ var AppCommon = {
         for (var i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
         }
-
-
         xhr.send(formData);
     },
     bindingWalletBalance: function () {

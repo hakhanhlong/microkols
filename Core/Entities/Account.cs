@@ -82,32 +82,33 @@ namespace Core.Entities
     public enum AccountType
     {
         [DisplayName("Tài khoản thường")]
-        Regular, 
+        Regular = 0, 
         [DisplayName("Hot Teen")]
-        HotTeen,
+        HotTeen = 1,
         [DisplayName("Hot Mom")]
-        HotMom,
+        HotMom = 2,
         [DisplayName("Hot Facebooker")]
-        HotFacebooker,
+        HotFacebooker = 3,
         [DisplayName("Kols")]
-        Kols,
+        Kols = 4,
     }
     public class AccountTypeHotMomData
     {
         public Gender Gender { get; set; }
         public int Age { get; set; }
+        public int AgeType { get; set; }
     }
 
     public enum Gender
     {
         [DisplayName("Không xác định")]
-        Undefined,
+        Undefined = 0,
         [DisplayName("Con trai")]
-        Male,
+        Male = 1,
         [DisplayName("Con gái")]
-        Female,
+        Female = 2,
         [DisplayName("Khác")]
-        Other
+        Other = 3
     }
     public enum MaritalStatus
     {
