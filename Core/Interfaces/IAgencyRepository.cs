@@ -11,5 +11,7 @@ namespace Core.Interfaces
         Task<Agency> GetActivedAgency(int id);
         Task<Agency> GetActivedAgency(string username);
         Task<Agency> GetAgency(string username);
+
+        int CountAll();
     }
 }

@@ -8,10 +8,11 @@ namespace Core.Specifications
 {
     public class CategorySpecification : BaseSpecification<Category>
     {
+        public CategorySpecification() : base() { }
+
         public CategorySpecification(int id)
          : base(i => i.Id == id)
-        {
-        }
+        {}
 
     }
 

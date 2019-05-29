@@ -17,9 +17,7 @@ namespace Infrastructure.Data
     {
 
         public AgencyRepository(AppDbContext dbContext) : base(dbContext)
-        {
-
-        }
+        {}
 
         public async Task<Agency> GetActivedAgency(int id)
         {
@@ -33,6 +31,12 @@ namespace Infrastructure.Data
         public async Task<Agency> GetAgency(string username)
         {
             return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username);
+        }
+
+
+        public int CountAll()
+        {
+            return _dbContext.Agency.Count();
         }
     }
 }
