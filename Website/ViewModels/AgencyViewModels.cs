@@ -79,7 +79,7 @@ namespace Website.ViewModels
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
                 Deleted = false,
-                Published = false,
+                Actived = false,
                 Description = Description,
                 Image = Image,
                 Name = Name,

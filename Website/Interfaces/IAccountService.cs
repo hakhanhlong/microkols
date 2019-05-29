@@ -30,5 +30,6 @@ namespace Website.Interfaces
 
         Task<ChangeBankAccountViewModel> GetBankAccount(int id);
         Task<bool> ChangeBankAccount(int id, ChangeBankAccountViewModel model, string username);
+        Task<bool> VerifyEmail(string email);
     }
 }

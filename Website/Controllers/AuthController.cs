@@ -87,10 +87,20 @@ namespace Website.Controllers
 
         #endregion
 
+
+
+        public async Task<IActionResult> VerifyAccountEmail(string username)
+        {
+            var r = await _accountService.VerifyEmail(username);
+
+            return Json(r);
+
+        }
+
         #endregion
 
 
-       
+
 
         #region Agency
 

@@ -59,6 +59,8 @@ namespace Website.Services
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
+
+
         #region Auth
         public async Task<AuthViewModel> GetAuth(LoginViewModel model)
         {
@@ -136,10 +138,6 @@ namespace Website.Services
 
 
         #endregion
-
-
-
-
 
 
         #region ChangeContact
@@ -388,6 +386,17 @@ namespace Website.Services
             //{
             //    return true;
             //}
+            return false;
+        }
+
+        public async Task<bool> VerifyEmail(string email)
+        {
+            var entity = await _accountRepository.GetActivedAccount(email);
+
+            if (entity == null)
+            {
+                return true;
+            }
             return false;
         }
 

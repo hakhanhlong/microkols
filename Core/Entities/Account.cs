@@ -9,11 +9,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Core.Entities
 {
-    public class Account : BaseEntity
+    public class Account : BaseEntityWithDate
     {
 
         // Người dùng thường -> AccountType = null
-        public AccountType? Type { get; set; }
+        public AccountType Type { get; set; }
 
         public string TypeData { get; set; }
 
@@ -22,9 +22,9 @@ namespace Core.Entities
         {
             get
             {
-                if (!string.IsNullOrEmpty(TypeData) && Type.HasValue)
+                if (!string.IsNullOrEmpty(TypeData))
                 {
-                    if (Type.Value == AccountType.HotMom)
+                    if (Type == AccountType.HotMom)
                     {
                         return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(TypeData);
                     }
@@ -68,10 +68,7 @@ namespace Core.Entities
         public string BankAccountBranch { get; set; }
 
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public string UserCreated { get; set; }
-        public string UserModified { get; set; }
+
 
 
         private List<AccountCategory> _AccountCategory = new List<AccountCategory>();
@@ -84,6 +81,8 @@ namespace Core.Entities
 
     public enum AccountType
     {
+        [DisplayName("Tài khoản thường")]
+        Regular, 
         [DisplayName("Hot Teen")]
         HotTeen,
         [DisplayName("Hot Mom")]
