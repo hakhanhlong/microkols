@@ -1,12 +1,12 @@
-﻿@model LoginViewModel
+﻿@model RegisterViewModel
 
 @{
-    ViewBag.Title = "Đăng nhập";
+    ViewBag.Title = "Đăng ký";
 
 }
 
 @section scripts{
-  
+
 }
 
 <div class="container">
@@ -17,7 +17,7 @@
         <div class="col-md-6 offset-3">
 
 
-            <h1 class="h3 text-center font-weight-normal">Đăng nhập</h1>
+            <h1 class="h3 text-center font-weight-normal">@ViewBag.Title</h1>
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <alert></alert>
@@ -27,9 +27,9 @@
 
                 <div class="form-group">
 
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="form-group">
@@ -42,19 +42,25 @@
                 </div>
 
 
+                <div class="form-group">
 
-                <div class="form-group ">
-                    <div class="form-check">
-                        <input class="form-check-input" asp-for="Remember" type="checkbox" value="true">
-                        <label asp-for="Remember" class="control-label"></label>
 
-                    </div>
+                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
 
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block ">
-                        Đăng nhập
+                        Đăng ký
                     </button>
                 </div>
 
@@ -66,10 +72,10 @@
 
             <partial name="_SocialLoginPartial" />
 
-           
+
             <p>
-                Bạn chưa có tài khoản?    <a class="text-primary" href="@Url.Action("Register")">
-                    Đăng ký tài khoản ngay <i class="fal fa-angle-right"></i>
+                Bạn đã có tài khoản?    <a class="text-primary" href="@Url.Action("Login")">
+                    Đăng nhậpngay <i class="fal fa-angle-right"></i>
                 </a>
             </p>
             <p>

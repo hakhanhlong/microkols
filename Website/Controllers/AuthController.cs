@@ -87,6 +87,31 @@ namespace Website.Controllers
 
         #endregion
 
+        #region Register
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var id = await _accountService.Register(model);
+
+                if (id > 0)
+                {
+                    return RedirectToAction("Index","Home");
+                }
+                this.AddAlertDanger("Tên đăng nhập đã tồn tại");
+            }
+            return View(model);
+        }
+
+
+
+        #endregion
 
 
         public async Task<IActionResult> VerifyAccountEmail(string username)

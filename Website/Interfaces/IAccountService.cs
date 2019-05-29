@@ -17,8 +17,8 @@ namespace Website.Interfaces
         Task<bool> ChangePassword(int id, ChangePasswordViewModel model, string username);
         Task<ForgotPasswordResultViewModel> ForgotPassword(string email);
         Task<AccountViewModel> GetAccount(int id);
-        
 
+        Task<int> Register(RegisterViewModel model);
         Task<AuthViewModel> GetAuth(LoginViewModel model);
         Task<AuthViewModel> GetAuth(LoginProviderViewModel model);
         Task<AuthViewModel> GetAuth(int id);

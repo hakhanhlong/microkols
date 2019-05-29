@@ -139,6 +139,42 @@ namespace Website.Services
 
         #endregion
 
+        #region Register
+
+        public async Task<int> Register(RegisterViewModel model)
+        {
+            var entity = await _accountRepository.GetActivedAccount(model.Email);
+            if (entity != null) return -1;
+
+            var salt = SecurityHelper.GenerateSalt();
+            var encryptpw = SecurityHelper.HashPassword(salt, model.Password);
+
+            entity = new Account()
+            {
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Email = model.Email,
+                Name = model.Name,
+                Password = encryptpw,
+                Address = string.Empty,
+                Phone = string.Empty,
+                Avatar = string.Empty,
+                Actived  = true,
+                Deleted = false,
+                UserModified = model.Email,
+                UserCreated = model.Email,
+                Salt = salt,
+                Type = AccountType.Regular,
+            };
+
+            await _accountRepository.AddAsync(entity);
+
+            return entity.Id;
+        }
+
+
+        #endregion
+
 
         #region ChangeContact
 
@@ -337,7 +373,7 @@ namespace Website.Services
         #endregion
 
 
-        #region ChangeIDCard
+        #region ChangeBankAccount
 
         public async Task<ChangeBankAccountViewModel> GetBankAccount(int id)
         {
