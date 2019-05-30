@@ -15,12 +15,12 @@ namespace Website.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Tiêu đề chiến dịch")]
         public string Title { get; set; }
-
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Yêu cầu của chiến dịch")]
         public string Description { get; set; }
+
     }
-    public class CreateCampaignViewModel : BaseCampaignViewModel
+    public class CreateCampaignViewModel 
     {
         public Campaign GetEntity(int agencyid, CampaignTypePrice campaignTypePrice, Core.Models.SettingModel setting, string username)
         {
@@ -39,7 +39,7 @@ namespace Website.ViewModels
                 Image = string.Empty,
                 Published = true,
                 Status = CampaignStatus.Created,
-                Title = Title,
+                Title = string.Empty,
                 UserCreated = username,
                 UserModified = username,
                 ExtraOptionChargePercent = setting.ExtraOptionCharge,
@@ -53,22 +53,36 @@ namespace Website.ViewModels
             };
 
         }
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Yêu cầu của chiến dịch")]
+        public string Description { get; set; }
 
-        [Display(Name = "Số lượng người bạn cần")]
+
+        [Display(Name = "Đối tượng")]
+        public List<AccountType> AccountType { get; set; } = new List<AccountType>();
+
+   
+
+     
+
+
+        [Display(Name = "Số lượng")]
         public int NumberOfAccount { get; set; }
 
-        [Display(Name = "Bạn cần MicroKOL chiến dịch")]
-        public List<AccountType> AccountType { get; set; }
 
-        [Display(Name = "Chi phí cho mỗi người")]
+        [Display(Name = "Chi phí")]
         public int? AccountPrice { get; set; }
 
-        [Display(Name = "Yêu cầu cụ thể chiến dịch")]
+
+        [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }
 
 
         [Display(Name = "Loại chiến dịch")]
         public CampaignType Type { get; set; }
+
+        [Display(Name = "Đính kèm hình ảnh cá nhân")]
+        public bool EnabledExtraType { get; set; }
 
 
 

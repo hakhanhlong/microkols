@@ -7420,3 +7420,15 @@ a.text-dark:hover, a.text-dark:focus {
 
 .field-validation-error {
   color: #dc3545; }
+
+#editAccountPriceWrap span {
+  color: #dc3545; }
+
+#editAccountPriceWrap input {
+  display: none; }
+
+#editAccountPriceWrap.openedit span {
+  display: none; }
+
+#editAccountPriceWrap.openedit input {
+  display: inline; }

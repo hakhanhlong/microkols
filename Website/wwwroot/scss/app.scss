@@ -13,9 +13,30 @@
     }
 }
 
-.input-validation-error{
-    border-color:$danger;
+.input-validation-error {
+    border-color: $danger;
 }
+
 .field-validation-error {
     color: $danger;
+}
+
+#editAccountPriceWrap {
+    span {
+        color: $danger;
+    }
+
+    input {
+        display: none;
+    }
+
+    &.openedit {
+        span {
+            display: none;
+        }
+
+        input {
+            display: inline;
+        }
+    }
 }

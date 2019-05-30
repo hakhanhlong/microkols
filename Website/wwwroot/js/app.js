@@ -21,6 +21,9 @@ var App = (function () {
         if (currentPage === 'account_changeaccounttype') {
             ChangeAccountTypePage.Init();
         }
+        else if (currentPage === 'agencycampaign_create') {
+            CreateCampaignPage.Init();
+        }
 
     }
     function handler() {

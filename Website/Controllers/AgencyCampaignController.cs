@@ -36,7 +36,7 @@ namespace Website.Controllers
         public async Task<IActionResult> Create()
         {
             await ViewbagData();
-            return View();
+            return View(new CreateCampaignViewModel());
         }
         [HttpPost]
         public async Task<IActionResult> Create(CreateCampaignViewModel model)

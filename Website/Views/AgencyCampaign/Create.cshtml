@@ -8,6 +8,9 @@
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
     var campaignTypePrices = (List<CampaignTypePriceViewModel>)ViewBag.CampaignTypePrices;
+
+    
+    var i = 0;
 }
 
 <h1 class="h3">@ViewData["Title"]</h1>
@@ -18,102 +21,106 @@
 <alert></alert>
 
 <form method="post" asp-action="Create" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="AccountType"></label>
-        <input type="text" class="form-control" asp-for="AccountType" />
-        @foreach (var accountType in accountTypes)
-        {
-            var checkboxId = $"CampaignType{accountType}";
-            <div class="custom-control custom-checkbox custom-control">
-                <input type="checkbox" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType" name="AccountType" id="@checkboxId" class="custom-control-input">
-                <label class="custom-control-label" for="@checkboxId">
-                    @accountType.ToDisplayName()
-                </label>
+    <input type="hidden" value="@AppSettings.ExtraOptionCharge" id="settingExtraOptionCharge" />
+    <input type="hidden" value="@AppSettings.ServiceCharge" id="settingServiceCharge" />
+    <div class="form-group row">
+        <label asp-for="Type" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <div class="mb-2">
+                <select asp-for="Type" class="form-control">
+                    @foreach (var campaignType in campaignTypes)
+                    {
+
+                        var campaignTypePrice = campaignTypePrices.FirstOrDefault(m => m.Type == campaignType);
+                        if (campaignTypePrice != null)
+                        {
+                            var accountPriceText = $"{campaignTypePrice.AccountPrice.ToPriceText()}{campaignTypePrice.Type.ToPriceLabel()}";
+                            <option value="@campaignType"
+                                    data-serviceprice="@campaignTypePrice.ServicePrice"
+                                    data-accountprice="@campaignTypePrice.AccountPrice"
+                                    data-accountextrapricepercent="@campaignTypePrice.AccountExtraPricePercent"
+                                    data-accountpricetext="@accountPriceText">
+                                @campaignType.ToDisplayName()
+                            </option>
+                        }
+                    }
+                </select>
             </div>
-        }
-        <span asp-validation-for="AccountType"></span>
+            <div class="mb-2 d-none" id="enabledExtraTypeWrap">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                    <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                </div>
+            </div>
+            <div class="mb-2 d-none" id="requirementWrap">
+                <textarea asp-for="Requirement" class="form-control"></textarea>
+                <span asp-validation-for="Requirement"></span>
+            </div>
+            <span asp-validation-for="Type"></span>
+        </div>
+
     </div>
 
-    <div id="accountTypeOther" class="d-none">
-        <div class="form-group">
-            <label asp-for="NumberOfAccount"></label>
+    <div class="form-group row">
+
+        <label asp-for="AccountType" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+
+            <div id="accountTypeWrap">
+                @foreach (var accountType in accountTypes)
+                {
+                    var checkboxId = $"CampaignType{accountType}";
+                    <div class="d-flex">
+                        <div>
+                            <div class="custom-control custom-checkbox custom-control">
+                                <input type="checkbox" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType" name="AccountType" id="@checkboxId" class="custom-control-input">
+                                <label class="custom-control-label" for="@checkboxId">
+                                    @accountType.ToDisplayName()
+                                </label>
+                            </div>
+                        </div>
+                        <div class="ml-4 d-flex">
+                            @if (accountType == AccountType.Regular)
+                            {
+                                <label asp-for="AccountPrice" class="mb-0"></label>
+
+                                <div class="pl-2" id="editAccountPriceWrap">
+                                    <span></span>
+                                    <input type="number" class="form-control " asp-for="AccountPrice" />
+                                </div>
+
+                            }
+
+                        </div>
+                    </div>
+                }
+                <span asp-validation-for="AccountType"></span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="form-group row">
+        <label asp-for="NumberOfAccount" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
             <input type="text" class="form-control" asp-for="NumberOfAccount" />
             <span asp-validation-for="NumberOfAccount"></span>
         </div>
     </div>
 
+    <div id="campaignOptions" class="row">
 
+        <label class="col-md-2"> Thêm tiêu chí</label>
+        <div class="col-md-10">
+            <div class="d-flex py-1">
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Title"></label>
-                <input type="text" class="form-control" asp-for="Title" />
-                <span asp-validation-for="Title"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea type="text" class="form-control" asp-for="Description" rows="6"></textarea>
-                <span asp-validation-for="Description"></span>
-            </div>
-        </div>
-
-    </div>
-    <div class="form-group">
-        <label asp-for="Type"></label>
-        <br />
-        @{ var i = 0;}
-        @foreach (var campaignType in campaignTypes)
-        {
-
-            var campaignTypePrice = campaignTypePrices.FirstOrDefault(m => m.Type == campaignType);
-            if (campaignTypePrice != null)
-            {
-                var radioId = $"CampaignType{campaignType}";
-                var accountPriceText = $"{campaignTypePrice.AccountPrice.ToPriceText()}{campaignTypePrice.Type.ToPriceLabel()}";
-                <div class="custom-control custom-radio custom-control">
-                    <input type="radio" @(i == 0 ? "checked" : "") value="@campaignType" name="Type" id="@radioId" class="custom-control-input">
-                    <div class="custom-control-label">
-
-                        <label for="@radioId">
-                            @campaignType.ToDisplayName()
-                        </label>
-                        <div class="row">
-                            <div class="col-6">
-                                Phí dịch vụ: @campaignTypePrice.ServicePrice.ToPriceText()
-                            </div>
-                            <div class="col-6">
-                                Phí: @accountPriceText
-                            </div>
-
-
-                        </div>
-
-                    </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
+                    <label class="custom-control-label" asp-for="EnabledGender"></label>
                 </div>
-            }
-            i++;
-        }
 
-        <span asp-validation-for="Type"></span>
-    </div>
-
-    <hr />
-    <div id="campaignOptions">
-
-        <h6>Thêm tiêu chí</h6>
-
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
-                        <label class="custom-control-label" asp-for="EnabledGender"></label>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div id="collapseEnabledGender" class="collapse">
+                <div id="collapseEnabledGender" class="collapse ml-4">
                     <div>
                         @{
                             var genderList = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>();
@@ -132,23 +139,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledAgeRange' asp-for="EnabledAgeRange">
-                        <label class="custom-control-label" asp-for="EnabledAgeRange"></label>
-                    </div>
+            <div class="d-flex py-1">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledAgeRange' asp-for="EnabledAgeRange">
+                    <label class="custom-control-label" asp-for="EnabledAgeRange"></label>
                 </div>
-            </div>
-            <div class="col">
-
-                <div id="collapseEnabledAgeRange" class="collapse">
+                <div id="collapseEnabledAgeRange" class="collapse ml-4">
                     <div class="form-row align-items-center">
                         <div class="col-auto">
 
-                            <input type="number" class="form-control" asp-for="AgeStart" />
+                            <input type="number" class="form-control  " asp-for="AgeStart" />
                             <span asp-validation-for="AgeStart"></span>
 
                         </div>
@@ -157,29 +157,24 @@
                         </div>
                         <div class="col-auto">
 
-                            <input type="number" class="form-control" asp-for="AgeEnd" />
+                            <input type="number" class="form-control  " asp-for="AgeEnd" />
                             <span asp-validation-for="AgeEnd"></span>
 
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledCity' asp-for="EnabledCity">
-                        <label class="custom-control-label" asp-for="EnabledCity"></label>
-                    </div>
+            <div class="d-flex py-1">
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledCity' asp-for="EnabledCity">
+                    <label class="custom-control-label" asp-for="EnabledCity"></label>
                 </div>
+                <div class=" ml-4 flex-grow-1">
+                    <div id="collapseEnabledCity" class="collapse">
 
-            </div>
-            <div class="col">
 
-                <div id="collapseEnabledCity" class="collapse">
-                    <div>
-                        <select asp-for="CityId" class="form-control">
+                        <select asp-for="CityId" class="form-control form-select2 ">
                             <option>Chọn khu vực</option>
                             @foreach (var city in cities)
                             {
@@ -188,39 +183,52 @@
 
                         </select>
                         <span asp-validation-for="CityId"></span>
-                    </div>
-                </div>
 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <div class="form-group">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target="#collapseEnabledCategory" asp-for="EnabledCategory">
-                        <label class="custom-control-label" asp-for="EnabledCategory"></label>
                     </div>
                 </div>
             </div>
-            <div class="col">
-
-                <div id="collapseEnabledCategory" class="collapse">
-                    <div>
+            <div class="d-flex py-1">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target="#collapseEnabledCategory" asp-for="EnabledCategory">
+                    <label class="custom-control-label" asp-for="EnabledCategory"></label>
+                </div>
+                <div class=" ml-4 flex-grow-1">
+                    <div id="collapseEnabledCategory" class="collapse">
                         <select asp-for="CategoryId" multiple class="form-control form-select2">
                             @foreach (var category in categories)
                             {
                                 <option value="@category.Id">@category.Name</option>
                             }
-
                         </select>
                         <span asp-validation-for="CategoryId"></span>
                     </div>
+
                 </div>
 
             </div>
+
+
         </div>
+    </div>
 
+    <hr />
+    <div class="row">
+        <label class="col-md-2">Chi phí</label>
+        <div class="col-md-10">
 
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2">Phí dịch vụ</label>
+        <div class="col-md-10">
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-2">Tổng chi phí</label>
+        <div class="col-md-10">
+
+        </div>
     </div>
 
     <div class="form-group">
