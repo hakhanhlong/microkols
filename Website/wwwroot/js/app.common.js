@@ -60,5 +60,10 @@ var AppCommon = {
         $.get(AppConstants.UrlGetAmount, function (val) {
             $('.wallet-balance').html(val);
         });
+    },
+    moneyFormat: function (input, n, x) {
+        var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+
+        return input.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,') + ' đ';
     }
 };

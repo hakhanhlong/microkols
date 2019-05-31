@@ -115,6 +115,11 @@ var CreateCampaignPage = (function () {
         var totalServiceCharge = totalServicePrice + serviceCharge;
 
         console.log('totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge);
+
+        $('#totalServicePrice').text(AppCommon.moneyFormat(totalServicePrice));
+        $('#serviceCharge').text(AppCommon.moneyFormat(serviceCharge));
+        $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
+
     }
     return {
         Init: init

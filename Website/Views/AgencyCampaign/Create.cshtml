@@ -108,6 +108,13 @@
             <span asp-validation-for="NumberOfAccount"></span>
         </div>
     </div>
+    <div class="form-group row">
+        <label asp-for="Description" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <textarea type="text" class="form-control" asp-for="Description" ></textarea>
+            <span asp-validation-for="Description"></span>
+        </div>
+    </div>
 
     <div id="campaignOptions" class="row">
 
@@ -212,27 +219,31 @@
     </div>
 
     <hr />
-    <div class="row">
-        <label class="col-md-2">Chi phí</label>
+    <div class="form-group row">
+        <div class="col-md-2">Chi phí</div>
         <div class="col-md-10">
+            <span id="totalServicePrice" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">Phí dịch vụ</div>
+        <div class="col-md-10">
+            <span id="serviceCharge" class="text-success"></span>
 
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-md-2">Phí dịch vụ</label>
+        <div class="col-md-2">Tổng chi phí</div>
         <div class="col-md-10">
+            <span id="totalServiceCharge" class="text-danger"></span>
 
         </div>
     </div>
+
     <div class="form-group row">
-        <label class="col-md-2">Tổng chi phí</label>
-        <div class="col-md-10">
-
+        <div class="col-md-10 offset-md-2">
+            <input type="submit" value="Thêm mới" class="btn btn-primary">
         </div>
-    </div>
-
-    <div class="form-group">
-        <input type="submit" value="Thêm mới" class="btn btn-primary">
     </div>
 </form>
 

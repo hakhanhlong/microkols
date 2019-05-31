@@ -27,7 +27,6 @@ namespace Core.Entities
         public int ServicePrice { get; set; }
         public int AccountPrice { get; set; }
         public int AccountExtraPercent { get; set; }
-
         public bool EnabledAccountExtra { get; set; }
 
         public CampaignStatus Status { get; set; }
@@ -39,6 +38,10 @@ namespace Core.Entities
 
         private List<CampaignAccount> _CampaignAccount = new List<CampaignAccount>();
         public IEnumerable<CampaignAccount> CampaignAccount => _CampaignAccount.AsReadOnly();
+
+
+        private List<CampaignAccountType> _CampaignAccountType = new List<CampaignAccountType>();
+        public IEnumerable<CampaignAccountType> CampaignAccountType => _CampaignAccountType.AsReadOnly();
 
     }
 

@@ -24,18 +24,36 @@ namespace Website.ViewModels
     {
         public Campaign GetEntity(int agencyid, CampaignTypePrice campaignTypePrice, Core.Models.SettingModel setting, string username)
         {
+            var accountPrice = 0;
+            if(Type== CampaignType.CustomService || Type== CampaignType.JoinEvent)
+            {
+                accountPrice = AccountPrice ?? 0;
 
+            }
+            else
+            {
+                accountPrice = campaignTypePrice.AccountPrice;
+            }
+
+
+            var accountExtraPercent = 0;
+
+            if(Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
+            {
+                if (EnabledExtraType)
+                {
+                    accountExtraPercent = campaignTypePrice.AccountExtraPricePercent;
+                }
+            }
 
             return new Campaign()
             {
                 DateCreated = DateTime.Now,
                 AgencyId = agencyid,
-
                 Data = string.Empty,
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Description = Description,
-                ServiceChargePercent = setting.ServiceCharge,
                 Image = string.Empty,
                 Published = true,
                 Status = CampaignStatus.Created,
@@ -43,13 +61,16 @@ namespace Website.ViewModels
                 UserCreated = username,
                 UserModified = username,
                 ExtraOptionChargePercent = setting.ExtraOptionCharge,
-                AccountExtraPercent = campaignTypePrice.AccountExtraPricePercent,
+                ServiceChargePercent = setting.ServiceCharge,
+
+
                 ServicePrice = campaignTypePrice.ServicePrice,
-                AccountPrice = campaignTypePrice.AccountPrice,
+                AccountExtraPercent = accountExtraPercent,
+                AccountPrice = accountPrice,
+                
                 EnabledAccountExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledAccountExtra : false,
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
-                Type = Type
-
+                Type = Type,
             };
 
         }

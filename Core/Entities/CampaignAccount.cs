@@ -17,7 +17,7 @@ namespace Core.Entities
         public CampaignType Type { get; set; }
         public int AccountCharge { get; set; } // chi phi cho tung nguoi tham gia 
         public int ExtraAccountCharge { get; set; } // tinh theo Extra ở CampaignTypeCharge
-        public int AccountChargeTimes { get; set; } // lượt thực hiện - dành cho Thay hình Avatar
+        public int AccountChargeTimes { get; set; } // lượt thực hiện - chi dành cho Thay hình Avatar
 
         public string RefUrl { get; set; }
         public string RefId { get; set; }
