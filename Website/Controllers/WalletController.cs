@@ -21,10 +21,9 @@ namespace Website.Controllers
             _walletService = walletService;
         }
 
-        public async Task<string> GetAmount()
-        {
-            var amount = User.Identity.IsAuthenticated ? await _walletService.GetAmount(CurrentUser) : 0;
-            return amount.ToString();
+        public async Task<long> GetAmount()
+        {            
+            return User.Identity.IsAuthenticated ? await _walletService.GetAmount(CurrentUser) : 0;
         }
 
 

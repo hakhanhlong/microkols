@@ -7,34 +7,32 @@ using System.Threading.Tasks;
 namespace Website.ViewModels
 {
    
-    public class CampaignTypePriceViewModel
+    public class CampaignTypeChargeViewModel
     {
 
-        public CampaignTypePriceViewModel()
+        public CampaignTypeChargeViewModel()
         {
 
         }
 
-        public CampaignTypePriceViewModel(CampaignTypePrice campaignType)
+        public CampaignTypeChargeViewModel(CampaignTypeCharge campaignType)
         {
-
             Id = campaignType.Id;
             Type = campaignType.Type;
-            ServicePrice = campaignType.ServicePrice;
-            AccountPrice = campaignType.AccountPrice;
-            AccountExtraPricePercent = campaignType.AccountExtraPricePercent;
+            ServiceChargeAmount = campaignType.ServiceChargeAmount;
+            AccountChargeAmount = campaignType.AccountChargeAmount;
+            AccountChargeExtraPercent = campaignType.AccountChargeExtraPercent;
         }
-        public static List<CampaignTypePriceViewModel> GetList(IEnumerable<CampaignTypePrice> campaignTypes)
+        public static List<CampaignTypeChargeViewModel> GetList(IEnumerable<CampaignTypeCharge> campaignTypes)
         {
-
-            return campaignTypes.Select(m => new CampaignTypePriceViewModel(m)).ToList();
-
+            return campaignTypes.Select(m => new CampaignTypeChargeViewModel(m)).ToList();
         }
 
         public int Id { get; set; }
+
         public CampaignType Type { get; set; }
-        public int ServicePrice { get; set; }
-        public int AccountPrice { get; set; }
-        public int AccountExtraPricePercent { get; set; }
+        public int ServiceChargeAmount { get; set; }
+        public int AccountChargeAmount { get; set; }
+        public int AccountChargeExtraPercent { get; set; }
     }
 }

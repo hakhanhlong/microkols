@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Core.Specifications
 {
-    public class CampaignTypePriceSpecification : BaseSpecification<CampaignTypePrice>
+    public class CampaignTypeChargeSpecification : BaseSpecification<CampaignTypeCharge>
     {
-        public CampaignTypePriceSpecification(CampaignType type)
+        public CampaignTypeChargeSpecification(CampaignType type)
          : base(i => i.Type == type)
         {
         }

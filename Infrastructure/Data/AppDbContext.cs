@@ -24,14 +24,15 @@ namespace Infrastructure.Data
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<AccountCategory> AccountCategory { get; set; }
         public virtual DbSet<AccountProvider> AccountProvider { get; set; }
-        public virtual DbSet<AccountPrice> AccountPrice { get; set; }
-
-        public virtual DbSet<CampaignTypePrice> CampaignTypePrice { get; set; }
+        public virtual DbSet<AccountCampaignCharge> AccountCampaignCharge { get; set; }
+        
+        public virtual DbSet<CampaignTypeCharge> CampaignTypeCharge { get; set; }
 
         public virtual DbSet<Agency> Agency { get; set; }
         public virtual DbSet<Campaign> Campaign { get; set; }
         public virtual DbSet<CampaignAccount> CampaignAccount { get; set; }
         public virtual DbSet<CampaignOption> CampaignOption { get; set; }
+        public virtual DbSet<CampaignAccountType> CampaignAccountType { get; set; }
 
 
         public virtual DbSet<Category> Category { get; set; }
@@ -58,6 +59,7 @@ namespace Infrastructure.Data
 
             builder.Entity<Campaign>(ConfigureCampaign);
             builder.Entity<CampaignAccount>(ConfigureCampaignAccount);
+            builder.Entity<CampaignAccountType>(ConfigureCampaignAccountType);
             builder.Entity<CampaignOption>(ConfigureCampaignOption);
 
 
@@ -118,14 +120,18 @@ namespace Infrastructure.Data
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignAccount)).SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignOption)).SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.Metadata.FindNavigation(nameof(Core.Entities.Campaign.CampaignAccountType)).SetPropertyAccessMode(PropertyAccessMode.Field);
 
         }
         private void ConfigureCampaignAccount(EntityTypeBuilder<CampaignAccount> builder)
         {
-
-            builder.HasKey(m => new { m.CampaignId, m.AccountId });
-
             builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignAccount).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
+
+        }
+        private void ConfigureCampaignAccountType(EntityTypeBuilder<CampaignAccountType> builder)
+        {
+
+            builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignAccountType).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
 
         }
         private void ConfigureCampaignOption(EntityTypeBuilder<CampaignOption> builder)
@@ -135,7 +141,7 @@ namespace Infrastructure.Data
 
         }
 
-        private void ConfigureCampaignType(EntityTypeBuilder<CampaignTypePrice> builder)
+        private void ConfigureCampaignTypeCharge(EntityTypeBuilder<CampaignTypeCharge> builder)
         {
 
         }

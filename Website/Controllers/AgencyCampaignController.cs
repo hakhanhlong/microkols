@@ -15,10 +15,12 @@ namespace Website.Controllers
     {
         private readonly ICampaignService _campaignService;
         private readonly ISharedService _sharedService;
-        public AgencyCampaignController(ISharedService sharedService, ICampaignService campaignService)
+        private readonly INotificationService _notificationService;
+        public AgencyCampaignController(ISharedService sharedService, ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
             _sharedService = sharedService;
+            _notificationService = notificationService;
         }
 
 
@@ -43,10 +45,18 @@ namespace Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
-                if (id > 0)
+                if(model.AccountType == null || model.AccountType.Count== 0)
                 {
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("AccountType", "Hãy chọn đối tượng");
+                }
+                else
+                {
+                    var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
+                    if (id > 0)
+                    {
+                        this.AddAlertSuccess("Thêm chiến dịch mới thành công");
+                        return RedirectToAction("Index");
+                    }
                 }
 
             }
@@ -56,13 +66,23 @@ namespace Website.Controllers
         private async Task ViewbagData()
         {
             ViewBag.Categories = await _sharedService.GetCategories();
-            ViewBag.CampaignTypePrices = await _campaignService.GetCampaignTypePrices();
+            ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
             ViewBag.Cities = await _sharedService.GetCities();
         }
 
 
         #endregion
 
+
+        #region RequestAccount
+
+        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
+        {
+            return Json(1);
+        }
+
+
+        #endregion
         public async Task<IActionResult> Details(int id)
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);

@@ -9,18 +9,18 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AccountPrice",
+                name: "AccountCampaignCharge",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccountId = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    Price = table.Column<int>(nullable: false)
+                    AccountChargeAmount = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AccountPrice", x => x.Id);
+                    table.PrimaryKey("PK_AccountCampaignCharge", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,14 +33,14 @@ namespace Infrastructure.Migrations
                     DateModified = table.Column<DateTime>(nullable: false),
                     UserCreated = table.Column<string>(nullable: true),
                     UserModified = table.Column<string>(nullable: true),
-                    Published = table.Column<bool>(nullable: false),
-                    Deleted = table.Column<bool>(nullable: false),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     Salt = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Image = table.Column<string>(nullable: true)
+                    Image = table.Column<string>(nullable: true),
+                    Deleted = table.Column<bool>(nullable: false),
+                    Actived = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,19 +72,19 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CampaignTypePrice",
+                name: "CampaignTypeCharge",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Type = table.Column<int>(nullable: false),
-                    ServicePrice = table.Column<int>(nullable: false),
-                    AccountPrice = table.Column<int>(nullable: false),
-                    AccountExtraPricePercent = table.Column<int>(nullable: false)
+                    ServiceChargeAmount = table.Column<int>(nullable: false),
+                    AccountChargeAmount = table.Column<int>(nullable: false),
+                    AccountChargeExtraPercent = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CampaignTypePrice", x => x.Id);
+                    table.PrimaryKey("PK_CampaignTypeCharge", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,10 +224,11 @@ namespace Infrastructure.Migrations
                     ServiceChargePercent = table.Column<int>(nullable: false),
                     ExtraOptionChargePercent = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    ServicePrice = table.Column<int>(nullable: false),
-                    AccountPrice = table.Column<int>(nullable: false),
-                    AccountExtraPercent = table.Column<int>(nullable: false),
-                    EnabledAccountExtra = table.Column<bool>(nullable: false),
+                    ServiceChargeAmount = table.Column<int>(nullable: false),
+                    AccountChargeAmount = table.Column<int>(nullable: false),
+                    AccountChargeExtraPercent = table.Column<int>(nullable: false),
+                    EnabledAccountChargeExtra = table.Column<bool>(nullable: false),
+                    AccountChargeTime = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     DateStart = table.Column<DateTime>(nullable: true),
                     DateEnd = table.Column<DateTime>(nullable: true)
@@ -295,6 +296,26 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CampaignAccountType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CampaignId = table.Column<int>(nullable: false),
+                    AccountType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CampaignAccountType", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CampaignAccountType_Campaign_CampaignId",
+                        column: x => x.CampaignId,
+                        principalTable: "Campaign",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CampaignOption",
                 columns: table => new
                 {
@@ -321,7 +342,11 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<int>(nullable: true),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    DateModified = table.Column<DateTime>(nullable: false),
+                    UserCreated = table.Column<string>(nullable: true),
+                    UserModified = table.Column<string>(nullable: true),
+                    Type = table.Column<int>(nullable: false),
                     TypeData = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
@@ -346,11 +371,7 @@ namespace Infrastructure.Migrations
                     BankAccountName = table.Column<string>(nullable: true),
                     BankAccountNumber = table.Column<string>(nullable: true),
                     BankAccountBank = table.Column<string>(nullable: true),
-                    BankAccountBranch = table.Column<string>(nullable: true),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    DateModified = table.Column<DateTime>(nullable: false),
-                    UserCreated = table.Column<string>(nullable: true),
-                    UserModified = table.Column<string>(nullable: true)
+                    BankAccountBranch = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -420,13 +441,13 @@ namespace Infrastructure.Migrations
                 name: "CampaignAccount",
                 columns: table => new
                 {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CampaignId = table.Column<int>(nullable: false),
                     AccountId = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     Type = table.Column<int>(nullable: false),
-                    AccountCharge = table.Column<int>(nullable: false),
-                    ExtraAccountCharge = table.Column<int>(nullable: false),
-                    AccountChargeTimes = table.Column<int>(nullable: false),
+                    AccountChargeAmount = table.Column<int>(nullable: false),
                     RefUrl = table.Column<string>(nullable: true),
                     RefId = table.Column<string>(nullable: true),
                     RefData = table.Column<string>(nullable: true),
@@ -437,7 +458,7 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CampaignAccount", x => new { x.CampaignId, x.AccountId });
+                    table.PrimaryKey("PK_CampaignAccount", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CampaignAccount_Account_AccountId",
                         column: x => x.AccountId,
@@ -483,6 +504,16 @@ namespace Infrastructure.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CampaignAccount_CampaignId",
+                table: "CampaignAccount",
+                column: "CampaignId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CampaignAccountType_CampaignId",
+                table: "CampaignAccountType",
+                column: "CampaignId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CampaignOption_CampaignId",
                 table: "CampaignOption",
                 column: "CampaignId");
@@ -506,10 +537,10 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AccountCategory");
+                name: "AccountCampaignCharge");
 
             migrationBuilder.DropTable(
-                name: "AccountPrice");
+                name: "AccountCategory");
 
             migrationBuilder.DropTable(
                 name: "AccountProvider");
@@ -521,10 +552,13 @@ namespace Infrastructure.Migrations
                 name: "CampaignAccount");
 
             migrationBuilder.DropTable(
+                name: "CampaignAccountType");
+
+            migrationBuilder.DropTable(
                 name: "CampaignOption");
 
             migrationBuilder.DropTable(
-                name: "CampaignTypePrice");
+                name: "CampaignTypeCharge");
 
             migrationBuilder.DropTable(
                 name: "Notification");

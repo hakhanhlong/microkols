@@ -55,7 +55,7 @@ var CreateCampaignPage = (function () {
             handlerType();
         });
 
-        $('#campaignOptions .custom-control-input:checked').change(function () {
+        $('#campaignOptions .form-option').change(function () {
 
             pricingCalculator();
 
@@ -78,7 +78,7 @@ var CreateCampaignPage = (function () {
         if (type === 'ShareContent' || type === 'ShareContentWithCaption') {
             $('#enabledExtraTypeWrap').removeClass('d-none');
         }
-        else if (type === 'CustomService' || type === 'JoinEvent') {
+        else if (type === 'CustomService') {
             $('#requirementWrap').removeClass('d-none');
             $('#editAccountPriceWrap').addClass('openedit');
         }
@@ -105,7 +105,7 @@ var CreateCampaignPage = (function () {
         //}
 
         var numberOfAccount = $('#NumberOfAccount').val();
-        var countOption = $('#campaignOptions .custom-control-input:checked').length;
+        var countOption = $('#campaignOptions .form-option:checked').length;
 
         var settingExtraOptionCharge = $('#settingExtraOptionCharge').val();
         var settingServiceCharge = $('#settingServiceCharge').val();
@@ -114,7 +114,7 @@ var CreateCampaignPage = (function () {
         var serviceCharge = totalServicePrice * settingServiceCharge / 100;
         var totalServiceCharge = totalServicePrice + serviceCharge;
 
-        console.log('totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge);
+        console.log('totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
 
         $('#totalServicePrice').text(AppCommon.moneyFormat(totalServicePrice));
         $('#serviceCharge').text(AppCommon.moneyFormat(serviceCharge));

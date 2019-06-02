@@ -1,0 +1,21 @@
+﻿@model CampaignAccountViewModel
+<div class="row ">
+    <div class="col-10">
+        <h5>
+            @Model.Account.Name @Model.AccountId
+        </h5>
+        <div>
+            @Model.Status.ToDisplayName()
+        </div>
+
+        <div></div>
+    </div>
+
+    <div class="col-2">
+        @if(Model.Status== CampaignAccountStatus.AccountRequest)
+        {
+            <button class="btn btn-outline-primary">Xác nhận tham gia</button>
+
+        }
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
@@ -26,6 +27,18 @@ namespace Website.Controllers
 
 
         }
+
+        #region MatchedAccount
+        public  async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+
+               IEnumerable<int> ignoreIds, int page = 1)
+        {
+            const int pagesize = 20;
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, page, pagesize, ignoreIds);
+            return PartialView(model);
+        }
+        #endregion
+
 
         #region ChangePassword
         public async Task<IActionResult> ChangePassword()

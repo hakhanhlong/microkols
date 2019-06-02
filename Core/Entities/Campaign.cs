@@ -24,10 +24,11 @@ namespace Core.Entities
         public int ExtraOptionChargePercent { get; set; }
 
         public CampaignType Type { get; set; }
-        public int ServicePrice { get; set; }
-        public int AccountPrice { get; set; }
-        public int AccountExtraPercent { get; set; }
-        public bool EnabledAccountExtra { get; set; }
+        public int ServiceChargeAmount { get; set; }
+        public int AccountChargeAmount { get; set; }
+        public int AccountChargeExtraPercent { get; set; }
+        public bool EnabledAccountChargeExtra { get; set; }
+        public int AccountChargeTime { get; set; } //default = 1 --> Số lần thực hiện --> Nếu = kiểu = thay avatar thì mới lên số lần
 
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }

@@ -20,19 +20,22 @@ namespace Website.Services
 
         private readonly ICampaignRepository _campaignRepository;
         private readonly IWalletRepository _walletRepository;
-        private readonly IAsyncRepository<CampaignTypePrice> _campaignTypePriceRepository;
+        private readonly IAsyncRepository<CampaignTypeCharge> _campaignTypeChargeRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
+        private readonly IAsyncRepository<CampaignAccountType> _campaignAccountTypeRepository;
         private readonly ISettingRepository _settingRepository;
         private readonly ITransactionRepository _transactionRepository;
 
         public CampaignService(ICampaignRepository campaignRepository,
             ITransactionRepository transactionRepository,
             IWalletRepository walletRepository,
-            IAsyncRepository<CampaignTypePrice> campaignTypePriceRepository,
+            IAsyncRepository<CampaignTypeCharge> campaignTypeChargeRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
+            IAsyncRepository<CampaignAccountType> campaignAccountTypeRepository,
              ISettingRepository settingRepository)
         {
-            _campaignTypePriceRepository = campaignTypePriceRepository;
+            _campaignAccountTypeRepository = campaignAccountTypeRepository;
+            _campaignTypeChargeRepository = campaignTypeChargeRepository;
             _campaignOptionRepository = campaignOptionRepository;
             _campaignRepository = campaignRepository;
             _walletRepository = walletRepository;
@@ -78,14 +81,14 @@ namespace Website.Services
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
-            var campaignTypePrice = await _campaignTypePriceRepository.GetSingleBySpecAsync(new CampaignTypePriceSpecification(model.Type));
-            if (campaignTypePrice == null)
+            var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
+            if (campaignTypeCharge == null)
             {
                 return -1;
             }
             var settings = await _settingRepository.GetSetting();
             var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var campaign = model.GetEntity(agencyid, campaignTypePrice, settings, username);
+            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, username);
             if (campaign == null)
             {
                 return -1;
@@ -94,48 +97,10 @@ namespace Website.Services
             await _campaignRepository.AddAsync(campaign);
             if (campaign.Id > 0)
             {
-                if (model.CityId.HasValue)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaign.Id,
-                        Name = CampaignOptionName.City,
-                        Value = model.CityId.Value.ToString()
-                    });
-                }
-                if (model.Gender.HasValue)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaign.Id,
-                        Name = CampaignOptionName.Gender,
-                        Value = model.Gender.Value.ToString()
-                    });
-                }
+                await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
 
-                if (model.AgeEnd.HasValue && model.AgeStart.HasValue)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaign.Id,
-                        Name = CampaignOptionName.AgeRange,
-                        Value = $"{model.AgeStart.Value}-{model.AgeEnd.Value}"
-                    });
-                }
+                await CreateCampaignOptions(campaign.Id, model, username);
 
-                if (model.CategoryId != null && model.CategoryId.Count > 0)
-                {
-                    foreach (var categoryid in model.CategoryId)
-                    {
-                        await _campaignOptionRepository.AddAsync(new CampaignOption()
-                        {
-                            CampaignId = campaign.Id,
-                            Name = CampaignOptionName.Category,
-                            Value = categoryid.ToString()
-                        });
-                    }
-
-                }
                 return campaign.Id;
 
             }
@@ -144,14 +109,93 @@ namespace Website.Services
 
             return -1;
         }
+        private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
+        {
+            foreach(var accountType in accountTypes)
+            {
+                await _campaignAccountTypeRepository.AddAsync(new CampaignAccountType()
+                {
+                    AccountType = accountType,
+                    CampaignId = campaignId
+                });
+            }
+            
+        }
+        private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
+        {
+            if ( model.EnabledCity && model.CityId.HasValue)
+            {
+                await _campaignOptionRepository.AddAsync(new CampaignOption()
+                {
+                    CampaignId = campaignId,
+                    Name = CampaignOptionName.City,
+                    Value = model.CityId.Value.ToString()
+                });
+            }
+            if (model.EnabledGender &&  model.Gender.HasValue)
+            {
+                await _campaignOptionRepository.AddAsync(new CampaignOption()
+                {
+                    CampaignId = campaignId,
+                    Name = CampaignOptionName.Gender,
+                    Value = model.Gender.Value.ToString()
+                });
+            }
+
+            if (model.EnabledAgeRange && model.AgeEnd.HasValue && model.AgeStart.HasValue)
+            {
+                await _campaignOptionRepository.AddAsync(new CampaignOption()
+                {
+                    CampaignId = campaignId,
+                    Name = CampaignOptionName.AgeRange,
+                    Value = $"{model.AgeStart.Value}-{model.AgeEnd.Value}"
+                });
+            }
+
+            if (model.EnabledCategory && model.CategoryId != null && model.CategoryId.Count > 0)
+            {
+                foreach (var categoryid in model.CategoryId)
+                {
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.Category,
+                        Value = categoryid.ToString()
+                    });
+                }
+
+            }
+
+        }
 
         #endregion
 
 
-        public async Task<List<CampaignTypePriceViewModel>> GetCampaignTypePrices()
+        #region Campaign Request
+        //public async Task<bool> RequestAccountJoinCampaign(int campaignid, int accountid, string username)
+        //{
+        //    var accountCampaign = await _campaignAccountTypeRepositoryre
+
+        //}
+       
+        #endregion
+
+        #region Campaign Account
+
+        public async Task<ListCampaignAccountViewModel> GetCampaignAccounts(int campaignid,int page, int pagesize)
         {
-            var list = await _campaignTypePriceRepository.ListAllAsync();
-            return CampaignTypePriceViewModel.GetList(list);
+            var campaignAccounts = await _campaignRepository.GetCampaignAccounts(campaignid, page, pagesize);
+
+            return new ListCampaignAccountViewModel(campaignAccounts, page, pagesize);
+
+
+        }
+        #endregion
+
+        public async Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges()
+        {
+            var list = await _campaignTypeChargeRepository.ListAllAsync();
+            return CampaignTypeChargeViewModel.GetList(list);
         }
     }
 }

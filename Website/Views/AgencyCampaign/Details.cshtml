@@ -1,114 +1,132 @@
 ﻿@model CampaignDetailsViewModel
 
 @{
-    ViewData["Title"] = Model.Title;
+    ViewData["Title"] = $"Chiến dịch {Model.Id}";
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
-
 }
-<h1 class="mt-0 h4">@Model.Title</h1>
+
 
 <div class="row">
     <div class="col-md-6">
 
-        @if (Model.DateStart.HasValue)
-        {
-            <p>
-                Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
-            </p>
-        }
-        <p>
+        @*@if (Model.DateStart.HasValue)
+            {
+                <div>
+                    Thời gian: @Model.DateStart.Value.ToViDate()  -  @Model.DateEnd.Value.ToViDate()
+                </div>
+            }*@
+        <div>
+            Mã chiến dịch:  <strong class="text-primary">@Model.Id</strong>
+        </div>
+        <div>
+            Chiến dịch: <span class="text-primary"> @Model.Type.ToDisplayName()</span>
+            @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+            {
+
+                if (Model.EnabledAccountChargeExtra)
+                {
+                    <span> - </span> <span>Đính kèm hình ảnh cá nhân</span>
+                }
+            }
+        </div>
+        <div>
             Trạng thái:  @Model.Status.ToBadge()
-        </p>
-        <p>
-            Loại chiến dịch: <strong> @Model.Type.ToDisplayName()</strong>
-        </p>
-        <p>
+        </div>
+
+        <div>
+            Đối tượng: @foreach (var accountType in Model.AccountTypes)
+            {
+                <span class="badge badge-info">@accountType.ToDisplayName()</span>
+            }
+        </div>
+        <div>
             Mô tả:  @Model.Description
-        </p>
+        </div>
+
+        @if (Model.CountOption > 0)
+        {
+            <h6>Tiêu chí</h6>
+            <ul>
+                @if (Model.Gender.HasValue)
+                {
+                    <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
+                }
+                @if (Model.CityId.HasValue)
+                {
+                    var city = cities.FirstOrDefault(m => m.Id == Model.CityId.Value);
+                    if (city != null)
+                    {
+                        <li>Khu vực: <strong>@city.Name</strong></li>
+                    }
+                }
+                @if (Model.AgeStart.HasValue)
+                {
+                    <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
+                }
+
+                @if (Model.CategoryIds.Count > 0)
+                {
+                    var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+
+                    <li>
+                        Lĩnh vực quan tâm/thế mạnh:
+                        @foreach (var cat in cats)
+                        {
+                            <strong>@cat.Name</strong>
+                        }
+                    </li>
+                }
+
+            </ul>
+
+        }
+
 
 
     </div>
     <div class="col-md-6">
 
-        <p>Tổng chi phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span> </p>
-        <p>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </p>
-        <h6>Tiêu chí</h6>
-        <ul>
-            @if (Model.Gender.HasValue)
-            {
-                <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
-            }
-            @if (Model.CityId.HasValue)
-            {
-                var city = cities.FirstOrDefault(m => m.Id == Model.CityId.Value);
-                if (city != null)
-                {
-                    <li>Khu vực: <strong>@city.Name</strong></li>
-                }
-            }
-            @if (Model.AgeStart.HasValue)
-            {
-                <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
-            }
+        <div>Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span> </div>
 
-            @if (Model.CategoryIds.Count > 0)
-            {
-                var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+        <div>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
 
-                <li>
-                    Lĩnh vực quan tâm/thế mạnh:
-                    @foreach (var cat in cats)
-                    {
-                        <strong>@cat.Name</strong>
-                    }
-                </li>
-            }
-
-        </ul>
     </div>
 </div>
+
 
 @if (Model.Payment.IsValidServiceCharge)
 {
     <div class="alert alert-warning" role="alert">
         <h4 class="alert-heading">Thông báo</h4>
-        <p>
-            Bạn chưa thanh toán phí dịch vụ. Vui lòng thanh toán phí dịch vụ để tiếp tục
-        </p>
+        <div>
+            Bạn chưa thanh toán phí dịch vụ. Vui lòng thanh toán phí dịch vụ để chọn thành viên
+        </div>
         <hr>
-        <p class="mb-0">
+        <div>
             <btnpayment campaign-id="Model.Id"></btnpayment>
-        </p>
+        </div>
     </div>
-    
 }
+else
+{
 
-<ul class="nav  nav-tabs">
+    <div class="card">
+        <div class="card-header">
+            Thành viên đã tham gia
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <button class="btn btn-primary"> <i class="fal fa-plus"></i> Thành viên mới</button>
+            </div>
 
-    <li class="nav-item">
-        <a class="nav-link active">Tổng hợp chi phí</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link">Thành viên tham gia</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link">Thành viên phù hợp</a>
-    </li>
+            @foreach (var campaignAccount in Model.CampaignAccounts)
+            {
+                <partial name="_CampaignAccountPartial" model="campaignAccount" />
+            }
 
-</ul>
 
-<div class="tab-content mt-3">
-    <div class="tab-pane fade show active">
-
-        <table>
-            <tr>
-                <th>Thông tin</th>
-
-                <th>Chi phí</th>
-            </tr>
-            <tr></tr>
-        </table>
+        </div>
     </div>
-
-</div>
+  
+}

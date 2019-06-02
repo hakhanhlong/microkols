@@ -9,7 +9,9 @@ namespace Website.Interfaces
 {
     public interface IAccountService
     {
-        Task<ListAccountViewModel> GetListAccount(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, string order, int page, int pagesize);
+        Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+                    string order, int page, int pagesize, IEnumerable<int> ignoreIds);
+
         Task<bool> ChangeAvatar(int id, ChangeAvatarViewModel model);
         Task<bool> ChangeContact(int id, ChangeContactViewModel model, string username);
         Task<bool> ChangeIDCard(int id, ChangeIDCardViewModel model, string username);

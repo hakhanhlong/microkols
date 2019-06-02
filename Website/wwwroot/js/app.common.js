@@ -58,7 +58,7 @@ var AppCommon = {
     },
     bindingWalletBalance: function () {
         $.get(AppConstants.UrlGetAmount, function (val) {
-            $('.wallet-balance').html(val);
+            $('.wallet-balance').html(AppCommon.moneyFormat(val));
         });
     },
     moneyFormat: function (input, n, x) {

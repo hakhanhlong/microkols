@@ -8,8 +8,7 @@ namespace Core.Models
 {
     public class CampaignPaymentModel
     {
-        private long _servicePaidAmount;
-        private long _accountPaidAmount;
+    
 
         public CampaignPaymentModel()
         {
@@ -20,20 +19,20 @@ namespace Core.Models
             IEnumerable<Transaction> transactions)
         {
             CampaignId = campaign.Id;
-            CampaignTitle = campaign.Title;
             ServiceChargeAmount = campaign.ToServiceChargeAmount(campaignOptions);
-            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out _servicePaidAmount, out _accountPaidAmount);
+            long servicePaidAmount, accountPaidAmount;
+            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out servicePaidAmount, out accountPaidAmount);
+            ServicePaidAmount = servicePaidAmount;
+            AccountPaidAmount = accountPaidAmount;
         }
 
-
-        public string CampaignTitle { get; set; }
         public int CampaignId { get; set; }
         public long ServiceChargeAmount { get; set; } = 0;
         public long AccountChargeAmount { get; set; } = 0;
         public long TotalChargeAmount { get { return AccountChargeAmount + ServiceChargeAmount; } }
 
-        public long ServicePaidAmount { get => _servicePaidAmount; set => _servicePaidAmount = value; }
-        public long AccountPaidAmount { get => _accountPaidAmount; set => _accountPaidAmount = value; }
+        public long ServicePaidAmount { get; set; }
+        public long AccountPaidAmount { get; set; }
         public long TotalPaidAmount { get; set; }
 
         public long ServiceChargeValue

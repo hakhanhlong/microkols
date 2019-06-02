@@ -7,7 +7,7 @@
 
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
-    var campaignTypePrices = (List<CampaignTypePriceViewModel>)ViewBag.CampaignTypePrices;
+    var campaignTypeCharges = (List<CampaignTypeChargeViewModel>)ViewBag.CampaignTypeCharges;
 
     
     var i = 0;
@@ -19,10 +19,10 @@
 
 
 <alert></alert>
-
+<div asp-validation-summary="ModelOnly" class="text-danger"> </div>
 <form method="post" asp-action="Create" enctype="multipart/form-data">
-    <input type="hidden" value="@AppSettings.ExtraOptionCharge" id="settingExtraOptionCharge" />
-    <input type="hidden" value="@AppSettings.ServiceCharge" id="settingServiceCharge" />
+    <input type="hidden" value="@AppSettings.CampaignExtraOptionChargePercent" id="settingExtraOptionCharge" />
+    <input type="hidden" value="@AppSettings.CampaignServiceChargePercent" id="settingServiceCharge" />
     <div class="form-group row">
         <label asp-for="Type" class="col-md-2 col-form-label"></label>
         <div class="col-md-10">
@@ -30,15 +30,14 @@
                 <select asp-for="Type" class="form-control">
                     @foreach (var campaignType in campaignTypes)
                     {
-
-                        var campaignTypePrice = campaignTypePrices.FirstOrDefault(m => m.Type == campaignType);
+                        var campaignTypePrice = campaignTypeCharges.FirstOrDefault(m => m.Type == campaignType);
                         if (campaignTypePrice != null)
                         {
-                            var accountPriceText = $"{campaignTypePrice.AccountPrice.ToPriceText()}{campaignTypePrice.Type.ToPriceLabel()}";
+                            var accountPriceText = $"{campaignTypePrice.AccountChargeAmount.ToPriceText()}{campaignTypePrice.Type.ToPriceLabel()}";
                             <option value="@campaignType"
-                                    data-serviceprice="@campaignTypePrice.ServicePrice"
-                                    data-accountprice="@campaignTypePrice.AccountPrice"
-                                    data-accountextrapricepercent="@campaignTypePrice.AccountExtraPricePercent"
+                                    data-serviceprice="@campaignTypePrice.ServiceChargeAmount"
+                                    data-accountprice="@campaignTypePrice.AccountChargeAmount"
+                                    data-accountextrapricepercent="@campaignTypePrice.AccountChargeExtraPercent"
                                     data-accountpricetext="@accountPriceText">
                                 @campaignType.ToDisplayName()
                             </option>
@@ -73,7 +72,8 @@
                     <div class="d-flex">
                         <div>
                             <div class="custom-control custom-checkbox custom-control">
-                                <input type="checkbox" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType" name="AccountType" id="@checkboxId" class="custom-control-input">
+                                <input type="checkbox" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType" 
+                                       name="AccountType" id="@checkboxId" class="custom-control-input">
                                 <label class="custom-control-label" for="@checkboxId">
                                     @accountType.ToDisplayName()
                                 </label>
@@ -82,11 +82,11 @@
                         <div class="ml-4 d-flex">
                             @if (accountType == AccountType.Regular)
                             {
-                                <label asp-for="AccountPrice" class="mb-0"></label>
+                                <label asp-for="AccountChargeAmount" class="mb-0"></label>
 
                                 <div class="pl-2" id="editAccountPriceWrap">
                                     <span></span>
-                                    <input type="number" class="form-control " asp-for="AccountPrice" />
+                                    <input type="number" class="form-control " asp-for="AccountChargeAmount" />
                                 </div>
 
                             }
@@ -123,7 +123,7 @@
             <div class="d-flex py-1">
 
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
+                    <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
                     <label class="custom-control-label" asp-for="EnabledGender"></label>
                 </div>
 
@@ -148,7 +148,7 @@
             </div>
             <div class="d-flex py-1">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledAgeRange' asp-for="EnabledAgeRange">
+                    <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target='#collapseEnabledAgeRange' asp-for="EnabledAgeRange">
                     <label class="custom-control-label" asp-for="EnabledAgeRange"></label>
                 </div>
                 <div id="collapseEnabledAgeRange" class="collapse ml-4">
@@ -174,7 +174,7 @@
             <div class="d-flex py-1">
 
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target='#collapseEnabledCity' asp-for="EnabledCity">
+                    <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target='#collapseEnabledCity' asp-for="EnabledCity">
                     <label class="custom-control-label" asp-for="EnabledCity"></label>
                 </div>
                 <div class=" ml-4 flex-grow-1">
@@ -182,7 +182,6 @@
 
 
                         <select asp-for="CityId" class="form-control form-select2 ">
-                            <option>Chọn khu vực</option>
                             @foreach (var city in cities)
                             {
                                 <option value="@city.Id">@city.Name</option>
@@ -196,7 +195,7 @@
             </div>
             <div class="d-flex py-1">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" data-toggle="collapse" data-target="#collapseEnabledCategory" asp-for="EnabledCategory">
+                    <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target="#collapseEnabledCategory" asp-for="EnabledCategory">
                     <label class="custom-control-label" asp-for="EnabledCategory"></label>
                 </div>
                 <div class=" ml-4 flex-grow-1">
@@ -226,7 +225,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="col-md-2">Phí dịch vụ</div>
+        <div class="col-md-2">Phí dịch vụ (<span class="text-success">@AppSettings.CampaignServiceChargePercent %</span>)</div>
         <div class="col-md-10">
             <span id="serviceCharge" class="text-success"></span>
 

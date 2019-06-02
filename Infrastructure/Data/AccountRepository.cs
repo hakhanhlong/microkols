@@ -1,8 +1,11 @@
 ﻿using Common;
+using Common.Extensions;
 using Common.Helpers;
 using Core;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Models;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,13 +39,21 @@ namespace Infrastructure.Data
         }
 
 
-
-        public async Task<IQueryable<Account>> Query(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend)
+    
+        public IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds)
         {
 
 
             var query = _dbContext.Account.Where(m => m.Actived);
-            if (categoryid.Any())
+            if(ignoreIds!= null && ignoreIds.Any())
+            {
+                query = query.Where(m => !ignoreIds.Contains(m.Id));
+            }
+            if (accountTypes != null && accountTypes.Any())
+            {
+                query = query.Where(m => accountTypes.Contains(m.Type));
+            }
+            if (categoryid != null && categoryid.Any())
             {
                 query = query.Where(m => m.AccountCategory.Any(n => categoryid.Contains(n.CategoryId)));
 

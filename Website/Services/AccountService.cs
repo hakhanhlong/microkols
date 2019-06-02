@@ -46,10 +46,12 @@ namespace Website.Services
         }
 
 
-        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, string order, int page, int pagesize)
+        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+
+            string order, int page, int pagesize, IEnumerable<int> ignoreIds)
         {
 
-            var query = await _accountRepository.Query(categoryid, gender, cityid, agestart, ageend);
+            var query = _accountRepository.Query(accountTypes, categoryid, gender, cityid, agestart, ageend, ignoreIds);
 
             var total = await query.CountAsync();
             var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
@@ -160,7 +162,7 @@ namespace Website.Services
                 Address = string.Empty,
                 Phone = string.Empty,
                 Avatar = string.Empty,
-                Actived  = true,
+                Actived = true,
                 Deleted = false,
                 UserModified = model.Email,
                 UserCreated = model.Email,
@@ -430,11 +432,11 @@ namespace Website.Services
             if (entity != null)
             {
                 entity.Type = model.Type;
-                if(model.Type== AccountType.HotMom)
+                if (model.Type == AccountType.HotMom)
                 {
                     entity.TypeData = JsonConvert.SerializeObject(model.HotMomData);
                 }
-                
+
                 entity.DateModified = DateTime.Now;
                 entity.UserModified = username;
 
@@ -449,7 +451,7 @@ namespace Website.Services
         #endregion
 
 
-        
+
 
 
         #region Helper

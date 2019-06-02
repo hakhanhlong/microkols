@@ -20,6 +20,11 @@ namespace Core.Entities
     }
     public enum NotificationType
     {
+        AgencyRequestJoinCampaign,
+        AgencyConfirmJoinCampaign,
+        AccountRequestJoinCampaign,
+        AccountConfirmJoinCampaign,
+
 
     }
     public enum NotificationStatus

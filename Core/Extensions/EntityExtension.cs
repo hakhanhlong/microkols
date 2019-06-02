@@ -9,7 +9,7 @@ namespace Core.Extensions
     {
         public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignOption> options)
         {
-            return GetCampaignServiceCharge(campaign.ServicePrice, campaign.ServiceChargePercent,
+            return GetCampaignServiceCharge(campaign.ServiceChargeAmount, campaign.ServiceChargePercent,
                 campaign.ExtraOptionChargePercent, options.Count());
         }
 
@@ -39,11 +39,11 @@ namespace Core.Extensions
                 totalPaid += transaction.Amount;
                 if (transaction.Type == TransactionType.CampaignServiceCharge)
                 {
-                    accountPaid += transaction.Amount;
+                    servicePaid  += transaction.Amount;
                 }
                 else if (transaction.Type == TransactionType.CampaignAccountCharge)
                 {
-                    servicePaid += transaction.Amount;
+                    accountPaid += transaction.Amount;
                 }
             }
             servicePaidAmount = servicePaid;
