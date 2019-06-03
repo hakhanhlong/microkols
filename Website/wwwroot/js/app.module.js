@@ -217,9 +217,7 @@ var AppPayment = (function () {
         });
     }
     function handlerMessage() {
-        $('.btn-reload').click(function (e) {
-            window.location = window.location;
-        });
+        AppCommon.handlerBtnReload();
     }
     return {
         Init: init,

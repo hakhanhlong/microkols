@@ -16,16 +16,20 @@ namespace Website.Controllers
         private readonly ICampaignService _campaignService;
         private readonly ISharedService _sharedService;
         private readonly INotificationService _notificationService;
-        public AgencyCampaignController(ISharedService sharedService, ICampaignService campaignService, INotificationService notificationService)
+        private readonly IAccountService _accountService;
+        public AgencyCampaignController(ISharedService sharedService,
+             IAccountService accountService,
+            ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
             _sharedService = sharedService;
             _notificationService = notificationService;
+            _accountService = accountService;
         }
 
 
 
-        public async Task<IActionResult> Index(CampaignType? type, string kw, int page = 1,int pagesize = 20)
+        public async Task<IActionResult> Index(CampaignType? type, string kw, int page = 1, int pagesize = 20)
         {
             var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, page, pagesize);
             ViewBag.Kw = kw;
@@ -45,7 +49,7 @@ namespace Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(model.AccountType == null || model.AccountType.Count== 0)
+                if (model.AccountType == null || model.AccountType.Count == 0)
                 {
                     ModelState.AddModelError("AccountType", "Hãy chọn đối tượng");
                 }
@@ -72,17 +76,8 @@ namespace Website.Controllers
 
 
         #endregion
+        #region Details
 
-
-        #region RequestAccount
-
-        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
-        {
-            return Json(1);
-        }
-
-
-        #endregion
         public async Task<IActionResult> Details(int id)
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
@@ -90,6 +85,29 @@ namespace Website.Controllers
             await ViewbagData();
             return View(model);
         }
+
+        #endregion
+
+
+        #region MatchedAccount
+
+        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
+        {
+            var result = await _campaignService.RequestAccountJoinCampaign(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
+            return Json(result ? 1 : 0);
+        }
+
+
+        public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+               IEnumerable<int> ignoreIds, int campaignId, int page = 1)
+        {
+            const int pagesize = 20;
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, page, pagesize, ignoreIds);
+
+            ViewBag.CampaignId = campaignId;
+            return PartialView(model);
+        }
+        #endregion
 
 
     }

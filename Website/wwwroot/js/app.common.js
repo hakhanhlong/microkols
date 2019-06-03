@@ -37,6 +37,11 @@ var AppCommon = {
         });
 
     },
+    handlerBtnReload() {
+        $('.btn-reload').click(function (e) {
+            window.location = window.location;
+        });
+    },
     uploadTempImage: function (files, path, callback) {
         var xhr, formData;
         xhr = new XMLHttpRequest();

@@ -1,4 +1,5 @@
 ﻿
+using Common.Extensions;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Models;
@@ -17,14 +18,15 @@ namespace Website.Services
 {
     public class CampaignService : BaseService, ICampaignService
     {
-
         private readonly ICampaignRepository _campaignRepository;
         private readonly IWalletRepository _walletRepository;
         private readonly IAsyncRepository<CampaignTypeCharge> _campaignTypeChargeRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly IAsyncRepository<CampaignAccountType> _campaignAccountTypeRepository;
+        private readonly ICampaignAccountRepository _campaignAccountRepository;
         private readonly ISettingRepository _settingRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly INotificationRepository _notificationRepository;
 
         public CampaignService(ICampaignRepository campaignRepository,
             ITransactionRepository transactionRepository,
@@ -32,6 +34,8 @@ namespace Website.Services
             IAsyncRepository<CampaignTypeCharge> campaignTypeChargeRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
             IAsyncRepository<CampaignAccountType> campaignAccountTypeRepository,
+           ICampaignAccountRepository campaignAccountRepository,
+           INotificationRepository notificationRepository,
              ISettingRepository settingRepository)
         {
             _campaignAccountTypeRepository = campaignAccountTypeRepository;
@@ -41,6 +45,8 @@ namespace Website.Services
             _walletRepository = walletRepository;
             _settingRepository = settingRepository;
             _transactionRepository = transactionRepository;
+            _campaignAccountRepository = campaignAccountRepository;
+            _notificationRepository = notificationRepository;
         }
 
         #region Campaign By Agency
@@ -111,7 +117,7 @@ namespace Website.Services
         }
         private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
         {
-            foreach(var accountType in accountTypes)
+            foreach (var accountType in accountTypes)
             {
                 await _campaignAccountTypeRepository.AddAsync(new CampaignAccountType()
                 {
@@ -119,11 +125,11 @@ namespace Website.Services
                     CampaignId = campaignId
                 });
             }
-            
+
         }
         private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
         {
-            if ( model.EnabledCity && model.CityId.HasValue)
+            if (model.EnabledCity && model.CityId.HasValue)
             {
                 await _campaignOptionRepository.AddAsync(new CampaignOption()
                 {
@@ -132,7 +138,7 @@ namespace Website.Services
                     Value = model.CityId.Value.ToString()
                 });
             }
-            if (model.EnabledGender &&  model.Gender.HasValue)
+            if (model.EnabledGender && model.Gender.HasValue)
             {
                 await _campaignOptionRepository.AddAsync(new CampaignOption()
                 {
@@ -172,25 +178,49 @@ namespace Website.Services
 
 
         #region Campaign Request
-        //public async Task<bool> RequestAccountJoinCampaign(int campaignid, int accountid, string username)
-        //{
-        //    var accountCampaign = await _campaignAccountTypeRepositoryre
-
-        //}
        
+
         #endregion
 
         #region Campaign Account
 
-        public async Task<ListCampaignAccountViewModel> GetCampaignAccounts(int campaignid,int page, int pagesize)
+        public async Task<ListCampaignAccountViewModel> GetCampaignAccounts(int campaignid, int page, int pagesize)
         {
-            var campaignAccounts = await _campaignRepository.GetCampaignAccounts(campaignid, page, pagesize);
+            var filter = new CampaignAccountByAgencySpecification(campaignid);
 
-            return new ListCampaignAccountViewModel(campaignAccounts, page, pagesize);
+            var total = await _campaignAccountRepository.CountAsync(filter);
+            var campaignAccounts = await _campaignAccountRepository.ListPagedAsync(filter, string.Empty, page, pagesize);
+
+            return new ListCampaignAccountViewModel(campaignAccounts, total, page, pagesize);
 
 
         }
-        #endregion
+        public async Task<bool> RequestAccountJoinCampaign(int agencyid,int campaignid, int accountid, string username)
+        {
+            var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, username);
+
+            if (createStatus > 0)
+            {
+                //add notification
+                await _notificationRepository.AddAsync(new Notification()
+                {
+                    Type = NotificationType.AgencyRequestJoinCampaign,
+                    EntityType = EntityType.Account,
+                    EntityId = accountid,
+                    DataId = campaignid,
+                    Data =string.Empty,
+                    Image = string.Empty,
+                    Status  = NotificationStatus.Created,
+                    DateCreated = DateTime.Now,
+                    Message = NotificationType.AgencyRequestJoinCampaign.GetMessageText(username,campaignid.ToString())
+                });
+                return true;
+
+            }
+            return false;
+        }
+
+         #endregion
 
         public async Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges()
         {

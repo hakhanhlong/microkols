@@ -8,8 +8,9 @@ namespace Core.Specifications
 {
     public class CampaignAccountByAgencySpecification : BaseSpecification<CampaignAccount>
     {
-       
+        public CampaignAccountByAgencySpecification(int campaignid) : base(m => m.CampaignId == campaignid)
+        {
+        }
     }
-
 
 }

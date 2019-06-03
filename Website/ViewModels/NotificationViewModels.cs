@@ -18,7 +18,6 @@ namespace Website.ViewModels
         public int DataId { get; set; }
         public string Data { get; set; }
         public NotificationType Type { get; set; }
-        public string Note { get; set; }
     }
     public class ListNotificationViewModel
     {

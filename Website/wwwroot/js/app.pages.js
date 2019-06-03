@@ -46,7 +46,6 @@
 
 })();
 
-
 var CreateCampaignPage = (function () {
 
     function init() {
@@ -59,16 +58,14 @@ var CreateCampaignPage = (function () {
 
             pricingCalculator();
 
-        })
-
-
+        });
     }
 
 
     function handlerType() {
         var type = $('#Type').val();
         console.log('type', type);
-        $('#enabledExtraTypeWrap,#requirementWrap').addClass('d-none');
+        $('#enabledExtraTypeWrap,#requirementWrap,#changeAvatarWrap').addClass('d-none');
         var selectedOption = $('#Type').children('option:selected');
         var accountpricetext = selectedOption.data('accountpricetext');
 
@@ -85,7 +82,9 @@ var CreateCampaignPage = (function () {
         else if (type === 'JoinEvent') {
             $('#editAccountPriceWrap').addClass('openedit');
         }
-
+        else if (type === 'ChangeAvatar') {
+            $('#changeAvatarWrap').removeClass('d-none');
+        }
 
         pricingCalculator();
     }
@@ -121,6 +120,51 @@ var CreateCampaignPage = (function () {
         $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
 
     }
+
+
+    return {
+        Init: init
+    };
+
+})();
+
+var DetailsCampaignPage = (function () {
+
+    function init() {
+       
+
+        handler();
+    }
+    function handler() {
+        $('.btn-campaignaccount').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerCampaignAccount();
+            });
+        });
+    }
+
+    function handlerCampaignAccount() {
+
+
+        $('.btn-requestjoin').click(function () {
+            var $this = $(this);
+            var $i = $(this).find('i');
+            $this.prop('disabled', true);
+            $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
+            var url = $(this).data('url');
+            $.get(url, function (res) {
+                $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
+                $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+            });
+        });
+
+
+        AppCommon.handlerBtnReload();
+    }
+
+
     return {
         Init: init
     };

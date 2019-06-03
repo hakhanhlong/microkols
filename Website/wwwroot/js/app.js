@@ -23,6 +23,8 @@ var App = (function () {
         }
         else if (currentPage === 'agencycampaign_create') {
             CreateCampaignPage.Init();
+        } else if (currentPage === 'agencycampaign_details') {
+            DetailsCampaignPage.Init();
         }
 
     }

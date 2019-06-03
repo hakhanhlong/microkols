@@ -11,7 +11,7 @@ using Website.ViewModels;
 
 namespace Website.Controllers
 {
-    [Authorize(Roles ="Account")]
+    [Authorize(Roles = "Account")]
     public class AccountController : BaseController
     {
 
@@ -28,16 +28,7 @@ namespace Website.Controllers
 
         }
 
-        #region MatchedAccount
-        public  async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
-
-               IEnumerable<int> ignoreIds, int page = 1)
-        {
-            const int pagesize = 20;
-            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, page, pagesize, ignoreIds);
-            return PartialView(model);
-        }
-        #endregion
+      
 
 
         #region ChangePassword
@@ -74,7 +65,7 @@ namespace Website.Controllers
             {
                 //--> move temp folder -> resources
 
-                model.ImageBack = _fileHelper.MoveTempFile(model.ImageBack,"account");
+                model.ImageBack = _fileHelper.MoveTempFile(model.ImageBack, "account");
                 model.ImageFront = _fileHelper.MoveTempFile(model.ImageFront, "account");
 
                 var r = await _accountService.ChangeIDCard(CurrentUser.Id, model, CurrentUser.Username);
@@ -173,6 +164,10 @@ namespace Website.Controllers
         public async Task<IActionResult> ChangeAccountType()
         {
             var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
+            if(model.Type != AccountType.Regular)
+            {
+                ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
+            }
             return View(model);
         }
         [HttpPost]
@@ -190,6 +185,16 @@ namespace Website.Controllers
                 }
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> UpdateAccountCampaignCharge(AccountCampaignChargeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, model);
+                this.AddAlert(r);
+            }
+            return RedirectToAction("ChangeAccountType");
         }
 
         #endregion

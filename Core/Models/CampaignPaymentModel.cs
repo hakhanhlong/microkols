@@ -8,7 +8,7 @@ namespace Core.Models
 {
     public class CampaignPaymentModel
     {
-    
+
 
         public CampaignPaymentModel()
         {
@@ -20,10 +20,33 @@ namespace Core.Models
         {
             CampaignId = campaign.Id;
             ServiceChargeAmount = campaign.ToServiceChargeAmount(campaignOptions);
-            long servicePaidAmount, accountPaidAmount;
+            long servicePaidAmount = 0, accountPaidAmount = 0, accountChargeAmount = 0;
             TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out servicePaidAmount, out accountPaidAmount);
             ServicePaidAmount = servicePaidAmount;
             AccountPaidAmount = accountPaidAmount;
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                var campaignAccountAmount = 0;
+                if (campaignAccount.Account.Type == AccountType.Regular)
+                {
+                    campaignAccountAmount = campaign.AccountChargeAmount;
+                   
+                }
+                else
+                {
+                    campaignAccountAmount = campaignAccount.AccountChargeAmount;
+                }
+
+                accountChargeAmount += campaignAccountAmount;
+                if (campaign.EnabledAccountChargeExtra)
+                {
+                    accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
+
+                }
+            }
+
+            AccountChargeAmount = accountChargeAmount;
         }
 
         public int CampaignId { get; set; }

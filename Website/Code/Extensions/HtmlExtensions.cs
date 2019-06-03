@@ -96,13 +96,15 @@ namespace Website.Code.Extensions
                 }
 
             }
+
+            parameters.Add("campaignid", model.Id);
             /*
              IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
 
             string order, int page, int pagesize, IEnumerable<int> ignoreIds
              */
 
-            return urlHelper.Action("MatchedAccount", "Account", parameters);
+            return urlHelper.Action("MatchedAccount", "AgencyCampaign", parameters);
 
         }
     }

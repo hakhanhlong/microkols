@@ -74,14 +74,14 @@ namespace Website.ViewModels
 
 
 
-        [Display(Name = "Số lượng")]
-        public int NumberOfAccount { get; set; }
+        //[Display(Name = "Số lượng")]
+        //public int NumberOfAccount { get; set; }
 
 
         [Display(Name = "Chi phí")]
         public int? AccountChargeAmount { get; set; }
         [Display(Name = "Thời gian")]
-        public int? AccountChargeTime { get; set; }
+        public int? AccountChargeTime { get; set; } = 1;
 
 
         [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]

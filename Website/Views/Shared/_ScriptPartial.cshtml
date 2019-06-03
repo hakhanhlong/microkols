@@ -2,7 +2,7 @@
     var controller = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
     var action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
 }
-<input id="FbAppId" type="hidden" value="@AppOptions.Value.FacebookAppId" />
+<input id="FbAppId" type="hidden" value="@AppOptions.CurrentValue.FacebookAppId" />
 <input id="CurrentPage" type="hidden" value="@($"{controller}_{action}")" />
 <environment include="Development">
     <script src="~/lib/jquery/dist/jquery.js"></script>

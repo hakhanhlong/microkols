@@ -1,0 +1,84 @@
+﻿@model CampaignDetailsViewModel
+
+@if (Model.AccountTypes.Contains(AccountType.Regular))
+{
+    var regularAccounts = Model.CampaignAccounts.Where(m => m.Account.Type == AccountType.Regular).ToList();
+
+    <div>
+        <div class="mb-3 d-flex">
+            <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
+            <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.UrlGetMatchedAccount(Model,1)"> <i class="fal fa-plus"></i> Thành viên mới</button>
+        </div>
+        @if (regularAccounts.Count > 0)
+        {
+            <div class="row py-2 border-bottom">
+                @foreach (var campaignAccount in Model.CampaignAccounts)
+                {
+                    <div class="col-md-6">
+                        <div class="media">
+                            <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="50">
+                            <div class="media-body">
+                                <h5 class="mt-0 h6">@campaignAccount.Account.Name</h5>
+                                <div class="">
+                                    Chi phí: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText()</span>
+                                </div>
+                                <div class="mt-2">
+                                    @if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                                    {
+                                        <button class="btn btn-outline-secondary btn-sm">Thành viên chưa đồng ý</button>
+                                    }
+
+                                    @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
+                                    {
+                                        <button class="btn btn-outline-secondary btn-sm">Duyệt</button>
+                                    }
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">Chưa có thành viên </div>
+        }
+    </div>
+}
+else
+{
+    var kolTypes = Model.AccountTypes.Where(m => m != AccountType.Regular).ToList();
+    if (kolTypes.Count > 0)
+    {
+        var text = string.Join(", ", kolTypes.Select(m => m.ToDisplayName()).ToArray());
+        var kolAccounts = Model.CampaignAccounts.Where(m => m.Account.Type != AccountType.Regular).ToList();
+
+        <div>
+            <div class="mb-3 d-flex">
+                <h3 class="h5">
+                    Thành viên Kol
+                    <span class="badge badge-primary">@kolAccounts.Count</span>
+                </h3>
+                <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.UrlGetMatchedAccount(Model,2)"> <i class="fal fa-plus"></i> Thành viên mới</button>
+            </div>
+            @if (kolAccounts.Count > 0)
+            {
+                <div>
+                    @foreach (var campaignAccount in Model.CampaignAccounts)
+                    {
+                        <partial name="_CampaignAccountPartial" model="campaignAccount" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Chưa có thành viên </div>
+            }
+
+
+        </div>
+    }
+}

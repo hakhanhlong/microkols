@@ -34,7 +34,7 @@
                 <label asp-for="Image" class="control-label"></label>
                 <input asp-for="Image" type="hidden" />
                 ​<div class="d-flex justify-content-center mb-1 border">
-                    <img src="@AppOptions.Value.GetImageUrl(Model.Image)" class="img-fluid align-self-center img-Image" alt="">
+                    <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" class="img-fluid align-self-center img-Image" alt="">
                 </div>
 
                 <div class="input-group">

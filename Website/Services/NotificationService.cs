@@ -131,7 +131,6 @@ namespace Website.Services
                 DataId = model.DataId,
                 Status = NotificationStatus.Created,
                 Type = model.Type,
-                Note = model.Note
             };
 
             await _notificationRepository.AddAsync(notification);

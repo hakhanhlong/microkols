@@ -42,10 +42,10 @@ namespace Website.ViewModels
         {
 
         }
-        public ListCampaignAccountViewModel(ListCampaignAccount campaignAccount,int page,int pagesize)
+        public ListCampaignAccountViewModel(List<CampaignAccount> campaignAccounts, int page,int pagesize,int total)
         {
-            CampaignAccounts = CampaignAccountViewModel.GetList(campaignAccount.CampaignAccounts);
-            Pager = new PagerViewModel(page, pagesize, campaignAccount.Total);
+            CampaignAccounts = CampaignAccountViewModel.GetList(campaignAccounts);
+            Pager = new PagerViewModel(page, pagesize, total);
 
         }
 

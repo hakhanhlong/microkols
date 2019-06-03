@@ -18,11 +18,13 @@ namespace Core.Specifications
             AddInclude(m => m.CampaignAccount);
             AddInclude(m => m.CampaignAccountType);
         }
+
         public CampaignByAgencySpecification(int agencyid, int id)
            : base(m => m.AgencyId == agencyid && m.Published && m.Id == id)
         {
             AddInclude(m => m.CampaignOption);
             AddInclude(m => m.CampaignAccount);
+            AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
             AddInclude(m => m.CampaignAccountType);
         }
     }

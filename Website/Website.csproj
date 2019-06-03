@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Api\" />
+    <Folder Include="wwwroot\resources\account\2019\" />
     <Folder Include="wwwroot\resources\temp\" />
   </ItemGroup>
 
