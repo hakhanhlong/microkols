@@ -72,8 +72,7 @@ namespace Website.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [RegularExpression(@"(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9 ]+(?<![_.])", ErrorMessage = "Hãy nhập đúng định dạng tên (Tiếng việt không dấu, không gồm ký tự đặc biệt)")]
-        [Display(Name = "Họ Tên của bạn", Prompt = "Họ Tên của bạn")]
+        [Display(Name = "Họ và tên", Prompt = "Họ Tên")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]

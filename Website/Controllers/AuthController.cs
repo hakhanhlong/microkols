@@ -102,6 +102,15 @@ namespace Website.Controllers
 
                 if (id > 0)
                 {
+                    var auth = await _accountService.GetAuth(id);
+
+                    if (auth != null)
+                    {
+                        await SignIn(auth);
+                        if (!string.IsNullOrEmpty(returnurl)) return Redirect(returnurl);
+
+                        return RedirectToAction("Index", "Home");
+                    }
                     return RedirectToAction("Index","Home");
                 }
                 this.AddAlertDanger("Tên đăng nhập đã tồn tại");
@@ -114,9 +123,9 @@ namespace Website.Controllers
         #endregion
 
 
-        public async Task<IActionResult> VerifyAccountEmail(string username)
+        public async Task<IActionResult> VerifyEmail(string email)
         {
-            var r = await _accountService.VerifyEmail(username);
+            var r = await _accountService.VerifyEmail(email);
 
             return Json(r);
 

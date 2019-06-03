@@ -228,4 +228,57 @@ namespace Website.ViewModels
 
         public List<AccountTypeHotMomData> HotMomData { get; set; } = new List<AccountTypeHotMomData>();
     }
+
+    public class AccountCampaignChargeViewModel
+    {
+        public AccountCampaignChargeViewModel()
+        {
+
+        }
+        public AccountCampaignChargeViewModel(AccountCampaignCharge entity)
+        {
+            Id = entity.Id;
+            Type = entity.Type;
+            AccountChargeAmount = entity.AccountChargeAmount;
+        }
+
+        public static List<AccountCampaignChargeViewModel> GetList(IEnumerable<AccountCampaignCharge> entities)
+        {
+            var ignoreTypes = new List<CampaignType>()
+            {
+                CampaignType.CustomService,
+                CampaignType.JoinEvent
+            };
+            var result = new List<AccountCampaignChargeViewModel>();
+            var types = Common.Helpers.StringHelper.GetEnumArray<CampaignType>();
+            foreach(var type in types)
+            {
+                var entity = entities.FirstOrDefault(m => m.Type == type);
+                if(entity!= null)
+                {
+                    result.Add(new AccountCampaignChargeViewModel()
+                    {
+                        Type = entity.Type,
+                        AccountChargeAmount = entity.AccountChargeAmount,
+                        Id = entity.Id
+                    });
+                }
+                else
+                {
+                    result.Add(new AccountCampaignChargeViewModel()
+                    {
+                        Type = type,
+                        AccountChargeAmount = 0,
+                        Id = 0
+                    });
+
+                }
+            }
+            return result;
+
+        }
+        public int Id { get; set; }
+        public CampaignType Type { get; set; }
+        public int AccountChargeAmount { get; set; }
+    }
 }

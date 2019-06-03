@@ -19,12 +19,12 @@
 
             <h1 class="h3 text-center font-weight-normal">@ViewBag.Title</h1>
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <alert></alert>
 
 
-            <form asp-action="Login" method="post">
+            <form asp-action="Register" method="post">
 
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
 
                     <label asp-for="Email" class="control-label"></label>

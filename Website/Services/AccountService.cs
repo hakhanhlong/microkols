@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿
+using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Http;
@@ -22,14 +23,17 @@ namespace Website.Services
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
+        private readonly IAsyncRepository<AccountCampaignCharge> _accountCampaignChargeRepository;
         private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
           IAccountRepository accountRepository, IWalletRepository walletRepository,
+           IAsyncRepository<AccountCampaignCharge> accountCampaignChargeRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
             _accountRepository = accountRepository;
             _accountProviderRepository = accountProviderRepository;
+            _accountCampaignChargeRepository = accountCampaignChargeRepository;
             _walletRepository = walletRepository;
 
         }
@@ -450,6 +454,46 @@ namespace Website.Services
 
         #endregion
 
+
+        #region Update AccountCampaignCharge
+
+        public async Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid)
+        {
+            var filter = new AccountCampaignChargeByAccountSpecification(accountid);
+
+
+            var accountCampaignCharges = await _accountCampaignChargeRepository.ListAsync(filter);
+
+            return AccountCampaignChargeViewModel.GetList(accountCampaignCharges);
+        }
+        public async Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model)
+        {
+            if (model.Id == 0)
+            {
+                var accountCharge = new AccountCampaignCharge()
+                {
+                    AccountId = accountid,
+                    Type = model.Type,
+                    AccountChargeAmount = model.AccountChargeAmount
+                };
+                await _accountCampaignChargeRepository.AddAsync(accountCharge);
+            }
+            else
+            {
+                var accountCharge = await _accountCampaignChargeRepository.GetByIdAsync(model.Id);
+                if(accountCharge == null || accountCharge.AccountId!= accountid)
+                {
+                    return false;
+                }
+
+                accountCharge.AccountChargeAmount = model.AccountChargeAmount;
+                await _accountCampaignChargeRepository.UpdateAsync(accountCharge);
+            }
+
+            return true;
+
+        }
+        #endregion
 
 
 
