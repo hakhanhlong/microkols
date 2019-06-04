@@ -6,7 +6,7 @@
     foreach (var item in Model)
     {
 
-        <div class="dropdown-item-text">
+        <div class="mb-2 pb-2 border-bottom">
             <a href="@Url.GetNotificationUrl(item)">
                 @item.Message
             </a>
@@ -15,16 +15,11 @@
         </div>
 
     }
-    <div class="dropdown-divider"></div>
-
-    <a href="@Url.Action("Index")" class="dropdown-item">Xem tất cả thông báo</a>
 
 }
 else
 {
-    <div class="dropdown-item-text">
-
+    <div class="alert alert-info">
         Bạn chưa có thông báo!
-
     </div>
 }
