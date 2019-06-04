@@ -1,0 +1,29 @@
+﻿@model List<NotificationViewModel>
+
+@if (Model != null && Model.Count > 0)
+{
+
+    foreach (var item in Model)
+    {
+
+        <div class="dropdown-item-text">
+            <a href="@Url.GetNotificationUrl(item)">
+                @item.Message
+            </a>
+            <br />
+            <span class="text-muted small"> <i class="fal fa-clock"></i> @item.Date.ToTimeAgo()</span>
+        </div>
+
+    }
+
+    <a href="@Url.Action("Index")" class="dropdown-item">Xem tất cả thông báo</a>
+
+}
+else
+{
+    <div class="dropdown-item-text">
+
+        Bạn chưa có thông báo!
+
+    </div>
+}

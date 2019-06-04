@@ -7,7 +7,7 @@
     <div>
         <div class="mb-3 d-flex">
             <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
-            <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.UrlGetMatchedAccount(Model,1)"> <i class="fal fa-plus"></i> Thành viên mới</button>
+            <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.GetMatchedAccountUrl(Model,1)"> <i class="fal fa-plus"></i> Thành viên mới</button>
         </div>
         @if (regularAccounts.Count > 0)
         {
@@ -62,7 +62,7 @@ else
                     Thành viên Kol
                     <span class="badge badge-primary">@kolAccounts.Count</span>
                 </h3>
-                <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.UrlGetMatchedAccount(Model,2)"> <i class="fal fa-plus"></i> Thành viên mới</button>
+                <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.GetMatchedAccountUrl(Model,2)"> <i class="fal fa-plus"></i> Thành viên mới</button>
             </div>
             @if (kolAccounts.Count > 0)
             {

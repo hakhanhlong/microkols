@@ -29,5 +29,20 @@ namespace Core.Specifications
         }
     }
 
+    public class CampaignByAccountSpecification : BaseSpecification<Campaign>
+    {
+        public CampaignByAccountSpecification(int accountid, string kw)
+          : base(m => m.CampaignAccount.Any(n=>n.AccountId == accountid) && (string.IsNullOrEmpty(kw) || m.Description.Contains(kw)))
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccountType);
+        }
 
+        public CampaignByAccountSpecification(int accountid, int id)
+           : base(m => m.CampaignAccount.Any(n => n.AccountId == accountid) && m.Published && m.Id == id)
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccountType);
+        }
+    }
 }

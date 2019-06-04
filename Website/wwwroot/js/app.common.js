@@ -14,6 +14,9 @@ var AppConstants = {
     UrlGetAmount: "/wallet/GetAmount",
     UrlRecharge: "/wallet/Recharge",
     UrlWithdraw: "/wallet/Withdraw",
+    UrlGetNotificationCount: "/Notification/Count",
+    UrlGetNotification: "/Notification/IndexPartial",
+
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'

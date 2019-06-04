@@ -19,6 +19,7 @@ namespace Website.ViewModels
             AccountChargeAmount = campaignAccount.AccountChargeAmount;
             DateModified = campaignAccount.DateModified;
             AccountId = campaignAccount.AccountId;
+            CampaignId = campaignAccount.CampaignId;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -28,6 +29,7 @@ namespace Website.ViewModels
 
         public AccountViewModel Account { get; set; }
         public int AccountId { get; set; }
+        public int CampaignId { get; set; }
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 

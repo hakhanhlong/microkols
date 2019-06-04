@@ -53,9 +53,9 @@ namespace Core.Entities
 
     public enum CampaignAccountStatus
     {
-        [DisplayName("Thành viên yêu cầu tham gia chiến dịch")]
+        [DisplayName("Thành viên xin tham gia chiến dịch")]
         AccountRequest = 0,
-        [DisplayName("Doanh nghiệp yêu cầu tham gia chiến dịch")]
+        [DisplayName("Doanh nghiệp mời tham gia chiến dịch")]
         AgencyRequest = 1,
 
         [DisplayName("Đã xác nhận tham gia chiến dịch")]

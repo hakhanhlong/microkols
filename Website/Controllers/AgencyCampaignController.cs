@@ -29,9 +29,9 @@ namespace Website.Controllers
 
 
 
-        public async Task<IActionResult> Index(CampaignType? type, string kw, int page = 1, int pagesize = 20)
+        public async Task<IActionResult> Index(CampaignType? type, string kw, int pageindex = 1, int pagesize = 20)
         {
-            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, page, pagesize);
+            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, pageindex, pagesize);
             ViewBag.Kw = kw;
             ViewBag.type = type;
             return View(model);
@@ -91,18 +91,12 @@ namespace Website.Controllers
 
         #region MatchedAccount
 
-        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
-        {
-            var result = await _campaignService.RequestAccountJoinCampaign(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
-            return Json(result ? 1 : 0);
-        }
-
 
         public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
-               IEnumerable<int> ignoreIds, int campaignId, int page = 1)
+               IEnumerable<int> ignoreIds, int campaignId, int pageindex = 1)
         {
             const int pagesize = 20;
-            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, page, pagesize, ignoreIds);
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, pageindex, pagesize, ignoreIds);
 
             ViewBag.CampaignId = campaignId;
             return PartialView(model);
@@ -110,5 +104,14 @@ namespace Website.Controllers
         #endregion
 
 
+        #region Action
+
+        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
+        {
+            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
+            return Json(result ? 1 : 0);
+        }
+
+        #endregion
     }
 }

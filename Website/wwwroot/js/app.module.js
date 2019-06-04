@@ -29,11 +29,11 @@ var AppBsModal = (function () {
     }
     function init(backdrop) {
         removeModal();
-        
+
         if (backdrop === undefined) {
             backdrop = true;
         }
-        var html = '<div id="appbsmodal" class="modal" data-backdrop="' + backdrop +'"></div>';
+        var html = '<div id="appbsmodal" class="modal" data-backdrop="' + backdrop + '"></div>';
         $('body').append(html);
         $(selectorId).on('hidden.bs.modal', function (e) {
             removeModal();
@@ -57,46 +57,46 @@ var AppBsModal = (function () {
 
 var AppNotification = (function () {
 
+    var $notifCount = $('.nav-notif .badge');
+    var $notifDropdown = $('.nav-notif .dropdown-menu');
     function init() {
-        if (AppSettings.IsAuthenticated) {
-
-            handler();
-            getNotificationCount();
-        }
+        handler();
+        getNotificationCount();
 
     }
 
     function handler() {
 
+        getNotificationDropdown();
     }
 
     function getNotificationCount() {
 
 
-        var currentcount = parseInt($('#header-notif-count').text());
+        var currentcount = parseInt($notifCount.text());
 
-        $.get(AppUrls.NotificationCount, function (count) {
+        $.get(AppConstants.UrlGetNotificationCount, function (count) {
 
-            $('.notif-count').html(count);
+            $notifCount.text(count);
 
             if (count !== currentcount) {
                 getNotificationDropdown();
             }
         });
 
-        if ($('.notif-uncheck').length === 0) {
-            $('.notif-checkedall').hide();
-        }
+        //if ($('.notif-uncheck').length === 0) {
+        //    $('.notif-checkedall').hide();
+        //}
 
-        $('.notif-checkedall').click(function () {
-            var url = $(this).data('url');
-            $.post(url, function () {
-                $('.notif-item').addClass('notif-checked');
-                $('.notif-checkedall').hide();
-            });
-        });
+        //$('.notif-checkedall').click(function () {
+        //    var url = $(this).data('url');
+        //    $.post(url, function () {
+        //        $('.notif-item').addClass('notif-checked');
+        //        $('.notif-checkedall').hide();
+        //    });
+        //});
 
-        handleCheckAll();
+        //handleCheckAll();
 
     }
 
@@ -113,8 +113,8 @@ var AppNotification = (function () {
     }
     function getNotificationDropdown() {
 
-        $.get(AppUrls.NotificationPartial, function (html) {
-            $('.dropdown-menu-notif').html(html);
+        $.get(AppConstants.UrlGetNotification, function (html) {
+            $notifDropdown.html(html);
             handleCheckAll();
         });
 

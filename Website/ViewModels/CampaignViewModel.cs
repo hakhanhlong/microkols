@@ -35,6 +35,7 @@ namespace Website.ViewModels
             DateStart = campaign.DateStart;
             DateEnd = campaign.DateEnd;
             DateCreated = campaign.DateCreated;
+            UserCreated = campaign.UserCreated;
             CountOption = campaign.CampaignOption.Count();
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
@@ -108,6 +109,7 @@ namespace Website.ViewModels
         public int? CityId { get; set; }
         public List<int> CategoryIds { get; set; }
 
+        public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }
         public CampaignType Type { get; set; }
         public CampaignStatus Status { get; set; }
@@ -116,6 +118,8 @@ namespace Website.ViewModels
 
 
     }
+
+   
 
     public class ListCampaignViewModel
     {

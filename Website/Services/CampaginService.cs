@@ -49,6 +49,47 @@ namespace Website.Services
             _notificationRepository = notificationRepository;
         }
 
+
+        #region Campaign By Account
+        public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, string keyword, int page, int pagesize)
+        {
+            var filter = new CampaignByAccountSpecification(accountid, keyword);
+            var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
+            var total = await _campaignRepository.CountAsync(filter);
+
+
+            var list = new List<CampaignWithAccountViewModel>();
+
+            foreach (var campaign in campaigns)
+            {
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaign.Id));
+                if (campaignAccount != null)
+                {
+                    list.Add(new CampaignWithAccountViewModel(campaign, campaignAccount));
+                }
+            }
+
+            return new ListCampaignWithAccountViewModel()
+            {
+                Campaigns = list,
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+        }
+        public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id)
+        {
+            var filter = new CampaignByAccountSpecification(accountid, id);
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null)
+            {
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
+                    campaign.CampaignAccount, new List<Transaction>());
+            }
+            return null;
+        }
+
+        #endregion
+
+
         #region Campaign By Agency
 
 
@@ -178,12 +219,19 @@ namespace Website.Services
 
 
         #region Campaign Request
-       
+
 
         #endregion
 
         #region Campaign Account
+        public async Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
+        {
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
 
+            return campaignAccount != null ? new CampaignAccountViewModel(campaignAccount) : null;
+
+        }
         public async Task<ListCampaignAccountViewModel> GetCampaignAccounts(int campaignid, int page, int pagesize)
         {
             var filter = new CampaignAccountByAgencySpecification(campaignid);
@@ -195,7 +243,7 @@ namespace Website.Services
 
 
         }
-        public async Task<bool> RequestAccountJoinCampaign(int agencyid,int campaignid, int accountid, string username)
+        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username)
         {
             var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, username);
 
@@ -208,11 +256,11 @@ namespace Website.Services
                     EntityType = EntityType.Account,
                     EntityId = accountid,
                     DataId = campaignid,
-                    Data =string.Empty,
+                    Data = string.Empty,
                     Image = string.Empty,
-                    Status  = NotificationStatus.Created,
+                    Status = NotificationStatus.Created,
                     DateCreated = DateTime.Now,
-                    Message = NotificationType.AgencyRequestJoinCampaign.GetMessageText(username,campaignid.ToString())
+                    Message = NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString())
                 });
                 return true;
 
@@ -220,7 +268,45 @@ namespace Website.Services
             return false;
         }
 
-         #endregion
+        public async Task<bool> ConfirmJoinCampaignByAccount(int accountid, int campaignid, string username)
+        {
+
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign != null)
+            {
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+
+                if (campaignAccount != null)
+                {
+                    if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                    {
+                        campaignAccount.Status = CampaignAccountStatus.Confirmed;
+                        campaignAccount.DateModified = DateTime.Now;
+                        campaignAccount.UserModified = username;
+                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                        await _notificationRepository.AddAsync(new Notification()
+                        {
+                            Type = NotificationType.AccountConfirmJoinCampaign,
+                            DataId = campaign.Id,
+                            Data = string.Empty,
+                            DateCreated = DateTime.Now,
+                            EntityType = EntityType.Agency,
+                            EntityId = campaign.AgencyId,
+                            Message = NotificationType.AccountConfirmJoinCampaign.GetMessageText(username, campaign.Id.ToString()),
+                            Status = NotificationStatus.Created
+                        });
+
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
 
         public async Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges()
         {

@@ -13,4 +13,11 @@ namespace Core.Specifications
         }
     }
 
+    public class CampaignAccountByAccountSpecification : BaseSpecification<CampaignAccount>
+    {
+        public CampaignAccountByAccountSpecification(int accountid, int campaignid) : base(m => m.CampaignId == campaignid && m.AccountId == accountid)
+        {
+            AddInclude(m => m.Account);
+        }
+    }
 }

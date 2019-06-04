@@ -7550,3 +7550,13 @@ ul.stepper {
 
 #editAccountPriceWrap.openedit input {
   display: inline; }
+
+.nav-notif {
+  position: relative; }
+  .nav-notif .badge {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    padding: 0.15em 0.35em; }
+  .nav-notif .dropdown-menu {
+    width: 20rem; }

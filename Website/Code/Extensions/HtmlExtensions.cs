@@ -53,7 +53,7 @@ namespace Website.Code.Extensions
         }
 
 
-        public static string UrlGetMatchedAccount(this IUrlHelper urlHelper, CampaignDetailsViewModel model, int type)
+        public static string GetMatchedAccountUrl(this IUrlHelper urlHelper, CampaignDetailsViewModel model, int type)
         {
             var queryParams = new Dictionary<string, string>();
 
@@ -106,6 +106,29 @@ namespace Website.Code.Extensions
 
             return urlHelper.Action("MatchedAccount", "AgencyCampaign", parameters);
 
+        }
+
+
+        public static string GetNotificationUrl(this IUrlHelper urlHelper, NotificationViewModel model)
+        {
+            if(model.Type== NotificationType.AccountConfirmJoinCampaign ||
+                model.Type == NotificationType.AccountRequestJoinCampaign ||
+                model.Type == NotificationType.AgencyConfirmJoinCampaign ||
+                model.Type == NotificationType.AgencyRequestJoinCampaign)
+            {
+
+                if(model.EntityType== EntityType.Account)
+                {
+                    return urlHelper.Action("Details", "AccountCampaign", new { id = model.DataId });
+                }
+                else if (model.EntityType == EntityType.Agency)
+                {
+                    return urlHelper.Action("Details", "AgencyCampaign", new { id = model.DataId });
+                }
+
+            }
+
+            return "#";
         }
     }
 

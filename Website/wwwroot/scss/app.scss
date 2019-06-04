@@ -41,3 +41,18 @@
         }
     }
 }
+
+.nav-notif {
+    position: relative;
+
+    .badge {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        padding: 0.15em 0.35em;
+    }
+
+    .dropdown-menu {
+        width: 20rem;
+    }
+}
