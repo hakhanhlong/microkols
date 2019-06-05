@@ -12,9 +12,7 @@ namespace BackOffice.Controllers
 
     [Authorize]
     public class AgencyController : Controller
-    {
-
-        
+    {        
         private readonly IAgencyBusiness _IAgencyBusiness;
 
         public AgencyController(IAgencyBusiness __IAgencyBusiness)

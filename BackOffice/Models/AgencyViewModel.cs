@@ -29,6 +29,7 @@ namespace BackOffice.Models
             Description = agency.Description;
             Image = agency.Image;
         }
+
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
 

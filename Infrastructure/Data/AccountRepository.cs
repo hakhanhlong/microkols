@@ -21,6 +21,11 @@ namespace Infrastructure.Data
 
         }
 
+        public int CountAll()
+        {
+            return _dbContext.Account.Count();
+        }
+
         public async Task<Account> GetActivedAccount(int id)
         {
             return await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == id && m.Actived);
