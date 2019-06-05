@@ -30,7 +30,7 @@ namespace Website.Services
 
         public async Task<AgencyViewModel> GetAgency(int id)
         {
-            var agency = await _agencyRepository.GetPublishedAgency(id);
+            var agency = await _agencyRepository.GetActivedAgency(id);
             return GetAgencyViewModel(agency);
         }
 
@@ -42,7 +42,7 @@ namespace Website.Services
         #region Auth
         public async Task<AuthViewModel> GetAuth(AgencyLoginViewModel model)
         {
-            var agency = await _agencyRepository.GetPublishedAgency(model.Username);
+            var agency = await _agencyRepository.GetActivedAgency(model.Username);
             if (agency != null)
             {
                 var encryptpw = SecurityHelper.HashPassword(agency.Salt, model.Password);
@@ -57,7 +57,7 @@ namespace Website.Services
 
         public async Task<AuthViewModel> GetAuth(int id)
         {
-            var agency = await _agencyRepository.GetPublishedAgency(id);
+            var agency = await _agencyRepository.GetActivedAgency(id);
             return GetAuth(agency);
         }
 
@@ -69,7 +69,7 @@ namespace Website.Services
 
         #endregion
 
-        public async Task<int> CreateAgency(CreateAgencyViewModel model)
+        public async Task<int> Register(RegisterAgencyViewModel model)
         {
             var isvalid = await VerifyUsername(model.Username);
             if (isvalid)

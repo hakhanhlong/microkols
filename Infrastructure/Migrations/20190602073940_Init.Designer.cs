@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190519230135_Init")]
+    [Migration("20190602073940_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,7 +79,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Salt");
 
-                    b.Property<int?>("Type");
+                    b.Property<int>("Type");
 
                     b.Property<string>("TypeData");
 
@@ -96,6 +96,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("Account");
                 });
 
+            modelBuilder.Entity("Core.Entities.AccountCampaignCharge", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountChargeAmount");
+
+                    b.Property<int>("AccountId");
+
+                    b.Property<int>("Type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountCampaignCharge");
+                });
+
             modelBuilder.Entity("Core.Entities.AccountCategory", b =>
                 {
                     b.Property<int>("AccountId");
@@ -107,23 +124,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("AccountCategory");
-                });
-
-            modelBuilder.Entity("Core.Entities.AccountPrice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AccountId");
-
-                    b.Property<int>("Price");
-
-                    b.Property<int>("Type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AccountPrice");
                 });
 
             modelBuilder.Entity("Core.Entities.AccountProvider", b =>
@@ -155,6 +155,8 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Actived");
+
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
@@ -168,8 +170,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Password");
-
-                    b.Property<bool>("Published");
 
                     b.Property<string>("Salt");
 
@@ -225,9 +225,11 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountExtraPercent");
+                    b.Property<int>("AccountChargeAmount");
 
-                    b.Property<int>("AccountPrice");
+                    b.Property<int>("AccountChargeExtraPercent");
+
+                    b.Property<int>("AccountChargeTime");
 
                     b.Property<int>("AgencyId");
 
@@ -245,7 +247,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<bool>("EnabledAccountExtra");
+                    b.Property<bool>("EnabledAccountChargeExtra");
 
                     b.Property<int>("ExtraOptionChargePercent");
 
@@ -255,9 +257,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Requirement");
 
-                    b.Property<int>("ServiceChargePercent");
+                    b.Property<int>("ServiceChargeAmount");
 
-                    b.Property<int>("ServicePrice");
+                    b.Property<int>("ServiceChargePercent");
 
                     b.Property<int>("Status");
 
@@ -278,19 +280,19 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.CampaignAccount", b =>
                 {
-                    b.Property<int>("CampaignId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountChargeAmount");
 
                     b.Property<int>("AccountId");
 
-                    b.Property<int>("AccountCharge");
-
-                    b.Property<int>("AccountChargeTimes");
+                    b.Property<int>("CampaignId");
 
                     b.Property<DateTime>("DateCreated");
 
                     b.Property<DateTime>("DateModified");
-
-                    b.Property<int>("ExtraAccountCharge");
 
                     b.Property<string>("RefData");
 
@@ -306,11 +308,30 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("UserModified");
 
-                    b.HasKey("CampaignId", "AccountId");
+                    b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
+                    b.HasIndex("CampaignId");
+
                     b.ToTable("CampaignAccount");
+                });
+
+            modelBuilder.Entity("Core.Entities.CampaignAccountType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountType");
+
+                    b.Property<int>("CampaignId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId");
+
+                    b.ToTable("CampaignAccountType");
                 });
 
             modelBuilder.Entity("Core.Entities.CampaignOption", b =>
@@ -332,23 +353,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("CampaignOption");
                 });
 
-            modelBuilder.Entity("Core.Entities.CampaignTypePrice", b =>
+            modelBuilder.Entity("Core.Entities.CampaignTypeCharge", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountExtraPricePercent");
+                    b.Property<int>("AccountChargeAmount");
 
-                    b.Property<int>("AccountPrice");
+                    b.Property<int>("AccountChargeExtraPercent");
 
-                    b.Property<int>("ServicePrice");
+                    b.Property<int>("ServiceChargeAmount");
 
                     b.Property<int>("Type");
 
                     b.HasKey("Id");
 
-                    b.ToTable("CampaignTypePrice");
+                    b.ToTable("CampaignTypeCharge");
                 });
 
             modelBuilder.Entity("Core.Entities.Category", b =>
@@ -597,6 +618,13 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Core.Entities.Campaign", "Campaign")
                         .WithMany("CampaignAccount")
+                        .HasForeignKey("CampaignId");
+                });
+
+            modelBuilder.Entity("Core.Entities.CampaignAccountType", b =>
+                {
+                    b.HasOne("Core.Entities.Campaign", "Campaign")
+                        .WithMany("CampaignAccountType")
                         .HasForeignKey("CampaignId");
                 });
 

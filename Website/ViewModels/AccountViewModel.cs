@@ -25,13 +25,15 @@ namespace Website.ViewModels
             Id = customer.Id;
             Email = customer.Email;
             Name = customer.Name;
-            Avatar = customer.Avatar;
+            Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
+            Type = customer.Type;
         }
 
         public static List<AccountViewModel> GetList(IEnumerable<Account> accounts)
         {
             return accounts.Select(m => new AccountViewModel(m)).ToList();
         }
+        public AccountType Type { get; set; }
         public int Id { get; set; }
         public string Email { get; set; }
 
@@ -209,5 +211,76 @@ namespace Website.ViewModels
         public string ImageBack { get; set; }
     }
 
+    public class ChangeAccountTypeViewModel
+    {
+        public ChangeAccountTypeViewModel()
+        {
 
+        }
+        public ChangeAccountTypeViewModel(Account entity)
+        {
+            Type = entity.Type;
+            if(entity.Type== AccountType.HotMom)
+            {
+                HotMomData = (List<AccountTypeHotMomData>)entity.TypeDataObj;
+            }
+
+        }
+        public AccountType Type { get; set; }
+
+        public List<AccountTypeHotMomData> HotMomData { get; set; } = new List<AccountTypeHotMomData>();
+    }
+
+    public class AccountCampaignChargeViewModel
+    {
+        public AccountCampaignChargeViewModel()
+        {
+
+        }
+        public AccountCampaignChargeViewModel(AccountCampaignCharge entity)
+        {
+            Id = entity.Id;
+            Type = entity.Type;
+            AccountChargeAmount = entity.AccountChargeAmount;
+        }
+
+        public static List<AccountCampaignChargeViewModel> GetList(IEnumerable<AccountCampaignCharge> entities)
+        {
+            var ignoreTypes = new List<CampaignType>()
+            {
+                CampaignType.CustomService,
+                CampaignType.JoinEvent
+            };
+            var result = new List<AccountCampaignChargeViewModel>();
+            var types = Common.Helpers.StringHelper.GetEnumArray<CampaignType>();
+            foreach(var type in types.Where(m=> !ignoreTypes.Contains(m)))
+            {
+                var entity = entities.FirstOrDefault(m => m.Type == type);
+                if(entity!= null)
+                {
+                    result.Add(new AccountCampaignChargeViewModel()
+                    {
+                        Type = entity.Type,
+                        AccountChargeAmount = entity.AccountChargeAmount,
+                        Id = entity.Id
+                    });
+                }
+                else
+                {
+                    result.Add(new AccountCampaignChargeViewModel()
+                    {
+                        Type = type,
+                        AccountChargeAmount = 0,
+                        Id = 0
+                    });
+
+                }
+            }
+            return result;
+
+        }
+        public int Id { get; set; }
+        public CampaignType Type { get; set; }
+        public int AccountChargeAmount { get; set; }
+    }
 }

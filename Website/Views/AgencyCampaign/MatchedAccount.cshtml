@@ -1,0 +1,51 @@
+﻿@model ListAccountViewModel
+@{ 
+    var campaignId = (int)ViewBag.CampaignId;
+}
+
+<div class="modal-dialog modal-lg">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Thành viên</h5>
+        </div>
+        <div class="modal-body">
+
+            @if (Model.Accounts.Count == 0)
+            {
+                <div class="alert alert-info">Không có thành viên phù hợp với chiến dịch</div>
+            }
+            else
+            {
+                foreach (var account in Model.Accounts)
+                {
+                    <div class="media">
+                        <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="65">
+                        <div class="media-body">
+                            <h5 class="mt-0 h6">@account.Name</h5>
+                            <div>
+                                <small>
+                                    @account.Type.ToDisplayName()
+                                </small>
+                                
+                            </div>
+                            @if(account.Type!= AccountType.Regular)
+                            {
+                                <div>
+                                    Chi phí: @account.
+                                </div>
+                            }
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm btn-requestjoin" data-url="@Url.Action("RequestAccountJoinCampaign","AgencyCampaign", new { campaignid= campaignId,accountid = account.Id  })" data-campaignid="@campaignId" 
+                                > <i class="fal fa-plus"></i> Chọn</button>
+                    </div>
+                }
+            }
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light btn-reload">Đóng</button>
+        </div>
+
+
+    </div>
+</div>

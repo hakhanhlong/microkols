@@ -49,7 +49,7 @@ namespace Website.ViewModels
         public string Image { get; set; }
     }
 
-    public class CreateAgencyViewModel : UpdateAgencyViewModel
+    public class RegisterAgencyViewModel : UpdateAgencyViewModel
     {
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Mật khẩu", Prompt = "Mật khẩu")]
@@ -79,7 +79,7 @@ namespace Website.ViewModels
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
                 Deleted = false,
-                Published = false,
+                Actived = false,
                 Description = Description,
                 Image = Image,
                 Name = Name,

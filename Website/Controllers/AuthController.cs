@@ -87,10 +87,54 @@ namespace Website.Controllers
 
         #endregion
 
+        #region Register
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var id = await _accountService.Register(model);
+
+                if (id > 0)
+                {
+                    var auth = await _accountService.GetAuth(id);
+
+                    if (auth != null)
+                    {
+                        await SignIn(auth);
+                        if (!string.IsNullOrEmpty(returnurl)) return Redirect(returnurl);
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    return RedirectToAction("Index","Home");
+                }
+                this.AddAlertDanger("Tên đăng nhập đã tồn tại");
+            }
+            return View(model);
+        }
+
+
+
         #endregion
 
 
-       
+        public async Task<IActionResult> VerifyEmail(string email)
+        {
+            var r = await _accountService.VerifyEmail(email);
+
+            return Json(r);
+
+        }
+
+        #endregion
+
+
+
 
         #region Agency
 
@@ -130,11 +174,11 @@ namespace Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AgencyRegister(CreateAgencyViewModel model, string returnurl = "")
+        public async Task<IActionResult> AgencyRegister(RegisterAgencyViewModel model, string returnurl = "")
         {
             if (ModelState.IsValid)
             {
-                var id = await _agencyService.CreateAgency(model);
+                var id = await _agencyService.Register(model);
 
                 if (id > 0)
                 {

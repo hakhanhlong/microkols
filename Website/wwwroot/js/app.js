@@ -4,9 +4,10 @@ var App = (function () {
     function init() {
         if (AppSettings.IsAuthenticated) {
             AppCommon.bindingWalletBalance();
+            AppNotification.Init();
             AppWallet.Init();
 
-            if (AppSettings.CurrentUser.Type == 2) {
+            if (AppSettings.CurrentUser.Type === 2) {
                 AppPayment.Init();
             }
             
@@ -14,8 +15,20 @@ var App = (function () {
 
 
         handler();
+        handlerPages();
     }
+    function handlerPages() {
+        var currentPage = $('#CurrentPage').val();
+        if (currentPage === 'account_changeaccounttype') {
+            ChangeAccountTypePage.Init();
+        }
+        else if (currentPage === 'agencycampaign_create') {
+            CreateCampaignPage.Init();
+        } else if (currentPage === 'agencycampaign_details') {
+            DetailsCampaignPage.Init();
+        }
 
+    }
     function handler() {
        
 
@@ -24,7 +37,7 @@ var App = (function () {
         $('.btn-facebook').click(function () {
             var $frm = $($(this).data('target'));
             FB.login(function (response) {
-                console.log('login-facebook', response)
+                console.log('login-facebook', response);
                 // handle the response
                 if (response.status === 'connected') {
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
@@ -94,7 +107,7 @@ var App = (function () {
         var cityid = $('#CityId').val();
         var districtid = $('#CityId').data('district');
         $.get(AppConstants.UrlGetDistricts(cityid), function (districts) {
-            if (districts.length == 0) {
+            if (districts.length === 0) {
                 $('.pdistrict').hide();
                 $('#DistrictId').html('');
             } else {
@@ -103,7 +116,7 @@ var App = (function () {
                 for (var i = 0; i < districts.length; i++) {
 
                     var selected = '';
-                    if (districtid == districts[i].id) {
+                    if (districtid === districts[i].id) {
                         selected += 'selected=selected';
                     }
                     html += '<option value="' + districts[i].id + '" ' + selected + '>' + districts[i].name + '</option>';

@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿
+using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,7 @@ using Common.Helpers;
 using Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Extensions;
+using Newtonsoft.Json;
 
 namespace Website.Services
 {
@@ -21,14 +23,17 @@ namespace Website.Services
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
+        private readonly IAsyncRepository<AccountCampaignCharge> _accountCampaignChargeRepository;
         private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
           IAccountRepository accountRepository, IWalletRepository walletRepository,
+           IAsyncRepository<AccountCampaignCharge> accountCampaignChargeRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
             _accountRepository = accountRepository;
             _accountProviderRepository = accountProviderRepository;
+            _accountCampaignChargeRepository = accountCampaignChargeRepository;
             _walletRepository = walletRepository;
 
         }
@@ -45,10 +50,12 @@ namespace Website.Services
         }
 
 
-        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, string order, int page, int pagesize)
+        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+
+            string order, int page, int pagesize, IEnumerable<int> ignoreIds)
         {
 
-            var query = await _accountRepository.Query(categoryid, gender, cityid, agestart, ageend);
+            var query = _accountRepository.Query(accountTypes, categoryid, gender, cityid, agestart, ageend, ignoreIds);
 
             var total = await query.CountAsync();
             var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
@@ -59,6 +66,8 @@ namespace Website.Services
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
+
+
         #region Auth
         public async Task<AuthViewModel> GetAuth(LoginViewModel model)
         {
@@ -137,9 +146,41 @@ namespace Website.Services
 
         #endregion
 
+        #region Register
+
+        public async Task<int> Register(RegisterViewModel model)
+        {
+            var entity = await _accountRepository.GetActivedAccount(model.Email);
+            if (entity != null) return -1;
+
+            var salt = SecurityHelper.GenerateSalt();
+            var encryptpw = SecurityHelper.HashPassword(salt, model.Password);
+
+            entity = new Account()
+            {
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Email = model.Email,
+                Name = model.Name,
+                Password = encryptpw,
+                Address = string.Empty,
+                Phone = string.Empty,
+                Avatar = string.Empty,
+                Actived = true,
+                Deleted = false,
+                UserModified = model.Email,
+                UserCreated = model.Email,
+                Salt = salt,
+                Type = AccountType.Regular,
+            };
+
+            await _accountRepository.AddAsync(entity);
+
+            return entity.Id;
+        }
 
 
-
+        #endregion
 
 
         #region ChangeContact
@@ -339,7 +380,7 @@ namespace Website.Services
         #endregion
 
 
-        #region ChangeIDCard
+        #region ChangeBankAccount
 
         public async Task<ChangeBankAccountViewModel> GetBankAccount(int id)
         {
@@ -375,6 +416,86 @@ namespace Website.Services
 
         #endregion
 
+        #region ChangeAccountType
+
+        public async Task<ChangeAccountTypeViewModel> GetChangeAccountType(int id)
+        {
+            var entity = await _accountRepository.GetByIdAsync(id);
+
+            if (entity != null)
+            {
+                return new ChangeAccountTypeViewModel(entity);
+            }
+            return null;
+        }
+
+        public async Task<bool> ChangeAccountType(int id, ChangeAccountTypeViewModel model, string username)
+        {
+            var entity = await _accountRepository.GetByIdAsync(id, false);
+
+            if (entity != null)
+            {
+                entity.Type = model.Type;
+                if (model.Type == AccountType.HotMom)
+                {
+                    entity.TypeData = JsonConvert.SerializeObject(model.HotMomData);
+                }
+
+                entity.DateModified = DateTime.Now;
+                entity.UserModified = username;
+
+                await _accountRepository.UpdateAsync(entity);
+                return true;
+            }
+            return false;
+
+        }
+
+
+        #endregion
+
+
+        #region Update AccountCampaignCharge
+
+        public async Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid)
+        {
+            var filter = new AccountCampaignChargeByAccountSpecification(accountid);
+
+
+            var accountCampaignCharges = await _accountCampaignChargeRepository.ListAsync(filter);
+
+            return AccountCampaignChargeViewModel.GetList(accountCampaignCharges);
+        }
+        public async Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model)
+        {
+            if (model.Id == 0)
+            {
+                var accountCharge = new AccountCampaignCharge()
+                {
+                    AccountId = accountid,
+                    Type = model.Type,
+                    AccountChargeAmount = model.AccountChargeAmount
+                };
+                await _accountCampaignChargeRepository.AddAsync(accountCharge);
+            }
+            else
+            {
+                var accountCharge = await _accountCampaignChargeRepository.GetByIdAsync(model.Id);
+                if(accountCharge == null || accountCharge.AccountId!= accountid)
+                {
+                    return false;
+                }
+
+                accountCharge.AccountChargeAmount = model.AccountChargeAmount;
+                await _accountCampaignChargeRepository.UpdateAsync(accountCharge);
+            }
+
+            return true;
+
+        }
+        #endregion
+
+
 
 
         #region Helper
@@ -388,6 +509,17 @@ namespace Website.Services
             //{
             //    return true;
             //}
+            return false;
+        }
+
+        public async Task<bool> VerifyEmail(string email)
+        {
+            var entity = await _accountRepository.GetActivedAccount(email);
+
+            if (entity == null)
+            {
+                return true;
+            }
             return false;
         }
 

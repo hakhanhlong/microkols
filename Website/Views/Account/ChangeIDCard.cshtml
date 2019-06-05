@@ -58,7 +58,7 @@
                         <label asp-for="ImageFront" class="control-label"></label>
                         <input asp-for="ImageFront" type="hidden" />
                         ​<div class="d-flex justify-content-center mb-1 border" >
-                            <img src="@AppOptions.Value.GetImageUrl(Model.ImageFront)" class="img-fluid align-self-center img-ImageFront" alt="" >
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageFront)" class="img-fluid align-self-center img-ImageFront" alt="" >
 
                         </div>
 
@@ -82,7 +82,7 @@
                         <label asp-for="ImageBack" class="control-label"></label>
                         <input asp-for="ImageBack" type="hidden" />
                         ​<div class="d-flex justify-content-center mb-1 border" >
-                            <img src="@AppOptions.Value.GetImageUrl(Model.ImageBack)" class="img-fluid align-self-center img-ImageBack" alt="">
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageBack)" class="img-fluid align-self-center img-ImageBack" alt="">
 
                         </div>
 

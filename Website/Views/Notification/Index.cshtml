@@ -1,0 +1,25 @@
+﻿@model List<NotificationViewModel>
+
+@if (Model != null && Model.Count > 0)
+{
+
+    foreach (var item in Model)
+    {
+
+        <div class="mb-2 pb-2 border-bottom">
+            <a href="@Url.GetNotificationUrl(item)">
+                @item.Message
+            </a>
+            <br />
+            <span class="text-muted small"> <i class="fal fa-clock"></i> @item.Date.ToTimeAgo()</span>
+        </div>
+
+    }
+
+}
+else
+{
+    <div class="alert alert-info">
+        Bạn chưa có thông báo!
+    </div>
+}

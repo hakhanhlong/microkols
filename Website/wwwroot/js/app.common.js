@@ -14,6 +14,9 @@ var AppConstants = {
     UrlGetAmount: "/wallet/GetAmount",
     UrlRecharge: "/wallet/Recharge",
     UrlWithdraw: "/wallet/Withdraw",
+    UrlGetNotificationCount: "/Notification/Count",
+    UrlGetNotification: "/Notification/IndexPartial",
+
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'
@@ -32,20 +35,21 @@ var AppCommon = {
                 $('#stickyFooterActions').fadeOut();
             }
         });
-
         $('#scrollToTop').click(function () {
             $('html, body').animate({ scrollTop: 0 }, 800);
-
         });
 
     },
+    handlerBtnReload() {
+        $('.btn-reload').click(function (e) {
+            window.location = window.location;
+        });
+    },
     uploadTempImage: function (files, path, callback) {
         var xhr, formData;
-
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
         xhr.open('POST', AppUrls.ImageMultipleUpload);
-
         xhr.onload = function () {
             if (xhr.status !== 200) {
                 failure('HTTP Error: ' + xhr.status);
@@ -58,13 +62,16 @@ var AppCommon = {
         for (var i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
         }
-
-
         xhr.send(formData);
     },
     bindingWalletBalance: function () {
         $.get(AppConstants.UrlGetAmount, function (val) {
-            $('.wallet-balance').html(val);
+            $('.wallet-balance').html(AppCommon.moneyFormat(val));
         });
+    },
+    moneyFormat: function (input, n, x) {
+        var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+
+        return input.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,') + ' đ';
     }
 };

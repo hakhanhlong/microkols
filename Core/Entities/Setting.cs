@@ -12,8 +12,8 @@ namespace Core.Entities
     }
     public enum SettingName
     {
-        ServiceCharge,
-        ExtraOptionCharge,
+        CampaignServiceChargePercent,
+        CampaignExtraOptionChargePercent,
         Phone,
         Address,
         

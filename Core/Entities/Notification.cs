@@ -13,18 +13,45 @@ namespace Core.Entities
         public int DataId { get; set; }
         public string Message { get; set; }
         public string Image { get; set; }
-        public string Title { get; set; }
-        public string Note { get; set; }
+        
         public DateTime DateCreated { get; set; }
         public NotificationStatus Status { get; set; }
     }
     public enum NotificationType
     {
-
+        AgencyRequestJoinCampaign,
+        AgencyConfirmJoinCampaign,
+        AccountRequestJoinCampaign,
+        AccountConfirmJoinCampaign,
     }
     public enum NotificationStatus
     {
         Created = 0,
         Checked = 1
+    }
+
+    public static class NotificationExt
+    {
+        public static string GetMessageText(this NotificationType type, params string[] args)
+        {
+            var message = "";
+            if (type == NotificationType.AccountConfirmJoinCampaign)
+            {
+                message = "Thành viên {0} đã đồng ý tham gia chiến dịch {1}";
+            }
+            else if (type == NotificationType.AgencyConfirmJoinCampaign)
+            {
+                message = "Doanh nghiệp {0} đã duyệt yêu cầu tham gia chiến dịch {1}";
+            }
+            else if (type == NotificationType.AccountRequestJoinCampaign)
+            {
+                message = "Thành viên {0} đã đề xuất được tham gia chiến dịch {1}";
+            }
+            else if (type == NotificationType.AgencyRequestJoinCampaign)
+            {
+                message = "Doanh nghiệp {0} mời bạn tham gia chiến dịch {1}";
+            }
+            return string.Format(message, args);
+        }
     }
 }

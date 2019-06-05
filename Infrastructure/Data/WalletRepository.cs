@@ -63,8 +63,8 @@ namespace Infrastructure.Data
                     DateModified = DateTime.Now,
                     EntityId = entityId,
                     EntityType = entityType,
-                    UserCreated = "Website",
-                    UserModified = "Website",
+                    UserCreated = "system",
+                    UserModified = "system",
                 };
                 await _dbContext.Wallet.AddAsync(entity);
                 await _dbContext.SaveChangesAsync();

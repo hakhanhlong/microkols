@@ -8,8 +8,8 @@ namespace Core.Interfaces
 {
     public interface IAgencyRepository : IRepository<Agency>, IAsyncRepository<Agency>
     {
-        Task<Agency> GetPublishedAgency(int id);
-        Task<Agency> GetPublishedAgency(string username);
+        Task<Agency> GetActivedAgency(int id);
+        Task<Agency> GetActivedAgency(string username);
         Task<Agency> GetAgency(string username);
 
         int CountAll();

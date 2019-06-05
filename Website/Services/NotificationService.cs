@@ -59,30 +59,32 @@ namespace Website.Services
             var result = new List<NotificationViewModel>();
             foreach (var item in notifications)
             {
-                EntityType entityType = EntityType.Agency;
-                int entityid = 0;
-                string entityImage = string.Empty;
-                string entityText = string.Empty;
+                //EntityType entityType = EntityType.Agency;
+                //int entityid = 0;
+                //string entityImage = string.Empty;
+                //string entityText = string.Empty;
 
 
-                /*
-                if (item.Type == NotificationType.ca)
-                {
-                    var campaign = await _campaignRepository.GetByIdAsync(item.DataId);
-                    if (campaign != null)
-                    {
-                        entityType = EntityType.Campaign;
-                        entityid = campaign.Id; 
-                        entityImage = string.Empty;
-                        entityText = campaign.Code;
-                    }
-                }
-                */
+                //if (item.Type == NotificationType.AccountConfirmJoinCampaign  ||
+                //    item.Type == NotificationType.AccountRequestJoinCampaign ||
+                //    item.Type == NotificationType.AgencyConfirmJoinCampaign ||
+                //    item.Type == NotificationType.AgencyRequestJoinCampaign )
+                //{
+                //    var campaign = await _campaignRepository.GetByIdAsync(item.DataId);
+                //    if (campaign != null)
+                //    {
+                //        entityType = EntityType.Campaign;
+                //        entityid = campaign.Id; 
+                //        entityImage = string.Empty;
+                //        entityText = campaign.Code;
+                //    }
+                //}
+
                 var notif = new NotificationViewModel(item);
-                notif.EntityId = entityid;
-                notif.EntityText = entityText;
-                notif.EntityType = entityType;
-                notif.EntityImage = entityImage;
+                //notif.EntityId = entityid;
+                //notif.EntityText = entityText;
+                //notif.EntityType = entityType;
+                //notif.EntityImage = entityImage;
 
                 result.Add(notif);
             }
@@ -131,7 +133,6 @@ namespace Website.Services
                 DataId = model.DataId,
                 Status = NotificationStatus.Created,
                 Type = model.Type,
-                Note = model.Note
             };
 
             await _notificationRepository.AddAsync(notification);

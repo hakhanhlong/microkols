@@ -9,11 +9,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Core.Entities
 {
-    public class Account : BaseEntity
+    public class Account : BaseEntityWithDate
     {
 
         // Người dùng thường -> AccountType = null
-        public AccountType? Type { get; set; }
+        public AccountType Type { get; set; }
 
         public string TypeData { get; set; }
 
@@ -22,9 +22,9 @@ namespace Core.Entities
         {
             get
             {
-                if (!string.IsNullOrEmpty(TypeData) && Type.HasValue)
+                if (!string.IsNullOrEmpty(TypeData))
                 {
-                    if (Type.Value == AccountType.HotMom)
+                    if (Type == AccountType.HotMom)
                     {
                         return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(TypeData);
                     }
@@ -68,10 +68,7 @@ namespace Core.Entities
         public string BankAccountBranch { get; set; }
 
 
-        public DateTime DateCreated { get; set; }
-        public DateTime DateModified { get; set; }
-        public string UserCreated { get; set; }
-        public string UserModified { get; set; }
+
 
 
         private List<AccountCategory> _AccountCategory = new List<AccountCategory>();
@@ -84,31 +81,34 @@ namespace Core.Entities
 
     public enum AccountType
     {
+        [DisplayName("Tài khoản thường")]
+        Regular = 0, 
         [DisplayName("Hot Teen")]
-        HotTeen,
+        HotTeen = 1,
         [DisplayName("Hot Mom")]
-        HotMom,
+        HotMom = 2,
         [DisplayName("Hot Facebooker")]
-        HotFacebooker,
+        HotFacebooker = 3,
         [DisplayName("Kols")]
-        Kols,
+        Kols = 4,
     }
     public class AccountTypeHotMomData
     {
         public Gender Gender { get; set; }
         public int Age { get; set; }
+        public int AgeType { get; set; }
     }
 
     public enum Gender
     {
         [DisplayName("Không xác định")]
-        Undefined,
+        Undefined = 0,
         [DisplayName("Con trai")]
-        Male,
+        Male = 1,
         [DisplayName("Con gái")]
-        Female,
+        Female = 2,
         [DisplayName("Khác")]
-        Other
+        Other = 3
     }
     public enum MaritalStatus
     {

@@ -19,13 +19,13 @@ namespace Infrastructure.Data
         public AgencyRepository(AppDbContext dbContext) : base(dbContext)
         {}
 
-        public async Task<Agency> GetPublishedAgency(int id)
+        public async Task<Agency> GetActivedAgency(int id)
         {
-            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Id == id && m.Published);
+            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Id == id && m.Actived);
         }
-        public async Task<Agency> GetPublishedAgency(string username)
+        public async Task<Agency> GetActivedAgency(string username)
         {
-            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username && m.Published);
+            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username && m.Actived);
         }
 
         public async Task<Agency> GetAgency(string username)

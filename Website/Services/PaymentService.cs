@@ -54,7 +54,11 @@ namespace Website.Services
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.ServiceChargeValue;
                 transactionType = Core.Entities.TransactionType.CampaignServiceCharge;
-                // check lan` 1 
+                
+            }
+            else
+            {
+                //....
             }
 
             if (amount > 0 && senderId > 0 && receiverId > 0 && transactionType != TransactionType.Undefined)

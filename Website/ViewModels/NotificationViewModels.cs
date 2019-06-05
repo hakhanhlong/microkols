@@ -18,7 +18,6 @@ namespace Website.ViewModels
         public int DataId { get; set; }
         public string Data { get; set; }
         public NotificationType Type { get; set; }
-        public string Note { get; set; }
     }
     public class ListNotificationViewModel
     {
@@ -42,6 +41,10 @@ namespace Website.ViewModels
             DataId = notification.DataId;
             Data = notification.Data;
             Status = notification.Status;
+            EntityType = notification.EntityType;
+            EntityId = notification.EntityId;
+            Message = notification.Message;
+
         }
 
 
@@ -49,25 +52,23 @@ namespace Website.ViewModels
         public int Id { get; set; }
         public NotificationType Type { get; set; }
         public int DataId { get; set; }
-
         public string Data { get; set; }
         public EntityType EntityType { get; set; }
         public int EntityId { get; set; }
-        public string EntityText { get; set; }
 
         public NotificationStatus Status { get; set; }
         public string EntityImage { get; set; }
     
 
-        public string Note { get; set; }
+        public string Message { get; set; }
         public DateTime Date { get; set; }
-        public string DateText
-        {
-            get
-            {
-                return Date.ToViDate();
-            }
-        }
+        //public string DateText
+        //{
+        //    get
+        //    {
+        //        return Date.ToViDate();
+        //    }
+        //}
 
 
 

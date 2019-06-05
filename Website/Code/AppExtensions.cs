@@ -33,6 +33,9 @@ namespace Website.Code
             services.AddScoped<ISettingRepository, SettingRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
+            services.AddScoped<ICampaignAccountRepository, CampaignAccountRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISharedService, SharedService>();
@@ -41,6 +44,7 @@ namespace Website.Code
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             
             services.AddSingleton<IFileHelper, FileHelper>();

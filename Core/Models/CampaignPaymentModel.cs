@@ -8,8 +8,7 @@ namespace Core.Models
 {
     public class CampaignPaymentModel
     {
-        private long _servicePaidAmount;
-        private long _accountPaidAmount;
+
 
         public CampaignPaymentModel()
         {
@@ -20,20 +19,43 @@ namespace Core.Models
             IEnumerable<Transaction> transactions)
         {
             CampaignId = campaign.Id;
-            CampaignTitle = campaign.Title;
             ServiceChargeAmount = campaign.ToServiceChargeAmount(campaignOptions);
-            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out _servicePaidAmount, out _accountPaidAmount);
+            long servicePaidAmount = 0, accountPaidAmount = 0, accountChargeAmount = 0;
+            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out servicePaidAmount, out accountPaidAmount);
+            ServicePaidAmount = servicePaidAmount;
+            AccountPaidAmount = accountPaidAmount;
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                var campaignAccountAmount = 0;
+                if (campaignAccount.Account.Type == AccountType.Regular)
+                {
+                    campaignAccountAmount = campaign.AccountChargeAmount;
+                   
+                }
+                else
+                {
+                    campaignAccountAmount = campaignAccount.AccountChargeAmount;
+                }
+
+                accountChargeAmount += campaignAccountAmount;
+                if (campaign.EnabledAccountChargeExtra)
+                {
+                    accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
+
+                }
+            }
+
+            AccountChargeAmount = accountChargeAmount;
         }
 
-
-        public string CampaignTitle { get; set; }
         public int CampaignId { get; set; }
         public long ServiceChargeAmount { get; set; } = 0;
         public long AccountChargeAmount { get; set; } = 0;
         public long TotalChargeAmount { get { return AccountChargeAmount + ServiceChargeAmount; } }
 
-        public long ServicePaidAmount { get => _servicePaidAmount; set => _servicePaidAmount = value; }
-        public long AccountPaidAmount { get => _accountPaidAmount; set => _accountPaidAmount = value; }
+        public long ServicePaidAmount { get; set; }
+        public long AccountPaidAmount { get; set; }
         public long TotalPaidAmount { get; set; }
 
         public long ServiceChargeValue

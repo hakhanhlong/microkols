@@ -16,14 +16,33 @@ namespace Core.Specifications
         {
             AddInclude(m => m.CampaignOption);
             AddInclude(m => m.CampaignAccount);
+            AddInclude(m => m.CampaignAccountType);
         }
+
         public CampaignByAgencySpecification(int agencyid, int id)
            : base(m => m.AgencyId == agencyid && m.Published && m.Id == id)
         {
             AddInclude(m => m.CampaignOption);
             AddInclude(m => m.CampaignAccount);
+            AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
+            AddInclude(m => m.CampaignAccountType);
         }
     }
 
+    public class CampaignByAccountSpecification : BaseSpecification<Campaign>
+    {
+        public CampaignByAccountSpecification(int accountid, string kw)
+          : base(m => m.CampaignAccount.Any(n=>n.AccountId == accountid) && (string.IsNullOrEmpty(kw) || m.Description.Contains(kw)))
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccountType);
+        }
 
+        public CampaignByAccountSpecification(int accountid, int id)
+           : base(m => m.CampaignAccount.Any(n => n.AccountId == accountid) && m.Published && m.Id == id)
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccountType);
+        }
+    }
 }

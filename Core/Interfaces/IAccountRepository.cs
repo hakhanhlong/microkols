@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,6 @@ namespace Core.Interfaces
         Task<Account> GetActivedAccount(int id);
         Task<Account> GetActivedAccount(string email);
         Task<Account> GetAccount(string email);
-        Task<IQueryable<Account>> Query(IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend);
-
-        int CountAll();
+        IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds);
     }
 }

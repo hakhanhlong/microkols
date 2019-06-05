@@ -10,17 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Infrastructure.Extensions;
 namespace Infrastructure.Data
 {
     public class CampaignRepository : EfRepository<Campaign>, ICampaignRepository
     {
-     
+
         public CampaignRepository(AppDbContext dbContext) : base(dbContext)
         {
-            
-        }
 
+        }
+    
         public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
         {
 

@@ -1,0 +1,33 @@
+﻿@model CampaignDetailsViewModel 
+@{
+    ViewData["Title"] = "Details";
+    var campaignAccount = (CampaignAccountViewModel)ViewBag.CampaignAccount;
+}
+
+
+
+<alert></alert>
+<div class="d-flex mb-2 pb-2 border-bottom ">
+    <div>
+        <h3 class="h5">
+            <a asp-action="Details" asp-route-id="@Model.Id">@Model.Type.ToDisplayName()</a>
+        </h3>
+        <div>
+            Người tạo: @Model.UserCreated
+        </div>
+        <div>
+            Ngày tạo: <span class="text-secondary">@Model.DateCreated.ToViDateTime() </span>
+        </div>
+
+        <div>
+            Công việc: @Model.Description
+        </div>
+        <div>@campaignAccount.Status.ToDisplayName()</div>
+        <div>
+            Số tiền bạn nhận khi thực hiện: @campaignAccount.AccountChargeAmount.ToPriceText()
+        </div>
+    </div>
+    <div class="ml-auto">
+        <partial name="_ActionPartial" model="campaignAccount" />
+    </div>
+</div>

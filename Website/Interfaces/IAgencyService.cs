@@ -10,7 +10,7 @@ namespace Website.Interfaces
     {
 
         Task<AgencyViewModel> GetAgency(int id);
-        Task<int> CreateAgency(CreateAgencyViewModel model);
+        Task<int> Register(RegisterAgencyViewModel model);
 
         Task<AuthViewModel> GetAuth(AgencyLoginViewModel model);
         Task<AuthViewModel> GetAuth(int id);

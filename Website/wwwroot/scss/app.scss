@@ -1,5 +1,6 @@
 ﻿@import "../lib/bootstrap/dist/scss/bootstrap.scss";
 @import "select2-bootstrap4.scss";
+@import "steppers.scss";
 
 .btn-facebook {
     color: #fff;
@@ -13,9 +14,45 @@
     }
 }
 
-.input-validation-error{
-    border-color:$danger;
+.input-validation-error {
+    border-color: $danger;
 }
+
 .field-validation-error {
     color: $danger;
+}
+
+#editAccountPriceWrap {
+    span {
+        color: $danger;
+    }
+
+    input {
+        display: none;
+    }
+
+    &.openedit {
+        span {
+            display: none;
+        }
+
+        input {
+            display: inline;
+        }
+    }
+}
+
+.nav-notif {
+    position: relative;
+
+    .badge {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        padding: 0.15em 0.35em;
+    }
+
+    .dropdown-menu {
+        width: 20rem;
+    }
 }

@@ -5,36 +5,28 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class CampaignTypePrice : BaseEntity
-    {
-        public CampaignType Type { get; set; }
-        public int ServicePrice { get; set; }
-        public int AccountPrice { get; set; }
-        public int AccountExtraPricePercent { get; set; }
-
-    }
-
     public enum CampaignType
     {
         [DisplayName("Chia sẻ thông điệp, không cần viết caption")]
-        ShareContent,
+        ShareContent = 1,
         [DisplayName("Chia sẻ thông điệp, viết thêm caption")]
-        ShareContentWithCaption,
+        ShareContentWithCaption = 2,
         [DisplayName("Thay hình Avatar")]
-        ChangeAvatar,
+        ChangeAvatar = 3,
         [DisplayName("Viết comment seeding cho chiến dịch")]
-        PostComment,
+        PostComment = 4,
         [DisplayName("Đăng ký tham dự sự kiện")]
-        JoinEvent,
+        JoinEvent = 5,
         [DisplayName("Share link livestream chương trình")]
-        ShareStreamUrl,
+        ShareStreamUrl = 6,
         [DisplayName("Yêu cầu khác")]
-        CustomService
+        CustomService = 7
     }
-    public static class CampaignTypeExentions {
+    public static class CampaignTypeExentions
+    {
         public static string ToPriceLabel(this CampaignType type)
         {
-            if(type== CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)
             {
                 return "/người/lần";
             }
@@ -47,7 +39,12 @@ namespace Core.Entities
             {
                 return "/người/lần";
             }
+            if (type == CampaignType.CustomService || type == CampaignType.JoinEvent)
+            {
+                return "";
+            }
             return type.ToString();
         }
     }
+
 }

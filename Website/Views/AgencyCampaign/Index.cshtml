@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </div>
-           
+
         </form>
 
     </div>
@@ -59,26 +59,8 @@
 
 @foreach (var item in Model.Campaigns)
 {
-    <div class="media mb-2 border-bottom">        
-        <div class="media-body">
-            <h5 class="mt-0">
-                <a asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
-            </h5>
-            <p>
-                @item.Status.ToBadge()
-            </p>
-            <p>
-                @item.Description
-            </p>
-            
-        </div>
-    </div>
+    <partial name="_CampaignItemPartial" model="item" />
 }
-
-<div class="row">
-    <div class="col-auto">
-        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type" ></pager>
-    </div>
-</div>
+<pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
 
 

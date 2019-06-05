@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
@@ -10,7 +11,7 @@ using Website.ViewModels;
 
 namespace Website.Controllers
 {
-    [Authorize(Roles ="Account")]
+    [Authorize(Roles = "Account")]
     public class AccountController : BaseController
     {
 
@@ -26,6 +27,9 @@ namespace Website.Controllers
 
 
         }
+
+      
+
 
         #region ChangePassword
         public async Task<IActionResult> ChangePassword()
@@ -61,7 +65,7 @@ namespace Website.Controllers
             {
                 //--> move temp folder -> resources
 
-                model.ImageBack = _fileHelper.MoveTempFile(model.ImageBack,"account");
+                model.ImageBack = _fileHelper.MoveTempFile(model.ImageBack, "account");
                 model.ImageFront = _fileHelper.MoveTempFile(model.ImageFront, "account");
 
                 var r = await _accountService.ChangeIDCard(CurrentUser.Id, model, CurrentUser.Username);
@@ -154,6 +158,46 @@ namespace Website.Controllers
 
         #endregion
 
+        #region ChangeAccountType
+
+
+        public async Task<IActionResult> ChangeAccountType()
+        {
+            var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
+            if(model.Type != AccountType.Regular)
+            {
+                ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeAccountType(ChangeAccountTypeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _accountService.ChangeAccountType(CurrentUser.Id, model, CurrentUser.Username);
+
+                if (r)
+                {
+                    await ReSignIn(CurrentUser.Id);
+                    this.AddAlert(true);
+                    return RedirectToAction("ChangeAccountType");
+                }
+            }
+            return View(model);
+        }
+
+        public async Task<IActionResult> UpdateAccountCampaignCharge(AccountCampaignChargeViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, model);
+                this.AddAlert(r);
+            }
+            return RedirectToAction("ChangeAccountType");
+        }
+
+        #endregion
 
         #region Helper
         private async Task ReSignIn(int id)
