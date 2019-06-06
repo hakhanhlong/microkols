@@ -33,7 +33,13 @@ namespace BackOffice
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
             });
+
+            services.Configure<CookieTempDataProviderOptions>(options => {
+                options.Cookie.IsEssential = true;
+            });
+
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Database:MicroKOLsSecurity:ConnectionString"]));
 
@@ -44,7 +50,10 @@ namespace BackOffice
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
 
             services.AddAppServices();
-            
+
+            services.AddMemoryCache();
+
+            services.AddSession();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -62,10 +71,10 @@ namespace BackOffice
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            
 
             app.UseAuthentication();
-
+            app.UseSession();
 
             app.UseMvc(routes =>
             {

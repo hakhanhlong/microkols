@@ -11,6 +11,9 @@ namespace BackOffice.Business.Interfaces
         Task<AgencyViewModel> GetAgency(int id);
         ListAgencyViewModel GetListAgency(int pageindex, int pagesize);
 
+        bool Active(int id);
+        bool UnActive(int id);
+
 
     }
 }

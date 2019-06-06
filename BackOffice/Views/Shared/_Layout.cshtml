@@ -199,7 +199,6 @@
                     </div>
                     <div class="align-items-center mt-3">
                         <div class="mr-auto">
-
                             @if (TempData["MessageSuccess"] != null)
                             {
                                 <div class="alert alert-success" role="alert">
@@ -209,6 +208,7 @@
                                     @TempData["MessageSuccess"]
                                 </div>
                             }
+
                             @if (TempData["MessageError"] != null)
                             {
                                 <div class="alert alert-danger" role="alert">

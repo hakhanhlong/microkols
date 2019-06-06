@@ -52,7 +52,7 @@
                                             DATE MODIFIED
                                         </th>
                                         <th>
-                                            PUBLISHED
+                                            ACTIVED
                                         </th>
                                         <th>
                                             DELETED
@@ -71,7 +71,23 @@
                                                 <td>@item.Name</td>
                                                 <td>@item.UserModified</td>
                                                 <td>@item.DateModified</td>
-                                                <td>@item.Published</td>
+                                                <td>
+                                                    
+                                                    @if (item.Actived)
+                                                    {
+                                                        
+                                                        <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
+                                                            True
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/agency/active?id=@(item.Id)" class="m-badge m-badge--danger m-badge--wide" style="text-decoration:none;">
+                                                            False
+                                                        </a>
+
+                                                    }
+                                                </td>
                                                 <td>@item.Deleted</td>
                                             </tr>
 

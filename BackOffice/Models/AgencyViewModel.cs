@@ -23,7 +23,7 @@ namespace BackOffice.Models
             DateModified = agency.DateModified;
             UserCreated = agency.UserCreated;
             UserModified = agency.UserModified;
-            Published = agency.Published;
+            Actived = agency.Actived;
             Deleted = agency.Deleted;
             Name = agency.Name;
             Description = agency.Description;
@@ -37,7 +37,7 @@ namespace BackOffice.Models
 
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
-        public bool Published { get; set; }
+        public bool Actived { get; set; }
 
         public bool Deleted { get; set; }
         public string Name { get; set; }

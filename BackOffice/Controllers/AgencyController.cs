@@ -23,11 +23,44 @@ namespace BackOffice.Controllers
         public IActionResult Index(int pageindex = 1)
         {
             var list_agency = _IAgencyBusiness.GetListAgency(pageindex, 20);
-
-
-
             return View(list_agency);
         }
+
+        public IActionResult Active(int id)
+        {
+            
+            if (_IAgencyBusiness.Active(id))
+            {
+                TempData["MessageSuccess"] = "Active Agency Success!";
+            }
+            else
+            {
+                TempData["MessageError"] = "Active Agency Error!";
+            }
+
+
+            return RedirectToAction("index", "agency");
+        }
+
+
+        public IActionResult UnActive(int id)
+        {
+            
+            if (_IAgencyBusiness.UnActive(id))
+            {
+                TempData["MessageSuccess"] = "UnActive Agency Success!";
+            }
+            else
+            {
+                TempData["MessageError"] = "UnActive Agency Error!";
+            }
+
+            return RedirectToAction("index", "agency");
+
+
+        }
+
+
     }
 
 

@@ -45,7 +45,31 @@ namespace BackOffice.Business
             };
         }
 
+        public bool Active(int id)
+        {
+            var agency = _IAgencyRepository.GetById(id);
+            if (agency != null)
+            {
+                agency.Actived = true;
+                _IAgencyRepository.Update(agency);
 
+                return true;
+            }
+            return false;
+        }
+
+        public bool UnActive(int id)
+        {
+            var agency = _IAgencyRepository.GetById(id);
+            if (agency != null)
+            {
+                agency.Actived = false;
+                _IAgencyRepository.Update(agency);
+
+                return true;
+            }
+            return false;
+        }
 
     }
 }
