@@ -2,16 +2,21 @@
 var App = (function () {
 
     function init() {
-        if (AppSettings.IsAuthenticated) {
-            AppCommon.bindingWalletBalance();
-            AppNotification.Init();
-            AppWallet.Init();
+        setTimeout(function () {
 
-            if (AppSettings.CurrentUser.Type === 2) {
-                AppPayment.Init();
+            //console.log('AppPayment Init', AppSettings);
+            if (AppSettings.IsAuthenticated) {
+                AppCommon.bindingWalletBalance();
+                AppNotification.Init();
+                AppWallet.Init();
+
+
+                if (AppSettings.CurrentUser.Type === 2) {
+                    AppPayment.Init();
+                }
+
             }
-            
-        }
+        }, 500);
 
 
         handler();

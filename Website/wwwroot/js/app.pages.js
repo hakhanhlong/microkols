@@ -145,6 +145,7 @@ var DetailsCampaignPage = (function () {
         });
     }
 
+
     function handlerCampaignAccount() {
 
 
@@ -157,14 +158,27 @@ var DetailsCampaignPage = (function () {
             $.get(url, function (res) {
                 $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
                 $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+
+                handlerReloadBtn(true);
             });
+
+
         });
+        handlerReloadBtn();
 
-
-        AppCommon.handlerBtnReload();
     }
 
+    function handlerReloadBtn(force) {
+        $('.btn-reload').unbind('click');
+        $('.btn-reload').click(function (e) {
+            if (force) {
+                window.location = window.location;
+            } else {
+                AppBsModal.HideModal();
 
+            }
+        });
+    }
     return {
         Init: init
     };

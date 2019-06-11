@@ -33,7 +33,7 @@ namespace Website.Services
             _transactionRepository = transactionRepository;
         }
       
-        public async Task<PaymentResultViewModel> CreatePayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
+        public async Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
         {
             var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyId, model.CampaignId);
             if (payment == null)
@@ -49,15 +49,21 @@ namespace Website.Services
 
             if (payment.IsValidServiceCharge)
             {
-                //service charge --> tru tien cho user ; + tien cho he thong
+                //service charge --> tru tien cho agency ; + tien cho he thong
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.ServiceChargeValue;
                 transactionType = Core.Entities.TransactionType.CampaignServiceCharge;
                 
             }
-            else
+            else if(payment.IsValidAccountCharge)
             {
+
+                //service charge --> tru tien cho agency ; + tien cho he thong
+                receiverId = await _walletRepository.GetSystemId();
+                senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
+                amount = payment.AccountChargeValue;
+                transactionType = Core.Entities.TransactionType.CampaignAccountCharge;
                 //....
             }
 

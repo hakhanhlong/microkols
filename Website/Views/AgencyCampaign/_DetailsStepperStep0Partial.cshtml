@@ -1,0 +1,8 @@
+﻿@model CampaignDetailsViewModel
+<div class="mb-2">
+    Phí dịch vụ: <strong class="text-danger">@Model.Payment.ServiceChargeAmount.ToPriceText()</strong>
+</div>
+<hr />
+<div class="">
+    <btnpayment campaign-id="Model.Id"></btnpayment>
+</div>

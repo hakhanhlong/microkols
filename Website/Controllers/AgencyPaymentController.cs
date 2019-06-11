@@ -31,7 +31,11 @@ namespace Website.Controllers
         [HttpPost]
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
-            var paymentResult = await _paymentService.CreatePayment(CurrentUser.Id, model, CurrentUser.Username);
+            var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
+            if(paymentResult.Status == Core.Entities.TransactionStatus.Completed)
+            {
+                //update status  
+            }
             ViewBag.PaymentResult = paymentResult;
             return PartialView("ModalPaymentMessage");
         }

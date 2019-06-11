@@ -250,18 +250,8 @@ namespace Website.Services
             if (createStatus > 0)
             {
                 //add notification
-                await _notificationRepository.AddAsync(new Notification()
-                {
-                    Type = NotificationType.AgencyRequestJoinCampaign,
-                    EntityType = EntityType.Account,
-                    EntityId = accountid,
-                    DataId = campaignid,
-                    Data = string.Empty,
-                    Image = string.Empty,
-                    Status = NotificationStatus.Created,
-                    DateCreated = DateTime.Now,
-                    Message = NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString())
-                });
+                await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
+                     NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
                 return true;
 
             }
@@ -308,10 +298,41 @@ namespace Website.Services
 
         #endregion
 
+        #region Action
+
+        public async Task<bool> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status,string username)
+        {
+        
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
+            if (campaign != null)
+            {
+
+                if(status== CampaignStatus.Started)
+                {
+                    campaign.DateStart = DateTime.Now;
+                }
+                if (status == CampaignStatus.Ended)
+                {
+                    campaign.DateEnd = DateTime.Now;
+                }
+
+
+                campaign.Status = status;
+                campaign.UserModified = username;
+                campaign.DateModified = DateTime.Now;
+
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region Campaign Types
         public async Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges()
         {
             var list = await _campaignTypeChargeRepository.ListAllAsync();
             return CampaignTypeChargeViewModel.GetList(list);
         }
+        #endregion
     }
 }

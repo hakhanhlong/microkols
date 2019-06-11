@@ -8,6 +8,7 @@ var AppBsModal = (function () {
 
     function hideModal() {
         $(selectorId).modal('hide');
+        $(selectorId).remove();
     }
     function openModal(html, callback) {
 

@@ -18,7 +18,7 @@ namespace Website.Interfaces
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
         Task<bool> ConfirmJoinCampaignByAccount(int accountid, int campaignid, string username);
 
-
+        Task<bool> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username);
 
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
 

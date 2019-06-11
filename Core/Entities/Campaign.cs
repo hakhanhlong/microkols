@@ -52,8 +52,6 @@ namespace Core.Entities
         Created,
         [DisplayName("Đã thanh toán")]
         Payed,
-        [DisplayName("Đang xử lý")]
-        Processing,
         [DisplayName("Đã bắt đầu")]
         Started,
         [DisplayName("Đã kết thúc")]

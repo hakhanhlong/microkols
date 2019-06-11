@@ -112,6 +112,16 @@ namespace Website.Controllers
             return Json(result ? 1 : 0);
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> RequestStartCampaign(int campaignid)
+        {
+            var result = await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, campaignid, CampaignStatus.Started, CurrentUser.Username);
+
+            this.AddAlert(result);
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
         #endregion
     }
 }
