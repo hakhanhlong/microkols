@@ -89,7 +89,7 @@ namespace Core.Models
         {
             get
             {
-                if (AccountChargeValue < 0)
+                if (AccountChargeValue > 0)
                 {
                     return true;
                 }

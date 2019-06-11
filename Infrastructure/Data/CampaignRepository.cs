@@ -24,7 +24,7 @@ namespace Infrastructure.Data
         public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
         {
 
-            var campaign = await _dbContext.Campaign.Include(m => m.CampaignAccount).Include(m => m.CampaignOption)
+            var campaign = await _dbContext.Campaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccount).ThenInclude(m=>m.Account)
                 .FirstOrDefaultAsync(m => m.AgencyId == agencyid && m.Published && m.Id == id);
             if (campaign != null)
             {

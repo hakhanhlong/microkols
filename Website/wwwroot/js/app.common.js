@@ -16,6 +16,7 @@ var AppConstants = {
     UrlWithdraw: "/wallet/Withdraw",
     UrlGetNotificationCount: "/Notification/Count",
     UrlGetNotification: "/Notification/IndexPartial",
+    UrlUploadTempImage: "/Home/UploadImage",
 
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
@@ -45,11 +46,11 @@ var AppCommon = {
             window.location = window.location;
         });
     },
-    uploadTempImage: function (files, path, callback) {
+    uploadTempImage: function (files,  callback) {
         var xhr, formData;
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
-        xhr.open('POST', AppUrls.ImageMultipleUpload);
+        xhr.open('POST', AppConstants.UrlUploadTempImage);
         xhr.onload = function () {
             if (xhr.status !== 200) {
                 failure('HTTP Error: ' + xhr.status);
