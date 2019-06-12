@@ -14,6 +14,7 @@ namespace Website.Controllers
         private readonly IWalletService _walletService;
         private readonly ICampaignService _campaignService;
         private readonly IPaymentService _paymentService;
+      
         public AgencyPaymentController(IWalletService walletService, ICampaignService campaignService, IPaymentService paymentService)
         {
             _campaignService = campaignService;
@@ -32,10 +33,6 @@ namespace Website.Controllers
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
-            if(paymentResult.Status == Core.Entities.TransactionStatus.Completed)
-            {
-                //update status  
-            }
             ViewBag.PaymentResult = paymentResult;
             return PartialView("ModalPaymentMessage");
         }

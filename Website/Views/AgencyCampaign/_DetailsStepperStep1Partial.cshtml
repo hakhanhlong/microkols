@@ -104,13 +104,15 @@
     <div class="mt-3">
         @if (Model.Payment.IsValidAccountCharge)
         {
-            <btnpayment campaign-id="Model.Id" text="Thanh toán để bắt đầu chiến dịch"></btnpayment>
+            <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
         }
         else
         {
-            <form asp-action="RequestStartCampaign">
+            <form asp-action="UpdateCampaignStatus" method="post" asp-controller="AgencyCampaign">
                 <button class="btn btn-primary">Bắt đầu chiến dịch</button>
                 <input type="hidden" name="campaignid" value="@Model.Id" />
+                <input type="hidden" name="status" value="@CampaignStatus.Started" />
+
             </form>
 
         }

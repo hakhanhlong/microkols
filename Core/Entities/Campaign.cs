@@ -50,12 +50,13 @@ namespace Core.Entities
     {
         [DisplayName("Khởi tạo")]
         Created,
-        [DisplayName("Đã thanh toán")]
-        Payed,
+  
         [DisplayName("Đã bắt đầu")]
         Started,
         [DisplayName("Đã kết thúc")]
         Ended,
+        [DisplayName("Đã hoàn thành")]
+        Completed,
         [DisplayName("Hủy")]
         Canceled
     }

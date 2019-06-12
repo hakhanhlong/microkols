@@ -300,14 +300,33 @@ namespace Website.Services
 
         #region Action
 
-        public async Task<bool> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status,string username)
+        public async Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username)
         {
-        
+
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
+                if ( status == CampaignStatus.Canceled && campaign.Status == CampaignStatus.Created)
+                {
+                    return -1;
+                }
 
-                if(status== CampaignStatus.Started)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
+                {
+                    return -1;
+                }
+
+                if (status == CampaignStatus.Ended && campaign.Status != CampaignStatus.Started)
+                {
+                    return -1;
+                }
+                if (status == CampaignStatus.Completed && campaign.Status != CampaignStatus.Ended)
+                {
+                    return -1;
+                }
+
+
+                if (status == CampaignStatus.Started)
                 {
                     campaign.DateStart = DateTime.Now;
                 }
@@ -321,9 +340,12 @@ namespace Website.Services
                 campaign.UserModified = username;
                 campaign.DateModified = DateTime.Now;
 
+                await _campaignRepository.UpdateAsync(campaign);
+
+                return 1;
             }
 
-            return false;
+            return 0;
         }
         #endregion
 

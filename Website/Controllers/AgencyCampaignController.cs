@@ -114,14 +114,24 @@ namespace Website.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> RequestStartCampaign(int campaignid)
+        public async Task<IActionResult> UpdateCampaignStatus(int campaignid, CampaignStatus status)
         {
-            var result = await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, campaignid, CampaignStatus.Started, CurrentUser.Username);
+            var result = await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, campaignid, status, CurrentUser.Username);
+            if (result > 0)
+            {
+                this.AddAlert(true);
+            }
+            else if (result == -1)
+            {
+                this.AddAlert(false, "Không được phép thay đổi trạng thái Chiến dịch");
+            }
+            else
+            {
+                this.AddAlert(false);
+            }
 
-            this.AddAlert(result);
             return RedirectToAction("Details", new { id = campaignid });
         }
-
         #endregion
     }
 }
