@@ -328,6 +328,8 @@ namespace Website.Services
 
                 if (status == CampaignStatus.Started)
                 {
+
+
                     campaign.DateStart = DateTime.Now;
                 }
                 if (status == CampaignStatus.Ended)
@@ -341,6 +343,12 @@ namespace Website.Services
                 campaign.DateModified = DateTime.Now;
 
                 await _campaignRepository.UpdateAsync(campaign);
+
+
+                if(status == CampaignStatus.Started)
+                {
+
+                }
 
                 return 1;
             }

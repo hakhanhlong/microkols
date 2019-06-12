@@ -57,7 +57,6 @@ namespace Core.Entities
         AccountRequest = 0,
         [DisplayName("Doanh nghiệp mời tham gia chiến dịch")]
         AgencyRequest = 1,
-
         [DisplayName("Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
         [DisplayName("Đang thực hiện")]

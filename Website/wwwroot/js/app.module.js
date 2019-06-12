@@ -69,6 +69,11 @@ var AppNotification = (function () {
     function handler() {
 
         getNotificationDropdown();
+
+        $('.nav-notif').on('show.bs.dropdown', function () {
+            
+            updateNotificationChecked();
+        })
     }
 
     function getNotificationCount() {
@@ -79,38 +84,28 @@ var AppNotification = (function () {
         $.get(AppConstants.UrlGetNotificationCount, function (count) {
 
             $notifCount.text(count);
+            if (count == 0) {
+
+                $('.nav-notif .badge').hide();
+            } else {
+
+                $('.nav-notif .badge').show();
+            }
 
             if (count !== currentcount) {
                 getNotificationDropdown();
             }
         });
 
-        //if ($('.notif-uncheck').length === 0) {
-        //    $('.notif-checkedall').hide();
-        //}
-
-        //$('.notif-checkedall').click(function () {
-        //    var url = $(this).data('url');
-        //    $.post(url, function () {
-        //        $('.notif-item').addClass('notif-checked');
-        //        $('.notif-checkedall').hide();
-        //    });
-        //});
-
-        //handleCheckAll();
-
     }
 
-    function handleCheckAll() {
-        $('.notif-checkedall').unbind('click');
-        $('.notif-checkedall').click(function () {
-            var url = $(this).data('url');
-            $.post(url, function () {
-                $('.notif-item').addClass('notif-checked');
-                $('.notif-checkedall').hide();
-                $('.notif-count').text('0');
-            });
-        });
+    function updateNotificationChecked() {
+        $.post(AppConstants.UrlUpdateNotificationChecked, function () {
+       
+
+            $('.nav-notif .badge').hide();
+            $('.nav-notif .badge').text('0');
+        });   
     }
     function getNotificationDropdown() {
 

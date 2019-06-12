@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Interfaces;
@@ -119,6 +120,18 @@ namespace Website.Controllers
             var result = await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, campaignid, status, CurrentUser.Username);
             if (result > 0)
             {
+
+                if (status == CampaignStatus.Started)
+                {
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+                }
+                else if (status == CampaignStatus.Ended)
+                {
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+                }
+
+
+
                 this.AddAlert(true);
             }
             else if (result == -1)

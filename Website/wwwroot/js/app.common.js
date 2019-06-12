@@ -15,6 +15,7 @@ var AppConstants = {
     UrlRecharge: "/wallet/Recharge",
     UrlWithdraw: "/wallet/Withdraw",
     UrlGetNotificationCount: "/Notification/Count",
+    UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
     UrlGetNotification: "/Notification/IndexPartial",
     UrlUploadTempImage: "/Home/UploadImage",
 

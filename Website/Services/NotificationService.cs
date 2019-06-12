@@ -19,22 +19,27 @@ namespace Website.Services
 {
     public class NotificationService : INotificationService
     {
+
         private readonly ILogger<NotificationService> _logger;
-        private readonly IAsyncRepository<Notification> _notificationRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly ICampaignRepository _campaignRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IMemoryCache _cache;
+        private readonly IAsyncRepository<CampaignAccount> _campaignAccountRepository;
 
-        public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache,ICampaignRepository campaignRepository,
+
+        public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache, ICampaignRepository campaignRepository,
             IAccountRepository accountRepository,
-             IAsyncRepository<Notification> notificationRepository)
+             INotificationRepository notificationRepository, IAsyncRepository<CampaignAccount> campaignAccountRepository)
         {
             _logger = loggerFactory.CreateLogger<NotificationService>();
             _notificationRepository = notificationRepository;
             _cache = cache;
             _campaignRepository = campaignRepository;
-            _accountRepository =accountRepository;
+            _accountRepository = accountRepository;
+            _campaignAccountRepository = campaignAccountRepository;
         }
+
 
         #region Notification
 
@@ -120,30 +125,38 @@ namespace Website.Services
             }
 
         }
-        public async Task<int> CreateNotification(EntityType entityType, int entityId,
-            CreateNotificationViewModel model, string username)
-        {
-            var notification = new Notification()
-            {
-
-                EntityId = entityId,
-                EntityType = entityType,
-                DateCreated = DateTime.Now,
-                Data = string.Empty,
-                DataId = model.DataId,
-                Status = NotificationStatus.Created,
-                Type = model.Type,
-            };
-
-            await _notificationRepository.AddAsync(notification);
-            return notification.Id;
-        }
-
-
-
+       
 
         #endregion
 
 
+
+        #region  Notification Job
+
+  
+        public async Task CreateNotificationCampaignStarted(int campaignid)
+        {
+
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignStarted, EntityType.Account, campaignAccount.AccountId, campaignid,
+               NotificationType.CampaignStarted.GetMessageText(campaignid.ToString()));
+            }
+        }
+
+        public async Task CreateNotificationCampaignEnded(int campaignid)
+        {
+
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignEnded, EntityType.Account, campaignAccount.AccountId, campaignid,
+                NotificationType.CampaignEnded.GetMessageText(campaignid.ToString()));
+            }
+        }
+        #endregion
     }
 }

@@ -23,6 +23,8 @@ namespace Core.Entities
         AgencyConfirmJoinCampaign,
         AccountRequestJoinCampaign,
         AccountConfirmJoinCampaign,
+        CampaignStarted,
+        CampaignEnded,
     }
     public enum NotificationStatus
     {
@@ -50,6 +52,14 @@ namespace Core.Entities
             else if (type == NotificationType.AgencyRequestJoinCampaign)
             {
                 message = "Doanh nghiệp {0} mời bạn tham gia chiến dịch {1}";
+            }
+            else if (type == NotificationType.CampaignStarted)
+            {
+                message = "Chiến dịch {0} đã bắt đầu thực hiện";
+            }
+            else if (type == NotificationType.CampaignStarted)
+            {
+                message = "Chiến dịch {0} đã kết thúc";
             }
             return string.Format(message, args);
         }

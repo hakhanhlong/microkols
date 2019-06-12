@@ -113,7 +113,7 @@
 </div>
 
 @{
-    var steps = new List<string>() { "Thanh toán phí dịch vụ", "Thành viên tham gia", "Bắt đầu chiến dịch", "Kết thúc chiến dịch" };
+    var steps = new List<string>() { "Thanh toán phí dịch vụ", "Thành viên tham gia", "Bắt đầu chiến dịch", "Kết thúc chiến dịch","Hoàn thành chiến dịch" };
 
     var activestepIdx = 0;
     if (Model.Status == CampaignStatus.Created)
@@ -122,7 +122,7 @@
         {
             activestepIdx = 0;
         }
-        else 
+        else
         {
             activestepIdx = 1;
         }
@@ -131,11 +131,14 @@
     {
         activestepIdx = 2;
     }
-    else
+    else if (Model.Status == CampaignStatus.Ended)
     {
-
+        activestepIdx = 3;
     }
-
+    else if (Model.Status == CampaignStatus.Completed)
+    {
+        activestepIdx = 4;
+    }
     <ul class="stepper stepper-vertical m-0 p-0">
 
         @for (var i = 0; i < steps.Count; i++)
