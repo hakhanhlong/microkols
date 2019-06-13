@@ -2,9 +2,9 @@
 <div class="p-2 bg-light mb-2">
     <div class="mb-2">Bạn chưa liên kết với tài khoản facebook</div>
     <div>
-        <button class="btn btn-outline-primary btn-linkfacebook" data-target="#frmLinkFb"> <i class="fa fa-facebook-f"></i> Liết kết tài khoản Facebook</button>
+        <button class="btn btn-outline-primary btn-linkfacebook" data-target="#frmLinkFb"> <i class="fab fa-facebook"></i> Liết kết tài khoản Facebook</button>
 
-        <form action="@Url.Action("GetUserInfo")" id="frmLinkFb" method="post">
+        <form action="@Url.Action("LinkProvider","Account")" id="frmLinkFb" method="post">
             <input type="hidden" name="provider" value="Facebook" />
             <input type="hidden" name="token" value="" />
 

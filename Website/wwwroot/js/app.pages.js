@@ -46,7 +46,7 @@
 
 })();
 
-var CreateCampaignPage = (function () {
+var AgencyCreateCampaignPage = (function () {
 
     function init() {
         handlerType();
@@ -128,7 +128,7 @@ var CreateCampaignPage = (function () {
 
 })();
 
-var DetailsCampaignPage = (function () {
+var AgencyDetailsCampaignPage = (function () {
 
     function init() {
        
@@ -179,6 +179,36 @@ var DetailsCampaignPage = (function () {
             }
         });
     }
+    return {
+        Init: init
+    };
+
+})();
+
+
+var AccountDetailsCampaignPage = (function () {
+
+    function init() {
+
+
+        handler();
+    }
+    function handler() {
+        $('.btn-updateref').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerUpdateRef();
+            });
+        });
+
+    }
+    function handlerUpdateRef() {
+
+    }
+
+
+    
     return {
         Init: init
     };

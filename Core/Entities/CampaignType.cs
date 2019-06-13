@@ -28,25 +28,25 @@ namespace Core.Entities
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption )
             {
-                return "Chia sẻ thông điệp ngay";
+                return "Chia sẻ thông điệp";
             }
             if (type == CampaignType.PostComment)
             {
-                return "Viết bình luận ngay";
+                return "Viết bình luận";
             }
             if (type == CampaignType.ShareStreamUrl)
             {
-                return "Chia sẻ link Stream ngay";
+                return "Chia sẻ link Stream";
             }
 
             if (type == CampaignType.ChangeAvatar)
             {
-                return "Thay hình Avatar ngay";
+                return "Thay hình Avatar";
             }
 
             if (type == CampaignType.JoinEvent)
             {
-                return "Đăng ký tham gia sự kiện ngay";
+                return "Đăng ký tham gia sự kiện";
             }
 
             if (type == CampaignType.CustomService)

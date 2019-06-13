@@ -20,6 +20,7 @@ namespace Core.Entities
 
         public string RefUrl { get; set; }
         public string RefId { get; set; }
+        public string RefContent { get; set; }
 
         public string RefData { get; set; }
         [NotMapped]

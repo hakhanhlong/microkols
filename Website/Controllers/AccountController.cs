@@ -31,7 +31,11 @@ namespace Website.Controllers
 
         }
 
-
+        public async Task<IActionResult> Index()
+        {
+            return RedirectToAction("ChangeInfo");
+            return View();
+        }
 
 
         #region ChangePassword
@@ -55,7 +59,7 @@ namespace Website.Controllers
         }
         #endregion
 
-        #region Change Info
+        #region ChangeIDCard
         public async Task<IActionResult> ChangeIDCard()
         {
             var model = await _accountService.GetIDCard(CurrentUser.Id);
@@ -206,14 +210,33 @@ namespace Website.Controllers
         [HttpPost]
         public async Task<IActionResult> LinkProvider(string provider, string token, string returnurl)
         {
-            var loginInfo = provider == "Facebook" ? await _facebookHelper.GetLoginProviderAsync(token) :
+            var info = provider == "Facebook" ? await _facebookHelper.GetLoginProviderAsync(token) :
                await Code.Helpers.SocialHelper.VerifyGoogleTokenAsync(token);
-            if (loginInfo == null)
+            if (info == null)
             {
                 this.AddAlertDanger($"Lỗi khi lấy thông tin từ hệ thống {provider}. Xin vui lòng thử lại. Token {token}");
             }
+            else
+            {
 
-            await _accountService.l
+                var r = await _accountService.UpdateAccountProvider(CurrentUser.Id, new UpdateAccountProviderViewModel()
+                {
+                    Email = info.Email,
+                    Image = info.Image,
+                    Name = info.Name,
+                    Provider = provider,
+                    ProviderId = info.ProviderId
+                }, CurrentUser.Username);
+
+                if (r < 0)
+                {
+                    this.AddAlertDanger($"Tài khoản {info.Provider} đã được liên kết với tài khoản khác. Vui lòng thử lại tài khoản khác");
+                }else
+                {
+
+                    this.AddAlertSuccess($"Liên kết Tài khoản {info.Provider} thành công");
+                }
+            }
 
             if (!string.IsNullOrEmpty(returnurl)) { return Redirect(returnurl); }
             return RedirectToAction("Index");

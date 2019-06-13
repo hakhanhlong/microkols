@@ -1,7 +1,10 @@
-﻿@model CampaignDetailsViewModel 
+﻿@model CampaignDetailsViewModel
 @{
     ViewData["Title"] = "Details";
     var campaignAccount = (CampaignAccountViewModel)ViewBag.CampaignAccount;
+
+    var facebookid = (string)ViewBag.FacebookId;
+
 }
 
 
@@ -41,33 +44,48 @@
     </div>
 </div>
 
-
-@if(Model.Status== CampaignStatus.Started)
+@if (string.IsNullOrEmpty(facebookid))
 {
-    <div>
-        @if(campaignAccount.Status == CampaignAccountStatus.Confirmed)
-        {
-        <div class="">
-            <div class="mb-2">
-                Chiến dịch đã được bắt đầu thực hiện. <br />
-                Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-            </div>
-            @if (Model.Type == CampaignType.ChangeAvatar)
+    <partial name="_LinkFacebookPartial" />
+}
+else
+{
+    if (Model.Status == CampaignStatus.Started)
+    {
+        <div>
+            @if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
             {
+            <div class="">
+                <div class="mb-2">
+                    Chiến dịch đã được bắt đầu thực hiện. <br />
+                    Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
+                </div>
 
-            <div>
+                <div class="mb-2">
+                    Nội dung công việc: <span>@Model.Description</span>
+                </div>
+                @if (Model.Type == CampaignType.ChangeAvatar)
+                {
 
-                <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
+                    <div>
 
+                        <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
+
+                    </div>
+
+                }
+                else if (Model.Type == CampaignType.ShareStreamUrl)
+                {
+                    <div>
+                        <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })">Đã @Model.Type.ToActionText()</button>
+
+                    </div>
+                }
             </div>
-
-
-
             }
 
+
         </div>
-        }
+    }
 
-
-    </div>
 }

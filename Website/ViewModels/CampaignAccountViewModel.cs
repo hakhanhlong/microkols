@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Website.ViewModels
 {
@@ -53,6 +54,28 @@ namespace Website.ViewModels
 
         public List<CampaignAccountViewModel> CampaignAccounts { get; set; }
         public PagerViewModel Pager { get; set; }
+    }
+
+    public class UpdateCampaignAccountRefViewModel
+    {
+        public UpdateCampaignAccountRefViewModel()
+        {
+
+        }
+        [Required( ErrorMessage ="Hãy nhập {0}")]
+        [Display(Name = "Đường link trên Facebook")]
+        public string RefUrl { get; set; }
+
+        public string RefId { get; set; }
+
+        public string RefContent { get; set; }
+
+
+        [Display(Name = "Ghi chú")]
+        public string Note { get; set; }
+        public int CampaignId { get; set; }
+        public CampaignType CampaignType { get; set; }
+
     }
 
 }

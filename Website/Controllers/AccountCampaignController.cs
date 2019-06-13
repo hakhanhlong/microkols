@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Interfaces;
+using Website.ViewModels;
 
 namespace Website.Controllers
 {
@@ -41,10 +43,35 @@ namespace Website.Controllers
 
             if (campaignAccount == null) return NotFound();
             ViewBag.CampaignAccount = campaignAccount;
+            ViewBag.FacebookId = await _accountService.GetProviderIdByAccount(CurrentUser.Id, "Facebook");
 
             return View(model);
         }
 
+
+        public async Task<IActionResult> UpdateCampaignAccountRef(int campaignid, CampaignType campaignType)
+        {
+   
+            return PartialView(new UpdateCampaignAccountRefViewModel()
+            {
+                CampaignId = campaignid,
+                CampaignType = campaignType
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCampaignAccountRef(UpdateCampaignAccountRefViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+            }
+            else
+            {
+                this.AddAlertDanger("Hãy nhập thông tin");
+            }
+
+            return RedirectToAction("Details", new { id = model.CampaignId });
+        }
         #endregion
 
         #region Action

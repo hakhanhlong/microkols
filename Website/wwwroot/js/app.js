@@ -28,11 +28,13 @@ var App = (function () {
             ChangeAccountTypePage.Init();
         }
         else if (currentPage === 'agencycampaign_create') {
-            CreateCampaignPage.Init();
+            AgencyCreateCampaignPage.Init();
         } else if (currentPage === 'agencycampaign_details') {
-            DetailsCampaignPage.Init();
+            AgencyDetailsCampaignPage.Init();
         }
-
+        else if (currentPage === 'accountcampaign_details') {
+            AccountDetailsCampaignPage.Init();
+        }
     }
     function handler() {
        
