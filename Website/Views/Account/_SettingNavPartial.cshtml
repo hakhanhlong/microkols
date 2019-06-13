@@ -1,5 +1,7 @@
 ﻿@model int
 
+<partial name="_LinkFacebookPartial" />
+
 <ul class="nav  nav-tabs">
     <li class="nav-item">
         <a class="nav-link @(Model== 0 ? "active":"")" asp-action="ChangeInfo">Thông tin cá nhân</a>

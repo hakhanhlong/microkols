@@ -51,7 +51,17 @@ var App = (function () {
             }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
         });
 
-        
+        $('.btn-linkfacebook').click(function () {
+            var $frm = $($(this).data('target'));
+            FB.login(function (response) {
+                console.log('login-facebook', response);
+                // handle the response
+                if (response.status === 'connected') {
+                    $frm.find('input[name=token]').val(response.authResponse.accessToken);
+                    $frm.submit();
+                }
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+        });
 
 
         $('.image-upload').change(function () {

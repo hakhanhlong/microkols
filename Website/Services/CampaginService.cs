@@ -306,7 +306,7 @@ namespace Website.Services
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if ( status == CampaignStatus.Canceled && campaign.Status == CampaignStatus.Created)
+                if (status == CampaignStatus.Canceled && campaign.Status == CampaignStatus.Created)
                 {
                     return -1;
                 }
@@ -345,7 +345,7 @@ namespace Website.Services
                 await _campaignRepository.UpdateAsync(campaign);
 
 
-                if(status == CampaignStatus.Started)
+                if (status == CampaignStatus.Started)
                 {
 
                 }
@@ -355,6 +355,26 @@ namespace Website.Services
 
             return 0;
         }
+
+
+        public async Task<int> SubmmitCampaignAccountChangeAvatar(int accountid, int campaignid, string username)
+        {
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+            campaignAccount.Status = CampaignAccountStatus.Submitted;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            return 1;
+        }
+
+
+
+
         #endregion
 
         #region Campaign Types

@@ -24,6 +24,38 @@ namespace Core.Entities
     }
     public static class CampaignTypeExentions
     {
+        public static string ToActionText(this CampaignType type)
+        {
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption )
+            {
+                return "Chia sẻ thông điệp ngay";
+            }
+            if (type == CampaignType.PostComment)
+            {
+                return "Viết bình luận ngay";
+            }
+            if (type == CampaignType.ShareStreamUrl)
+            {
+                return "Chia sẻ link Stream ngay";
+            }
+
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "Thay hình Avatar ngay";
+            }
+
+            if (type == CampaignType.JoinEvent)
+            {
+                return "Đăng ký tham gia sự kiện ngay";
+            }
+
+            if (type == CampaignType.CustomService)
+            {
+                return "Thực hiện ngay";
+            }
+
+            return type.ToString();
+        }
         public static string ToPriceLabel(this CampaignType type)
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)

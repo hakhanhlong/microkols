@@ -16,18 +16,58 @@
             Người tạo: @Model.UserCreated
         </div>
         <div>
+            Trạng thái:  @Model.Status.ToBadge()
+        </div>
+        <div>
             Ngày tạo: <span class="text-secondary">@Model.DateCreated.ToViDateTime() </span>
         </div>
 
         <div>
-            Công việc: @Model.Description
+            Mô tả Công việc: @Model.Description
         </div>
-        <div>@campaignAccount.Status.ToDisplayName()</div>
+        <div>
+            <span class="badge badge-primary">@campaignAccount.Status.ToDisplayName()</span>
+
+        </div>
         <div>
             Số tiền bạn nhận khi thực hiện: @campaignAccount.AccountChargeAmount.ToPriceText()
         </div>
+
+
+
     </div>
     <div class="ml-auto">
         <partial name="_ActionPartial" model="campaignAccount" />
     </div>
 </div>
+
+
+@if(Model.Status== CampaignStatus.Started)
+{
+    <div>
+        @if(campaignAccount.Status == CampaignAccountStatus.Confirmed)
+        {
+        <div class="">
+            <div class="mb-2">
+                Chiến dịch đã được bắt đầu thực hiện. <br />
+                Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
+            </div>
+            @if (Model.Type == CampaignType.ChangeAvatar)
+            {
+
+            <div>
+
+                <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
+
+            </div>
+
+
+
+            }
+
+        </div>
+        }
+
+
+    </div>
+}

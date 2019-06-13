@@ -18,17 +18,20 @@ namespace Website.Controllers
         private readonly IAccountService _accountService;
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
-        public AccountController(IAccountService accountService, ISharedService sharedService, IFileHelper fileHelper)
+        private readonly IFacebookHelper _facebookHelper;
+        public AccountController(IAccountService accountService, ISharedService sharedService,
+            IFileHelper fileHelper, IFacebookHelper facebookHelper)
         {
 
             _accountService = accountService;
             _sharedService = sharedService;
             _fileHelper = fileHelper;
+            _facebookHelper = facebookHelper;
 
 
         }
 
-      
+
 
 
         #region ChangePassword
@@ -164,7 +167,7 @@ namespace Website.Controllers
         public async Task<IActionResult> ChangeAccountType()
         {
             var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
-            if(model.Type != AccountType.Regular)
+            if (model.Type != AccountType.Regular)
             {
                 ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
             }
@@ -197,6 +200,24 @@ namespace Website.Controllers
             return RedirectToAction("ChangeAccountType");
         }
 
+        #endregion
+
+        #region Link Provider
+        [HttpPost]
+        public async Task<IActionResult> LinkProvider(string provider, string token, string returnurl)
+        {
+            var loginInfo = provider == "Facebook" ? await _facebookHelper.GetLoginProviderAsync(token) :
+               await Code.Helpers.SocialHelper.VerifyGoogleTokenAsync(token);
+            if (loginInfo == null)
+            {
+                this.AddAlertDanger($"Lỗi khi lấy thông tin từ hệ thống {provider}. Xin vui lòng thử lại. Token {token}");
+            }
+
+            await _accountService.l
+
+            if (!string.IsNullOrEmpty(returnurl)) { return Redirect(returnurl); }
+            return RedirectToAction("Index");
+        }
         #endregion
 
         #region Helper

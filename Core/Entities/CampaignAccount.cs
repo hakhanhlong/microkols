@@ -42,8 +42,6 @@ namespace Core.Entities
         }
 
 
-
-
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string UserCreated { get; set; }
@@ -59,10 +57,22 @@ namespace Core.Entities
         AgencyRequest = 1,
         [DisplayName("Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
-        [DisplayName("Đang thực hiện")]
-        Processing = 3,
-        [DisplayName("Đã hoàn thành")]
-        Done = 3,
+        [DisplayName("Đang gửi xét duyệt")]
+        Submitted = 3,
 
+        [DisplayName("Từ chối nội dung")]
+        Declined = 4,
+        [DisplayName("Đã duyệt nội dung")]
+        Approved = 5,
+        [DisplayName("Đã hoàn thành")]
+        Done = 5,
+
+    }
+    public static class CampaignAccountExt
+    {
+        public static string ToAgencyText(this CampaignAccountStatus status)
+        {
+            return status.ToString();
+        }
     }
 }

@@ -283,4 +283,9 @@ namespace Website.ViewModels
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; }
     }
+
+    public class UpdateAccountProviderViewModel : LoginProviderViewModel
+    {
+       
+    }
 }

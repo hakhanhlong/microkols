@@ -146,6 +146,42 @@ namespace Website.Services
 
         #endregion
 
+        #region Update Provider
+
+        public async Task<string> GetProviderIdByAccount(int accountid, string provider)
+        {
+            var filter = new AccountProviderSpecification(accountid, provider);
+
+            var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            return accountProvider != null ? accountProvider.ProviderId : string.Empty;
+        }
+
+        public async Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username)
+        {
+            var filter = new AccountProviderSpecification(model.Provider, model.ProviderId);
+            var accountprovider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            if (accountprovider != null)
+            {
+                if (accountprovider.AccountId != accountid)
+                {
+                    return -1;
+                }
+                return 1;
+            }
+
+            accountprovider = new AccountProvider()
+            {
+                AccountId = accountid,
+                Email = model.Email,
+                Name = model.Name,
+                Provider = model.Provider,
+                ProviderId = model.ProviderId
+            };
+            await _accountProviderRepository.AddAsync(accountprovider);
+            return 1;
+        }
+        #endregion
+
         #region Register
 
         public async Task<int> Register(RegisterViewModel model)
@@ -481,7 +517,7 @@ namespace Website.Services
             else
             {
                 var accountCharge = await _accountCampaignChargeRepository.GetByIdAsync(model.Id);
-                if(accountCharge == null || accountCharge.AccountId!= accountid)
+                if (accountCharge == null || accountCharge.AccountId != accountid)
                 {
                     return false;
                 }

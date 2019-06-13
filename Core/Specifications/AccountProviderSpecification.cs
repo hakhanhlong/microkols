@@ -12,7 +12,10 @@ namespace Core.Specifications
         {
 
         }
+        public AccountProviderSpecification(int accountid, string provider) : base(m => m.AccountId == accountid && m.Provider == provider)
+        {
 
+        }
         public AccountProviderSpecification(string provider, string providerid)
             : base(m => m.ProviderId == providerid && m.Provider == provider)
         {

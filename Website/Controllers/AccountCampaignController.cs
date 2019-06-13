@@ -47,6 +47,7 @@ namespace Website.Controllers
 
         #endregion
 
+        #region Action
         public async Task<IActionResult> ConfirmJoinCampaign(int campaignid)
         {
             var result = await _campaignService.ConfirmJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username);
@@ -55,6 +56,11 @@ namespace Website.Controllers
 
             return RedirectToAction("Details", new { id = campaignid });
         }
+
+
+
+        #endregion
+
 
     }
 }
