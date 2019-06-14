@@ -44,7 +44,7 @@ ul.stepper {
     padding: 1.5rem;
 
     li {
-        a {
+        > a {
             padding: $stepper-li-a-padding;
             text-align: center;
 
@@ -139,7 +139,7 @@ ul.stepper {
       align-items: flex-start;
       flex-direction: column;
 
-      a {
+      > a {
         .label {
           flex-flow: column nowrap;
           order: 2;
@@ -177,7 +177,7 @@ ul.stepper {
     flex-direction: column;
     position: relative;
 
-    a {
+   > a {
       align-self: flex-start;
       display: flex;
       position: relative;

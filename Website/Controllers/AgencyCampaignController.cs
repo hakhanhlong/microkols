@@ -137,6 +137,14 @@ namespace Website.Controllers
             {
                 this.AddAlert(false, "Không được phép thay đổi trạng thái Chiến dịch");
             }
+            else if (result == -2)
+            {
+                this.AddAlert(false, "Không được phép kết thúc Chiến dịch nếu vẫn còn thành viên không thực hiện");
+            }
+            else if (result == -3)
+            {
+                this.AddAlert(false, "Không được phép bắt đầu chiến dịch khi còn thành viên chưa được duyệt hoặc hủy");
+            }
             else
             {
                 this.AddAlert(false);
@@ -144,6 +152,35 @@ namespace Website.Controllers
 
             return RedirectToAction("Details", new { id = campaignid });
         }
+
+      
+        [HttpPost]
+        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid,int accountid,int type)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type);
+                if (r > 0)
+                {
+                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : "Bạn đã hủy nội dung caption thành công");
+
+
+                }
+                else
+                {
+                    this.AddAlertDanger("Thông tin chiến dịch không đúng");
+                }
+
+            }
+            else
+            {
+                this.AddAlertDanger("Thông tin chiến dịch không đúng");
+            }
+
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
+
         #endregion
     }
 }

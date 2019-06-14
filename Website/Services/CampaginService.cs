@@ -34,8 +34,8 @@ namespace Website.Services
             IAsyncRepository<CampaignTypeCharge> campaignTypeChargeRepository,
             IAsyncRepository<CampaignOption> campaignOptionRepository,
             IAsyncRepository<CampaignAccountType> campaignAccountTypeRepository,
-           ICampaignAccountRepository campaignAccountRepository,
-           INotificationRepository notificationRepository,
+            ICampaignAccountRepository campaignAccountRepository,
+            INotificationRepository notificationRepository,
              ISettingRepository settingRepository)
         {
             _campaignAccountTypeRepository = campaignAccountTypeRepository;
@@ -49,6 +49,20 @@ namespace Website.Services
             _notificationRepository = notificationRepository;
         }
 
+        #region Campaigns
+        public async Task<List<int>> GetEndedCampaignIds()
+        {
+            return await _campaignRepository.GetCampaignIds(CampaignStatus.Ended);
+        }
+
+        public async Task<List<int>> GetAccountIdsByCampaignId(int campaignid)
+        {
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
+
+
+            return campaignAccounts.Select(m=>m.AccountId).ToList();
+        }
+        #endregion
 
         #region Campaign By Account
         public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, string keyword, int page, int pagesize)
@@ -296,9 +310,13 @@ namespace Website.Services
             return false;
         }
 
+
+
         #endregion
 
         #region Action
+
+   
 
         public async Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username)
         {
@@ -325,11 +343,39 @@ namespace Website.Services
                     return -1;
                 }
 
+                if (status == CampaignStatus.Ended)
+                {
+                    //check so luong nguoi hoan thanh
+                    var count = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, null
+                        , new List<CampaignAccountStatus> {
+                            CampaignAccountStatus.Finished,
+                            CampaignAccountStatus.Canceled
+                        }));
+
+                    if (count > 0)
+                    {
+                        return -2;
+                    }
+
+                }else if(status== CampaignStatus.Started)
+                {
+                    var count = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus> {
+                            CampaignAccountStatus.AccountRequest,
+                            CampaignAccountStatus.AgencyRequest,
+                    }, null));
+
+                    if (count > 0)
+                    {
+                        return -3;
+                    }
+                }
+
+
+
+
 
                 if (status == CampaignStatus.Started)
                 {
-
-
                     campaign.DateStart = DateTime.Now;
                 }
                 if (status == CampaignStatus.Ended)
@@ -372,6 +418,83 @@ namespace Website.Services
             return 1;
         }
 
+        public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
+        {
+            // thiều phần verify .... 
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, model.CampaignId);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+            if (!string.IsNullOrEmpty(model.RefId))
+            {
+                campaignAccount.RefId = model.RefId;
+            }
+            campaignAccount.RefUrl = model.RefUrl;
+
+
+            campaignAccount.Status = CampaignAccountStatus.Finished;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            return 1;
+        }
+
+        public async Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username)
+        {
+            // thiều phần verify .... 
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
+            if (campaign == null) return -1;
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaign.Id);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+
+            campaignAccount.RefContent = model.RefContent;
+
+            campaignAccount.Status = CampaignAccountStatus.Submitted;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            //notification
+
+            await _notificationRepository.CreateNotification(NotificationType.AccountSubmitCampaignRefContent,
+                EntityType.Agency, campaign.AgencyId, campaign.Id,
+                 NotificationType.AccountSubmitCampaignRefContent.GetMessageText(username, campaign.Id.ToString()),
+                 campaignAccount.Id.ToString());
+
+            return 1;
+        }
+
+
+        public async Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type)
+        {
+
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign == null || campaign.AgencyId != agencyid) return -1;
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaign.Id);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+
+            campaignAccount.Status = type == 1 ? CampaignAccountStatus.Approved : CampaignAccountStatus.Declined;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            //notification
+            var notiftype = type == 1 ? NotificationType.AgencyApproveCampaignRefContent : NotificationType.AgencyDeclineCampaignRefContent;
+            await _notificationRepository.CreateNotification(notiftype,
+                EntityType.Account, campaignAccount.AccountId, campaign.Id,
+                 notiftype.GetMessageText(username, campaign.Id.ToString()),
+                 campaignAccount.Id.ToString());
+
+            return 1;
+        }
 
 
 

@@ -1,9 +1,0 @@
-﻿@model CampaignAccountViewModel
-
-@if (Model.Status == CampaignAccountStatus.AgencyRequest)
-{
-    <form asp-action="ConfirmJoinCampaign">
-        <input type="hidden" value="@Model.CampaignId" name="campaignid" />
-        <button class="btn btn-outline-primary">Xác nhận tham gia </button>
-    </form>
-}

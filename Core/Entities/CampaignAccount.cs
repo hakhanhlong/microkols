@@ -18,6 +18,7 @@ namespace Core.Entities
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia
 
+        public string RefImage { get; set; }
         public string RefUrl { get; set; }
         public string RefId { get; set; }
         public string RefContent { get; set; }
@@ -65,8 +66,11 @@ namespace Core.Entities
         Declined = 4,
         [DisplayName("Đã duyệt nội dung")]
         Approved = 5,
+
         [DisplayName("Đã hoàn thành")]
-        Done = 5,
+        Finished  = 6,
+        [DisplayName("Hủy tham gia")]
+        Canceled = 7,
 
     }
     public static class CampaignAccountExt

@@ -21,6 +21,11 @@ namespace Infrastructure.Data
 
         }
     
+        public async Task<List<int>> GetCampaignIds(CampaignStatus status)
+        {
+            return await _dbContext.Campaign.Where(m => m.Status == status).Select(m => m.Id).ToListAsync();
+        }
+
         public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
         {
 

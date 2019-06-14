@@ -40,7 +40,7 @@ namespace Website.ViewModels
             {
                 DateCreated = DateTime.Now,
                 AgencyId = agencyid,
-                Data = string.Empty,
+                Data = Data,
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Description = Description,
@@ -58,7 +58,8 @@ namespace Website.ViewModels
                 EnabledAccountChargeExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledExtraType : false,
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
                 Type = Type,
-                AccountChargeTime = AccountChargeTime ?? 1
+                AccountChargeTime = AccountChargeTime ?? 1,
+               
 
             };
 
@@ -66,6 +67,10 @@ namespace Website.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Yêu cầu của chiến dịch")]
         public string Description { get; set; }
+
+     
+        [Display(Name = "Thông tin đối tượng chiến dịch (Link, hình ảnh,...)")]
+        public string Data { get; set; }
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]

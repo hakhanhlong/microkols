@@ -7413,10 +7413,10 @@ ul.stepper {
   margin: 1em -1.5rem;
   padding: 0 1.5rem;
   padding: 1.5rem; }
-  ul.stepper li a {
+  ul.stepper li > a {
     padding: 1.5rem;
     text-align: center; }
-    ul.stepper li a .circle {
+    ul.stepper li > a .circle {
       display: inline-block;
       color: #fff;
       border-radius: 50%;
@@ -7426,7 +7426,7 @@ ul.stepper {
       text-align: center;
       line-height: 1.7rem;
       margin-right: 0.5rem; }
-    ul.stepper li a .label {
+    ul.stepper li > a .label {
       display: inline-block;
       color: rgba(0, 0, 0, 0.38); }
   ul.stepper li.active a .circle, ul.stepper li.completed a .circle {
@@ -7471,7 +7471,7 @@ ul.stepper {
       .stepper-horizontal li {
         align-items: flex-start;
         flex-direction: column; }
-        .stepper-horizontal li a .label {
+        .stepper-horizontal li > a .label {
           flex-flow: column nowrap;
           order: 2;
           margin-top: 0.2rem; }
@@ -7496,13 +7496,13 @@ ul.stepper {
     flex: 1;
     flex-direction: column;
     position: relative; }
-    .stepper-vertical li a {
+    .stepper-vertical li > a {
       align-self: flex-start;
       display: flex;
       position: relative; }
-      .stepper-vertical li a .circle {
+      .stepper-vertical li > a .circle {
         order: 1; }
-      .stepper-vertical li a .label {
+      .stepper-vertical li > a .label {
         flex-flow: column nowrap;
         order: 2;
         margin-top: 0.2rem; }

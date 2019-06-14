@@ -7,8 +7,6 @@
 
 }
 
-
-
 <alert></alert>
 <div class="d-flex mb-2 pb-2 border-bottom ">
     <div>
@@ -24,13 +22,11 @@
         <div>
             Ngày tạo: <span class="text-secondary">@Model.DateCreated.ToViDateTime() </span>
         </div>
-
         <div>
             Mô tả Công việc: @Model.Description
         </div>
         <div>
             <span class="badge badge-primary">@campaignAccount.Status.ToDisplayName()</span>
-
         </div>
         <div>
             Số tiền bạn nhận khi thực hiện: @campaignAccount.AccountChargeAmount.ToPriceText()
@@ -40,7 +36,7 @@
 
     </div>
     <div class="ml-auto">
-        <partial name="_ActionPartial" model="campaignAccount" />
+        @*<partial name="_ActionPartial" model="campaignAccount" />*@
     </div>
 </div>
 
@@ -50,42 +46,97 @@
 }
 else
 {
-    if (Model.Status == CampaignStatus.Started)
-    {
-        <div>
-            @if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
+    <div>
+
+        <div class="mb-2 text-break">
+
+            @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
             {
-            <div class="">
-                <div class="mb-2">
-                    Chiến dịch đã được bắt đầu thực hiện. <br />
-                    Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-                </div>
-
-                <div class="mb-2">
-                    Nội dung công việc: <span>@Model.Description</span>
-                </div>
-                @if (Model.Type == CampaignType.ChangeAvatar)
-                {
-
-                    <div>
-
-                        <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
-
-                    </div>
-
-                }
-                else if (Model.Type == CampaignType.ShareStreamUrl)
-                {
-                    <div>
-                        <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })">Đã @Model.Type.ToActionText()</button>
-
-                    </div>
-                }
-            </div>
+                <div>Nội dung Caption: <span class="text-info" target="_blank">@campaignAccount.RefContent</span></div>
             }
 
 
+            @if (!string.IsNullOrEmpty(campaignAccount.RefId))
+            {
+                <div>Facebook Id thực hiện: @campaignAccount.RefId</div>
+            }
+            @if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+            {
+                <div>Link thực hiện: <a href="@campaignAccount.RefUrl" target="_blank">@campaignAccount.RefUrl</a></div>
+            }
+
         </div>
-    }
+        <div>
+            <div>
+                @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
+                {
+                    <span class="btn btn-outline-secondary">Chờ doanh nghiệp duyệt yêu cầu tham gia chiến dịch của bạn</span>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                {
+                    <form asp-action="ConfirmJoinCampaign">
+                        <input type="hidden" value="@Model.Id" name="campaignid" />
+                        <button class="btn btn-outline-primary">Xác nhận tham gia </button>
+                    </form>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
+                {
+                    <div>
+                        <div class="mb-2">
+                            Chiến dịch đã được bắt đầu thực hiện. <br />
+                            Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
+                        </div>
+
+                        <div class="mb-2">
+                            Nội dung công việc: <span>@Model.Description</span>
+                        </div>
+                        @if (Model.Type == CampaignType.ChangeAvatar)
+                        {
+                            <div>
+                                <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
+
+                            </div>
+                        }
+                    </div>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.Submitted)
+                {
+                    <span class="btn btn-outline-secondary">Đã gửi để doanh nghiệp duyệt</span>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.Approved)
+                {
+                    <div>
+                        Doanh nghiệp Đã duyệt nội dung Caption
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
+
+                    </div>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.Declined)
+                {
+                    <span class="btn btn-outline-danger">Đã từ chối - Hãy thực hiện lại</span>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.Finished)
+                {
+                    <span class="btn btn-outline-success">Hoàn thành thực hiện</span>
+                }
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    /**/
 
 }

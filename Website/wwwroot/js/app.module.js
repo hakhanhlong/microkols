@@ -111,7 +111,7 @@ var AppNotification = (function () {
 
         $.get(AppConstants.UrlGetNotification, function (html) {
             $notifDropdown.html(html);
-            handleCheckAll();
+            //handleCheckAll();
         });
 
 

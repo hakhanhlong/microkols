@@ -25,7 +25,7 @@
                 <div>
                     @foreach (var campaignAccount in Model.CampaignAccounts)
                     {
-                        <partial name="_CampaignAccountPartial" model="campaignAccount" />
+                        <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
                     }
                 </div>
             }
@@ -54,30 +54,9 @@
             <div class="row py-2">
                 @foreach (var campaignAccount in Model.CampaignAccounts)
                 {
-                    <div class="col-md-6">
-                        <div class="media">
-                            <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="50">
-                            <div class="media-body">
-                                <h5 class="mt-0 h6">@campaignAccount.Account.Name</h5>
-                                <div class="">
-                                    Chi phí: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText()</span>
-                                </div>
-                                <div class="mt-2">
-                                    @if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
-                                    {
-                                        <button class="btn btn-outline-secondary btn-sm">Thành viên chưa đồng ý</button>
-                                    }
-
-                                    @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
-                                    {
-                                        <button class="btn btn-outline-secondary btn-sm">Duyệt</button>
-                                    }
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
+                <div class="col-md-6">
+                    <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
+                </div>
 
                 }
             </div>
@@ -114,7 +93,6 @@
                 <input type="hidden" name="status" value="@CampaignStatus.Started" />
 
             </form>
-
         }
     </div>
 

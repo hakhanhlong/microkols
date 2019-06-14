@@ -1,5 +1,5 @@
 ﻿@model CampaignWithAccountViewModel
-<div class="d-flex mb-2 pb-2 border-bottom ">
+<div class="mb-2 pb-2 border-bottom ">
     <div>
         <h3 class="h5">
             <a asp-action="Details" asp-route-id="@Model.Id">@Model.Type.ToDisplayName()</a>
@@ -18,9 +18,5 @@
         <div>
             Số tiền bạn nhận khi thực hiện: @Model.CampaignAccount.AccountChargeAmount.ToPriceText()
         </div>
-    </div>
-    <div class="ml-auto">
-      
-        <partial name="_ActionPartial" model="Model.CampaignAccount" />
     </div>
 </div>

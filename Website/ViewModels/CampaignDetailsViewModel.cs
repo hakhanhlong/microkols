@@ -19,9 +19,10 @@ namespace Website.ViewModels
 
             AccountChargeTime = campaign.AccountChargeTime;
 
+            campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
             Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
             Transactions = TransactionViewModel.GetList(transactions);
-            CampaignAccounts = CampaignAccountViewModel.GetList(campaign.CampaignAccount);
+            CampaignAccounts = CampaignAccountViewModel.GetList(campaignAccounts);
         }
 
         public bool EnabledAccountChargeExtra { get; set; }

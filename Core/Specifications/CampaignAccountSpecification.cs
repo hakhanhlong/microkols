@@ -6,12 +6,28 @@ using System.Text;
 
 namespace Core.Specifications
 {
+    public class CampaignAccountSpecification : BaseSpecification<CampaignAccount>
+    {
+        public CampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid)
+        {
+        }
+        public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status ) : base(m => m.CampaignId == campaignid && m.Status== status)
+        {
+        }
+    }
+
+
     public class CampaignAccountByAgencySpecification : BaseSpecification<CampaignAccount>
     {
         public CampaignAccountByAgencySpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
         }
+        public CampaignAccountByAgencySpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
+            : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
+            (ignoreStatus== null || !ignoreStatus.Contains(m.Status)))
+        {
 
+        }
     }
     public class ConfirmedCampaignAccountSpecification : BaseSpecification<CampaignAccount>
     {

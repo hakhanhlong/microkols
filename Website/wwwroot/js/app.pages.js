@@ -204,10 +204,21 @@ var AccountDetailsCampaignPage = (function () {
 
     }
     function handlerUpdateRef() {
+        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
+        $('#frmUpdateCampaignAccountRef').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload() });
 
+                });
+            }
+        });
     }
-
-
     
     return {
         Init: init

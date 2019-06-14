@@ -18,7 +18,6 @@ namespace Infrastructure.Data
         {
 
         }
-
         #region Campaign Account
 
         public async Task<int> CreateAgencyRequestCampaignAccount(int agencyid, int campaignid, int accountid, string username)

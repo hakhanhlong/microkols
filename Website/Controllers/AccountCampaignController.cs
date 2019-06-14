@@ -49,29 +49,7 @@ namespace Website.Controllers
         }
 
 
-        public async Task<IActionResult> UpdateCampaignAccountRef(int campaignid, CampaignType campaignType)
-        {
-   
-            return PartialView(new UpdateCampaignAccountRefViewModel()
-            {
-                CampaignId = campaignid,
-                CampaignType = campaignType
-            });
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateCampaignAccountRef(UpdateCampaignAccountRefViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
 
-            }
-            else
-            {
-                this.AddAlertDanger("Hãy nhập thông tin");
-            }
-
-            return RedirectToAction("Details", new { id = model.CampaignId });
-        }
         #endregion
 
         #region Action
@@ -84,8 +62,83 @@ namespace Website.Controllers
             return RedirectToAction("Details", new { id = campaignid });
         }
 
+        public async Task<IActionResult> SubmitCampaignAccountRefContent(int campaignid)
+        {
+            return PartialView(new SubmitCampaignAccountRefContentViewModel()
+            {
+                CampaignId = campaignid
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitCampaignAccountRefContent(SubmitCampaignAccountRefContentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.SubmitCampaignAccountRefContent(CurrentUser.Id, model, CurrentUser.Username);
+                if (r > 0)
+                {
+                    ViewBag.Success = "Bạn đã gửi thành công nội dung Caption. Vui lòng chờ doanh nghiệp duyệt nội dung";
+                }
+                else
+                {
+                    ViewBag.Error = "Thông tin chiến dịch không đúng";
+                }
+
+            }
+            else
+            {
+                ViewBag.Error = "Hãy nhập đầy đủ thông tin";
+            }
+
+            return PartialView("UpdateCampaignAccountMessage");
+        }
 
 
+
+        public async Task<IActionResult> UpdateCampaignAccountRef(int campaignid, CampaignType campaignType)
+        {
+            var campaignAccount = await _campaignService.GetCampaignAccountByAccount(CurrentUser.Id, campaignid);
+            if (campaignAccount == null)
+            {
+                return PartialView();
+            }
+            if ((campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.Declined)
+                && campaignType == CampaignType.ShareContentWithCaption)
+            {
+                return RedirectToAction("SubmitCampaignAccountRefContent", new { campaignid });
+            }
+
+
+            return PartialView(new UpdateCampaignAccountRefViewModel()
+            {
+                CampaignId = campaignid,
+                CampaignType = campaignType
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCampaignAccountRef(UpdateCampaignAccountRefViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
+                if (r > 0)
+                {
+                    ViewBag.Success = "Bạn đã thực hiện thành công công việc";
+                }
+                else
+                {
+                    ViewBag.Error = "Thông tin chiến dịch không đúng";
+                }
+
+            }
+            else
+            {
+                ViewBag.Error = "Hãy nhập đầy đủ thông tin";
+            }
+
+            return PartialView("UpdateCampaignAccountMessage");
+        }
         #endregion
 
 

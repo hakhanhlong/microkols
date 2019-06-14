@@ -9,6 +9,6 @@ namespace Website.Interfaces
    public  interface IPaymentService
     {
         Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username);
-
+        Task<PaymentResultViewModel> CreatePaybackCampaignAccount(int campaignid, int accountid, string username);
     }
 }

@@ -21,6 +21,12 @@ namespace Website.ViewModels
             DateModified = campaignAccount.DateModified;
             AccountId = campaignAccount.AccountId;
             CampaignId = campaignAccount.CampaignId;
+
+
+            RefUrl =  campaignAccount.RefUrl;
+            RefId = campaignAccount.RefId;
+            RefContent = campaignAccount.RefContent;
+            RefData = campaignAccount.RefDataObj;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -34,7 +40,13 @@ namespace Website.ViewModels
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 
-     
+
+
+        public string RefUrl { get; set; }
+        public string RefId { get; set; }
+        public string RefContent { get; set; }
+        public object RefData { get; set; }
+
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
     }
@@ -56,6 +68,15 @@ namespace Website.ViewModels
         public PagerViewModel Pager { get; set; }
     }
 
+    public class SubmitCampaignAccountRefContentViewModel
+    {
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Nội dung Caption")]
+
+        public string RefContent { get; set; }
+        public int CampaignId { get; set; }
+    }
+
     public class UpdateCampaignAccountRefViewModel
     {
         public UpdateCampaignAccountRefViewModel()
@@ -64,11 +85,10 @@ namespace Website.ViewModels
         }
         [Required( ErrorMessage ="Hãy nhập {0}")]
         [Display(Name = "Đường link trên Facebook")]
+        //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
 
         public string RefId { get; set; }
-
-        public string RefContent { get; set; }
 
 
         [Display(Name = "Ghi chú")]
