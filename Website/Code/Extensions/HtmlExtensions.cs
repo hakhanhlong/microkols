@@ -73,6 +73,22 @@ namespace Website.Code.Extensions
             return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
         }
 
+
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountStatus status)
+        {
+            var type = "primary";
+            if (status == CampaignAccountStatus.AccountRequest)
+            {
+                type = "light";
+            }
+            else
+            {
+                type = "info";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+        }
+
         public static HtmlString ToIcon(this bool published)
         {
             var icon = "";

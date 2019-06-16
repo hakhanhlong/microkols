@@ -264,6 +264,8 @@ var HomeIndexPage = (function () {
 
     function init() {
         handler();
+
+        $('#main').css('min-height', '0');
     }
 
 

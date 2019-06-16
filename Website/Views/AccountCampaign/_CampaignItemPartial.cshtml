@@ -1,22 +1,53 @@
 ﻿@model CampaignWithAccountViewModel
-<div class="mb-2 pb-2 border-bottom ">
-    <div>
-        <h3 class="h5">
-            <a asp-action="Details" asp-route-id="@Model.Id">@Model.Type.ToDisplayName()</a>
-        </h3>
-        <div>
-            Người tạo: @Model.UserCreated
-        </div>
-        <div>
-            Ngày tạo: <span class="text-secondary">@Model.DateCreated.ToViDateTime() </span>
+
+
+
+<div class="card mb-3">
+    <div class="card-header d-flex">
+
+        <div class="mr-auto">
+            Chiến dịch @Model.Id
         </div>
 
+
         <div>
-            Công việc: @Model.Description
+            @Model.Status.ToBadge()
         </div>
-        <div>@Model.CampaignAccount.Status.ToDisplayName()</div>
-        <div>
-            Số tiền bạn nhận khi thực hiện: @Model.CampaignAccount.AccountChargeAmount.ToPriceText()
+
+    </div>
+    <div class="card-body">
+        <div class="card-text">
+            <div>
+                Doanh nghiệp: <span class="text-primary">@Model.UserCreated</span>
+            </div>
+
+            <div>
+               Công việc: @Model.Type.ToDisplayName()
+            </div>
+
+            <div>@Model.CampaignAccount.Status.ToBadge()</div>
+            <div>
+                Số tiền nhận:  <span class="text-success">@Model.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
+            </div>
         </div>
+
+        <div class="d-flex  mt-3">
+            <div class="text-muted mr-auto">
+                <small>
+                    @Model.DateCreated.ToTimeAgo()
+                </small>
+
+            </div>
+            <div class="text-right">
+
+
+
+                <a asp-action="Details" asp-route-id="@Model.Id" class=" btn btn-primary btn-sm">Chi tiết</a>
+
+            </div>
+        </div>
+
+
+
     </div>
 </div>

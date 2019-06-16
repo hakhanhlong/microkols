@@ -77,16 +77,7 @@
             <div>
                 Mã chiến dịch:  <strong class="text-primary">@Model.Id</strong>
             </div>
-            <div>
-                Loại chiến dịch: <span class="text-primary"> @Model.Type.ToDisplayName()</span>
-                @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
-                {
-                    if (Model.EnabledAccountChargeExtra)
-                    {
-                        <span> - </span> <span>Đính kèm hình ảnh cá nhân</span>
-                    }
-                }
-            </div>
+          
             <div>
                 Trạng thái:  @Model.Status.ToBadge()
             </div>
@@ -135,10 +126,22 @@
 
         </div>
         <div class="col-md-6">
+            <div>
+                Công việc: <span class="text-primary"> @Model.Type.ToDisplayName()</span>
+                @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+                {
+                    if (Model.EnabledAccountChargeExtra)
+                    {
+                        <span> - </span> <span>Đính kèm hình ảnh cá nhân</span>
+                    }
+                }
+            </div>
+
+
             @if (!string.IsNullOrEmpty(Model.Data))
             {
                 <div>
-                    Link chia sẻ:  <a href="@Model.Data" target="_blank">@Model.Data</a>
+                   @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
                 </div>
             }
 
@@ -155,7 +158,6 @@
                     <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" class="img-thumbnail" style="height:200px" />
                 </div>
             }
-
 
 
             @if (Model.CountOption > 0)

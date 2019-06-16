@@ -9,17 +9,22 @@
                 </button>
             </div>
             <div class="modal-body">
-                @if(Model.CampaignType == CampaignType.ShareContentWithCaption)
-                {
 
-                }
+                <div class="text-center">Chờ hệ thống tự động lấy dữ liệu chia sẻ của bạn </div>
+
+                <div class="text-center  py-4"> --- Hoặc ---- </div>
+
                 <div class="form-group">
                     <label asp-for="RefUrl"></label>
                     <input type="text" asp-for="RefUrl" class="form-control" />
                     <span asp-validation-for="RefUrl" class="text-danger"></span>
                 </div>
+                @if (Model.CampaignType == CampaignType.ShareContentWithCaption || Model.CampaignType == CampaignType.ShareContent)
+                {
+                    //if Avatar
 
-                <div class="form-group">
+                }
+                <div class="form-group d-none">
                     <label asp-for="Note"></label>
                     <textarea asp-for="Note" class="form-control"></textarea>
                     <span asp-validation-for="Note" class="text-danger"></span>
