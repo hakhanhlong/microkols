@@ -29,10 +29,14 @@ namespace Website.Interfaces
 
         Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username);
         Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username);
+        Task<int> SubmmitCampaignAccountChangeAvatar(int accountid, SubmmitCampaignAccountChangeAvatarViewModel model, string username);
 
         Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type);
 
         Task<List<int>> GetEndedCampaignIds();
-        Task<List<int>> GetAccountIdsByCampaignId(int campaignid);
+        Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid);
+
+        Task<bool> UpdateCampaignCompleted(int campaignid, string username);
+        Task<bool> UpdateCampaignError(int campaignid, string note, string username);
     }
 }

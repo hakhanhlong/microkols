@@ -261,6 +261,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<string>("SystemNote");
+
                     b.Property<string>("Title");
 
                     b.Property<int>("Type");

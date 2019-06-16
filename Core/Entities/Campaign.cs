@@ -18,6 +18,7 @@ namespace Core.Entities
    
         public string Requirement { get; set; }
 
+        public string SystemNote { get; set; }
         // Lay o settings
         public int ServiceChargePercent { get; set; }
         // Lay o settings
@@ -49,15 +50,16 @@ namespace Core.Entities
     public enum CampaignStatus
     {
         [DisplayName("Khởi tạo")]
-        Created,
-  
+        Created = 1,
         [DisplayName("Đã bắt đầu")]
-        Started,
+        Started = 2,
         [DisplayName("Đã kết thúc")]
-        Ended,
+        Ended = 3,
         [DisplayName("Đã hoàn thành")]
-        Completed,
-        [DisplayName("Hủy")]
-        Canceled
+        Completed = 4,
+        [DisplayName("Đã Hủy")]
+        Canceled = 5,
+        [DisplayName("Lỗi")]
+        Error = 6,
     }
 }

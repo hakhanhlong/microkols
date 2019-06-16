@@ -43,7 +43,7 @@ namespace Website.Services
 
         #region Notification
 
-        public async Task<int> GetCountNotification(EntityType entityType,int entityId, NotificationStatus? status)
+        public async Task<int> GetCountNotification(EntityType entityType, int entityId, NotificationStatus? status)
         {
             return await _notificationRepository.CountAsync(new NotificationSpecification(entityType, entityId, status));
         }
@@ -125,19 +125,31 @@ namespace Website.Services
             }
 
         }
-       
+
 
         #endregion
 
 
 
         #region  Notification Job
+        public async Task CreateNotificationCampaignCompleted(int campaignid)
+        {
 
-  
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
+               NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), campaignAccount.AccountChargeAmount.ToPriceText()));
+            }
+        }
+
         public async Task CreateNotificationCampaignStarted(int campaignid)
         {
 
-            var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus>(){
+                CampaignAccountStatus.Canceled, CampaignAccountStatus.AccountRequest, CampaignAccountStatus.AgencyRequest
+            }));
 
             foreach (var campaignAccount in campaignAccounts)
             {
@@ -149,8 +161,10 @@ namespace Website.Services
         public async Task CreateNotificationCampaignEnded(int campaignid)
         {
 
-            var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
-
+            //var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus>(){
+                CampaignAccountStatus.Finished
+            }, null));
             foreach (var campaignAccount in campaignAccounts)
             {
                 await _notificationRepository.CreateNotification(NotificationType.CampaignEnded, EntityType.Account, campaignAccount.AccountId, campaignid,

@@ -45,7 +45,7 @@ namespace Website.Interfaces
         Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model);
 
 
-        Task<string> GetProviderIdByAccount(int accountid, string provider);
+        Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider);
 
     }
 }

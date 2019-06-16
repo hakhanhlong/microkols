@@ -14,6 +14,12 @@ namespace Core.Entities
         public string Email { get; set; }
 
     }
-   
+
+    public enum AccountProviderNames
+    {
+        Facebook
+    }
+
+
 
 }

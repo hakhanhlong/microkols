@@ -81,29 +81,30 @@ else
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
                 {
-                    <div>
-                        <div class="mb-2">
-                            Chiến dịch đã được bắt đầu thực hiện. <br />
-                            Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-                        </div>
-
-                        <div class="mb-2">
-                            Nội dung công việc: <span>@Model.Description</span>
-                        </div>
-                        @if (Model.Type == CampaignType.ChangeAvatar)
-                        {
-                            <div>
-                                <button class="btn btn-primary">Xác nhận đã đổi Avatar</button>
+                    if (Model.Status == CampaignStatus.Started)
+                    {
+                        <div>
+                            <div class="mb-2">
+                                Chiến dịch đã được bắt đầu thực hiện. <br />
+                                Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
                             </div>
-                        }
-                        else
-                        {
+
+                            <div class="mb-2">
+                                Nội dung công việc: <span>@Model.Description</span>
+                            </div>
+
                             <div>
                                 <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
 
                             </div>
-                        }
-                    </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">Chờ doanh nghiệp bắt đầu chiến dịch để thực hiện công việc</div>
+                    }
+
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Submitted)
                 {

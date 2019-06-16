@@ -25,7 +25,9 @@ namespace Core.Entities
         AccountConfirmJoinCampaign,
         CampaignStarted,
         CampaignEnded,
+        CampaignCompleted,
         AccountSubmitCampaignRefContent,
+        AccountFinishCampaignRefContent,
         AgencyApproveCampaignRefContent,
         AgencyDeclineCampaignRefContent,
         AgencyCancelAccountJoinCampaign,
@@ -40,12 +42,19 @@ namespace Core.Entities
     {
         public static string GetMessageText(this NotificationType type, params string[] args)
         {
-            var message = "";
+            
+               var message = "";
             if (type == NotificationType.AccountConfirmJoinCampaign)
             {
                 message = "Thành viên {0} đã đồng ý tham gia chiến dịch {1}";
             }
-            else if (type == NotificationType.AgencyCancelAccountJoinCampaign)
+
+            else if (type == NotificationType.AccountFinishCampaignRefContent)
+            {
+                message = "Thành viên {0} đã thực hiện công việc chiến dịch {1}";
+            }
+
+            else if(type == NotificationType.AgencyCancelAccountJoinCampaign)
             {
                 message = "Doanh nghiệp {0} đã hủy quyền tham gia dự án chiến dịch {1} của bạn";
             }
@@ -79,10 +88,16 @@ namespace Core.Entities
             {
                 message = "Chiến dịch {0} đã bắt đầu thực hiện";
             }
-            else if (type == NotificationType.CampaignStarted)
+            else if (type == NotificationType.CampaignEnded)
             {
                 message = "Chiến dịch {0} đã kết thúc";
             }
+            else if (type == NotificationType.CampaignCompleted)
+            {
+                message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận {1} ";
+            }
+
+            
             return string.Format(message, args);
         }
     }

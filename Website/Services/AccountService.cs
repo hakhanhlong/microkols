@@ -148,9 +148,9 @@ namespace Website.Services
 
         #region Update Provider
 
-        public async Task<string> GetProviderIdByAccount(int accountid, string provider)
+        public async Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider)
         {
-            var filter = new AccountProviderSpecification(accountid, provider);
+            var filter = new AccountProviderSpecification(accountid, provider.ToString());
 
             var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
             return accountProvider != null ? accountProvider.ProviderId : string.Empty;

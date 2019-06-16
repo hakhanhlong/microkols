@@ -49,6 +49,7 @@
 var AgencyCreateCampaignPage = (function () {
 
     function init() {
+        handler();
         handlerType();
         $('#Type').change(function () {
             handlerType();
@@ -62,12 +63,43 @@ var AgencyCreateCampaignPage = (function () {
     }
 
 
+
+    function handler() {
+        $('#dataImageFile').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var preview = $(this).data('preview');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                if (datas.length > 0) {
+                    $(target).val(datas[0].path);
+                    $(target).trigger("change");
+                    $(preview).attr('src', datas[0].url);
+                }
+            });
+
+        });
+
+    }
+
     function handlerType() {
         var type = $('#Type').val();
         console.log('type', type);
         $('#enabledExtraTypeWrap,#requirementWrap,#changeAvatarWrap').addClass('d-none');
         var selectedOption = $('#Type').children('option:selected');
         var accountpricetext = selectedOption.data('accountpricetext');
+        var datatext = selectedOption.data('datatext');
+        $('#dataText').text(datatext);
+        if (type === 'ChangeAvatar') {
+
+            $('#dataInput').addClass('d-none');
+            $('#dataImage').removeClass('d-none');
+        } else {
+
+            $('#dataInput').removeClass('d-none');
+            $('#dataImage').addClass('d-none');
+        }
 
         $('#editAccountPriceWrap span').text(accountpricetext);
         $('#editAccountPriceWrap').removeClass('openedit');
@@ -84,6 +116,8 @@ var AgencyCreateCampaignPage = (function () {
         }
         else if (type === 'ChangeAvatar') {
             $('#changeAvatarWrap').removeClass('d-none');
+
+            
         }
 
         pricingCalculator();
@@ -220,6 +254,27 @@ var AccountDetailsCampaignPage = (function () {
         });
     }
     
+    return {
+        Init: init
+    };
+
+})();
+
+var HomeIndexPage = (function () {
+
+    function init() {
+        handler();
+    }
+
+
+    function handler() {
+        $('.owl-carousel').owlCarousel({
+            margin: 10,
+            loop: true,
+            autoWidth: true,
+            items: 4
+        })
+    }
     return {
         Init: init
     };

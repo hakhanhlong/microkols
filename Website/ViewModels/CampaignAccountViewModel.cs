@@ -72,8 +72,15 @@ namespace Website.ViewModels
     {
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Nội dung Caption")]
-
         public string RefContent { get; set; }
+
+        public string Image { get; set; }
+        public int CampaignId { get; set; }
+    }
+
+
+    public class SubmmitCampaignAccountChangeAvatarViewModel
+    {
         public int CampaignId { get; set; }
     }
 

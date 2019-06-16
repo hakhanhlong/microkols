@@ -7414,7 +7414,7 @@ ul.stepper {
   padding: 0 1.5rem;
   padding: 1.5rem; }
   ul.stepper li > a {
-    padding: 1.5rem;
+    padding: 1rem;
     text-align: center; }
     ul.stepper li > a .circle {
       display: inline-block;
@@ -7480,7 +7480,7 @@ ul.stepper {
           position: absolute;
           width: 1px;
           height: calc(100% - 40px);
-          left: 2.19rem;
+          left: 1.9rem;
           top: 3.75rem; } }
   .stepper-horizontal > li:not(:last-of-type) {
     margin-bottom: 0 !important; }
@@ -7520,9 +7520,12 @@ ul.stepper {
       position: absolute;
       width: 1px;
       height: calc(100% - 40px);
-      left: 2.19rem;
+      left: 1.9rem;
       top: 3.44rem;
       background-color: rgba(0, 0, 0, 0.1); }
+
+body {
+  /*background-color: #f8f9fa;*/ }
 
 .btn-facebook {
   color: #fff;
@@ -7560,3 +7563,137 @@ ul.stepper {
     padding: 0.15em 0.35em; }
   .nav-notif .dropdown-menu {
     width: 20rem; }
+
+.affix {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  opacity: 1; }
+
+.affix-top {
+  position: static;
+  opacity: 0.8; }
+
+#cookieConsent {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  border-radius: 0; }
+
+.footer {
+  color: #ced4da;
+  font-size: .9rem; }
+  .footer .ps h3 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 1rem; }
+  .footer .ps li a {
+    transition: all .5s; }
+  .footer .ps li a:hover {
+    padding-left: .5rem; }
+  .footer a {
+    color: #fff; }
+
+.pagetitle {
+  padding: 1rem 0;
+  background: #f8f9fa; }
+  .pagetitle .breadcrumb {
+    background: none;
+    padding: 0;
+    margin: 0; }
+    .pagetitle .breadcrumb li {
+      font-size: .8rem; }
+    .pagetitle .breadcrumb a {
+      color: #000; }
+  .pagetitle h1 {
+    font-size: 1.75rem;
+    margin-bottom: 0; }
+
+.nav-linetabs .nav-item .nav-link {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  background-color: transparent;
+  border-bottom: 3px solid transparent;
+  color: #000;
+  transition: all .5s; }
+  .nav-linetabs .nav-item .nav-link.active {
+    border-color: #007bff;
+    color: #007bff; }
+
+.homeslider {
+  background: url(https://7saturday.com/assets/img/home4-slider-bg.jpg) center;
+  background-size: cover;
+  position: relative; }
+  .homeslider:before {
+    background: #343a40;
+    content: "";
+    height: 100%;
+    left: 0;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    width: 100%; }
+  .homeslider .wrap {
+    position: relative;
+    padding: 200px 20px 150px 20px; }
+  .homeslider .card {
+    border-top-width: 5px; }
+  .homeslider .card-agency {
+    border-top-color: #17a2b8; }
+  .homeslider .card-account {
+    border-top-color: #ffc107; }
+
+.homesliderkols {
+  background-color: #f5f5f5;
+  padding: 50px 0; }
+  .homesliderkols .owl-item img {
+    height: 320px;
+    width: 320px; }
+
+.homecounting .fa-brain, .homecounting .fa-star {
+  font-size: 3rem; }
+
+.homecounting h3 {
+  margin-left: 1.5rem; }
+  .homecounting h3 span {
+    color: #007bff; }
+
+.homecounting .ics {
+  width: 110px;
+  height: 110px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto 1rem; }
+
+.homecounting .ics-wrap {
+  padding-top: 30px; }
+
+.homecounting .ics.red {
+  color: #dc3545;
+  border-color: #dc3545; }
+
+.homecounting .ics.violet {
+  color: #6f42c1;
+  border-color: #6f42c1; }
+
+.homecounting .ics.green {
+  color: #28a745;
+  border-color: #28a745; }
+
+.homecounting .ics.blue {
+  color: #007bff;
+  border-color: #007bff; }
+
+.homecounting .ics.yellow {
+  color: #ffc107;
+  border-color: #ffc107; }
+
+.homecounting .ics.teal {
+  color: #20c997;
+  border-color: #20c997; }

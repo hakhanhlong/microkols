@@ -4,7 +4,7 @@ $border-radius-base: .125rem !default;
 $border-radius-circle: 50% !default;
 
 // Steppers
-$stepper-li-a-padding: 1.5rem!default;
+$stepper-li-a-padding: 1rem!default;
 $stepper-li-a-circle-color: $white !default;
 $stepper-li-a-circle-border-radius: $border-radius-circle !default;
 $stepper-li-a-circle-bg: rgba($black, .38) !default;
@@ -20,7 +20,7 @@ $stepper-horizontal-breakpoint: 47.9375rem !default;
 $stepper-horizontal-small-li-a-label-mt: .2rem !default;
 $stepper-horizontal-small-li-after-width: $stepper-horizontal-li-after-height !default;
 $stepper-horizontal-small-li-after-height: calc(100% - 40px) !default;
-$stepper-horizontal-small-li-after-left: 2.19rem !default;
+$stepper-horizontal-small-li-after-left: 1.9rem !default;
 $stepper-horizontal-small-li-after-top: 3.75rem !default;
 
 $stepper-vertical-li-a-label-mt: $stepper-horizontal-small-li-a-label-mt !default;

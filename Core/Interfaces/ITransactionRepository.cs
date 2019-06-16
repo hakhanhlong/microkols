@@ -15,5 +15,7 @@ namespace Core.Interfaces
 
         Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username);
         Task UpdateTransactionHistory(int transactionid, int walletid, long amount, long balance, string note);
+
+        Task<long> GetTotalAmount(TransactionType transactionType, int refid);
     }
 }

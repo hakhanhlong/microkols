@@ -44,7 +44,7 @@ namespace Website.ViewModels
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Description = Description,
-                Image = string.Empty,
+                Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
                 Status = CampaignStatus.Created,
                 Title = string.Empty,
@@ -64,8 +64,7 @@ namespace Website.ViewModels
             };
 
         }
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Yêu cầu của chiến dịch")]
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
 
      
@@ -88,6 +87,7 @@ namespace Website.ViewModels
         [Display(Name = "Thời gian")]
         public int? AccountChargeTime { get; set; } = 1;
 
+        public string Image { get; set; } = string.Empty;
 
         [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }

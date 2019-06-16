@@ -14,6 +14,13 @@ namespace Core.Specifications
         public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status ) : base(m => m.CampaignId == campaignid && m.Status== status)
         {
         }
+
+        public CampaignAccountSpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
+           : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
+           (ignoreStatus == null  || !ignoreStatus.Contains(m.Status)))
+        {
+
+        }
     }
 
 
@@ -22,12 +29,7 @@ namespace Core.Specifications
         public CampaignAccountByAgencySpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
         }
-        public CampaignAccountByAgencySpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
-            : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
-            (ignoreStatus== null || !ignoreStatus.Contains(m.Status)))
-        {
-
-        }
+        
     }
     public class ConfirmedCampaignAccountSpecification : BaseSpecification<CampaignAccount>
     {

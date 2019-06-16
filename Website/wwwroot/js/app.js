@@ -34,10 +34,12 @@ var App = (function () {
         }
         else if (currentPage === 'accountcampaign_details') {
             AccountDetailsCampaignPage.Init();
+        } else if (currentPage === 'home_index') {
+            HomeIndexPage.Init();
         }
     }
     function handler() {
-       
+
 
 
 
@@ -116,6 +118,15 @@ var App = (function () {
                 });
             }, 500);
         }
+
+        AppCommon.toggleAffix();
+
+        if ($('#cookieConsentModal').length > 0) {
+            $('#cookieConsentModal').modal('show');
+        }
+
+
+
 
     }
 

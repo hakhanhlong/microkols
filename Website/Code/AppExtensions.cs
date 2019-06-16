@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Website.Code.Helpers;
 using Website.Code.Middlewares;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.Services;
 
 namespace Website.Code
@@ -46,7 +47,11 @@ namespace Website.Code
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<INotificationService, NotificationService>();
 
-            
+
+
+
+            services.AddScoped<ICampaignJob, CampaignJob>();
+
             services.AddSingleton<IFileHelper, FileHelper>();
             services.AddSingleton<IFacebookClient, FacebookClient>();
             services.AddSingleton<IFacebookHelper, FacebookHelper>();

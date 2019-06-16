@@ -8,6 +8,7 @@ namespace Website.Code.Helpers
 {
     public interface IFacebookHelper
     {
+        string GetAvatarUrl(string facebookid);
         Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken);
 
     }
@@ -18,6 +19,11 @@ namespace Website.Code.Helpers
         public FacebookHelper(IFacebookClient facebookClient)
         {
             _facebookClient = facebookClient;
+        }
+
+        public string GetAvatarUrl(string facebookid)
+        {
+            return $"http://graph.facebook.com/{facebookid}/picture?type=large";
         }
 
         public async Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken)

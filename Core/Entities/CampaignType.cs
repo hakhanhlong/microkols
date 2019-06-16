@@ -77,6 +77,40 @@ namespace Core.Entities
             }
             return type.ToString();
         }
+
+        public static string ToDataText(this CampaignType type)
+        {
+           
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "Hình ảnh Avatar";
+            }
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            {
+                return "Link nội dung";
+            }
+  
+
+            if (type == CampaignType.PostComment )
+            {
+                return "Link để bình luận";
+            }
+            if ( type == CampaignType.ShareStreamUrl)
+            {
+                return "Link stream";
+            }
+
+            if ( type == CampaignType.JoinEvent)
+            {
+                return "Link sự kiện";
+            }
+
+            if (type == CampaignType.CustomService)
+            {
+                return "";
+            }
+            return type.ToString();
+        }
     }
 
 }

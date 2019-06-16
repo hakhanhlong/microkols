@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Core.Entities;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Website.Code.Helpers;
 using Website.Interfaces;
 using Website.ViewModels;
 
@@ -18,23 +20,26 @@ namespace Website.Controllers
         private readonly ISharedService _sharedService;
         private readonly INotificationService _notificationService;
         private readonly IAccountService _accountService;
+        private readonly IFileHelper _fileHelper;
         public AgencyCampaignController(ISharedService sharedService,
-             IAccountService accountService,
+             IAccountService accountService, IFileHelper fileHelper,
             ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
             _sharedService = sharedService;
             _notificationService = notificationService;
             _accountService = accountService;
+            _fileHelper = fileHelper;
         }
 
 
 
-        public async Task<IActionResult> Index(CampaignType? type, string kw, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> Index(CampaignType? type, CampaignStatus? status, string kw, int pageindex = 1, int pagesize = 20)
         {
             var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, pageindex, pagesize);
             ViewBag.Kw = kw;
             ViewBag.type = type;
+            ViewBag.status = status;
             return View(model);
         }
 
@@ -56,6 +61,10 @@ namespace Website.Controllers
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(model.Image))
+                    {
+                        model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
+                    }
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
@@ -143,7 +152,7 @@ namespace Website.Controllers
             }
             else if (result == -3)
             {
-                this.AddAlert(false, "Không được phép bắt đầu chiến dịch khi còn thành viên chưa được duyệt hoặc hủy");
+                this.AddAlert(false, "Không được phép bắt đầu chiến dịch khi không có thành viên tham gia hoặc thành viên chưa được duyệt hoặc hủy");
             }
             else
             {
@@ -153,9 +162,9 @@ namespace Website.Controllers
             return RedirectToAction("Details", new { id = campaignid });
         }
 
-      
+
         [HttpPost]
-        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid,int accountid,int type)
+        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid, int accountid, int type)
         {
             if (ModelState.IsValid)
             {

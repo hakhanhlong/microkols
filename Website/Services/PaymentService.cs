@@ -152,7 +152,14 @@ namespace Website.Services
         }
 
 
+        public async Task<bool> VerifyPaybackCampaignAccount(int campaignid)
+        {
+            var totalServiceCharge = await _transactionRepository.GetTotalAmount(TransactionType.CampaignServiceCharge, campaignid);
+            var totalPayBack = await _transactionRepository.GetTotalAmount(TransactionType.CampaignAccountPayback, campaignid);
 
+            return (totalPayBack <= totalServiceCharge);
+
+        }
         public async Task<PaymentResultViewModel> CreatePaybackCampaignAccount(int campaignid, int accountid, string username)
         {
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));

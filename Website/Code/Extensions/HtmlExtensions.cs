@@ -33,8 +33,44 @@ namespace Website.Code.Extensions
         }
         public static HtmlString ToBadge(this Core.Entities.CampaignStatus status)
         {
-            var type = "success";
+            var type = "primary";
+            if(status== CampaignStatus.Canceled )
+            {
+                type = "dark";
+            }
+            else if ( status == CampaignStatus.Error)
+            {
+                type = "danger";
+            }
+            else if (status == CampaignStatus.Started)
+            {
+                type = "warning";
+            }
+
+            else if (status == CampaignStatus.Ended)
+            {
+                type = "info";
+            }
+            else if (status == CampaignStatus.Completed)
+            {
+                type = "success";
+            }
             return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+        }
+
+        public static HtmlString ToBadge(this Core.Entities.AccountType accountType)
+        {
+            var type = "primary";
+            if(accountType== AccountType.Regular)
+            {
+                type = "light";
+            }
+            else 
+            {
+                type = "info";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
         }
 
         public static HtmlString ToIcon(this bool published)
