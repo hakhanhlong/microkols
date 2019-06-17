@@ -33,6 +33,11 @@ namespace Infrastructure.Data
         {
             return await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == id && m.Actived);
         }
+
+        public async Task<List<int>> GetActivedAccountIds()
+        {
+            return await _dbContext.Account.Where(m =>  m.Actived).Select(m=>m.Id).ToListAsync();
+        }
         public async Task<Account> GetActivedAccount(string email)
         {
             return await _dbContext.Account.FirstOrDefaultAsync(m => m.Email == email && m.Actived);

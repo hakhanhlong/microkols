@@ -40,7 +40,10 @@ namespace Website.Services
             _accountFbPostRepository = accountFbPostRepository;
 
         }
-
+        public async Task<List<int>> GetActivedAccountIds()
+        {
+            return await _accountRepository.GetActivedAccountIds();
+        }
         public async Task<AccountViewModel> GetAccount(int id)
         {
             var account = await _accountRepository.GetActivedAccount(id);
@@ -86,6 +89,7 @@ namespace Website.Services
             return null;
         }
 
+
         public async Task<AuthViewModel> GetAuth(LoginProviderViewModel model)
         {
             var filter = new AccountProviderSpecification(model.Provider, model.ProviderId);
@@ -130,6 +134,7 @@ namespace Website.Services
                     Expired = DateTime.Now.AddHours(1)
                 };
                 await _accountProviderRepository.AddAsync(accountprovider);
+              
                 return GetAuth(account);
             }
             else
@@ -191,23 +196,21 @@ namespace Website.Services
                 post.CommentCount = model.CommentCount;
                 post.DateModified = DateTime.Now;
                 post.UserModified = username;
-                
+
 
 
                 await _accountFbPostRepository.UpdateAsync(post);
             }
 
         }
+
         #endregion
 
         #region Account Provider
 
-        public async Task<List<AccountProviderViewModel>> GetAccountProviders(int accountid, AccountProviderNames provider)
-        {
-            var filter = new AccountProviderSpecification(accountid, provider);
-            var accountProviders = await _accountProviderRepository.ListAsync(filter);
-            return AccountProviderViewModel.GetList(accountProviders);
-        }
+
+
+
 
         public async Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider)
         {
@@ -235,7 +238,12 @@ namespace Website.Services
             var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
             return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
         }
-
+        public async Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid)
+        {
+            var filter = new AccountProviderSpecification(provider, providerid);
+            var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
+        }
 
         public async Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider)
         {
@@ -267,7 +275,7 @@ namespace Website.Services
                 Expired = DateTime.Now.AddHours(1)
             };
             await _accountProviderRepository.AddAsync(accountprovider);
-            return 1;
+            return 2;
         }
         #endregion
 

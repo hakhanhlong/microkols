@@ -9,6 +9,7 @@ namespace Website.Interfaces
 {
     public interface IAccountService
     {
+        Task<List<int>> GetActivedAccountIds();
         Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
                     string order, int page, int pagesize, IEnumerable<int> ignoreIds);
 
@@ -45,7 +46,7 @@ namespace Website.Interfaces
 
 
         #region Account Provider
-
+        Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid);
         Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider);
         Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
         Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider);

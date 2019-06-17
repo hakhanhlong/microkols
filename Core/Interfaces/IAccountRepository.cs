@@ -10,6 +10,7 @@ namespace Core.Interfaces
 {
     public interface IAccountRepository : IRepository<Account>, IAsyncRepository<Account>
     {
+        Task<List<int>> GetActivedAccountIds();
         Task<Account> GetActivedAccount(int id);
         Task<Account> GetActivedAccount(string email);
         Task<Account> GetAccount(string email);

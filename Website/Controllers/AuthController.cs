@@ -60,12 +60,12 @@ namespace Website.Controllers
         }
 
 
-      
+
         #endregion
 
 
         #region Social login
-
+        [HttpPost]
         public async Task<IActionResult> GetUserInfo(AccountProviderNames provider, string token)
         {
             var loginInfo = provider == AccountProviderNames.Facebook ? await _facebookHelper.GetLoginProviderAsync(token) :
@@ -75,14 +75,26 @@ namespace Website.Controllers
                 this.AddAlertDanger($"Lỗi khi lấy thông tin từ hệ thống {provider}. Xin vui lòng thử lại. Token {token}");
                 return RedirectToAction("Login");
             }
+
+            var accountProvider = await _accountService.GetAccountProviderByProvider(provider, loginInfo.ProviderId);
+            var accountProviderExist = accountProvider != null;
+
             var auth = await _accountService.GetAuth(loginInfo);
             if (auth == null)
             {
-              
                 this.AddAlertDanger("Lỗi khi lấy thông tin đăng nhập. Tài khoản đã bị khóa hoặc xóa. Xin vui lòng liên hệ quản trị hệ thống");
                 return RedirectToAction("Login");
             }
-            BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
+
+            if (provider == AccountProviderNames.Facebook)
+            {
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
+                if (!accountProviderExist)
+                {
+                    BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, auth.Username, 1));
+                }
+            }
+
 
             await SignIn(auth);
             return RedirectToAction("Index", "Home");
@@ -115,7 +127,7 @@ namespace Website.Controllers
 
                         return RedirectToAction("Index", "Home");
                     }
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 this.AddAlertDanger("Tên đăng nhập đã tồn tại");
             }

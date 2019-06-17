@@ -35,9 +35,14 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return RedirectToAction("ChangeInfo");
+            return View();
         }
 
+        public async Task<IActionResult> FbPost(int page = 1, int pagesize = 20)
+        {
+            var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, page, pagesize);
+            return View(model);
+        }
 
         #region ChangePassword
         public async Task<IActionResult> ChangePassword()
@@ -220,7 +225,6 @@ namespace Website.Controllers
             }
             else
             {
-
                 var r = await _accountService.UpdateAccountProvider(CurrentUser.Id, new UpdateAccountProviderViewModel()
                 {
                     Email = info.Email,
@@ -239,6 +243,12 @@ namespace Website.Controllers
 
                     BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
                     this.AddAlertSuccess($"Liên kết Tài khoản {info.Provider} thành công");
+
+
+                    if (r == 2)
+                    { // tao moi fb id -> add new FbPost tu 2018
+                        BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 1));
+                    }
                 }
             }
 

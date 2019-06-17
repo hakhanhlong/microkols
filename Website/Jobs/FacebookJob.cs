@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Common.Extensions;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Hangfire;
@@ -40,7 +41,10 @@ namespace Website.Jobs
             foreach (var accountProvider in accountProviders)
             {
                 BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken(accountProvider.Id, accountProvider.AccessToken));
+
             }
+
+
         }
 
         public async Task ExtendAccessToken(int id, string tokenExpired)
@@ -50,6 +54,8 @@ namespace Website.Jobs
             {
                 await _accountService.UpdateAccountProvidersAccessToken(id, accessToken.AccessToken, accessToken.ExpiresIn);
             }
+
+
         }
 
         #endregion
@@ -57,15 +63,15 @@ namespace Website.Jobs
 
         #region Update Facebook Post
 
-        public async Task UpdateFbPost(int accountid, string username)
+        public async Task UpdateFbPost(int accountid, string username, int type = 1)
         {
-            
+
             var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
             if (accountProvider != null)
             {
-
+                var since = type == 1 ? new DateTime(2018, 1, 1).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
                 // chi lay 1000 bai`
-                var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId);
+                var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
                 foreach (var fbPost in fbPosts)
                 {
@@ -73,11 +79,18 @@ namespace Website.Jobs
                     {
                         await _accountService.UpdateFbPost(accountid, fbPost, username);
                     }
-
                 }
             }
+        }
 
+        public async Task UpdateFbPost()
+        {
+            var accountIds = await _accountService.GetActivedAccountIds();
 
+            foreach (var accountId in accountIds)
+            {
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(accountId, AppConstants.USERNAME, 2));
+            }
         }
         #endregion
 

@@ -104,6 +104,7 @@ namespace Website
 
             RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCompletedCampagin(0), Cron.Hourly);
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.ExtendAccessToken(), Cron.Daily);
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), Cron.Daily);
 
 
             app.UseMvc(routes =>

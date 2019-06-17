@@ -12,7 +12,7 @@ namespace Website.Code.Helpers
     {
         string GetAvatarUrl(string facebookid);
         Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken);
-        Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid);
+        Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid, long since = 1514764800, int limit = 10000);
         Task<FbExtendTokenViewModel> GetExtendToken(string accessToken);
 
     }
@@ -49,10 +49,10 @@ namespace Website.Code.Helpers
             };
         }
 
-        public async Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid)
+        public async Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid, long since = 1514764800, int limit = 10000)
         {
 
-            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}/posts", "limit=1000&since=1514764800&fields=full_picture,message,created_time,link,shares,comments.summary(1),likes.limit(0).summary(1),reactions.summary(1)");
+            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}/posts", $"limit={limit}&since={since}&fields=full_picture,message,created_time,link,shares,comments.summary(1),likes.limit(0).summary(1),reactions.summary(1)");
             var result = new List<AccountFbPostViewModel>();
             var posts = (JArray)postResult["data"];
             foreach (var post in posts)

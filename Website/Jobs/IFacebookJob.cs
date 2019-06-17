@@ -7,6 +7,7 @@ namespace Website.Jobs
         Task ExtendAccessToken();
         Task ExtendAccessToken(int id, string tokenExpired);
 
-        Task UpdateFbPost(int accountid, string username);
+        Task UpdateFbPost();
+        Task UpdateFbPost(int accountid, string username, int type = 1);
     }
 }

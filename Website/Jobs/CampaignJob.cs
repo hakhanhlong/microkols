@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Website.Code;
 using Website.Interfaces;
 
 namespace Website.Jobs
@@ -13,7 +14,6 @@ namespace Website.Jobs
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
         private readonly IAccountService _accountService;
-        const string Username = "system";
         public CampaignJob(IPaymentService paymentService,
              IAccountService accountService,
             ICampaignService campaignService, INotificationService notificationService)
@@ -41,13 +41,13 @@ namespace Website.Jobs
 
                     foreach (var accountid in accountids)
                     {
-                        await _paymentService.CreatePaybackCampaignAccount(campaignid, accountid, Username);
+                        await _paymentService.CreatePaybackCampaignAccount(campaignid, accountid, AppConstants.USERNAME);
                     }
 
                     var isvalid = await _paymentService.VerifyPaybackCampaignAccount(campaignid);
                     if (isvalid)
                     {
-                        await _campaignService.UpdateCampaignCompleted(campaignid, Username);
+                        await _campaignService.UpdateCampaignCompleted(campaignid, AppConstants.USERNAME);
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignCompleted(campaignid));
                     }
                     else
@@ -58,7 +58,7 @@ namespace Website.Jobs
                 }
                 catch(Exception ex)
                 {
-                    await _campaignService.UpdateCampaignError(campaignid,$"Lỗi khi hoàn thành chiến dịch: {ex.Message}" , Username);
+                    await _campaignService.UpdateCampaignError(campaignid,$"Lỗi khi hoàn thành chiến dịch: {ex.Message}" , AppConstants.USERNAME);
                 }
                 
             }
