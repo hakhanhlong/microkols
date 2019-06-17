@@ -42,6 +42,36 @@ namespace Website.ViewModels
         public string Avatar { get; set; }
     }
 
+    public class AccountProviderViewModel
+    {
+        public AccountProviderViewModel()
+        {
+
+        }
+        public AccountProviderViewModel(AccountProvider accountProvider)
+        {
+            Id = accountProvider.Id;
+            AccountId = accountProvider.AccountId;
+            AccessToken = accountProvider.AccessToken;
+            Expired = accountProvider.Expired;
+            ProviderId = accountProvider.ProviderId;
+            Name = accountProvider.Name;
+            Email = accountProvider.Email;
+        }
+        public static List<AccountProviderViewModel> GetList(IEnumerable<AccountProvider> accounts)
+        {
+            return accounts.Select(m => new AccountProviderViewModel(m)).ToList();
+        }
+        public int Id { get; set; }
+        public int AccountId { get; set; }
+        public string AccessToken { get; set; }
+        public DateTime Expired { get; set; }
+
+        public AccountProviderNames Provider { get; set; }
+        public string ProviderId { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
 
     public class ChangePasswordViewModel
     {

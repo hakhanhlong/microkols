@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.ViewModels;
 
 namespace Website.Controllers
@@ -34,7 +36,6 @@ namespace Website.Controllers
         public async Task<IActionResult> Index()
         {
             return RedirectToAction("ChangeInfo");
-            return View();
         }
 
 
@@ -84,6 +85,7 @@ namespace Website.Controllers
             return View(model);
         }
         #endregion
+
         #region Change Info
         public async Task<IActionResult> ChangeInfo()
         {
@@ -208,9 +210,9 @@ namespace Website.Controllers
 
         #region Link Provider
         [HttpPost]
-        public async Task<IActionResult> LinkProvider(string provider, string token, string returnurl)
+        public async Task<IActionResult> LinkProvider(AccountProviderNames provider, string token, string returnurl)
         {
-            var info = provider == "Facebook" ? await _facebookHelper.GetLoginProviderAsync(token) :
+            var info = provider == AccountProviderNames.Facebook ? await _facebookHelper.GetLoginProviderAsync(token) :
                await Code.Helpers.SocialHelper.VerifyGoogleTokenAsync(token);
             if (info == null)
             {
@@ -231,9 +233,11 @@ namespace Website.Controllers
                 if (r < 0)
                 {
                     this.AddAlertDanger($"Tài khoản {info.Provider} đã được liên kết với tài khoản khác. Vui lòng thử lại tài khoản khác");
-                }else
+                }
+                else
                 {
 
+                    BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
                     this.AddAlertSuccess($"Liên kết Tài khoản {info.Provider} thành công");
                 }
             }

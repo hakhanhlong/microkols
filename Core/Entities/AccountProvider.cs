@@ -8,7 +8,10 @@ namespace Core.Entities
     {
         public int AccountId { get; set; }
         public Account Account { get; set; }
-        public string Provider { get; set; }
+        public string AccessToken { get; set; }
+        public DateTime Expired { get; set; }
+
+        public AccountProviderNames Provider { get; set; }
         public string ProviderId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
@@ -17,7 +20,8 @@ namespace Core.Entities
 
     public enum AccountProviderNames
     {
-        Facebook
+        Facebook,
+        Google
     }
 
 

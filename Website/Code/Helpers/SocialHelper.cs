@@ -25,7 +25,8 @@ namespace Website.Code.Helpers
                     Email = (string)user.email,
                     ProviderId = (string)user.sub,
                     Name = (string)user.name,
-                    Provider = "Google"
+                    Provider = AccountProviderNames.Google,
+                    AccessToken = token
                 };
             }
             catch
@@ -52,7 +53,8 @@ namespace Website.Code.Helpers
                     Email = (string)user.email,
                     ProviderId = (string)user.id,
                     Name = (string)user.name,
-                    Provider = "Facebook"
+                    Provider = AccountProviderNames.Facebook,
+                    AccessToken= token
                 };
             }
             catch

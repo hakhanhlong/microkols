@@ -39,13 +39,24 @@ namespace Website.Interfaces
         Task<bool> VerifyEmail(string email);
 
 
-        Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
 
         Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid);
         Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model);
 
 
-        Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider);
+        #region Account Provider
 
+        Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider);
+        Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
+        Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider);
+        Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider);
+        Task<bool> UpdateAccountProvidersAccessToken(int id, string accessToken, int expiredIn);
+
+        #endregion
+
+        #region Account FbPost
+        Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username);
+        Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize);
+        #endregion
     }
 }

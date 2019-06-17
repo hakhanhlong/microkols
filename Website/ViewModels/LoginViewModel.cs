@@ -45,12 +45,13 @@ namespace Website.ViewModels
 
     public class LoginProviderViewModel 
     {
-        public string Provider { get; set; }
+        public AccountProviderNames Provider { get; set; }
 
         public string ProviderId { get; set; }
         public string Email { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+        public string AccessToken { get; set; }
 
     }
 

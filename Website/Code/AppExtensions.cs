@@ -51,7 +51,9 @@ namespace Website.Code
 
 
             services.AddScoped<ICampaignJob, CampaignJob>();
+            services.AddScoped<IFacebookJob, FacebookJob>();
 
+            
             services.AddSingleton<IFileHelper, FileHelper>();
             services.AddSingleton<IFacebookClient, FacebookClient>();
             services.AddSingleton<IFacebookHelper, FacebookHelper>();

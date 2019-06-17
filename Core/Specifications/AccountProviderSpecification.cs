@@ -12,11 +12,12 @@ namespace Core.Specifications
         {
 
         }
-        public AccountProviderSpecification(int accountid, string provider) : base(m => m.AccountId == accountid && m.Provider == provider)
+        public AccountProviderSpecification(int accountid, AccountProviderNames provider) : base(m => m.AccountId == accountid && m.Provider == provider)
         {
 
         }
-        public AccountProviderSpecification(string provider, string providerid)
+
+        public AccountProviderSpecification(AccountProviderNames provider, string providerid)
             : base(m => m.ProviderId == providerid && m.Provider == provider)
         {
 
@@ -26,5 +27,21 @@ namespace Core.Specifications
 
 
     }
+
+    public class AccountProviderByExpiredTokenSpecification : BaseSpecification<AccountProvider>
+    {
+        
+        public AccountProviderByExpiredTokenSpecification(AccountProviderNames provider) 
+            : base(m => m.Provider == provider && m.Expired < DateTime.Now.AddHours(2))
+        {
+
+        }
+
+
+
+
+
+    }
+
 
 }
