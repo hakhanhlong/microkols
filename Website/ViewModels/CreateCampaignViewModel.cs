@@ -84,6 +84,7 @@ namespace Website.ViewModels
 
         [Display(Name = "Chi phí")]
         public int? AccountChargeAmount { get; set; }
+
         [Display(Name = "Thời gian")]
         public int? AccountChargeTime { get; set; } = 1;
 

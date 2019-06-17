@@ -36,7 +36,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index(CampaignType? type, CampaignStatus? status, string kw, int pageindex = 1, int pagesize = 20)
         {
-            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, pageindex, pagesize);
+            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, status, kw, pageindex, pagesize);
             ViewBag.Kw = kw;
             ViewBag.type = type;
             ViewBag.status = status;
@@ -69,7 +69,7 @@ namespace Website.Controllers
                     if (id > 0)
                     {
                         this.AddAlertSuccess("Thêm chiến dịch mới thành công");
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Details", new { id = id }) ;
                     }
                 }
 

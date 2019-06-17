@@ -8,8 +8,8 @@ namespace Core.Specifications
 {
     public class CampaignByAgencySpecification : BaseSpecification<Campaign>
     {
-        public CampaignByAgencySpecification(int agencyid, CampaignType? type, string keyword)
-            : base(m => m.AgencyId == agencyid && m.Published && (!type.HasValue || m.Type == type) &&
+        public CampaignByAgencySpecification(int agencyid, CampaignType? type, CampaignStatus? status, string keyword)
+            : base(m => m.AgencyId == agencyid && m.Published && (!type.HasValue || m.Type == type) && (!status.HasValue || m.Status == status) &&
 
             (string.IsNullOrEmpty(keyword) || m.Title.Contains(keyword))
             )

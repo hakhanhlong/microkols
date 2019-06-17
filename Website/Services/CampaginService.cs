@@ -108,9 +108,9 @@ namespace Website.Services
 
 
 
-        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, string keyword, int page, int pagesize)
+        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize)
         {
-            var filter = new CampaignByAgencySpecification(agencyid, type, keyword);
+            var filter = new CampaignByAgencySpecification(agencyid, type, status, keyword);
             var campaigns = await _campaignRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);
             var total = await _campaignRepository.CountAsync(filter);
 
