@@ -1,0 +1,20 @@
+
+#editAccountPriceWrap {
+    span {
+        color: $danger;
+    }
+
+    input {
+        display: none;
+    }
+
+    &.openedit {
+        span {
+            display: none;
+        }
+
+        input {
+            display: inline;
+        }
+    }
+}
