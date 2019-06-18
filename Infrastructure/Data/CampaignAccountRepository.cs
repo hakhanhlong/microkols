@@ -58,6 +58,19 @@ namespace Infrastructure.Data
                 await _dbContext.SaveChangesAsync();
                 return 1;
             }
+            else 
+            {
+                if(campaignAccount.Status== CampaignAccountStatus.Canceled)
+                {
+                    campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
+                    campaignAccount.DateModified = DateTime.Now;
+                    campaignAccount.UserModified = username;
+                    campaignAccount.AccountChargeAmount = accountChargeAmount;
+                    await _dbContext.SaveChangesAsync();
+                    return 1;
+                }
+
+            }
             return 0;
         }
         #endregion

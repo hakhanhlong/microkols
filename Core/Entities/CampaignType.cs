@@ -26,9 +26,9 @@ namespace Core.Entities
     {
         public static string ToActionText(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption )
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
             {
-                return "Chia sẻ thông điệp";
+                return "Chia sẻ ngay";
             }
             if (type == CampaignType.PostComment)
             {
@@ -89,7 +89,7 @@ namespace Core.Entities
             {
                 return "Link nội dung";
             }
-  
+          
 
             if (type == CampaignType.PostComment )
             {

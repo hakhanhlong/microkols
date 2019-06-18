@@ -51,15 +51,10 @@
         </div>
         @if (regularAccounts.Count > 0)
         {
-            <div class="row py-2">
-                @foreach (var campaignAccount in Model.CampaignAccounts)
-                {
-                <div class="col-md-6">
-                    <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
-                </div>
-
-                }
-            </div>
+            foreach (var campaignAccount in Model.CampaignAccounts)
+            {
+                <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
+            }
         }
         else
         {
@@ -74,8 +69,17 @@
 <div class="">
 
     <div class="mb-2">
-        Tổng chi phí: <span class="text-danger"> @Model.Payment.AccountChargeAmount.ToPriceText()</span>
+        Tổng phí thành viên: <span class="text-danger"> @Model.Payment.AccountChargeAmount.ToPriceText()</span>
+
+        @*@if(Model.Type== CampaignType.ShareContent || Model.Type== CampaignType.ShareContentWithCaption)
+        {
+            if (Model.EnabledAccountChargeExtra)
+            {
+                <span>Phí đính kèm hình ảnh cá nhân  </span>
+            }
+        }*@
     </div>
+   
     <div class="mb-2">
         Đã thanh toán: <span class="text-success">@Model.Payment.AccountPaidAmount.ToPriceText()</span>
     </div>

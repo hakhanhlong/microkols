@@ -66,9 +66,9 @@
 
         @if (!string.IsNullOrEmpty(Model.Data))
         {
-        <div>
-            @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
-        </div>
+            <div>
+                @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
+            </div>
         }
 
         @if (!string.IsNullOrEmpty(Model.Description))
@@ -135,18 +135,17 @@ else
                 {
                     if (Model.Status == CampaignStatus.Started)
                     {
+
                         <div>
                             <div class="mb-2">
                                 Chiến dịch đã được bắt đầu thực hiện. <br />
                                 Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
                             </div>
 
-                            <div class="mb-2">
-                                Nội dung công việc: <span>@Model.Description</span>
-                            </div>
-
                             <div>
-                                <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
+                                <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })">
+                                
+                                @Model.Type.ToActionText() ngay</button>
 
                             </div>
 
@@ -167,11 +166,13 @@ else
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Approved)
                 {
-                    <div>
+                    <div class="mb-2">
                         Doanh nghiệp Đã duyệt nội dung Caption
                     </div>
 
                     <div>
+                        <button class="btn btn-info btn-shareui" data-caption="@campaignAccount.RefContent" data-href="@Model.Data" > Chia sẻ ngay</button>
+
                         <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
 
                     </div>

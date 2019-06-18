@@ -236,6 +236,29 @@ var AccountDetailsCampaignPage = (function () {
             });
         });
 
+
+        $('.btn-shareui').click(function () {
+
+            var href = $(this).data('href');
+            //var caption = $(this).data('caption');
+
+            FB.ui(
+                {
+                    method: 'share',
+                    href: href,
+                    //quote: caption,
+                },
+                function (response) {
+
+                    console.log('FB.ui', response);
+                    if (response && !response.error_message) {
+                        alert('Posting completed.');
+                    } else {
+                        alert('Error while posting.');
+                    }
+                });
+        });
+
     }
     function handlerUpdateRef() {
         $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
@@ -252,6 +275,10 @@ var AccountDetailsCampaignPage = (function () {
                 });
             }
         });
+
+
+
+
     }
     
     return {

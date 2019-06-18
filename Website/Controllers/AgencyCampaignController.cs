@@ -69,7 +69,7 @@ namespace Website.Controllers
                     if (id > 0)
                     {
                         this.AddAlertSuccess("Thêm chiến dịch mới thành công");
-                        return RedirectToAction("Details", new { id = id }) ;
+                        return RedirectToAction("Details", new { id = id });
                     }
                 }
 
@@ -121,6 +121,15 @@ namespace Website.Controllers
             var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
             return Json(result ? 1 : 0);
         }
+
+        public async Task<IActionResult> FeedbackAccountJoinCampaign(int campaignid, int accountid, int type)
+        {
+            var result = await _campaignService.FeedbackJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, type == 1, CurrentUser.Name);
+
+            this.AddAlert(result);
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
 
 
         [HttpPost]

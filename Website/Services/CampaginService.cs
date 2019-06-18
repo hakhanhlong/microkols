@@ -311,6 +311,54 @@ namespace Website.Services
         }
 
 
+        public async Task<bool> FeedbackJoinCampaignByAgency(int agencyid, int campaignid, int accountid, bool confirmed, string username)
+        {
+
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign != null || campaign.AgencyId!= agencyid)
+            {
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+
+                if (campaignAccount != null)
+                {
+                    if (campaignAccount.Status == CampaignAccountStatus.AccountRequest || campaignAccount.Status== CampaignAccountStatus.AgencyRequest)
+                    {
+                        var notifType = NotificationType.AgencyConfirmJoinCampaign;
+                        if (confirmed)
+                        {
+                            campaignAccount.Status = CampaignAccountStatus.Confirmed;
+                        }
+                        else
+                        {
+                            notifType = NotificationType.AgencyCancelAccountJoinCampaign;
+                            campaignAccount.Status = CampaignAccountStatus.Canceled;
+                        }
+                        
+                        campaignAccount.DateModified = DateTime.Now;
+                        campaignAccount.UserModified = username;
+                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+                     
+                        await _notificationRepository.AddAsync(new Notification()
+                        {
+                            Type = notifType,
+                            DataId = campaign.Id,
+                            Data = string.Empty,
+                            DateCreated = DateTime.Now,
+                            EntityType = EntityType.Account,
+                            EntityId = accountid,
+                            Message = notifType.GetMessageText(username, campaign.Id.ToString()),
+                            Status = NotificationStatus.Created
+                        });
+
+                        return true;
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
 
         #endregion
 
