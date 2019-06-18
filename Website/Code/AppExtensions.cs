@@ -36,6 +36,7 @@ namespace Website.Code
             services.AddScoped<ICampaignRepository, CampaignRepository>();
             services.AddScoped<ICampaignAccountRepository, CampaignAccountRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IAccountFbPostRepository, AccountFbPostRepository>();
             
 
             services.AddScoped<IAccountService, AccountService>();

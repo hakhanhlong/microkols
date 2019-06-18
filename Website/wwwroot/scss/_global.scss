@@ -1,4 +1,4 @@
-﻿
+﻿/// <reference path="../lib/bootstrap/dist/scss/bootstrap.scss" /> 
 body {
 }
 
@@ -29,6 +29,7 @@ body {
     top: 0;
     width: 100%;
     opacity: 1;
+    z-index: 9;
 }
 
 .affix-top {
@@ -45,12 +46,30 @@ body {
         border-left: none;
         background-color: transparent;
         border-bottom: 3px solid transparent;
-        color: $black;
+        color: $dark;
         transition: all .5s;
 
         &.active {
             border-color: $primary;
             color: $primary;
+        }
+    }
+}
+
+.navbar-menu{
+
+}
+
+.navbar-profile {
+    .nav-link {
+        padding: 0.25rem .75rem;
+        /*color: $dark;*/
+        border-top: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+
+        &:hover, &.active {
+            color: $primary;
+            border-bottom-color: $primary;
         }
     }
 }
@@ -121,7 +140,7 @@ body {
 
 
 .pagetitle {
-    padding: 1rem 0;
+    padding: .5rem 0;
     background: $light;
 
     .breadcrumb {
@@ -134,12 +153,12 @@ body {
         }
 
         a {
-            color: $black;
         }
     }
 
     h1 {
         font-size: 1.75rem;
         margin-bottom: 0;
+        color:$black;
     }
 }

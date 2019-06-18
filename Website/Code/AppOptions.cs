@@ -22,6 +22,7 @@ namespace Website.Code
         {
             if (!string.IsNullOrEmpty(path))
             {
+                if (path.StartsWith("http")) return path;
                 return $"{ResourceServer}/{path}";
             }
             return string.Empty;

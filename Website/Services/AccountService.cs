@@ -23,13 +23,13 @@ namespace Website.Services
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
-        private readonly IAsyncRepository<AccountFbPost> _accountFbPostRepository;
+        private readonly IAccountFbPostRepository _accountFbPostRepository;
         private readonly IAsyncRepository<AccountCampaignCharge> _accountCampaignChargeRepository;
         private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
           IAccountRepository accountRepository, IWalletRepository walletRepository,
            IAsyncRepository<AccountCampaignCharge> accountCampaignChargeRepository,
-           IAsyncRepository<AccountFbPost> accountFbPostRepository,
+          IAccountFbPostRepository accountFbPostRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
@@ -47,12 +47,16 @@ namespace Website.Services
         public async Task<AccountViewModel> GetAccount(int id)
         {
             var account = await _accountRepository.GetActivedAccount(id);
-            return GetAccountViewModel(account);
+            return await GetAccountViewModel(account);
         }
 
-        private AccountViewModel GetAccountViewModel(Account account)
+        private async Task<AccountViewModel> GetAccountViewModel(Account account)
         {
-            return (account == null) ? null : new AccountViewModel(account);
+
+            if (account == null) return null;
+
+            var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+            return new AccountViewModel(account, accountCouting);
         }
 
 
@@ -65,10 +69,18 @@ namespace Website.Services
 
             var total = await query.CountAsync();
             var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+            var list = new List<AccountViewModel>();
+            foreach (var account in accounts)
+            {
+                var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+
+                list.Add(new AccountViewModel(account, accountCouting));
+            }
+
 
             return new ListAccountViewModel()
             {
-                Accounts = AccountViewModel.GetList(accounts),
+                Accounts = list,
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
@@ -111,11 +123,12 @@ namespace Website.Services
                         UserModified = model.Email,
                         Address = string.Empty,
                         Phone = string.Empty,
-                        Avatar = string.Empty,
+                        Avatar = model.Image,
                         Salt = SecurityHelper.GenerateSalt(),
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
+
 
                     };
                     await _accountRepository.AddAsync(account);
@@ -134,7 +147,7 @@ namespace Website.Services
                     Expired = DateTime.Now.AddHours(1)
                 };
                 await _accountProviderRepository.AddAsync(accountprovider);
-              
+
                 return GetAuth(account);
             }
             else
@@ -157,6 +170,16 @@ namespace Website.Services
 
         #endregion
 
+
+        #region AccountCounting
+
+        public async Task<AccountCountingViewModel> GetAccountCounting(int accountid)
+        {
+            var model = await _accountFbPostRepository.GetAccountCounting(accountid);
+            return new AccountCountingViewModel(model);
+        }
+
+        #endregion
         #region AccountFacebookPost
         public async Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize)
         {

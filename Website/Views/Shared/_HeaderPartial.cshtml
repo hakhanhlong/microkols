@@ -1,7 +1,5 @@
 ﻿<header class="header">
-
-
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+    <nav class="navbar navbar-menu navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Micro KOLs</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -10,65 +8,21 @@
             </button>
             <div class="navbar-collapse collapse d-flex">
 
-                <ul class="navbar-nav  mr-auto ">
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (CurrentUser.Type == Core.Entities.EntityType.Agency)
-                        {
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link text-dark" asp-controller="AgencyCampaign" asp-action="Index" data-toggle="dropdown">
-                                    Danh sách  Chiến dịch
-                                    <i class="fal fa-angle-down"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Index">Chiến dịch</a>
-                                    <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Create">Thêm chiến dịch</a>
-                                </div>
-                            </li>
-                        }
-                        else if (CurrentUser.Type == EntityType.Account)
-                        {
-                            <li class="nav-item ">
-                                <a class="nav-link text-dark" asp-controller="AccountCampaign" asp-action="Index">
-                                    Chiến dịch
-                                </a>
-
-                            </li>
-
-                        }
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Doanh nghiệp</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Tin tức</a>
-                        </li>
-                    }
-
+                <ul class="navbar-nav  mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Doanh nghiệp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Tin tức</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li class="nav-item dropdown">
 
-                            <a class="nav-link" data-toggle="dropdown">
-                                <i class="fal fa-wallet"></i>
-
-                                <span class="wallet-balance text-danger pl-2">&nbsp;&nbsp;&nbsp;</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item wallet-recharge"> Nạp tiền</a>
-                            </div>
-
-
-                        </li>
                         <li class="nav-item dropdown nav-notif">
                             <a class="nav-link" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
                                 <i class="fal fa-bell"></i>
@@ -121,4 +75,68 @@
             </div>
         </div>
     </nav>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <nav class="navbar-profile bg-white border-bottom" data-toggle="affix">
+            <div class="container">
+                <ul class="nav">
+                    @if (CurrentUser.Type == Core.Entities.EntityType.Agency)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Agency"> <i class="fal fa-tachometer-alt"></i> Trang chủ </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" asp-controller="AgencyCampaign" asp-action="Index" data-toggle="dropdown">
+                                <i class="fal fa-object-group"></i> Chiến dịch
+
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Index">Chiến dịch</a>
+                                <a class="dropdown-item" asp-controller="AgencyCampaign" asp-action="Create">Thêm chiến dịch</a>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-item wallet-recharge">Nạp tiền</a>
+                        </li>
+                    }
+                    else if (CurrentUser.Type == EntityType.Account)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Account">
+
+                                <i class="fal fa-tachometer-alt"></i> Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="AccountCampaign" asp-action="Index">
+                                <i class="fal fa-object-group"></i>  Chiến dịch
+                            </a>
+
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link wallet-withdraw" href="javascript:;"> Rút tiền</a>
+                        </li>
+
+                    }
+
+                    <li class="nav-item ml-auto">
+
+                        <a class="nav-link">
+                            <i class="fal fa-wallet"></i>
+                            <span class="wallet-balance text-danger pl-2">&nbsp;</span>
+                        </a>
+
+                    </li>
+
+
+                </ul>
+
+
+            </div>
+
+        </nav>
+    }
 </header>

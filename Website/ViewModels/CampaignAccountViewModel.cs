@@ -13,7 +13,7 @@ namespace Website.ViewModels
     {
         public CampaignAccountViewModel(CampaignAccount campaignAccount)
         {
-            Account = new AccountViewModel(campaignAccount.Account);
+            Account = new AccountViewModel(campaignAccount.Account, null);
             Status = campaignAccount.Status;
             DateCreated = campaignAccount.DateCreated;
             Type = campaignAccount.Type;

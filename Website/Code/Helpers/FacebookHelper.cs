@@ -37,7 +37,7 @@ namespace Website.Code.Helpers
         public async Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken)
         {
             var user = await _facebookClient.GetAsync<dynamic>(accessToken, "me", "fields=email,name");
-
+          
             return new LoginProviderViewModel()
             {
                 Email = (string)user.email,
@@ -45,7 +45,8 @@ namespace Website.Code.Helpers
                 Name = (string)user.name,
                 Provider = Core.Entities.AccountProviderNames.Facebook,
                 AccessToken = accessToken,
-                
+                Image = GetAvatarUrl((string) user.id)
+
             };
         }
 

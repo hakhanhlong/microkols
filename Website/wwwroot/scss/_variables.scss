@@ -4,7 +4,7 @@
 // Color Variables
 // Bootstrap Color Overrides
 
-$white: #FBFBFB !default;
+$white: #fff !default;
 $gray-100: #f8f9fc !default;
 $gray-200: #eaecf4 !default;
 $gray-300: #dddfeb !default;
@@ -16,11 +16,11 @@ $gray-800: #5a5c69 !default;
 $gray-900: #3a3b45 !default;
 $black: #000 !default;
 
-$blue: #6482B6 !default;
+$blue: #3C5A99 !default;
 $indigo: #6610f2 !default;
 $purple: #6f42c1 !default;
 $pink: #D8AFA4 !default;
-$red: #8E3544 !default;
+$red: red !default;
 $orange: #fd7e14 !default;
 $yellow: #F0AE67 !default;
 $green: #1cc88a !default;
@@ -31,7 +31,7 @@ $cyan: #36b9cc !default;
 $brand-google: #ea4335;
 $brand-facebook: #3b5998;
 
-$primary: $orange !default;
+$primary: $blue !default;
 $secondary: $gray-600 !default;
 
 // Set Contrast Threshold

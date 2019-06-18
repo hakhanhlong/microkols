@@ -1,5 +1,6 @@
 ﻿using Common.Extensions;
 using Core.Entities;
+using Core.Models;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -20,18 +21,26 @@ namespace Website.ViewModels
         {
 
         }
-        public AccountViewModel(Account customer)
+        public AccountViewModel(Account customer, AccountCountingModel accountCounting)
         {
             Id = customer.Id;
             Email = customer.Email;
             Name = customer.Name;
             Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
             Type = customer.Type;
+            AccountCounting = new AccountCountingViewModel(accountCounting);
         }
 
-        public static List<AccountViewModel> GetList(IEnumerable<Account> accounts)
+        public static List<AccountViewModel> GetList(IEnumerable<Account> accounts, IEnumerable<AccountCountingModel> accountCountings)
         {
-            return accounts.Select(m => new AccountViewModel(m)).ToList();
+            var result = new List<AccountViewModel>();
+            foreach(var account in accounts)
+            {
+                var accountCouting = accountCountings.FirstOrDefault(m => m.AccountId == account.Id);
+
+                result.Add(new AccountViewModel(account, accountCouting));
+            }
+            return result;
         }
         public AccountType Type { get; set; }
         public int Id { get; set; }
@@ -40,6 +49,8 @@ namespace Website.ViewModels
         public string Name { get; set; }
 
         public string Avatar { get; set; }
+
+        public AccountCountingViewModel AccountCounting { get; set; }
     }
 
     public class AccountProviderViewModel
@@ -190,11 +201,11 @@ namespace Website.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Số tài khoản")]
         public string Number { get; set; }
-         
+
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Ngân hàng")]
         public string Bank { get; set; }
-        
+
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Chi nhánh")]
         public string Branch { get; set; }
@@ -250,7 +261,7 @@ namespace Website.ViewModels
         public ChangeAccountTypeViewModel(Account entity)
         {
             Type = entity.Type;
-            if(entity.Type== AccountType.HotMom)
+            if (entity.Type == AccountType.HotMom)
             {
                 HotMomData = (List<AccountTypeHotMomData>)entity.TypeDataObj;
             }
@@ -283,10 +294,10 @@ namespace Website.ViewModels
             };
             var result = new List<AccountCampaignChargeViewModel>();
             var types = Common.Helpers.StringHelper.GetEnumArray<CampaignType>();
-            foreach(var type in types.Where(m=> !ignoreTypes.Contains(m)))
+            foreach (var type in types.Where(m => !ignoreTypes.Contains(m)))
             {
                 var entity = entities.FirstOrDefault(m => m.Type == type);
-                if(entity!= null)
+                if (entity != null)
                 {
                     result.Add(new AccountCampaignChargeViewModel()
                     {
@@ -316,6 +327,6 @@ namespace Website.ViewModels
 
     public class UpdateAccountProviderViewModel : LoginProviderViewModel
     {
-       
+
     }
 }
