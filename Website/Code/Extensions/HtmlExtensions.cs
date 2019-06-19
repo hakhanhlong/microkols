@@ -163,6 +163,7 @@ namespace Website.Code.Extensions
             }
 
             parameters.Add("campaignid", model.Id);
+            parameters.Add("campaignType", model.Type);
             /*
              IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
 

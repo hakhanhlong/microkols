@@ -325,7 +325,15 @@ namespace Website.ViewModels
         public int AccountChargeAmount { get; set; }
     }
 
-    public class UpdateAccountProviderViewModel : LoginProviderViewModel
+    public class UpdateAccountCampaignChargeViewModel
+    {
+        public List<CampaignType> Type { get; set; }
+        public List<int> AccountChargeAmount { get; set; }
+        public List<int> Id { get; set; }
+
+    }
+
+        public class UpdateAccountProviderViewModel : LoginProviderViewModel
     {
 
     }

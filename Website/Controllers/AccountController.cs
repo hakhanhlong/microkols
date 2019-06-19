@@ -201,12 +201,20 @@ namespace Website.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> UpdateAccountCampaignCharge(AccountCampaignChargeViewModel model)
+        public async Task<IActionResult> UpdateAccountCampaignCharge(UpdateAccountCampaignChargeViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var r = await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, model);
-                this.AddAlert(r);
+                for(var i = 0;i< model.Id.Count; i++)
+                {
+
+                    await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, new AccountCampaignChargeViewModel() {
+                        Id = model.Id[i],
+                        AccountChargeAmount = model.AccountChargeAmount[i],
+                        Type = model.Type[i]
+                    });
+                }
+                this.AddAlert(true);
             }
             return RedirectToAction("ChangeAccountType");
         }

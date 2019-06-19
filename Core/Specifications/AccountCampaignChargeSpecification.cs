@@ -20,7 +20,10 @@ namespace Core.Specifications
         {
 
         }
+        public AccountCampaignChargeByAccountSpecification(int accountId, CampaignType campaignType) : base(m => m.AccountId == accountId && m.Type== campaignType)
+        {
 
+        }
     }
 
 }

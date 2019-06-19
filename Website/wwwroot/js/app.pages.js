@@ -117,7 +117,7 @@ var AgencyCreateCampaignPage = (function () {
         else if (type === 'ChangeAvatar') {
             $('#changeAvatarWrap').removeClass('d-none');
 
-            
+
         }
 
         pricingCalculator();
@@ -129,7 +129,7 @@ var AgencyCreateCampaignPage = (function () {
         var serviceprice = selectedOption.data('serviceprice');
         var accountprice = selectedOption.data('accountprice');
         var accountextrapricepercent = selectedOption.data('accountextrapricepercent');
-        
+
 
         if (type === 'CustomService' || type === 'JoinEvent') {
             accountprice = $('#AccountPrice').val();
@@ -165,7 +165,7 @@ var AgencyCreateCampaignPage = (function () {
 var AgencyDetailsCampaignPage = (function () {
 
     function init() {
-       
+
 
         handler();
     }
@@ -182,22 +182,46 @@ var AgencyDetailsCampaignPage = (function () {
 
     function handlerCampaignAccount() {
 
+        $('.frm-requestjoin').submit(function () {
+            var $frm = $(this);
 
-        $('.btn-requestjoin').click(function () {
-            var $this = $(this);
-            var $i = $(this).find('i');
-            $this.prop('disabled', true);
+            var data = $frm.serialize();
+            var url = $frm.data('action');
+            var $frmbtn = $frm.find('.btn-requestjoin');
+            var $i = $frmbtn.find('i');
+            $frmbtn.prop('disabled', true);
             $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
-            var url = $(this).data('url');
-            $.get(url, function (res) {
-                $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
-                $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
 
+            $.post(url, data, function (res) {
+                if (res == 1) {
+
+                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-success');
+                    $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+                } else {
+
+                    $frmbtn.prop('disabled', false);
+                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-danger');
+                    $i.removeClass('fa-spinner fa-spin').addClass('fa-plus');
+                }
                 handlerReloadBtn(true);
-            });
+            })
 
 
-        });
+
+        })
+
+        //$('.btn-requestjoin').click(function () {
+        //    var $this = $(this);
+        //    var $i = $(this).find('i');
+        //    $this.prop('disabled', true);
+        //    $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
+        //    var url = $(this).data('url');
+        //    $.get(url, function (res) {
+        //        $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
+        //        $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+        //        handlerReloadBtn(true);
+        //    });
+        //});
         handlerReloadBtn();
 
     }
@@ -283,7 +307,7 @@ var AccountDetailsCampaignPage = (function () {
 
 
     }
-    
+
     return {
         Init: init
     };

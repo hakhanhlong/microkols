@@ -15,7 +15,7 @@ namespace Website.Interfaces
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
         Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid);
-        Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
+        Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, int amount, string username);
         Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed);
 
         Task<bool> FeedbackJoinCampaignByAgency(int agencyid, int campaignid, int accountid, bool confirmed,  string username);

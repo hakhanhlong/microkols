@@ -20,7 +20,7 @@ namespace Infrastructure.Data
         }
         #region Campaign Account
 
-        public async Task<int> CreateAgencyRequestCampaignAccount(int agencyid, int campaignid, int accountid, string username)
+        public async Task<int> CreateAgencyRequestCampaignAccount(int agencyid, int campaignid, int accountid,int amount, string username)
         {
             var campaign = await _dbContext.Campaign.FirstOrDefaultAsync(m => m.Id == campaignid && m.AgencyId == agencyid);
             if (campaign == null)
@@ -35,6 +35,10 @@ namespace Infrastructure.Data
                 var accountPrice = await _dbContext.AccountCampaignCharge.Where(m => m.AccountId == account.Id && m.Type == campaign.Type).FirstOrDefaultAsync();
                 if (accountPrice == null) return -1;
                 accountChargeAmount = accountPrice.AccountChargeAmount;
+                if(amount> accountChargeAmount)
+                {
+                    accountChargeAmount = amount;
+                }
             }
 
             if(campaign.Type== CampaignType.ChangeAvatar)
