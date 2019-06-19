@@ -23,11 +23,13 @@ namespace Website.Services
         private readonly ILogger<AccountService> _logger;
         private readonly IAccountRepository _accountRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
+        private readonly IAccountFbPostRepository _accountFbPostRepository;
         private readonly IAsyncRepository<AccountCampaignCharge> _accountCampaignChargeRepository;
         private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
           IAccountRepository accountRepository, IWalletRepository walletRepository,
            IAsyncRepository<AccountCampaignCharge> accountCampaignChargeRepository,
+          IAccountFbPostRepository accountFbPostRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
@@ -35,18 +37,26 @@ namespace Website.Services
             _accountProviderRepository = accountProviderRepository;
             _accountCampaignChargeRepository = accountCampaignChargeRepository;
             _walletRepository = walletRepository;
+            _accountFbPostRepository = accountFbPostRepository;
 
         }
-
+        public async Task<List<int>> GetActivedAccountIds()
+        {
+            return await _accountRepository.GetActivedAccountIds();
+        }
         public async Task<AccountViewModel> GetAccount(int id)
         {
             var account = await _accountRepository.GetActivedAccount(id);
-            return GetAccountViewModel(account);
+            return await GetAccountViewModel(account);
         }
 
-        private AccountViewModel GetAccountViewModel(Account account)
+        private async Task<AccountViewModel> GetAccountViewModel(Account account)
         {
-            return (account == null) ? null : new AccountViewModel(account);
+
+            if (account == null) return null;
+
+            var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+            return new AccountViewModel(account, accountCouting);
         }
 
 
@@ -59,10 +69,18 @@ namespace Website.Services
 
             var total = await query.CountAsync();
             var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+            var list = new List<AccountViewModel>();
+            foreach (var account in accounts)
+            {
+                var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+
+                list.Add(new AccountViewModel(account, accountCouting));
+            }
+
 
             return new ListAccountViewModel()
             {
-                Accounts = AccountViewModel.GetList(accounts),
+                Accounts = list,
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
@@ -82,6 +100,7 @@ namespace Website.Services
             }
             return null;
         }
+
 
         public async Task<AuthViewModel> GetAuth(LoginProviderViewModel model)
         {
@@ -104,11 +123,13 @@ namespace Website.Services
                         UserModified = model.Email,
                         Address = string.Empty,
                         Phone = string.Empty,
-                        Avatar = string.Empty,
+                        Avatar = model.Image,
                         Salt = SecurityHelper.GenerateSalt(),
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
+
+
                     };
                     await _accountRepository.AddAsync(account);
                     await _walletRepository.CreateWallet(EntityType.Account, account.Id);
@@ -122,8 +143,11 @@ namespace Website.Services
                     Name = model.Name,
                     Provider = model.Provider,
                     ProviderId = model.ProviderId,
+                    AccessToken = model.AccessToken,
+                    Expired = DateTime.Now.AddHours(1)
                 };
                 await _accountProviderRepository.AddAsync(accountprovider);
+
                 return GetAuth(account);
             }
             else
@@ -144,6 +168,151 @@ namespace Website.Services
         }
 
 
+        #endregion
+
+
+        #region AccountCounting
+
+        public async Task<AccountCountingViewModel> GetAccountCounting(int accountid)
+        {
+            var model = await _accountFbPostRepository.GetAccountCounting(accountid);
+            return new AccountCountingViewModel(model);
+        }
+
+        #endregion
+        #region AccountFacebookPost
+
+        public async Task<AccountFbPostViewModel> GetAccountFbPost(int accountid,string postid)
+        {
+            var filter = new AccountFbPostSpecification(accountid, postid);
+            var post = await _accountFbPostRepository.GetSingleBySpecAsync(filter);
+
+            if(post!= null)
+            {
+                return new AccountFbPostViewModel(post);
+            }
+            return null;
+        }
+        public async Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize)
+        {
+            var filter = new AccountFbPostByAccountSpecification(accountid);
+            var total = await _accountFbPostRepository.CountAsync(filter);
+            var posts = await _accountFbPostRepository.ListPagedAsync(filter, "PostTime_desc", page, pagesize);
+            return new ListAccountFbPostViewModel(posts, page, pagesize, total);
+        }
+        public async Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username)
+        {
+            var filter = new AccountFbPostSpecification(model.PostId);
+            var post = await _accountFbPostRepository.GetSingleBySpecAsync(filter);
+            if (post == null)
+            {
+                post = new AccountFbPost()
+                {
+                    AccountId = accountid,
+                    CommentCount = model.CommentCount,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    LikeCount = model.LikeCount,
+                    Link = model.Link,
+                    Message = model.Message,
+                    Picture = model.Picture,
+                    PostId = model.PostId,
+                    PostTime = model.PostTime,
+                    ShareCount = model.ShareCount,
+                    UserCreated = username,
+                    UserModified = username,
+                    Permalink= model.Permalink
+                };
+                await _accountFbPostRepository.AddAsync(post);
+            }
+            else
+            {
+                post.ShareCount = model.ShareCount;
+                post.LikeCount = model.LikeCount;
+                post.CommentCount = model.CommentCount;
+                post.DateModified = DateTime.Now;
+                post.UserModified = username;
+
+
+
+                await _accountFbPostRepository.UpdateAsync(post);
+            }
+
+        }
+
+        #endregion
+
+        #region Account Provider
+
+
+
+
+
+        public async Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider)
+        {
+            var filter = new AccountProviderByExpiredTokenSpecification(provider);
+            var accountProviders = await _accountProviderRepository.ListAsync(filter);
+            return AccountProviderViewModel.GetList(accountProviders);
+        }
+
+        public async Task<bool> UpdateAccountProvidersAccessToken(int id, string accessToken, int expiredIn)
+        {
+            var accountProvider = await _accountProviderRepository.GetByIdAsync(id);
+            if (accountProvider != null)
+            {
+                accountProvider.AccessToken = accessToken;
+                accountProvider.Expired = DateTime.Now.AddSeconds(expiredIn);
+                await _accountProviderRepository.UpdateAsync(accountProvider);
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider)
+        {
+            var filter = new AccountProviderSpecification(accountid, provider);
+            var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
+        }
+        public async Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid)
+        {
+            var filter = new AccountProviderSpecification(provider, providerid);
+            var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
+        }
+
+        public async Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider)
+        {
+            var accountProvider = await GetAccountProviderByAccount(accountid, provider);
+            return accountProvider != null ? accountProvider.ProviderId : string.Empty;
+        }
+
+        public async Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username)
+        {
+            var filter = new AccountProviderSpecification(model.Provider, model.ProviderId);
+            var accountprovider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+            if (accountprovider != null)
+            {
+                if (accountprovider.AccountId != accountid)
+                {
+                    return -1;
+                }
+                return 1;
+            }
+
+            accountprovider = new AccountProvider()
+            {
+                AccountId = accountid,
+                Email = model.Email,
+                Name = model.Name,
+                Provider = model.Provider,
+                ProviderId = model.ProviderId,
+                AccessToken = model.AccessToken,
+                Expired = DateTime.Now.AddHours(1)
+            };
+            await _accountProviderRepository.AddAsync(accountprovider);
+            return 2;
+        }
         #endregion
 
         #region Register
@@ -481,7 +650,7 @@ namespace Website.Services
             else
             {
                 var accountCharge = await _accountCampaignChargeRepository.GetByIdAsync(model.Id);
-                if(accountCharge == null || accountCharge.AccountId!= accountid)
+                if (accountCharge == null || accountCharge.AccountId != accountid)
                 {
                     return false;
                 }
@@ -494,8 +663,6 @@ namespace Website.Services
 
         }
         #endregion
-
-
 
 
         #region Helper

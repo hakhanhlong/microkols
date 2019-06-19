@@ -2,16 +2,21 @@
 var App = (function () {
 
     function init() {
-        if (AppSettings.IsAuthenticated) {
-            AppCommon.bindingWalletBalance();
-            AppNotification.Init();
-            AppWallet.Init();
+        setTimeout(function () {
 
-            if (AppSettings.CurrentUser.Type === 2) {
-                AppPayment.Init();
+            //console.log('AppPayment Init', AppSettings);
+            if (AppSettings.IsAuthenticated) {
+                AppCommon.bindingWalletBalance();
+                AppNotification.Init();
+                AppWallet.Init();
+
+
+                if (AppSettings.CurrentUser.Type === 2) {
+                    AppPayment.Init();
+                }
+
             }
-            
-        }
+        }, 500);
 
 
         handler();
@@ -23,14 +28,18 @@ var App = (function () {
             ChangeAccountTypePage.Init();
         }
         else if (currentPage === 'agencycampaign_create') {
-            CreateCampaignPage.Init();
+            AgencyCreateCampaignPage.Init();
         } else if (currentPage === 'agencycampaign_details') {
-            DetailsCampaignPage.Init();
+            AgencyDetailsCampaignPage.Init();
         }
-
+        else if (currentPage === 'accountcampaign_details') {
+            AccountDetailsCampaignPage.Init();
+        } else if (currentPage === 'home_index') {
+            HomeIndexPage.Init();
+        }
     }
     function handler() {
-       
+
 
 
 
@@ -43,10 +52,20 @@ var App = (function () {
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
                 }
-            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,publish_actions' });
         });
 
-        
+        $('.btn-linkfacebook').click(function () {
+            var $frm = $($(this).data('target'));
+            FB.login(function (response) {
+                console.log('login-facebook', response);
+                // handle the response
+                if (response.status === 'connected') {
+                    $frm.find('input[name=token]').val(response.authResponse.accessToken);
+                    $frm.submit();
+                }
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+        });
 
 
         $('.image-upload').change(function () {
@@ -99,6 +118,15 @@ var App = (function () {
                 });
             }, 500);
         }
+
+        AppCommon.toggleAffix();
+
+        if ($('#cookieConsentModal').length > 0) {
+            $('#cookieConsentModal').modal('show');
+        }
+
+
+
 
     }
 

@@ -19,6 +19,7 @@ namespace Website.Code.TagHelpers
     public class ButtonPaymentTagHelper : TagHelper
     {
         public int CampaignId { get; set; }
+        public string Text { get; set; } = "Thanh toán";
         [ViewContext]
         public ViewContext ViewContext { get; set; }
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -27,7 +28,7 @@ namespace Website.Code.TagHelpers
             output.Attributes.Add("class", $"btn btn-primary btn-payment");
             output.Attributes.Add("data-id", CampaignId);
 
-            output.Content.SetHtmlContent($"Thanh toán");
+            output.Content.SetHtmlContent(Text);
         }
     }
 

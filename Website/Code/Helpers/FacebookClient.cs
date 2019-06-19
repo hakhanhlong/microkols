@@ -32,7 +32,8 @@ namespace Website.Code.Helpers
 
         public async Task<T> GetAsync<T>(string accessToken, string endpoint, string args = null)
         {
-            var response = await _httpClient.GetAsync($"{endpoint}?access_token={accessToken}&{args}");
+            var tokenParams = !string.IsNullOrEmpty(accessToken) ? $"access_token={accessToken}" : "";
+            var response = await _httpClient.GetAsync($"{endpoint}?{tokenParams}&{args}");
             if (!response.IsSuccessStatusCode)
                 return default(T);
 

@@ -22,8 +22,11 @@ namespace Website.Services
         private readonly ITransactionRepository _transactionRepository;
         private readonly ICampaignRepository _campaignRepository;
         private readonly IWalletRepository _walletRepository;
+        private readonly ICampaignAccountRepository _campaignAccountRepository;
+
 
         public PaymentService(ILogger<TransactionService> logger,
+             ICampaignAccountRepository campaignAccountRepository,
             IWalletRepository walletRepository, ICampaignRepository campaignRepository,
            ITransactionRepository transactionRepository)
         {
@@ -31,9 +34,10 @@ namespace Website.Services
             _walletRepository = walletRepository;
             _campaignRepository = campaignRepository;
             _transactionRepository = transactionRepository;
+            _campaignAccountRepository = campaignAccountRepository;
         }
-      
-        public async Task<PaymentResultViewModel> CreatePayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
+
+        public async Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
         {
             var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyId, model.CampaignId);
             if (payment == null)
@@ -49,15 +53,21 @@ namespace Website.Services
 
             if (payment.IsValidServiceCharge)
             {
-                //service charge --> tru tien cho user ; + tien cho he thong
+                //service charge --> tru tien cho agency ; + tien cho he thong
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.ServiceChargeValue;
                 transactionType = Core.Entities.TransactionType.CampaignServiceCharge;
-                
+
             }
-            else
+            else if (payment.IsValidAccountCharge)
             {
+
+                //service charge --> tru tien cho agency ; + tien cho he thong
+                receiverId = await _walletRepository.GetSystemId();
+                senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
+                amount = payment.AccountChargeValue;
+                transactionType = Core.Entities.TransactionType.CampaignAccountCharge;
                 //....
             }
 
@@ -117,7 +127,7 @@ namespace Website.Services
                         errorCode = PaymentResultErrorCode.CongTienLoi;
                     }
                 }
-                else if(senderBalance== -2)
+                else if (senderBalance == -2)
                 {
                     errorCode = PaymentResultErrorCode.KhongDuTien;
                 }
@@ -129,7 +139,7 @@ namespace Website.Services
             catch (Exception ex)
             {
                 transactionStatus = TransactionStatus.Error;
-                if(errorCode== PaymentResultErrorCode.KhongLoi)
+                if (errorCode == PaymentResultErrorCode.KhongLoi)
                 {
                     errorCode = PaymentResultErrorCode.KhongXacDinh;
                 }
@@ -139,6 +149,45 @@ namespace Website.Services
             await _transactionRepository.UpdateTransactionStatus(transactionid, transactionStatus, transactionNote, username);
 
             return new PaymentResultViewModel(PaymentResultErrorCode.KhongXacDinh);
+        }
+
+
+        public async Task<bool> VerifyPaybackCampaignAccount(int campaignid)
+        {
+            var totalServiceCharge = await _transactionRepository.GetTotalAmount(TransactionType.CampaignServiceCharge, campaignid);
+            var totalPayBack = await _transactionRepository.GetTotalAmount(TransactionType.CampaignAccountPayback, campaignid);
+
+            return (totalPayBack <= totalServiceCharge);
+
+        }
+        public async Task<PaymentResultViewModel> CreatePaybackCampaignAccount(int campaignid, int accountid, string username)
+        {
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+
+
+            if (campaignAccount == null || campaignAccount.Status != CampaignAccountStatus.Finished)
+            {
+                return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
+            }
+
+
+            long amount = campaignAccount.AccountChargeAmount;
+            var senderId = await _walletRepository.GetSystemId();
+            var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId); 
+            var transactionType = TransactionType.CampaignAccountPayback;
+            var refId = campaignAccount.CampaignId;
+            var refData = campaignAccount.Id.ToString();
+
+
+            if (amount > 0 && senderId > 0 && receiverId > 0 && transactionType != TransactionType.Undefined)
+            {
+                return await Pay(senderId, receiverId, amount, transactionType, string.Empty, username, refId, refData);
+            }
+
+
+            return new PaymentResultViewModel(senderId == 0 || receiverId == 0 ? PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac :
+
+                PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
         }
 
     }

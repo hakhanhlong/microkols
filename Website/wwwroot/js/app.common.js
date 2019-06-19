@@ -15,7 +15,9 @@ var AppConstants = {
     UrlRecharge: "/wallet/Recharge",
     UrlWithdraw: "/wallet/Withdraw",
     UrlGetNotificationCount: "/Notification/Count",
+    UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
     UrlGetNotification: "/Notification/IndexPartial",
+    UrlUploadTempImage: "/Home/UploadImage",
 
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
@@ -45,11 +47,11 @@ var AppCommon = {
             window.location = window.location;
         });
     },
-    uploadTempImage: function (files, path, callback) {
+    uploadTempImage: function (files,  callback) {
         var xhr, formData;
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
-        xhr.open('POST', AppUrls.ImageMultipleUpload);
+        xhr.open('POST', AppConstants.UrlUploadTempImage);
         xhr.onload = function () {
             if (xhr.status !== 200) {
                 failure('HTTP Error: ' + xhr.status);
@@ -73,5 +75,37 @@ var AppCommon = {
         var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
 
         return input.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,') + ' đ';
+    },
+    toggleAffix: function () {
+
+        var toggleAffix = function (affixElement, scrollElement, wrapper) {
+
+            var height = affixElement.outerHeight(),
+                top = wrapper.offset().top;
+
+            if (scrollElement.scrollTop() >= top) {
+                wrapper.height(height);
+                affixElement.addClass("affix");
+            }
+            else {
+                affixElement.removeClass("affix");
+                wrapper.height('auto');
+            }
+
+        };
+
+
+        $('[data-toggle="affix"]').each(function () {
+            var ele = $(this),
+                wrapper = $('<div></div>');
+
+            ele.before(wrapper);
+            $(window).on('scroll resize', function () {
+                toggleAffix(ele, $(this), wrapper);
+            });
+
+            // init
+            toggleAffix(ele, $(window), wrapper);
+        });
     }
 };

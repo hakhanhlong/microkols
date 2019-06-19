@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Core.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Website.ViewModels
 {
@@ -12,7 +13,7 @@ namespace Website.ViewModels
     {
         public CampaignAccountViewModel(CampaignAccount campaignAccount)
         {
-            Account = new AccountViewModel(campaignAccount.Account);
+            Account = new AccountViewModel(campaignAccount.Account, null);
             Status = campaignAccount.Status;
             DateCreated = campaignAccount.DateCreated;
             Type = campaignAccount.Type;
@@ -20,6 +21,12 @@ namespace Website.ViewModels
             DateModified = campaignAccount.DateModified;
             AccountId = campaignAccount.AccountId;
             CampaignId = campaignAccount.CampaignId;
+
+
+            RefUrl =  campaignAccount.RefUrl;
+            RefId = campaignAccount.RefId;
+            RefContent = campaignAccount.RefContent;
+            RefData = campaignAccount.RefDataObj;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -33,7 +40,13 @@ namespace Website.ViewModels
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 
-     
+
+
+        public string RefUrl { get; set; }
+        public string RefId { get; set; }
+        public string RefContent { get; set; }
+        public object RefData { get; set; }
+
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
     }
@@ -53,6 +66,43 @@ namespace Website.ViewModels
 
         public List<CampaignAccountViewModel> CampaignAccounts { get; set; }
         public PagerViewModel Pager { get; set; }
+    }
+
+    public class SubmitCampaignAccountRefContentViewModel
+    {
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Nội dung Caption")]
+        public string RefContent { get; set; }
+
+        public string Image { get; set; }
+        public int CampaignId { get; set; }
+    }
+
+
+    public class SubmmitCampaignAccountChangeAvatarViewModel
+    {
+        public int CampaignId { get; set; }
+    }
+
+    public class UpdateCampaignAccountRefViewModel
+    {
+        public UpdateCampaignAccountRefViewModel()
+        {
+
+        }
+        [Required( ErrorMessage ="Hãy nhập {0}")]
+        [Display(Name = "Link trên Facebook")]
+        //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
+        public string RefUrl { get; set; }
+
+        public string RefId { get; set; }
+
+
+        [Display(Name = "Ghi chú")]
+        public string Note { get; set; }
+        public int CampaignId { get; set; }
+        public CampaignType CampaignType { get; set; }
+
     }
 
 }

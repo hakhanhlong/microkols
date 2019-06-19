@@ -24,6 +24,43 @@ namespace Core.Entities
     }
     public static class CampaignTypeExentions
     {
+        public static bool IsShareCampaign(this CampaignType type)
+        {
+            return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
+
+        }
+        public static string ToActionText(this CampaignType type)
+        {
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            {
+                return "Chia sẻ";
+            }
+            if (type == CampaignType.PostComment)
+            {
+                return "Viết bình luận";
+            }
+            if (type == CampaignType.ShareStreamUrl)
+            {
+                return "Chia sẻ link Stream";
+            }
+
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "Thay hình Avatar";
+            }
+
+            if (type == CampaignType.JoinEvent)
+            {
+                return "Đăng ký tham gia sự kiện";
+            }
+
+            if (type == CampaignType.CustomService)
+            {
+                return "Thực hiện ngay";
+            }
+
+            return type.ToString();
+        }
         public static string ToPriceLabel(this CampaignType type)
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)
@@ -40,6 +77,40 @@ namespace Core.Entities
                 return "/người/lần";
             }
             if (type == CampaignType.CustomService || type == CampaignType.JoinEvent)
+            {
+                return "";
+            }
+            return type.ToString();
+        }
+
+        public static string ToDataText(this CampaignType type)
+        {
+           
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "Hình ảnh Avatar";
+            }
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            {
+                return "Link nội dung";
+            }
+          
+
+            if (type == CampaignType.PostComment )
+            {
+                return "Link để bình luận";
+            }
+            if ( type == CampaignType.ShareStreamUrl)
+            {
+                return "Link stream";
+            }
+
+            if ( type == CampaignType.JoinEvent)
+            {
+                return "Link sự kiện";
+            }
+
+            if (type == CampaignType.CustomService)
             {
                 return "";
             }

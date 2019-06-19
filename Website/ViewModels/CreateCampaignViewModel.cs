@@ -40,11 +40,11 @@ namespace Website.ViewModels
             {
                 DateCreated = DateTime.Now,
                 AgencyId = agencyid,
-                Data = string.Empty,
+                Data = Data,
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Description = Description,
-                Image = string.Empty,
+                Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
                 Status = CampaignStatus.Created,
                 Title = string.Empty,
@@ -58,14 +58,18 @@ namespace Website.ViewModels
                 EnabledAccountChargeExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledExtraType : false,
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
                 Type = Type,
-                AccountChargeTime = AccountChargeTime ?? 1
+                AccountChargeTime = AccountChargeTime ?? 1,
+               
 
             };
 
         }
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Yêu cầu của chiến dịch")]
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
+
+     
+        [Display(Name = "Thông tin đối tượng chiến dịch (Link, hình ảnh,...)")]
+        public string Data { get; set; }
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -80,9 +84,11 @@ namespace Website.ViewModels
 
         [Display(Name = "Chi phí")]
         public int? AccountChargeAmount { get; set; }
+
         [Display(Name = "Thời gian")]
         public int? AccountChargeTime { get; set; } = 1;
 
+        public string Image { get; set; } = string.Empty;
 
         [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }

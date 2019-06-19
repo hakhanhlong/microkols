@@ -37,6 +37,8 @@ namespace Website.ViewModels
             DateCreated = campaign.DateCreated;
             UserCreated = campaign.UserCreated;
             CountOption = campaign.CampaignOption.Count();
+            Image = campaign.Image;
+            Data = campaign.Data;
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
             {
@@ -96,6 +98,8 @@ namespace Website.ViewModels
 
         public int Id { get; set; }
 
+        public string Image { get; set; }
+        public string Data { get; set; }
         public DateTime DateCreated { get; set; }
 
         public DateTime? DateStart { get; set; }
@@ -112,6 +116,7 @@ namespace Website.ViewModels
         public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }
         public CampaignType Type { get; set; }
+
         public CampaignStatus Status { get; set; }
 
 

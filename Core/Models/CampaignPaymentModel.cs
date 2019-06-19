@@ -2,6 +2,7 @@
 using Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Core.Models
@@ -25,13 +26,23 @@ namespace Core.Models
             ServicePaidAmount = servicePaidAmount;
             AccountPaidAmount = accountPaidAmount;
 
+
+            var campaginAccountStatusArr = new List<CampaignAccountStatus>()
+            {
+                CampaignAccountStatus.Confirmed,
+                CampaignAccountStatus.Submitted ,
+                CampaignAccountStatus.Declined,
+                CampaignAccountStatus.Approved,
+                CampaignAccountStatus.Finished
+            };
+            campaignAccounts = campaignAccounts.Where(m => campaginAccountStatusArr.Contains(m.Status));
+
             foreach (var campaignAccount in campaignAccounts)
             {
                 var campaignAccountAmount = 0;
                 if (campaignAccount.Account.Type == AccountType.Regular)
                 {
                     campaignAccountAmount = campaign.AccountChargeAmount;
-                   
                 }
                 else
                 {
@@ -42,7 +53,6 @@ namespace Core.Models
                 if (campaign.EnabledAccountChargeExtra)
                 {
                     accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
-
                 }
             }
 
@@ -89,7 +99,7 @@ namespace Core.Models
         {
             get
             {
-                if (AccountChargeValue < 0)
+                if (AccountChargeValue > 0)
                 {
                     return true;
                 }

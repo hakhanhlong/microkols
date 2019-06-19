@@ -79,5 +79,11 @@ namespace Infrastructure.Data
             await _dbContext.TransactionHistory.AddAsync(transactionHistory);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<long> GetTotalAmount(TransactionType transactionType, int refid)
+        {
+
+            return await _dbContext.Transaction.Where(m => m.Type == transactionType && m.RefId == refid && m.Status == TransactionStatus.Completed).Select(m => m.Amount).DefaultIfEmpty(0).SumAsync();
+        }
     }
 }

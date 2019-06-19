@@ -1,11 +1,15 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.ViewModels;
 
 namespace Website.Controllers
@@ -17,23 +21,26 @@ namespace Website.Controllers
         private readonly ISharedService _sharedService;
         private readonly INotificationService _notificationService;
         private readonly IAccountService _accountService;
+        private readonly IFileHelper _fileHelper;
         public AgencyCampaignController(ISharedService sharedService,
-             IAccountService accountService,
+             IAccountService accountService, IFileHelper fileHelper,
             ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
             _sharedService = sharedService;
             _notificationService = notificationService;
             _accountService = accountService;
+            _fileHelper = fileHelper;
         }
 
 
 
-        public async Task<IActionResult> Index(CampaignType? type, string kw, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> Index(CampaignType? type, CampaignStatus? status, string kw, int pageindex = 1, int pagesize = 20)
         {
-            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, kw, pageindex, pagesize);
+            var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, status, kw, pageindex, pagesize);
             ViewBag.Kw = kw;
             ViewBag.type = type;
+            ViewBag.status = status;
             return View(model);
         }
 
@@ -55,11 +62,15 @@ namespace Website.Controllers
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(model.Image))
+                    {
+                        model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
+                    }
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
                         this.AddAlertSuccess("Thêm chiến dịch mới thành công");
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Details", new { id = id });
                     }
                 }
 
@@ -111,6 +122,85 @@ namespace Website.Controllers
             var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
             return Json(result ? 1 : 0);
         }
+
+        public async Task<IActionResult> FeedbackAccountJoinCampaign(int campaignid, int accountid, int type)
+        {
+            var result = await _campaignService.FeedbackJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, type == 1, CurrentUser.Name);
+
+            this.AddAlert(result);
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCampaignStatus(int campaignid, CampaignStatus status)
+        {
+            var result = await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, campaignid, status, CurrentUser.Username);
+            if (result > 0)
+            {
+
+                if (status == CampaignStatus.Started)
+                {
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+                }
+                else if (status == CampaignStatus.Ended)
+                {
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+                    BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCompletedCampagin(campaignid));
+
+                }
+
+
+                this.AddAlert(true);
+            }
+            else if (result == -1)
+            {
+                this.AddAlert(false, "Không được phép thay đổi trạng thái Chiến dịch");
+            }
+            else if (result == -2)
+            {
+                this.AddAlert(false, "Không được phép kết thúc Chiến dịch nếu vẫn còn thành viên không thực hiện");
+            }
+            else if (result == -3)
+            {
+                this.AddAlert(false, "Không được phép bắt đầu chiến dịch khi không có thành viên tham gia hoặc thành viên chưa được duyệt hoặc hủy");
+            }
+            else
+            {
+                this.AddAlert(false);
+            }
+
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid, int accountid, int type)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type);
+                if (r > 0)
+                {
+                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : "Bạn đã hủy nội dung caption thành công");
+
+
+                }
+                else
+                {
+                    this.AddAlertDanger("Thông tin chiến dịch không đúng");
+                }
+
+            }
+            else
+            {
+                this.AddAlertDanger("Thông tin chiến dịch không đúng");
+            }
+
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+
 
         #endregion
     }

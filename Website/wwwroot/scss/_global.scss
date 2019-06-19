@@ -1,0 +1,175 @@
+﻿/// <reference path="../lib/bootstrap/dist/scss/bootstrap.scss" /> 
+body {
+}
+
+.btn-facebook {
+    color: #fff;
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+
+    &:hover {
+        color: #fff;
+        background-color: #2d4373;
+        border-color: rgba(0,0,0,0.2)
+    }
+}
+
+
+.input-validation-error {
+    border-color: $danger;
+}
+
+.field-validation-error {
+    color: $danger;
+}
+
+
+.affix {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    opacity: 1;
+    z-index: 9;
+}
+
+.affix-top {
+    position: static;
+    opacity: 0.8;
+}
+
+
+.nav-linetabs {
+
+    .nav-item .nav-link {
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        background-color: transparent;
+        border-bottom: 3px solid transparent;
+        color: $dark;
+        transition: all .5s;
+
+        &.active {
+            border-color: $primary;
+            color: $primary;
+        }
+    }
+}
+
+.navbar-menu {
+    .navbar-brand {
+        color: $white;
+    }
+
+    .navbar-nav .nav-link {
+        color: $white;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        background: darken($primary, 5%);
+    }
+}
+
+.navbar-profile {
+    .nav-link {
+        padding: 0.25rem .75rem;
+        /*color: $dark;*/
+        border-top: 2px solid transparent;
+        border-bottom: 2px solid transparent;
+
+        &:hover, &.active {
+            color: $primary;
+            border-bottom-color: $primary;
+        }
+    }
+}
+
+
+
+
+.nav-notif {
+    position: relative;
+
+    .badge {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        padding: 0.15em 0.35em;
+    }
+
+    .dropdown-menu {
+        width: 20rem;
+    }
+}
+
+
+
+
+#cookieConsent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.footer {
+    color: $gray-400;
+    font-size: .9rem;
+
+    .ps {
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        li {
+
+            a {
+                transition: all .5s;
+            }
+
+            a:hover {
+                padding-left: .5rem;
+            }
+        }
+    }
+
+    a {
+        color: $white;
+    }
+}
+
+#main {
+    min-height: 800px;
+}
+
+
+
+
+.pagetitle {
+    padding: .5rem 0;
+    background: $light;
+    border-bottom:$border-width solid $border-color;
+    .breadcrumb {
+        background: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            font-size: .8rem;
+        }
+
+        a {
+        }
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0;
+        color:$black;
+    }
+}

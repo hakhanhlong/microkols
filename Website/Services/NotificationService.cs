@@ -19,26 +19,31 @@ namespace Website.Services
 {
     public class NotificationService : INotificationService
     {
+
         private readonly ILogger<NotificationService> _logger;
-        private readonly IAsyncRepository<Notification> _notificationRepository;
+        private readonly INotificationRepository _notificationRepository;
         private readonly ICampaignRepository _campaignRepository;
         private readonly IAccountRepository _accountRepository;
         private readonly IMemoryCache _cache;
+        private readonly IAsyncRepository<CampaignAccount> _campaignAccountRepository;
 
-        public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache,ICampaignRepository campaignRepository,
+
+        public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache, ICampaignRepository campaignRepository,
             IAccountRepository accountRepository,
-             IAsyncRepository<Notification> notificationRepository)
+             INotificationRepository notificationRepository, IAsyncRepository<CampaignAccount> campaignAccountRepository)
         {
             _logger = loggerFactory.CreateLogger<NotificationService>();
             _notificationRepository = notificationRepository;
             _cache = cache;
             _campaignRepository = campaignRepository;
-            _accountRepository =accountRepository;
+            _accountRepository = accountRepository;
+            _campaignAccountRepository = campaignAccountRepository;
         }
+
 
         #region Notification
 
-        public async Task<int> GetCountNotification(EntityType entityType,int entityId, NotificationStatus? status)
+        public async Task<int> GetCountNotification(EntityType entityType, int entityId, NotificationStatus? status)
         {
             return await _notificationRepository.CountAsync(new NotificationSpecification(entityType, entityId, status));
         }
@@ -120,30 +125,52 @@ namespace Website.Services
             }
 
         }
-        public async Task<int> CreateNotification(EntityType entityType, int entityId,
-            CreateNotificationViewModel model, string username)
-        {
-            var notification = new Notification()
-            {
-
-                EntityId = entityId,
-                EntityType = entityType,
-                DateCreated = DateTime.Now,
-                Data = string.Empty,
-                DataId = model.DataId,
-                Status = NotificationStatus.Created,
-                Type = model.Type,
-            };
-
-            await _notificationRepository.AddAsync(notification);
-            return notification.Id;
-        }
-
-
 
 
         #endregion
 
 
+
+        #region  Notification Job
+        public async Task CreateNotificationCampaignCompleted(int campaignid)
+        {
+
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
+               NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), campaignAccount.AccountChargeAmount.ToPriceText()));
+            }
+        }
+
+        public async Task CreateNotificationCampaignStarted(int campaignid)
+        {
+
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus>(){
+                CampaignAccountStatus.Canceled, CampaignAccountStatus.AccountRequest, CampaignAccountStatus.AgencyRequest
+            }));
+
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignStarted, EntityType.Account, campaignAccount.AccountId, campaignid,
+               NotificationType.CampaignStarted.GetMessageText(campaignid.ToString()));
+            }
+        }
+
+        public async Task CreateNotificationCampaignEnded(int campaignid)
+        {
+
+            //var campaignAccounts = await _campaignAccountRepository.ListAsync(new ConfirmedCampaignAccountSpecification(campaignid));
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus>(){
+                CampaignAccountStatus.Finished
+            }, null));
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                await _notificationRepository.CreateNotification(NotificationType.CampaignEnded, EntityType.Account, campaignAccount.AccountId, campaignid,
+                NotificationType.CampaignEnded.GetMessageText(campaignid.ToString()));
+            }
+        }
+        #endregion
     }
 }

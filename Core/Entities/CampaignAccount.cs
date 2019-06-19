@@ -18,8 +18,10 @@ namespace Core.Entities
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia
 
+        public string RefImage { get; set; }
         public string RefUrl { get; set; }
         public string RefId { get; set; }
+        public string RefContent { get; set; }
 
         public string RefData { get; set; }
         [NotMapped]
@@ -42,8 +44,6 @@ namespace Core.Entities
         }
 
 
-
-
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string UserCreated { get; set; }
@@ -57,13 +57,27 @@ namespace Core.Entities
         AccountRequest = 0,
         [DisplayName("Doanh nghiệp mời tham gia chiến dịch")]
         AgencyRequest = 1,
-
         [DisplayName("Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
-        [DisplayName("Đang thực hiện")]
-        Processing = 3,
-        [DisplayName("Đã hoàn thành")]
-        Done = 3,
+        [DisplayName("Đang gửi xét duyệt")]
+        Submitted = 3,
 
+        [DisplayName("Từ chối nội dung")]
+        Declined = 4,
+        [DisplayName("Đã duyệt nội dung")]
+        Approved = 5,
+
+        [DisplayName("Đã hoàn thành")]
+        Finished  = 6,
+        [DisplayName("Hủy tham gia")]
+        Canceled = 7,
+
+    }
+    public static class CampaignAccountExt
+    {
+        public static string ToAgencyText(this CampaignAccountStatus status)
+        {
+            return status.ToString();
+        }
     }
 }

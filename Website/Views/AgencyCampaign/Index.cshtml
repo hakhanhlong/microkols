@@ -5,62 +5,111 @@
 
     var kw = (string)ViewBag.Kw;
     var type = (CampaignType?)ViewBag.type;
+
+    var stautusArr = StringHelper.GetEnumArray<CampaignStatus>();
+    var status = (CampaignStatus?)ViewBag.Status;
 }
 
-<h1 class="h3">@ViewData["Title"]</h1>
 
+@section Top{
 
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
 
-<div class="row mb-3 justify-content-between">
-    <div class="col-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a asp-action="Index">Danh sách chiến dịch</a></li>
 
-        <div class="btn-group" role="group">
+                </ol>
 
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="fal fa-plus"></i>
-                Thêm chiến dịch mới
-            </a>
-        </div>
+                <h1>@ViewData["Title"]</h1>
 
-    </div>
-    <div class="col-6">
-        <form method="get" asp-action="Index">
-            <div class="form-row">
-                <div class="col-auto w-25">
-                    <select class="form-control" name="campaignTypeId">
-                        <option value="">Tất cả loại</option>
-                        @foreach (var campaignType in campaignTypes)
-                        {
-                            <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
-                        }
-                    </select>
-                </div>
-                <div class="col">
-
-                    <div class="input-group">
-
-                        <input type="text" name="kw" class="form-control" value="@kw" placeholder="Tìm kiếm">
-
-                        <div class="input-group-append">
-
-                            <button type="submit" class="btn btn-outline-secondary">
-                                <i class="fal fa-search"></i>
-                            </button>
-
-                        </div>
-                    </div>
-                </div>
             </div>
 
-        </form>
+            <div class="pt-2">
+
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fal fa-plus"></i>
+                    Thêm chiến dịch mới
+                </a>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+
+
+
+<ul class="nav nav-tabs nav-linetabs">
+    <li class="nav-item">
+        <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-controller="AgencyCampaign" asp-route-status="">Tất cả</a>
+    </li>
+    @foreach (var statusItem in stautusArr)
+    {
+        var isactived = statusItem == status;
+        <li class="nav-item">
+            <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-controller="AgencyCampaign" asp-route-status="@statusItem">@statusItem.ToDisplayName()</a>
+        </li>
+    }
+</ul>
+
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+        <alert></alert>
+
+        <div class="row py-3 justify-content-between">
+
+            <div class="col-12">
+                <form method="get" asp-action="Index">
+                    <div class="form-row">
+                        <div class="col-auto w-25">
+                            <select class="form-control" name="campaignTypeId">
+                                <option value="">Tất cả loại</option>
+                                @foreach (var campaignType in campaignTypes)
+                                {
+                                    <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col">
+
+                            <div class="input-group">
+
+                                <input type="text" name="kw" class="form-control" value="@kw" placeholder="Tìm kiếm">
+
+                                <div class="input-group-append">
+
+                                    <button type="submit" class="btn btn-outline-secondary">
+                                        <i class="fal fa-search"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            @foreach (var item in Model.Campaigns)
+            {
+            <div class="col-md-6">
+                <partial name="_CampaignItemPartial" model="item" />
+            </div>
+            }
+        </div>
+        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
+
 
     </div>
+
 </div>
-
-@foreach (var item in Model.Campaigns)
-{
-    <partial name="_CampaignItemPartial" model="item" />
-}
-<pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
-
-

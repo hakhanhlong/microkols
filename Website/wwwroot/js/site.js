@@ -14,6 +14,4 @@
         cache: true
     });
 });
-
-
-
+//App.Init();

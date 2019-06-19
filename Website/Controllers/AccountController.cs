@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.ViewModels;
 
 namespace Website.Controllers
@@ -18,18 +20,29 @@ namespace Website.Controllers
         private readonly IAccountService _accountService;
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
-        public AccountController(IAccountService accountService, ISharedService sharedService, IFileHelper fileHelper)
+        private readonly IFacebookHelper _facebookHelper;
+        public AccountController(IAccountService accountService, ISharedService sharedService,
+            IFileHelper fileHelper, IFacebookHelper facebookHelper)
         {
 
             _accountService = accountService;
             _sharedService = sharedService;
             _fileHelper = fileHelper;
+            _facebookHelper = facebookHelper;
 
 
         }
 
-      
+        public async Task<IActionResult> Index()
+        {
+            return View();
+        }
 
+        public async Task<IActionResult> FbPost(int page = 1, int pagesize = 20)
+        {
+            var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, page, pagesize);
+            return View(model);
+        }
 
         #region ChangePassword
         public async Task<IActionResult> ChangePassword()
@@ -52,7 +65,7 @@ namespace Website.Controllers
         }
         #endregion
 
-        #region Change Info
+        #region ChangeIDCard
         public async Task<IActionResult> ChangeIDCard()
         {
             var model = await _accountService.GetIDCard(CurrentUser.Id);
@@ -77,6 +90,7 @@ namespace Website.Controllers
             return View(model);
         }
         #endregion
+
         #region Change Info
         public async Task<IActionResult> ChangeInfo()
         {
@@ -164,7 +178,7 @@ namespace Website.Controllers
         public async Task<IActionResult> ChangeAccountType()
         {
             var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
-            if(model.Type != AccountType.Regular)
+            if (model.Type != AccountType.Regular)
             {
                 ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
             }
@@ -197,6 +211,50 @@ namespace Website.Controllers
             return RedirectToAction("ChangeAccountType");
         }
 
+        #endregion
+
+        #region Link Provider
+        [HttpPost]
+        public async Task<IActionResult> LinkProvider(AccountProviderNames provider, string token, string returnurl)
+        {
+            var info = provider == AccountProviderNames.Facebook ? await _facebookHelper.GetLoginProviderAsync(token) :
+               await Code.Helpers.SocialHelper.VerifyGoogleTokenAsync(token);
+            if (info == null)
+            {
+                this.AddAlertDanger($"Lỗi khi lấy thông tin từ hệ thống {provider}. Xin vui lòng thử lại. Token {token}");
+            }
+            else
+            {
+                var r = await _accountService.UpdateAccountProvider(CurrentUser.Id, new UpdateAccountProviderViewModel()
+                {
+                    Email = info.Email,
+                    Image = info.Image,
+                    Name = info.Name,
+                    Provider = provider,
+                    ProviderId = info.ProviderId
+                }, CurrentUser.Username);
+
+                if (r < 0)
+                {
+                    this.AddAlertDanger($"Tài khoản {info.Provider} đã được liên kết với tài khoản khác. Vui lòng thử lại tài khoản khác");
+                }
+                else
+                {
+
+                    BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
+                    this.AddAlertSuccess($"Liên kết Tài khoản {info.Provider} thành công");
+
+
+                    if (r == 2)
+                    { // tao moi fb id -> add new FbPost tu 2018
+                        BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 1));
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(returnurl)) { return Redirect(returnurl); }
+            return RedirectToAction("Index");
+        }
         #endregion
 
         #region Helper

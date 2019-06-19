@@ -10,5 +10,7 @@ namespace Core.Interfaces
 {
     public interface INotificationRepository : IRepository<Notification>, IAsyncRepository<Notification>
     {
+
+        Task<int> CreateNotification(NotificationType type, EntityType entityType, int entityId, int dataid, string message, string data = "", string image = "");
     }
 }

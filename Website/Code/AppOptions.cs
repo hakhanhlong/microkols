@@ -11,7 +11,7 @@ namespace Website.Code
         public string GoogleApiKey { get; set; }
         public string GoogleAppId { get; set; }
         public string FacebookAppId { get; set; }
-
+        public string FacebookAppSecret { get; set; }
         public string FacebookAppToken { get; set; }
 
         public string ResourceServer { get; set; }
@@ -22,6 +22,7 @@ namespace Website.Code
         {
             if (!string.IsNullOrEmpty(path))
             {
+                if (path.StartsWith("http")) return path;
                 return $"{ResourceServer}/{path}";
             }
             return string.Empty;
@@ -50,4 +51,6 @@ namespace Website.Code
         public string AccountName { get; set; }
     }
 
+
+  
 }

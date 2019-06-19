@@ -1,0 +1,26 @@
+﻿@model SubmitCampaignAccountRefContentViewModel
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <form method="post" action="javascript:;" data-action="@Url.Action("SubmitCampaignAccountRefContent","AccountCampaign")" id="frmUpdateCampaignAccountRef">
+            <div class="modal-header">
+                <h5 class="modal-title">Thực hiện công việc</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+             
+                <div class="form-group">
+                    <label asp-for="RefContent"></label>
+                    <textarea asp-for="RefContent" class="form-control"></textarea>
+                    <span asp-validation-for="RefContent" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                <input type="hidden" asp-for="CampaignId" />
+                <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

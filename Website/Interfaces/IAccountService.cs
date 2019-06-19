@@ -9,6 +9,8 @@ namespace Website.Interfaces
 {
     public interface IAccountService
     {
+        Task<AccountCountingViewModel> GetAccountCounting(int accountid);
+        Task<List<int>> GetActivedAccountIds();
         Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
                     string order, int page, int pagesize, IEnumerable<int> ignoreIds);
 
@@ -39,7 +41,25 @@ namespace Website.Interfaces
         Task<bool> VerifyEmail(string email);
 
 
+
         Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid);
         Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model);
+
+
+        #region Account Provider
+        Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid);
+        Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider);
+        Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
+        Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider);
+        Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider);
+        Task<bool> UpdateAccountProvidersAccessToken(int id, string accessToken, int expiredIn);
+
+        #endregion
+
+        #region Account FbPost
+        Task<AccountFbPostViewModel> GetAccountFbPost(int accountid, string postid);
+        Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username);
+        Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize);
+        #endregion
     }
 }

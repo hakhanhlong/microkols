@@ -24,6 +24,8 @@ namespace Infrastructure.Data
         public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<AccountCategory> AccountCategory { get; set; }
         public virtual DbSet<AccountProvider> AccountProvider { get; set; }
+        public virtual DbSet<AccountFbPost> AccountFbPost { get; set; }
+
         public virtual DbSet<AccountCampaignCharge> AccountCampaignCharge { get; set; }
         
         public virtual DbSet<CampaignTypeCharge> CampaignTypeCharge { get; set; }
@@ -94,7 +96,7 @@ namespace Infrastructure.Data
 
             builder.HasOne(m => m.Account).WithMany(m => m.AccountProvider).HasForeignKey(m => m.AccountId).OnDelete(DeleteBehavior.ClientSetNull);
 
-            //builder.Property(e => e.Provider).HasConversion(v => v.ToString(), v => (AccountProviderType)Enum.Parse(typeof(AccountProviderProvider), v));
+            builder.Property(e => e.Provider).HasConversion(v => v.ToString(), v => (AccountProviderNames)Enum.Parse(typeof(AccountProviderNames), v));
         }
         private void ConfigureAgency(EntityTypeBuilder<Agency> builder)
         {

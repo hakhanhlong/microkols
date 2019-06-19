@@ -18,7 +18,6 @@ namespace Infrastructure.Data
         {
 
         }
-
         #region Campaign Account
 
         public async Task<int> CreateAgencyRequestCampaignAccount(int agencyid, int campaignid, int accountid, string username)
@@ -37,6 +36,20 @@ namespace Infrastructure.Data
                 if (accountPrice == null) return -1;
                 accountChargeAmount = accountPrice.AccountChargeAmount;
             }
+
+            if(campaign.Type== CampaignType.ChangeAvatar)
+            {
+                accountChargeAmount = campaign.AccountChargeTime * accountChargeAmount;
+            }
+            else if(campaign.Type== CampaignType.ShareContentWithCaption || campaign.Type== CampaignType.ShareContent)
+            {
+                if (campaign.EnabledAccountChargeExtra)
+                {
+                    var extraCharge = accountChargeAmount * campaign.AccountChargeExtraPercent / 100;
+                    accountChargeAmount = accountChargeAmount + extraCharge;
+                }
+            }
+
             var campaignAccount = await _dbContext.CampaignAccount.FirstOrDefaultAsync(m => m.CampaignId == campaign.Id && m.AccountId == account.Id);
             if (campaignAccount == null)
             {
@@ -58,6 +71,19 @@ namespace Infrastructure.Data
                 await _dbContext.CampaignAccount.AddAsync(campaignAccount);
                 await _dbContext.SaveChangesAsync();
                 return 1;
+            }
+            else 
+            {
+                if(campaignAccount.Status== CampaignAccountStatus.Canceled)
+                {
+                    campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
+                    campaignAccount.DateModified = DateTime.Now;
+                    campaignAccount.UserModified = username;
+                    campaignAccount.AccountChargeAmount = accountChargeAmount;
+                    await _dbContext.SaveChangesAsync();
+                    return 1;
+                }
+
             }
             return 0;
         }

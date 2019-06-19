@@ -1,11 +1,14 @@
 ﻿@model ListAccountViewModel
+
+@inject Website.Interfaces.IAccountService AccountService
+
 @{ 
     var campaignId = (int)ViewBag.CampaignId;
 }
 
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-lg  modal-dialog-centered">
 
-    <div class="modal-content">
+    <div class="modal-content ">
         <div class="modal-header">
             <h5 class="modal-title">Thành viên</h5>
         </div>
@@ -23,21 +26,33 @@
                         <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="65">
                         <div class="media-body">
                             <h5 class="mt-0 h6">@account.Name</h5>
-                            <div>
-                                <small>
-                                    @account.Type.ToDisplayName()
-                                </small>
-                                
+                         
+                            <div class="d-flex align-items-center">
+                               
+                                <span  data-toggle="tooltip" title="Lượt thích trung bình">
+                                    @account.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
+                                </span>
+
+                                <span class="px-2"  data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
+
+                                    @account.AccountCounting.AvgShareCount <i class="fal fa-share"></i>
+                                </span>
+
+
+                                <span  data-toggle="tooltip" title="Lượt bình luận trung bình">
+
+                                    @account.AccountCounting.AvgCommentCount <i class="fal fa-comment"></i>
+                                </span>
                             </div>
-                            @if(account.Type!= AccountType.Regular)
+                            @if (account.Type != AccountType.Regular)
                             {
                                 <div>
-                                    Chi phí: @account.
+                                    Chi phí: @account
                                 </div>
                             }
                         </div>
-                        <button class="btn btn-outline-primary btn-sm btn-requestjoin" data-url="@Url.Action("RequestAccountJoinCampaign","AgencyCampaign", new { campaignid= campaignId,accountid = account.Id  })" data-campaignid="@campaignId" 
-                                > <i class="fal fa-plus"></i> Chọn</button>
+                        <button class="btn btn-outline-primary btn-sm btn-requestjoin" 
+                                data-url="@Url.Action("RequestAccountJoinCampaign","AgencyCampaign", new { campaignid= campaignId,accountid = account.Id  })" data-campaignid="@campaignId" > <i class="fal fa-plus"></i> Mời tham gia chiến dịch</button>
                     </div>
                 }
             }

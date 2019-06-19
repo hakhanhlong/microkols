@@ -7,24 +7,23 @@
     <link href="~/lib/fontawesome-pro-5.2.0-web/css/all.css" rel="stylesheet" />
     <link href="~/lib/daterangepicker/daterangepicker.css" rel="stylesheet" />
     <link href="~/lib/select2/dist/css/select2.min.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/lib/owlcarousel2/dist/assets/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/lib/owlcarousel2/dist/assets/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/css/app.css" rel="stylesheet" asp-append-version="true" />
 
 </head>
 <body>
 
     <partial name="_HeaderPartial" />
-    <div class="container">
-        <partial name="_CookieConsentPartial" />
+    @RenderSection("Top", required: false)
+    <div class="container" id="main">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
+    <partial name="_FooterPartial" />
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - Website - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <partial name="_CookieConsentPartial" />
 
     <partial name="_ScriptPartial" />
     @RenderSection("Scripts", required: false)

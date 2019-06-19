@@ -22,6 +22,15 @@
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
             </div>
         }
+        else if (payment.TotalChargeValue == 0)
+        {
+            <div class="modal-body">
+                <div class="alert alert-success">Chiến dịch đã được thanh toán đủ</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        }
         else
         {
             <form method="post" action="javascript:;" data-action="@Url.Action("CampaignPayment","AgencyPayment")" id="frmPayment">
@@ -61,6 +70,13 @@
                             </div>
                         </div>
                     }
+
+                    <div class="form-group row">
+                        <label class="col-4">Tổng tiền cần thanh toán</label>
+                        <div class="col-8 text-danger">
+                            @payment.TotalChargeValue.ToPriceText()
+                        </div>
+                    </div>
 
 
                     <div class="form-group row">

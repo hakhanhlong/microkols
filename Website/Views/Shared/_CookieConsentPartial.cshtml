@@ -9,10 +9,17 @@
 @if (showBanner)
 {
     <div id="cookieConsent" class="alert alert-info alert-dismissible fade show" role="alert">
-        Use this space to summarize your privacy and cookie use policy. <a asp-area="" asp-controller="Home" asp-action="Privacy">Learn More</a>.
-        <button type="button" class="accept-policy close" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
-            <span aria-hidden="true">Accept</span>
-        </button>
+
+        <div class="container d-flex">
+
+
+            <div class="mr-auto">Chúng tôi sử dụng Cookies giúp bạn có những trải nghiệm tốt nhất. Xem thêm chính sách, mục đích sử dụng  <a asp-area="" asp-controller="Home" asp-action="Privacy">tại đây</a> .</div>
+
+            
+            <button type="button" class="btn btn-primary btn-sm" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">
+                <span aria-hidden="true">Đồng ý</span>
+            </button>
+        </div>
     </div>
     <script>
         (function () {

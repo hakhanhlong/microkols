@@ -180,17 +180,15 @@ namespace Infrastructure.Data
         {
 
             var query = GetQueryBySpecification(spec, disableTracking);
-
-            if (!string.IsNullOrEmpty(sortOrder))
+            if (string.IsNullOrEmpty(sortOrder))
             {
+                query = query.OrderByDescending(m=>m.Id);
+            }
+            else
+            {
+
                 bool descending = false;
                 // Not set default -> DB don't include Id property
-                //if (string.IsNullOrEmpty(sortOrder))
-                //{
-                //    sortOrder = "Id";
-                //}
-                //else
-
 
                 if (sortOrder.EndsWith("_desc"))
                 {

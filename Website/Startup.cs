@@ -19,6 +19,7 @@ using Website.Code;
 using Website.Code.Binders;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.Services;
 
 namespace Website
@@ -97,7 +98,13 @@ namespace Website
             app.UseAuthentication();
             app.UseSession();
 
+
+            app.UseHangfireDashboard();
             app.UseHangfireServer();
+
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCompletedCampagin(0), Cron.Hourly);
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.ExtendAccessToken(), Cron.Daily);
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), Cron.Daily);
 
 
             app.UseMvc(routes =>

@@ -1,58 +1,17 @@
-﻿@import "../lib/bootstrap/dist/scss/bootstrap.scss";
-@import "select2-bootstrap4.scss";
-@import "steppers.scss";
+﻿@import "_variables.scss";
 
-.btn-facebook {
-    color: #fff;
-    background-color: #3b5998;
-    border-color: rgba(0,0,0,0.2);
+@import "../lib/bootstrap/dist/scss/bootstrap.scss";
 
-    &:hover {
-        color: #fff;
-        background-color: #2d4373;
-        border-color: rgba(0,0,0,0.2)
-    }
-}
 
-.input-validation-error {
-    border-color: $danger;
-}
 
-.field-validation-error {
-    color: $danger;
-}
+@import "_global.scss";
+@import "_mixins.scss";
 
-#editAccountPriceWrap {
-    span {
-        color: $danger;
-    }
+@import "addons/_select2-bootstrap4.scss";
+@import "addons/_steppers.scss";
 
-    input {
-        display: none;
-    }
+@import "_campaign.scss";
+@import "_home.scss";
 
-    &.openedit {
-        span {
-            display: none;
-        }
 
-        input {
-            display: inline;
-        }
-    }
-}
 
-.nav-notif {
-    position: relative;
-
-    .badge {
-        position: absolute;
-        top: 3px;
-        right: 0;
-        padding: 0.15em 0.35em;
-    }
-
-    .dropdown-menu {
-        width: 20rem;
-    }
-}

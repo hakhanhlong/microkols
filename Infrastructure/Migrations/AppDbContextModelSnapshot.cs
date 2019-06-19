@@ -124,7 +124,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AccountCategory");
                 });
 
-            modelBuilder.Entity("Core.Entities.AccountProvider", b =>
+            modelBuilder.Entity("Core.Entities.AccountFbPost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -132,11 +132,59 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("AccountId");
 
+                    b.Property<int>("CommentCount");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<DateTime>("DateModified");
+
+                    b.Property<int>("LikeCount");
+
+                    b.Property<string>("Link");
+
+                    b.Property<string>("Message");
+
+                    b.Property<string>("Permalink");
+
+                    b.Property<string>("Picture");
+
+                    b.Property<string>("PostId");
+
+                    b.Property<DateTime>("PostTime");
+
+                    b.Property<int>("ShareCount");
+
+                    b.Property<string>("UserCreated");
+
+                    b.Property<string>("UserModified");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountFbPost");
+                });
+
+            modelBuilder.Entity("Core.Entities.AccountProvider", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AccessToken");
+
+                    b.Property<int>("AccountId");
+
                     b.Property<string>("Email");
+
+                    b.Property<DateTime>("Expired");
+
+                    b.Property<int?>("FollowersCount");
+
+                    b.Property<int?>("FriendsCount");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Provider");
+                    b.Property<string>("Provider")
+                        .IsRequired();
 
                     b.Property<string>("ProviderId");
 
@@ -261,6 +309,8 @@ namespace Infrastructure.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<string>("SystemNote");
+
                     b.Property<string>("Title");
 
                     b.Property<int>("Type");
@@ -292,9 +342,13 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("DateModified");
 
+                    b.Property<string>("RefContent");
+
                     b.Property<string>("RefData");
 
                     b.Property<string>("RefId");
+
+                    b.Property<string>("RefImage");
 
                     b.Property<string>("RefUrl");
 
@@ -449,11 +503,7 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Message");
 
-                    b.Property<string>("Note");
-
                     b.Property<int>("Status");
-
-                    b.Property<string>("Title");
 
                     b.Property<int>("Type");
 

@@ -46,9 +46,10 @@
 
 })();
 
-var CreateCampaignPage = (function () {
+var AgencyCreateCampaignPage = (function () {
 
     function init() {
+        handler();
         handlerType();
         $('#Type').change(function () {
             handlerType();
@@ -62,12 +63,43 @@ var CreateCampaignPage = (function () {
     }
 
 
+
+    function handler() {
+        $('#dataImageFile').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var preview = $(this).data('preview');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                if (datas.length > 0) {
+                    $(target).val(datas[0].path);
+                    $(target).trigger("change");
+                    $(preview).attr('src', datas[0].url);
+                }
+            });
+
+        });
+
+    }
+
     function handlerType() {
         var type = $('#Type').val();
         console.log('type', type);
         $('#enabledExtraTypeWrap,#requirementWrap,#changeAvatarWrap').addClass('d-none');
         var selectedOption = $('#Type').children('option:selected');
         var accountpricetext = selectedOption.data('accountpricetext');
+        var datatext = selectedOption.data('datatext');
+        $('#dataText').text(datatext);
+        if (type === 'ChangeAvatar') {
+
+            $('#dataInput').addClass('d-none');
+            $('#dataImage').removeClass('d-none');
+        } else {
+
+            $('#dataInput').removeClass('d-none');
+            $('#dataImage').addClass('d-none');
+        }
 
         $('#editAccountPriceWrap span').text(accountpricetext);
         $('#editAccountPriceWrap').removeClass('openedit');
@@ -84,6 +116,8 @@ var CreateCampaignPage = (function () {
         }
         else if (type === 'ChangeAvatar') {
             $('#changeAvatarWrap').removeClass('d-none');
+
+            
         }
 
         pricingCalculator();
@@ -128,7 +162,7 @@ var CreateCampaignPage = (function () {
 
 })();
 
-var DetailsCampaignPage = (function () {
+var AgencyDetailsCampaignPage = (function () {
 
     function init() {
        
@@ -145,6 +179,7 @@ var DetailsCampaignPage = (function () {
         });
     }
 
+
     function handlerCampaignAccount() {
 
 
@@ -157,14 +192,121 @@ var DetailsCampaignPage = (function () {
             $.get(url, function (res) {
                 $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
                 $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+
+                handlerReloadBtn(true);
+            });
+
+
+        });
+        handlerReloadBtn();
+
+    }
+
+    function handlerReloadBtn(force) {
+        $('.btn-reload').unbind('click');
+        $('.btn-reload').click(function (e) {
+            if (force) {
+                window.location = window.location;
+            } else {
+                AppBsModal.HideModal();
+
+            }
+        });
+    }
+    return {
+        Init: init
+    };
+
+})();
+
+
+var AccountDetailsCampaignPage = (function () {
+
+    function init() {
+
+
+        handler();
+    }
+    function handler() {
+        $('.btn-updateref').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerUpdateRef();
             });
         });
 
 
-        AppCommon.handlerBtnReload();
+        $('.btn-shareui').click(function () {
+            AppBsModal.Init('static');
+            AppBsModal.OpenModal('');
+            AppBsModal.ShowLoading();
+            var href = $(this).data('href');
+            var urlsubmit = $(this).data('urlsubmit');
+            //var caption = $(this).data('caption');
+
+            FB.ui(
+                {
+                    method: 'share',
+                    href: href
+                    //quote: caption,
+                },
+                function (response) {
+                    if (response && !response.error_message) {
+                        $.post(urlsubmit, function (html) {
+                            AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+                        });
+                    } else {
+                        AppBsModal.HideModal();
+                    }
+                });
+        });
+
+    }
+    function handlerUpdateRef() {
+        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
+        $('#frmUpdateCampaignAccountRef').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+
+                });
+            }
+        });
+
+
+
+
+    }
+    
+    return {
+        Init: init
+    };
+
+})();
+
+var HomeIndexPage = (function () {
+
+    function init() {
+        handler();
+
+        $('#main').css('min-height', '0');
     }
 
 
+    function handler() {
+        $('.owl-carousel').owlCarousel({
+            margin: 10,
+            loop: true,
+            autoWidth: true,
+            items: 4
+        })
+    }
     return {
         Init: init
     };
