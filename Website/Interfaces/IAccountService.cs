@@ -57,6 +57,7 @@ namespace Website.Interfaces
         #endregion
 
         #region Account FbPost
+        Task<AccountFbPostViewModel> GetAccountFbPost(int accountid, string postid);
         Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username);
         Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize);
         #endregion

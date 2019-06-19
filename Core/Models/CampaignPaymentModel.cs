@@ -43,7 +43,6 @@ namespace Core.Models
                 if (campaignAccount.Account.Type == AccountType.Regular)
                 {
                     campaignAccountAmount = campaign.AccountChargeAmount;
-
                 }
                 else
                 {

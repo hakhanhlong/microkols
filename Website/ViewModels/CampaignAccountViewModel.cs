@@ -91,7 +91,7 @@ namespace Website.ViewModels
 
         }
         [Required( ErrorMessage ="Hãy nhập {0}")]
-        [Display(Name = "Nhập link trên Facebook của bạn")]
+        [Display(Name = "Link trên Facebook")]
         //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
 

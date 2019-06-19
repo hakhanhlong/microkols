@@ -9,12 +9,25 @@
                 </button>
             </div>
             <div class="modal-body">
+                @if (Model.CampaignType.IsShareCampaign())
+                {
+                    <div class="text-center">Chờ hệ thống tự động lấy dữ liệu chia sẻ của bạn </div>
 
-                <div class="text-center">Chờ hệ thống tự động lấy dữ liệu chia sẻ của bạn </div>
+                    <div class="text-center  py-4"> --- Hoặc ---- </div>
+                }
 
-                <div class="text-center  py-4"> --- Hoặc ---- </div>
+                @{ 
+                    var hideRefUrl = "";
+                }
+                @if(Model.CampaignType == CampaignType.JoinEvent)
+                {
 
-                <div class="form-group">
+                    hideRefUrl = "d-none";
+                    <div class="alert alert-info">Bạn xác nhận đã tham gia Sự kiện</div>
+                    Model.RefUrl = "Joined";
+
+                }
+                <div class="form-group @hideRefUrl">
                     <label asp-for="RefUrl"></label>
                     <input type="text" asp-for="RefUrl" class="form-control" />
                     <span asp-validation-for="RefUrl" class="text-danger"></span>

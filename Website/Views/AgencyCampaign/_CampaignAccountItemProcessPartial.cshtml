@@ -1,0 +1,122 @@
+﻿@inject Website.Interfaces.IAccountService AccountService
+@inject Website.Code.Helpers.IFacebookHelper FacebookHelper
+@model CampaignAccountViewModel
+<div class="media mb-2">
+    <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(Model.Account.Avatar)" width="60">
+    <div class="media-body">
+        <h5 class="mt-0 h6">@Model.Account.Name</h5>
+        <div class="mt-2">
+            @Model.Status.ToAgencyBadge()
+        </div>
+        @if (Model.Status == CampaignAccountStatus.Submitted)
+        {
+            <div class="mt-2">
+                Nội dung Caption: <span class="text-info"> @Model.RefContent</span>
+            </div>
+        }
+        else if (Model.Status == CampaignAccountStatus.Finished)
+        {
+
+            if (Model.Type.IsShareCampaign())
+            {
+                <div>
+                    Link chia sẻ:
+                    <a href="@Model.RefUrl" target="_blank">@Model.RefUrl</a>
+                </div>
+                if (!string.IsNullOrEmpty(Model.RefId))
+                {
+                    var post = await AccountService.GetAccountFbPost(Model.AccountId, Model.RefId);
+                    if (post != null)
+                    {
+                        <div class="d-flex align-items-center">
+
+                            <span data-toggle="tooltip" title="Lượt thích">
+                                @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                            </span>
+                            <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
+
+                                @post.ShareCount <i class="fal fa-share"></i>
+                            </span>
+                            <span data-toggle="tooltip" title="Lượt bình luận">
+                                @post.CommentCount <i class="fal fa-comment"></i>
+                            </span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div>Hệ thống đang lấy dữ liệu từ link chia sẻ....</div>
+                }
+            }
+            else if (Model.Type == CampaignType.ChangeAvatar)
+            {
+                var logAvatarTimes = (List<CampaignAccountRefDataChangeAvatar>)Model.RefData;
+                var accountFbId = await AccountService.GetProviderIdByAccount(Model.AccountId, AccountProviderNames.Facebook);
+                var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
+                <div>Lịch sử thay đổi Avatar</div>
+                <div class="row">
+                    <div class="col-1 text-center">
+                        <img src="@avatarurl" class="img-fluid" />
+                        <small class="text-muted">Hiện tại</small>
+                    </div>
+
+                    @if (logAvatarTimes != null)
+                    {
+                        foreach (var logAvatar in logAvatarTimes)
+                        {
+
+                            <div class="col-1 text-center">
+                                <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
+                                <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
+                            </div>
+                        }
+                    }
+
+                </div>
+            }
+            else if (Model.Type == CampaignType.PostComment)
+            { 
+                <div>
+                    Link chia sẻ:
+                    <a href="@Model.RefUrl" target="_blank">@Model.RefUrl</a>
+                </div>
+
+            }
+
+        }
+    </div>
+    <div class="mr-auto">
+        @if (Model.Status == CampaignAccountStatus.AccountRequest)
+        {
+            <div>
+                <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                    <input type="hidden" name="campaignid" value="@Model.CampaignId" />
+                    <input type="hidden" name="accountid" value="@Model.AccountId" />
+
+                    <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
+                    <button class="btn btn-outline-danger btn-sm" name="type" value="0">Từ chối</button>
+                </form>
+            </div>
+        }
+        else if (Model.Status == CampaignAccountStatus.AgencyRequest)
+        {
+            <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                <input type="hidden" name="campaignid" value="@Model.CampaignId" />
+                <input type="hidden" name="accountid" value="@Model.AccountId" />
+
+                <button class="btn btn-outline-danger btn-sm" value="0">Hủy yêu cầu</button>
+            </form>
+        }
+        else if (Model.Status == CampaignAccountStatus.Submitted)
+        {
+            <form asp-action="FeedbackCampaignAccountRefContent" method="post">
+                <input type="hidden" name="campaignid" value="@Model.CampaignId" />
+                <input type="hidden" name="accountid" value="@Model.AccountId" />
+                <button class="btn btn-outline-success btn-sm" type="submit" name="type" value="1">Duyệt nội dung</button>
+                <button class="btn btn-outline-secondary btn-sm" type="submit" name="type" value="0">Không duyệt nội dung</button>
+            </form>
+        }
+    </div>
+
+</div>
+<hr />

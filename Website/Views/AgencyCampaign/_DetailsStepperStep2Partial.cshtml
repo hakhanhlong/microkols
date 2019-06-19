@@ -1,6 +1,5 @@
 ﻿@model CampaignDetailsViewModel
 
-
 @{
     var kolTypes = Model.AccountTypes.Where(m => m != AccountType.Regular).ToList();
     if (kolTypes.Count > 0)
@@ -9,29 +8,21 @@
         var kolAccounts = Model.CampaignAccounts.Where(m => m.Account.Type != AccountType.Regular).ToList();
         if (kolAccounts.Count > 0)
         {
+            var kolText = string.Join(',', kolTypes.Select(m => m.ToDisplayName()).ToArray());
+            <div class="mb-3">
+                <div class="mb-3 d-flex">
+                    <h3 class="h5">
+                        Thành viên Kol - @kolText
 
-        var kolText = string.Join(',', kolTypes.Select(m => m.ToDisplayName()).ToArray());
-        <div class="mb-3">
-            <div class="mb-3 d-flex">
-                <h3 class="h5">
-                    Thành viên Kol - @kolText
-
-                </h3>
-            </div>
-            @if (kolAccounts.Count > 0)
-            {
+                    </h3>
+                </div>
                 <div>
                     @foreach (var campaignAccount in Model.CampaignAccounts)
                     {
-                        <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
+                        <partial name="_CampaignAccountItemProcessPartial" model="campaignAccount" />
                     }
                 </div>
-            }
-            else
-            {
-                <div class="alert alert-info">Chưa có thành viên </div>
-            }
-        </div>
+            </div>
         }
     }
 }
@@ -42,26 +33,17 @@
     var regularAccounts = Model.CampaignAccounts.Where(m => m.Account.Type == AccountType.Regular).ToList();
     if (regularAccounts.Count > 0)
     {
-    <div class="mb-3">
-        <div class="mb-3 d-flex">
-            <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
+        <div class="mb-3">
+            <div class="mb-3 d-flex">
+                <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
+            </div>
+            @foreach (var campaignAccount in Model.CampaignAccounts)
+            {
+                <partial name="_CampaignAccountItemProcessPartial" model="campaignAccount" />
+
+            }
 
         </div>
-        @if (regularAccounts.Count > 0)
-        {
-            <div >
-                @foreach (var campaignAccount in Model.CampaignAccounts)
-                {
-                    <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
-                    <hr />
-                }
-            </div>
-        }
-        else
-        {
-            <div class="alert alert-info">Chưa có thành viên </div>
-        }
-    </div>
     }
 }
 

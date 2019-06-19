@@ -24,6 +24,11 @@ namespace Core.Entities
     }
     public static class CampaignTypeExentions
     {
+        public static bool IsShareCampaign(this CampaignType type)
+        {
+            return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
+
+        }
         public static string ToActionText(this CampaignType type)
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)

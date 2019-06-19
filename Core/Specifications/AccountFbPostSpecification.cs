@@ -12,7 +12,10 @@ namespace Core.Specifications
         {
 
         }
+        public AccountFbPostSpecification(int accountid,string postid) : base(m => m.PostId == postid && m.AccountId == accountid)
+        {
 
+        }
 
     }
 
