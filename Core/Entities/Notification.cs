@@ -31,6 +31,7 @@ namespace Core.Entities
         AgencyApproveCampaignRefContent,
         AgencyDeclineCampaignRefContent,
         AgencyCancelAccountJoinCampaign,
+        AccountDeclineJoinCampaign,
     }
     public enum NotificationStatus
     {
@@ -44,11 +45,14 @@ namespace Core.Entities
         {
             
                var message = "";
+            if (type == NotificationType.AccountDeclineJoinCampaign)
+            {
+                message = "Thành viên {0} đã không đồng ý tham gia chiến dịch {1} của bạn";
+            }
             if (type == NotificationType.AccountConfirmJoinCampaign)
             {
                 message = "Thành viên {0} đã đồng ý tham gia chiến dịch {1}";
             }
-
             else if (type == NotificationType.AccountFinishCampaignRefContent)
             {
                 message = "Thành viên {0} đã thực hiện công việc chiến dịch {1}";

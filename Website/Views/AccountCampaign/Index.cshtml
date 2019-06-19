@@ -69,11 +69,14 @@
             </div>
         </div>
 
-        @foreach (var item in Model.Campaigns)
-        {
-            <partial name="_CampaignItemPartial" model="item" />
-        }
-
+        <div class="row">
+            @foreach (var item in Model.Campaigns)
+            {
+                <div class="col-md-6">
+                    <partial name="_CampaignItemPartial" model="item" />
+                </div>
+            }
+        </div>
         <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw"></pager>
 
 

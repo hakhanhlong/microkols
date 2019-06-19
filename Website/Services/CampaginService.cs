@@ -272,7 +272,7 @@ namespace Website.Services
             return false;
         }
 
-        public async Task<bool> ConfirmJoinCampaignByAccount(int accountid, int campaignid, string username)
+        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username,bool confirmed)
         {
 
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
@@ -284,20 +284,21 @@ namespace Website.Services
                 {
                     if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
                     {
-                        campaignAccount.Status = CampaignAccountStatus.Confirmed;
+                        campaignAccount.Status = confirmed ? CampaignAccountStatus.Confirmed : CampaignAccountStatus.Canceled;
                         campaignAccount.DateModified = DateTime.Now;
                         campaignAccount.UserModified = username;
                         await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
+                        var notifType = confirmed ? NotificationType.AccountConfirmJoinCampaign : NotificationType.AccountDeclineJoinCampaign;
                         await _notificationRepository.AddAsync(new Notification()
                         {
-                            Type = NotificationType.AccountConfirmJoinCampaign,
+                            Type = notifType,
                             DataId = campaign.Id,
                             Data = string.Empty,
                             DateCreated = DateTime.Now,
                             EntityType = EntityType.Agency,
                             EntityId = campaign.AgencyId,
-                            Message = NotificationType.AccountConfirmJoinCampaign.GetMessageText(username, campaign.Id.ToString()),
+                            Message = notifType.GetMessageText(username, campaign.Id.ToString()),
                             Status = NotificationStatus.Created
                         });
 
@@ -521,6 +522,9 @@ namespace Website.Services
                  campaignAccount.Id.ToString());
             return 1;
         }
+
+  
+
 
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
         {

@@ -238,23 +238,26 @@ var AccountDetailsCampaignPage = (function () {
 
 
         $('.btn-shareui').click(function () {
-
+            AppBsModal.Init('static');
+            AppBsModal.OpenModal('');
+            AppBsModal.ShowLoading();
             var href = $(this).data('href');
+            var urlsubmit = $(this).data('urlsubmit');
             //var caption = $(this).data('caption');
 
             FB.ui(
                 {
                     method: 'share',
-                    href: href,
+                    href: href
                     //quote: caption,
                 },
                 function (response) {
-
-                    console.log('FB.ui', response);
                     if (response && !response.error_message) {
-                        alert('Posting completed.');
+                        $.post(urlsubmit, function (html) {
+                            AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+                        });
                     } else {
-                        alert('Error while posting.');
+                        AppBsModal.HideModal();
                     }
                 });
         });
@@ -270,7 +273,7 @@ var AccountDetailsCampaignPage = (function () {
                 var data = $(this).serialize();
                 AppBsModal.ShowLoading();
                 $.post(url, data, function (html) {
-                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload() });
+                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
 
                 });
             }

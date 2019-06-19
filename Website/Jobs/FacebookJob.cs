@@ -23,14 +23,17 @@ namespace Website.Jobs
         private readonly IFacebookHelper _facebookHelper;
         private readonly AppOptions _options;
         private readonly IAccountService _accountService;
+        private readonly ICampaignService _campaignService;
         public FacebookJob(ILoggerFactory loggerFactory, IFacebookHelper facebookHelper,
              IAccountService accountService,
+             ICampaignService campaignService,
             IOptionsMonitor<AppOptions> optionsAccessor)
         {
             _logger = loggerFactory.CreateLogger<FacebookJob>();
             _accountService = accountService;
             _facebookHelper = facebookHelper;
             _options = optionsAccessor.CurrentValue;
+            _campaignService = campaignService;
         }
 
         #region ExtendAccessToken
@@ -73,12 +76,42 @@ namespace Website.Jobs
                 // chi lay 1000 bai`
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
+
                 foreach (var fbPost in fbPosts)
                 {
                     if (!string.IsNullOrEmpty(fbPost.PostId))
                     {
                         await _accountService.UpdateFbPost(accountid, fbPost, username);
                     }
+                }
+
+
+                if (type == 2)
+                {
+                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid, string.Empty, 1, 100);
+                    var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
+
+
+                    foreach (var campaign in campaigns)
+                    {
+                        var fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
+                        if(fbPost!= null)
+                        {
+
+                            await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                            {
+                                CampaignId = campaign.Id,
+                                CampaignType = campaign.Type,
+                                Note = string.Empty,
+                                RefId = fbPost.PostId,
+                                RefUrl = fbPost.Permalink,
+
+                            }, username);
+                        }
+
+                     
+                    }
+
                 }
             }
         }

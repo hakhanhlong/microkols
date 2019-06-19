@@ -208,7 +208,8 @@ namespace Website.Services
                     PostTime = model.PostTime,
                     ShareCount = model.ShareCount,
                     UserCreated = username,
-                    UserModified = username
+                    UserModified = username,
+                    Permalink= model.Permalink
                 };
                 await _accountFbPostRepository.AddAsync(post);
             }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.ViewModels;
 
 namespace Website.Controllers
@@ -146,6 +147,8 @@ namespace Website.Controllers
                 else if (status == CampaignStatus.Ended)
                 {
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+                    BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCompletedCampagin(campaignid));
+
                 }
 
 

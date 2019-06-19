@@ -116,6 +116,14 @@ namespace Website.ViewModels
         public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }
         public CampaignType Type { get; set; }
+
+        public bool IsSharedCampaign
+        {
+            get
+            {
+                return Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption || Type == CampaignType.ShareStreamUrl;
+            }
+        }
         public CampaignStatus Status { get; set; }
 
 

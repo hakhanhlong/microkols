@@ -176,10 +176,24 @@ namespace Website.Code.Extensions
 
         public static string GetNotificationUrl(this IUrlHelper urlHelper, NotificationViewModel model)
         {
-            if(model.Type== NotificationType.AccountConfirmJoinCampaign ||
-                model.Type == NotificationType.AccountRequestJoinCampaign ||
-                model.Type == NotificationType.AgencyConfirmJoinCampaign ||
-                model.Type == NotificationType.AgencyRequestJoinCampaign)
+
+            var campaignNotifTypes = new List<NotificationType>()
+            {
+                NotificationType.AgencyRequestJoinCampaign,
+        NotificationType.AgencyConfirmJoinCampaign,
+        NotificationType.AccountRequestJoinCampaign,
+        NotificationType.AccountConfirmJoinCampaign,
+        NotificationType.CampaignStarted,
+        NotificationType.CampaignEnded,
+        NotificationType.CampaignCompleted,
+        NotificationType.AccountSubmitCampaignRefContent,
+        NotificationType.AccountFinishCampaignRefContent,
+        NotificationType.AgencyApproveCampaignRefContent,
+        NotificationType.AgencyDeclineCampaignRefContent,
+        NotificationType.AgencyCancelAccountJoinCampaign,
+        NotificationType.AccountDeclineJoinCampaign,
+            };
+            if(campaignNotifTypes.Contains(model.Type))
             {
 
                 if(model.EntityType== EntityType.Account)

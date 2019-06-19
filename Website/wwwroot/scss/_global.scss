@@ -56,8 +56,19 @@ body {
     }
 }
 
-.navbar-menu{
+.navbar-menu {
+    .navbar-brand {
+        color: $white;
+    }
 
+    .navbar-nav .nav-link {
+        color: $white;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        background: darken($primary, 5%);
+    }
 }
 
 .navbar-profile {
@@ -142,7 +153,7 @@ body {
 .pagetitle {
     padding: .5rem 0;
     background: $light;
-
+    border-bottom:$border-width solid $border-color;
     .breadcrumb {
         background: none;
         padding: 0;

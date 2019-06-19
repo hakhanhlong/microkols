@@ -35,6 +35,8 @@ namespace Website.ViewModels
             try { LikeCount = (int)obj.likes.summary.total_count; } catch { }
             try { CommentCount = (int)obj.comments.summary.total_count; } catch { }
             try { PostId = (string)obj.id; } catch { }
+            try { Permalink = (string)obj.permalink_url; } catch { }
+            
         }
         public AccountFbPostViewModel(AccountFbPost accountFbPost)
         {
@@ -48,6 +50,7 @@ namespace Website.ViewModels
             ShareCount = accountFbPost.ShareCount;
             LikeCount = accountFbPost.LikeCount;
             CommentCount = accountFbPost.CommentCount;
+            Permalink = accountFbPost.Permalink;
         }
 
         public static List<AccountFbPostViewModel> GetList(IEnumerable<AccountFbPost> posts)
@@ -62,6 +65,7 @@ namespace Website.ViewModels
         public string Picture { get; set; }
         public string Message { get; set; }
         public string Link { get; set; }
+        public string Permalink { get; set; }
         public string PostId { get; set; }
         public DateTime PostTime { get; set; }
 

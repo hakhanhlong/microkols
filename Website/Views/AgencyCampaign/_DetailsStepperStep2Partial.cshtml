@@ -31,8 +31,6 @@
             {
                 <div class="alert alert-info">Chưa có thành viên </div>
             }
-
-
         </div>
         }
     }
@@ -69,13 +67,9 @@
 
 
 <div class="">
-
     <form asp-action="UpdateCampaignStatus" method="post" asp-controller="AgencyCampaign">
         <button class="btn btn-primary">Kết thúc chiến dịch</button>
         <input type="hidden" name="campaignid" value="@Model.Id" />
         <input type="hidden" name="status" value="@CampaignStatus.Ended" />
-
     </form>
-
-
 </div>

@@ -28,7 +28,7 @@ namespace Core.Entities
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
             {
-                return "Chia sẻ ngay";
+                return "Chia sẻ";
             }
             if (type == CampaignType.PostComment)
             {

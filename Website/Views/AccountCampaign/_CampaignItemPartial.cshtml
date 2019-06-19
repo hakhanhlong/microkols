@@ -4,16 +4,12 @@
 
 <div class="card mb-3">
     <div class="card-header d-flex">
-
         <div class="mr-auto">
             Chiến dịch @Model.Id
         </div>
-
-
         <div>
             @Model.Status.ToBadge()
         </div>
-
     </div>
     <div class="card-body">
         <div class="card-text">
@@ -39,11 +35,7 @@
 
             </div>
             <div class="text-right">
-
-
-
                 <a asp-action="Details" asp-route-id="@Model.Id" class=" btn btn-primary btn-sm">Chi tiết</a>
-
             </div>
         </div>
 

@@ -32,63 +32,59 @@
 
 <div class="mt-3"></div>
 <alert></alert>
-<div class="row ">
-    <div class="col-md-6">
-        <div>
-            Doanh nghiệp: @Model.UserCreated
-        </div>
-        <div>
-            Ngày tạo: <span class="text-muted">@Model.DateCreated.ToViDateTime() </span>
-        </div>
 
-        <div>
-            @campaignAccount.Status.ToBadge()
-        </div>
-        <div>
-            Số tiền nhận: <span class="text-danger">@campaignAccount.AccountChargeAmount.ToPriceText()</span>
-        </div>
-
-
-
-    </div>
-    <div class="col-md-6">
-        <div>
-            Công việc: <span> @Model.Type.ToDisplayName()</span>
-            @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+<fieldset>
+    <legend>Thông tin chiến dịch</legend>
+    <p>
+        Mã chiến dịch: <strong>@Model.Id</strong>
+        <br />
+        Doanh nghiệp: <strong class="text-primary"> @Model.UserCreated</strong>
+        <br>
+        Ngày tạo: <span class="text-muted">@Model.DateCreated.ToViDateTime() </span>
+        <br>
+        Số tiền nhận: <span class="text-danger">@campaignAccount.AccountChargeAmount.ToPriceText()</span>
+    </p>
+    <legend>Nội dung công việc</legend>
+    <div>
+        Công việc: <span> @Model.Type.ToDisplayName()</span>
+        @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+        {
+            if (Model.EnabledAccountChargeExtra)
             {
-                if (Model.EnabledAccountChargeExtra)
-                {
-                    <small class="text-info">Đính kèm hình ảnh cá nhân</small>
-                }
+                <span>-</span> <span>Đính kèm hình ảnh cá nhân</span>
             }
-        </div>
-
-
-        @if (!string.IsNullOrEmpty(Model.Data))
-        {
-            <div>
-                @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
-            </div>
         }
-
-        @if (!string.IsNullOrEmpty(Model.Description))
-        {
-            <div>
-                Mô tả:  @Model.Description
-            </div>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.Image))
-        {
-            <div>
-                <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" class="img-thumbnail" style="height:200px" />
-            </div>
-        }
-
-
-
     </div>
-</div>
+
+    @if (!string.IsNullOrEmpty(Model.Data))
+    {
+        <div>
+            @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <div>
+            Mô tả:  @Model.Description
+        </div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.Image))
+    {
+        <div>
+            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" class="img-thumbnail" style="height:200px" />
+        </div>
+    }
+
+
+    @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
+    {
+        <div>Nội dung Caption: <span class="text-info" target="_blank">@campaignAccount.RefContent</span></div>
+    }
+
+
+</fieldset>
 <hr />
 
 
@@ -102,11 +98,7 @@ else
 
         <div class="mb-2 text-break">
 
-            @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
-            {
-                <div>Nội dung Caption: <span class="text-info" target="_blank">@campaignAccount.RefContent</span></div>
-            }
-
+           
 
             @if (!string.IsNullOrEmpty(campaignAccount.RefId))
             {
@@ -122,30 +114,54 @@ else
             <div>
                 @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
                 {
-                    <span class="btn btn-outline-secondary">Chờ doanh nghiệp duyệt yêu cầu tham gia chiến dịch của bạn</span>
+                    <div class="alert alert-info">
+                        Bạn đã gửi yêu cầu tham gia chiến dịch. <br />
+                        Vui lòng chờ doanh nghiệp duyệt yêu cầu tham gia chiến dịch của bạn
+                    </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
                 {
-                    <form asp-action="ConfirmJoinCampaign">
-                        <input type="hidden" value="@Model.Id" name="campaignid" />
-                        <button class="btn btn-outline-primary">Xác nhận tham gia </button>
-                    </form>
+
+                    <div class="alert alert-info">
+                        Doanh nghiệp đã mời bạn tham gia chiến dịch
+
+                        <hr />
+
+                        <form asp-action="FeedbackJoinCampaign">
+                            <input type="hidden" value="@Model.Id" name="campaignid" />
+                            <button class="btn btn-primary" name="type" value="1">Đồng ý tham gia </button>
+                            <button class="btn btn-secondary" name="type" value="0">Không đồng ý </button>
+                        </form>
+                    </div>
+
+
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
+                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.Approved)
                 {
+
                     if (Model.Status == CampaignStatus.Started)
                     {
 
-                        <div>
-                            <div class="mb-2">
+                        <div class="alert alert-info">
+
+                            @if (campaignAccount.Status == CampaignAccountStatus.Approved)
+                            {
+                                <p>
+                                    Doanh nghiệp Đã duyệt nội dung Caption
+                                </p>
+                            }
+                            <p>
                                 Chiến dịch đã được bắt đầu thực hiện. <br />
                                 Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-                            </div>
+                            </p>
 
                             <div>
-                                <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })">
-                                
-                                @Model.Type.ToActionText() ngay</button>
+                                @if (Model.IsSharedCampaign)
+                                {
+                                    <button class="btn btn-primary btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Data"> <i class="fab fa-facebook"></i> Chia sẻ ngay</button>
+
+                                }
+                                <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Bạn đã thực hiện công việc </button>
 
                             </div>
 
@@ -153,38 +169,56 @@ else
                     }
                     else
                     {
-                        <div class="alert alert-info">Chờ doanh nghiệp bắt đầu chiến dịch để thực hiện công việc</div>
+                        <div class="alert alert-info">
+                            @if (campaignAccount.Status == CampaignAccountStatus.Approved)
+                            {
+                                <p>
+                                    Doanh nghiệp Đã duyệt nội dung Caption
+                                </p>
+                            }
+
+                            <p>
+                                Vui lòng chờ doanh nghiệp bắt đầu chiến dịch để thực hiện công việc
+                            </p>
+
+                        </div>
                     }
 
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Submitted)
                 {
-                    <div>
-                        Đã gửi nội dung thông điệp để doanh nghiệp duyệt
-                    </div>
-                    <span class="btn btn-outline-secondary">Chờ doanh nghiệp duyệt</span>
-                }
-                else if (campaignAccount.Status == CampaignAccountStatus.Approved)
-                {
-                    <div class="mb-2">
-                        Doanh nghiệp Đã duyệt nội dung Caption
-                    </div>
-
-                    <div>
-                        <button class="btn btn-info btn-shareui" data-caption="@campaignAccount.RefContent" data-href="@Model.Data" > Chia sẻ ngay</button>
-
-                        <button class="btn btn-primary btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype =Model.Type })"> @Model.Type.ToActionText() ngay</button>
-
+                    <div class="alert alert-info">
+                        Đã gửi nội dung Caption. Vui lòng chờ doanh nghiệp duyệt nội dung
                     </div>
                 }
+
                 else if (campaignAccount.Status == CampaignAccountStatus.Declined)
                 {
-                    <span class="btn btn-outline-danger">Đã từ chối - Hãy thực hiện lại</span>
+                    <div class="alert alert-danger">
+                        <p>
+                            Nội dung Caption bị Doanh nghiệp từ chối
+                        </p>
+                        <div>
+                            <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Gửi lại nội dung Caption </button>
+
+                        </div>
+                    </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Finished)
                 {
-                    <span class="btn btn-outline-success">Hoàn thành thực hiện</span>
+                    if (Model.Status == CampaignStatus.Completed)
+                    {
+                        <div class="alert alert-info">Chiến dịch đã kết thúc</div>
+
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">Bạn đã hoàn thành công việc. Vui lòng chờ Doanh nghiệp kết thúc chiến dịch để nhận tiền</div>
+
+
+                    }
                 }
+
 
             </div>
 

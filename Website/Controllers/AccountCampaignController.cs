@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.Jobs;
 using Website.ViewModels;
 
 namespace Website.Controllers
@@ -17,7 +19,7 @@ namespace Website.Controllers
         private readonly ICampaignService _campaignService;
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
-        private readonly IFacebookHelper _facebookHelper; 
+        private readonly IFacebookHelper _facebookHelper;
         public AccountCampaignController(ISharedService sharedService,
             IFacebookHelper facebookHelper,
              IAccountService accountService,
@@ -57,11 +59,12 @@ namespace Website.Controllers
         #endregion
 
         #region Action
-        public async Task<IActionResult> ConfirmJoinCampaign(int campaignid)
+        public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
         {
-            var result = await _campaignService.ConfirmJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username);
+            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, type == 1);
 
-            this.AddAlert(result);
+
+            //this.AddAlert(result);
 
             return RedirectToAction("Details", new { id = campaignid });
         }
@@ -98,6 +101,15 @@ namespace Website.Controllers
             return PartialView("UpdateCampaignAccountMessage");
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitCampaignAccountSharedContent()
+        {
+            BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
+            ViewBag.Success = "Hệ thống đang cập nhật thông tin Facebook của bạn. Vui lòng đợi";
+
+            return PartialView("UpdateCampaignAccountMessage");
+        }
 
 
         public async Task<IActionResult> SubmmitCampaignAccountChangeAvatar(int campaignid)
@@ -141,7 +153,7 @@ namespace Website.Controllers
         public async Task<IActionResult> UpdateCampaignAccountRef(int campaignid, CampaignType campaignType)
         {
 
-            if(campaignType == CampaignType.ChangeAvatar)
+            if (campaignType == CampaignType.ChangeAvatar)
             {
                 return RedirectToAction("SubmmitCampaignAccountChangeAvatar", new { campaignid });
             }
@@ -156,7 +168,7 @@ namespace Website.Controllers
             {
                 return RedirectToAction("SubmitCampaignAccountRefContent", new { campaignid });
             }
-            
+
 
             return PartialView(new UpdateCampaignAccountRefViewModel()
             {

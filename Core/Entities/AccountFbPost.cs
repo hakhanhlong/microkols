@@ -12,6 +12,7 @@ namespace Core.Entities
         public string Link { get; set; }
         public string PostId { get; set; }
 
+        public string Permalink { get; set; }
         public DateTime PostTime { get; set; }
 
         public int ShareCount { get; set; }

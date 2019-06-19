@@ -1,5 +1,5 @@
 ﻿<header class="header">
-    <nav class="navbar navbar-menu navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary">
+    <nav class="navbar navbar-menu navbar-expand-sm navbar-toggleable-sm bg-primary">
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Micro KOLs</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -10,7 +10,7 @@
 
                 <ul class="navbar-nav  mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
+                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Doanh nghiệp</a>
@@ -26,7 +26,7 @@
                         <li class="nav-item dropdown nav-notif">
                             <a class="nav-link" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
                                 <i class="fal fa-bell"></i>
-                                <span class="badge badge-danger">0</span>
+                                <span class="badge badge-danger" style="display:none">0</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
 
@@ -84,7 +84,14 @@
                     @if (CurrentUser.Type == Core.Entities.EntityType.Agency)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Agency"> <i class="fal fa-tachometer-alt"></i> Trang chủ </a>
+                            <a class="nav-link" asp-action="Index" asp-controller="Agency">
+                                <i class="fal fa-tachometer-alt"></i> Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Agency">
+                                <i class="fal fa-tachometer-alt"></i> Trang chủ
+                            </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link" asp-controller="AgencyCampaign" asp-action="Index" data-toggle="dropdown">
@@ -98,14 +105,16 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link dropdown-item wallet-recharge">Nạp tiền</a>
+                            <a class="nav-link dropdown-item wallet-recharge" href="javascript:;">
+                                <i class="fal fa-coins"></i>
+                                Nạp tiền
+                            </a>
                         </li>
                     }
                     else if (CurrentUser.Type == EntityType.Account)
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Index" asp-controller="Account">
-
                                 <i class="fal fa-tachometer-alt"></i> Trang chủ
                             </a>
                         </li>
@@ -113,24 +122,20 @@
                             <a class="nav-link" asp-controller="AccountCampaign" asp-action="Index">
                                 <i class="fal fa-object-group"></i>  Chiến dịch
                             </a>
-
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link wallet-withdraw" href="javascript:;"> Rút tiền</a>
+                            <a class="nav-link wallet-withdraw" href="#">
+                                <i class="fal fa-coins"></i> Rút tiền
+                            </a>
                         </li>
-
                     }
 
                     <li class="nav-item ml-auto">
-
-                        <a class="nav-link">
+                        <span class="nav-link">
                             <i class="fal fa-wallet"></i>
-                            <span class="wallet-balance text-danger pl-2">&nbsp;</span>
-                        </a>
-
+                            <span class="wallet-balance text-danger pl-2">0 đ</span>
+                        </span>
                     </li>
-
 
                 </ul>
 

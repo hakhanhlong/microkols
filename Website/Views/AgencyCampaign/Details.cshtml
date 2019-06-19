@@ -67,17 +67,11 @@
 <alert></alert>
 
 <div>
-
-
     <div class="row">
-
         <div class="col-md-6">
-
-
             <div>
                 Mã chiến dịch:  <strong class="text-primary">@Model.Id</strong>
             </div>
-
             <div>
                 Trạng thái:  @Model.Status.ToBadge()
             </div>
@@ -135,10 +129,7 @@
                         <br /> <small class="text-info"> Đính kèm hình ảnh cá nhân</small>
                     }
                 }
-
-            </div>
-           
-
+            </div>           
 
             @if (!string.IsNullOrEmpty(Model.Data))
             {
@@ -213,13 +204,9 @@
     if (Model.Status == CampaignStatus.Canceled)
     {
         <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
-
-
     }
     else
     {
-
-
         var steps = new List<string>() { "Thanh toán phí dịch vụ", "Thành viên tham gia", "Bắt đầu chiến dịch", "Kết thúc chiến dịch", "Hoàn thành chiến dịch" };
 
         var activestepIdx = 0;
@@ -258,7 +245,6 @@
                     </a>
                     @if (i == activestepIdx)
                     {
-
                         var stepPartial = $"_DetailsStepperStep{activestepIdx}Partial";
                         <div class="step-content">
                             <partial name="@stepPartial" model="Model" />

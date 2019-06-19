@@ -5,6 +5,7 @@
 // Bootstrap Color Overrides
 
 $white: #fff !default;
+/*
 $gray-100: #f8f9fc !default;
 $gray-200: #eaecf4 !default;
 $gray-300: #dddfeb !default;
@@ -13,7 +14,7 @@ $gray-500: #b7b9cc !default;
 $gray-600: #858796 !default;
 $gray-700: #6e707e !default;
 $gray-800: #5a5c69 !default;
-$gray-900: #3a3b45 !default;
+$gray-900: #3a3b45 !default;*/
 $black: #000 !default;
 
 $blue: #3C5A99 !default;
@@ -32,13 +33,13 @@ $brand-google: #ea4335;
 $brand-facebook: #3b5998;
 
 $primary: $blue !default;
-$secondary: $gray-600 !default;
+/*$secondary: $gray-600 !default;*/
 
 // Set Contrast Threshold
 $yiq-contrasted-threshold: 195 !default;
 
 // Typography
-$body-color: $gray-600 !default;
+/*$body-color: $gray-600 !default;*/
 
 $font-family-sans-serif: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", 'Noto Color Emoji' !default;
 
@@ -47,13 +48,13 @@ $font-weight-light: 300 !default;
 $headings-font-weight: 400 !default;
 
 // Shadows
-$box-shadow-sm: 0 0.125rem 0.25rem 0 rgba($gray-900, .2) !default;
-$box-shadow: 0 0.15rem 1.75rem 0 rgba($gray-900, .15) !default;
+/*$box-shadow-sm: 0 0.125rem 0.25rem 0 rgba($gray-900, .2) !default;
+$box-shadow: 0 0.15rem 1.75rem 0 rgba($gray-900, .15) !default;*/
 // $box-shadow-lg: 0 1rem 3rem rgba($black, .175) !default;
 
 // Borders Radius
 $border-radius: 0 !default;
-$border-color: darken($gray-200, 2%);
+/*$border-color: darken($gray-200, 2%);*/
 
 // Spacing Variables
 // Change below variable if the height of the navbar changes
@@ -64,8 +65,8 @@ $sidebar-base-width: 14rem;
 $sidebar-collapsed-width: 6.5rem;
 
 // Card
-$card-cap-bg: $gray-100;
-$card-border-color: $border-color;
+/*$card-cap-bg: $gray-100;
+$card-border-color: $border-color;*/
 
 // Adjust column spacing for symmetry
 $spacer: 1rem;
@@ -76,4 +77,4 @@ $transition-collapse: height .15s ease !default;
 
 // Dropdowns
 $dropdown-font-size: 0.85rem;
-$dropdown-border-color: $border-color;
+/*$dropdown-border-color: $border-color;*/
