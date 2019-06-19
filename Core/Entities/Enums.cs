@@ -11,4 +11,6 @@ namespace Core.Entities
         Account = 1,
         Agency = 2
     }
+
+
 }

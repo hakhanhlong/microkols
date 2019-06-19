@@ -40,6 +40,13 @@ namespace Infrastructure.Data
             }
             return entity;
         }
+
+        public int CountAll()
+        {
+            return _dbContext.Wallet.Count();
+        }
+
+
         public async Task<int> GetWalletId(EntityType entityType, int entityId)
         {
             var entity = await GetWallet(entityType, entityId);
