@@ -104,12 +104,13 @@ namespace Website.Controllers
 
 
         public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
-               IEnumerable<int> ignoreIds, int campaignId, int pageindex = 1)
+               IEnumerable<int> ignoreIds, int campaignId, CampaignType campaignType, int pageindex = 1)
         {
             const int pagesize = 20;
             var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, pageindex, pagesize, ignoreIds);
 
             ViewBag.CampaignId = campaignId;
+            ViewBag.CampaignType = campaignType;
             return PartialView(model);
         }
         #endregion
@@ -117,9 +118,9 @@ namespace Website.Controllers
 
         #region Action
 
-        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid)
+        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, int? amount)
         {
-            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
+            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, amount ?? 0, CurrentUser.Name);
             return Json(result ? 1 : 0);
         }
 

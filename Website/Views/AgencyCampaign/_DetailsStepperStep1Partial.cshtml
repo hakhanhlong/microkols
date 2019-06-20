@@ -23,7 +23,7 @@
             @if (kolAccounts.Count > 0)
             {
                 <div>
-                    @foreach (var campaignAccount in Model.CampaignAccounts)
+                    @foreach (var campaignAccount in kolAccounts)
                     {
                         <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
                     }
@@ -51,7 +51,7 @@
         </div>
         @if (regularAccounts.Count > 0)
         {
-            foreach (var campaignAccount in Model.CampaignAccounts)
+            foreach (var campaignAccount in regularAccounts)
             {
                 <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
             }

@@ -50,10 +50,10 @@ namespace Core.Models
                 }
 
                 accountChargeAmount += campaignAccountAmount;
-                if (campaign.EnabledAccountChargeExtra)
-                {
-                    accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
-                }
+                //if (campaign.EnabledAccountChargeExtra)
+                //{
+                //    accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
+                //}
             }
 
             AccountChargeAmount = accountChargeAmount;

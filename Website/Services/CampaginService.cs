@@ -257,9 +257,9 @@ namespace Website.Services
 
 
         }
-        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username)
+        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid,int amount, string username)
         {
-            var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, username);
+            var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, amount, username);
 
             if (createStatus > 0)
             {

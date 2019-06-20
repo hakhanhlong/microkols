@@ -154,7 +154,7 @@ namespace Website.Services
 
         public async Task<bool> VerifyPaybackCampaignAccount(int campaignid)
         {
-            var totalServiceCharge = await _transactionRepository.GetTotalAmount(TransactionType.CampaignServiceCharge, campaignid);
+            var totalServiceCharge = await _transactionRepository.GetTotalAmount(TransactionType.CampaignAccountCharge, campaignid);
             var totalPayBack = await _transactionRepository.GetTotalAmount(TransactionType.CampaignAccountPayback, campaignid);
 
             return (totalPayBack <= totalServiceCharge);

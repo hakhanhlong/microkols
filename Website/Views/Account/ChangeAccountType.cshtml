@@ -118,31 +118,32 @@
         var accountCampaignCharges = (List<AccountCampaignChargeViewModel>)ViewBag.AccountCampaignCharges;
 
         <h5> Cấu hình chi phí</h5>
-        <div>
-            @foreach (var accountCampaignCharge in accountCampaignCharges)
-            {<form asp-action="UpdateAccountCampaignCharge">
-                    <div class="row my-2">
 
+<form asp-action="UpdateAccountCampaignCharge">
+    <div>
+        @foreach (var accountCampaignCharge in accountCampaignCharges)
+        {
+        <div class="row my-2">
+            <label class="col-md-4">@accountCampaignCharge.Type.ToDisplayName()</label>
+            <div class="col-md-6">
 
-                        <label class="col-md-4">@accountCampaignCharge.Type.ToDisplayName()</label>
-                        <div class="col-md-6">
+                <input type="number" max="@int.MaxValue" min="0" name="AccountChargeAmount" value="@accountCampaignCharge.AccountChargeAmount" class="form-control" />
 
-                            <input type="number" min="0" name="AccountChargeAmount" value="@accountCampaignCharge.AccountChargeAmount" class=" ml-2 form-control" />
-
-                        </div>
-                        <div class="col-md-2">
-
-                            <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
-                            <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
-                            <input type="submit" value="Cập nhật" class="btn btn-primary ml-2" />
-                        </div>
-
-
-                    </div>
-                </form>
-            }
+                <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
+                <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
+            </div>
         </div>
 
+        }
+
+        <div class="row">
+
+            <div class="col-md-6 offset-4">
+                <input type="submit" value="Cập nhật" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+        </form>
     }
 
 </div>

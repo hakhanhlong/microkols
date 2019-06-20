@@ -598,6 +598,7 @@ namespace Website.Services
             return null;
         }
 
+
         public async Task<bool> ChangeAccountType(int id, ChangeAccountTypeViewModel model, string username)
         {
             var entity = await _accountRepository.GetByIdAsync(id, false);
@@ -635,6 +636,15 @@ namespace Website.Services
 
             return AccountCampaignChargeViewModel.GetList(accountCampaignCharges);
         }
+
+
+        public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType) {
+            var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
+            var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
+
+            return accountCharge != null ? accountCharge.AccountChargeAmount : 0;
+        }
+
         public async Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model)
         {
             if (model.Id == 0)

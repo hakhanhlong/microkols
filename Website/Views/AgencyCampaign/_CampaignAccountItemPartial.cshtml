@@ -5,7 +5,11 @@
 <div class="media mb-2">
     <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(Model.Account.Avatar)" width="60">
     <div class="media-body">
-        <h5 class="mt-0 h6">@Model.Account.Name</h5>
+        <h5 class="mt-0 h6">@Model.Account.Name  @Model.Account.Type.ToBadge() </h5>
+
+        <div>
+            Chi phí: <span class="text-danger">@Model.AccountChargeAmount.ToPriceText()</span> 
+        </div>
         <div class="mt-2">
             @Model.Status.ToAgencyBadge()
         </div>

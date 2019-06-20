@@ -13,10 +13,9 @@
                 <div class="alert alert-success">
                     <p>Thanh toán @paymentResult.Type.ToDisplayName() thành công</p>
                     <p>Số tiền thanh toán: <span class="text-success">@paymentResult.Amount.ToPriceText()</span></p>
-                    @if (paymentResult.Type == Core.Entities.TransactionType.CampaignAccountCharge)
-                    {
+           
                         <p>Số tiền còn lại trong ví: <span class="text-danger">@paymentResult.SenderBalance.ToPriceText()</span> </p>
-                    }
+           
                 </div>
 
             }
