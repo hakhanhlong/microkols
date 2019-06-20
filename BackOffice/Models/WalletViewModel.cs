@@ -36,7 +36,7 @@ namespace BackOffice.Models
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
 
-        
+        public string Name { get; set; }
 
     }
 

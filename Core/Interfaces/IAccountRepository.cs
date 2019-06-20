@@ -15,5 +15,7 @@ namespace Core.Interfaces
         Task<Account> GetActivedAccount(string email);
         Task<Account> GetAccount(string email);
         IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds);
+
+        int CountAll();
     }
 }

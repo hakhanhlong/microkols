@@ -20,11 +20,13 @@ namespace BackOffice
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IAgencyRepository, AgencyRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
 
             //business
             services.AddScoped<IAgencyBusiness, AgencyBusiness>();
             services.AddScoped<IWalletBusiness, WalletBusiness>();
+            services.AddScoped<IAccountBusiness, AccountBusiness>();
 
 
 

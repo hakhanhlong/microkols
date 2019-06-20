@@ -46,6 +46,9 @@
                                         ENTITY
                                     </th>
                                     <th>
+                                        NAME
+                                    </th>
+                                    <th>
                                         BALANCE
                                     </th>
                                     <th>
@@ -53,7 +56,7 @@
                                     </th>
                                     <th>
                                         USER CREATED
-                                    </th>                                 
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,7 +68,8 @@
                                         count++;
                                         <tr>
                                             <td>@count</td>
-                                            <td></td>
+                                            <td>@item.EntityType.ToString()</td>
+                                            <td>@item.Name</td>
                                             <td>@item.Balance</td>
                                             <td>@item.DateCreated</td>
                                             <td>@item.UserCreated</td>
