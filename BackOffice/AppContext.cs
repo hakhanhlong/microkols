@@ -22,6 +22,8 @@ namespace BackOffice
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
 
+            services.AddScoped<ICampaignTypeChargeRepository, CampaignTypeChargeRepository>();
+
 
             //business
             services.AddScoped<IAgencyBusiness, AgencyBusiness>();
