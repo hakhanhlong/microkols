@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Website</title>
+    <link href="~/lib/fontawesome-pro-5.2.0-web/css/all.css" rel="stylesheet" />
+    <link href="~/css/app.css" rel="stylesheet" asp-append-version="true" />
+
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-2 py-5">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+
+    <partial name="_ScriptPartial" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

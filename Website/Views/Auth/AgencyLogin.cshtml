@@ -2,42 +2,53 @@
 
 @{
     ViewBag.Title = "Đăng nhập";
+    Layout = "_AuthLayout";
 
 }
 
 @section scripts{
-  
+
 }
 
-<div class="container">
 
+<div class="card card-login shadow p-5">
+
+    <h1 class="mb-5 h3">
+
+        <a asp-action="Index" asp-controller="Home"> <i class="fal fa-arrow-left"></i></a>
+        Đăng nhập tài khoản <span class="text-primary"> doanh nghiệp</span>
+    </h1>
     <div class="row">
+        <div class="col-md-6">
 
-
-        <div class="col-md-6 offset-3">
-
-
-            <h1 class="h3">Đăng nhập - Doanh nghiệp</h1>
-
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <alert></alert>
-
-
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <form asp-action="AgencyLogin" method="post">
 
                 <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fal fa-user"></i> </span>
+                        </div>
+                        <input asp-for="Username" class="form-control" />
 
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" class="form-control" />
+                    </div>
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" class="form-control" type="password" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
 
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> <i class="fal fa-lock"></i> </span>
+                        </div>
+                        <input asp-for="Password" class="form-control" />
+
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+
+
 
                 <div class="form-group ">
                     <div class="custom-control custom-checkbox">
@@ -48,21 +59,34 @@
 
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block ">
+                    <button type="submit" class="btn btn-primary ">
                         Đăng nhập
                     </button>
                 </div>
 
-                <p>
-                    <a class="text-primary" asp-action="AgencyRegister"> Đăng ký tài khoản mới <i class="fal fa-angle-right"></i></a>
-                </p>
+                @*<p>
+                        <a class="text-primary" href="@Url.Action("ForgotPassword")"> Quên mật khẩu? <i class="fal fa-angle-right"></i></a>
+                    </p>*@
             </form>
 
 
-          
+
+            <p>
+                <a class="text-primary" href="@Url.Action("AgencyRegister")">
+                    Bạn chưa có tài khoản?
+                </a>
+            </p>
+            <p>
+                Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="@Url.Action("Privacy","Home")">điều khoản sử dụng</a>
+            </p>
+
         </div>
+        <div class="col-md-5 offset-1">
+            <img src="~/img/auth/login-bg.jpg" class="img-fluid" />
+
+        </div>
+
     </div>
 
 </div>
-
 

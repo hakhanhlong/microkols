@@ -12,13 +12,13 @@ namespace Website.ViewModels
     {
      
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Email")]
+        [Display(Name = "Email", Prompt ="Email")]
         [EmailAddress(ErrorMessage = "Email không đúng")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu")]
+        [Display(Name = "Mật khẩu",Prompt ="Mật khẩu")]
         public string Password { get; set; }
 
 
@@ -30,12 +30,12 @@ namespace Website.ViewModels
     {
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên đăng nhập")]
+        [Display(Name = "Tên đăng nhập",Prompt = "Tên đăng nhập")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [DataType(DataType.Password)]
-        [Display(Name = "Mật khẩu")]
+        [Display(Name = "Mật khẩu",Prompt ="Mật khẩu")]
         public string Password { get; set; }
 
 

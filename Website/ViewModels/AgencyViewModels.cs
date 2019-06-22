@@ -39,7 +39,7 @@ namespace Website.ViewModels
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên doanh nghiệp")]
+        [Display(Name = "Tên doanh nghiệp",Prompt ="Tên doanh nghiệp")]
         public string Name { get; set; }
 
         [Display(Name = "Mô tả")]
@@ -61,10 +61,11 @@ namespace Website.ViewModels
         [Display(Name = "Xác nhận mật khẩu", Prompt = "Xác nhận mật khẩu")]
         [DataType(DataType.Password)]
         [StringLength(20, ErrorMessage = "{0} Có độ dài từ {2} - {1} ký tự.", MinimumLength = 6)]
+        [Compare("Password", ErrorMessage ="{0} và {1} không trùng nhau")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên đăng nhập")]
+        [Display(Name = "Tên đăng nhập",Prompt = "Tên đăng nhập")]
         [Remote("VerifyAgencyUsername", "Auth", ErrorMessage = "{0} đã tồn tại")]
         public string Username { get; set; }
 
