@@ -195,7 +195,7 @@ namespace Website.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên chủ tài khoản")]
+        [Display(Name = "Tài khoản")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]

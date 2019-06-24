@@ -71,9 +71,9 @@ var AppNotification = (function () {
         getNotificationDropdown();
 
         $('.nav-notif').on('show.bs.dropdown', function () {
-            
+
             updateNotificationChecked();
-        })
+        });
     }
 
     function getNotificationCount() {
@@ -84,7 +84,7 @@ var AppNotification = (function () {
         $.get(AppConstants.UrlGetNotificationCount, function (count) {
 
             $notifCount.text(count);
-            if (count == 0) {
+            if (count === 0) {
 
                 $('.nav-notif .badge').hide();
             } else {
@@ -131,14 +131,37 @@ var AppWallet = (function () {
             e.preventDefault();
 
             AppBsModal.Init();
-            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge);
+            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge, function () {
+                handlerRecharge();
+            });
         });
 
-        $('.wallet-widthdraw').click(function (e) {
+        $('.wallet-withdraw').click(function (e) {
             e.preventDefault();
+            AppBsModal.Init();
+            AppBsModal.OpenRemoteModal(AppConstants.UrlWithdraw, function () {
+                handlerWithdraw();
+            });
 
         });
     }
+
+    function handlerWithdraw() {
+        $.validator.unobtrusive.parse($('#frmWithDraw'));
+        $('#frmWithDraw').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html);
+                });
+            }
+        });
+    }
+
 
     function handlerRecharge() {
         $.validator.unobtrusive.parse($('#frmRecharge'));

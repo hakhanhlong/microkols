@@ -8,11 +8,11 @@ namespace Website.ViewModels
 {
     public class WithDrawViewModel
     {
-        [Display(Name="Số tiền")]
-        [Required]
+        [Display(Name="Số tiền rút")]
+        [Required(ErrorMessage ="Hãy nhập {0}")]
         public long Amount { get; set; }
 
-        [Display(Name="Thông tin tài khoản nhận tiền")]
+        [Display(Name="Ghi chú")]
         public string Note { get; set; }
     }
 
