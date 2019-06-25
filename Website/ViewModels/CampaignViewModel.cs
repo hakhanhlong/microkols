@@ -53,7 +53,7 @@ namespace Website.ViewModels
                 {
                     var ageStart = 0;
                     var ageEnd = 0;
-                    if (int.TryParse(arrAge[0], out ageStart) && int.TryParse(arrAge[0], out ageEnd))
+                    if (int.TryParse(arrAge[0], out ageStart) && int.TryParse(arrAge[1], out ageEnd))
                     {
                         AgeStart = ageStart;
                         AgeEnd = ageEnd;
