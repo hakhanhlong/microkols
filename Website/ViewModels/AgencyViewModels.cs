@@ -36,6 +36,7 @@ namespace Website.ViewModels
             Name = entity.Name;
             Description = entity.Description;
             Image = entity.Image;
+            TaxIdNumber = entity.TaxIdNumber;
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -47,6 +48,10 @@ namespace Website.ViewModels
 
         [Display(Name = "Ảnh đại diện")]
         public string Image { get; set; }
+
+
+        [Display(Name = "Mã số thuế")]
+        public string TaxIdNumber { get; set; }
     }
 
     public class RegisterAgencyViewModel : UpdateAgencyViewModel
@@ -65,8 +70,9 @@ namespace Website.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên đăng nhập",Prompt = "Tên đăng nhập")]
-        [Remote("VerifyAgencyUsername", "Auth", ErrorMessage = "{0} đã tồn tại")]
+        [Display(Name = "Email đăng nhập", Prompt = "Email đăng nhập")]
+        [EmailAddress( ErrorMessage = "{0} không đúng")]
+        [Remote("VerifyAgencyUsername", "Auth", ErrorMessage = "{0} đã tồn tại hoặc không phải Email doanh nghiệp")]
         public string Username { get; set; }
 
 

@@ -35,14 +35,18 @@
             }
             <div class="form-group">
                 <label asp-for="Gender"></label>
-                <select name="Gender" id="Gender" class="form-control">
+
+                <div>
                     @foreach (var item in genderArr)
-                    {
-                        <!option value="@item" @(Model != null && item == Model.Gender ? "selected=selected" : "")>
-                            @item.ToDisplayName()
-                        </!option>
+                        {
+                            var radioId = $"genderRadio{item}";
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="@radioId" name="Gender" class="custom-control-input" value="@item" @(Model != null && item == Model.Gender ? "checked" : "")>
+                            <label class="custom-control-label" for="@radioId">@item.ToDisplayName()</label>
+                        </div>
                     }
-                </select>
+                    </div>
+               
                 <span asp-validation-for="Gender"></span>
             </div>
             @{
@@ -50,6 +54,18 @@
             }
             <div class="form-group">
                 <label asp-for="MaritalStatus"></label>
+                <div>
+                    @foreach (var item in maritalStatusArr)
+                    {
+                        var radioId = $"MaritalStatus{item}";
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="@radioId" name="MaritalStatus" class="custom-control-input" value="@item" @(Model != null && item == Model.MaritalStatus ? "checked" : "")>
+                            <label class="custom-control-label" for="@radioId">@item.ToDisplayName()</label>
+                        </div>
+
+                    }
+
+                </div>
                 <select name="MaritalStatus" id="MaritalStatus" class="form-control">
                     @foreach (var item in maritalStatusArr)
                     {

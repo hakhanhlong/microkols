@@ -12,6 +12,7 @@ namespace Core.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
+        public string TaxIdNumber { get; set; }
 
         public bool Deleted { get; set; }
         public bool Actived { get; set; }

@@ -13,7 +13,11 @@
 
 <div class="card card-login shadow p-5">
 
-    <h1 class="mb-5 h3">Đăng ký</h1>
+    <h1 class="mb-5 h3">
+
+        <a asp-action="Index" asp-controller="Home"> <i class="fal fa-arrow-left"></i></a>
+        Đăng ký
+    </h1>
     <div class="row">
         <div class="col-md-6">
 
@@ -64,7 +68,9 @@
                     </div>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
-
+                <p>
+                    <small class="text-danger">* Bạn cần điền chính xác thông tin của mình để nhận tiền từ hệ thống </small>
+                </p>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">
                         Đăng ký
