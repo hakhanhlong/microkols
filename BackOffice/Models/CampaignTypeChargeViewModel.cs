@@ -17,6 +17,18 @@ namespace BackOffice.Models
     public class CampaignTypeChargeViewModel
     {
 
+        public CampaignTypeChargeViewModel(CampaignTypeCharge _CampaignTypeCharge)
+        {
+            Id = _CampaignTypeCharge.Id;
+            Type = _CampaignTypeCharge.Type;
+            ServiceChargeAmount = _CampaignTypeCharge.ServiceChargeAmount;
+            AccountChargeAmount = _CampaignTypeCharge.AccountChargeAmount;
+            AccountChargeExtraPercent = _CampaignTypeCharge.AccountChargeExtraPercent;
+
+        }
+
+        public CampaignTypeChargeViewModel() { }
+
         public int Id { get; set; }
         public CampaignType Type { get; set; }
         public int ServiceChargeAmount { get; set; }
@@ -24,5 +36,8 @@ namespace BackOffice.Models
         public int AccountChargeExtraPercent { get; set; }
 
 
+
+
     }
+
 }

@@ -29,6 +29,46 @@ namespace Core.Entities
             return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
 
         }
+
+
+        public static string ToText(this CampaignType type)
+        {
+            if (type == CampaignType.ShareContent)
+            {
+                return "Chia sẻ thông điệp, không cần viết caption";
+            }
+            if (type == CampaignType.ShareContentWithCaption)
+            {
+                return "Chia sẻ thông điệp, viết thêm caption";
+            }
+            if (type == CampaignType.ChangeAvatar)
+            {
+                return "Thay hình Avatar";
+            }
+
+            if (type == CampaignType.PostComment)
+            {
+                return "Viết comment seeding cho chiến dịch";
+            }
+
+            if (type == CampaignType.JoinEvent)
+            {
+                return "Đăng ký tham gia sự kiện";
+            }
+
+            if (type == CampaignType.ShareStreamUrl)
+            {
+                return "Share link livestream chương trình";
+            }
+
+            if (type == CampaignType.CustomService)
+            {
+                return "Yêu cầu khác";
+            }
+
+            return type.ToString();
+        }
+
         public static string ToActionText(this CampaignType type)
         {
             if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)

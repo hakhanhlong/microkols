@@ -4,5 +4,86 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+@model IEnumerable<CampaignTypeCharge>
 
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Campaign Type
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Campaign Type
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        NAME
+                                    </th>
+                                    <th>
+                                        
+                                    </th>                                 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in Model)
+                                    {
+                                        count++;
+                                        
+                                        <tr>
+                                            <td>
+                                                @(count)
+                                            </td>
+                                            <td>
+                                                @item.Type.ToText()
+                                            </td>    
+                                            <td>
+                                                <a href="/campaigntypecharge/edit?id=@item.Id" class="btn btn-sm btn-info">
+                                                    CONFIGURATION
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+
+
+                                }
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+    </div>
