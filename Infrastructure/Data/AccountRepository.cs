@@ -81,7 +81,7 @@ namespace Infrastructure.Data
 
             if (agestart.HasValue && ageend.HasValue)
             {
-                var dt = new DateTime(1, 1, DateTime.Now.Year);
+                var dt = new DateTime( DateTime.Now.Year, 1, 1);
                 var dtstart = dt.AddYears(0 - ageend.Value);
                 var dtend = dt.AddYears(0 - agestart.Value);
 

@@ -117,32 +117,32 @@
     {
         var accountCampaignCharges = (List<AccountCampaignChargeViewModel>)ViewBag.AccountCampaignCharges;
 
-        <h5> Cấu hình chi phí</h5>
+        <h5> Nhập chi phí tối thiểu bạn muốn nhận cho mỗi hoạt động của bạn</h5>
 
-<form asp-action="UpdateAccountCampaignCharge">
-    <div>
-        @foreach (var accountCampaignCharge in accountCampaignCharges)
-        {
-        <div class="row my-2">
-            <label class="col-md-4">@accountCampaignCharge.Type.ToDisplayName()</label>
-            <div class="col-md-6">
+        <form asp-action="UpdateAccountCampaignCharge">
+            <div>
+                @foreach (var accountCampaignCharge in accountCampaignCharges)
+                {
+                    <div class="row my-2">
+                        <label class="col-md-4">@accountCampaignCharge.Type.ToDisplayName()</label>
+                        <div class="col-md-6">
 
-                <input type="number" max="@int.MaxValue" min="0" name="AccountChargeAmount" value="@accountCampaignCharge.AccountChargeAmount" class="form-control" />
+                            <input type="number" max="@int.MaxValue" min="0" name="AccountChargeAmount" value="@accountCampaignCharge.AccountChargeAmount" class="form-control" />
 
-                <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
-                <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
+                            <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
+                            <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
+                        </div>
+                    </div>
+
+                }
+
+                <div class="row">
+
+                    <div class="col-md-6 offset-4">
+                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                    </div>
+                </div>
             </div>
-        </div>
-
-        }
-
-        <div class="row">
-
-            <div class="col-md-6 offset-4">
-                <input type="submit" value="Cập nhật" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
         </form>
     }
 

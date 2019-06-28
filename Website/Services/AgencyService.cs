@@ -103,6 +103,7 @@ namespace Website.Services
                 agency.Name = model.Name;
                 agency.Image = model.Image;
                 agency.Description = model.Description;
+                agency.TaxIdNumber = model.TaxIdNumber;
                 await _agencyRepository.UpdateAsync(agency);
 
                 return true;

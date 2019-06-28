@@ -1,73 +1,73 @@
 ﻿@inject Microsoft.Extensions.Options.IOptions<Website.Code.AppOptions> appOptions
 @model WithDrawViewModel
 
-@{ 
+@{
     var amount = (long)ViewBag.Amount;
+    var bankAccount = (ChangeBankAccountViewModel)ViewBag.BankAccount;
+    var bankAccountInvalid = bankAccount != null && !string.IsNullOrEmpty(bankAccount.Bank);
 }
-@*<div id="withDrawmodal">
-    <form method="post" action="javascript" id="frmWithDraw" data-action="@Url.Action("WithDraw","Wallet")">
 
 
-        <div class="form-horizontal">
-
-            @Html.ValidationSummary(true, "", new { @class = "text-danger wrapper" })
-            <div class="form-group">
-
-                <label class="col-md-3 control-label">Số tiền trong ví</label>
-                <div class="col-md-9" style="padding-top:11px;">
-                    <span class="text-success">@amount.ToPrice()</span>
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(model => model.Amount, new { @class = "col-md-3 control-label" })
-                <div class="col-md-9">
-                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
-
-                    @Html.ValidationMessageFor(model => model.Amount)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.Note, new { @class = "col-md-3 control-label" })
-                <div class="col-md-9">
-                    @Html.TextAreaFor(model => model.Note, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.Note)
-                </div>
-            </div>
-
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Rút tiền </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
-
-        <hr />
-
-        <div class="text-right">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-            <input type="submit" value="Yêu cầu rút tiền" class="btn btn-primary">
-        </div>
-    </form>
-    <script type="text/javascript">
-        $().ready(function () {
-            $.validator.unobtrusive.parse($('#frmWithDraw'));
+        @if (bankAccountInvalid)
+        {
+            <form method="post" action="javascript:;" data-action="@Url.Action("WithDraw","Wallet")" id="frmWithDraw">
 
 
+                <div class="modal-body">
+
+                    <div>
+                        <label>Số dư ví: </label> <span class="text-danger">@amount.ToPriceText()</span>
+                    </div>
 
 
-            $('#frmWithDraw').submit(function (e) {
-                e.preventDefault();
+                    <div class="form-group">
+                        <label asp-for="Amount"></label>
+                        <input type="number" asp-for="Amount" class="form-control" min="1000" max="@amount" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
 
-                var isvalid = $(this).valid();
-                if (isvalid) {
+                    <div class="form-group">
+                        <label asp-for="Note"></label>
+                        <textarea asp-for="Note" class="form-control"></textarea>
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+                    <div class="alert alert-info">
+                        <h5>Tài khoản nhận</h5>
+                        <p>
+                            Tài khoản: <span class="text-primary">@bankAccount.Name</span> <br />
+                            Số Tài khoản: <span class="text-primary">@bankAccount.Number</span> <br />
+                            Ngân hàng: <span class="text-primary">@bankAccount.Bank</span> <br />
+                            Chi nhánh: <span class="text-primary">@bankAccount.Branch</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                    <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
+                </div>
+            </form>
+        }
+        else
+        {
 
-                    var url = $(this).data('action');
-                    var data = $(this).serialize();
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    Bạn chưa cập nhật tài khoản ngân hàng. Vui lòng cập nhật thông tin tài khoản <a class="text-primary" asp-action="ChangeBankAccount" asp-controller="Account">tại đây</a>
+                </div>
+            </div>
 
-                    $('#withDrawmodal').html('<p class="text-center"><i class="fa fa-spin fa-spinner"></i> </p>');
-                    $.post(url, data, function (html) {
-                        $('#withDrawmodal').html(html);
-                    });
-                }
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        }
 
-            });
-
-        });
-    </script>
-</div>*@
+    </div>
+</div>

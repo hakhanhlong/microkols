@@ -212,6 +212,10 @@ namespace Website.Controllers
 
         public async Task<IActionResult> VerifyAgencyUsername(string username)
         {
+            if(username.Contains("google") || username.Contains("yahoo")|| username.Contains("gmail"))
+            {
+                return Json(false);
+            }
             var r = await _agencyService.VerifyUsername(username);
 
             return Json(r);
