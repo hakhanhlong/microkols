@@ -12,5 +12,11 @@ namespace BackOffice.Controllers
         {
             return View();
         }
+
+        public IActionResult WalletRecharge(int pageindex = 1)
+        {
+
+            return View();
+        }
     }
 }
