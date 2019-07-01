@@ -44,6 +44,8 @@ namespace BackOffice.Models
         public string Description { get; set; }
         public string Image { get; set; }
 
+        
+
     }
 
 
