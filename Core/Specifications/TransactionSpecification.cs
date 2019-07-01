@@ -14,6 +14,11 @@ namespace Core.Specifications
         {
 
         }
+
+        public TransactionSpecification(TransactionType type): base(t=>t.Type == type) { }
+
+        public TransactionSpecification(TransactionStatus status) : base(t => t.Status== status) { }
+
     }
 
     public class TransactionByCampaignSpecification : BaseSpecification<Transaction>
