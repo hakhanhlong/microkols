@@ -1,43 +1,43 @@
 ﻿
 @{
-    ViewData["Title"] = "WalletRecharge";
+    ViewData["Title"] = "AccountCharge";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @model ListTransactionViewModel
 
 @section Subheaders{
-<h3 class="m-subheader__title m-subheader__title--separator">
-    Wallet Deposite
-</h3>
-<ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
-    <li class="m-nav__item m-nav__item--home">
-        <a href="#" class="m-nav__link m-nav__link--icon">
-            <i class="m-nav__link-icon la la-home"></i>
-        </a>
-    </li>
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Account Charge
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
 
-    <li class="m-nav__separator">
-        -
-    </li>
-    <li class="m-nav__item">
-        <a href="/transaction" class="m-nav__link">
-            <span class="m-nav__link-text">
-                Transaction
-            </span>
-        </a>
-    </li>
-    <li class="m-nav__separator">
-        -
-    </li>
-    <li class="m-nav__item">
-        <a href="/transaction/walletrecharge" class="m-nav__link">
-            <span class="m-nav__link-text">
-                Wallet Deposite
-            </span>
-        </a>
-    </li>
-</ul>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction/accountcharge" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Account Charge
+                </span>
+            </a>
+        </li>
+    </ul>
 }
 
 <div class="row">
@@ -47,34 +47,34 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Deposite
+                            Account Charge
                         </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/walletrecharge?status=Created" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/accountcharge?status=Created" role="tab">
                                 Created
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/walletrecharge?status=Canceled" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/accountcharge?status=Canceled" role="tab">
                                 Canceled
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/walletrecharge?status=Processing" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/accountcharge?status=Processing" role="tab">
                                 Processing
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/walletrecharge?status=Completed" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/accountcharge?status=Completed" role="tab">
                                 Completed
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/walletrecharge?status=Error" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/accountcharge?status=Error" role="tab">
                                 Error
                             </a>
                         </li>
@@ -87,7 +87,7 @@
 
                         @if (Model != null)
                         {
-                          
+
                             @await Html.PartialAsync("~/Views/Transaction/_TransactionItem.cshtml", Model)
                         }
                         else
@@ -99,7 +99,7 @@
                             </div>
                         }
 
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>

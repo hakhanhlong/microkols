@@ -9,5 +9,8 @@ namespace BackOffice.Business.Interfaces
     public interface IWalletBusiness
     {
         ListWalletViewModel GetListWallet(int pageindex, int pagesize);
+        WalletViewModel Get(int id);
+
+
     }
 }

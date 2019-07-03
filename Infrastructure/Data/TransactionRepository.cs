@@ -85,5 +85,10 @@ namespace Infrastructure.Data
 
             return await _dbContext.Transaction.Where(m => m.Type == transactionType && m.RefId == refid && m.Status == TransactionStatus.Completed).Select(m => m.Amount).DefaultIfEmpty(0).SumAsync();
         }
+
+        public int CountAll()
+        {
+            return _dbContext.Transaction.Count();
+        }
     }
 }

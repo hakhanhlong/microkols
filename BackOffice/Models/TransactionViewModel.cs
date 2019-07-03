@@ -45,10 +45,14 @@ namespace BackOffice.Models
         public DateTime DateModified { get; set; }
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
-
         public string Code { get; set; }
+
         public int SenderId { get; set; }
+        public string SenderName { get; set; }
+
         public int ReceiverId { get; set; }
+        public string ReceiverName { get; set; }
+
         public long Amount { get; set; }
         public TransactionType Type { get; set; }
         public TransactionStatus Status { get; set; }
@@ -57,5 +61,7 @@ namespace BackOffice.Models
         public string RefData { get; set; }
         public string Note { get; set; }
         public string AdminNote { get; set; }
+
+        public int Number { get; set; }
     }
 }

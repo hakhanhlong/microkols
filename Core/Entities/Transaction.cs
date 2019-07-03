@@ -24,6 +24,7 @@ namespace Core.Entities
     }
     public enum TransactionStatus
     {
+        All = -1,
         Created = 0,
         Canceled = 1,
         Processing = 2,
