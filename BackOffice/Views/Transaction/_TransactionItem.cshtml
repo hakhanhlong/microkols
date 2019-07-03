@@ -21,6 +21,7 @@
             <th>
                 STATUS
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -36,11 +37,47 @@
                 <td>@item.Code</td>
                 <td>@item.Amount</td>
                 <td>@item.Status</td>
+                <td>
+
+                    @if (item.Status == TransactionStatus.Created)
+                    {
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-primary m-btn m-btn--air active">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
+                                Approve
+                            </label>
+                            <label class="btn btn-primary m-btn m-btn--air">
+                                <input type="radio" name="options" id="option2" autocomplete="off">
+                                Processing
+                            </label>
+                            <label class="btn btn-primary m-btn m-btn--air">
+                                <input type="radio" name="options" id="option3" autocomplete="off">
+                                Cancel
+                            </label>
+                        </div>
+                    }
+                    @if (item.Status == TransactionStatus.Processing)
+                    {
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-primary m-btn m-btn--air active">
+                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
+                                Approve
+                            </label>                            
+                            <label class="btn btn-primary m-btn m-btn--air">
+                                <input type="radio" name="options" id="option3" autocomplete="off">
+                                Cancel
+                            </label>
+                        </div>
+                    }
+
+
+
+                </td>
             </tr>
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)
