@@ -15,5 +15,7 @@ namespace BackOffice.Business.Interfaces
         ListTransactionViewModel GetTransactions(int pageindex, int pagesize);
 
         Task<ListTransactionViewModel> GetTransactions(TransactionType type, TransactionStatus status, int pageindex, int pagesize);
+
+        int UpdateStatus(TransactionStatus status, int id);
     }
 }

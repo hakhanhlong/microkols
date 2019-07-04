@@ -79,5 +79,20 @@ namespace BackOffice.Business
             };
         }
 
+        public int UpdateStatus(TransactionStatus status, int id)
+        {
+            int retValue = -1;
+            var _transaction = _ITransactionRepository.GetById(id);
+            if(_transaction != null)
+            {
+                _transaction.Status = status;
+                _ITransactionRepository.Update(_transaction);
+                retValue = 1;
+            }
+            
+
+            return retValue;
+        }
+
     }
 }

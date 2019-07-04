@@ -30,7 +30,7 @@
         {
             count++;
             item.Number = count;
-            <tr>
+            <tr id="transaction_@(item.Id)">
                 <td>@item.Number</td>
                 <td>@item.SenderName</td>
                 <td>@item.ReceiverName</td>
@@ -41,16 +41,16 @@
 
                     @if (item.Status == TransactionStatus.Created)
                     {
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-primary m-btn m-btn--air active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
+                        <div class="btn-group btn-group-toggle pull-right" data-toggle="buttons">
+                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');">
+                                <input type="radio" name="options" id="option1" autocomplete="off">
                                 Approve
                             </label>
-                            <label class="btn btn-primary m-btn m-btn--air">
+                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');">
                                 <input type="radio" name="options" id="option2" autocomplete="off">
                                 Processing
                             </label>
-                            <label class="btn btn-primary m-btn m-btn--air">
+                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');">
                                 <input type="radio" name="options" id="option3" autocomplete="off">
                                 Cancel
                             </label>
@@ -58,12 +58,12 @@
                     }
                     @if (item.Status == TransactionStatus.Processing)
                     {
-                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                            <label class="btn btn-primary m-btn m-btn--air active">
-                                <input type="radio" name="options" id="option1" autocomplete="off" checked="">
+                        <div class="btn-group btn-group-toggle pull-right" data-toggle="buttons">
+                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');">
+                                <input type="radio" name="options" id="option1" autocomplete="off">
                                 Approve
                             </label>                            
-                            <label class="btn btn-primary m-btn m-btn--air">
+                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');">
                                 <input type="radio" name="options" id="option3" autocomplete="off">
                                 Cancel
                             </label>
@@ -76,7 +76,7 @@
             </tr>
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
-                <tr>
+                <tr id="transaction_note_@(item.Id)">
                     <td colspan="7">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {

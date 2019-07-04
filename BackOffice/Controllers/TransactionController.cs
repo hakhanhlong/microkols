@@ -57,6 +57,19 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
+        [HttpPost]
+        public JsonResult ChangeStatus(TransactionStatus status, int id)
+        {
+            int code = _ITransactionBussiness.UpdateStatus(status, id);
+            string _msg_code = "{\"Code\": -1, \"Message\": \"Update Status Error\"}";
+            if(code == 1)
+            {
+                _msg_code = "{\"Code\": 1, \"Message\": \"Update Status Success\"}";
+            }
+           
+            return Json(_msg_code);
+        }
+
 
 
         public async Task<ListTransactionViewModel> FillTransactions(TransactionType type, TransactionStatus status, int pageindex)

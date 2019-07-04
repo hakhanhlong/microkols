@@ -1,4 +1,24 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function UpdateTransactionStatus(status, id) {
 
-// Write your JavaScript code.
+    $.ajax({
+        type: "POST",        
+        url: "/Transaction/ChangeStatus",
+        data: { status: status, id:id },
+        success: function (data) {
+
+            console.log(data);
+
+            var json_data = JSON.parse(data);
+
+            if (json_data.Code === 1) {
+                console.log("Success");
+                $('#transaction_' + id).remove();
+                $('#transaction_note_' + id).remove();
+                
+            }
+        },
+        dataType: "json",
+        traditional: true
+    });
+
+}
