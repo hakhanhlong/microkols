@@ -102,6 +102,9 @@
                     </div>
                 </div>
             </div>
+            <div class="m-portlet__foot">
+                <pager pager="@Model.Pager" asp-route-status="@(Context.Request.Query["status"])" asp-action="accountcharge"></pager>
+            </div>
         </div>
     </div>
 </div>

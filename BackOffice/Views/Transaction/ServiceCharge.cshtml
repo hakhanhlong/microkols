@@ -88,7 +88,7 @@
                         @if (Model != null)
                         {
 
-                            @await Html.PartialAsync("~/Views/Transaction/_TransactionItem.cshtml", Model)
+                            @await Html.PartialAsync("~/Views/Transaction/_TransactionItem.cshtml", Model)                            
                         }
                         else
                         {
@@ -101,6 +101,9 @@
 
                     </div>
                 </div>
+            </div>
+            <div class="m-portlet__foot">
+                <pager pager="@Model.Pager" asp-route-status="@(Context.Request.Query["status"])" asp-action="servicecharge"></pager>
             </div>
         </div>
     </div>
