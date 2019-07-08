@@ -37,7 +37,25 @@
         <div class="m-grid__item m-grid__item--fluid m-grid m-grid--hor m-login m-login--2 m-login-2--skin-2 m-login--signup" id="m_login" style="background-image: url(/assets/app/media/img//bg/bg-3.jpg);">
             <div class="m-grid__item m-grid__item--fluid m-login__wrapper">
                 <div class="m-login__container">
+                    @if (TempData["MessageSuccess"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>
+                                Success!
+                            </strong>
+                            @TempData["MessageSuccess"]
+                        </div>
+                    }
 
+                    @if (TempData["MessageError"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <strong>
+                                Error!
+                            </strong>
+                            @TempData["MessageError"]
+                        </div>
+                    }
 
                     @RenderBody()
 

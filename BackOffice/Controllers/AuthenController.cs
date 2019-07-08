@@ -12,8 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BackOffice.Controllers
 {
-
-    [Authorize]
+    
     public class AuthenController : Controller
     {
         private UserManager<AppUser> _userManager;
@@ -36,8 +35,8 @@ namespace BackOffice.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel details, string returnUrl)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginModel details)
         {
             if (ModelState.IsValid)
             {
@@ -48,13 +47,15 @@ namespace BackOffice.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, details.Password, true, false);
                     if (result.Succeeded)
                     {
-                        return Redirect(returnUrl ?? "/");
+                        return Redirect("/");
                     }
-                    ModelState.AddModelError(nameof(LoginModel.Email), "Invalid user or Password");
+                    
                 }
+                //ModelState.AddModelError(nameof(LoginModel.Email), "Invalid user or Password");
+                TempData["MessageError"] = "Invalid user or Password";
             }
 
-            return View(returnUrl);
+            return View();
         }
 
         [Authorize]
