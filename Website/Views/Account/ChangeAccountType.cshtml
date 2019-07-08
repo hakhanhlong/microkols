@@ -2,12 +2,13 @@
 @{
     ViewBag.Title = "Cài đặt";
 
+    var ignoreCampaignTypes = (List<CampaignType>)ViewBag.IgnoreCampaignTypes;
+
     var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>().AsEnumerable();
 
     if (Model.Type == AccountType.Regular)
     {
-        accountTypeArr = accountTypeArr.Where(m => m != AccountType.Regular);
-
+        // accountTypeArr = accountTypeArr.Where(m => m != AccountType.Regular);
     }
     else
     {
@@ -116,8 +117,8 @@
     @if (ViewBag.AccountCampaignCharges != null)
     {
         var accountCampaignCharges = (List<AccountCampaignChargeViewModel>)ViewBag.AccountCampaignCharges;
-
-        <h5> Nhập chi phí tối thiểu bạn muốn nhận cho mỗi hoạt động của bạn</h5>
+        <hr />
+        <h5 class="mb-3"> Nhập chi phí tối thiểu bạn muốn nhận cho mỗi hoạt động của bạn</h5>
 
         <form asp-action="UpdateAccountCampaignCharge">
             <div>
@@ -144,6 +145,45 @@
                 </div>
             </div>
         </form>
+    }
+
+    @if (ViewBag.CampaignTypeCharges != null)
+    {
+        var campaignTypeCharges = (List<CampaignTypeChargeViewModel>)ViewBag.CampaignTypeCharges;
+        <hr />
+        <h5 class="mb-3"> Bạn sẽ nhận được khoản thu nhập khi tham gia chiến dịch của chúng tôi</h5>
+
+        @foreach (var campaignTypeCharge in campaignTypeCharges)
+        {
+            if (campaignTypeCharge.Type == CampaignType.CustomService) { continue; }
+
+            <div class="row my-2">
+                <label class="col-md-4">@campaignTypeCharge.Type.ToDisplayName()</label>
+                <div class="col-md-6">
+
+                    <input type="number" disabled value="@campaignTypeCharge.AccountChargeAmount" class="form-control" />
+
+
+
+                </div>
+                <div class="col-md-2">
+                    @{
+                        var switchid = $"switch{campaignTypeCharge.Type}";
+                        var ischecked = ignoreCampaignTypes.Contains(campaignTypeCharge.Type);
+                        var checkedstr = ischecked ? "" : "checked=checked";
+                    }
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr 
+                                data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = campaignTypeCharge.Type, removed = !ischecked})"/>
+                        <label class="custom-control-label" for="@switchid">Đồng ý</label>
+                    </div>
+
+
+                </div>
+            </div>
+
+        }
+
     }
 
 </div>

@@ -267,6 +267,7 @@ namespace Website.ViewModels
             }
 
         }
+        [Display(Name ="Loại tài khoản")]
         public AccountType Type { get; set; }
 
         public List<AccountTypeHotMomData> HotMomData { get; set; } = new List<AccountTypeHotMomData>();

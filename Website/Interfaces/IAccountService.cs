@@ -62,5 +62,9 @@ namespace Website.Interfaces
         Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username);
         Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize);
         #endregion
+
+
+        Task<List<CampaignType>> GetIgnoreCampaignTypes(int accountid);
+        Task<bool> UpdateIgnoreCampaignTypes(int accountid, CampaignType type, bool removed, string username);
     }
 }

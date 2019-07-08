@@ -4,13 +4,35 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Core.Entities
 {
+    
     public class Account : BaseEntityWithDate
     {
+        public string IgnoreCampaignTypes { get; set; }
+
+        [NotMapped]
+        public List<CampaignType> IgnoreCampaignTypesObj
+        {
+            get
+            {
+                var result = new List<CampaignType>();
+                if (!string.IsNullOrEmpty(IgnoreCampaignTypes))
+                {
+                    var campaignTypeArr = IgnoreCampaignTypes.ToListInt();
+                    foreach(var campaignType in campaignTypeArr)
+                    {
+                        result.Add((CampaignType)campaignType);
+                    }
+                }
+
+                return result;
+            }
+        }
 
         // Người dùng thường -> AccountType = null
         public AccountType Type { get; set; }

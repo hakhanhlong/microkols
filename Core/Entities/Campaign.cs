@@ -7,6 +7,8 @@ namespace Core.Entities
 {
     public class Campaign : BaseEntityWithMeta
     {
+
+        public string Code { get; set; }
         public int AgencyId { get; set; }
         public Agency Agency { get; set; }
         public string Title { get; set; }

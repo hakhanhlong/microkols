@@ -21,10 +21,12 @@ namespace Website.Controllers
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
         private readonly IFacebookHelper _facebookHelper;
+        private readonly ICampaignService _campaignService;
         public AccountController(IAccountService accountService, ISharedService sharedService,
+            ICampaignService campaignService,
             IFileHelper fileHelper, IFacebookHelper facebookHelper)
         {
-
+            _campaignService = campaignService;
             _accountService = accountService;
             _sharedService = sharedService;
             _fileHelper = fileHelper;
@@ -173,7 +175,12 @@ namespace Website.Controllers
         #endregion
 
         #region ChangeAccountType
-
+        
+        public async Task<IActionResult> UpdateIgnoreCampaignTypes(CampaignType type, bool removed)
+        {
+            var result = await _accountService.UpdateIgnoreCampaignTypes(CurrentUser.Id, type, !removed, CurrentUser.Username);
+            return Json(result);
+        }
 
         public async Task<IActionResult> ChangeAccountType()
         {
@@ -182,6 +189,11 @@ namespace Website.Controllers
             {
                 ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
             }
+            else
+            {
+                ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
+            }
+            ViewBag.IgnoreCampaignTypes = await _accountService.GetIgnoreCampaignTypes(CurrentUser.Id);
             return View(model);
         }
         [HttpPost]

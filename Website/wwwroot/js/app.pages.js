@@ -1,6 +1,10 @@
 ﻿var ChangeAccountTypePage = (function () {
 
     function init() {
+        handler();
+    }
+
+    function handler() {
         var datas = $.parseJSON($('#modelHotMomData').html());
         new Vue({
             el: '#dataHotMom',
@@ -29,8 +33,15 @@
 
             handlerType();
         });
-    }
 
+
+        $('.checkbox-ignorecampaigntype').change(function () {
+            var url = $(this).data('url');
+            $.post(url, function () { });
+
+        });
+
+    }
 
     function handlerType() {
         var type = $("input[name=Type]:checked").val();
