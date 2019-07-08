@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackOffice.Controllers
 {
+
+    [Authorize]
     public class TransactionController : Controller
     {
         ITransactionBusiness _ITransactionBussiness;
@@ -58,15 +61,23 @@ namespace BackOffice.Controllers
         }
 
         [HttpPost]
-        public JsonResult ChangeStatus(TransactionStatus status, int id)
+        public async Task<JsonResult> ChangeStatus(TransactionStatus status, int id)
         {
-            int code = _ITransactionBussiness.UpdateStatus(status, id);
+            int code = await _ITransactionBussiness.UpdateStatus(status, id, HttpContext.User.Identity.Name);
             string _msg_code = "{\"Code\": -1, \"Message\": \"Update Status Error\"}";
-            if(code == 1)
+            if(code == 9)
             {
                 _msg_code = "{\"Code\": 1, \"Message\": \"Update Status Success\"}";
+
             }
-           
+            else if (code == 10){
+                _msg_code = "{\"Code\": -1, \"Message\": \"wallet do not exist\"}";
+            }
+            else if (code == 11)
+            {
+                _msg_code = "{\"Code\": -1, \"Message\": \"wallet balance sender or receiver less then zero or amount could be abstract\"}";
+            }
+
             return Json(_msg_code);
         }
 

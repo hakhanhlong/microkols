@@ -77,6 +77,7 @@ namespace Infrastructure.Data
                 WalletId = walletid
             };
             await _dbContext.TransactionHistory.AddAsync(transactionHistory);
+
             await _dbContext.SaveChangesAsync();
         }
 

@@ -24,7 +24,7 @@ namespace BackOffice.Controllers
         public IActionResult Index(int pageindex = 1)
         {
 
-            var _list = _ICategoryRepository.ListPaging("" , pageindex, 20);
+            var _list = _ICategoryRepository.ListPaging("" , pageindex, 50);
 
             return View(_list);
         }

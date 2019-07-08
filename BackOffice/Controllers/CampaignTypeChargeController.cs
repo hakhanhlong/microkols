@@ -4,10 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Models;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackOffice.Controllers
 {
+    [Authorize]
     public class CampaignTypeChargeController : Controller
     {
 
