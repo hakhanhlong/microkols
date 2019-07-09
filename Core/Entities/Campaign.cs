@@ -36,6 +36,7 @@ namespace Core.Entities
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+        public int Quantity { get; set; }
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
         public IEnumerable<CampaignOption> CampaignOption => _CampaignOption.AsReadOnly();

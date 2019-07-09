@@ -11,6 +11,7 @@ namespace Website.Interfaces
     public interface ICampaignService
     {
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
+        Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);

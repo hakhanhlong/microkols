@@ -256,6 +256,15 @@
     </div>
 
     <hr />
+
+
+    <div class="form-group row">
+        <label asp-for="Quantity" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">            
+            <input type="number" asp-for="Quantity" min="0" class="form-control"/>
+            <span asp-validation-for="Description"></span>
+        </div>
+    </div>
     <div class="form-group row">
         <div class="col-md-2">Chi phí</div>
         <div class="col-md-10">
@@ -276,9 +285,18 @@
 
         </div>
     </div>
+    <div class="form-group row">
+        <div class="col-md-2">Mã chiến dịch</div>
+        <div class="col-md-10">
+            <span class="text-success">@Model.Code</span>
+
+        </div>
+    </div>
+
 
     <div class="form-group row">
         <div class="col-md-10 offset-md-2">
+            <input type="button" value="Thanh toán ngay" class="btn btn-info">
             <input type="submit" value="Thêm mới" class="btn btn-primary">
         </div>
     </div>

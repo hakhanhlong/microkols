@@ -140,6 +140,16 @@ namespace Website.Services
         }
 
 
+        public async Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid)
+        {
+            var code = await _campaignRepository.GetValidCode(agencyid);
+
+            return new CreateCampaignViewModel()
+            {
+                Code = code
+            };
+        }
+
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
             var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
@@ -148,8 +158,9 @@ namespace Website.Services
                 return -1;
             }
             var settings = await _settingRepository.GetSetting();
-            var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, username);
+           // var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
+            var code = await _campaignRepository.GetValidCode(agencyid);
+            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, code, username);
             if (campaign == null)
             {
                 return -1;

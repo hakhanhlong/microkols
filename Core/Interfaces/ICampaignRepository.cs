@@ -12,6 +12,7 @@ namespace Core.Interfaces
     public interface ICampaignRepository : IRepository<Campaign>, IAsyncRepository<Campaign>
     {
 
+        Task<string> GetValidCode(int agencyid);
         Task<List<int>> GetCampaignIds(CampaignStatus status);
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
         Task<List<Campaign>> GetCampaignsMatchedAccount(int accountid);

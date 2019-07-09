@@ -21,6 +21,16 @@ namespace Infrastructure.Data
 
         }
 
+
+        public async Task<string> GetValidCode(int agencyid)
+        {
+            var code = string.Format("{0}{1:ddMMyy}", agencyid, DateTime.Now);
+
+            var count = await _dbContext.Campaign.CountAsync(m => m.Code == code);
+
+            return string.Format("{0}{1:D3}", code, count + 1);
+        }
+
         public async Task<List<int>> GetCampaignIds(CampaignStatus status)
         {
             return await _dbContext.Campaign.Where(m => m.Status == status).Select(m => m.Id).ToListAsync();
