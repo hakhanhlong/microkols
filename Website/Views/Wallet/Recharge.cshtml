@@ -2,6 +2,7 @@
 
 @{
     var bankAccounts = AppOptions.CurrentValue.BankAccounts;
+    
 }
 
 <div class="modal-dialog modal-dialog-centered">
@@ -16,7 +17,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label asp-for="Amount"></label>
-                    <input type="text" asp-for="Amount" class="form-control" />
+                    <input type="number" asp-for="Amount" class="form-control" />
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
 
@@ -60,11 +61,14 @@
                
                 <div class="form-group">
                     <label asp-for="Note"></label>
-                    <textarea asp-for="Note" class="form-control"></textarea>
+                    <div>
+                        <textarea asp-for="Note" class="form-control"></textarea>
+                    </div>
                     <span asp-validation-for="Note" class="text-danger"></span>
                 </div>
             </div>
             <div class="modal-footer">
+                <input type="hidden" asp-for="CampaignId" />
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
                 <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
             </div>

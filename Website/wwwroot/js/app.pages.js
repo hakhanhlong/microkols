@@ -92,6 +92,52 @@ var AgencyCreateCampaignPage = (function () {
 
         });
 
+        $('#btnCreateCampaign').click(function () {
+
+            $('#submittype').val(1);
+            createCampaign(function (response) {
+                window.location = response.url;
+
+            });
+        });
+
+
+        $('#btnCreateCampaignRecharge').click(function () {
+
+            $('#submittype').val(0);
+            createCampaign(function (response) {
+                AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(response.campaignid), function () {
+                    AppWallet.HandlerRecharge();
+                });
+            });
+        });
+
+    }
+    function createCampaign(callback) {
+        var $frm = $('#frmCreateCampaign');
+
+        console.log('createCampaign');
+        if ($frm.valid()) {
+            AppBsModal.Init('static');
+            AppBsModal.ShowLoading();
+            var action = $frm.data('action');
+            var formdata = $frm.serialize();
+            $.post(action, formdata, function (response) {
+                if (response.status == -1) {
+
+                    AppBsModal.HideModal();
+                    $.notify({
+                        message: response.message,
+                        type: 'danger'
+                    })
+                } else {
+                    callback(response);
+
+                }
+
+            });
+
+        }
     }
 
     function handlerType() {
@@ -158,11 +204,26 @@ var AgencyCreateCampaignPage = (function () {
         var serviceCharge = totalServicePrice * settingServiceCharge / 100;
         var totalServiceCharge = totalServicePrice + serviceCharge;
 
-        console.log('totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
 
         $('#totalServicePrice').text(AppCommon.moneyFormat(totalServicePrice));
         $('#serviceCharge').text(AppCommon.moneyFormat(serviceCharge));
         $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
+
+
+        console.log('AppSettings.CurrentUser.Balance', AppSettings.CurrentUser.Balance, 'totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
+        setTimeout(function () {
+            if (AppSettings.CurrentUser.Balance <= totalServiceCharge) {
+
+                $('#btnCreateCampaignRecharge').show();
+                $('#btnCreateCampaign').hide();
+
+            } else {
+                $('#btnCreateCampaignRecharge').hide();
+                $('#btnCreateCampaign').show();
+
+            }
+        }, 1000);
+       
 
     }
 

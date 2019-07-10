@@ -39,6 +39,7 @@ namespace Website.ViewModels
             CountOption = campaign.CampaignOption.Count();
             Image = campaign.Image;
             Data = campaign.Data;
+            Code = campaign.Code;
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
             {
@@ -86,7 +87,6 @@ namespace Website.ViewModels
             }
 
             CategoryIds = categoryids;
-
         }
 
 
@@ -97,6 +97,8 @@ namespace Website.ViewModels
 
 
         public int Id { get; set; }
+
+        public string Code { get; set; }
 
         public string Image { get; set; }
         public string Data { get; set; }

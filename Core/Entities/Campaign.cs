@@ -65,4 +65,19 @@ namespace Core.Entities
         [DisplayName("Lỗi")]
         Error = 6,
     }
+
+    /*
+     [DisplayName("Chờ phê duyệt")]
+        ChoPheDuyet = 1,
+        [DisplayName("Thực hiện chiến dịch")]
+        ThucHien = 2,
+        [DisplayName("Theo dõi chiến dịch")]
+        TheoDoi = 3,
+        [DisplayName("Đã hoàn thành")]
+        Completed = 4,
+        [DisplayName("Đã Hủy")]
+        Canceled = 5,
+        [DisplayName("Lỗi")]
+        Error = 6,
+     */
 }

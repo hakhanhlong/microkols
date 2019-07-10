@@ -32,7 +32,7 @@
 <div class="mt-3"></div>
 <alert></alert>
 <div asp-validation-summary="ModelOnly" class="text-danger"> </div>
-<form method="post" asp-action="Create" enctype="multipart/form-data">
+<form method="post" action="javascript:;" data-action="@Url.Action("Create")" enctype="multipart/form-data" id="frmCreateCampaign">
     <input type="hidden" value="@AppSettings.CampaignExtraOptionChargePercent" id="settingExtraOptionCharge" />
     <input type="hidden" value="@AppSettings.CampaignServiceChargePercent" id="settingServiceCharge" />
     <div class="form-group row">
@@ -293,11 +293,11 @@
         </div>
     </div>
 
-
     <div class="form-group row">
         <div class="col-md-10 offset-md-2">
-            <input type="button" value="Thanh toán ngay" class="btn btn-info">
-            <input type="submit" value="Thêm mới" class="btn btn-primary">
+            <input type="hidden" value="0" name="submittype" id="submittype"/>
+            <input type="button" value="Nạp tiền" class="btn btn-info" id="btnCreateCampaignRecharge" style="display:none" />
+            <input type="button" value="Tiếp tục" class="btn btn-primary" id="btnCreateCampaign"  style="display:none"/>
         </div>
     </div>
 </form>

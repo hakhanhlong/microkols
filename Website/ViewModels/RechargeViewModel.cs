@@ -24,6 +24,7 @@ namespace Website.ViewModels
         [Display(Name = "Ngân hàng")]
         public string Bank { get; set; }
 
+        public int CampaignId { get; set; }
 
 
         public string GetTransactionData()

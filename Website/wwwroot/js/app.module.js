@@ -4,6 +4,7 @@ var AppBsModal = (function () {
 
     function showLoading() {
         $(selectorId).html(AppConstants.ModalSpinner);
+        $(selectorId).modal('show');
     }
 
     function hideModal() {
@@ -131,7 +132,7 @@ var AppWallet = (function () {
             e.preventDefault();
 
             AppBsModal.Init();
-            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge, function () {
+            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(), function () {
                 handlerRecharge();
             });
         });

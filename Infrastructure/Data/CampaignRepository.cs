@@ -26,9 +26,9 @@ namespace Infrastructure.Data
         {
             var code = string.Format("{0}{1:ddMMyy}", agencyid, DateTime.Now);
 
-            var count = await _dbContext.Campaign.CountAsync(m => m.Code == code);
+            var count = await _dbContext.Campaign.CountAsync(m => m.Code.Contains(code));
 
-            return string.Format("{0}{1:D3}", code, count + 1);
+            return string.Format("{0}{1:D2}", code, count + 1);
         }
 
         public async Task<List<int>> GetCampaignIds(CampaignStatus status)

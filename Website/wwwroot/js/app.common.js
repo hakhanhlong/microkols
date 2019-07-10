@@ -4,7 +4,8 @@ var AppSettings = {
     CurrentUser: {
         Username: '',
         Name: '',
-        Type:-1
+        Type: -1,
+        Balance: 0
     },
 };
 
@@ -12,7 +13,12 @@ var AppSettings = {
 var AppConstants = {
     UrlUploadFile: "/home/uploadimage",
     UrlGetAmount: "/wallet/GetAmount",
-    UrlRecharge: "/wallet/Recharge",
+    UrlRecharge: function (campaignid) {
+        if (!campaignid) {
+            campaignid = 0;
+        }
+        return "/wallet/Recharge?campaignid=" + campaignid;
+    },
     UrlWithdraw: "/wallet/Withdraw",
     UrlGetNotificationCount: "/Notification/Count",
     UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
@@ -69,6 +75,7 @@ var AppCommon = {
     bindingWalletBalance: function () {
         $.get(AppConstants.UrlGetAmount, function (val) {
             $('.wallet-balance').html(AppCommon.moneyFormat(val));
+            AppSettings.CurrentUser.Balance = val;
         });
     },
     moneyFormat: function (input, n, x) {
