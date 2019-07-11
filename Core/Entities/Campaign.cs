@@ -52,15 +52,17 @@ namespace Core.Entities
 
     public enum CampaignStatus
     {
-        [DisplayName("Khởi tạo")]
-        Created = 1,
-        [DisplayName("Đã bắt đầu")]
+        [DisplayName("Chờ phê duyệt")]
+        WaitToConfirm = 0,
+        [DisplayName("Chọn thành viên")]
+        AddAccount = 1,
+        [DisplayName("Bắt đầu")]
         Started = 2,
-        [DisplayName("Đã kết thúc")]
+        [DisplayName("Kết thúc")]
         Ended = 3,
-        [DisplayName("Đã hoàn thành")]
+        [DisplayName("Hoàn thành")]
         Completed = 4,
-        [DisplayName("Đã Hủy")]
+        [DisplayName("Hủy")]
         Canceled = 5,
         [DisplayName("Lỗi")]
         Error = 6,

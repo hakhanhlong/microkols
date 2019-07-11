@@ -87,6 +87,10 @@ namespace Website.Controllers
 
                             if (paymentResult.Status == TransactionStatus.Completed)
                             {
+
+                                // tam thoi chua khac phuc dc loi tracking id
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount, CurrentUser.Name));
+                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount , CurrentUser.Name);
                                 return Json(new
                                 {
                                     status = 1,

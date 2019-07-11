@@ -88,6 +88,13 @@
         </div>
 
     </div>
+    <div class="form-group row">
+        <label asp-for="Title" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input type="text" class="form-control" asp-for="Title" />
+            <span asp-validation-for="Title"></span>
+        </div>
+    </div>
 
     <div class="form-group row">
 
@@ -150,7 +157,7 @@
     <div class="form-group row">
         <label asp-for="Description" class="col-md-2 col-form-label"></label>
         <div class="col-md-10">
-            <textarea type="text" class="form-control" asp-for="Description"></textarea>
+            <textarea class="form-control" asp-for="Description"></textarea>
             <span asp-validation-for="Description"></span>
         </div>
     </div>
@@ -260,8 +267,8 @@
 
     <div class="form-group row">
         <label asp-for="Quantity" class="col-md-2 col-form-label"></label>
-        <div class="col-md-10">            
-            <input type="number" asp-for="Quantity" min="0" class="form-control"/>
+        <div class="col-md-10">
+            <input type="number" asp-for="Quantity" min="0" class="form-control" />
             <span asp-validation-for="Description"></span>
         </div>
     </div>
@@ -295,9 +302,9 @@
 
     <div class="form-group row">
         <div class="col-md-10 offset-md-2">
-            <input type="hidden" value="0" name="submittype" id="submittype"/>
+            <input type="hidden" value="0" name="submittype" id="submittype" />
             <input type="button" value="Nạp tiền" class="btn btn-info" id="btnCreateCampaignRecharge" style="display:none" />
-            <input type="button" value="Tiếp tục" class="btn btn-primary" id="btnCreateCampaign"  style="display:none"/>
+            <input type="button" value="Tiếp tục" class="btn btn-primary" id="btnCreateCampaign" style="display:none" />
         </div>
     </div>
 </form>

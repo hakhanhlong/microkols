@@ -40,6 +40,7 @@ namespace Website.ViewModels
             Image = campaign.Image;
             Data = campaign.Data;
             Code = campaign.Code;
+            Title = campaign.Title;
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
             {
@@ -97,7 +98,7 @@ namespace Website.ViewModels
 
 
         public int Id { get; set; }
-
+        public string Title { get; set; }
         public string Code { get; set; }
 
         public string Image { get; set; }

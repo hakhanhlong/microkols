@@ -46,8 +46,8 @@ namespace Website.ViewModels
                 Description = Description,
                 Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
-                Status = CampaignStatus.Created,
-                Title = string.Empty,
+                Status = CampaignStatus.WaitToConfirm,
+                Title = Title,
                 UserCreated = username,
                 UserModified = username,
                 ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
@@ -67,6 +67,11 @@ namespace Website.ViewModels
             };
 
         }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên chiến dịch")]
+        public string Title { get; set; }
+
         [Display(Name = "Mô tả")]
         public string Description { get; set; }
 

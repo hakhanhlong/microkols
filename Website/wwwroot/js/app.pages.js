@@ -96,7 +96,10 @@ var AgencyCreateCampaignPage = (function () {
 
             $('#submittype').val(1);
             createCampaign(function (response) {
-                window.location = response.url;
+                setTimeout(function () {
+                    window.location = response.url;
+                }, 1000);
+                
 
             });
         });

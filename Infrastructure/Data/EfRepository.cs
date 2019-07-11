@@ -227,7 +227,6 @@ namespace Infrastructure.Data
         {
             _dbContext.Set<T>().Add(entity);
             await _dbContext.SaveChangesAsync();
-
             return entity;
         }
 
