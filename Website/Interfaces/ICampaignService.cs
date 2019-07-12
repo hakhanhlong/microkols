@@ -32,7 +32,7 @@ namespace Website.Interfaces
         Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username);
         Task<int> SubmmitCampaignAccountChangeAvatar(int accountid, SubmmitCampaignAccountChangeAvatarViewModel model, string username);
 
-        Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type);
+        Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newrefContent);
 
         Task<List<int>> GetEndedCampaignIds();
         Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid);

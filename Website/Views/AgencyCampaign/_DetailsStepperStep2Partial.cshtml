@@ -1,51 +1,153 @@
 ﻿@model CampaignDetailsViewModel
+@inject Website.Interfaces.IAccountService AccountService
+@inject Website.Code.Helpers.IFacebookHelper FacebookHelper
 
-@{
-    var kolTypes = Model.AccountTypes.Where(m => m != AccountType.Regular).ToList();
-    if (kolTypes.Count > 0)
-    {
-        var text = string.Join(", ", kolTypes.Select(m => m.ToDisplayName()).ToArray());
-        var kolAccounts = Model.CampaignAccounts.Where(m => m.Account.Type != AccountType.Regular).ToList();
-        if (kolAccounts.Count > 0)
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="w-">
+                STT
+            </th>
+            <th>
+                Tên người chia sẻ
+            </th>
+            <th width="250">
+                Link facebook
+            </th>
+            <th>
+                nội dung chia sẻ
+            </th>
+            <th>
+
+            </th>
+            <th>
+                Ghi chú
+            </th>
+        </tr>
+
+
+    </thead>
+    <tbody>
+        @{ var stt = 0;}
+
+        @foreach (var campaignAccount in Model.CampaignAccounts)
         {
-            var kolText = string.Join(',', kolTypes.Select(m => m.ToDisplayName()).ToArray());
-            <div class="mb-3">
-                <div class="mb-3 d-flex">
-                    <h3 class="h5">
-                        Thành viên Kol - @kolText
-
-                    </h3>
-                </div>
-                <div>
-                    @foreach (var campaignAccount in Model.CampaignAccounts)
+            stt++;
+            <tr>
+                <td>@stt</td>
+                <td>@campaignAccount.Account.Name</td>
+                <td>
+                    @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                     {
-                        <partial name="_CampaignAccountItemProcessPartial" model="campaignAccount" />
+                        if (campaignAccount.Type.IsShareCampaign())
+                        {
+                            if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                            {
+                                <div>
+                                    <a href="@campaignAccount.RefUrl" target="_blank">@campaignAccount.RefUrl</a>
+                                </div>
+                                if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                                {
+                                    var post = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId);
+                                    if (post != null)
+                                    {
+                                        <div class="d-flex align-items-center">
+
+                                            <span data-toggle="tooltip" title="Lượt thích">
+                                                @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                            </span>
+                                            <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
+
+                                                @post.ShareCount <i class="fal fa-share"></i>
+                                            </span>
+                                            <span data-toggle="tooltip" title="Lượt bình luận">
+                                                @post.CommentCount <i class="fal fa-comment"></i>
+                                            </span>
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                        else if (campaignAccount.Type == CampaignType.ChangeAvatar)
+                        {
+                            var logAvatarTimes = (List<CampaignAccountRefDataChangeAvatar>)campaignAccount.RefData;
+                            var accountFbId = await AccountService.GetProviderIdByAccount(campaignAccount.AccountId, AccountProviderNames.Facebook);
+                            var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
+                            <div class="row">
+                                <div class="col-1 text-center">
+                                    <img src="@avatarurl" class="img-fluid" />
+                                    <small class="text-muted">Hiện tại</small>
+                                </div>
+
+                                @if (logAvatarTimes != null)
+                                {
+                                    foreach (var logAvatar in logAvatarTimes)
+                                    {
+
+                                        <div class="col-1 text-center">
+                                            <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
+                                            <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        }
+                        else if (campaignAccount.Type == CampaignType.PostComment)
+                        {
+                            <div>
+                                <a href="@campaignAccount.RefUrl" target="_blank">@campaignAccount.RefUrl</a>
+                            </div>
+                        }
                     }
-                </div>
-            </div>
+                </td>
+                <td>
+                    @if (campaignAccount.Status == CampaignAccountStatus.Submitted)
+                    {
+                        <div class="mt-2">
+                            <span class="text-info"> @campaignAccount.RefContent</span>
+                        </div>
+                    }
+                </td>
+                <td>
+                    @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
+                    {
+                        <div>
+                            <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                                <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
+                                <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
+
+                                <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
+                                <button class="btn btn-outline-danger btn-sm" name="type" value="0">Từ chối</button>
+                            </form>
+                        </div>
+                    }
+                    else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                    {
+                        <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                            <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
+                            <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
+
+                            <button class="btn btn-outline-danger btn-sm" value="0">Hủy yêu cầu</button>
+                        </form>
+                    }
+                    else if (campaignAccount.Status == CampaignAccountStatus.Submitted)
+                    {
+                        <form asp-action="FeedbackCampaignAccountRefContent" method="post">
+                            <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
+                            <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
+                            <button class="btn btn-outline-success btn-sm" type="submit" name="type" value="1">Duyệt nội dung</button>
+                            <button class="btn btn-outline-secondary btn-sm" type="submit" name="type" value="0">Không duyệt nội dung</button>
+                        </form>
+                    }
+                </td>
+                <td>
+
+                </td>
+            </tr>
         }
-    }
-}
-
-
-@if (Model.AccountTypes.Contains(AccountType.Regular))
-{
-    var regularAccounts = Model.CampaignAccounts.Where(m => m.Account.Type == AccountType.Regular).ToList();
-    if (regularAccounts.Count > 0)
-    {
-        <div class="mb-3">
-            <div class="mb-3 d-flex">
-                <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
-            </div>
-            @foreach (var campaignAccount in Model.CampaignAccounts)
-            {
-                <partial name="_CampaignAccountItemProcessPartial" model="campaignAccount" />
-
-            }
-
-        </div>
-    }
-}
+    </tbody>
+</table>
 
 
 <div class="">

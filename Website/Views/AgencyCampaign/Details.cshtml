@@ -209,9 +209,11 @@
     }
     else if (Model.Status == CampaignStatus.AddAccount)
     {
-        
         <partial name="_DetailsStepperStep1Partial" model="Model" />
-
+    }
+    else if (Model.Status == CampaignStatus.Started)
+    {
+        <partial name="_DetailsStepperStep2Partial" model="Model" />
     }
 }
 

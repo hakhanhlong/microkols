@@ -238,7 +238,8 @@ namespace Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type);
+                var newRefContent = "";
+                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type, newRefContent);
                 if (r > 0)
                 {
                     this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : "Bạn đã hủy nội dung caption thành công");

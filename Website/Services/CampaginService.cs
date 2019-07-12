@@ -609,7 +609,7 @@ namespace Website.Services
         }
 
 
-        public async Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type)
+        public async Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newContent)
         {
 
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
