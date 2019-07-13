@@ -13,7 +13,7 @@
         <div class="mt-2">
             @Model.Status.ToAgencyBadge()
         </div>
-        @if (Model.Status == CampaignAccountStatus.Submitted)
+        @if (Model.Status == CampaignAccountStatus.SubmittedContent)
         {
             <div class="mt-2">
                 Nội dung: <span class="text-info"> @Model.RefContent</span>
@@ -49,7 +49,7 @@
                 <button class="btn btn-outline-danger btn-sm" value="0">Hủy yêu cầu</button>
             </form>
         }
-        else if (Model.Status == CampaignAccountStatus.Submitted)
+        else if (Model.Status == CampaignAccountStatus.SubmittedContent)
         {
             <form asp-action="FeedbackCampaignAccountRefContent" method="post">
                 <input type="hidden" name="campaignid" value="@Model.CampaignId" />

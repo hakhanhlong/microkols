@@ -173,7 +173,7 @@ namespace Website.Services
 
                 await CreateCampaignOptions(campaign.Id, model, username);
 
-                
+
 
 
                 return campaign.Id;
@@ -380,6 +380,37 @@ namespace Website.Services
 
         #region Action
 
+        public async Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username)
+        {
+            var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);
+            if(campaignAccount== null || campaignAccount.ReportStatus.HasValue)
+            {
+                return false;
+            }
+
+            campaignAccount.ReportStatus = CampaignAccountReportStatus.Reported;
+            campaignAccount.ReportNote = model.Note;
+            campaignAccount.ReportImages = model.Image;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+            return true;
+        }
+
+        public async Task<bool> UpdateCampaignAccountRating(int agencyid, UpdateCampaignAccountRatingViewModel model, string username)
+        {
+            var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);
+            if (campaignAccount == null || campaignAccount.ReportStatus.HasValue)
+            {
+                return false;
+            }
+
+            campaignAccount.Rating = model.Rating;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+            return true;
+        }
 
         public async Task<bool> UpdateCampaignCompleted(int campaignid, string username)
         {
@@ -417,14 +448,14 @@ namespace Website.Services
             return false;
 
         }
-        
+
         public async Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username)
         {
 
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if (status == CampaignStatus.Canceled && (campaign.Status != CampaignStatus.AddAccount || campaign.Status == CampaignStatus.WaitToConfirm))
+                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.AddAccount && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }
@@ -593,7 +624,7 @@ namespace Website.Services
 
             campaignAccount.RefContent = model.RefContent;
 
-            campaignAccount.Status = CampaignAccountStatus.Submitted;
+            campaignAccount.Status = CampaignAccountStatus.SubmittedContent;
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;
             await _campaignAccountRepository.UpdateAsync(campaignAccount);
@@ -620,7 +651,13 @@ namespace Website.Services
             if (campaignAccount == null) return -1;
 
 
-            campaignAccount.Status = type == 1 ? CampaignAccountStatus.Approved : CampaignAccountStatus.Declined;
+            var status = type == 1 ? CampaignAccountStatus.ApprovedContent :
+                type == 2 ? CampaignAccountStatus.UpdatedContent : CampaignAccountStatus.DeclinedContent;
+            campaignAccount.Status = status;
+            if(status== CampaignAccountStatus.UpdatedContent)
+            {
+                campaignAccount.RefContent = newContent;
+            }
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;
             await _campaignAccountRepository.UpdateAsync(campaignAccount);

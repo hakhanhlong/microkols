@@ -41,6 +41,7 @@ var App = (function () {
     function handler() {
 
 
+        $('[data-toggle="tooltip"]').tooltip()
 
 
         $('.btn-facebook').click(function () {
@@ -67,6 +68,14 @@ var App = (function () {
             }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
         });
 
+        $('.btn-remotemodal').click(function () {
+            var url = $(this).data('url');
+
+            AppBsModal.Init();
+            AppBsModal.OpenRemoteModal(url, function () { });
+
+
+        });
 
         $('.image-upload').change(function () {
             var id = $(this).attr('id');

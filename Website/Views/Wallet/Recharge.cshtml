@@ -2,7 +2,7 @@
 
 @{
     var bankAccounts = AppOptions.CurrentValue.BankAccounts;
-    
+
 }
 
 <div class="modal-dialog modal-dialog-centered">
@@ -21,23 +21,23 @@
                     <span asp-validation-for="Amount" class="text-danger"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label asp-for="Method"></label> <br />
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" checked value="Trực tiếp" id="Method1" name="Method" class="custom-control-input">
+                        <input type="radio" value="Trực tiếp" id="Method1" name="Method" class="custom-control-input">
                         <label class="custom-control-label" for="Method1">Trực tiếp</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input type="radio" value="Chuyển khoản" id="Method2" name="Method" class="custom-control-input">
+                        <input type="radio" checked value="Chuyển khoản" id="Method2" name="Method" class="custom-control-input">
                         <label class="custom-control-label" for="Method2">Chuyển khoản</label>
                     </div>
                     <span asp-validation-for="Method" class="text-danger"></span>
                 </div>
-              <div id="bankWrap" class="d-none">
+                <div id="bankWrap" class="d-none">
                     <div class="form-group">
                         <label asp-for="Bank"></label>
                         <select name="Bank" class="form-control" id="Bank">
-                            <option>Chọn ngân hàng</option>
+                            <option>Chọn ngân hàng nhận</option>
                             @foreach (var bankAccount in bankAccounts)
                             {
                                 <option value="@bankAccount.BankCode">@bankAccount.BankName</option>
@@ -58,14 +58,29 @@
 
                     }
                 </div>
-               
-                <div class="form-group">
-                    <label asp-for="Note"></label>
-                    <div>
-                        <textarea asp-for="Note" class="form-control"></textarea>
+                @if (ViewBag.Campaign != null)
+                {
+                    var campaign = (CampaignDetailsViewModel)ViewBag.Campaign;
+                    <hr />
+                    <div class="form-group">
+                        <label>Nội dung nạp tiền</label>
+                        <div>Mã chiến dịch: <strong>@campaign.Code</strong></div>
+                        <input type="hidden" asp-for="Note" />
                     </div>
-                    <span asp-validation-for="Note" class="text-danger"></span>
-                </div>
+
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="Note"></label>
+                        <div>
+                            <textarea asp-for="Note" class="form-control"></textarea>
+                        </div>
+                        <span asp-validation-for="Note" class="text-danger"></span>
+                    </div>
+
+                }
+
             </div>
             <div class="modal-footer">
                 <input type="hidden" asp-for="CampaignId" />

@@ -21,7 +21,7 @@ namespace Website.ViewModels
         [Display(Name = "Ghi chú")]
         public string Note { get; set; }
 
-        [Display(Name = "Ngân hàng")]
+        [Display(Name = "Ngân hàng nhận")]
         public string Bank { get; set; }
 
         public int CampaignId { get; set; }

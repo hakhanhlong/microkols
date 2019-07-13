@@ -30,6 +30,7 @@ namespace Core.Entities
         AccountFinishCampaignRefContent,
         AgencyApproveCampaignRefContent,
         AgencyDeclineCampaignRefContent,
+        AgencyUpdatedCampaignRefContent,
         AgencyCancelAccountJoinCampaign,
         AccountDeclineJoinCampaign,
     }
@@ -69,8 +70,13 @@ namespace Core.Entities
             }
             else if (type == NotificationType.AgencyDeclineCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} từ chối duyệt nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} yêu cầu sửa lại nội dung Caption chiến dịch {1} của bạn";
             }
+            else if (type == NotificationType.AgencyUpdatedCampaignRefContent)
+            {
+                message = "Doanh nghiệp {0} từ sửa nội dung Caption chiến dịch {1} của bạn";
+            }
+            
             else if (type == NotificationType.AccountSubmitCampaignRefContent)
             {
                 message = "Thành viên {0} đã gửi nội dung Caption chiến dịch {1}";

@@ -46,7 +46,9 @@ namespace Website.Controllers
                 {
                     amount = campaign.Payment.TotalChargeAmount;
                     note = $"Nạp tiền chiến dịch {campaign.Code}";
+                    ViewBag.Campaign = campaign;
                 }
+                
             }
             var model = new RechargeViewModel()
             {
