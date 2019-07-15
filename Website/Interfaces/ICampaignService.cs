@@ -11,6 +11,7 @@ namespace Website.Interfaces
     public interface ICampaignService
     {
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
+        Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
@@ -31,7 +32,7 @@ namespace Website.Interfaces
         Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username);
         Task<int> SubmmitCampaignAccountChangeAvatar(int accountid, SubmmitCampaignAccountChangeAvatarViewModel model, string username);
 
-        Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type);
+        Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newrefContent);
 
         Task<List<int>> GetEndedCampaignIds();
         Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid);

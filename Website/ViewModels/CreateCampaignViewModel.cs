@@ -12,7 +12,7 @@ namespace Website.ViewModels
 {
     public class CreateCampaignViewModel
     {
-        public Campaign GetEntity(int agencyid, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string username)
+        public Campaign GetEntity(int agencyid, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
         {
             var accountChargeAmount = 0;
             if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
@@ -46,8 +46,8 @@ namespace Website.ViewModels
                 Description = Description,
                 Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
-                Status = CampaignStatus.Created,
-                Title = string.Empty,
+                Status = CampaignStatus.WaitToConfirm,
+                Title = Title,
                 UserCreated = username,
                 UserModified = username,
                 ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
@@ -59,11 +59,19 @@ namespace Website.ViewModels
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
                 Type = Type,
                 AccountChargeTime = AccountChargeTime ?? 1,
-               
+                Code = code,
+                Quantity = Quantity,
+                
+
 
             };
 
         }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên chiến dịch")]
+        public string Title { get; set; }
+
         [Display(Name = "Mô tả")]
         public string Description { get; set; }
 
@@ -78,8 +86,8 @@ namespace Website.ViewModels
 
 
 
-        //[Display(Name = "Số lượng")]
-        //public int NumberOfAccount { get; set; }
+        [Display(Name = "Số lượng")]
+        public int Quantity { get; set; }
 
 
         [Display(Name = "Chi phí")]
@@ -131,6 +139,8 @@ namespace Website.ViewModels
         [Display(Name = "Chọn khu vực")]
         public int? CityId { get; set; }
 
+        [Display(Name = "Mã chiến dịch")]
+        public string Code { get; set; }
     }
 
 }

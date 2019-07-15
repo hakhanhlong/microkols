@@ -7,15 +7,17 @@ namespace Core.Entities
 {
     public class Campaign : BaseEntityWithMeta
     {
+
+        public string Code { get; set; }
         public int AgencyId { get; set; }
         public Agency Agency { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        
+
         //Mô tả, Nội dung hoặc được link của campaign để người dùng thao tác....
         public string Data { get; set; }
         public string Image { get; set; }
-   
+
         public string Requirement { get; set; }
 
         public string SystemNote { get; set; }
@@ -34,6 +36,7 @@ namespace Core.Entities
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+        public int Quantity { get; set; }
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
         public IEnumerable<CampaignOption> CampaignOption => _CampaignOption.AsReadOnly();
@@ -49,17 +52,40 @@ namespace Core.Entities
 
     public enum CampaignStatus
     {
-        [DisplayName("Khởi tạo")]
-        Created = 1,
-        [DisplayName("Đã bắt đầu")]
+        [DisplayName("Chờ phê duyệt")]
+        WaitToConfirm = 0,
+        [DisplayName("Chọn thành viên")]
+        AddAccount = 1,
+        [DisplayName("Bắt đầu")]
         Started = 2,
-        [DisplayName("Đã kết thúc")]
+        [DisplayName("Kết thúc")]
         Ended = 3,
-        [DisplayName("Đã hoàn thành")]
+        [DisplayName("Hoàn thành")]
         Completed = 4,
-        [DisplayName("Đã Hủy")]
+        [DisplayName("Hủy")]
         Canceled = 5,
         [DisplayName("Lỗi")]
         Error = 6,
+
+        //[DisplayName("Chờ phê duyệt")]
+        //ChoPheDuyet = 0,
+        //[DisplayName("Bắt đầu")]
+        //BatDau = 1,
+        //[DisplayName("Thực hiện")]
+        //ThucHien = 2,
+        //[DisplayName("Theo dõi")]
+        //TheoDoi = 3,
+        //[DisplayName("Hoàn thành")]
+        //HoanThanh = 4,
+        //[DisplayName("Kết thúc")]
+        //KetThuc = 5,
+        //[DisplayName("Đã Hủy")]
+        //DaHuy = 5,
+        //[DisplayName("Lỗi")]
+        //Loi = 6,
     }
+
+
+
+
 }

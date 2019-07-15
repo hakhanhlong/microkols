@@ -21,9 +21,10 @@ namespace Website.Controllers
         private readonly ISharedService _sharedService;
         private readonly INotificationService _notificationService;
         private readonly IAccountService _accountService;
+        private readonly IPaymentService _paymentService;
         private readonly IFileHelper _fileHelper;
         public AgencyCampaignController(ISharedService sharedService,
-             IAccountService accountService, IFileHelper fileHelper,
+             IAccountService accountService, IFileHelper fileHelper, IPaymentService  paymentService,
             ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
@@ -31,6 +32,7 @@ namespace Website.Controllers
             _notificationService = notificationService;
             _accountService = accountService;
             _fileHelper = fileHelper;
+            _paymentService = paymentService;
         }
 
 
@@ -49,16 +51,18 @@ namespace Website.Controllers
         public async Task<IActionResult> Create()
         {
             await ViewbagData();
-            return View(new CreateCampaignViewModel());
+            var model = await _campaignService.GetCreateCampaign(CurrentUser.Id);
+            return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCampaignViewModel model)
+        public async Task<IActionResult> Create(CreateCampaignViewModel model, int submittype = 0)
         {
+            var error = "";
             if (ModelState.IsValid)
             {
                 if (model.AccountType == null || model.AccountType.Count == 0)
                 {
-                    ModelState.AddModelError("AccountType", "Hãy chọn đối tượng");
+                    error = "Hãy chọn đối tượng";
                 }
                 else
                 {
@@ -69,14 +73,67 @@ namespace Website.Controllers
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
-                        this.AddAlertSuccess("Thêm chiến dịch mới thành công");
-                        return RedirectToAction("Details", new { id = id });
+                        //this.AddAlertSuccess("Thêm chiến dịch mới thành công");
+                        //return RedirectToAction("Details", new { id = id });
+
+                        if(submittype== 1)
+                        {
+                            var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, new CreateCampaignPaymentViewModel()
+                            {
+                                CampaignId = id,
+                                Note = string.Empty
+                            }, CurrentUser.Username);
+
+
+                            if (paymentResult.Status == TransactionStatus.Completed)
+                            {
+
+                                // tam thoi chua khac phuc dc loi tracking id
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount, CurrentUser.Name));
+                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount , CurrentUser.Name);
+                                return Json(new
+                                {
+                                    status = 1,
+                                    message = "Thêm chiến dịch mới thành công",
+                                    campaignid = id,
+                                    url = Url.Action("Details", new { id = id })
+                                });
+
+                            }
+                            else
+                            {
+                                error = $"{paymentResult.ErrorMessage} - Mã lỗi: {paymentResult.ErrorCode}";
+                            }
+
+                        }
+                        else
+                        {
+                            return Json(new
+                            {
+                                status = 1,
+                                message = "Thêm chiến dịch mới thành công",
+                                campaignid = id,
+                            });
+                        }
+                        //payment luon
+
+
                     }
+                    else
+                    {
+                        error = "Lỗi khi khởi tạo chiến dịch. Vui lòng thử lại";
+                    }
+                    
                 }
 
             }
-            await ViewbagData();
-            return View(model);
+            return Json(new
+            {
+                status = -1,
+                message = error
+            });
+            //await ViewbagData();
+            //return View(model);
         }
         private async Task ViewbagData()
         {
@@ -181,7 +238,8 @@ namespace Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type);
+                var newRefContent = "";
+                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type, newRefContent);
                 if (r > 0)
                 {
                     this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : "Bạn đã hủy nội dung caption thành công");

@@ -675,6 +675,44 @@ namespace Website.Services
         #endregion
 
 
+        #region AccountIgnore
+
+        public async Task<List<CampaignType>> GetIgnoreCampaignTypes(int accountid)
+        {
+            var account = await _accountRepository.GetByIdAsync(accountid);
+            return account != null ? account.IgnoreCampaignTypesObj : new List<CampaignType>();
+        }
+
+
+        public async Task<bool> UpdateIgnoreCampaignTypes(int accountid, CampaignType type, bool removed,string username)
+        {
+            var account = await _accountRepository.GetByIdAsync(accountid);
+            if (account != null) {
+                var currentIgnore = account.IgnoreCampaignTypesObj;
+                if (removed)
+                {
+                    currentIgnore.Remove(type);
+                }
+                else
+                {
+                    currentIgnore.Add(type);
+                }
+
+
+                var ignoreCampaignTypeStr = currentIgnore.Select(m => (int)m).ToList().ToListInt();
+
+                account.IgnoreCampaignTypes = ignoreCampaignTypeStr;
+                account.DateModified = DateTime.Now;
+                account.UserModified = username;
+
+                await _accountRepository.UpdateAsync(account);
+                return true;
+            }
+            return false;
+        }
+        #endregion
+
+
         #region Helper
 
         public async Task<bool> VerifyIDCard(string email)

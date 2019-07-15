@@ -21,6 +21,16 @@ namespace Infrastructure.Data
 
         }
 
+
+        public async Task<string> GetValidCode(int agencyid)
+        {
+            var code = string.Format("{0}{1:ddMMyy}", agencyid, DateTime.Now);
+
+            var count = await _dbContext.Campaign.CountAsync(m => m.Code.Contains(code));
+
+            return string.Format("{0}{1:D2}", code, count + 1);
+        }
+
         public async Task<List<int>> GetCampaignIds(CampaignStatus status)
         {
             return await _dbContext.Campaign.Where(m => m.Status == status).Select(m => m.Id).ToListAsync();
@@ -47,7 +57,7 @@ namespace Infrastructure.Data
             var account = await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == accountid && m.Actived);
             if (account == null) return new List<Campaign>();
 
-            var campaigns = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Created
+            var campaigns = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.AddAccount
                 && !m.CampaignAccount.Any(n => n.AccountId == accountid)
                 && m.CampaignAccountType.Any(n=>n.AccountType == account.Type))
                 .Include(m => m.CampaignOption)

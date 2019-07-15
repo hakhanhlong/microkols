@@ -9,6 +9,5 @@ namespace Core.Interfaces
 {
     public interface ICategoryRepository: IRepository<Category>, IAsyncRepository<Category>
     {
-           
     }
 }

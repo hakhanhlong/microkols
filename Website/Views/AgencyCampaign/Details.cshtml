@@ -1,7 +1,7 @@
 ﻿@model CampaignDetailsViewModel
 
 @{
-    ViewData["Title"] = $"Chiến dịch {Model.Id}";
+    ViewData["Title"] = $"Chiến dịch {Model.Code}";
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
 }
@@ -25,7 +25,7 @@
             </div>
 
             <div class="pt-2">
-                @if (Model.Status == CampaignStatus.Created)
+                @if (Model.Status == CampaignStatus.WaitToConfirm || Model.Status == CampaignStatus.AddAccount)
                 {
                     <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Hủy chiến dịch</button>
 
@@ -60,47 +60,22 @@
     </div>
 }
 
-
-
-<div class="mt-3"></div>
-
-<alert></alert>
-
-<div>
+<div class="mt-3">
+    <alert></alert>
     <div class="row">
         <div class="col-md-6">
             <div>
-                Mã chiến dịch:  <strong class="text-primary">@Model.Id</strong>
+                Mã chiến dịch:  <strong class="text-primary">@Model.Code</strong>
             </div>
+            <div>Tên chiến dịch: <span>@Model.Title</span></div>
             <div>
                 Trạng thái:  @Model.Status.ToBadge()
             </div>
-            @if (Model.DateStart.HasValue)
-            {
-                <div>
-                    Bắt đầu:  <span class="text-info">@Model.DateStart.Value.ToViDate()</span>
-                </div>
-            }
 
 
-            @if (Model.DateEnd.HasValue)
-            {
-                <div>
-                    Kết thúc:
-                    <span class="text-info">
-                        @Model.DateEnd.Value.ToViDate()
-                    </span>
 
-                </div>
-            }
+
             <div>
-                Đối tượng: @foreach (var accountType in Model.AccountTypes)
-                {
-                    <span class="badge badge-info">@accountType.ToDisplayName()</span>
-                }
-            </div>
-
-            <div class="mt-3">
 
                 <div>
                     Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
@@ -117,6 +92,29 @@
 
             </div>
 
+            <div>
+                Ngày khởi tạo:  <span class="text-info">@Model.DateCreated.ToViDate()</span>
+            </div>
+            @if (Model.DateStart.HasValue)
+            {
+                <div>
+                    Ngày bắt đầu:  <span class="text-info">@Model.DateStart.Value.ToViDate()</span>
+                </div>
+            }
+
+
+            @if (Model.DateEnd.HasValue)
+            {
+                <div>
+                    Ngày kết thúc:
+                    <span class="text-info">
+                        @Model.DateEnd.Value.ToViDate()
+                    </span>
+
+                </div>
+            }
+
+
 
         </div>
         <div class="col-md-6">
@@ -129,7 +127,7 @@
                         <br /> <small class="text-info"> Đính kèm hình ảnh cá nhân</small>
                     }
                 }
-            </div>           
+            </div>
 
             @if (!string.IsNullOrEmpty(Model.Data))
             {
@@ -205,55 +203,17 @@
     {
         <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
     }
-    else
+    else if (Model.Status == CampaignStatus.WaitToConfirm)
     {
-        var steps = new List<string>() { "Thanh toán phí dịch vụ", "Thành viên tham gia", "Bắt đầu chiến dịch", "Kết thúc chiến dịch", "Hoàn thành chiến dịch" };
-
-        var activestepIdx = 0;
-        if (Model.Status == CampaignStatus.Created)
-        {
-            if (Model.Payment.IsValidServiceCharge)
-            {
-                activestepIdx = 0;
-            }
-            else
-            {
-                activestepIdx = 1;
-            }
-        }
-        else if (Model.Status == CampaignStatus.Started)
-        {
-            activestepIdx = 2;
-        }
-        else if (Model.Status == CampaignStatus.Ended || Model.Status == CampaignStatus.Error)
-        {
-            activestepIdx = 3;
-        }
-        else if (Model.Status == CampaignStatus.Completed)
-        {
-            activestepIdx = 4;
-        }
-        <ul class="stepper stepper-vertical m-0 p-0">
-
-            @for (var i = 0; i < steps.Count; i++)
-            {
-                var stepCssClass = i < activestepIdx ? "completed" : i == activestepIdx ? "active" : "";
-                <li class="@stepCssClass">
-                    <a href="javascript:;">
-                        <span class="circle">@(i + 1)</span>
-                        <span class="label">@steps[i]</span>
-                    </a>
-                    @if (i == activestepIdx)
-                    {
-                        var stepPartial = $"_DetailsStepperStep{activestepIdx}Partial";
-                        <div class="step-content">
-                            <partial name="@stepPartial" model="Model" />
-                        </div>
-                    }
-                </li>
-
-            }
-        </ul>
+        <div class="alert alert-info">Hệ thống đang kiểm tra lại thông tin nạp tiền của quý khách. Quý khách sẽ nhận được thông báo tiếp tục thực hiện chiến dịch ngay khi hệ thống xác nhận việc nạp tiền</div>
+    }
+    else if (Model.Status == CampaignStatus.AddAccount)
+    {
+        <partial name="_DetailsStepperStep1Partial" model="Model" />
+    }
+    else if (Model.Status == CampaignStatus.Started)
+    {
+        <partial name="_DetailsStepperStep2Partial" model="Model" />
     }
 }
 

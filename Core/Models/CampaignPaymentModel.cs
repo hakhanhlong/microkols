@@ -60,6 +60,7 @@ namespace Core.Models
         }
 
         public int CampaignId { get; set; }
+        public int CampaignCode { get; set; }
         public long ServiceChargeAmount { get; set; } = 0;
         public long AccountChargeAmount { get; set; } = 0;
         public long TotalChargeAmount { get { return AccountChargeAmount + ServiceChargeAmount; } }

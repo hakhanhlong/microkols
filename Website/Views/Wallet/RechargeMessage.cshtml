@@ -8,32 +8,49 @@
             @if (ViewBag.Success != null)
             {
 
-                <p class="text-success text-center">
-                    <strong>
-                        @ViewBag.Success
-                    </strong>
-                </p>
+                if (ViewBag.Campaign != null)
+                {
+
+                    var campaign = (CampaignDetailsViewModel)ViewBag.Campaign;
+
+                    <p class="text-success text-center">
+                        Bạn đã gửi yêu cầu nạp tiền chiến dịch @campaign.Code thành công. Vui lòng chờ quản trị hệ thống duyệt giao dịch và kích hoạt chiến dịch cho bạn
+                    </p>
+                }
+                else
+                {
+                    <p class="text-success text-center">
+                        <strong>
+                            @ViewBag.Success
+                        </strong>
+                    </p>
+
+                }
             }
 
 
             @if (ViewBag.Error != null)
             {
                 <p class="text-danger text-center">
-                    <strong>
-                        @ViewBag.Error
-                    </strong>
+
+                    @ViewBag.Error
+
                 </p>
             }
 
-            <hr />
-            <div class="text-right">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        </div>
+        <div class="modal-footer">
+            @if (ViewBag.Campaign != null)
+            {
 
-            </div>
+                <a href="@Url.Action("Index","AgencyCampaign")" class="btn btn-primary">Đồng ý</a>
+            }
+            else
+            {
+                <button type="button" class="btn btn-outline-dark btn-reload">Đóng</button>
+            }
+
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark btn-reload">Đóng</button>
-    </div>
-
+  
 </div>

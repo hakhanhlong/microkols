@@ -140,6 +140,16 @@ namespace Website.Services
         }
 
 
+        public async Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid)
+        {
+            var code = await _campaignRepository.GetValidCode(agencyid);
+
+            return new CreateCampaignViewModel()
+            {
+                Code = code
+            };
+        }
+
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
             var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
@@ -148,8 +158,9 @@ namespace Website.Services
                 return -1;
             }
             var settings = await _settingRepository.GetSetting();
-            var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, username);
+            // var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
+            var code = await _campaignRepository.GetValidCode(agencyid);
+            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, code, username);
             if (campaign == null)
             {
                 return -1;
@@ -161,6 +172,9 @@ namespace Website.Services
                 await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
 
                 await CreateCampaignOptions(campaign.Id, model, username);
+
+                
+
 
                 return campaign.Id;
 
@@ -238,6 +252,7 @@ namespace Website.Services
         #endregion
 
         #region Campaign Account
+
         public async Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
         {
             var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
@@ -257,7 +272,7 @@ namespace Website.Services
 
 
         }
-        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid,int amount, string username)
+        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, int amount, string username)
         {
             var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, amount, username);
 
@@ -272,7 +287,7 @@ namespace Website.Services
             return false;
         }
 
-        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username,bool confirmed)
+        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed)
         {
 
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
@@ -316,13 +331,13 @@ namespace Website.Services
         {
 
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-            if (campaign != null || campaign.AgencyId!= agencyid)
+            if (campaign != null || campaign.AgencyId != agencyid)
             {
                 var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
 
                 if (campaignAccount != null)
                 {
-                    if (campaignAccount.Status == CampaignAccountStatus.AccountRequest || campaignAccount.Status== CampaignAccountStatus.AgencyRequest)
+                    if (campaignAccount.Status == CampaignAccountStatus.AccountRequest || campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
                     {
                         var notifType = NotificationType.AgencyConfirmJoinCampaign;
                         if (confirmed)
@@ -334,11 +349,11 @@ namespace Website.Services
                             notifType = NotificationType.AgencyCancelAccountJoinCampaign;
                             campaignAccount.Status = CampaignAccountStatus.Canceled;
                         }
-                        
+
                         campaignAccount.DateModified = DateTime.Now;
                         campaignAccount.UserModified = username;
                         await _campaignAccountRepository.UpdateAsync(campaignAccount);
-                     
+
                         await _notificationRepository.AddAsync(new Notification()
                         {
                             Type = notifType,
@@ -384,7 +399,7 @@ namespace Website.Services
 
         }
 
-        public async Task<bool> UpdateCampaignError(int campaignid,string note, string username)
+        public async Task<bool> UpdateCampaignError(int campaignid, string note, string username)
         {
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
             if (campaign != null && campaign.Status == CampaignStatus.Ended)
@@ -402,18 +417,27 @@ namespace Website.Services
             return false;
 
         }
+        
         public async Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username)
         {
 
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.Created)
+                if (status == CampaignStatus.Canceled && (campaign.Status != CampaignStatus.AddAccount || campaign.Status == CampaignStatus.WaitToConfirm))
+                {
+                    return -1;
+                }
+                if (status == CampaignStatus.AddAccount && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }
 
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.AddAccount)
+                {
+                    return -1;
+                }
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.AddAccount)
                 {
                     return -1;
                 }
@@ -523,7 +547,7 @@ namespace Website.Services
             return 1;
         }
 
-  
+
 
 
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
@@ -585,7 +609,7 @@ namespace Website.Services
         }
 
 
-        public async Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type)
+        public async Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newContent)
         {
 
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);

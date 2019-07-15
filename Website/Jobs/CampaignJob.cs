@@ -23,6 +23,8 @@ namespace Website.Jobs
             _notificationService = notificationService;
             _accountService = accountService;
         }
+
+        
         public async Task UpdateCompletedCampagin(int campaignid = 0)
         {
             if (campaignid == 0)
