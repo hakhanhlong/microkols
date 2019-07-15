@@ -69,6 +69,29 @@ namespace BackOffice.Business
             };
         }
 
+        public async Task<List<GroupTransactionViewModel>> GetTransactions(TransactionType type, TransactionStatus status)
+        {
+            var lastDateTime = DateTime.Now.AddMonths(-1);
+
+            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            var filter = new TransactionSpecification(type, status, startDate, endDate);
+
+            var queries = await _ITransactionRepository.ListAsync(filter);
+
+            var transactions = from t in queries
+                               group t by t.ReceiverId into wallet
+                               select new GroupTransactionViewModel
+                               {
+                                   walletid = wallet.Key,
+                                   Transactions = wallet.Select(t => new TransactionViewModel(t)).ToList()
+                               };
+
+            return transactions.ToList();
+
+        }
+
         public ListTransactionViewModel GetTransactions(int pageindex, int pagesize)
         {
             var transactions = _ITransactionRepository.ListPaging("DateModified_desc", pageindex, pagesize);

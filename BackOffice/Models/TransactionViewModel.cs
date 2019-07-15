@@ -14,6 +14,13 @@ namespace BackOffice.Models
         public PagerViewModel Pager { get; set; }
     }
 
+    public class GroupTransactionViewModel
+    {
+        public int walletid { get; set; }
+        public List<TransactionViewModel> Transactions { get; set; }
+
+    }
+
     public class TransactionViewModel
     {
 

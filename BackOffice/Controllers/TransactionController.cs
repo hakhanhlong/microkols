@@ -102,7 +102,7 @@ namespace BackOffice.Controllers
                 try {
                     item.SenderName = _IWalletBusiness.Get(item.SenderId).Name;
                 }
-                catch { }
+                catch { } 
                 try {
                     item.ReceiverName = _IWalletBusiness.Get(item.ReceiverId).Name;
                 }
