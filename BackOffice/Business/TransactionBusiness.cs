@@ -16,13 +16,16 @@ namespace BackOffice.Business
 
         ITransactionRepository _ITransactionRepository;
         IWalletRepository _IWalletRepository;
+        IAccountRepository _IAccountRepository;
+
         private readonly ILogger<TransactionBusiness> _logger;
 
         public TransactionBusiness(ITransactionRepository __ITransactionRepository, 
-            ILoggerFactory _loggerFactory, IWalletRepository __IWalletRepository) {
+            ILoggerFactory _loggerFactory, IWalletRepository __IWalletRepository, IAccountRepository __IAccountRepository) {
             _ITransactionRepository = __ITransactionRepository;
             _logger = _loggerFactory.CreateLogger<TransactionBusiness>();
             _IWalletRepository = __IWalletRepository;
+            _IAccountRepository = __IAccountRepository;
         }
 
         public async Task<ListTransactionViewModel> GetTransactionByType(TransactionType type, int pageindex, int pagesize)
@@ -69,7 +72,7 @@ namespace BackOffice.Business
             };
         }
 
-        public async Task<List<GroupTransactionViewModel>> GetTransactions(TransactionType type, TransactionStatus status)
+        public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype)
         {
             var lastDateTime = DateTime.Now.AddMonths(-1);
 
@@ -80,12 +83,22 @@ namespace BackOffice.Business
 
             var queries = await _ITransactionRepository.ListAsync(filter);
 
-            var transactions = from t in queries
-                               group t by t.ReceiverId into wallet
+            queries = (from q in queries
+                       from a in _IAccountRepository.ListAll()
+                       from w in _IWalletRepository.ListAll()
+                       where q.ReceiverId == w.Id && a.Id == w.EntityId && w.EntityType == EntityType.Account
+                       && accounttype.Contains(a.Type)
+                       select q).ToList();
+
+
+            var transactions = from t in queries                                                              
+                               group t by t.ReceiverId into wallet                               
                                select new GroupTransactionViewModel
                                {
                                    walletid = wallet.Key,
-                                   Transactions = wallet.Select(t => new TransactionViewModel(t)).ToList()
+                                   Transactions = wallet.Select(t => new TransactionViewModel(t)).ToList(),
+                                   Account = _IAccountRepository.ListAll().Where(a=>a.Id == wallet.Key).Select(a=>new AccountViewModel(a)).FirstOrDefault(),
+                                   IsCashOut = wallet.Count(t=>t.IsCashOut == false) > 0?false:true                                   
                                };
 
             return transactions.ToList();
