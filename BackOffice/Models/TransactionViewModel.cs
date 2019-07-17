@@ -14,6 +14,16 @@ namespace BackOffice.Models
         public PagerViewModel Pager { get; set; }
     }
 
+    public class GroupTransactionViewModel
+    {
+        public int walletid { get; set; }
+        public List<TransactionViewModel> Transactions { get; set; }
+
+        public AccountViewModel Account { get; set; }
+        public bool IsCashOut { get; set; }
+
+    }
+
     public class TransactionViewModel
     {
 
@@ -36,7 +46,8 @@ namespace BackOffice.Models
             RefData = t.RefData;
             Note = t.Note;
             AdminNote = t.AdminNote;
-
+            CashoutDate = t.CashoutDate;
+            IsCashOut = t.IsCashOut;
         }
 
 
@@ -46,6 +57,10 @@ namespace BackOffice.Models
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
         public string Code { get; set; }
+
+        public DateTime? CashoutDate { get; set; }
+        public bool? IsCashOut { get; set; }
+
 
         public int SenderId { get; set; }
         public string SenderName { get; set; }

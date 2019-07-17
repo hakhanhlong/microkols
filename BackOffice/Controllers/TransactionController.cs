@@ -7,6 +7,7 @@ using BackOffice.Models;
 using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 
 namespace BackOffice.Controllers
 {
@@ -54,10 +55,32 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
-        public async Task<IActionResult> AccountPayback(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
+        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.Regular)
         {
-            var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
+            //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
+
+
+
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, new AccountType[] { type});
+
+
             return View(_listTransaction);
+        }
+
+        public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.Regular)
+        {
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, new AccountType[] { type });
+            if (_listTransaction != null)
+            {
+
+                byte[] fileContents;
+                using (var package = new ExcelPackage())
+                {
+                }
+
+            }
+
+            return RedirectToAction("AccountPayback", "Transaction", new { type = type });
         }
 
         [HttpPost]
@@ -71,11 +94,11 @@ namespace BackOffice.Controllers
 
             }
             else if (code == 10){
-                _msg_code = "{\"Code\": -1, \"Message\": \"wallet do not exist\"}";
+                _msg_code = "{\"Code\": -1, \"Message\": \"Wallet do not exist\"}";
             }
             else if (code == 11)
             {
-                _msg_code = "{\"Code\": -1, \"Message\": \"wallet balance sender or receiver less then zero or amount could be abstract\"}";
+                _msg_code = "{\"Code\": -1, \"Message\": \"Wallet balance sender or receiver less then zero or amount could be abstract\"}";
             }
 
             return Json(_msg_code);
@@ -102,7 +125,7 @@ namespace BackOffice.Controllers
                 try {
                     item.SenderName = _IWalletBusiness.Get(item.SenderId).Name;
                 }
-                catch { }
+                catch { } 
                 try {
                     item.ReceiverName = _IWalletBusiness.Get(item.ReceiverId).Name;
                 }

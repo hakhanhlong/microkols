@@ -21,6 +21,9 @@ namespace Core.Specifications
 
         public TransactionSpecification(TransactionType type, TransactionStatus status) : base(t => t.Status == status && t.Type == type) { }
 
+        public TransactionSpecification(TransactionType type, TransactionStatus status, DateTime startDate, DateTime endDate) : base(t => t.Status == status && t.Type == type 
+        && t.DateModified >= startDate && t.DateModified <= endDate) { }
+
     }
 
     public class TransactionByCampaignSpecification : BaseSpecification<Transaction>

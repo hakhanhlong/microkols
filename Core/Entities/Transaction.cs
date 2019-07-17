@@ -18,6 +18,8 @@ namespace Core.Entities
         public string RefData { get; set; }
         public string Note { get; set; }
         public string AdminNote { get; set; }
+        public DateTime? CashoutDate { get; set; }
+        public bool? IsCashOut { get; set; }
 
         private List<TransactionHistory> _TransactionHistory = new List<TransactionHistory>();
         public IEnumerable<TransactionHistory> TransactionHistory => _TransactionHistory.AsReadOnly();

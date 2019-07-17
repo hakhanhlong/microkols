@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model ListTransactionViewModel
+@model List<GroupTransactionViewModel>
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -54,28 +54,28 @@
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/accountpayback?status=Created" role="tab">
-                                Created
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Regular"?"active":"")" href="/transaction/accountpayback?type=Regular" role="tab">
+                                Regular
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/accountpayback?status=Canceled" role="tab">
-                                Canceled
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotTeen"?"active":"")" href="/transaction/accountpayback?type=HotTeen" role="tab">
+                                HotTeen
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/accountpayback?status=Processing" role="tab">
-                                Processing
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotMom"?"active":"")" href="/transaction/accountpayback?type=HotMom" role="tab">
+                                HotMom
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/accountpayback?status=Completed" role="tab">
-                                Completed
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotFacebooker"?"active":"")" href="/transaction/accountpayback?type=HotFacebooker" role="tab">
+                                HotFacebooker
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/accountpayback?status=Error" role="tab">
-                                Error
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Kols"?"active":"")" href="/transaction/accountpayback?type=Kols" role="tab">
+                                Kols
                             </a>
                         </li>
                     </ul>
@@ -84,11 +84,73 @@
             <div class="m-portlet__body">
                 <div class="tab-content">
                     <div class="tab-pane active show">
-
+                        
                         @if (Model != null)
                         {
+                            bool IsCashOut = Model.Count(g=>g.IsCashOut == false)>0?false:true;
+                            <div class="mb-5 pull-right">
+                                <a href="#" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
+                                @if (!IsCashOut)
+                                {
+                                    <a href="#" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
+                                }
 
-                            @await Html.PartialAsync("~/Views/Transaction/_TransactionItem.cshtml", Model)                            
+                            </div>
+                            foreach (var item in Model)
+                            {
+
+                                <div class="m-section">                                    
+                                    <div class="m-section__content">
+                                        <table class="table">
+                                            <thead class="thead-inverse">
+                                                <tr>
+                                                    <th>
+                                                        #
+                                                    </th>
+                                                    <th>
+                                                        DATETIME
+                                                    </th>
+                                                    <th>
+                                                        AMOUNT CASHOUT
+                                                    </th>
+                                                    <th>
+                                                        STATUS CASHOUT
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @{
+                                        int count = 1;
+                                        long total_amount = 0;
+                                    }
+                                            <tr>
+                                                <td>NAME</td>
+                                                <td>@item.Account.BankAccountName</td>
+                                                <td>BANK NUMBER</td>
+                                                <td>@item.Account.BankAccountNumber</td>
+                                            </tr>
+                                            @foreach (var transaction in item.Transactions)
+                                    {
+                                                    <tr>
+                                                        <td>@(count)</td>
+                                                        <td>@transaction.DateModified</td>
+                                                        <td>@transaction.Amount</td>
+                                                        <td>@(transaction.IsCashOut.HasValue ? transaction.IsCashOut.Value : false)</td>
+                                                    </tr>
+                                                    count++;
+                                        total_amount += transaction.Amount;
+                                    }
+                                            <tr>
+                                                <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">TOTAL</span></td>
+                                                <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">@total_amount</span></td>                                                        
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+
                         }
                         else
                         {
@@ -102,9 +164,7 @@
                     </div>
                 </div>
             </div>
-            <div class="m-portlet__foot">
-                <pager pager="@Model.Pager" asp-route-status="@(Context.Request.Query["status"])" asp-action="accountpayback"></pager>
-            </div>
+            
         </div>
     </div>
 </div>

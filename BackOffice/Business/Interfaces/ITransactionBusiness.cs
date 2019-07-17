@@ -16,6 +16,8 @@ namespace BackOffice.Business.Interfaces
 
         Task<ListTransactionViewModel> GetTransactions(TransactionType type, TransactionStatus status, int pageindex, int pagesize);
 
+        Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype);
+
         Task<int> UpdateStatus(TransactionStatus status, int id, string username);
     }
 }
