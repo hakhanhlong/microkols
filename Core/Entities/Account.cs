@@ -34,7 +34,27 @@ namespace Core.Entities
             }
         }
 
-     
+
+        public AccountType Type { get; set; }
+
+        public string TypeData { get; set; }
+        [NotMapped]
+        public object TypeDataObj
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(TypeData))
+                {
+                    if (Type == AccountType.HotMom)
+                    {
+                        return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(TypeData);
+                    }
+
+                }
+
+                return null;
+            }
+        }
 
         public string Email { get; set; }
         public string Password { get; set; }

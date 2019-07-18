@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class AccountType : BaseEntity
+    public class AccountType2 : BaseEntity
     {
         public int AccountId { get; set; }
         public int Account { get; set; }
-        public AccountTypeType Type { get; set; }
+        public AccountType Type { get; set; }
 
         public string Data { get; set; }
 
@@ -22,7 +22,7 @@ namespace Core.Entities
             {
                 if (!string.IsNullOrEmpty(Data))
                 {
-                    if (Type == AccountTypeType.HotMom)
+                    if (Type == AccountType.HotMom)
                     {
                         return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(Data);
                     }
@@ -35,7 +35,7 @@ namespace Core.Entities
 
     }
 
-    public enum AccountTypeType
+    public enum AccountType
     {
         [DisplayName("Tài khoản thường")]
         Regular = 0,
