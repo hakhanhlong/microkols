@@ -171,6 +171,24 @@ namespace Website.Services
         #endregion
 
 
+        #region Generate Dumb Account
+        
+        public async Task CreateDumbAccount(int count = 100)
+        {
+            for(var i = 0;i< count; i++)
+            {
+
+                var account = new Account()
+                {
+                    Actived = true,
+                    Address = string.Empty,
+                    
+                }
+
+            }
+        }
+         #endregion
+
         #region AccountCounting
 
         public async Task<AccountCountingViewModel> GetAccountCounting(int accountid)
