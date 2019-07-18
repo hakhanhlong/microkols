@@ -34,29 +34,7 @@ namespace Core.Entities
             }
         }
 
-        // Người dùng thường -> AccountType = null
-        public AccountType Type { get; set; }
-
-        public string TypeData { get; set; }
-
-        [NotMapped]
-        public object TypeDataObj
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(TypeData))
-                {
-                    if (Type == AccountType.HotMom)
-                    {
-                        return JsonConvert.DeserializeObject<List<AccountTypeHotMomData>>(TypeData);
-                    }
-
-                }
-
-                return null;
-            }
-        }
-
+     
 
         public string Email { get; set; }
         public string Password { get; set; }
@@ -101,26 +79,7 @@ namespace Core.Entities
         public IEnumerable<AccountProvider> AccountProvider => _AccountProvider.AsReadOnly();
     }
 
-    public enum AccountType
-    {
-        [DisplayName("Tài khoản thường")]
-        Regular = 0, 
-        [DisplayName("Hot Teen")]
-        HotTeen = 1,
-        [DisplayName("Hot Mom")]
-        HotMom = 2,
-        [DisplayName("Hot Facebooker")]
-        HotFacebooker = 3,
-        [DisplayName("Kols")]
-        Kols = 4,
-    }
-    public class AccountTypeHotMomData
-    {
-        public Gender Gender { get; set; }
-        public int Age { get; set; }
-        public int AgeType { get; set; }
-    }
-
+  
     public enum Gender
     {
         [DisplayName("Chưa xác định")]
