@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
 using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
@@ -17,6 +20,8 @@ namespace BackOffice.Controllers
     {
         ITransactionBusiness _ITransactionBussiness;
         IWalletBusiness _IWalletBusiness;
+        private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        private readonly IHostingEnvironment _hostingEnvironment;
 
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness)
@@ -55,28 +60,153 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
-        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.Regular)
+        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
 
+            AccountType[] _accounttype = new AccountType[5];
 
+            if (type == AccountType.All)
+            {
+                _accounttype[0] = AccountType.Regular;
+                _accounttype[1] = AccountType.HotFacebooker;
+                _accounttype[2] = AccountType.HotMom;
+                _accounttype[3] = AccountType.HotTeen;
+                _accounttype[4] = AccountType.Kols;
+            }
+            else
+            {
+                _accounttype[0] = type;
+            }
+                
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, new AccountType[] { type});
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype);
 
 
             return View(_listTransaction);
         }
 
-        public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.Regular)
+        public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All)
         {
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, new AccountType[] { type });
+            AccountType[] _accounttype = new AccountType[5];
+
+            if (type == AccountType.All)
+            {
+                _accounttype[0] = AccountType.Regular;
+                _accounttype[1] = AccountType.HotFacebooker;
+                _accounttype[2] = AccountType.HotMom;
+                _accounttype[3] = AccountType.HotTeen;
+                _accounttype[4] = AccountType.Kols;
+            }
+            else
+            {
+                _accounttype[0] = type;
+            }
+
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype );
             if (_listTransaction != null)
             {
 
-                byte[] fileContents;
-                using (var package = new ExcelPackage())
+                var package = new ExcelPackage();
+                package.Workbook.Properties.Title = "AccountPayback";
+                package.Workbook.Properties.Author = "MicroKols.";
+                package.Workbook.Properties.Subject = "Account Payback";
+                package.Workbook.Properties.Keywords = "AccountPayback";
+
+
+                var worksheet = package.Workbook.Worksheets.Add("Account Cash Out");
+
+                int count_row_header = 1;
+                int number_stt = 1;
+                int turn = 1;
+                foreach(var transaction in _listTransaction)
                 {
+                    //First add the headers
+                    worksheet.Cells[count_row_header, 1].Value = "STT";
+                    worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
+                    worksheet.Cells[count_row_header, 2].Value = "DATETIME";
+                    worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
+                    worksheet.Cells[count_row_header, 3].Value = "AMOUNT";
+                    worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
+
+                    //Second add the headers                    
+                    worksheet.Cells[(count_row_header + 1), 1].Value = "NAME";
+                    worksheet.Cells[(count_row_header + 1), 1].Style.Font.Bold = true;
+                    worksheet.Cells[(count_row_header + 1), 2].Value = transaction.Account.BankAccountName;
+                    worksheet.Cells[(count_row_header + 1), 3].Value = "BANK NUMBER";
+                    worksheet.Cells[(count_row_header + 1), 3].Style.Font.Bold = true;
+                    worksheet.Cells[(count_row_header + 1), 4].Value = transaction.Account.BankAccountNumber;
+
+
+
+                    int count = turn;
+                    long total_amount = 0;
+                    foreach(var item in transaction.Transactions)
+                    {
+                        //for the first item
+                        if (count_row_header == 1)
+                            count_row_header = 2;                        
+
+                        worksheet.Cells[count_row_header + count, 1].Value = number_stt;                        
+                        worksheet.Cells[count_row_header + count, 2].Value = item.DateModified.ToString("dd/MM/yyyy");                        
+                        worksheet.Cells[count_row_header + count, 3].Value = item.Amount;
+
+                        total_amount += item.Amount;
+                        count++;
+                        number_stt++;
+                    }
+                    if(count == transaction.Transactions.Count() + turn)
+                    {                        
+                        worksheet.Cells[count_row_header + count, 2].Value = "TOTAL";
+                        worksheet.Cells[count_row_header + count, 2].Style.Font.Bold = true;
+                        worksheet.Cells[count_row_header + count, 2].Style.Font.Color.SetColor(Color.Red);
+                        worksheet.Cells[count_row_header + count, 3].Value = total_amount;
+                        worksheet.Cells[count_row_header + count, 3].Style.Font.Bold = true;
+                        worksheet.Cells[count_row_header + count, 3].Style.Font.Color.SetColor(Color.Red);
+
+                    }
+
+                    count_row_header += transaction.Transactions.Count() + 4;
+                    turn++;
+
                 }
+
+
+                byte[] reportBytes = new byte[] { };
+                try
+                {
+                    
+                    reportBytes = package.GetAsByteArray();
+                }
+                catch { }
+
+                return File(reportBytes, XlsxContentType, "report.xlsx");
+
+
+
+
+
+                //worksheet.Cells[2, 1].Value = 1000;
+                //worksheet.Cells[2, 2].Value = "Jon";
+                //worksheet.Cells[2, 3].Value = "M";
+                //worksheet.Cells[2, 4].Value = 5000;
+                //worksheet.Cells[2, 4].Style.Numberformat.Format = numberformat;
+
+                //worksheet.Cells[3, 1].Value = 1001;
+                //worksheet.Cells[3, 2].Value = "Graham";
+                //worksheet.Cells[3, 3].Value = "M";
+                //worksheet.Cells[3, 4].Value = 10000;
+                //worksheet.Cells[3, 4].Style.Numberformat.Format = numberformat;
+
+                //worksheet.Cells[4, 1].Value = 1002;
+                //worksheet.Cells[4, 2].Value = "Jenny";
+                //worksheet.Cells[4, 3].Value = "F";
+                //worksheet.Cells[4, 4].Value = 5000;
+                //worksheet.Cells[4, 4].Style.Numberformat.Format = numberformat;
+
+
+
+
 
             }
 

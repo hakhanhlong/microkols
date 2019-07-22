@@ -103,6 +103,8 @@ namespace Core.Entities
 
     public enum AccountType
     {
+        [DisplayName("Tất cả")]
+        All = -1,
         [DisplayName("Tài khoản thường")]
         Regular = 0, 
         [DisplayName("Hot Teen")]

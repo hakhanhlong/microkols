@@ -89,7 +89,7 @@
                         {
                             bool IsCashOut = Model.Count(g=>g.IsCashOut == false)>0?false:true;
                             <div class="mb-5 pull-right">
-                                <a href="#" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
+                                <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
                                 @if (!IsCashOut)
                                 {
                                     <a href="#" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
@@ -130,16 +130,16 @@
                                                 <td>@item.Account.BankAccountNumber</td>
                                             </tr>
                                             @foreach (var transaction in item.Transactions)
-                                    {
-                                                    <tr>
-                                                        <td>@(count)</td>
-                                                        <td>@transaction.DateModified</td>
-                                                        <td>@transaction.Amount</td>
-                                                        <td>@(transaction.IsCashOut.HasValue ? transaction.IsCashOut.Value : false)</td>
-                                                    </tr>
-                                                    count++;
-                                        total_amount += transaction.Amount;
-                                    }
+                                            {
+                                                            <tr>
+                                                                <td>@(count)</td>
+                                                                <td>@transaction.DateModified</td>
+                                                                <td>@transaction.Amount</td>
+                                                                <td>@(transaction.IsCashOut.HasValue ? transaction.IsCashOut.Value : false)</td>
+                                                            </tr>
+                                                            count++;
+                                                total_amount += transaction.Amount;
+                                            }
                                             <tr>
                                                 <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">TOTAL</span></td>
                                                 <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">@total_amount</span></td>                                                        
