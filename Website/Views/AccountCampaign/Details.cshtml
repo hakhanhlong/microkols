@@ -136,7 +136,7 @@ else
 
 
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.Approved)
+                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.ApprovedContent || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
                     if (Model.Status == CampaignStatus.Started)
@@ -144,7 +144,7 @@ else
 
                         <div class="alert alert-info">
 
-                            @if (campaignAccount.Status == CampaignAccountStatus.Approved)
+                            @if (campaignAccount.Status == CampaignAccountStatus.ApprovedContent || campaignAccount.Status== CampaignAccountStatus.UpdatedContent)
                             {
                                 <p>
                                     Doanh nghiệp Đã duyệt nội dung Caption
@@ -170,7 +170,7 @@ else
                     else
                     {
                         <div class="alert alert-info">
-                            @if (campaignAccount.Status == CampaignAccountStatus.Approved)
+                            @if (campaignAccount.Status == CampaignAccountStatus.ApprovedContent || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                             {
                                 <p>
                                     Doanh nghiệp Đã duyệt nội dung Caption
@@ -185,18 +185,18 @@ else
                     }
 
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.Submitted)
+                else if (campaignAccount.Status == CampaignAccountStatus.SubmittedContent)
                 {
                     <div class="alert alert-info">
                         Đã gửi nội dung Caption. Vui lòng chờ doanh nghiệp duyệt nội dung
                     </div>
                 }
 
-                else if (campaignAccount.Status == CampaignAccountStatus.Declined)
+                else if (campaignAccount.Status == CampaignAccountStatus.DeclinedContent)
                 {
                     <div class="alert alert-danger">
                         <p>
-                            Nội dung Caption bị Doanh nghiệp từ chối
+                            Doanh nghiệp yêu cầu sửa lại  Nội dung Caption
                         </p>
                         <div>
                             <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Gửi lại nội dung Caption </button>

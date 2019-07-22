@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Core.Extensions;
 using Core.Models;
 using System.ComponentModel.DataAnnotations;
+using Common.Extensions;
 
 namespace Website.ViewModels
 {
@@ -13,6 +14,7 @@ namespace Website.ViewModels
     {
         public CampaignAccountViewModel(CampaignAccount campaignAccount)
         {
+            Id = campaignAccount.Id;
             Account = new AccountViewModel(campaignAccount.Account, null);
             Status = campaignAccount.Status;
             DateCreated = campaignAccount.DateCreated;
@@ -27,12 +29,22 @@ namespace Website.ViewModels
             RefId = campaignAccount.RefId;
             RefContent = campaignAccount.RefContent;
             RefData = campaignAccount.RefDataObj;
+
+            Rating = campaignAccount.Rating;
+            ReportStatus = campaignAccount.ReportStatus;
+            ReportNote = campaignAccount.ReportNote;
+            ReportImages = campaignAccount.ReportImages.ToListString();
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
             return campaignAccounts.Select(m => new CampaignAccountViewModel(m)).ToList();
         }
 
+        public int Id { get; set; }
+        public CampaignAccountRating? Rating { get; set; }
+        public CampaignAccountReportStatus? ReportStatus { get; set; }
+        public string ReportNote { get; set; }
+        public List<string> ReportImages { get; set; }
 
         public AccountViewModel Account { get; set; }
         public int AccountId { get; set; }
@@ -105,4 +117,32 @@ namespace Website.ViewModels
 
     }
 
+    public class ReportCampaignAccountViewModel
+    {
+
+        public int Id { get; set; }
+        public int CampaignId { get; set; }
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Lý do báo cáo")]
+        public string Note { get; set; }
+
+        [Display(Name = "Hình ảnh chứng minh")]
+        public string Image { get; set; }
+
+    }
+
+    public class UpdateCampaignAccountRatingViewModel
+    {
+
+        public int Id { get; set; }
+        public int CampaignId { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Đánh giá")]
+        public CampaignAccountRating? Rating { get; set; }
+        
+
+
+    }
 }

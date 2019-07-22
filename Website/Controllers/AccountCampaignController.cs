@@ -163,7 +163,7 @@ namespace Website.Controllers
             {
                 return PartialView();
             }
-            if ((campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.Declined)
+            if ((campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.DeclinedContent)
                 && campaignType == CampaignType.ShareContentWithCaption)
             {
                 return RedirectToAction("SubmitCampaignAccountRefContent", new { campaignid });

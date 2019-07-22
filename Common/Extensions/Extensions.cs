@@ -139,6 +139,7 @@ namespace Common.Extensions
         public static List<string> ToListString(this string input, char c = '|')
         {
             var result = new List<string>();
+            if(!string.IsNullOrEmpty(input))
             foreach (var item in input.Split(c))
             {
                 if (!string.IsNullOrEmpty(item))

@@ -1,0 +1,95 @@
+﻿@model CampaignDetailsViewModel
+
+
+@{
+    var kolTypes = Model.AccountTypes.Where(m => m != AccountType.Regular).ToList();
+    if (kolTypes.Count > 0)
+    {
+        var text = string.Join(", ", kolTypes.Select(m => m.ToDisplayName()).ToArray());
+        var kolAccounts = Model.CampaignAccounts.Where(m => m.Account.Type != AccountType.Regular).ToList();
+
+        var kolText = string.Join(',', kolTypes.Select(m => m.ToDisplayName()).ToArray());
+        <div class="mb-3">
+            <div class="mb-3 d-flex">
+                <h3 class="h5">
+                    Thành viên Kol - @kolText
+
+                </h3>
+                <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.GetMatchedAccountUrl(Model,2)">
+
+                    <i class="fal fa-plus"></i> Thành viên mới
+                </button>
+            </div>
+            @if (kolAccounts.Count > 0)
+            {
+                <div>
+                    @foreach (var campaignAccount in kolAccounts)
+                    {
+                        <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">Chưa có thành viên </div>
+            }
+
+
+        </div>
+    }
+}
+
+
+@if (Model.AccountTypes.Contains(AccountType.Regular))
+{
+    var regularAccounts = Model.CampaignAccounts.Where(m => m.Account.Type == AccountType.Regular).ToList();
+
+    <div class="mb-3">
+        <div class="mb-3 d-flex">
+            <h3 class="h5">Thành viên thường <span class="badge badge-primary">@regularAccounts.Count</span></h3>
+            <button class="btn btn-primary btn-sm ml-auto btn-campaignaccount" data-url="@Url.GetMatchedAccountUrl(Model,1)"> <i class="fal fa-plus"></i> Thành viên mới</button>
+        </div>
+        @if (regularAccounts.Count > 0)
+        {
+            foreach (var campaignAccount in regularAccounts)
+            {
+                <partial name="_CampaignAccountItemPartial" model="campaignAccount" />
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">Chưa có thành viên </div>
+        }
+    </div>
+}
+
+
+<hr />
+
+<div class="">
+
+    <div class="mb-2">
+        Tổng phí thành viên: <span class="text-danger"> @Model.Payment.AccountChargeAmount.ToPriceText()</span>
+    </div>
+   
+    <div class="mb-2">
+        Đã thanh toán: <span class="text-success">@Model.Payment.AccountPaidAmount.ToPriceText()</span>
+    </div>
+
+    <div class="mt-3">
+        @if (Model.Payment.IsValidAccountCharge)
+        {
+            <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+        }
+        else
+        {
+            <form asp-action="UpdateCampaignStatus" method="post" asp-controller="AgencyCampaign">
+                <button class="btn btn-primary">Bắt đầu chiến dịch</button>
+                <input type="hidden" name="campaignid" value="@Model.Id" />
+                <input type="hidden" name="status" value="@CampaignStatus.Started" />
+
+            </form>
+        }
+    </div>
+
+</div>

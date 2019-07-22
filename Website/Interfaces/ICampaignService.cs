@@ -39,5 +39,8 @@ namespace Website.Interfaces
 
         Task<bool> UpdateCampaignCompleted(int campaignid, string username);
         Task<bool> UpdateCampaignError(int campaignid, string note, string username);
+
+        Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username);
+        Task<bool> UpdateCampaignAccountRating(int agencyid, UpdateCampaignAccountRatingViewModel model, string username);
     }
 }

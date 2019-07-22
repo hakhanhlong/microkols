@@ -1,0 +1,46 @@
+﻿@model UpdateCampaignAccountRatingViewModel
+
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <form method="post" action="@Url.Action("UpdateCampaignAccountRating")" >
+            <div class="modal-header">
+                <h5 class="modal-title">Đánh giá người dùng </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+           
+                <div class="form-group">
+
+                    @{
+                        var ratingArr = StringHelper.GetEnumArray<CampaignAccountRating>();
+                        var radioNoneId = $"ratingNone{Model.Id}";
+                        <div class="custom-control custom-radio">
+                            <input type="radio" id="@radioNoneId" name="Rating" value="" class="custom-control-input" @(!Model.Rating.HasValue ? "checked" : "") />
+                            <label class="custom-control-label" for="@radioNoneId"> Không chọn</label>
+                        </div>
+                        foreach (var ratingItem in ratingArr)
+                        {
+                            var radioId = $"rating{ratingItem}{Model.Id}";
+                            <div class="custom-control custom-radio custome-">
+                                <input type="radio" id="@radioId" name="Rating" value="@ratingItem" class="custom-control-input" @(ratingItem == Model.Rating ? "checked" : "") />
+                                <label class="custom-control-label" for="@radioId"> @ratingItem.ToDisplayName()</label>
+                            </div>
+                        }
+                    }
+
+
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" asp-for="CampaignId" />
+                <input type="hidden" asp-for="Id" />
+                
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                <input type="submit" value="Đồng ý" class="btn btn-submit btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

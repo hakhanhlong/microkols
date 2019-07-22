@@ -24,7 +24,7 @@ namespace Website.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IFileHelper _fileHelper;
         public AgencyCampaignController(ISharedService sharedService,
-             IAccountService accountService, IFileHelper fileHelper, IPaymentService  paymentService,
+             IAccountService accountService, IFileHelper fileHelper, IPaymentService paymentService,
             ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
@@ -76,7 +76,7 @@ namespace Website.Controllers
                         //this.AddAlertSuccess("Thêm chiến dịch mới thành công");
                         //return RedirectToAction("Details", new { id = id });
 
-                        if(submittype== 1)
+                        if (submittype == 1)
                         {
                             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, new CreateCampaignPaymentViewModel()
                             {
@@ -123,7 +123,7 @@ namespace Website.Controllers
                     {
                         error = "Lỗi khi khởi tạo chiến dịch. Vui lòng thử lại";
                     }
-                    
+
                 }
 
             }
@@ -144,13 +144,15 @@ namespace Website.Controllers
 
 
         #endregion
+       
         #region Details
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id, string vt = "")
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
             if (model == null) return NotFound();
             await ViewbagData();
+            ViewBag.activedTab = vt;
             return View(model);
         }
 
@@ -174,6 +176,53 @@ namespace Website.Controllers
 
 
         #region Action
+
+
+        public async Task<IActionResult> ReportCampaignAccount(int id,int campaignid)
+        {
+
+            var model = new ReportCampaignAccountViewModel()
+            {
+                Id = id,
+                CampaignId = campaignid
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ReportCampaignAccount(ReportCampaignAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.ReportCampaignAccount(CurrentUser.Id, model, CurrentUser.Username);
+                this.AddAlert(r);
+            }
+            return RedirectToAction("Details", new { id = model.CampaignId, vt= "2" });
+        }
+
+
+        public async Task<IActionResult> UpdateCampaignAccountRating(int id, int campaignid, CampaignAccountRating? rating)
+        {
+
+            var model = new UpdateCampaignAccountRatingViewModel()
+            {
+                Id = id,
+                CampaignId = campaignid,
+                Rating = rating
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCampaignAccountRating(UpdateCampaignAccountRatingViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.UpdateCampaignAccountRating(CurrentUser.Id, model, CurrentUser.Username);
+                this.AddAlert(r);
+            }
+            return RedirectToAction("Details", new { id = model.CampaignId, vt = "2" });
+        }
+
+
 
         public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, int? amount)
         {
@@ -234,15 +283,15 @@ namespace Website.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid, int accountid, int type)
+        public async Task<IActionResult> FeedbackCampaignAccountRefContent(int campaignid, int accountid, int type, string refContent)
         {
             if (ModelState.IsValid)
             {
-                var newRefContent = "";
-                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type, newRefContent);
+                var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type, refContent);
                 if (r > 0)
                 {
-                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : "Bạn đã hủy nội dung caption thành công");
+                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : type == 2 ? "Bạn đã cập nhật nội dung caption thành công" 
+                        : "Bạn đã yêu cầu sửa lại nội dung caption thành công");
 
 
                 }

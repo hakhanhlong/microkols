@@ -43,11 +43,30 @@ namespace Core.Entities
 
         }
 
-
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
+
+        public CampaignAccountRating? Rating { get; set; }
+        public CampaignAccountReportStatus? ReportStatus { get; set; }
+        public string ReportNote { get; set; }
+        public string ReportImages { get; set; }
+    }
+
+    public enum CampaignAccountReportStatus
+    {
+        Reported = 1,
+    }
+
+    public enum CampaignAccountRating
+    {
+        [DisplayName("Tương tác Kém")]
+        InteractiveLow = 0,
+        [DisplayName("Tương tác Bình thường")]
+        InteractiveMedium = 1,
+        [DisplayName("Tương tác Tốt")]
+        InteractiveHigh = 2,
     }
 
 
@@ -60,15 +79,16 @@ namespace Core.Entities
         [DisplayName("Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
         [DisplayName("Đang gửi xét duyệt")]
-        Submitted = 3,
-
-        [DisplayName("Từ chối nội dung")]
-        Declined = 4,
+        SubmittedContent = 3,
+        [DisplayName("Yêu cầu sửa nội dung")]
+        DeclinedContent = 31,
         [DisplayName("Đã duyệt nội dung")]
-        Approved = 5,
+        ApprovedContent = 32,
+        [DisplayName("Đã duyệt và cập nhật nội dung")]
+        UpdatedContent = 33,
 
         [DisplayName("Đã hoàn thành")]
-        Finished  = 6,
+        Finished = 6,
         [DisplayName("Hủy tham gia")]
         Canceled = 7,
 

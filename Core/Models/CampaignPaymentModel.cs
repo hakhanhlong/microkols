@@ -30,9 +30,9 @@ namespace Core.Models
             var campaginAccountStatusArr = new List<CampaignAccountStatus>()
             {
                 CampaignAccountStatus.Confirmed,
-                CampaignAccountStatus.Submitted ,
-                CampaignAccountStatus.Declined,
-                CampaignAccountStatus.Approved,
+                CampaignAccountStatus.SubmittedContent ,
+                CampaignAccountStatus.DeclinedContent,
+                CampaignAccountStatus.ApprovedContent,
                 CampaignAccountStatus.Finished
             };
             campaignAccounts = campaignAccounts.Where(m => campaginAccountStatusArr.Contains(m.Status));

@@ -96,17 +96,67 @@
 
             </div>
         </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã chiến dịch</th>
+                        <th>Tên chiến dịch</th>
+                        <th>Loại chiến dịch</th>
+                        <th>Thời gian thực hiện</th>
+                        @*<th>Số tiền</th>
+                        <th>Đã chi</th>*@
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var stt = 0;
+                    }
+                    @foreach (var item in Model.Campaigns)
+                    {
+                        stt++;
+                        var url = Url.Action("Details", new { id = item.Id });
+                        <tr>
+                            <td>@stt</td>
+                            <td>
+                                <a href="@url">
+                                    @item.Code
+                                </a>
+                            </td>
 
-
-
-        <div class="row">
-            @foreach (var item in Model.Campaigns)
-            {
-            <div class="col-md-6">
-                <partial name="_CampaignItemPartial" model="item" />
-            </div>
-            }
+                            <td>@item.Title</td>
+                            <td>@item.Type.ToDisplayName()</td>
+                            <td>
+                                @if (item.DateStart.HasValue)
+                                {
+                                    <span>@item.DateStart.Value.ToViDate()</span>
+                                }
+                            </td>
+                            @*<td></td>
+                            <td></td>*@
+                            <td>@item.Status.ToBadge()</td>
+                            <td>
+                                <a href="@url" class="btn btn-sm btn-outline-primary">Chi tiết</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
+
+
+
+        @*<div class="row">
+                @foreach (var item in Model.Campaigns)
+                {
+                <div class="col-md-6">
+                    <partial name="_CampaignItemPartial" model="item" />
+                </div>
+                }
+            </div>*@
         <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
 
 
