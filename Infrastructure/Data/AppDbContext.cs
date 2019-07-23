@@ -42,6 +42,8 @@ namespace Infrastructure.Data
         public virtual DbSet<District> District { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
 
+        public virtual DbSet<PayoutExport> PayoutExport { get; set; }
+
 
         public virtual DbSet<Setting> Setting { get; set; }
 
