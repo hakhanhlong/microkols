@@ -73,11 +73,11 @@
                                 HotFacebooker
                             </a>
                         </li>
-                        <li class="nav-item m-tabs__item">
+                        @*<li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Kols"?"active":"")" href="/transaction/accountpayback?type=Kols" role="tab">
                                 Kols
                             </a>
-                        </li>
+                        </li>*@
                     </ul>
                 </div>
             </div>
@@ -85,17 +85,24 @@
                 <div class="tab-content">
                     <div class="tab-pane active show">
                         
-                        @if (Model != null)
+                        @if (Model.Count() > 0)
                         {
-                            bool IsCashOut = Model.Count(g=>g.IsCashOut == false)>0?false:true;
-                            <div class="mb-5 pull-right">
-                                <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
-                                @if (!IsCashOut)
-                                {
-                                    <a href="#" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
-                                }
+                            
+                        <div class="mb-5 pull-right">
 
-                            </div>
+                            @if (ViewBag.PayoutExport != null)
+                            {
+                                var PayoutExport = (PayoutExport)ViewBag.PayoutExport;
+                                if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
+                                {
+                                    <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
+                            }
+                        </div>
                             foreach (var item in Model)
                             {
 
@@ -120,9 +127,9 @@
                                             </thead>
                                             <tbody>
                                             @{
-                                        int count = 1;
-                                        long total_amount = 0;
-                                    }
+                                            int count = 1;
+                                            long total_amount = 0;
+                                        }
                                             <tr>
                                                 <td>NAME</td>
                                                 <td>@item.Account.BankAccountName</td>
@@ -138,7 +145,7 @@
                                                                 <td>@(transaction.IsCashOut.HasValue ? transaction.IsCashOut.Value : false)</td>
                                                             </tr>
                                                             count++;
-                                                total_amount += transaction.Amount;
+                                                            total_amount += transaction.Amount;
                                             }
                                             <tr>
                                                 <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">TOTAL</span></td>

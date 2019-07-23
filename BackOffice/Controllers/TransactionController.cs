@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
 using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +23,14 @@ namespace BackOffice.Controllers
         IWalletBusiness _IWalletBusiness;
         private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private readonly IHostingEnvironment _hostingEnvironment;
+        IPayoutExportRepository _IPayoutExportRepository;
 
 
-        public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness)
+        public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IPayoutExportRepository __IPayoutExportRepository)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
+            _IPayoutExportRepository = __IPayoutExportRepository;
         }
 
         public IActionResult Index()
@@ -64,46 +67,106 @@ namespace BackOffice.Controllers
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
 
-            AccountType[] _accounttype = new AccountType[5];
+            AccountType[] _accounttype;
 
             if (type == AccountType.All)
             {
+                _accounttype = new AccountType[4];
                 _accounttype[0] = AccountType.Regular;
                 _accounttype[1] = AccountType.HotFacebooker;
                 _accounttype[2] = AccountType.HotMom;
                 _accounttype[3] = AccountType.HotTeen;
-                _accounttype[4] = AccountType.Kols;
+                //_accounttype[4] = AccountType.Kols;
             }
             else
             {
+                _accounttype = new AccountType[1];
                 _accounttype[0] = type;
             }
-                
+
+            var lastDateTime = DateTime.Now.AddMonths(-1);
+            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
 
             var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype);
 
-
+            ViewBag.PayoutExport = PayoutExport;
             return View(_listTransaction);
+        }
+
+        public async Task<IActionResult> AccountSubtractWallet(AccountType type = AccountType.All)
+        {
+            AccountType[] _accounttype;
+
+            if (type == AccountType.All)
+            {
+                _accounttype = new AccountType[4];
+                _accounttype[0] = AccountType.Regular;
+                _accounttype[1] = AccountType.HotFacebooker;
+                _accounttype[2] = AccountType.HotMom;
+                _accounttype[3] = AccountType.HotTeen;
+                //_accounttype[4] = AccountType.Kols;
+            }
+            else
+            {
+                _accounttype = new AccountType[1];
+                _accounttype[0] = type;
+            }
+
+            var lastDateTime = DateTime.Now.AddMonths(-1);
+            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
+
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype);
+            if(_listTransaction.Count() > 0)
+            {
+                foreach(var transaction in _listTransaction)
+                {
+                    foreach(var item in transaction.Transactions)
+                    {
+                        if(_ITransactionBussiness.UpdateCashOut(item.Id) > 0)
+                        {
+                            await _ITransactionBussiness.CalculateBalance(item.Id, item.Amount, item.ReceiverId, item.SenderId, "[Trả tiền mặt][AccountPayback]", HttpContext.User.Identity.Name);
+                        }
+                    }
+                }
+
+                if(PayoutExport != null)
+                {
+                    PayoutExport.IsUpdateWallet = true;
+                    _IPayoutExportRepository.Update(PayoutExport);
+                    TempData["MessageSuccess"] = "Substract Wallet CashOut Success!";
+                }
+            }
+
+            return RedirectToAction("AccountPayback", "Transaction", new { type = type });
+
         }
 
         public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All)
         {
-            AccountType[] _accounttype = new AccountType[5];
+            AccountType[] _accounttype;
 
             if (type == AccountType.All)
             {
+                _accounttype = new AccountType[4];
                 _accounttype[0] = AccountType.Regular;
                 _accounttype[1] = AccountType.HotFacebooker;
                 _accounttype[2] = AccountType.HotMom;
                 _accounttype[3] = AccountType.HotTeen;
-                _accounttype[4] = AccountType.Kols;
+                //_accounttype[4] = AccountType.Kols;
             }
             else
             {
+                _accounttype = new AccountType[1];
                 _accounttype[0] = type;
             }
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype );
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype);
             if (_listTransaction != null)
             {
 
@@ -173,14 +236,35 @@ namespace BackOffice.Controllers
 
 
                 byte[] reportBytes = new byte[] { };
+
+                var lastDateTime = DateTime.Now.AddMonths(-1);
+                DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
                 try
                 {
                     
                     reportBytes = package.GetAsByteArray();
+
+
+
+                    bool isexist = _IPayoutExportRepository.IsExist(startDate, endDate, type);
+                    if (!isexist)
+                    {
+                        _IPayoutExportRepository.Add(new PayoutExport() {
+                            AccountType = type,
+                            CreatedDate = DateTime.Now,
+                            CreatedUser = HttpContext.User.Identity.Name,
+                            IsExport = true,
+                            IsUpdateWallet = false,
+                            StartDateExport = startDate,
+                            EndDateExport = endDate
+                        });
+                    }
+
                 }
                 catch { }
 
-                return File(reportBytes, XlsxContentType, "report.xlsx");
+                return File(reportBytes, XlsxContentType, string.Format("{0}{1}{2}_{3}{4}{5}_{6}.xlsx", startDate.Day, startDate.Month, startDate.Year, endDate.Day, endDate.Month, endDate.Year, type.ToString()));
 
 
 

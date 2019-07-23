@@ -75,7 +75,6 @@ namespace BackOffice.Business
         public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype)
         {
             var lastDateTime = DateTime.Now.AddMonths(-1);
-
             DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
 
@@ -116,6 +115,25 @@ namespace BackOffice.Business
                 Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
                 Pager = new PagerViewModel(pageindex, pagesize, total)
             };
+        }
+
+
+        public int UpdateCashOut(int transactionid)
+        {
+            int retValue = -1;
+            var _transaction = _ITransactionRepository.GetById(transactionid);
+            if (_transaction != null)
+            {
+                try {
+                    _transaction.CashoutDate = DateTime.Now;
+                    _transaction.IsCashOut = true;
+                    _ITransactionRepository.Update(_transaction);
+                    retValue = 1;
+                }
+                catch { }
+            }
+
+            return retValue;
         }
 
         public async Task<int> UpdateStatus(TransactionStatus status, int id, string username)
