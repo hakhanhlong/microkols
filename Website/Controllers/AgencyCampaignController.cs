@@ -89,8 +89,8 @@ namespace Website.Controllers
                             {
 
                                 // tam thoi chua khac phuc dc loi tracking id
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount, CurrentUser.Name));
-                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.AddAccount , CurrentUser.Name);
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm, CurrentUser.Name));
+                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm , CurrentUser.Name);
                                 return Json(new
                                 {
                                     status = 1,

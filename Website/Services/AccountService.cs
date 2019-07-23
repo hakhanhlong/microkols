@@ -172,22 +172,40 @@ namespace Website.Services
 
 
         #region Generate Dumb Account
-        
-        public async Task CreateDumbAccount(int count = 100)
+
+        public async Task CreateDumbAccount(int count = 30)
         {
-            for(var i = 0;i< count; i++)
+            for (var i = 0; i < count; i++)
             {
 
                 var account = new Account()
                 {
                     Actived = true,
-                    Address = string.Empty,
-
+                    Address = $"{count} Lạc Trung",
+                    Avatar = string.Empty,
+                    Deleted = false,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    Type = AccountType.Regular,
+                    Salt = "",
+                    Password = "",
+                    UserCreated = "hxq1988",
+                    Email = $"tk{i}@microkols.com",
+                    Phone = "",
+                    Name = $"Tài khoản {i}",
+                    UserModified = "hxq1988",
+                    Gender = i % 2 == 0 ? Gender.Male : Gender.Female,
+                    CityId = 1,
+                    DistrictId = 1
                 };
+
+                await _accountRepository.AddAsync(account);
+
+
 
             }
         }
-         #endregion
+        #endregion
 
         #region AccountCounting
 
@@ -200,12 +218,12 @@ namespace Website.Services
         #endregion
         #region AccountFacebookPost
 
-        public async Task<AccountFbPostViewModel> GetAccountFbPost(int accountid,string postid)
+        public async Task<AccountFbPostViewModel> GetAccountFbPost(int accountid, string postid)
         {
             var filter = new AccountFbPostSpecification(accountid, postid);
             var post = await _accountFbPostRepository.GetSingleBySpecAsync(filter);
 
-            if(post!= null)
+            if (post != null)
             {
                 return new AccountFbPostViewModel(post);
             }
@@ -239,7 +257,7 @@ namespace Website.Services
                     ShareCount = model.ShareCount,
                     UserCreated = username,
                     UserModified = username,
-                    Permalink= model.Permalink
+                    Permalink = model.Permalink
                 };
                 await _accountFbPostRepository.AddAsync(post);
             }
@@ -656,7 +674,8 @@ namespace Website.Services
         }
 
 
-        public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType) {
+        public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType)
+        {
             var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
             var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
 
@@ -702,10 +721,11 @@ namespace Website.Services
         }
 
 
-        public async Task<bool> UpdateIgnoreCampaignTypes(int accountid, CampaignType type, bool removed,string username)
+        public async Task<bool> UpdateIgnoreCampaignTypes(int accountid, CampaignType type, bool removed, string username)
         {
             var account = await _accountRepository.GetByIdAsync(accountid);
-            if (account != null) {
+            if (account != null)
+            {
                 var currentIgnore = account.IgnoreCampaignTypesObj;
                 if (removed)
                 {

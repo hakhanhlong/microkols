@@ -4,7 +4,7 @@
     var steps = new List<string>() { "Thanh toán phí dịch vụ", "Thành viên tham gia", "Bắt đầu chiến dịch", "Kết thúc chiến dịch", "Hoàn thành chiến dịch" };
 
     var activestepIdx = 0;
-    if (Model.Status == CampaignStatus.AddAccount)
+    if (Model.Status == CampaignStatus.WaitToConfirm)
     {
         if (Model.Payment.IsValidServiceCharge)
         {
