@@ -9,6 +9,7 @@ namespace Website.Interfaces
 {
     public interface IAccountService
     {
+        Task CreateDumbAccount(int count = 30);
         Task<AccountCountingViewModel> GetAccountCounting(int accountid);
         Task<List<int>> GetActivedAccountIds();
         Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,

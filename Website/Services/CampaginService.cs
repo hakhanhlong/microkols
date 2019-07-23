@@ -146,7 +146,8 @@ namespace Website.Services
 
             return new CreateCampaignViewModel()
             {
-                Code = code
+                Code = code,
+                AccountType = new List<AccountType>() { AccountType.Regular }
             };
         }
 
@@ -170,14 +171,9 @@ namespace Website.Services
             if (campaign.Id > 0)
             {
                 await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
-
                 await CreateCampaignOptions(campaign.Id, model, username);
 
-
-
-
                 return campaign.Id;
-
             }
 
 
@@ -455,20 +451,20 @@ namespace Website.Services
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.AddAccount && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.WaitToConfirm && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }
-                if (status == CampaignStatus.AddAccount && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.WaitToConfirm && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }
 
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.AddAccount)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.AddAccount)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.WaitToConfirm)
                 {
                     return -1;
                 }

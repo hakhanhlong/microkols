@@ -107,8 +107,8 @@
                     var checkboxId = $"CampaignType{accountType}";
                     <div class="d-flex">
                         <div>
-                            <div class="custom-control custom-checkbox custom-control">
-                                <input type="checkbox" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType"
+                            <div class="custom-control custom-radio custom-control">
+                                <input type="radio" @(Model.AccountType.Contains(accountType) ? "checked" : "") value="@accountType"
                                        name="AccountType" id="@checkboxId" class="custom-control-input">
                                 <label class="custom-control-label" for="@checkboxId">
                                     @accountType.ToDisplayName()
