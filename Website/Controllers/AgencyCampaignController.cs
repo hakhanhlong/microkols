@@ -162,10 +162,11 @@ namespace Website.Controllers
         #region MatchedAccount
 
 
-        public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
-               IEnumerable<int> ignoreIds, int campaignId, CampaignType campaignType, int pageindex = 1)
+        public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, 
+            int? cityid, int? agestart, int? ageend,
+               IEnumerable<int> ignoreIds, int campaignId, CampaignType campaignType, int pageindex = 1, int pagesize = 20)
         {
-            const int pagesize = 20;
+      
             var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, pageindex, pagesize, ignoreIds);
 
             ViewBag.CampaignId = campaignId;

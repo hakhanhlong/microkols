@@ -73,7 +73,7 @@ namespace Website.ViewModels
         [Display(Name = "Tên chiến dịch")]
         public string Title { get; set; }
 
-        [Display(Name = "Mô tả")]
+        [Display(Name = "Nội dung, Mô tả thời gian cụ thể chiến dịch")]
         public string Description { get; set; }
 
      
@@ -82,7 +82,7 @@ namespace Website.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Đối tượng")]
+        [Display(Name = "Bạn cần Micro Kols")]
         public List<AccountType> AccountType { get; set; } = new List<AccountType>();
 
 
@@ -142,6 +142,14 @@ namespace Website.ViewModels
 
         [Display(Name = "Mã chiến dịch")]
         public string Code { get; set; }
+
+        public string DateFeedback { get; set; }
+        
+
+        public List<string> CustomAccountNames { get; set; }
+
+        public List<int> AccountIds { get; set; }
+        public List<int> AccountChargeAmounts { get; set; }
     }
 
 }

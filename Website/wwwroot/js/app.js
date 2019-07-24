@@ -1,5 +1,4 @@
-﻿
-var App = (function () {
+﻿var App = (function () {
 
     function init() {
         setTimeout(function () {

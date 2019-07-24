@@ -182,8 +182,41 @@ var AgencyCreateCampaignPage = (function () {
 
         pricingCalculator();
     }
+    function loadAccounts() {
+
+        var urlparams = '';
+
+        var accountType = $('input[name=AccountType]:checked').val();
+        urlparams += '&accountTypes=' + accountType;
+        var enabledGender = $('input[name=EnabledGender]:checked').val();
+        if (enabledGender === "true") {
+            urlparams += '&gender=' + $('input[name=Gender]:checked').val();
+        }
+
+        var enabledAgeRange = $('input[name=EnabledAgeRange]:checked').val();
+        if (enabledAgeRange === "true") {
+            urlparams += '&agestart=' + $('#AgeStart').val() + '&ageend=' + $('#AgeEnd').val();
+        }
+
+        var enabledCity = $('input[name=EnabledCity]:checked').val();
+        if (enabledCity === "true") {
+            urlparams += '&cityid=' + $('#CityId').val();
+        }
+
+        var enabledCategory = $('input[name=EnabledCategory]:checked').val();
+        if (enabledCategory === "true") {
+            var categoryids = $('#CategoryId').val();
+            for (var i = 0; i < categoryids.length; i++) {
+                urlparams += '&categoryid=' + categoryids[i];
+            }
+        }
+        urlparams += '&pagesize=' + $('#Quantity').val();
+        console.log('urlparams', urlparams);
+
+    }
 
     function pricingCalculator() {
+ 
         var type = $('#Type').val();
         var selectedOption = $('#Type').children('option:selected');
         var serviceprice = selectedOption.data('serviceprice');
@@ -213,7 +246,7 @@ var AgencyCreateCampaignPage = (function () {
         $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
 
 
-        console.log('AppSettings.CurrentUser.Balance', AppSettings.CurrentUser.Balance, 'totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
+        //console.log('AppSettings.CurrentUser.Balance', AppSettings.CurrentUser.Balance, 'totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
         setTimeout(function () {
             if (AppSettings.CurrentUser.Balance <= totalServiceCharge) {
 

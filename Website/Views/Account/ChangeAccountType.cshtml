@@ -20,15 +20,42 @@
 @section Scripts {
     <script type="text/javascript">
 
-    </script>
-    <script type="text/template">
-        <select class="form-control" name="HotMomData.Gender">
-            <option value="@Gender.Male">@Gender.Male.ToDisplayName()</option>
-            <option value="@Gender.Female">@Gender.Female.ToDisplayName()</option>
-        </select>
+        $().ready(function () {
 
-        <input type="number" name="HotMomData.Age" class="form-control" />
+            var datas = $.parseJSON($('#modelHotMomData').html());
+
+            var vm = new Vue({
+                el: '#dataHotMom',
+                data: {
+                    childrens: []
+                },
+                created() {
+                    this.childrens = datas;
+                },
+                methods: {
+                    createItem: function () {
+                        this.childrens.push({
+                            Gender: 1,
+                            Age: 0,
+                            AgeType: 2
+                        });
+                    },
+                    removeItem: function (idx) {
+                        this.data.splice(idx, 1);
+                    }
+
+                }
+            });
+        });
     </script>
+    @*<script type="text/template">
+            <select class="form-control" name="HotMomData.Gender">
+                <option value="@Gender.Male">@Gender.Male.ToDisplayName()</option>
+                <option value="@Gender.Female">@Gender.Female.ToDisplayName()</option>
+            </select>
+
+            <input type="number" name="HotMomData.Age" class="form-control" />
+        </script>*@
     <script type="text/template" id="modelHotMomData">
         @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HotMomData))
     </script>
@@ -173,8 +200,8 @@
                         var checkedstr = ischecked ? "" : "checked=checked";
                     }
                     <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr 
-                                data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = campaignTypeCharge.Type, removed = !ischecked})"/>
+                        <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr
+                               data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = campaignTypeCharge.Type, removed = !ischecked})" />
                         <label class="custom-control-label" for="@switchid">Đồng ý</label>
                     </div>
 
