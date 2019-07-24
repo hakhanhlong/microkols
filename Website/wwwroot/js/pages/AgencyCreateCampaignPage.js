@@ -2,19 +2,7 @@
 
     function init() {
         handler();
-        handlerType();
-        $('#Type').change(function () {
-            handlerType();
-        });
-
-        $('#campaignOptions .form-option').change(function () {
-
-            pricingCalculator();
-
-        });
     }
-
-
 
     function handler() {
         $('#dataImageFile').change(function () {
@@ -56,6 +44,31 @@
             });
         });
 
+        handlerType();
+        $('#Type').change(function () {
+            handlerType();
+        });
+
+
+
+        /*
+        $('#frmCreateCampaign input,#frmCreateCampaign select').change(function () {
+            console.log('input change');
+          
+            pricingCalculator();
+        });
+        */
+
+        $('#campaignOptions .form-option').change(function () {
+            pricingCalculator();
+        });
+
+
+        $('.btn-suggestaccount').click(function () {
+
+            suggestAccount();
+        });
+
     }
     function createCampaign(callback) {
         var $frm = $('#frmCreateCampaign');
@@ -82,6 +95,18 @@
             });
 
         }
+    }
+
+    function handlerAccountType() {
+        var accouttype = $('input[name=AccountType]:checked').val();
+
+        if (accouttype === 'Regular' || $('#suggestAccount').length == 0) {
+            $('#dateFeedbackWrap').addClass('d-none');
+        } else {
+
+            $('#dateFeedbackWrap').removeClass('d-none');
+        }
+
     }
 
     function handlerType() {
@@ -123,8 +148,10 @@
 
         pricingCalculator();
     }
-    function loadAccounts() {
 
+    function suggestAccount() {
+
+        var url = $('#suggestAccount').data('url');
         var urlparams = '';
 
         var accountType = $('input[name=AccountType]:checked').val();
@@ -151,9 +178,54 @@
                 urlparams += '&categoryid=' + categoryids[i];
             }
         }
+
         urlparams += '&pagesize=' + $('#Quantity').val();
+        urlparams += '&campaignType=' + $('#Type').val();
+
+
         console.log('urlparams', urlparams);
 
+        $('#suggestAccount').html(AppConstants.HtmlSpinner);
+        $.get(url + '?' + urlparams, function (html) {
+            $('#suggestAccount').html(html);
+
+            handlerSuggestAccount();
+        });
+    }
+
+    function handlerSuggestAccount() {
+
+        var renewUrl = $('#tblMatchedAccounts').data('renewurl');
+        $('.btn-renewaccount').unbind('click');
+        $('.btn-renewaccount').click(function () {
+            var $tr = $(this).closest('tr');
+            var ignoreids = '';
+            $('.cb-accountid').each(function () {
+                ignoreids += '&ignoreids=' + $(this).val();
+            }).promise().done(function () {
+
+                $.get(renewUrl + ignoreids, function (html) {
+                    if (html.length < 100) {
+                        $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
+                    } else {
+                        $tr.replaceWith(html);
+                        handlerSuggestAccount();
+                    }
+                });
+            });
+        });
+        $('.cb-accountid').change('click');
+        $('.cb-accountid').change(function () {
+            var $target = $(this).data('target');
+            if ($(this).is(':checked')) {
+                $($target).val($(this).val());
+            } else {
+
+                $($target).val(0);
+            }
+        })
+
+        handlerAccountType();
     }
 
     function pricingCalculator() {

@@ -676,6 +676,7 @@ namespace Website.Services
 
         public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType)
         {
+
             var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
             var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
 

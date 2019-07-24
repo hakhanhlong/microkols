@@ -144,7 +144,7 @@ namespace Website.Controllers
 
 
         #endregion
-       
+
         #region Details
 
         public async Task<IActionResult> Details(int id, string vt = "")
@@ -162,16 +162,39 @@ namespace Website.Controllers
         #region MatchedAccount
 
 
-        public async Task<IActionResult> MatchedAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, 
-            int? cityid, int? agestart, int? ageend,
-               IEnumerable<int> ignoreIds, int campaignId, CampaignType campaignType, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> MatchedAccount(CampaignType campaignType,
+            IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
+            int? cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20)
         {
-      
-            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, pageindex, pagesize, ignoreIds);
 
-            ViewBag.CampaignId = campaignId;
+            ViewBag.Pagesize = pagesize;
+
+            if (pagesize > 0)
+            {
+                var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend,
+                    string.Empty, pageindex, pagesize, null);
+
+                ViewBag.CampaignId = campaignId;
+                ViewBag.CampaignType = campaignType;
+                ViewBag.AccountTypes = accountTypes;
+                ViewBag.RenewUrl = Url.Action("RenewAccount", new { accountTypes, categoryid, gender, cityid, agestart, ageend, campaignType });
+                return PartialView(model);
+            }
+            return PartialView();
+        }
+
+        public async Task<IActionResult> RenewAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
+           int? cityid, int? agestart, int? ageend,
+            IEnumerable<int> ignoreIds, CampaignType campaignType)
+        {
+
             ViewBag.CampaignType = campaignType;
+            ViewBag.AccountTypes = accountTypes;
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, 1, 1, ignoreIds);
+
+
             return PartialView(model);
+
         }
         #endregion
 
@@ -179,7 +202,7 @@ namespace Website.Controllers
         #region Action
 
 
-        public async Task<IActionResult> ReportCampaignAccount(int id,int campaignid)
+        public async Task<IActionResult> ReportCampaignAccount(int id, int campaignid)
         {
 
             var model = new ReportCampaignAccountViewModel()
@@ -197,7 +220,7 @@ namespace Website.Controllers
                 var r = await _campaignService.ReportCampaignAccount(CurrentUser.Id, model, CurrentUser.Username);
                 this.AddAlert(r);
             }
-            return RedirectToAction("Details", new { id = model.CampaignId, vt= "2" });
+            return RedirectToAction("Details", new { id = model.CampaignId, vt = "2" });
         }
 
 
@@ -291,7 +314,7 @@ namespace Website.Controllers
                 var r = await _campaignService.FeedbackCampaignAccountRefContent(CurrentUser.Id, campaignid, accountid, CurrentUser.Username, type, refContent);
                 if (r > 0)
                 {
-                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : type == 2 ? "Bạn đã cập nhật nội dung caption thành công" 
+                    this.AddAlertSuccess((type == 1) ? $"Bạn đã xác nhận thành công nội dung Caption." : type == 2 ? "Bạn đã cập nhật nội dung caption thành công"
                         : "Bạn đã yêu cầu sửa lại nội dung caption thành công");
 
 

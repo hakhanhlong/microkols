@@ -2,98 +2,46 @@
 
 @inject Website.Interfaces.IAccountService AccountService
 
-@{
-    var campaignId = (int)ViewBag.CampaignId;
-    var campaignType = (CampaignType)ViewBag.CampaignType;
+@if (Model == null)
+{
+    <div class="alert alert-danger">Hãy nhập số lượng Kol trong chiến dịch</div>
 }
+else
+{
+    @if (Model.Accounts.Count == 0)
+    {
+        <div class="alert alert-info">Không có thành viên phù hợp với chiến dịch</div>
+    }
+    else
+    {
+        var campaignId = (int)ViewBag.CampaignId;
+        var campaignType = (CampaignType)ViewBag.CampaignType;
+        var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
+        <div class="table-responsive" id="tblMatchedAccounts" data-renewurl="@ViewBag.RenewUrl">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Thành viên</th>
+                        @if (!accountTypes.Contains(AccountType.Regular))
+                        {
+                            <th width="200" class="text-center">Chi phí</th>
+                            <th width="50">
 
-<div class="modal-dialog modal-lg  modal-dialog-centered">
+                            </th>
+                        }
 
-    <div class="modal-content ">
-        <div class="modal-header">
-            <h5 class="modal-title">Thành viên</h5>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var account in Model.Accounts)
+                    {
+                        <partial name="_AccountItemPartial" model="account" />
+                    }
+
+                </tbody>
+            </table>
         </div>
-        <div class="modal-body">
+    }
 
-            @if (Model.Accounts.Count == 0)
-            {
-                <div class="alert alert-info">Không có thành viên phù hợp với chiến dịch</div>
-            }
-            else
-            {
-                foreach (var account in Model.Accounts)
-                { <form action="javascript:;" class="frm-requestjoin" data-action="@Url.Action("RequestAccountJoinCampaign")">
-
-                        <div class="media">
-                            <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="65">
-                            <div class="media-body">
-                                <h5 class="mt-0 h6">@account.Name @account.Type.ToBadge()</h5>
-
-
-
-                                @if (account.Type != AccountType.Regular)
-                                {
-
-                                    var chargeAmount = await AccountService.GetAcountChargeAmount(account.Id, campaignType);
-
-                                    <div class="input-group input-group-sm my-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Chi phí</span>
-                                        </div>
-                                        <input type="number" min="@chargeAmount" class="form-control form-chargeAmount" value="@chargeAmount" step="1000" name="amount" />
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">đ</span>
-                                        </div>
-                                    </div>
-                                }
-
-                                <div class="d-flex align-items-center">
-
-                                    <span data-toggle="tooltip" title="Lượt thích trung bình">
-                                        @account.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
-                                    </span>
-
-                                    <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
-
-                                        @account.AccountCounting.AvgShareCount <i class="fal fa-share"></i>
-                                    </span>
-
-
-                                    <span data-toggle="tooltip" title="Lượt bình luận trung bình">
-
-                                        @account.AccountCounting.AvgCommentCount <i class="fal fa-comment"></i>
-                                    </span>
-                                </div>
-
-                            </div>
-                            <div class="ml-4 d-flex flex-column">
-                                <button class="btn btn-outline-primary btn-sm btn-requestjoin" type="submit">
-                                    <i class="fal fa-plus"></i> Mời
-                                </button>
-
-                                <input type="hidden" name="campaignid" value="@campaignId" />
-                                <input type="hidden" name="accountid" value="@account.Id" />
-                                @if (account.Type != AccountType.Regular)
-                                {
-
-                                    <button class="btn btn-sm btn-outline-info mt-2">
-                                        Thay đổi
-                                    </button>
-                                }
-
-                            </div>
-
-
-                        </div>
-                        <hr />
-                    </form>
-                }
-            }
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-light btn-reload">Đóng</button>
-        </div>
-
-
-    </div>
-</div>
+}

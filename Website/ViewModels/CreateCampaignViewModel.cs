@@ -61,6 +61,7 @@ namespace Website.ViewModels
                 AccountChargeTime = AccountChargeTime ?? 1,
                 Code = code,
                 Quantity = Quantity,
+                DateStart = DateStart.ToViDateTime()
                 
                 
 
@@ -131,10 +132,17 @@ namespace Website.ViewModels
         public List<int> CategoryId { get; set; }
 
 
+        [Display(Name = "Tags")]
+        public bool EnabledTags { get; set; } = false;
+        [Display(Name = "Thêm Tags")]
+        public List<string> AccountTags { get; set; }
+
+
 
         [Display(Name = "Khu vực")]
         public bool EnabledCity { get; set; } = false;
 
+   
         
 
         [Display(Name = "Chọn khu vực")]
@@ -143,6 +151,12 @@ namespace Website.ViewModels
         [Display(Name = "Mã chiến dịch")]
         public string Code { get; set; }
 
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Ngày bắt đầu")]
+        public string DateStart { get; set; }
+
+
+        [Display(Name = "Phản hồi chậm nhất")]
         public string DateFeedback { get; set; }
         
 
