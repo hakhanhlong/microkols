@@ -1,4 +1,3 @@
-
 var App = (function () {
 
     function init() {
@@ -189,42 +188,8 @@ var App = (function () {
 })();
 
 
-var AppSettings = {
-    IsAuthenticated: false,
-    CurrentUser: {
-        Username: '',
-        Name: '',
-        Type: -1,
-        Balance: 0
-    },
-};
-
-
-var AppConstants = {
-    UrlUploadFile: "/home/uploadimage",
-    UrlGetAmount: "/wallet/GetAmount",
-    UrlRecharge: function (campaignid) {
-        if (!campaignid) {
-            campaignid = 0;
-        }
-        return "/wallet/Recharge?campaignid=" + campaignid;
-    },
-    UrlWithdraw: "/wallet/Withdraw",
-    UrlGetNotificationCount: "/Notification/Count",
-    UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
-    UrlGetNotification: "/Notification/IndexPartial",
-    UrlUploadTempImage: "/Home/UploadImage",
-
-    UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
-    UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
-    ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'
-
-};
-
-
-
-
 var AppCommon = {
+   
     loadScrollTop: function () {
         $(window).scroll(function () {
             if ($(this).scrollTop() > 500) {
@@ -238,7 +203,8 @@ var AppCommon = {
         });
 
     },
-    handlerBtnReload() {
+    
+    handlerBtnReload: function() {
         $('.btn-reload').click(function (e) {
             window.location = window.location;
         });
@@ -262,17 +228,20 @@ var AppCommon = {
         }
         xhr.send(formData);
     },
+  
     bindingWalletBalance: function () {
         $.get(AppConstants.UrlGetAmount, function (val) {
             $('.wallet-balance').html(AppCommon.moneyFormat(val));
             AppSettings.CurrentUser.Balance = val;
         });
     },
+    
     moneyFormat: function (input, n, x) {
         var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
 
         return input.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,') + ' đ';
     },
+  
     toggleAffix: function () {
 
         var toggleAffix = function (affixElement, scrollElement, wrapper) {
@@ -305,8 +274,40 @@ var AppCommon = {
             toggleAffix(ele, $(window), wrapper);
         });
     }
+ 
 };
 
+var AppConstants = {
+    UrlUploadFile: "/home/uploadimage",
+    UrlGetAmount: "/wallet/GetAmount",
+    UrlRecharge: function (campaignid) {
+        if (!campaignid) {
+            campaignid = 0;
+        }
+        return "/wallet/Recharge?campaignid=" + campaignid;
+    },
+    UrlWithdraw: "/wallet/Withdraw",
+    UrlGetNotificationCount: "/Notification/Count",
+    UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
+    UrlGetNotification: "/Notification/IndexPartial",
+    UrlUploadTempImage: "/Home/UploadImage",
+
+    UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
+    UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
+    ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'
+
+};
+
+
+var AppSettings = {
+    IsAuthenticated: false,
+    CurrentUser: {
+        Username: '',
+        Name: '',
+        Type: -1,
+        Balance: 0
+    },
+};
 
 var AppBsModal = (function () {
     var selectorId = '#appbsmodal';
@@ -366,6 +367,7 @@ var AppBsModal = (function () {
     };
 })();
 
+
 var AppNotification = (function () {
 
     var $notifCount = $('.nav-notif .badge');
@@ -411,11 +413,11 @@ var AppNotification = (function () {
 
     function updateNotificationChecked() {
         $.post(AppConstants.UrlUpdateNotificationChecked, function () {
-       
+
 
             $('.nav-notif .badge').hide();
             $('.nav-notif .badge').text('0');
-        });   
+        });
     }
     function getNotificationDropdown() {
 
@@ -431,6 +433,44 @@ var AppNotification = (function () {
     return {
         Init: init
     };
+})();
+
+
+var AppPayment = (function () {
+
+    function init() {
+        $('.btn-payment').click(function (e) {
+            e.preventDefault();
+            var campaignid = $(this).data('id');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(AppConstants.UrlAgencyPayment(campaignid));
+        });
+    }
+
+    function handlerPayment() {
+        $.validator.unobtrusive.parse($('#frmPayment'));
+        $('#frmPayment').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html);
+                });
+            }
+        });
+    }
+    function handlerMessage() {
+        AppCommon.handlerBtnReload();
+    }
+    return {
+        Init: init,
+        HandlerPayment: handlerPayment,
+        HandlerMessage: handlerMessage
+    };
+
 })();
 
 var AppWallet = (function () {
@@ -519,20 +559,53 @@ var AppWallet = (function () {
     };
 })();
 
-var AppPayment = (function () {
+
+var AccountDetailsCampaignPage = (function () {
 
     function init() {
-        $('.btn-payment').click(function (e) {
-            e.preventDefault();
-            var campaignid = $(this).data('id');
-            AppBsModal.Init('static');
-            AppBsModal.OpenRemoteModal(AppConstants.UrlAgencyPayment(campaignid));
-        });
-    }
 
-    function handlerPayment() {
-        $.validator.unobtrusive.parse($('#frmPayment'));
-        $('#frmPayment').submit(function (e) {
+
+        handler();
+    }
+    function handler() {
+        $('.btn-updateref').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerUpdateRef();
+            });
+        });
+
+
+        $('.btn-shareui').click(function () {
+            AppBsModal.Init('static');
+            AppBsModal.OpenModal('');
+            AppBsModal.ShowLoading();
+            var href = $(this).data('href');
+            var urlsubmit = $(this).data('urlsubmit');
+            //var caption = $(this).data('caption');
+
+            FB.ui(
+                {
+                    method: 'share',
+                    href: href
+                    //quote: caption,
+                },
+                function (response) {
+                    if (response && !response.error_message) {
+                        $.post(urlsubmit, function (html) {
+                            AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+                        });
+                    } else {
+                        AppBsModal.HideModal();
+                    }
+                });
+        });
+
+    }
+    function handlerUpdateRef() {
+        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
+        $('#frmUpdateCampaignAccountRef').submit(function (e) {
             e.preventDefault();
             var isvalid = $(this).valid();
             if (isvalid) {
@@ -540,74 +613,13 @@ var AppPayment = (function () {
                 var data = $(this).serialize();
                 AppBsModal.ShowLoading();
                 $.post(url, data, function (html) {
-                    AppBsModal.OpenModal(html);
+                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+
                 });
             }
         });
     }
-    function handlerMessage() {
-        AppCommon.handlerBtnReload();
-    }
-    return {
-        Init: init,
-        HandlerPayment: handlerPayment,
-        HandlerMessage: handlerMessage
-    };
 
-})();
-var ChangeAccountTypePage = (function () {
-
-    function init() {
-        handler();
-    }
-
-    function handler() {
-        var datas = $.parseJSON($('#modelHotMomData').html());
-        new Vue({
-            el: '#dataHotMom',
-            data: {
-                childrens: []
-            },
-            created() {
-                this.childrens = datas;
-            },
-            methods: {
-                createItem: function () {
-                    this.childrens.push({
-                        Gender: 1,
-                        Age: 0,
-                        AgeType: 2
-                    });
-                },
-                removeItem: function (idx) {
-                    this.data.splice(idx, 1);
-                }
-
-            }
-        });
-        handlerType();
-        $("input[name=Type]").change(function () {
-
-            handlerType();
-        });
-
-
-        $('.checkbox-ignorecampaigntype').change(function () {
-            var url = $(this).data('url');
-            $.post(url, function () { });
-
-        });
-
-    }
-
-    function handlerType() {
-        var type = $("input[name=Type]:checked").val();
-        if (type === 'HotMom') {
-            $('#dataHotMom').removeClass('d-none');
-        } else {
-            $('#dataHotMom').addClass('d-none');
-        }
-    }
     return {
         Init: init
     };
@@ -656,7 +668,7 @@ var AgencyCreateCampaignPage = (function () {
                 setTimeout(function () {
                     window.location = response.url;
                 }, 1000);
-                
+
 
             });
         });
@@ -773,7 +785,7 @@ var AgencyCreateCampaignPage = (function () {
     }
 
     function pricingCalculator() {
- 
+
         var type = $('#Type').val();
         var selectedOption = $('#Type').children('option:selected');
         var serviceprice = selectedOption.data('serviceprice');
@@ -816,7 +828,7 @@ var AgencyCreateCampaignPage = (function () {
 
             }
         }, 1000);
-       
+
 
     }
 
@@ -826,6 +838,7 @@ var AgencyCreateCampaignPage = (function () {
     };
 
 })();
+
 
 var AgencyDetailsCampaignPage = (function () {
 
@@ -908,71 +921,62 @@ var AgencyDetailsCampaignPage = (function () {
 
 })();
 
-
-var AccountDetailsCampaignPage = (function () {
+var ChangeAccountTypePage = (function () {
 
     function init() {
-
-
         handler();
     }
+
     function handler() {
-        $('.btn-updateref').click(function () {
-            var url = $(this).data('url');
-            AppBsModal.Init('static');
-            AppBsModal.OpenRemoteModal(url, function () {
-                handlerUpdateRef();
-            });
-        });
-
-
-        $('.btn-shareui').click(function () {
-            AppBsModal.Init('static');
-            AppBsModal.OpenModal('');
-            AppBsModal.ShowLoading();
-            var href = $(this).data('href');
-            var urlsubmit = $(this).data('urlsubmit');
-            //var caption = $(this).data('caption');
-
-            FB.ui(
-                {
-                    method: 'share',
-                    href: href
-                    //quote: caption,
+        /*
+        var datas = $.parseJSON($('#modelHotMomData').html());
+        
+        var vm = new Vue({
+            el: '#dataHotMom',
+            data: {
+                childrens: []
+            },
+            created() {
+                this.childrens = datas;
+            },
+            methods: {
+                createItem: function () {
+                    this.childrens.push({
+                        Gender: 1,
+                        Age: 0,
+                        AgeType: 2
+                    });
                 },
-                function (response) {
-                    if (response && !response.error_message) {
-                        $.post(urlsubmit, function (html) {
-                            AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
-                        });
-                    } else {
-                        AppBsModal.HideModal();
-                    }
-                });
-        });
+                removeItem: function (idx) {
+                    this.data.splice(idx, 1);
+                }
 
-    }
-    function handlerUpdateRef() {
-        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
-        $('#frmUpdateCampaignAccountRef').submit(function (e) {
-            e.preventDefault();
-            var isvalid = $(this).valid();
-            if (isvalid) {
-                var url = $(this).data('action');
-                var data = $(this).serialize();
-                AppBsModal.ShowLoading();
-                $.post(url, data, function (html) {
-                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
-
-                });
             }
         });
+        */
+        handlerType();
+        $("input[name=Type]").change(function () {
+
+            handlerType();
+        });
 
 
+        $('.checkbox-ignorecampaigntype').change(function () {
+            var url = $(this).data('url');
+            $.post(url, function () { });
 
+        });
 
     }
 
+    function handlerType() {
+        var type = $("input[name=Type]:checked").val();
+        if (type === 'HotMom') {
+            $('#dataHotMom').removeClass('d-none');
+        } else {
+            $('#dataHotMom').addClass('d-none');
+        }
+    }
     return {
         Init: init
     };
@@ -994,10 +998,27 @@ var HomeIndexPage = (function () {
             loop: true,
             autoWidth: true,
             items: 4
-        })
+        });
     }
     return {
         Init: init
     };
 
 })();
+$().ready(function () {
+    var appId = $('#FbAppId').val();
+    $.ajax({
+        type: "GET",
+        url: 'https://connect.facebook.net/en_US/sdk.js',
+        success: function () {
+            FB.init({
+                appId: appId,
+                version: 'v3.2'
+            });
+            App.Init();
+        },
+        dataType: "script",
+        cache: true
+    });
+});
+//App.Init();

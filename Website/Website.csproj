@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="Views\Shared\ViewComponent\" />
     <Folder Include="wwwroot\img\kols\" />
-    <Folder Include="wwwroot\build\" />
     <Folder Include="wwwroot\resources\account\2019\" />
     <Folder Include="wwwroot\resources\temp\" />
   </ItemGroup>

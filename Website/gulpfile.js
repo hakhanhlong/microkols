@@ -9,14 +9,16 @@ var gulp = require("gulp"),
     concat = require('gulp-concat');
 
 
+var jsDest = 'wwwroot/build/js';
+
 // other content removed
-gulp.task('pack-js', function () {
-    return gulp.src(['wwwroot/js/app.js', 'wwwroot/js/app.*.js'])
+gulp.task('js', function () {
+    return gulp.src(['wwwroot/js/app.js', 'wwwroot/js/common/*.js', 'wwwroot/js/modules/*.js', 'wwwroot/js/pages/*.js','wwwroot/js/site.js',])
         .pipe(concat('app.js'))
-        .pipe(gulp.dest('wwwroot/build/js'))
-        .pipe(rename('uglify.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('wwwroot/build/js'));
+        .pipe(gulp.dest(jsDest))
+        .pipe(rename('app.min.js'))
+        .pipe(uglify().on('error', console.error))
+        .pipe(gulp.dest(jsDest));
 });
 
 gulp.task("scss", function () {
@@ -27,4 +29,6 @@ gulp.task("scss", function () {
 
 gulp.task('watch', function () {
     gulp.watch('wwwroot/scss/*.scss', gulp.series('scss'));
+    gulp.watch('wwwroot/js/*.js', gulp.series('js'));
+    gulp.watch('wwwroot/js/*/*.js', gulp.series('js'));
 });
