@@ -83,10 +83,9 @@ namespace BackOffice.Business
             var queries = await _ITransactionRepository.ListAsync(filter);
 
             queries = (from q in queries
-                       from a in _IAccountRepository.ListAll()
-                       from w in _IWalletRepository.ListAll()
-                       where q.ReceiverId == w.Id && a.Id == w.EntityId && w.EntityType == EntityType.Account
-                       && accounttype.Contains(a.Type)
+                       from a in _IAccountRepository.ListAll().Where(a=>accounttype.Contains(a.Type))
+                       from w in _IWalletRepository.ListAll().Where(w=>w.EntityType == EntityType.Account)
+                       where q.ReceiverId == w.Id && a.Id == w.EntityId
                        select q).ToList();
 
 
@@ -202,7 +201,7 @@ namespace BackOffice.Business
                 //walletSender.Balance = walletSender.Balance - transactionAmount;
                 //walletSender.DateModified = DateTime.Now;
                 //_IWalletRepository.Update(walletSender);
-                newamount_sender = await _IWalletRepository.Exchange(senderid, 0 - transactionAmount, username);
+                newamount_sender = await _IWalletRepository.Exchange(walletSender.Id, 0 - transactionAmount, username);
 
 
 
@@ -212,7 +211,7 @@ namespace BackOffice.Business
                 //walletRecevier.Balance = walletRecevier.Balance + transactionAmount;
                 //walletRecevier.DateModified = DateTime.Now;
                 //_IWalletRepository.Update(walletRecevier);
-                newamount_receiver = await _IWalletRepository.Exchange(receiverid, transactionAmount, username);
+                newamount_receiver = await _IWalletRepository.Exchange(walletRecevier.Id, transactionAmount, username);
 
                 if (newamount_sender > 0 && newamount_receiver > 0)
                 {
@@ -221,7 +220,7 @@ namespace BackOffice.Business
                     await _ITransactionRepository.UpdateTransactionHistory(transactionid, walletSender.Id, 0 - transactionAmount, _old_sender_wallet_balance, _note);
                     //tạo transactionhistory cộng ví người nhận
                     _note = string.Format("{4} - Cộng ví người nhận: walletid = {0}, amount = {1}, _old_receiver_wallet_balance={2}, transactionId={3}", walletRecevier.Id, transactionAmount, _old_receiver_wallet_balance, transactionid, header_log);
-                    await _ITransactionRepository.UpdateTransactionHistory(transactionid, walletRecevier.Id, 0 - transactionAmount, _old_receiver_wallet_balance, _note);
+                    await _ITransactionRepository.UpdateTransactionHistory(transactionid, walletRecevier.Id, transactionAmount, _old_receiver_wallet_balance, _note);
 
                     retValue = 9;
                 }
