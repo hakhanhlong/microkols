@@ -128,7 +128,8 @@ namespace BackOffice.Controllers
                 {
                     foreach(var item in transaction.Transactions)
                     {
-                        if(_ITransactionBussiness.UpdateCashOut(item.Id) > 0)
+                        int retValue = _ITransactionBussiness.UpdateCashOut(item.Id);
+                        if (retValue > 0)
                         {
                             await _ITransactionBussiness.CalculateBalance(item.Id, item.Amount, item.ReceiverId, item.SenderId, "[Trả tiền mặt][AccountPayback]", HttpContext.User.Identity.Name);
                         }
@@ -265,8 +266,6 @@ namespace BackOffice.Controllers
                 catch { }
 
                 return File(reportBytes, XlsxContentType, string.Format("{0}{1}{2}_{3}{4}{5}_{6}.xlsx", startDate.Day, startDate.Month, startDate.Year, endDate.Day, endDate.Month, endDate.Year, type.ToString()));
-
-
 
 
 
