@@ -46,7 +46,7 @@ namespace Website.ViewModels
                 Description = Description,
                 Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
-                Status = CampaignStatus.WaitToConfirm,
+                Status = CampaignStatus.Created,
                 Title = Title,
                 UserCreated = username,
                 UserModified = username,

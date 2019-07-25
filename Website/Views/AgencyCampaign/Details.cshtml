@@ -24,37 +24,37 @@
 
             </div>
 
-            <div class="pt-2">
-                @if (Model.Status == CampaignStatus.WaitToConfirm || Model.Status == CampaignStatus.WaitToConfirm)
-                {
-                    <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Hủy chiến dịch</button>
+            @*<div class="pt-2">
+                    @if (Model.Status == CampaignStatus.Created)
+                    {
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Hủy chiến dịch</button>
 
 
-                    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form asp-action="UpdateCampaignStatus" method="post">
+                                        <div class="modal-body">
+                                            Bạn có chắc chắn muốn hủy chiến dịch?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                                            <input type="hidden" name="status" value="@CampaignStatus.Canceled" />
+                                            <input type="hidden" name="campaignid" value="@Model.Id" />
+                                        </div>
+                                    </form>
                                 </div>
-                                <form asp-action="UpdateCampaignStatus" method="post">
-                                    <div class="modal-body">
-                                        Bạn có chắc chắn muốn hủy chiến dịch?
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
-                                        <input type="hidden" name="status" value="@CampaignStatus.Canceled" />
-                                        <input type="hidden" name="campaignid" value="@Model.Id" />
-                                    </div>
-                                </form>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
+                    }
+                </div>*@
 
         </div>
     </div>
@@ -98,7 +98,7 @@
             @if (Model.DateStart.HasValue)
             {
                 <div>
-                    Ngày bắt đầu:  <span class="text-info">@Model.DateStart.Value.ToViDate()</span>
+                    Ngày bắt đầu:  <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span>
                 </div>
             }
 
@@ -108,14 +108,10 @@
                 <div>
                     Ngày kết thúc:
                     <span class="text-info">
-                        @Model.DateEnd.Value.ToViDate()
+                        @Model.DateEnd.Value.ToViDateTime()
                     </span>
-
                 </div>
             }
-
-
-
         </div>
         <div class="col-md-6">
             <div class="mb-2">
@@ -196,6 +192,28 @@
 
 </div>
 
+
+<div>
+    @if (Model.Payment.IsValidAccountCharge)
+    {
+
+        <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+
+    }
+    @if (Model.Status == CampaignStatus.Started)
+    {
+        <form asp-action="UpdateCampaignStatus" method="post" asp-controller="AgencyCampaign">
+            <button class="btn btn-primary">Kết thúc chiến dịch</button>
+            <input type="hidden" name="campaignid" value="@Model.Id" />
+            <input type="hidden" name="status" value="@CampaignStatus.Ended" />
+        </form>
+    }
+
+
+</div>
+
+
+
 <hr />
 
 @{
@@ -203,35 +221,23 @@
     {
         <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
     }
-    else if (Model.Status == CampaignStatus.WaitToConfirm)
-    {
-        <div class="alert alert-info">Hệ thống đang kiểm tra lại thông tin nạp tiền của quý khách. Quý khách sẽ nhận được thông báo tiếp tục thực hiện chiến dịch ngay khi hệ thống xác nhận việc nạp tiền</div>
-    }
-    else if (Model.Status == CampaignStatus.WaitToConfirm)
-    {
-        <partial name="_DetailsAddAccountPartial" model="Model" />
-    }
-    else if (Model.Status == CampaignStatus.Started)
+    else
     {
         var tab2Active = "2" == ViewBag.activedTab ? "active show" : "";
-        var tabActive = "2" == ViewBag.activedTab ? "" : "active show";
-        <div class="mb-2">
-            <form asp-action="UpdateCampaignStatus" method="post" asp-controller="AgencyCampaign">
-                <button class="btn btn-primary">Kết thúc chiến dịch</button>
-                <input type="hidden" name="campaignid" value="@Model.Id" />
-                <input type="hidden" name="status" value="@CampaignStatus.Ended" />
-            </form>
-        </div>
+        var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
+
+
         <ul class="nav nav-tabs" id="myTab" role="tablist">
+       
             <li class="nav-item">
-                <a class="nav-link @tabActive" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
+                <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link @tab2Active" data-toggle="tab" href="#tabReview">Theo dõi chiến dịch</a>
             </li>
         </ul>
         <div class="tab-content pt-3">
-            <div class="tab-pane fade   @tabActive" id="tabProcess">
+            <div class="tab-pane fade @tab1Active" id="tabProcess">
                 <partial name="_DetailsAccountsProcessPartial" model="Model" />
 
             </div>
@@ -239,10 +245,6 @@
                 <partial name="_DetailsAccountsReviewPartial" model="Model" />
             </div>
         </div>
-    }
-    else if (Model.Status == CampaignStatus.Ended || Model.Status == CampaignStatus.Completed)
-    {
-
     }
 }
 

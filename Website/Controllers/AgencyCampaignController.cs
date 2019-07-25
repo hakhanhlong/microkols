@@ -109,8 +109,8 @@ namespace Website.Controllers
                             {
 
                                 // tam thoi chua khac phuc dc loi tracking id
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm, CurrentUser.Username));
-                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm , CurrentUser.Name);
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.Created, CurrentUser.Username));
+                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.Created , CurrentUser.Name);
                                 return Json(new
                                 {
                                     status = 1,
@@ -162,7 +162,7 @@ namespace Website.Controllers
 
         #region Details
 
-        public async Task<IActionResult> Details(int id, string vt = "")
+        public async Task<IActionResult> Details(int id, string vt = "1")
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
             if (model == null) return NotFound();

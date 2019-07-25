@@ -32,7 +32,7 @@ namespace Core.Specifications
     public class CampaignByAccountSpecification : BaseSpecification<Campaign>
     {
         public CampaignByAccountSpecification(int accountid, string kw)
-          : base(m => m.CampaignAccount.Any(n=>n.AccountId == accountid) && (string.IsNullOrEmpty(kw) || m.Description.Contains(kw)))
+          : base(m => m.CampaignAccount.Any(n => n.AccountId == accountid) && (string.IsNullOrEmpty(kw) || m.Description.Contains(kw)))
         {
             AddInclude(m => m.CampaignOption);
             AddInclude(m => m.CampaignAccountType);
@@ -45,4 +45,16 @@ namespace Core.Specifications
             AddInclude(m => m.CampaignAccountType);
         }
     }
+
+    public class CampaignExpiredFeedbackTimeSpecification : BaseSpecification<Campaign>
+    {
+        public CampaignExpiredFeedbackTimeSpecification()
+          : base(m => m.Status == CampaignStatus.Created && m.AccountFeedbackBefore.HasValue && m.AccountFeedbackBefore.Value < DateTime.Now)
+        {
+        }
+
+
+    }
+
+
 }

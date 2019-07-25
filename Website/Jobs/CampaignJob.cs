@@ -71,6 +71,15 @@ namespace Website.Jobs
         public async Task UpdateCampaignAccountExpired()
         {
 
+           await _campaignService.UpdateCampaignAccountExpired();
+
+        }
+
+
+        public async Task UpdateCampaignAccountStart()
+        {
+
+
         }
     }
 }

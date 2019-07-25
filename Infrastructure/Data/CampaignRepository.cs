@@ -57,7 +57,7 @@ namespace Infrastructure.Data
             var account = await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == accountid && m.Actived);
             if (account == null) return new List<Campaign>();
 
-            var campaigns = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.WaitToConfirm
+            var campaigns = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Created
                 && !m.CampaignAccount.Any(n => n.AccountId == accountid)
                 && m.CampaignAccountType.Any(n=>n.AccountType == account.Type))
                 .Include(m => m.CampaignOption)

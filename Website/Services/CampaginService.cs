@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Models;
 using Core.Specifications;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -62,6 +63,7 @@ namespace Website.Services
 
             return campaignAccounts.Select(m => m.AccountId).ToList();
         }
+
         #endregion
 
         #region Campaign By Account
@@ -149,7 +151,7 @@ namespace Website.Services
                 Code = code,
                 AccountType = new List<AccountType>() { AccountType.Regular },
                 Quantity = 10,
-                
+
             };
         }
 
@@ -235,7 +237,7 @@ namespace Website.Services
                 }
 
             }
-            if (model.EnabledTags && model.AccountTags!= null && model.AccountTags.Count>0)
+            if (model.EnabledTags && model.AccountTags != null && model.AccountTags.Count > 0)
             {
                 foreach (var tag in model.AccountTags)
                 {
@@ -248,7 +250,7 @@ namespace Website.Services
                 }
             }
         }
-        
+
         private async Task CreateCampaignAccount(int campaignId, int accountid, string username)
         {
 
@@ -263,6 +265,50 @@ namespace Website.Services
         #endregion
 
         #region Campaign Account
+
+        
+        public async Task UpdateCampaignAccountExpired(int campaignid = 0,int agencyid = 0)
+        {
+            if (campaignid == 0)
+            {
+                var campaigns = await _campaignRepository.ListAsync(new CampaignExpiredFeedbackTimeSpecification());
+
+                foreach (var campaign in campaigns)
+                {
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignAccountExpired(campaign.Id, campaign.AgencyId));
+                }
+            }
+            else
+            {
+                var username = "bot";
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid, CampaignAccountStatus.AgencyRequest));
+                
+                foreach(var campaignAccount in campaignAccounts)
+                {
+                    campaignAccount.Status =  CampaignAccountStatus.Canceled;
+                    campaignAccount.DateModified = DateTime.Now;
+                    campaignAccount.UserModified = username;
+                    await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                    var notifType = NotificationType.AccountDeclineJoinCampaign;
+                    await _notificationRepository.AddAsync(new Notification()
+                    {
+                        Type = notifType,
+                        DataId = campaignid,
+                        Data = string.Empty,
+                        DateCreated = DateTime.Now,
+                        EntityType = EntityType.Agency,
+                        EntityId = agencyid,
+                        Message = notifType.GetMessageText(username, campaignid.ToString()),
+                        Status = NotificationStatus.Created
+                    });
+
+                }
+
+            }
+
+
+        }
 
         public async Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
         {
@@ -394,7 +440,7 @@ namespace Website.Services
         public async Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);
-            if(campaignAccount== null || campaignAccount.ReportStatus.HasValue)
+            if (campaignAccount == null || campaignAccount.ReportStatus.HasValue)
             {
                 return false;
             }
@@ -466,20 +512,20 @@ namespace Website.Services
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.WaitToConfirm && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.Created && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
                 }
-                if (status == CampaignStatus.WaitToConfirm && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.Created && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
                 }
 
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
                 }
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.WaitToConfirm)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
                 }
@@ -665,7 +711,7 @@ namespace Website.Services
             var status = type == 1 ? CampaignAccountStatus.ApprovedContent :
                 type == 2 ? CampaignAccountStatus.UpdatedContent : CampaignAccountStatus.DeclinedContent;
             campaignAccount.Status = status;
-            if(status== CampaignAccountStatus.UpdatedContent)
+            if (status == CampaignAccountStatus.UpdatedContent)
             {
                 campaignAccount.RefContent = newContent;
             }

@@ -148,7 +148,7 @@ namespace Website.Services
             _logger.LogInformation($"{logText} -> End -> {transactionStatus}|{transactionNote}");
             await _transactionRepository.UpdateTransactionStatus(transactionid, transactionStatus, transactionNote, username);
 
-            return new PaymentResultViewModel(PaymentResultErrorCode.KhongXacDinh);
+            return new PaymentResultViewModel(errorCode);
         }
 
 

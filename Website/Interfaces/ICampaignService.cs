@@ -10,6 +10,7 @@ namespace Website.Interfaces
 {
     public interface ICampaignService
     {
+        Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0);
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
         Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);

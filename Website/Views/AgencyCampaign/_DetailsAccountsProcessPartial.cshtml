@@ -2,7 +2,8 @@
 @inject Website.Interfaces.IAccountService AccountService
 @inject Website.Code.Helpers.IFacebookHelper FacebookHelper
 
-<table class="table table-bordered">
+
+<table class="table table-sm table-bordered">
     <thead>
         <tr>
             <th class="w-">
@@ -24,8 +25,6 @@
 
             </th>
         </tr>
-
-
     </thead>
     <tbody>
         @{ var stt = 0;}
@@ -105,7 +104,7 @@
                 <span class="text-info"> @campaignAccount.RefContent</span>
             </td>
             <td>
-                @campaignAccount.Status.ToBadge()
+                @campaignAccount.Status.ToAgencyBadge()
             </td>
             <td>
                 @*@if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
