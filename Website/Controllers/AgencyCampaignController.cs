@@ -62,7 +62,11 @@ namespace Website.Controllers
             {
                 if (model.AccountType == null || model.AccountType.Count == 0)
                 {
-                    error = "Hãy chọn đối tượng";
+                    error = "Hãy chọn đối tượng ";
+                }
+                else if (model.AccountIds == null || model.AccountIds.Count == 0 || model.AccountIds.Count != model.AccountChargeAmounts.Count)
+                {
+                    error = "Không có Kol phù hợp";
                 }
                 else
                 {
@@ -73,6 +77,22 @@ namespace Website.Controllers
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
+
+                        for (var i = 0; i < model.AccountIds.Count; i++)
+                        {
+                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[0];
+                            BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
+
+                        }
+                        return Json(new
+                        {
+                            status = 1,
+                            message = "Thêm chiến dịch mới thành công",
+                            campaignid = id,
+                        });
+
+
+                        /*
                         //this.AddAlertSuccess("Thêm chiến dịch mới thành công");
                         //return RedirectToAction("Details", new { id = id });
 
@@ -89,7 +109,7 @@ namespace Website.Controllers
                             {
 
                                 // tam thoi chua khac phuc dc loi tracking id
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm, CurrentUser.Name));
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm, CurrentUser.Username));
                                 //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.WaitToConfirm , CurrentUser.Name);
                                 return Json(new
                                 {
@@ -108,15 +128,10 @@ namespace Website.Controllers
                         }
                         else
                         {
-                            return Json(new
-                            {
-                                status = 1,
-                                message = "Thêm chiến dịch mới thành công",
-                                campaignid = id,
-                            });
+                         
                         }
                         //payment luon
-
+                        */
 
                     }
                     else

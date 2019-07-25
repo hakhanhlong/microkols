@@ -61,7 +61,9 @@ namespace Website.ViewModels
                 AccountChargeTime = AccountChargeTime ?? 1,
                 Code = code,
                 Quantity = Quantity,
-                DateStart = DateStart.ToViDateTime()
+                DateStart = DateStart.ToViDateTime(),
+                AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
+                CustomKolNames = CustomKolNames.ToListString()
                 
                 
 
@@ -156,11 +158,12 @@ namespace Website.ViewModels
         public string DateStart { get; set; }
 
 
-        [Display(Name = "Phản hồi chậm nhất")]
-        public string DateFeedback { get; set; }
-        
+        [Display(Name = "Phản hồi trước")]
+        public string FeedbackBefore { get; set; }
 
-        public List<string> CustomAccountNames { get; set; }
+
+        [Display(Name = "Kols mà bạn muốn hợp tác")]
+        public List<string> CustomKolNames { get; set; }
 
         public List<int> AccountIds { get; set; }
         public List<int> AccountChargeAmounts { get; set; }

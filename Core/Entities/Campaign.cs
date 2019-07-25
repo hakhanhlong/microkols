@@ -36,6 +36,11 @@ namespace Core.Entities
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+
+
+        public string CustomKolNames { get; set; }
+        public DateTime? AccountFeedbackBefore { get; set; }
+
         public int Quantity { get; set; }
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();

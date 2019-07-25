@@ -147,7 +147,9 @@ namespace Website.Services
             return new CreateCampaignViewModel()
             {
                 Code = code,
-                AccountType = new List<AccountType>() { AccountType.Regular }
+                AccountType = new List<AccountType>() { AccountType.Regular },
+                Quantity = 10,
+                
             };
         }
 
@@ -172,11 +174,8 @@ namespace Website.Services
             {
                 await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
                 await CreateCampaignOptions(campaign.Id, model, username);
-
                 return campaign.Id;
             }
-
-
 
             return -1;
         }
@@ -190,8 +189,8 @@ namespace Website.Services
                     CampaignId = campaignId
                 });
             }
-
         }
+
         private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
         {
             if (model.EnabledCity && model.CityId.HasValue)
@@ -236,6 +235,22 @@ namespace Website.Services
                 }
 
             }
+            if (model.EnabledTags && model.AccountTags!= null && model.AccountTags.Count>0)
+            {
+                foreach (var tag in model.AccountTags)
+                {
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.Tags,
+                        Value = tag
+                    });
+                }
+            }
+        }
+        
+        private async Task CreateCampaignAccount(int campaignId, int accountid, string username)
+        {
 
         }
 

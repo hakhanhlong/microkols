@@ -101,12 +101,20 @@
         var accouttype = $('input[name=AccountType]:checked').val();
 
         if (accouttype === 'Regular' || $('#suggestAccount').length == 0) {
-            $('#dateFeedbackWrap').addClass('d-none');
+            $('#dateFeedbackWrap,#customAccountNameWrap').addClass('d-none');
         } else {
 
-            $('#dateFeedbackWrap').removeClass('d-none');
+            $('#dateFeedbackWrap,#customAccountNameWrap').removeClass('d-none');
         }
 
+        if ($('#suggestAccount tr').length > 1) {
+            $('#actionWrap').removeClass('d-none');
+        } else {
+            $('#actionWrap').addClass('d-none');
+
+        }
+
+            
     }
 
     function handlerType() {
@@ -214,7 +222,7 @@
                 });
             });
         });
-        $('.cb-accountid').change('click');
+        $('.cb-accountid').unbind('click');
         $('.cb-accountid').change(function () {
             var $target = $(this).data('target');
             if ($(this).is(':checked')) {
