@@ -64,7 +64,7 @@
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
                 }
-            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,user_link' });
         });
 
         $('.btn-remotemodal').click(function () {

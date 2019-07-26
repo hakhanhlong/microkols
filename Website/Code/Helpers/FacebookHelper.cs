@@ -13,6 +13,7 @@ namespace Website.Code.Helpers
         string GetAvatarUrl(string facebookid);
         Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken);
         Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid, long since = 1514764800, int limit = 10000);
+        Task<AccountFbInfoViewModel> GetInfo(string accessToken, string fid);
         Task<FbExtendTokenViewModel> GetExtendToken(string accessToken);
 
     }
@@ -45,7 +46,7 @@ namespace Website.Code.Helpers
                 Name = (string)user.name,
                 Provider = Core.Entities.AccountProviderNames.Facebook,
                 AccessToken = accessToken,
-                Image = GetAvatarUrl((string) user.id)
+                Image = GetAvatarUrl((string) user.id),
 
             };
         }
@@ -63,6 +64,17 @@ namespace Website.Code.Helpers
 
             return result;
         }
+
+        public async Task<AccountFbInfoViewModel> GetInfo(string accessToken, string fid)
+        {
+
+            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}", $"fields=id,friends.limit(0),link");
+
+            return new AccountFbInfoViewModel(postResult);
+        }
+
+
+        
 
         public async Task<FbExtendTokenViewModel> GetExtendToken(string accessToken)
         {

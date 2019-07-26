@@ -20,6 +20,23 @@ namespace Website.ViewModels
         public List<AccountFbPostViewModel> Posts { get; set; }
         public PagerViewModel Pager { get; set; }
     }
+    public class AccountFbInfoViewModel
+    {
+        public AccountFbInfoViewModel()
+        {
+
+        }
+        public AccountFbInfoViewModel(dynamic obj)
+        {
+            try { Link = (string)obj.link; } catch { }
+
+
+            try { FriendsCount = (int)obj.friends.summary.total_count; } catch { }
+        }
+        public string Link { get; set; }
+
+        public int FriendsCount { get; set; }
+    }
     public class AccountFbPostViewModel
     {
 

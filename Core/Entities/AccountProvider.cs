@@ -15,7 +15,7 @@ namespace Core.Entities
         public string ProviderId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-
+        public string Link { get; set; }
         public int? FriendsCount { get; set; }
         public int? FollowersCount { get; set; }
 
