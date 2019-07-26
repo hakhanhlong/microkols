@@ -266,6 +266,7 @@ namespace Website.Services
 
         #region Campaign Account
 
+        public async Task UpdateCampaignStart
         
         public async Task UpdateCampaignAccountExpired(int campaignid = 0,int agencyid = 0)
         {
@@ -309,6 +310,7 @@ namespace Website.Services
 
 
         }
+
 
         public async Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
         {
@@ -512,19 +514,11 @@ namespace Website.Services
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignByAgencySpecification(agencyid, campaignid));
             if (campaign != null)
             {
-                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.Created && campaign.Status != CampaignStatus.Created)
-                {
-                    return -1;
-                }
-                if (status == CampaignStatus.Created && campaign.Status != CampaignStatus.Created)
+                if (status == CampaignStatus.Canceled && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
                 }
 
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
-                {
-                    return -1;
-                }
                 if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
                 {
                     return -1;
