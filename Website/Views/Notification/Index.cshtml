@@ -1,25 +1,54 @@
 ﻿@model List<NotificationViewModel>
-
-@if (Model != null && Model.Count > 0)
-{
-
-    foreach (var item in Model)
-    {
-
-        <div class="mb-2 pb-2 border-bottom">
-            <a href="@Url.GetNotificationUrl(item)">
-                @item.Message
-            </a>
-            <br />
-            <span class="text-muted small"> <i class="fal fa-clock"></i> @item.Date.ToTimeAgo()</span>
-        </div>
-
-    }
-
+@{
+    ViewData["Title"] = "Thông báo";
 }
-else
-{
-    <div class="alert alert-info">
-        Bạn chưa có thông báo!
+
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a asp-action="Index">Tài khoản</a></li>
+
+                </ol>
+
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
     </div>
 }
+
+
+<div class="mt-3">
+
+
+    @if (Model != null && Model.Count > 0)
+    {
+
+        foreach (var item in Model)
+        {
+
+            <div class="mb-2 pb-2 border-bottom">
+                <a href="@Url.GetNotificationUrl(item)">
+                    @item.Message
+                </a>
+                <br />
+                <span class="text-muted small"> <i class="fal fa-clock"></i> @item.Date.ToTimeAgo()</span>
+            </div>
+
+        }
+
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Bạn chưa có thông báo!
+        </div>
+    }
+</div>
