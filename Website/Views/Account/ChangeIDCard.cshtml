@@ -5,14 +5,31 @@
 
 
 
-<h2>@ViewBag.Title</h2>
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item "><a asp-action="Index">Tài khoản</a></li>
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
 
 <partial name="_SettingNavPartial" model="1" />
 <div class="tab-content mt-3">
     <div class="tab-pane fade show active">
 
 
-        <form method="post" asp-action="ChangeIDCard"  enctype="multipart/form-data">
+        <form method="post" asp-action="ChangeIDCard" enctype="multipart/form-data">
 
             <alert></alert>
 
@@ -57,8 +74,8 @@
 
                         <label asp-for="ImageFront" class="control-label"></label>
                         <input asp-for="ImageFront" type="hidden" />
-                        ​<div class="d-flex justify-content-center mb-1 border" >
-                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageFront)" class="img-fluid align-self-center img-ImageFront" alt="" >
+                        ​<div class="d-flex justify-content-center mb-1 border">
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageFront)" class="img-fluid align-self-center img-ImageFront" alt="">
 
                         </div>
 
@@ -81,7 +98,7 @@
 
                         <label asp-for="ImageBack" class="control-label"></label>
                         <input asp-for="ImageBack" type="hidden" />
-                        ​<div class="d-flex justify-content-center mb-1 border" >
+                        ​<div class="d-flex justify-content-center mb-1 border">
                             <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageBack)" class="img-fluid align-self-center img-ImageBack" alt="">
 
                         </div>
@@ -91,7 +108,7 @@
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input image-upload"
-                                       id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack"  />
+                                       id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack" />
                                 <label class="custom-file-label" for="uploadimg02">
                                     Chọn file
                                 </label>

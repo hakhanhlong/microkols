@@ -43,5 +43,7 @@ namespace Website.Interfaces
 
         Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username);
         Task<bool> UpdateCampaignAccountRating(int agencyid, UpdateCampaignAccountRatingViewModel model, string username);
+
+        Task<CampaignCounterViewModel> GetCampaignCounterByAccount(int accountid);
     }
 }

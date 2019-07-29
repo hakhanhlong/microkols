@@ -270,8 +270,8 @@ namespace Website.Services
         {
 
         }
-        
-        public async Task UpdateCampaignAccountExpired(int campaignid = 0,int agencyid = 0)
+
+        public async Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0)
         {
             if (campaignid == 0)
             {
@@ -286,10 +286,10 @@ namespace Website.Services
             {
                 var username = "bot";
                 var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid, CampaignAccountStatus.AgencyRequest));
-                
-                foreach(var campaignAccount in campaignAccounts)
+
+                foreach (var campaignAccount in campaignAccounts)
                 {
-                    campaignAccount.Status =  CampaignAccountStatus.Canceled;
+                    campaignAccount.Status = CampaignAccountStatus.Canceled;
                     campaignAccount.DateModified = DateTime.Now;
                     campaignAccount.UserModified = username;
                     await _campaignAccountRepository.UpdateAsync(campaignAccount);
@@ -438,6 +438,44 @@ namespace Website.Services
         }
 
 
+        #endregion
+
+
+        #region CampaignCounterViewModel
+
+        public async Task<CampaignCounterViewModel> GetCampaignCounterByAccount(int accountid)
+        {
+            var filter = new CampaignAccountByAccountSpecification(accountid, new List<CampaignAccountStatus>()
+            {
+                CampaignAccountStatus.Confirmed,
+                CampaignAccountStatus.SubmittedContent,
+                CampaignAccountStatus.DeclinedContent,
+                CampaignAccountStatus.ApprovedContent,
+                CampaignAccountStatus.UpdatedContent,
+                CampaignAccountStatus.Finished,
+            });
+            var filter2 = new CampaignAccountByAccountSpecification(accountid, new List<CampaignAccountStatus>()
+            {
+                CampaignAccountStatus.SubmittedContent,
+                CampaignAccountStatus.DeclinedContent,
+                CampaignAccountStatus.ApprovedContent,
+                CampaignAccountStatus.UpdatedContent,
+            });
+
+            var filter3 = new CampaignAccountByAccountSpecification(accountid, new List<CampaignAccountStatus>()
+            {
+                CampaignAccountStatus.Finished,
+            });
+
+            return new CampaignCounterViewModel()
+            {
+                Total = await _campaignAccountRepository.CountAsync(filter),
+                TotalProcess = await _campaignAccountRepository.CountAsync(filter2),
+                TotalFinished = await _campaignAccountRepository.CountAsync(filter3),
+            };
+
+
+        }
         #endregion
 
         #region Action

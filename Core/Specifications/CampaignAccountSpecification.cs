@@ -34,6 +34,10 @@ namespace Core.Specifications
         {
         }
     }
+
+
+
+
     public class ConfirmedCampaignAccountSpecification : BaseSpecification<CampaignAccount>
     {
         public ConfirmedCampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid 
@@ -50,6 +54,12 @@ namespace Core.Specifications
             : base(m => m.CampaignId == campaignid && m.AccountId == accountid)
         {
             AddInclude(m => m.Account);
+        }
+
+        public CampaignAccountByAccountSpecification(int accountid, IEnumerable<CampaignAccountStatus> arrStatus)
+          : base(m => arrStatus.Contains(m.Status) && m.AccountId == accountid)
+        {
+
         }
     }
 

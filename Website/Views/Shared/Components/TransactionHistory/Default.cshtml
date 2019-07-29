@@ -1,0 +1,64 @@
+﻿@model ListTransactionHistoryViewModel
+
+<div class="card">
+
+
+    <div class="card-header d-flex">
+        <div class="mr-auto">
+            Lịch sửa giao dịch
+        </div>
+    </div>
+    <div class="card-body">
+
+        @*<div class="mb-3">
+            <form method="get" action="#">
+                <div class="input-group">
+
+                    <input type="text" name="daterange" autocomplete="off" class="form-control form-daterangepicker" value="@ViewBag.DateRange" />
+
+                    <div class="input-group-append">
+
+
+                        <button type="submit" class="btn btn-outline-secondary">
+                            <i class="fal fa-search"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+        </div>*@
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th>Mã giao dịch</th>
+                        <th>Số tiền</th>
+                        <th>Còn lại</th>
+                        <th>Nội dung</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.TransactionHistories)
+                    {
+                        var textcolor = item.Amount >= 0 ? "text-success" : "text-danger";
+                        var textsyl = item.Amount > 0 ? "+" : "";
+                        <tr>
+                            <td>@item.Code</td>
+                            <td class="@textcolor">@textsyl @item.Amount.ToPriceText()</td>
+                            <td class="text-primary">@item.Balance.ToPriceText()</td>
+                            <td><a asp-action="Details" asp-controller="AccountCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a> </td>
+                        </tr>
+                    }
+                </tbody>
+                @*<tfoot>
+                        <tr>
+                            <td colspan="3"></td>
+                        </tr>
+                    </tfoot>*@
+            </table>
+        </div>
+
+    </div>
+
+</div>

@@ -127,6 +127,17 @@
 
         });
 
+        $('.form-daterangepicker').daterangepicker({
+           
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+            var years = moment().diff(start, 'years');
+
+        });
+
+        
         //$('.form-datepicker').daterangepicker({
         //    "singleDatePicker": true,
         //    "showWeekNumbers": true,

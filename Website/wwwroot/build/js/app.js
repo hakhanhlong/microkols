@@ -127,6 +127,21 @@ var App = (function () {
 
         });
 
+        $('.form-daterangepicker').daterangepicker({
+           
+            autoUpdateInput: false,
+            autoApply: true,
+            showDropdowns: true,
+            //startDate: "01/01/2000",
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+            var years = moment().diff(start, 'years');
+
+        });
+
+        
         //$('.form-datepicker').daterangepicker({
         //    "singleDatePicker": true,
         //    "showWeekNumbers": true,
