@@ -59,7 +59,7 @@ namespace Infrastructure.Data
 
             var campaigns = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Created
                 && !m.CampaignAccount.Any(n => n.AccountId == accountid)
-                && m.CampaignAccountType.Any(n=>n.AccountType == account.Type))
+                && m.CampaignAccountType.Any(n => n.AccountType == account.Type))
                 .Include(m => m.CampaignOption)
                 .Include(m => m.CampaignAccount)
                 .Include(m => m.CampaignAccountType)
@@ -182,6 +182,54 @@ namespace Infrastructure.Data
         }
 
 
+        public async Task<IQueryable<Campaign>> QueryCampaignByAccount(int accountid, int type, string keyword)
+        {
+
+            /*
+               public CampaignByAccountSpecification(int accountid, string kw)
+          : base(m => m.CampaignAccount.Any(n => n.AccountId == accountid) && (string.IsNullOrEmpty(kw) || m.Description.Contains(kw)))
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccountType);
+        }
+             */
+
+            var query = _dbContext.CampaignAccount.Where(m => m.AccountId == accountid);
+
+
+
+
+            if (type == 1)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.AccountRequest);
+            }
+            else if (type == 2)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.Confirmed || m.Status == CampaignAccountStatus.SubmittedContent
+                || m.Status == CampaignAccountStatus.DeclinedContent || m.Status == CampaignAccountStatus.ApprovedContent);
+
+            }
+            else if (type == 3)
+            {
+
+                query = query.Where(m => m.Status == CampaignAccountStatus.UpdatedContent || m.Status == CampaignAccountStatus.Finished);
+
+            }
+            else if (type == 4)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.Canceled);
+            }
+            var campaignids = query.Select(m => m.CampaignId).Distinct();
+
+
+            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id));
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                queryCampaign = queryCampaign.Where(m => m.Code.Contains(keyword) || m.Description.Contains(keyword));
+            }
+            return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
+        }
 
         public int CountAll()
         {

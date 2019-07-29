@@ -5,6 +5,7 @@ using Core.Interfaces;
 using Core.Models;
 using Core.Specifications;
 using Hangfire;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -67,11 +68,17 @@ namespace Website.Services
         #endregion
 
         #region Campaign By Account
-        public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, string keyword, int page, int pagesize)
+        public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, int type, string keyword, int page, int pagesize)
         {
-            var filter = new CampaignByAccountSpecification(accountid, keyword);
-            var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
-            var total = await _campaignRepository.CountAsync(filter);
+            
+            var query = await _campaignRepository.QueryCampaignByAccount(accountid, type, keyword);
+
+            var total = await query.CountAsync();
+            var campaigns = await query.OrderByDescending(m=>m.Id).GetPagedAsync(page, pagesize);
+
+            //var filter = new CampaignByAccountSpecification(accountid, keyword);
+            //var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
+            //var total = await _campaignRepository.CountAsync(filter);
 
 
             var list = new List<CampaignWithAccountViewModel>();

@@ -88,7 +88,7 @@ namespace Website.Jobs
 
                 if (type == 2)
                 {
-                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid, string.Empty, 1, 100);
+                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid,0, string.Empty, 1, 100);
                     var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
 
 

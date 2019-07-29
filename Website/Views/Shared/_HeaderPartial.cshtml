@@ -108,10 +108,10 @@
                     else if (CurrentUser.Type == EntityType.Account)
                     {
                         @*<li class="nav-item">
-                            <a class="nav-link" asp-action="Index" asp-controller="Account">
-                                <i class="fal fa-tachometer-alt"></i> Trang chủ
-                            </a>
-                        </li>*@
+                <a class="nav-link" asp-action="Index" asp-controller="Account">
+                    <i class="fal fa-tachometer-alt"></i> Trang chủ
+                </a>
+            </li>*@
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Index" asp-controller="Notification">
                                 <i class="fal fa-bell"></i> Thông báo
@@ -126,6 +126,11 @@
                         <li class="nav-item ">
                             <a class="nav-link" asp-controller="AccountCampaign" asp-action="Index">
                                 <i class="fal fa-object-group"></i>  Chiến dịch
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="Account" asp-action="ChangeAccountType">
+                                <i class="fal fa-cogs"></i>  Cấu hình
                             </a>
                         </li>
                         <li class="nav-item ">

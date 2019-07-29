@@ -25,7 +25,7 @@ namespace Website.Interfaces
 
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
 
-        Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, string keyword, int page, int pagesize);
+        Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid,int type, string keyword, int page, int pagesize);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id);
 
 
