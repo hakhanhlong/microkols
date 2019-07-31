@@ -10,5 +10,8 @@ namespace BackOffice.Business.Interfaces
     {
         Task<AccountViewModel> GetAccount(int id);
         ListAccountViewModel GetListAccount(int pageindex, int pagesize);
+
+        ListAccountViewModel Search(string keyword, int type ,int pageindex, int pagesize);
+
     }
 }

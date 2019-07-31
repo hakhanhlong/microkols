@@ -51,5 +51,10 @@ namespace BackOffice.Business
                 Pager = new PagerViewModel(pageindex, pagesize, total)
             };
         }
+
+        public ListAccountViewModel Search(string keyword, int type, int pageindex, int pagesize)
+        {
+            return new ListAccountViewModel();
+        }
     }
 }
