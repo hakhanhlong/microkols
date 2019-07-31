@@ -89,7 +89,6 @@
             <span asp-validation-for="Type"></span>
         </div>
 
-
     </div>
 
     <div class="form-group row">
@@ -155,16 +154,19 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="ml-4 d-flex">
-                            @if (accountType == AccountType.Regular)
-                            {
-                                <label asp-for="AccountChargeAmount" class="mb-0"></label>
+                        <div class="ml-4 d-withRegular d-none">
+                            <div class="d-flex ">
+                                @if (accountType == AccountType.Regular)
+                                {
+                                    <label asp-for="AccountChargeAmount" class="mb-0"></label>
+                                    <div class="pl-2" id="editAccountPriceWrap">
+                                        <span></span>
+                                        <input type="number" class="form-control " asp-for="AccountChargeAmount" />
+                                    </div>
+                                }
 
-                                <div class="pl-2" id="editAccountPriceWrap">
-                                    <span></span>
-                                    <input type="number" class="form-control " asp-for="AccountChargeAmount" />
-                                </div>
-                            }
+                            </div>
+                           
                         </div>
                     </div>
                 }
@@ -241,7 +243,7 @@
                     <div id="collapseEnabledCity" class="collapse">
 
 
-                        <select asp-for="CityId" class="form-control form-select2 ">
+                        <select asp-for="CityId" multiple class="form-control form-select2 ">
                             @foreach (var city in cities)
                             {
                                 <option value="@city.Id">@city.Name</option>
@@ -294,43 +296,66 @@
 
     <div class="form-group row">
         <label asp-for="Quantity" class="col-md-2 col-form-label"></label>
-        <div class="col-md-10">
-            <input type="number" asp-for="Quantity" min="0" class="form-control w-25" />
+        <div class="col-md-2">
+
+            
+
+            <input type="number" asp-for="Quantity" min="0" class="form-control" />
             <span asp-validation-for="Description"></span>
         </div>
-    </div>
-    <hr />
+        <div class="col-md-8 d-none d-withoutRegular">
+            <div class="row">
 
-    <div class="form-group row">
-
-        <label class="col-md-2 col-form-label">Danh sách Kols phù hợp</label>
-        <div class="col-md-10">
-            <div class="mb-2">
-                <button type="button" class="btn btn-success btn-success btn-suggestaccount btn-sm"> <i class="fal fa-search-plus"></i> Tìm kiếm</button>
-            </div>
-
-            <div id="suggestAccount" data-url="@Url.Action("MatchedAccount")">
-
-
+                <label class="col-md-3 col-form-label">Chi phí tối thiểu</label>
+                <div class="col-md-3">
+                    <input type="number" id="amountMin" value="0" min="0" step="10000" class="form-control" />
+                </div>
+                <label class="col-md-3 col-form-label">Chi phí tối đa</label>
+                <div class="col-md-3">
+                    <input type="number" id="amountMax" value="100000000" min="0" max="@int.MaxValue" step="10000" class="form-control" />
+                </div>
             </div>
         </div>
-
+        
     </div>
 
-    <div class="form-group row d-none" id="customAccountNameWrap">
-        <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
-        <div class="col-md-10">
-            <select asp-for="CustomKolNames" multiple class="form-control form-select2-tags"></select>
+    <div class="d-none d-withoutRegular">
 
-            <span asp-validation-for="CustomKolNames"></span>
+        <hr />
+
+        <div class="form-group row">
+
+            <label class="col-md-2 col-form-label">Danh sách Kols phù hợp</label>
+            <div class="col-md-10">
+                <div class="mb-2">
+                    <button type="button" class="btn btn-success btn-success btn-suggestaccount btn-sm"> <i class="fal fa-search-plus"></i> Tìm kiếm</button>
+                </div>
+
+                <div id="suggestAccount" data-url="@Url.Action("MatchedAccount")">
+
+
+                </div>
+            </div>
+
         </div>
-    </div>
-    <div class="form-group row d-none" id="dateFeedbackWrap">
-        <label asp-for="FeedbackBefore" class="col-md-2 col-form-label"></label>
-        <div class="col-md-10">
-            <input type="text" class="form-control form-datetimepicker" asp-for="FeedbackBefore" />
-            <span asp-validation-for="FeedbackBefore"></span>
+
+        <div class="form-group row d-none" id="customAccountNameWrap">
+            <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
+            <div class="col-md-10">
+                <select asp-for="CustomKolNames" multiple class="form-control form-select2-tags"></select>
+
+                <span asp-validation-for="CustomKolNames"></span>
+            </div>
         </div>
+        <div class="form-group row d-none" id="dateFeedbackWrap">
+            <label asp-for="FeedbackBefore" class="col-md-2 col-form-label"></label>
+            <div class="col-md-10">
+                <input type="text" class="form-control form-datetimepicker" asp-for="FeedbackBefore" />
+                <span asp-validation-for="FeedbackBefore"></span>
+            </div>
+        </div>
+
+
     </div>
     <hr />
 

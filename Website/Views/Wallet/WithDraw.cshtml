@@ -3,8 +3,6 @@
 
 @{
     var amount = (long)ViewBag.Amount;
-    var bankAccount = (ChangeBankAccountViewModel)ViewBag.BankAccount;
-    var bankAccountInvalid = bankAccount != null && !string.IsNullOrEmpty(bankAccount.Bank);
 }
 
 
@@ -16,8 +14,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        @if (bankAccountInvalid)
-        {
+    
             <form method="post" action="javascript:;" data-action="@Url.Action("WithDraw","Wallet")" id="frmWithDraw">
 
 
@@ -28,10 +25,40 @@
                     </div>
 
 
+
                     <div class="form-group">
                         <label asp-for="Amount"></label>
-                        <input type="text" asp-for="Amount" class="form-control" min="1000" max="@amount" />
+                        <input type="number" asp-for="Amount" class="form-control" min="10000" max="@amount" />
                         <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+
+                    <h6>Thông tin tài khoản</h6>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Name"></label>
+                                <input type="text" asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Number"></label>
+                                <input type="text" asp-for="Number" class="form-control" />
+                                <span asp-validation-for="Number" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Bank"></label>
+                                <input type="text" asp-for="Bank" class="form-control" />
+                                <span asp-validation-for="Bank" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Branch"></label>
+                                <input type="text" asp-for="Branch" class="form-control" />
+                                <span asp-validation-for="Branch" class="text-danger"></span>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -39,35 +66,13 @@
                         <textarea asp-for="Note" class="form-control"></textarea>
                         <span asp-validation-for="Note" class="text-danger"></span>
                     </div>
-                    <div class="alert alert-info">
-                        <h5>Tài khoản nhận</h5>
-                        <p>
-                            Tài khoản: <span class="text-primary">@bankAccount.Name</span> <br />
-                            Số Tài khoản: <span class="text-primary">@bankAccount.Number</span> <br />
-                            Ngân hàng: <span class="text-primary">@bankAccount.Bank</span> <br />
-                            Chi nhánh: <span class="text-primary">@bankAccount.Branch</span>
-                        </p>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
-                    <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
+                    <input type="submit" value="Gửi yêu cầu rút tiền" class="btn btn-submit btn-primary" />
                 </div>
             </form>
-        }
-        else
-        {
-
-            <div class="modal-body">
-                <div class="alert alert-danger">
-                    Bạn chưa cập nhật tài khoản ngân hàng. Vui lòng cập nhật thông tin tài khoản <a class="text-primary" asp-action="ChangeBankAccount" asp-controller="Account">tại đây</a>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
-            </div>
-        }
+     
 
     </div>
 </div>

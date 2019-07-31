@@ -1,0 +1,92 @@
+﻿@model ListAccountViewModel
+@inject Website.Interfaces.IAccountService AccountService
+
+@{
+    var min = (int)ViewBag.Min;
+    var max = (int)ViewBag.Max;
+    var campaignType = (CampaignType)ViewBag.CampaignType;
+    var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
+}
+
+
+
+@foreach (var account in Model.Accounts)
+{
+    var chargeAmount = 0;
+
+    var isvalid = true;
+
+    if (!accountTypes.Contains(AccountType.Regular))
+    {
+        chargeAmount = await AccountService.GetAcountChargeAmount(account.Id, campaignType);
+        if (min > 0)
+        {
+            if (chargeAmount < min)
+            {
+                isvalid = false;
+            }
+        }
+        if (isvalid && max > 0)
+        {
+            if (chargeAmount > max)
+            {
+                isvalid = false;
+            }
+        }
+    }
+
+    if (isvalid)
+    {
+        <tr>
+            <td>
+                <div class="d-flex  align-items-center">
+                    <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32">
+                    <div class="mr-3 font-weight-normal">@account.Name </div>
+
+                    <div class="small">
+                        <span data-toggle="tooltip" title="Lượt thích trung bình">
+                            @account.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
+                        </span>
+
+                        <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
+
+                            @account.AccountCounting.AvgShareCount <i class="fal fa-share"></i>
+                        </span>
+
+
+                        <span data-toggle="tooltip" title="Lượt bình luận trung bình">
+                            @account.AccountCounting.AvgCommentCount <i class="fal fa-comment"></i>
+                        </span>
+                    </div>
+                </div>
+                @if (accountTypes.Contains(AccountType.Regular))
+                {
+                    <input type="hidden" name="AccountChargeAmounts" value="0" />
+                    <input type="hidden" name="AccountIds" value="@account.Id" class="form-accountid" />
+                }
+            </td>
+            @if (!accountTypes.Contains(AccountType.Regular))
+            {
+                <td>
+                    <div class="input-group input-group-sm">
+                        <input type="number" min="@chargeAmount" class="form-control" max="@int.MaxValue"
+                               value="@chargeAmount" step="10000" name="AccountChargeAmounts" />
+                        <div class="input-group-append">
+                            <span class="input-group-text">đ</span>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    @{
+                        var cbid = $"cbAccount{account.Id}";
+                        var tbid = $"tbAccount{account.Id}";
+                    }
+                    <input type="hidden" name="AccountIds" id="@tbid" value="@account.Id" class="form-accountid" />
+                    <button type="button" class="btn btn-info btn-sm btn-renewaccount"><i class="fal fa-redo"></i> Đổi</button>
+
+                </td>
+            }
+
+        </tr>
+    }
+}

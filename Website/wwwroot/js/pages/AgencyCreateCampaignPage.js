@@ -49,6 +49,10 @@
             handlerType();
         });
 
+        handlerAccountType();
+        $('input[name=AccountType]').change(function () {
+            handlerAccountType();
+        });
 
 
         /*
@@ -71,6 +75,8 @@
 
     }
     function createCampaign(callback) {
+
+
         var $frm = $('#frmCreateCampaign');
 
         console.log('createCampaign');
@@ -99,18 +105,22 @@
 
     function handlerAccountType() {
         var accouttype = $('input[name=AccountType]:checked').val();
-
-        if (accouttype === 'Regular' || $('#suggestAccount').length == 0) {
-            $('#dateFeedbackWrap,#customAccountNameWrap').addClass('d-none');
-        } else {
-
-            $('#dateFeedbackWrap,#customAccountNameWrap').removeClass('d-none');
-        }
-
-        if ($('#suggestAccount tr').length > 1) {
+        console.log('accouttype', accouttype);
+        if (accouttype === 'Regular') {
+            $('.d-withoutRegular').addClass('d-none');
             $('#actionWrap').removeClass('d-none');
+            $('.d-withRegular').removeClass('d-none');
         } else {
-            $('#actionWrap').addClass('d-none');
+
+            $('.d-withoutRegular').removeClass('d-none');
+            $('.d-withRegular').addClass('d-none');
+
+            if ($('#suggestAccount tr').length > 1) {
+                $('#actionWrap').removeClass('d-none');
+            } else {
+
+                $('#actionWrap').addClass('d-none');
+            }
 
         }
 
@@ -191,6 +201,10 @@
         urlparams += '&campaignType=' + $('#Type').val();
 
 
+        urlparams += '&min=' + $('#amountMin').val();
+        urlparams += '&max=' + $('#amountMax').val();
+
+
         console.log('urlparams', urlparams);
 
         $('#suggestAccount').html(AppConstants.HtmlSpinner);
@@ -208,7 +222,7 @@
         $('.btn-renewaccount').click(function () {
             var $tr = $(this).closest('tr');
             var ignoreids = '';
-            $('.cb-accountid').each(function () {
+            $('.form-accountid').each(function () {
                 ignoreids += '&ignoreids=' + $(this).val();
             }).promise().done(function () {
 
@@ -222,16 +236,6 @@
                 });
             });
         });
-        $('.cb-accountid').unbind('click');
-        $('.cb-accountid').change(function () {
-            var $target = $(this).data('target');
-            if ($(this).is(':checked')) {
-                $($target).val($(this).val());
-            } else {
-
-                $($target).val(0);
-            }
-        })
 
         handlerAccountType();
     }

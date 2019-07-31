@@ -134,7 +134,7 @@ namespace Website.Controllers
 
                 if (r > 0)
                 {
-                    ViewBag.Success = "Yêu cầu rút tiền đã được gửi. Vui lòng chờ quản trị nạp tạo giao dịch tài khoản của bạn.";
+                    ViewBag.Success = "Yêu cầu rút tiền đã được gửi. Vui lòng chờ quản trị duyệt giao dịch.";
                     return PartialView("WithDrawMessage");
                 }
                 else if (r == -2)

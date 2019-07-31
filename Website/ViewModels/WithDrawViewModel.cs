@@ -14,6 +14,23 @@ namespace Website.ViewModels
 
         [Display(Name="Ghi chú")]
         public string Note { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tài khoản")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Số tài khoản")]
+        public string Number { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Ngân hàng")]
+        public string Bank { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Chi nhánh")]
+        public string Branch { get; set; }
     }
 
 

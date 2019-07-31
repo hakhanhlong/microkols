@@ -13,7 +13,7 @@ namespace Website.Interfaces
         Task<AccountCountingViewModel> GetAccountCounting(int accountid);
         Task<List<int>> GetActivedAccountIds();
         Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
-                    string order, int page, int pagesize, IEnumerable<int> ignoreIds);
+                    string order, int page, int pagesize, IEnumerable<int> ignoreIds, int min, int max);
 
         Task<bool> ChangeAvatar(int id, ChangeAvatarViewModel model);
         Task<bool> ChangeContact(int id, ChangeContactViewModel model, string username);
