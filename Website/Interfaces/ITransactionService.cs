@@ -11,5 +11,7 @@ namespace Website.Interfaces
     {
         Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username);
         Task<int> CreateTransaction(EntityType entityType, int entityId, WithDrawViewModel model, string username);
+
+        Task<ListTransactionHistoryViewModel> GetTransactionHistoryByAccount(int accountid, string daterange, int page, int pagesize);
     }
 }

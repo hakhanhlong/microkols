@@ -10,6 +10,7 @@ namespace Website.Interfaces
 {
     public interface ICampaignService
     {
+        Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0);
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
         Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
@@ -24,7 +25,7 @@ namespace Website.Interfaces
 
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
 
-        Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, string keyword, int page, int pagesize);
+        Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid,int type, string keyword, int page, int pagesize);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id);
 
 
@@ -42,5 +43,7 @@ namespace Website.Interfaces
 
         Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username);
         Task<bool> UpdateCampaignAccountRating(int agencyid, UpdateCampaignAccountRatingViewModel model, string username);
+
+        Task<CampaignCounterViewModel> GetCampaignCounterByAccount(int accountid);
     }
 }

@@ -36,6 +36,11 @@ namespace Core.Entities
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
+
+
+        public string CustomKolNames { get; set; }
+        public DateTime? AccountFeedbackBefore { get; set; }
+
         public int Quantity { get; set; }
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
@@ -53,7 +58,7 @@ namespace Core.Entities
     public enum CampaignStatus
     {
         [DisplayName("Chờ phê duyệt")]
-        WaitToConfirm = 1,
+        Created = 1,
         [DisplayName("Bắt đầu")]
         Started = 2,
         [DisplayName("Kết thúc")]

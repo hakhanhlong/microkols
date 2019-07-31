@@ -5,5 +5,6 @@ namespace Website.Jobs
     public interface ICampaignJob
     {
         Task UpdateCompletedCampagin(int campaignid = 0);
+        Task UpdateCampaignAccountExpired();
     }
 }

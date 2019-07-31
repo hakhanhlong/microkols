@@ -1,0 +1,54 @@
+﻿@model ChangeBankAccountViewModel
+
+@{ 
+    var isValid = (Model != null && !string.IsNullOrEmpty(Model.Name));
+    var isEditValid = Model != null && (DateTime.Now.Day > 16 || DateTime.Now.Day < 5);
+}
+    <div class="card">
+   
+
+        <div class="card-header d-flex">
+            <div class="mr-auto">
+                Thông tin tài khoản
+            </div>
+            <div>
+
+                @if (isEditValid)
+                {
+                    <a asp-action="ChangeBankAccount" asp-controller="Account" class="badge badge-primary">Thay đổi</a>
+                }
+
+            </div>
+        </div>
+        <div class="card-body">
+
+            @if (isValid)
+            {
+
+
+
+                <div class="row">
+                    <div class="col-4">Tài khoản</div>
+                    <div class="col-6 text-primary">@Model.Name</div>
+                </div>
+                <div class="row">
+                    <div class="col-4">Số tài khoản</div>
+                    <div class="col-6 text-primary">@Model.Number</div>
+                </div>
+                <div class="row">
+                    <div class="col-4">Ngân hàng</div>
+                    <div class="col-6 text-primary">@Model.Bank</div>
+                </div>
+                <div class="row">
+                    <div class="col-4">Chi nhánh</div>
+                    <div class="col-6 text-primary">@Model.Branch</div>
+                </div>
+
+            }
+            else
+            {
+                <div class="alert alert-info">Bạn chưa cập nhật thông tin tài khaorn ngân hàng. Vui lòng cập nhật <a asp-action="ChangeBankAccount" asp-controller="Account"> tại đây</a></div>
+            }
+        </div>
+
+    </div>

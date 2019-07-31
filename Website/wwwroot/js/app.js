@@ -64,7 +64,7 @@
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
                 }
-            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,user_link' });
         });
 
         $('.btn-remotemodal').click(function () {
@@ -93,18 +93,51 @@
         });
 
         $('.form-select2').select2({ theme: "bootstrap4" });
+        $('.form-select2-tags').select2({
+            theme: "bootstrap4",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
 
+
+        
         $('.form-datepicker').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
+            autoApply: true,
+            //autoUpdateInput: false,
             //startDate: "01/01/2000",
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+
+        $('.form-datetimepicker').daterangepicker({
+            singleDatePicker: true,
+            //autoUpdateInput: false,
+            timePicker: true,
+            autoApply: 'true',
+            showDropdowns: true,
+            //startDate: "01/01/2000",
+            locale: {
+                format: 'hh:mm DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+                var years = moment().diff(start, 'years');
+
+        });
+
+        $('.form-daterangepicker').daterangepicker({
+           
             locale: {
                 format: 'DD/MM/YYYY'
             }
         }, function (start, end, label) {
             var years = moment().diff(start, 'years');
+
         });
 
+        
         //$('.form-datepicker').daterangepicker({
         //    "singleDatePicker": true,
         //    "showWeekNumbers": true,

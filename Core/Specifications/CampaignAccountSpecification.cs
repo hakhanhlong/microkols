@@ -29,11 +29,19 @@ namespace Core.Specifications
         public CampaignAccountByAgencySpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
         }
-        
+
+        public CampaignAccountByAgencySpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)
+        {
+        }
     }
+
+
+
+
     public class ConfirmedCampaignAccountSpecification : BaseSpecification<CampaignAccount>
     {
-        public ConfirmedCampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid && m.Status != CampaignAccountStatus.AccountRequest && m.Status != CampaignAccountStatus.AgencyRequest)
+        public ConfirmedCampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid 
+        && m.Status != CampaignAccountStatus.AccountRequest && m.Status != CampaignAccountStatus.AgencyRequest)
         {
         }
 
@@ -47,5 +55,14 @@ namespace Core.Specifications
         {
             AddInclude(m => m.Account);
         }
+
+        public CampaignAccountByAccountSpecification(int accountid, IEnumerable<CampaignAccountStatus> arrStatus)
+          : base(m => arrStatus.Contains(m.Status) && m.AccountId == accountid)
+        {
+
+        }
     }
+
+    
+
 }

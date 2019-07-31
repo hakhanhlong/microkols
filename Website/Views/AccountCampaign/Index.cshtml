@@ -25,17 +25,20 @@
     </div>
 }
 
+@{ 
+    var type = ViewBag.Type!= null ? (int)ViewBag.Type :  0;
+    var arrType = new string[] { "Tất cả","Chiến dịch mới", "Đang thực hiện", "Đã thực hiện", "Đã hủy" };
+}
 
-<ul class="nav nav-tabs nav-linetabs">
-    <li class="nav-item">
-        <a class="nav-link active" asp-action="Index">Chiến dịch đã tham gia</a>
-    </li>
+    <ul class="nav nav-tabs nav-linetabs">
+        @for (var i = 0; i < arrType.Length; i++)
+        {
+            <li class="nav-item">
+                <a class="nav-link @(type== i? "active":"")" asp-action="Index" asp-route-type="@i">@arrType[i]</a>
+            </li>
+        }
 
-    <li class="nav-item">
-        <a class="nav-link" asp-action="Index">Tìm kiếm chiến dịch phù hợp</a>
-    </li>
-
-</ul>
+    </ul>
 
 
 
@@ -68,7 +71,6 @@
 
             </div>
         </div>
-
         <div class="row">
             @foreach (var item in Model.Campaigns)
             {

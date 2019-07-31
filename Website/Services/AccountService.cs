@@ -128,7 +128,7 @@ namespace Website.Services
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
-
+                        
 
                     };
                     await _accountRepository.AddAsync(account);
@@ -144,7 +144,8 @@ namespace Website.Services
                     Provider = model.Provider,
                     ProviderId = model.ProviderId,
                     AccessToken = model.AccessToken,
-                    Expired = DateTime.Now.AddHours(1)
+                    Expired = DateTime.Now.AddHours(1),
+                    Link  = string.Empty
                 };
                 await _accountProviderRepository.AddAsync(accountprovider);
 
@@ -152,6 +153,7 @@ namespace Website.Services
             }
             else
             {
+
                 return await GetAuth(accountprovider.AccountId);
             }
         }
@@ -349,6 +351,29 @@ namespace Website.Services
             await _accountProviderRepository.AddAsync(accountprovider);
             return 2;
         }
+
+
+        public async Task<bool> UpdateAccountProviderInfo(int accountproviderid, string link, int friendscount, string username)
+        {
+            if(accountproviderid== 5)
+            {
+
+            }
+            var accountprovider = await _accountProviderRepository.GetByIdAsync(accountproviderid);
+            if (accountprovider != null)
+            {
+                accountprovider.Link = link;
+                accountprovider.FriendsCount = friendscount;
+
+                await _accountProviderRepository.UpdateAsync(accountprovider);
+                return true;
+            }
+            return false;
+
+         
+        }
+
+
         #endregion
 
         #region Register
@@ -676,6 +701,7 @@ namespace Website.Services
 
         public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType)
         {
+
             var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
             var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
 

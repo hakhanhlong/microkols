@@ -34,11 +34,11 @@ namespace Website.Code.Extensions
         public static HtmlString ToBadge(this Core.Entities.CampaignStatus status)
         {
             var type = "primary";
-            if(status== CampaignStatus.Canceled )
+            if (status == CampaignStatus.Canceled)
             {
                 type = "dark";
             }
-            else if ( status == CampaignStatus.Error)
+            else if (status == CampaignStatus.Error)
             {
                 type = "danger";
             }
@@ -61,11 +61,11 @@ namespace Website.Code.Extensions
         public static HtmlString ToBadge(this Core.Entities.AccountType accountType)
         {
             var type = "primary";
-            if(accountType== AccountType.Regular)
+            if (accountType == AccountType.Regular)
             {
                 type = "light";
             }
-            else 
+            else
             {
                 type = "info";
             }
@@ -83,8 +83,13 @@ namespace Website.Code.Extensions
             {
                 type = "info";
             }
+            var text = status.ToDisplayName();
+            if (status == CampaignAccountStatus.AgencyRequest)
+            {
+                text = "Chờ thành viên phản hồi";
+            }
 
-            return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+            return new HtmlString($"<span class='badge badge-{type}'>{text}</span>");
         }
 
         public static HtmlString ToBadge(this Core.Entities.CampaignAccountStatus status)
@@ -101,6 +106,7 @@ namespace Website.Code.Extensions
 
             return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
         }
+
 
         public static HtmlString ToIcon(this bool published)
         {
@@ -194,10 +200,10 @@ namespace Website.Code.Extensions
         NotificationType.AgencyCancelAccountJoinCampaign,
         NotificationType.AccountDeclineJoinCampaign,
             };
-            if(campaignNotifTypes.Contains(model.Type))
+            if (campaignNotifTypes.Contains(model.Type))
             {
 
-                if(model.EntityType== EntityType.Account)
+                if (model.EntityType == EntityType.Account)
                 {
                     return urlHelper.Action("Details", "AccountCampaign", new { id = model.DataId });
                 }

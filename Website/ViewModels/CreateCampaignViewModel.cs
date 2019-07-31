@@ -46,7 +46,7 @@ namespace Website.ViewModels
                 Description = Description,
                 Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
                 Published = true,
-                Status = CampaignStatus.WaitToConfirm,
+                Status = CampaignStatus.Created,
                 Title = Title,
                 UserCreated = username,
                 UserModified = username,
@@ -61,6 +61,9 @@ namespace Website.ViewModels
                 AccountChargeTime = AccountChargeTime ?? 1,
                 Code = code,
                 Quantity = Quantity,
+                DateStart = DateStart.ToViDateTime(),
+                AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
+                CustomKolNames = CustomKolNames.ToListString()
                 
                 
 
@@ -131,10 +134,17 @@ namespace Website.ViewModels
         public List<int> CategoryId { get; set; }
 
 
+        [Display(Name = "Tags")]
+        public bool EnabledTags { get; set; } = false;
+        [Display(Name = "Thêm Tags")]
+        public List<string> AccountTags { get; set; }
+
+
 
         [Display(Name = "Khu vực")]
         public bool EnabledCity { get; set; } = false;
 
+   
         
 
         [Display(Name = "Chọn khu vực")]
@@ -143,10 +153,17 @@ namespace Website.ViewModels
         [Display(Name = "Mã chiến dịch")]
         public string Code { get; set; }
 
-        public string DateFeedback { get; set; }
-        
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Ngày bắt đầu")]
+        public string DateStart { get; set; }
 
-        public List<string> CustomAccountNames { get; set; }
+
+        [Display(Name = "Phản hồi trước")]
+        public string FeedbackBefore { get; set; }
+
+
+        [Display(Name = "Kols mà bạn muốn hợp tác")]
+        public List<string> CustomKolNames { get; set; }
 
         public List<int> AccountIds { get; set; }
         public List<int> AccountChargeAmounts { get; set; }

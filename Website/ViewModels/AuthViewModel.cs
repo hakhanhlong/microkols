@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Common.Extensions;
+using System.Security.Principal;
+
 namespace Website.ViewModels
 {
     public class AuthViewModel
@@ -74,10 +76,6 @@ namespace Website.ViewModels
                 Roles = new List<string>() // not get roles ,
             };
         }
-
-
-
-
 
     }
 }

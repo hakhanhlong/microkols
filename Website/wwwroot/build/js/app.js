@@ -64,7 +64,7 @@ var App = (function () {
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
                 }
-            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,user_link' });
         });
 
         $('.btn-remotemodal').click(function () {
@@ -93,9 +93,44 @@ var App = (function () {
         });
 
         $('.form-select2').select2({ theme: "bootstrap4" });
+        $('.form-select2-tags').select2({
+            theme: "bootstrap4",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
 
+
+        
         $('.form-datepicker').daterangepicker({
             singleDatePicker: true,
+            showDropdowns: true,
+            autoApply: true,
+            //autoUpdateInput: false,
+            //startDate: "01/01/2000",
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+
+        $('.form-datetimepicker').daterangepicker({
+            singleDatePicker: true,
+            //autoUpdateInput: false,
+            timePicker: true,
+            autoApply: 'true',
+            showDropdowns: true,
+            //startDate: "01/01/2000",
+            locale: {
+                format: 'hh:mm DD/MM/YYYY'
+            }
+        }, function (start, end, label) {
+                var years = moment().diff(start, 'years');
+
+        });
+
+        $('.form-daterangepicker').daterangepicker({
+           
+            autoUpdateInput: false,
+            autoApply: true,
             showDropdowns: true,
             //startDate: "01/01/2000",
             locale: {
@@ -103,8 +138,10 @@ var App = (function () {
             }
         }, function (start, end, label) {
             var years = moment().diff(start, 'years');
+
         });
 
+        
         //$('.form-datepicker').daterangepicker({
         //    "singleDatePicker": true,
         //    "showWeekNumbers": true,
@@ -294,8 +331,8 @@ var AppConstants = {
 
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
-    ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>'
-
+    ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>',
+    HtmlSpinner: '<div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div>'
 };
 
 
@@ -630,19 +667,7 @@ var AgencyCreateCampaignPage = (function () {
 
     function init() {
         handler();
-        handlerType();
-        $('#Type').change(function () {
-            handlerType();
-        });
-
-        $('#campaignOptions .form-option').change(function () {
-
-            pricingCalculator();
-
-        });
     }
-
-
 
     function handler() {
         $('#dataImageFile').change(function () {
@@ -684,6 +709,31 @@ var AgencyCreateCampaignPage = (function () {
             });
         });
 
+        handlerType();
+        $('#Type').change(function () {
+            handlerType();
+        });
+
+
+
+        /*
+        $('#frmCreateCampaign input,#frmCreateCampaign select').change(function () {
+            console.log('input change');
+          
+            pricingCalculator();
+        });
+        */
+
+        $('#campaignOptions .form-option').change(function () {
+            pricingCalculator();
+        });
+
+
+        $('.btn-suggestaccount').click(function () {
+
+            suggestAccount();
+        });
+
     }
     function createCampaign(callback) {
         var $frm = $('#frmCreateCampaign');
@@ -710,6 +760,26 @@ var AgencyCreateCampaignPage = (function () {
             });
 
         }
+    }
+
+    function handlerAccountType() {
+        var accouttype = $('input[name=AccountType]:checked').val();
+
+        if (accouttype === 'Regular' || $('#suggestAccount').length == 0) {
+            $('#dateFeedbackWrap,#customAccountNameWrap').addClass('d-none');
+        } else {
+
+            $('#dateFeedbackWrap,#customAccountNameWrap').removeClass('d-none');
+        }
+
+        if ($('#suggestAccount tr').length > 1) {
+            $('#actionWrap').removeClass('d-none');
+        } else {
+            $('#actionWrap').addClass('d-none');
+
+        }
+
+            
     }
 
     function handlerType() {
@@ -751,8 +821,10 @@ var AgencyCreateCampaignPage = (function () {
 
         pricingCalculator();
     }
-    function loadAccounts() {
 
+    function suggestAccount() {
+
+        var url = $('#suggestAccount').data('url');
         var urlparams = '';
 
         var accountType = $('input[name=AccountType]:checked').val();
@@ -779,9 +851,54 @@ var AgencyCreateCampaignPage = (function () {
                 urlparams += '&categoryid=' + categoryids[i];
             }
         }
+
         urlparams += '&pagesize=' + $('#Quantity').val();
+        urlparams += '&campaignType=' + $('#Type').val();
+
+
         console.log('urlparams', urlparams);
 
+        $('#suggestAccount').html(AppConstants.HtmlSpinner);
+        $.get(url + '?' + urlparams, function (html) {
+            $('#suggestAccount').html(html);
+
+            handlerSuggestAccount();
+        });
+    }
+
+    function handlerSuggestAccount() {
+
+        var renewUrl = $('#tblMatchedAccounts').data('renewurl');
+        $('.btn-renewaccount').unbind('click');
+        $('.btn-renewaccount').click(function () {
+            var $tr = $(this).closest('tr');
+            var ignoreids = '';
+            $('.cb-accountid').each(function () {
+                ignoreids += '&ignoreids=' + $(this).val();
+            }).promise().done(function () {
+
+                $.get(renewUrl + ignoreids, function (html) {
+                    if (html.length < 100) {
+                        $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
+                    } else {
+                        $tr.replaceWith(html);
+                        handlerSuggestAccount();
+                    }
+                });
+            });
+        });
+        $('.cb-accountid').unbind('click');
+        $('.cb-accountid').change(function () {
+            var $target = $(this).data('target');
+            if ($(this).is(':checked')) {
+                $($target).val($(this).val());
+            } else {
+
+                $($target).val(0);
+            }
+        })
+
+        handlerAccountType();
     }
 
     function pricingCalculator() {

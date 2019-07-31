@@ -5,7 +5,25 @@
 
 
 
-<h2>@ViewBag.Title</h2>
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item "><a asp-action="Index">Tài khoản</a></li>
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
 
 <partial name="_SettingNavPartial" model="0" />
 <div class="tab-content mt-3">
@@ -38,15 +56,15 @@
 
                 <div>
                     @foreach (var item in genderArr)
-                        {
-                            var radioId = $"genderRadio{item}";
+                    {
+                        var radioId = $"genderRadio{item}";
                         <div class="custom-control custom-radio custom-control-inline">
                             <input type="radio" id="@radioId" name="Gender" class="custom-control-input" value="@item" @(Model != null && item == Model.Gender ? "checked" : "")>
                             <label class="custom-control-label" for="@radioId">@item.ToDisplayName()</label>
                         </div>
                     }
-                    </div>
-               
+                </div>
+
                 <span asp-validation-for="Gender"></span>
             </div>
             @{

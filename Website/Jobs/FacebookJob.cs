@@ -88,7 +88,7 @@ namespace Website.Jobs
 
                 if (type == 2)
                 {
-                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid, string.Empty, 1, 100);
+                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid,0, string.Empty, 1, 100);
                     var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
 
 
@@ -128,5 +128,35 @@ namespace Website.Jobs
         #endregion
 
 
+        #region Update Facebook Info
+        public async Task UpdateFbInfo()
+        {
+            var accountIds = await _accountService.GetActivedAccountIds();
+
+            foreach (var accountId in accountIds)
+            {
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbInfo(accountId));
+            }
+        }
+
+        public async Task UpdateFbInfo(int accountid)
+        {
+            if(accountid== 5)
+            {
+
+            }
+            var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
+            if (accountProvider != null)
+            {
+
+                var info = await _facebookHelper.GetInfo(accountProvider.AccessToken, accountProvider.ProviderId);
+                if(info!= null)
+                {
+                    await _accountService.UpdateAccountProviderInfo(accountProvider.Id, info.Link, info.FriendsCount, "bot");
+                }
+            }
+        }
+
+        #endregion
     }
 }

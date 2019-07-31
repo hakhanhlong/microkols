@@ -107,9 +107,20 @@
                     }
                     else if (CurrentUser.Type == EntityType.Account)
                     {
+                        @*<li class="nav-item">
+                <a class="nav-link" asp-action="Index" asp-controller="Account">
+                    <i class="fal fa-tachometer-alt"></i> Trang chủ
+                </a>
+            </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Notification">
+                                <i class="fal fa-bell"></i> Thông báo
+                            </a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Index" asp-controller="Account">
-                                <i class="fal fa-tachometer-alt"></i> Trang chủ
+                                <i class="fal fa-user"></i> Tài khoản
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -117,9 +128,14 @@
                                 <i class="fal fa-object-group"></i>  Chiến dịch
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link wallet-withdraw" href="#">
-                                <i class="fal fa-coins"></i> Rút tiền
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="Account" asp-action="ChangeAccountType">
+                                <i class="fal fa-cogs"></i>  Cấu hình
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">
+                                <i class="fal fa-sticky-note"></i>  Quan trọng
                             </a>
                         </li>
                     }

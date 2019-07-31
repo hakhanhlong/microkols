@@ -10,6 +10,7 @@ var gulp = require("gulp"),
 
 
 var jsDest = 'wwwroot/build/js';
+var cssDest = 'wwwroot/build/css';
 
 // other content removed
 gulp.task('js', function () {
@@ -24,7 +25,10 @@ gulp.task('js', function () {
 gulp.task("scss", function () {
     return gulp.src('wwwroot/scss/app.scss')
         .pipe(sass())
-        .pipe(gulp.dest('wwwroot/css'));
+        .pipe(gulp.dest(cssDest))
+        .pipe(rename('app.min.css'))
+        .pipe(cssnano())
+        .pipe(gulp.dest(cssDest));
 });
 
 gulp.task('watch', function () {

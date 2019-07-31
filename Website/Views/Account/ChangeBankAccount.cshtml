@@ -4,8 +4,26 @@
 }
 
 
+@section Top{
 
-<h2>@ViewBag.Title</h2>
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item "><a asp-action="Index">Tài khoản</a></li>
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
 
 <partial name="_SettingNavPartial" model="2" />
 <div class="tab-content mt-3">

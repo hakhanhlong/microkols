@@ -9,5 +9,8 @@ namespace Website.Jobs
 
         Task UpdateFbPost();
         Task UpdateFbPost(int accountid, string username, int type = 1);
+
+        Task UpdateFbInfo();
+        Task UpdateFbInfo(int accountid);
     }
 }

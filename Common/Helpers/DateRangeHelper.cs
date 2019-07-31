@@ -71,5 +71,12 @@ namespace Common.Helpers
 
             return range;
         }
+
+
+        public static DateRange? GetDateRange(string input)
+        {
+
+            return null;
+        }
     }
 }

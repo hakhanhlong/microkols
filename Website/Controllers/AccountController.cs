@@ -37,6 +37,8 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
+
+            ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
             return View();
         }
 

@@ -1,6 +1,32 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Điều khoản & Quy định";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a asp-action="Index">Nội dung</a></li>
+
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<div class="my-3">
+    <p>Điều khoản & Quy định sử dụng dịch vụ.</p>
+    <p>
+        Bao gồm các điều khoản của hệ thống với doanh nghiệp và người dùng. Hiển thị với cả doanh nghiệp và người dùng
+    </p>
+</div>

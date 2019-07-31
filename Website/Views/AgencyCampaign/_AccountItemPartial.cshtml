@@ -1,4 +1,68 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model AccountViewModel
+
+@inject Website.Interfaces.IAccountService AccountService
+@{
+
+    var campaignType = (CampaignType)ViewBag.CampaignType;
+    var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
+}
+<tr>
+    <td>
+        <div class="d-flex  align-items-center">
+            <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(Model.Avatar)" width="32">
+            <div class="mr-3 font-weight-normal">@Model.Name </div>
+
+            <div class="small">
+                <span data-toggle="tooltip" title="Lượt thích trung bình">
+                    @Model.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
+                </span>
+
+                <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
+
+                    @Model.AccountCounting.AvgShareCount <i class="fal fa-share"></i>
+                </span>
+
+
+                <span data-toggle="tooltip" title="Lượt bình luận trung bình">
+                    @Model.AccountCounting.AvgCommentCount <i class="fal fa-comment"></i>
+                </span>
+            </div>
+        </div>
+        @if (accountTypes.Contains(AccountType.Regular))
+        {
+            <input type="hidden" name="AccountChargeAmounts" value="0" />
+            <input type="hidden" name="AccountIds" value="@Model.Id" />
+        }
+    </td>
+    @if (!accountTypes.Contains(AccountType.Regular))
+    {
+        var chargeAmount = await AccountService.GetAcountChargeAmount(Model.Id, campaignType);
+
+
+        <td>
+            <div class="input-group input-group-sm">
+                <input type="number" min="@chargeAmount" class="form-control" max="@int.MaxValue"
+                       value="@chargeAmount" step="10000" name="AccountChargeAmounts" />
+                <div class="input-group-append">
+                    <span class="input-group-text">đ</span>
+                </div>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-info btn-renewaccount"><i class="fal fa-redo"></i></button>
+                </div>
+            </div>
+        </td>
+        <td>
+            @{
+                var cbid = $"cbAccount{Model.Id}";
+                var tbid = $"tbAccount{Model.Id}";
+            }
+            <input type="hidden" name="AccountIds" id="@tbid" value="@Model.Id" />
+
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input cb-accountid" id="@cbid" data-target="#@tbid" value="@Model.Id" checked />
+                <label class="custom-control-label" for="@cbid"></label>
+            </div>
+        </td>
+    }
+
+</tr>
