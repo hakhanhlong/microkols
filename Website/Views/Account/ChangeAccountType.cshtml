@@ -4,7 +4,7 @@
 
     var ignoreCampaignTypes = (List<CampaignType>)ViewBag.IgnoreCampaignTypes;
 
-    var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>().AsEnumerable();
+    var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>().Where(m => m != AccountType.All);
 
     if (Model.Type == AccountType.Regular)
     {
@@ -18,47 +18,52 @@
 }
 
 @section Scripts {
-    <script type="text/javascript">
 
-        $().ready(function () {
+    @if (Model.Type == AccountType.HotMom)
+    {
 
-            var datas = $.parseJSON($('#modelHotMomData').html());
+        <script type="text/javascript">
 
-            var vm = new Vue({
-                el: '#dataHotMom',
-                data: {
-                    childrens: []
-                },
-                created() {
-                    this.childrens = datas;
-                },
-                methods: {
-                    createItem: function () {
-                        this.childrens.push({
-                            Gender: 1,
-                            Age: 0,
-                            AgeType: 2
-                        });
+            $().ready(function () {
+
+                var datas = $.parseJSON($('#modelHotMomData').html());
+
+                var vm = new Vue({
+                    el: '#dataHotMom',
+                    data: {
+                        childrens: []
                     },
-                    removeItem: function (idx) {
-                        this.data.splice(idx, 1);
+                    created() {
+                        this.childrens = datas;
+                    },
+                    methods: {
+                        createItem: function () {
+                            this.childrens.push({
+                                Gender: 1,
+                                Age: 0,
+                                AgeType: 2
+                            });
+                        },
+                        removeItem: function (idx) {
+                            this.data.splice(idx, 1);
+                        }
+
                     }
-
-                }
+                });
             });
-        });
-    </script>
-    @*<script type="text/template">
-            <select class="form-control" name="HotMomData.Gender">
-                <option value="@Gender.Male">@Gender.Male.ToDisplayName()</option>
-                <option value="@Gender.Female">@Gender.Female.ToDisplayName()</option>
-            </select>
+        </script>
+        @*<script type="text/template">
+                <select class="form-control" name="HotMomData.Gender">
+                    <option value="@Gender.Male">@Gender.Male.ToDisplayName()</option>
+                    <option value="@Gender.Female">@Gender.Female.ToDisplayName()</option>
+                </select>
 
-            <input type="number" name="HotMomData.Age" class="form-control" />
-        </script>*@
-    <script type="text/template" id="modelHotMomData">
-        @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HotMomData))
-    </script>
+                <input type="number" name="HotMomData.Age" class="form-control" />
+            </script>*@
+        <script type="text/template" id="modelHotMomData">
+            @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HotMomData))
+        </script>
+    }
 }
 
 @section Top{
@@ -176,6 +181,21 @@
 
                             <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
                             <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
+                        </div>
+
+                        <div class="col-md-2">
+                            @{
+                                var switchid = $"switch{accountCampaignCharge.Type}";
+                                var ischecked = ignoreCampaignTypes.Contains(accountCampaignCharge.Type);
+                                var checkedstr = ischecked ? "" : "checked=checked";
+                            }
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr
+                                       data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = accountCampaignCharge.Type, removed = !ischecked})" />
+                                <label class="custom-control-label" for="@switchid">Đồng ý</label>
+                            </div>
+
+
                         </div>
                     </div>
 

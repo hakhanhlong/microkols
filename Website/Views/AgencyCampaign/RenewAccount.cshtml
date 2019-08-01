@@ -1,8 +1,5 @@
 ﻿@model ListAccountViewModel
 @if (Model != null && Model.Accounts.Count == 1)
 {
-    foreach (var account in Model.Accounts)
-    {
-        <partial name="_AccountItemPartial" model="account" />
-    }
+    <partial name="_MatchedAccountsPartial" model="Model" />
 }

@@ -60,16 +60,39 @@ namespace Website.Controllers
             var error = "";
             if (ModelState.IsValid)
             {
+                if (model.AccountType.Contains(AccountType.Regular))
+                {
+
+                    //generate accountids
+
+                    var matchedAccountIds = new List<int>();
+                    var matchedAccountChargeAmounts = new List<int>();
+                    var matchedAccounts = await _accountService.GetListAccount(model.AccountType, model.CategoryId, model.Gender, model.CityId, model.AgeStart, model.AgeEnd, string.Empty, 1, model.Quantity, null, 0, 0);
+
+                    foreach (var matchedAccount in matchedAccounts.Accounts)
+                    {
+                        matchedAccountIds.Add(matchedAccount.Id);
+                        matchedAccountChargeAmounts.Add(0);
+                    }
+                    model.AccountIds = matchedAccountIds;
+                    model.AccountChargeAmounts = matchedAccountChargeAmounts;
+                }
+
+
+
                 if (model.AccountType == null || model.AccountType.Count == 0)
                 {
                     error = "Hãy chọn đối tượng ";
                 }
                 else if (model.AccountIds == null || model.AccountIds.Count == 0 || model.AccountIds.Count != model.AccountChargeAmounts.Count)
                 {
-                    error = "Không có Kol phù hợp";
+                    error = "Không có Kol phù hợp. Vui lòng chộn các tiêu chí khác";
                 }
                 else
                 {
+
+
+
                     if (!string.IsNullOrEmpty(model.Image))
                     {
                         model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
@@ -77,6 +100,7 @@ namespace Website.Controllers
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
+
 
                         for (var i = 0; i < model.AccountIds.Count; i++)
                         {
@@ -89,6 +113,7 @@ namespace Website.Controllers
                             status = 1,
                             message = "Thêm chiến dịch mới thành công",
                             campaignid = id,
+                            url = Url.Action("Details", new { id = id})
                         });
 
 
@@ -179,7 +204,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> MatchedAccount(CampaignType campaignType,
             IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
-            int? cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20)
+            IEnumerable<int> cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20, int min = 0, int max = 0)
         {
 
             ViewBag.Pagesize = pagesize;
@@ -187,25 +212,31 @@ namespace Website.Controllers
             if (pagesize > 0)
             {
                 var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend,
-                    string.Empty, pageindex, pagesize, null);
+                    string.Empty, pageindex, pagesize, null, min, max);
 
                 ViewBag.CampaignId = campaignId;
                 ViewBag.CampaignType = campaignType;
                 ViewBag.AccountTypes = accountTypes;
-                ViewBag.RenewUrl = Url.Action("RenewAccount", new { accountTypes, categoryid, gender, cityid, agestart, ageend, campaignType });
+                ViewBag.Min = min;
+                ViewBag.Max = max;
+                ViewBag.RenewUrl = Url.Action("RenewAccount", new { accountTypes, categoryid, gender, cityid, agestart, ageend, campaignType, min, max });
                 return PartialView(model);
             }
             return PartialView();
         }
 
         public async Task<IActionResult> RenewAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
-           int? cityid, int? agestart, int? ageend,
-            IEnumerable<int> ignoreIds, CampaignType campaignType)
+           IEnumerable<int> cityid, int? agestart, int? ageend,
+            IEnumerable<int> ignoreIds, CampaignType campaignType, int min = 0, int max = 0)
         {
 
+         
             ViewBag.CampaignType = campaignType;
             ViewBag.AccountTypes = accountTypes;
-            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend, string.Empty, 1, 1, ignoreIds);
+            ViewBag.Min = min;
+            ViewBag.Max = max;
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid,
+                agestart, ageend, string.Empty, 1, 1, ignoreIds, min, max);
 
 
             return PartialView(model);

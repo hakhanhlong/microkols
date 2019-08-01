@@ -99,11 +99,16 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link" asp-action="Index" asp-controller="Agency">
+                                <i class="fal fa-user"></i> Tài khoản
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
                             <a class="nav-link wallet-recharge" href="#">
                                 <i class="fal fa-coins"></i>
                                 Nạp tiền
                             </a>
-                        </li>
+                        </li>*@
                     }
                     else if (CurrentUser.Type == EntityType.Account)
                     {

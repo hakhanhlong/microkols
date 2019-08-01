@@ -84,14 +84,7 @@
                     }
 
                 </div>
-                <select name="MaritalStatus" id="MaritalStatus" class="form-control">
-                    @foreach (var item in maritalStatusArr)
-                    {
-                        <!option value="@item" @(Model != null && item == Model.MaritalStatus ? "selected=selected" : "")>
-                            @item.ToDisplayName()
-                        </!option>
-                    }
-                </select>
+             
                 <span asp-validation-for="MaritalStatus"></span>
             </div>
             <div class="form-group">

@@ -58,8 +58,15 @@ namespace Website.Services
 
             var systemid = await _walletRepository.GetSystemId();
 
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(new
+            {
+                BankName = model.Bank,
+                BankNumber = model.Number,
+                BankAccount = model.Name,
+                BankBranch = model.Branch
+            });
             var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletWithdraw,
-              string.Empty, model.Note, username);
+              data, model.Note, username);
             return transactionId;
 
         }
@@ -69,11 +76,12 @@ namespace Website.Services
 
         #region TransactionHistory
 
-        public async Task<ListTransactionHistoryViewModel> GetTransactionHistoryByAccount(int accountid, string daterange, int page, int pagesize)
+       
+        public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, string daterange, int page, int pagesize)
         {
             var date = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
 
-            var walletid = await _walletRepository.GetWalletId(EntityType.Account, accountid);
+            var walletid = await _walletRepository.GetWalletId(entityType, entityid);
 
             var filter = new TransactionHistorySpecification(walletid, date);
 

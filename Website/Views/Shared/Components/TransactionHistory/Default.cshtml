@@ -1,32 +1,35 @@
 ﻿@model ListTransactionHistoryViewModel
 
+@{
+
+}
 <div class="card">
 
 
     <div class="card-header d-flex">
         <div class="mr-auto">
-            Lịch sửa giao dịch
+            Lịch sử giao dịch
         </div>
     </div>
     <div class="card-body">
 
         @*<div class="mb-3">
-            <form method="get" action="#">
-                <div class="input-group">
+                <form method="get" action="#">
+                    <div class="input-group">
 
-                    <input type="text" name="daterange" autocomplete="off" class="form-control form-daterangepicker" value="@ViewBag.DateRange" />
+                        <input type="text" name="daterange" autocomplete="off" class="form-control form-daterangepicker" value="@ViewBag.DateRange" />
 
-                    <div class="input-group-append">
+                        <div class="input-group-append">
 
 
-                        <button type="submit" class="btn btn-outline-secondary">
-                            <i class="fal fa-search"></i>
-                        </button>
+                            <button type="submit" class="btn btn-outline-secondary">
+                                <i class="fal fa-search"></i>
+                            </button>
 
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>*@
+                </form>
+            </div>*@
         <div class="table-responsive">
             <table class="table table-bordered table-sm">
                 <thead>
@@ -47,7 +50,20 @@
                             <td>@item.Code</td>
                             <td class="@textcolor">@textsyl @item.Amount.ToPriceText()</td>
                             <td class="text-primary">@item.Balance.ToPriceText()</td>
-                            <td><a asp-action="Details" asp-controller="AccountCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a> </td>
+
+
+                            <td>
+                                @if (CurrentUser.Type == EntityType.Account)
+                                {
+                                    <a asp-action="Details" asp-controller="AccountCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a>
+                                }
+                                else if (CurrentUser.Type == EntityType.Agency)
+                                {
+                                    <a asp-action="Details" asp-controller="AgencyCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a>
+                                }
+
+
+                            </td>
                         </tr>
                     }
                 </tbody>

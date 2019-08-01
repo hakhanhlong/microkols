@@ -60,12 +60,13 @@ namespace Website.Services
         }
 
 
-        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> 
+            categoryid, Gender? gender, IEnumerable<int> cityid, int? agestart, int? ageend,
 
-            string order, int page, int pagesize, IEnumerable<int> ignoreIds)
+            string order, int page, int pagesize, IEnumerable<int> ignoreIds,int min,int max)
         {
 
-            var query = _accountRepository.Query(accountTypes, categoryid, gender, cityid, agestart, ageend, ignoreIds);
+            var query = _accountRepository.Query(accountTypes, categoryid, gender, cityid, agestart, ageend, ignoreIds,min,max);
 
             var total = await query.CountAsync();
             var accounts = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);

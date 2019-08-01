@@ -22,7 +22,8 @@ namespace Website.ViewComponents
         {
             ViewBag.DateRange = daterange;
             var currentUser = AuthViewModel.GetModel(HttpContext.User);
-            var model = await _transactionService.GetTransactionHistoryByAccount(currentUser.Id, daterange, page, 20);
+            ViewBag.Type = currentUser.Type;
+            var model = await _transactionService.GetTransactionHistory(currentUser.Type,currentUser.Id, daterange, page, 20);
             return View(vname, model);
         }
 

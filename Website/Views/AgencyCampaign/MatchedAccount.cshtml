@@ -2,18 +2,24 @@
 
 @inject Website.Interfaces.IAccountService AccountService
 
+
 @if (Model == null)
 {
     <div class="alert alert-danger">Hãy nhập số lượng Kol trong chiến dịch</div>
 }
 else
 {
-    @if (Model.Accounts.Count == 0)
+
+
+
+    if (Model.Accounts.Count == 0)
     {
         <div class="alert alert-info">Không có thành viên phù hợp với chiến dịch</div>
     }
     else
     {
+        var min = (int)ViewBag.Min;
+        var max = (int)ViewBag.Max;
         var campaignId = (int)ViewBag.CampaignId;
         var campaignType = (CampaignType)ViewBag.CampaignType;
         var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
@@ -24,8 +30,8 @@ else
                         <th>Thành viên</th>
                         @if (!accountTypes.Contains(AccountType.Regular))
                         {
-                            <th width="200" class="text-center">Chi phí</th>
-                            <th width="50">
+                            <th width="160" class="text-center">Chi phí</th>
+                            <th width="100">
 
                             </th>
                         }
@@ -34,11 +40,8 @@ else
                 </thead>
                 <tbody>
 
-                    @foreach (var account in Model.Accounts)
-                    {
-                        <partial name="_AccountItemPartial" model="account" />
-                    }
-
+                    <partial name="_MatchedAccountsPartial" model="Model" />
+           
                 </tbody>
             </table>
         </div>

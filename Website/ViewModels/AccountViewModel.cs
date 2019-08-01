@@ -137,11 +137,11 @@ namespace Website.ViewModels
         public string Birthday { get; set; }
 
         [Display(Name = "Giới tính")]
-        public Gender Gender { get; set; } = Gender.Undefined;
+        public Gender Gender { get; set; } = Gender.Male;
 
 
         [Display(Name = "Tình trạng hôn nhân")]
-        public MaritalStatus MaritalStatus { get; set; } = MaritalStatus.Undefined;
+        public MaritalStatus MaritalStatus { get; set; } = MaritalStatus.Single;
 
 
     }

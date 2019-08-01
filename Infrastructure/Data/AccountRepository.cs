@@ -36,7 +36,7 @@ namespace Infrastructure.Data
 
         public async Task<List<int>> GetActivedAccountIds()
         {
-            return await _dbContext.Account.Where(m =>  m.Actived).Select(m=>m.Id).ToListAsync();
+            return await _dbContext.Account.Where(m => m.Actived).Select(m => m.Id).ToListAsync();
         }
         public async Task<Account> GetActivedAccount(string email)
         {
@@ -49,13 +49,14 @@ namespace Infrastructure.Data
         }
 
 
-    
-        public IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds)
+
+        public IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
+           IEnumerable<int> cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds, int min, int max)
         {
 
 
             var query = _dbContext.Account.Where(m => m.Actived);
-            if(ignoreIds!= null && ignoreIds.Any())
+            if (ignoreIds != null && ignoreIds.Any())
             {
                 query = query.Where(m => !ignoreIds.Contains(m.Id));
             }
@@ -74,19 +75,20 @@ namespace Infrastructure.Data
                 query = query.Where(m => m.Gender == gender.Value);
             }
 
-            if (cityid.HasValue)
+            if (cityid != null && cityid.Any())
             {
-                query = query.Where(m => m.CityId == cityid);
+                query = query.Where(m => m.CityId.HasValue && cityid.Contains(m.CityId.Value));
             }
 
             if (agestart.HasValue && ageend.HasValue)
             {
-                var dt = new DateTime( DateTime.Now.Year, 1, 1);
+                var dt = new DateTime(DateTime.Now.Year, 1, 1);
                 var dtstart = dt.AddYears(0 - ageend.Value);
                 var dtend = dt.AddYears(0 - agestart.Value);
 
                 query = query.Where(m => m.Birthday.HasValue && m.Birthday.Value >= dtstart && m.Birthday.Value <= dtend);
             }
+
 
             return query;
 

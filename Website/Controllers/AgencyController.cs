@@ -27,6 +27,11 @@ namespace Website.Controllers
 
         }
 
+        public async Task<IActionResult> Index()
+        {
+
+            return View();
+        }
 
 
         #region UpdateAgency

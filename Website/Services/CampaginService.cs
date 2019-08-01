@@ -192,6 +192,7 @@ namespace Website.Services
         {
             foreach (var accountType in accountTypes)
             {
+
                 await _campaignAccountTypeRepository.AddAsync(new CampaignAccountType()
                 {
                     AccountType = accountType,
@@ -202,14 +203,20 @@ namespace Website.Services
 
         private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
         {
-            if (model.EnabledCity && model.CityId.HasValue)
+            if (model.EnabledCity &&  model.CityId != null && model.CityId.Count > 0)
             {
-                await _campaignOptionRepository.AddAsync(new CampaignOption()
+
+                foreach (var cityId in model.CityId)
                 {
-                    CampaignId = campaignId,
-                    Name = CampaignOptionName.City,
-                    Value = model.CityId.Value.ToString()
-                });
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.City,
+                        Value = cityId.ToString()
+                    });
+                }
+
+              
             }
             if (model.EnabledGender && model.Gender.HasValue)
             {

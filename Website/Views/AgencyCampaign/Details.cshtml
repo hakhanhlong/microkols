@@ -155,12 +155,20 @@
                     {
                         <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
                     }
-                    @if (Model.CityId.HasValue)
+                    @if (Model.CityId.Count > 0)
                     {
-                        var city = cities.FirstOrDefault(m => m.Id == Model.CityId.Value);
-                        if (city != null)
+                        var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
+                        if (listcity.Any())
                         {
-                            <li>Khu vực: <strong>@city.Name</strong></li>
+                            <li>
+                                Khu vực:
+
+                                @foreach (var city in listcity)
+                                {
+                                    <strong>@city.Name</strong>
+                                }
+
+                            </li>
                         }
                     }
                     @if (Model.AgeStart.HasValue)
@@ -228,7 +236,7 @@
 
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-       
+
             <li class="nav-item">
                 <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
             </li>

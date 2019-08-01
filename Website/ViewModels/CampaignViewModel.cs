@@ -63,15 +63,18 @@ namespace Website.ViewModels
                 }
             }
 
-            var cityOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.City);
-            if (cityOpt != null)
+            var cityOpts = campaign.CampaignOption.Where(m => m.Name == CampaignOptionName.City);
+            var cityids = new List<int>();
+            foreach (var cityOpt in cityOpts)
             {
+             
                 var cityid = 0;
                 if (int.TryParse(cityOpt.Value, out cityid))
                 {
-                    CityId = cityid;
+                    cityids.Add(cityid);
                 }
             }
+            CityId = cityids;
 
             var categoryOpts = campaign.CampaignOption.Where(m => m.Name == CampaignOptionName.Category).ToList();
             var categoryids = new List<int>();
@@ -113,7 +116,7 @@ namespace Website.ViewModels
         public Gender? Gender { get; set; }
         public int? AgeStart { get; set; }
         public int? AgeEnd { get; set; }
-        public int? CityId { get; set; }
+        public List<int> CityId { get; set; }
         public List<int> CategoryIds { get; set; }
 
         public string UserCreated { get; set; }
