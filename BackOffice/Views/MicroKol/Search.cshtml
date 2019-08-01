@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ListAccountViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        MicroKOls Search
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            MicroKOls Search
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/MicroKol/_FilterPartial.cshtml")
+                    </div>
+                </div>
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+
+                        @if (Model != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            IMAGE
+                                        </th>
+                                        <th>
+                                            EMAIL
+                                        </th>
+                                        <th>
+                                            NAME
+                                        </th>
+                                        <th>
+                                            TYPE
+                                        </th>
+                                        <th>
+                                            ACTIVED
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int count = 1;}
+                                    @foreach (var item in Model.Accounts)
+                                    {
+                                        <tr>
+                                            <td>@(count)</td>
+                                            <td></td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Type.ToString()</td>
+                                            <td>@(item.Actived == true ? "Active" : "Not Active")</td>
+                                            <td><a href="#" class="btn btn-sm btn-info">View</a></td>
+                                        </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                            <pager pager="@Model.Pager" asp-action="Index"></pager>
+                        }
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>

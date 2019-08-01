@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
+using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackOffice.Controllers
@@ -26,6 +27,20 @@ namespace BackOffice.Controllers
             }
             return View(list);
         }
+
+
+        public IActionResult Search(string keyword, AccountType type, int pageindex = 1)
+        {
+
+            var list = _IAccountBusiness.Search(keyword, type, pageindex, 25);
+            if (list == null)
+            {
+                TempData["MessageError"] = "No data microkols for binding";
+            }
+            return View(list);
+        }
+
+
     }
 
 

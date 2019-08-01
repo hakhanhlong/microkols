@@ -2,6 +2,7 @@
 using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -52,9 +53,21 @@ namespace BackOffice.Business
             };
         }
 
-        public ListAccountViewModel Search(string keyword, int type, int pageindex, int pagesize)
+        public ListAccountViewModel Search(string keyword, AccountType type, int pageindex, int pagesize)
         {
-            return new ListAccountViewModel();
+            var specification = type == AccountType.All? new AccountSpecification(keyword, keyword) : new AccountSpecification(keyword, type);
+
+            var accounts = _IAccountRepository.ListPaged(specification, "DateModified_desc", pageindex, pagesize);
+
+            var total = _IAccountRepository.Count(specification);
+
+
+            return new ListAccountViewModel()
+            {
+                Accounts = accounts.Select(a=>new AccountViewModel(a)).ToList(),
+
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BackOffice.Models;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace BackOffice.Business.Interfaces
         Task<AccountViewModel> GetAccount(int id);
         ListAccountViewModel GetListAccount(int pageindex, int pagesize);
 
-        ListAccountViewModel Search(string keyword, int type ,int pageindex, int pagesize);
+        ListAccountViewModel Search(string keyword, AccountType type ,int pageindex, int pagesize);
 
     }
 }

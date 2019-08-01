@@ -1,19 +1,22 @@
-﻿<form class="m-form m-form--fit m--margin-bottom-20">
+﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/microkol/search">
     <div class="row m--margin-bottom-20">
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Name:
             </label>
-            <input type="text" class="form-control m-input" placeholder="Email or Name" data-col-index="0">
+            <input type="text" name="keyword" class="form-control m-input" placeholder="Email or Name" data-col-index="0">
         </div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Type:
             </label>
-            <select class="form-control m-input" data-col-index="7">
-                <option value="">
-                    Select
-                </option>
+            <select class="form-control m-input" data-col-index="7" name="type">
+                <option value="All">All</option>
+                <option value="Regular">Regular</option>
+                <option value="HotTeen">HotTeen</option>
+                <option value="HotMom">HotMom</option>
+                <option value="HotFacebooker">HotFacebooker</option>
+                <option value="Kols">Kols</option>
             </select>
         </div>
     </div>    
