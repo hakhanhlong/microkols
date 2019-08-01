@@ -96,7 +96,7 @@
         $('.form-select2-tags').select2({
             theme: "bootstrap4",
             tags: true,
-            tokenSeparators: [',', ' ']
+            tokenSeparators: [',']
         });
 
 

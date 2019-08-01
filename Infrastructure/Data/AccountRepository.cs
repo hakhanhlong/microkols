@@ -51,7 +51,7 @@ namespace Infrastructure.Data
 
 
         public IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
-            int? cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds, int min, int max)
+           IEnumerable<int> cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds, int min, int max)
         {
 
 
@@ -75,9 +75,9 @@ namespace Infrastructure.Data
                 query = query.Where(m => m.Gender == gender.Value);
             }
 
-            if (cityid.HasValue)
+            if (cityid != null && cityid.Any())
             {
-                query = query.Where(m => m.CityId == cityid);
+                query = query.Where(m => m.CityId.HasValue && cityid.Contains(m.CityId.Value));
             }
 
             if (agestart.HasValue && ageend.HasValue)
@@ -89,7 +89,7 @@ namespace Infrastructure.Data
                 query = query.Where(m => m.Birthday.HasValue && m.Birthday.Value >= dtstart && m.Birthday.Value <= dtend);
             }
 
-          
+
             return query;
 
         }

@@ -96,7 +96,7 @@ var App = (function () {
         $('.form-select2-tags').select2({
             theme: "bootstrap4",
             tags: true,
-            tokenSeparators: [',', ' ']
+            tokenSeparators: [',']
         });
 
 
@@ -847,7 +847,12 @@ var AgencyCreateCampaignPage = (function () {
 
         var enabledCity = $('input[name=EnabledCity]:checked').val();
         if (enabledCity === "true") {
-            urlparams += '&cityid=' + $('#CityId').val();
+
+            var cityIds = $('#CityId').val();
+            console.log('cityids', cityIds);
+            for (var i = 0; i < cityIds.length; i++) {
+                urlparams += '&cityid=' + cityIds[i];
+            }
         }
 
         var enabledCategory = $('input[name=EnabledCategory]:checked').val();

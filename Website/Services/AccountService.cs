@@ -60,7 +60,8 @@ namespace Website.Services
         }
 
 
-        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, int? cityid, int? agestart, int? ageend,
+        public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> 
+            categoryid, Gender? gender, IEnumerable<int> cityid, int? agestart, int? ageend,
 
             string order, int page, int pagesize, IEnumerable<int> ignoreIds,int min,int max)
         {

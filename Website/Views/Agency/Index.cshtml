@@ -23,28 +23,26 @@
 }
 
 
-@*<ul class="nav nav-tabs nav-linetabs">
-        <li class="nav-item">
-            <a class="nav-link active" asp-action="Index">Tài khoản</a>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" asp-action="FbPost">Facebook Post</a>
-        </li>
-
-    </ul>*@
-
-
 
 <div class="row mt-4">
-    <div class="col-md-3 col-lg-6 col-12">
+    <div class="col-md-4 col-12">
         <div class="card">
             <div class="card-content">
                 <div class="card-body">
                     <div class="media d-flex">
                         <div class="media-body text-left">
                             <h3 class="text-danger wallet-balance">0</h3>
-                            <span>Trong ví</span>
+                
+                            <div>
+                                <a class="wallet-recharge btn btn-success  btn-sm" href="#">
+                                    <i class="fal fa-coins"></i>
+                                    Nạp tiền
+                                </a>
+                                <a class="wallet-withdraw btn btn-info btn-sm" href="#">
+                                    <i class="fal fa-coins"></i>
+                                    Rút tiền
+                                </a>
+                            </div>
                         </div>
                         <div class="align-self-center">
                             <i class="fal fa-wallet fa-2x float-right text-danger"></i>
@@ -54,22 +52,6 @@
             </div>
         </div>
     </div> 
-    <div class="col-md-2 ">
-
-
-        <div class="mb-3">
-            <a class="wallet-recharge btn btn-success btn-block" href="#">
-                <i class="fal fa-coins"></i>
-                Nạp tiền
-            </a>
-        </div>
-        <div>
-            <a class="wallet-withdraw btn btn-info btn-block" href="#">
-                <i class="fal fa-coins"></i>
-                Rút tiền
-            </a>
-        </div>
-    </div>
     @*<div class="col-md-3 col-lg-6 col-12">
             <div class="card">
                 <div class="card-content">

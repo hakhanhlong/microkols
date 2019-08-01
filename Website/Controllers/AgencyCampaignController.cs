@@ -204,7 +204,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> MatchedAccount(CampaignType campaignType,
             IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
-            int? cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20, int min = 0, int max = 0)
+            IEnumerable<int> cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20, int min = 0, int max = 0)
         {
 
             ViewBag.Pagesize = pagesize;
@@ -226,7 +226,7 @@ namespace Website.Controllers
         }
 
         public async Task<IActionResult> RenewAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
-           int? cityid, int? agestart, int? ageend,
+           IEnumerable<int> cityid, int? agestart, int? ageend,
             IEnumerable<int> ignoreIds, CampaignType campaignType, int min = 0, int max = 0)
         {
 

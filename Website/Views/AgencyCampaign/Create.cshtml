@@ -8,7 +8,7 @@
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
     var campaignTypeCharges = (List<CampaignTypeChargeViewModel>)ViewBag.CampaignTypeCharges;
-    var genderList = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>().Where(m=>m!= Gender.Undefined);
+    var genderList = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>();
 
 
     var i = 0;
@@ -339,7 +339,7 @@
 
         </div>
 
-        <div class="form-group row d-none" id="customAccountNameWrap">
+        <div class="form-group row" >
             <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
             <div class="col-md-10">
                 <select asp-for="CustomKolNames" multiple class="form-control form-select2-tags"></select>
@@ -347,7 +347,7 @@
                 <span asp-validation-for="CustomKolNames"></span>
             </div>
         </div>
-        <div class="form-group row d-none" id="dateFeedbackWrap">
+        <div class="form-group row ">
             <label asp-for="FeedbackBefore" class="col-md-2 col-form-label"></label>
             <div class="col-md-10">
                 <input type="text" class="form-control form-datetimepicker" asp-for="FeedbackBefore" />
@@ -389,6 +389,7 @@
 
     <div class="form-group row d-none" id="actionWrap">
         <div class="col-md-10 offset-md-2">
+            <a asp-action="Index" asp-controller="AgencyCampaign" class="btn btn-light">Hủy</a>
             <input type="hidden" value="0" name="submittype" id="submittype" />
             <input type="button" value="Nạp tiền" class="btn btn-info" id="btnCreateCampaignRecharge" style="display:none" />
             <input type="button" value="Tiếp tục" class="btn btn-primary" id="btnCreateCampaign" style="display:none" />

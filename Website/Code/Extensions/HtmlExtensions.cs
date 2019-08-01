@@ -149,9 +149,12 @@ namespace Website.Code.Extensions
                 parameters.Add("gender", model.Gender.Value);
             }
 
-            if (model.CityId.HasValue)
+            if (model.CityId.Count>0)
             {
-                parameters.Add("cityid", model.CityId.Value);
+                for (int i = 0; i < model.CityId.Count; ++i)
+                {
+                    parameters.Add("cityid[" + i + "]", model.CityId[i]);
+                }
             }
             if (model.AgeStart.HasValue && model.AgeEnd.HasValue)
             {

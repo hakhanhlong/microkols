@@ -148,7 +148,7 @@ namespace Website.ViewModels
         
 
         [Display(Name = "Chọn khu vực")]
-        public int? CityId { get; set; }
+        public List<int> CityId { get; set; }
 
         [Display(Name = "Mã chiến dịch")]
         public string Code { get; set; }

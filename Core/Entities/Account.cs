@@ -102,8 +102,7 @@ namespace Core.Entities
   
     public enum Gender
     {
-        [DisplayName("Chưa xác định")]
-        Undefined = 0,
+     
         [DisplayName("Nam")]
         Male = 1,
         [DisplayName("Nữ")]
@@ -111,8 +110,7 @@ namespace Core.Entities
     }
     public enum MaritalStatus
     {
-        [DisplayName("Chưa xác định")]
-        Undefined,
+       
         [DisplayName("Độc thân")]
         Single,
         [DisplayName("Kết hôn")]
