@@ -42,6 +42,7 @@ namespace BackOffice.Models
             IDCardName = _Account.IDCardName;
             IDCardNumber = _Account.IDCardNumber;
             IDCardTime = _Account.IDCardTime;
+            IDCardCity = _Account.IDCardCity;
             IDCardImageFront = _Account.IDCardImageFront;
             IDCardImageBack = _Account.IDCardImageBack;
             BankAccountName = _Account.BankAccountName;

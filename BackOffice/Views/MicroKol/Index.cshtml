@@ -80,7 +80,7 @@
                                                 <td>@item.Name</td>
                                                 <td>@item.Type.ToString()</td>
                                                 <td>@(item.Actived == true ? "Active" : "Not Active")</td>
-                                                <td><a href="#" class="btn btn-sm btn-info">View</a></td>
+                                                <td><a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">View</a></td>
                                             </tr>
                                             count++;
                                         }

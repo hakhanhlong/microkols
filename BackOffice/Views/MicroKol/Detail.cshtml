@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AccountViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        MicroKOls Listing
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="/microkol" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/microkol" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    MicroKOls Listing
+                </span>
+            </a>
+        </li>
+        @if (Model != null && Model.Id > 0)
+        {
+            <li class="m-nav__separator">
+                -
+            </li>
+            <li class="m-nav__item">
+                <a href="/microkol/detail?id=@(Model.Id)" class="m-nav__link">
+                    <span class="m-nav__link-text">
+                        @Model.Name
+                    </span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Detail @(Model != null?string.Format("\"{0}\"", Model.Name):"")
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form class="m-form m-form--fit">
+                    <div class="m-portlet__body">
+                        <div class="m-form__section m-form__section--first">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">
+                                    1. Customer Info:
+                                </h3>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label for="example_input_full_name">
+                                    Full Name:
+                                </label>
+                                <input class="form-control m-input" placeholder="Enter full name" asp-for="Name">
+                                <span class="m-form__help">
+                                    Please enter your full name
+                                </span>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Email address:
+                                </label>
+                                <input class="form-control m-input" placeholder="Enter email" asp-for="Email">
+                                <span class="m-form__help">
+                                    We'll never share your email with anyone else
+                                </span>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Address:
+                                </label>
+                                <input class="form-control m-input" placeholder="Address" asp-for="Address">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Phone:
+                                </label>
+                                <div class="m-input-icon m-input-icon--left">
+                                    <input class="form-control m-input" placeholder="Phone number" asp-for="Phone">
+                                    <span class="m-input-icon__icon m-input-icon__icon--left">
+                                        <span>
+                                            <i class="la la-bell"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="m-form__group form-group">
+                                <label for="">
+                                    Status:
+                                </label>
+                                <div class="m-checkbox-list">
+                                    <label class="m-checkbox">
+                                        <input type="checkbox" asp-for="Actived">
+                                        Actived
+                                        <span></span>
+                                    </label>
+                                    <label class="m-checkbox">
+                                        <input type="checkbox" asp-for="Deleted">
+                                        Deleted
+                                        <span></span>
+                                    </label>                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-form__seperator m-form__seperator--dashed"></div>
+                        <div class="m-form__section m-form__section--last">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">
+                                    2. Card Identify:
+                                </h3>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label for="example_input_full_name">
+                                    Name:
+                                </label>
+                                <input class="form-control m-input" placeholder="Card Name" asp-for="IDCardName">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Number:
+                                </label>
+                                <input class="form-control m-input" placeholder="Card Number" asp-for="IDCardNumber">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    DateTime:
+                                </label>
+                                <input class="form-control m-input" placeholder="Card Time" asp-for="IDCardTime">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    City:
+                                </label>
+                                <input class="form-control m-input" placeholder="City" asp-for="IDCardCity">
+                            </div>
+                        </div>                        
+                        <div class="m-form__seperator m-form__seperator--dashed mt-5 mb-5"></div>
+                        <div class="m-form__section m-form__section--first">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">
+                                    3. Payment Info:
+                                </h3>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Bank Account Name:
+                                </label>
+                                <input class="form-control m-input" placeholder="Bank Account Name" asp-for="BankAccountName">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Bank Account Number:
+                                </label>
+                                <input class="form-control m-input" placeholder="Bank Account Number" asp-for="BankAccountNumber">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Bank Name:
+                                </label>
+                                <input class="form-control m-input" placeholder="Bank Name" asp-for="BankAccountBank">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Bank Branch:
+                                </label>
+                                <input class="form-control m-input" placeholder="Bank Branch" asp-for="BankAccountBranch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                        <div class="m-form__actions m-form__actions--solid">
+                            <button type="reset" class="btn btn-success">
+                                Submit
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+

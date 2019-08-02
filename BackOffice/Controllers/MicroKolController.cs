@@ -40,6 +40,17 @@ namespace BackOffice.Controllers
             return View(list);
         }
 
+        public async Task<IActionResult> Detail(int id = 0)
+        {
+            var microkol = await _IAccountBusiness.GetAccount(id);
+            if(microkol == null)
+            {
+                TempData["MessageError"] = "MicroKol do not exist!";
+            }
+
+            return View(microkol);
+        }
+
 
     }
 
