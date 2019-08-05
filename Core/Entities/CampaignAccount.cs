@@ -72,6 +72,8 @@ namespace Core.Entities
 
     public enum CampaignAccountStatus
     {
+        [DisplayName("Chờ trả tiền")]
+        WaitToPay = -1,
         [DisplayName("Thành viên xin tham gia chiến dịch")]
         AccountRequest = 0,
         [DisplayName("Doanh nghiệp mời tham gia chiến dịch")]

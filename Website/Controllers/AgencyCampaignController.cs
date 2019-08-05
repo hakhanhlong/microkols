@@ -105,7 +105,7 @@ namespace Website.Controllers
                         for (var i = 0; i < model.AccountIds.Count; i++)
                         {
                             var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[0];
-                            BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
+                            BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
 
                         }
                         return Json(new
@@ -296,7 +296,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, int? amount)
         {
-            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, amount ?? 0, CurrentUser.Name);
+            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid,  CurrentUser.Name);
             return Json(result ? 1 : 0);
         }
 

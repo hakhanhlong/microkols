@@ -247,6 +247,7 @@
 
     function pricingCalculator() {
 
+        /*
         var type = $('#Type').val();
         var selectedOption = $('#Type').children('option:selected');
         var serviceprice = selectedOption.data('serviceprice');
@@ -276,6 +277,7 @@
         $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
 
 
+
         //console.log('AppSettings.CurrentUser.Balance', AppSettings.CurrentUser.Balance, 'totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
         setTimeout(function () {
             if (AppSettings.CurrentUser.Balance <= totalServiceCharge) {
@@ -290,7 +292,8 @@
             }
         }, 1000);
 
-
+        */
+        $('#btnCreateCampaign').show();
     }
 
 

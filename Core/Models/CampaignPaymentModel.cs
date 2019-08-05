@@ -25,15 +25,21 @@ namespace Core.Models
             TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out servicePaidAmount, out accountPaidAmount);
             ServicePaidAmount = servicePaidAmount;
             AccountPaidAmount = accountPaidAmount;
+            
 
+            // tru tien account luon 
 
             var campaginAccountStatusArr = new List<CampaignAccountStatus>()
             {
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
                 CampaignAccountStatus.Confirmed,
                 CampaignAccountStatus.SubmittedContent ,
+                CampaignAccountStatus.UpdatedContent ,
                 CampaignAccountStatus.DeclinedContent,
                 CampaignAccountStatus.ApprovedContent,
-                CampaignAccountStatus.Finished
+                CampaignAccountStatus.Finished,
+                
             };
             campaignAccounts = campaignAccounts.Where(m => campaginAccountStatusArr.Contains(m.Status));
 

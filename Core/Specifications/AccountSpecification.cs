@@ -29,6 +29,14 @@ namespace Core.Specifications
 
     }
 
-   
+    public class AccountWithCategorySpecification : BaseSpecification<Account>
+    {
+        public AccountWithCategorySpecification(int accountid) : base(m => m.Id == accountid)
+        {
+            AddInclude(m => m.AccountCategory);
+        }
+    }
 
-}
+
+
+    }

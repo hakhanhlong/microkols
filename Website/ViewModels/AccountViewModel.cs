@@ -126,7 +126,7 @@ namespace Website.ViewModels
             Gender = entity.Gender;
             MaritalStatus = entity.MaritalStatus;
 
-
+            CategoryId = entity.AccountCategory.Select(m => m.CategoryId).ToList();
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -139,6 +139,8 @@ namespace Website.ViewModels
         [Display(Name = "Giới tính")]
         public Gender Gender { get; set; } = Gender.Male;
 
+        [Display(Name = "Sở thích/chuyên môn")]
+        public List<int> CategoryId { get; set; }
 
         [Display(Name = "Tình trạng hôn nhân")]
         public MaritalStatus MaritalStatus { get; set; } = MaritalStatus.Single;

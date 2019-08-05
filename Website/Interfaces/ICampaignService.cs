@@ -10,6 +10,7 @@ namespace Website.Interfaces
 {
     public interface ICampaignService
     {
+        Task<bool> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username);
         Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0);
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
         Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
@@ -17,7 +18,7 @@ namespace Website.Interfaces
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
         Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid);
-        Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, int amount, string username);
+        Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
         Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed);
 
         Task<bool> FeedbackJoinCampaignByAgency(int agencyid, int campaignid, int accountid, bool confirmed,  string username);
