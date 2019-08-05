@@ -1,9 +1,7 @@
 ﻿
 @{
-                /**/
-
-                ViewData["Title"] = "ChangeType";
-                Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "CampaignCharge";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @model AccountViewModel
@@ -40,14 +38,13 @@
                     </span>
                 </a>
             </li>
-
             <li class="m-nav__separator">
                 -
             </li>
             <li class="m-nav__item">
-                <a href="/microkol/changetype?id=@(Model.Id)" class="m-nav__link">
+                <a href="/microkol/campaigncharge?id=@(Model.Id)" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        Change Type
+                        Campaign charge
                     </span>
                 </a>
             </li>
@@ -99,51 +96,3 @@
     </ul>
 }
 
-
-
-<div class="row">
-    <div class="col-lg-12">
-        <!--begin::Portlet-->
-        <div class="m-portlet">
-            <div class="m-portlet__head">
-                <div class="m-portlet__head-caption">
-                    <div class="m-portlet__head-title">
-                        <span class="m-portlet__head-icon m--hide">
-                            <i class="la la-gear"></i>
-                        </span>
-                        <h3 class="m-portlet__head-text">
-                            Change Type @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
-                        </h3>
-                    </div>
-                </div>
-            </div>
-            <!--begin::Form-->
-            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/microkol/changetype">
-                <div class="m-portlet__body">
-                    <input type="hidden" asp-for="Id">
-                    <div class="form-group m-form__group">
-                        <label for="exampleSelect1">
-                            Select type
-                        </label>
-                        <select class="form-control m-input" asp-for="Type" asp-items="@ViewBag.MocrokolTypes">                                                        
-                        </select>
-                    </div>
-
-
-                </div>
-                <div class="m-portlet__foot m-portlet__foot--fit">
-                    <div class="m-form__actions">
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                        <button type="reset" class="btn btn-secondary">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </form>
-            <!--end::Form-->
-        </div>
-        <!--end::Portlet-->
-    </div>
-</div>

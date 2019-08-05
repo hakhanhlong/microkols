@@ -136,6 +136,55 @@ namespace BackOffice.Controllers
             return View(microkol);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeType(AccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Id > 0)
+                {
+                    var microkol = _IAccountRepository.GetById(model.Id);
+                    if (microkol == null)
+                    {
+                        TempData["MessageError"] = "MicroKol do not exist!";
+                    }
+                    else
+                    {
+
+                        microkol.Type = model.Type;
+                        await _IAccountRepository.UpdateAsync(microkol);
+                        TempData["MessageSuccess"] = "MicroKol update microkol type success!";
+
+                    }
+                }
+            }
+
+
+            return RedirectToAction("changetype", "microkol", new { id = model.Id });
+        }
+
+
+        public async Task<IActionResult> CampaignCharge(int id = 0)
+        {
+            var microkol = await _IAccountBusiness.GetAccount(id);
+
+            ViewBag.MocrokolTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Regular", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotTeen", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotMom", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotFacebooker", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Kols", Value = "4"}
+            };
+
+
+            if (microkol == null)
+            {
+                TempData["MessageError"] = "MicroKol do not exist!";
+            }
+
+            return View(microkol);
+        }
 
     }
 }
