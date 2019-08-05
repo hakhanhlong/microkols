@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model AccountViewModel
+@model List<AccountCampaignChargeViewModel>
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -26,15 +26,15 @@
                 </span>
             </a>
         </li>
-        @if (Model != null && Model.Id > 0)
+        @if (ViewBag.Microkol != null)
         {
             <li class="m-nav__separator">
                 -
             </li>
             <li class="m-nav__item">
-                <a href="/microkol/detail?id=@(Model.Id)" class="m-nav__link">
+                <a href="/microkol/detail?id=@(ViewBag.Microkol.Id)" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        @Model.Name
+                        @ViewBag.Microkol.Name
                     </span>
                 </a>
             </li>
@@ -42,7 +42,7 @@
                 -
             </li>
             <li class="m-nav__item">
-                <a href="/microkol/campaigncharge?id=@(Model.Id)" class="m-nav__link">
+                <a href="/microkol/campaigncharge?id=@(ViewBag.Microkol.Id)" class="m-nav__link">
                     <span class="m-nav__link-text">
                         Campaign charge
                     </span>
@@ -67,15 +67,15 @@
                 <span class="m-menu__arrow m-menu__arrow--adjust" style="left: 73px;"></span>
                 <ul class="m-menu__subnav">
                     <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/changepassword?id=@(Model.Id)" class="m-menu__link ">
+                        <a href="/microkol/changepassword?id=@(Context.Request.Query["id"])" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
                                 Change Password
                             </span>
                         </a>
                     </li>
-                    <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/changetype?id=@(Model.Id)" class="m-menu__link ">
+                    <li class="m-menu__item" aria-haspopup="true">
+                        <a href="/microkol/changetype?id=@(Context.Request.Query["id"])" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
                                 Config MicroKOL Type
@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/campaigncharge?id=@Model.Id" class="m-menu__link ">
+                        <a href="/microkol/campaigncharge?id=@(Context.Request.Query["id"])" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
                                 Config MicroKOL Campaign Charge
@@ -96,3 +96,79 @@
     </ul>
 }
 
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Campaign Charge "@(ViewBag.Microkol.Name)"
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/microkol/campaigncharge">
+                    <div class="m-portlet__body">
+
+                        @if (Model != null && Model.Count > 0)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <div class="form-group m-form__group" id="group_data">
+                                    <label for="exampleSelect1">
+                                        @item.Type.ToText()
+                                    </label>
+                                    <input class="form-control m-input" value="@(item.AccountChargeAmount)" name="AccountChargeAmount">
+                                    <input type="hidden" value="@(item.Id)" name="Id">
+                                    <input type="hidden" value="@(item.AccountId)" name="AccountId">
+                                    <input type="hidden" value="@(item.Type)" name="Type">
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div class="m-portlet__foot m-portlet__foot--fit">
+                        <div class="m-form__actions">
+                            <button id="btnSubmit" type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+
+@section Scripts{ 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnSubmit').click(function (e) {
+                e.preventDefault();
+
+                var data = [];
+                $('.m-portlet__body #group_data').each(function (index, group) {
+                    let item = {};
+                    $(group).find('input').each(function (index, value) {
+                        item['' + $(value).attr('name') + ''] = $(value).val();
+                    });
+                    data.push(item);
+                });
+
+                console.log(data);
+
+
+            });
+        });
+    </script>
+}

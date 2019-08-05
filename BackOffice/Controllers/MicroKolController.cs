@@ -15,10 +15,15 @@ namespace BackOffice.Controllers
 
         IAccountBusiness _IAccountBusiness;
         IAccountRepository _IAccountRepository;
-        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository)
+        IAccountCampaignChargeRepository _IAccountCampaignChargeRepository;
+        IAccountCampaignChargeBusiness _IAccountCampaignChargeBusiness;
+        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
+            IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
+            _IAccountCampaignChargeRepository = __IAccountCampaignChargeRepository;
+            _IAccountCampaignChargeBusiness = __IAccountCampaignChargeBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -166,24 +171,23 @@ namespace BackOffice.Controllers
 
         public async Task<IActionResult> CampaignCharge(int id = 0)
         {
+            var list = _IAccountCampaignChargeBusiness.GetByAccountID(id);
             var microkol = await _IAccountBusiness.GetAccount(id);
 
-            ViewBag.MocrokolTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            if(microkol != null)
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Regular", Value = "0"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotTeen", Value = "1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotMom", Value = "2"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotFacebooker", Value = "3"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Kols", Value = "4"}
-            };
-
-
-            if (microkol == null)
-            {
-                TempData["MessageError"] = "MicroKol do not exist!";
+                ViewBag.Microkol = microkol;
             }
 
-            return View(microkol);
+            return View(list);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CampaignCharge(List<AccountCampaignChargeViewModel> model)
+        {
+            
+
+            return View(model);
         }
 
     }

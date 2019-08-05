@@ -27,12 +27,17 @@ namespace BackOffice
 
             services.AddScoped<IPayoutExportRepository, PayoutExportRepository>();
 
+            services.AddScoped<IAccountCampaignChargeRepository, AccountCampaignChargeRepository>();
+
 
             //business
             services.AddScoped<IAgencyBusiness, AgencyBusiness>();
             services.AddScoped<IWalletBusiness, WalletBusiness>();
             services.AddScoped<IAccountBusiness, AccountBusiness>();
             services.AddScoped<ITransactionBusiness, TransactionBusiness>();
+            services.AddScoped<IAccountCampaignChargeBusiness, AccountCampaignChargeBusiness>();
+
+            
 
 
 
