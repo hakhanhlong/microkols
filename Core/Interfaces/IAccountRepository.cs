@@ -18,6 +18,7 @@ namespace Core.Interfaces
             IEnumerable<int> cityid, int? agestart, int? ageend, IEnumerable<int> ignoreIds, int min, int max);
 
         int CountAll();
-        
+
+        Task UpdateAccountCategory(int accountid, List<int> categoryid);
     }
 }

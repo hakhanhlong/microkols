@@ -20,7 +20,7 @@ namespace Infrastructure.Data
         }
         #region Campaign Account
 
-        public async Task<int> CreateAgencyRequestCampaignAccount(int agencyid, int campaignid, int accountid,int amount, string username)
+        public async Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid,int amount, string username)
         {
             var campaign = await _dbContext.Campaign.FirstOrDefaultAsync(m => m.Id == campaignid && m.AgencyId == agencyid);
             if (campaign == null)
@@ -67,7 +67,7 @@ namespace Infrastructure.Data
                     AccountId = account.Id,
                     RefUrl = string.Empty,
                     AccountChargeAmount = accountChargeAmount,
-                    Status = CampaignAccountStatus.AgencyRequest,
+                    Status = CampaignAccountStatus.WaitToPay,
                     Type = campaign.Type,
                     UserCreated = username,
                     UserModified = username,
@@ -80,7 +80,7 @@ namespace Infrastructure.Data
             {
                 if(campaignAccount.Status== CampaignAccountStatus.Canceled)
                 {
-                    campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
+                    campaignAccount.Status = CampaignAccountStatus.WaitToPay;
                     campaignAccount.DateModified = DateTime.Now;
                     campaignAccount.UserModified = username;
                     campaignAccount.AccountChargeAmount = accountChargeAmount;
@@ -91,6 +91,7 @@ namespace Infrastructure.Data
             }
             return 0;
         }
+        
         #endregion
 
     }

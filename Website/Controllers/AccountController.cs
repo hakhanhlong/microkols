@@ -99,6 +99,7 @@ namespace Website.Controllers
         public async Task<IActionResult> ChangeInfo()
         {
             var model = await _accountService.GetInformation(CurrentUser.Id);
+            ViewBag.Categories = await _sharedService.GetCategories();
             return View(model);
         }
         [HttpPost]
@@ -112,6 +113,7 @@ namespace Website.Controllers
                 return RedirectToAction("ChangeInfo");
 
             }
+            ViewBag.Categories = await _sharedService.GetCategories();
             return View(model);
         }
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Interfaces;
@@ -34,6 +35,17 @@ namespace Website.Controllers
         {
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
             ViewBag.PaymentResult = paymentResult;
+            if (paymentResult.Status == Core.Entities.TransactionStatus.Completed)
+            {
+             
+                var accountids = new List<int>();
+
+                for (var i = 0; i < accountids.Count; i++)
+                {
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, accountids[i],  CurrentUser.Username));
+
+                }
+            }
             return PartialView("ModalPaymentMessage");
         }
 

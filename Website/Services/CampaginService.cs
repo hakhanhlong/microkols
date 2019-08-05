@@ -70,11 +70,11 @@ namespace Website.Services
         #region Campaign By Account
         public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, int type, string keyword, int page, int pagesize)
         {
-            
+
             var query = await _campaignRepository.QueryCampaignByAccount(accountid, type, keyword);
 
             var total = await query.CountAsync();
-            var campaigns = await query.OrderByDescending(m=>m.Id).GetPagedAsync(page, pagesize);
+            var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
 
             //var filter = new CampaignByAccountSpecification(accountid, keyword);
             //var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
@@ -203,7 +203,7 @@ namespace Website.Services
 
         private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
         {
-            if (model.EnabledCity &&  model.CityId != null && model.CityId.Count > 0)
+            if (model.EnabledCity && model.CityId != null && model.CityId.Count > 0)
             {
 
                 foreach (var cityId in model.CityId)
@@ -216,7 +216,7 @@ namespace Website.Services
                     });
                 }
 
-              
+
             }
             if (model.EnabledGender && model.Gender.HasValue)
             {
@@ -348,19 +348,40 @@ namespace Website.Services
 
 
         }
-        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, int amount, string username)
+
+        public async Task<bool> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username)
         {
-            var createStatus = await _campaignAccountRepository.CreateAgencyRequestCampaignAccount(agencyid, campaignid, accountid, amount, username);
+            var createStatus = await _campaignAccountRepository.CreateCampaignAccount(agencyid, campaignid, accountid, amount, username);
 
-            if (createStatus > 0)
+            return (createStatus > 0);
+        }
+        public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign != null)
             {
-                //add notification
-                await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
-                     NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
-                return true;
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
 
+                if (campaignAccount != null)
+                {
+                    if (campaignAccount.Status == CampaignAccountStatus.WaitToPay)
+                    {
+                        campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
+                        campaignAccount.DateModified = DateTime.Now;
+                        campaignAccount.UserModified = username;
+                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                        await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
+                            NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+
+                        return true;
+                    }
+
+                }
             }
+
             return false;
+
         }
 
         public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed)

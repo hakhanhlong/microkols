@@ -465,7 +465,7 @@ namespace Website.Services
 
         public async Task<ChangeInformationViewModel> GetInformation(int id)
         {
-            var entity = await _accountRepository.GetByIdAsync(id);
+            var entity = await _accountRepository.GetSingleBySpecAsync(new AccountWithCategorySpecification(id));
 
             if (entity != null)
             {
@@ -488,6 +488,8 @@ namespace Website.Services
                 entity.UserModified = username;
 
                 await _accountRepository.UpdateAsync(entity);
+
+                await _accountRepository.UpdateAccountCategory(entity.Id, model.CategoryId);
                 return true;
             }
             return false;

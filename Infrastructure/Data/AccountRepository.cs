@@ -94,5 +94,28 @@ namespace Infrastructure.Data
 
         }
 
+
+        public async Task UpdateAccountCategory(int accountid, List<int> categoryid)
+        {
+            var accountCategories = await _dbContext.AccountCategory.Where(m => m.AccountId == accountid).ToListAsync();
+
+            _dbContext.AccountCategory.RemoveRange(accountCategories);
+            await _dbContext.SaveChangesAsync();
+
+
+            if(categoryid!= null && categoryid.Count > 0)
+            {
+                foreach(var catid in categoryid)
+                {
+                   await _dbContext.AccountCategory.AddAsync(new AccountCategory()
+                    {
+                        AccountId = accountid,
+                        CategoryId = catid
+                   });
+                }
+                await _dbContext.SaveChangesAsync();
+            }
+
+        }
     }
 }

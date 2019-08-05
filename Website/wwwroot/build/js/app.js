@@ -908,6 +908,7 @@ var AgencyCreateCampaignPage = (function () {
 
     function pricingCalculator() {
 
+        /*
         var type = $('#Type').val();
         var selectedOption = $('#Type').children('option:selected');
         var serviceprice = selectedOption.data('serviceprice');
@@ -937,6 +938,7 @@ var AgencyCreateCampaignPage = (function () {
         $('#totalServiceCharge').text(AppCommon.moneyFormat(totalServiceCharge));
 
 
+
         //console.log('AppSettings.CurrentUser.Balance', AppSettings.CurrentUser.Balance, 'totalServicePrice', totalServicePrice, 'serviceCharge', serviceCharge, 'totalServiceCharge', totalServiceCharge, 'countOption', countOption);
         setTimeout(function () {
             if (AppSettings.CurrentUser.Balance <= totalServiceCharge) {
@@ -951,7 +953,8 @@ var AgencyCreateCampaignPage = (function () {
             }
         }, 1000);
 
-
+        */
+        $('#btnCreateCampaign').show();
     }
 
 

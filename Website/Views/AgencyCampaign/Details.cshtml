@@ -202,7 +202,7 @@
 
 
 <div>
-    @if (Model.Payment.IsValidAccountCharge)
+    @if (Model.Payment.IsValidAccountCharge || Model.Payment.IsValidServiceCharge)
     {
 
         <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
