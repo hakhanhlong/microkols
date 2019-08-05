@@ -1,0 +1,149 @@
+﻿
+@{
+                /**/
+
+                ViewData["Title"] = "ChangeType";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AccountViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        MicroKOls Listing
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="/microkol" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/microkol" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    MicroKOls Listing
+                </span>
+            </a>
+        </li>
+        @if (Model != null && Model.Id > 0)
+        {
+            <li class="m-nav__separator">
+                -
+            </li>
+            <li class="m-nav__item">
+                <a href="/microkol/detail?id=@(Model.Id)" class="m-nav__link">
+                    <span class="m-nav__link-text">
+                        @Model.Name
+                    </span>
+                </a>
+            </li>
+
+            <li class="m-nav__separator">
+                -
+            </li>
+            <li class="m-nav__item">
+                <a href="/microkol/changetype?id=@(Model.Id)" class="m-nav__link">
+                    <span class="m-nav__link-text">
+                        Change Type
+                    </span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@section HorizontalMenu{
+    <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
+        <li class="m-menu__item m-menu__item--submenu m-menu__item--rel m-menu__item--open-dropdown m-menu__item--hover" m-menu-submenu-toggle="click" m-menu-link-redirect="1" aria-haspopup="true">
+            <a href="javascript:;" class="m-menu__link m-menu__toggle">
+                <i class="m-menu__link-icon flaticon-add"></i>
+                <span class="m-menu__link-text">
+                    Actions
+                </span>
+                <i class="m-menu__hor-arrow la la-angle-down"></i>
+                <i class="m-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="m-menu__submenu m-menu__submenu--classic m-menu__submenu--left">
+                <span class="m-menu__arrow m-menu__arrow--adjust" style="left: 73px;"></span>
+                <ul class="m-menu__subnav">
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="/microkol/changepassword?id=@(Model.Id)" class="m-menu__link ">
+                            <i class="m-menu__link-icon flaticon-file"></i>
+                            <span class="m-menu__link-text">
+                                Change Password
+                            </span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="/microkol/changetype?id=@(Model.Id)" class="m-menu__link ">
+                            <i class="m-menu__link-icon flaticon-file"></i>
+                            <span class="m-menu__link-text">
+                                Config MicroKOL Type
+                            </span>
+                        </a>
+                    </li>
+                    <li class="m-menu__item " aria-haspopup="true">
+                        <a href="/category/add" class="m-menu__link ">
+                            <i class="m-menu__link-icon flaticon-file"></i>
+                            <span class="m-menu__link-text">
+                                Config MicroKOL Campaign Charge
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+}
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon m--hide">
+                            <i class="la la-gear"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            Change Type @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <!--begin::Form-->
+            <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/microkol/changetype">
+                <div class="m-portlet__body">
+                    <input type="hidden" asp-for="Id">
+                    <div class="form-group m-form__group">
+                        <label for="exampleSelect1">
+                            Select type
+                        </label>
+                        <select class="form-control m-input" asp-for="Type" asp-items="@ViewBag.MocrokolTypes">                                                        
+                        </select>
+                    </div>
+
+
+                </div>
+                <div class="m-portlet__foot m-portlet__foot--fit">
+                    <div class="m-form__actions">
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>
