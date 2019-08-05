@@ -4,6 +4,7 @@
     ViewData["Title"] = $"Chiến dịch {Model.Code}";
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
+    var balance = (long)ViewBag.Balance;
 }
 
 
@@ -189,6 +190,19 @@
                         </li>
                     }
 
+
+                    @if (Model.AccountTypes.Contains(AccountType.HotMom))
+                    {
+                     
+                        <li>
+                            Con cái:
+
+                            @(Model.ChildType  == 0 ? "Tất cả giới tính ": Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" :"")
+
+                            Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax 
+                        </li>
+                    }
+
                 </ul>
 
             }
@@ -201,11 +215,23 @@
 </div>
 
 
-<div>
+<div class="mt-2">
     @if (Model.Payment.IsValidAccountCharge || Model.Payment.IsValidServiceCharge)
     {
 
-        <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+        if (Model.Payment.TotalChargeAmount > balance)
+        {
+
+        
+                    <input type="button" value ="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+        }
+        else
+        {
+            <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+
+        }
+
+
 
     }
     @if (Model.Status == CampaignStatus.Started)

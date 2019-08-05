@@ -167,6 +167,14 @@ namespace Website.ViewModels
 
         public List<int> AccountIds { get; set; }
         public List<int> AccountChargeAmounts { get; set; }
+
+
+        [Display(Name = "Giới tính")]
+        public int? ChildType { get; set; }
+
+        [Display(Name = "Độ tuổi")]
+        public int? ChildAgeMin { get; set; }
+        public int? ChildAgeMax { get; set; }
     }
 
 }

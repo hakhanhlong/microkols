@@ -23,7 +23,8 @@ namespace Website.Controllers
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
         private readonly IFileHelper _fileHelper;
-        public AgencyCampaignController(ISharedService sharedService,
+        private readonly IWalletService _walletService;
+        public AgencyCampaignController(ISharedService sharedService, IWalletService walletService,
              IAccountService accountService, IFileHelper fileHelper, IPaymentService paymentService,
             ICampaignService campaignService, INotificationService notificationService)
         {
@@ -33,6 +34,7 @@ namespace Website.Controllers
             _accountService = accountService;
             _fileHelper = fileHelper;
             _paymentService = paymentService;
+            _walletService = walletService;
         }
 
 
@@ -193,6 +195,7 @@ namespace Website.Controllers
             if (model == null) return NotFound();
             await ViewbagData();
             ViewBag.activedTab = vt;
+            ViewBag.Balance = await _walletService.GetAmount(CurrentUser.Type, CurrentUser.Id);
             return View(model);
         }
 

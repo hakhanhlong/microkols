@@ -511,10 +511,11 @@ var AppWallet = (function () {
 
     function init() {
         $('.wallet-recharge').click(function (e) {
+            var campaignid = $(this).data('campaignid');
             e.preventDefault();
 
             AppBsModal.Init();
-            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(), function () {
+            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(campaignid), function () {
                 handlerRecharge();
             });
         });
@@ -771,7 +772,7 @@ var AgencyCreateCampaignPage = (function () {
             $('.d-withoutRegular').addClass('d-none');
             $('#actionWrap').removeClass('d-none');
             $('.d-withRegular').removeClass('d-none');
-        } else {
+        } else  {
 
             $('.d-withoutRegular').removeClass('d-none');
             $('.d-withRegular').addClass('d-none');
@@ -782,6 +783,16 @@ var AgencyCreateCampaignPage = (function () {
 
                 $('#actionWrap').addClass('d-none');
             }
+
+        }
+
+        if (accouttype === 'HotMom') {
+            $('.d-withoutHotMom').addClass('d-none');
+            $('.d-withHotMom').removeClass('d-none');
+        } else {
+
+            $('.d-withoutHotMom').removeClass('d-none');
+            $('.d-withHotMom').addClass('d-none');
 
         }
 
