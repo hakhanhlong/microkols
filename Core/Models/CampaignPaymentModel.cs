@@ -31,6 +31,7 @@ namespace Core.Models
 
             var campaginAccountStatusArr = new List<CampaignAccountStatus>()
             {
+                CampaignAccountStatus.WaitToPay,
                 CampaignAccountStatus.AccountRequest,
                 CampaignAccountStatus.AgencyRequest,
                 CampaignAccountStatus.Confirmed,

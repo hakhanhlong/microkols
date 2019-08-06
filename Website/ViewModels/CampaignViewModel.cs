@@ -91,6 +91,35 @@ namespace Website.ViewModels
             }
 
             CategoryIds = categoryids;
+
+            var childOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Child);
+            if (childOpt != null)
+            {
+
+
+
+                var arrAge = childOpt.Value.Split('|');
+                if (arrAge.Length == 2)
+                {
+                    var childType = 0;
+                    if (int.TryParse(arrAge[0], out childType))
+                    {
+                        ChildType = childType;
+                    }
+
+                    var arrAge2 = arrAge[1].Split('-');
+                    if (arrAge2.Length == 2)
+                    {
+                        var childAgeMin = 0;
+                        var childAgeMax = 0;
+                        if (int.TryParse(arrAge2[0], out childAgeMin) && int.TryParse(arrAge2[1], out childAgeMax))
+                        {
+                            ChildAgeMin = childAgeMin;
+                            ChildAgeMax = childAgeMax;
+                        }
+                    }
+                }
+            }
         }
 
 
@@ -118,6 +147,10 @@ namespace Website.ViewModels
         public int? AgeEnd { get; set; }
         public List<int> CityId { get; set; }
         public List<int> CategoryIds { get; set; }
+
+        public int? ChildType { get; set; }
+        public int? ChildAgeMin { get; set; }
+        public int? ChildAgeMax { get; set; }
 
         public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }

@@ -3,7 +3,7 @@
     ViewData["Title"] = "Thêm chiến dịch";
 
     var campaignTypes = StringHelper.GetEnumArray<CampaignType>();
-    var accountTypes = StringHelper.GetEnumArray<AccountType>().Where(m=>m!= AccountType.All);
+    var accountTypes = StringHelper.GetEnumArray<AccountType>().Where(m => m != AccountType.All);
 
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;
@@ -154,19 +154,48 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="ml-4 d-withRegular d-none">
-                            <div class="d-flex ">
-                                @if (accountType == AccountType.Regular)
-                                {
-                                    <label asp-for="AccountChargeAmount" class="mb-0"></label>
-                                    <div class="pl-2" id="editAccountPriceWrap">
-                                        <span></span>
-                                        <input type="number" class="form-control " asp-for="AccountChargeAmount" />
-                                    </div>
-                                }
+                        <div class="ml-4">
+                            @if (accountType == AccountType.Regular)
+                            {
+                                <div class="d-withRegular  d-none">
 
-                            </div>
-                           
+                                    <div class="d-flex">
+                                        <label asp-for="AccountChargeAmount" class="mb-0"></label>
+                                        <div class="pl-2" id="editAccountPriceWrap">
+                                            <span></span>
+                                            <input type="number" class="form-control " asp-for="AccountChargeAmount" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+                            else if (accountType == AccountType.HotMom)
+                            {
+                                <div class="d-withHotMom d-none">
+                                    <div class="d-flex">
+                                        <div class="px-2" style="width:80px">Giới tính</div>
+                                        <select class="form-control form-control-sm" name="ChildType" style="width:100px">
+                                            <option selected value="0">Tất cả</option>
+                                            <option value="1">Con trai</option>
+                                            <option value="2">Con gái</option>
+
+                                        </select>
+
+                                        <div class="px-2" style="width:80px">độ tuổi</div>
+                                        <input type="number" class="form-control  form-control-sm" style="width:80px" asp-for="ChildAgeMin" value="0" />
+
+                                        <div class="px-2">-</div>
+
+                                        <input type="number" class="form-control  form-control-sm" style="width:80px" asp-for="ChildAgeMax" value="20" />
+
+
+                                    </div>
+                                </div>
+
+                            }
+
+
+
                         </div>
                     </div>
                 }
@@ -298,7 +327,7 @@
         <label asp-for="Quantity" class="col-md-2 col-form-label"></label>
         <div class="col-md-2">
 
-            
+
 
             <input type="number" asp-for="Quantity" min="0" class="form-control" />
             <span asp-validation-for="Description"></span>
@@ -316,7 +345,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
 
     <div class="d-none d-withoutRegular">
@@ -339,7 +368,7 @@
 
         </div>
 
-        <div class="form-group row" >
+        <div class="form-group row">
             <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
             <div class="col-md-10">
                 <select asp-for="CustomKolNames" multiple class="form-control form-select2-tags"></select>
@@ -360,25 +389,25 @@
     <hr />
 
     @*<div class="form-group row">
-        <div class="col-md-2">Chi phí</div>
-        <div class="col-md-10">
-            <span id="totalServicePrice" class="text-danger"></span>
+            <div class="col-md-2">Chi phí</div>
+            <div class="col-md-10">
+                <span id="totalServicePrice" class="text-danger"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-2">Phí dịch vụ (<span class="text-success">@AppSettings.CampaignServiceChargePercent %</span>)</div>
-        <div class="col-md-10">
-            <span id="serviceCharge" class="text-success"></span>
+        <div class="form-group row">
+            <div class="col-md-2">Phí dịch vụ (<span class="text-success">@AppSettings.CampaignServiceChargePercent %</span>)</div>
+            <div class="col-md-10">
+                <span id="serviceCharge" class="text-success"></span>
 
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-md-2">Tổng chi phí</div>
-        <div class="col-md-10">
-            <span id="totalServiceCharge" class="text-danger"></span>
+        <div class="form-group row">
+            <div class="col-md-2">Tổng chi phí</div>
+            <div class="col-md-10">
+                <span id="totalServiceCharge" class="text-danger"></span>
 
-        </div>
-    </div>*@
+            </div>
+        </div>*@
 
     <div class="form-group row">
         <div class="col-md-2">Mã chiến dịch</div>

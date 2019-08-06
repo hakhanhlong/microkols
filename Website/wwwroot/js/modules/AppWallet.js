@@ -4,10 +4,11 @@ var AppWallet = (function () {
 
     function init() {
         $('.wallet-recharge').click(function (e) {
+            var campaignid = $(this).data('campaignid');
             e.preventDefault();
 
             AppBsModal.Init();
-            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(), function () {
+            AppBsModal.OpenRemoteModal(AppConstants.UrlRecharge(campaignid), function () {
                 handlerRecharge();
             });
         });

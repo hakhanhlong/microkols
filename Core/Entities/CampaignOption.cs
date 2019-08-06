@@ -18,6 +18,7 @@ namespace Core.Entities
         AgeRange,
         Gender,
         City,
-        Tags
+        Tags,
+        Child
     }
 }

@@ -15,7 +15,7 @@ namespace Website.Controllers
         private readonly IWalletService _walletService;
         private readonly ICampaignService _campaignService;
         private readonly IPaymentService _paymentService;
-      
+
         public AgencyPaymentController(IWalletService walletService, ICampaignService campaignService, IPaymentService paymentService)
         {
             _campaignService = campaignService;
@@ -34,18 +34,27 @@ namespace Website.Controllers
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
-            ViewBag.PaymentResult = paymentResult;
-            if (paymentResult.Status == Core.Entities.TransactionStatus.Completed)
+            if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Type == Core.Entities.TransactionType.CampaignServiceCharge)
             {
-             
-                var accountids = new List<int>();
+                var paymentResult2 = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
 
-                for (var i = 0; i < accountids.Count; i++)
+                paymentResult2.Amount += paymentResult.Amount;
+                ViewBag.PaymentResult = paymentResult2;
+
+                if (paymentResult2.Status == Core.Entities.TransactionStatus.Completed)
                 {
-                    BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, accountids[i],  CurrentUser.Username));
+
+
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
 
                 }
             }
+            else
+            {
+                ViewBag.PaymentResult = paymentResult;
+            }
+
+
             return PartialView("ModalPaymentMessage");
         }
 
