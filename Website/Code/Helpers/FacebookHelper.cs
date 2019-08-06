@@ -37,18 +37,31 @@ namespace Website.Code.Helpers
 
         public async Task<LoginProviderViewModel> GetLoginProviderAsync(string accessToken)
         {
-            var user = await _facebookClient.GetAsync<dynamic>(accessToken, "me", "fields=email,name");
-          
-            return new LoginProviderViewModel()
+            try
             {
-                Email = (string)user.email,
-                ProviderId = (string)user.id,
-                Name = (string)user.name,
-                Provider = Core.Entities.AccountProviderNames.Facebook,
-                AccessToken = accessToken,
-                Image = GetAvatarUrl((string) user.id),
+                var user = await _facebookClient.GetAsync<dynamic>(accessToken, "me", "fields=email,name");
+                var id = (string)user.id;
+                var email = (string)user.email;
+                if (string.IsNullOrEmpty(email))
+                {
+                    email = $"{id}@facebook.com";
+                }
+                return new LoginProviderViewModel()
+                {
+                    Email = email,
+                    ProviderId = id,
+                    Name = (string)user.name,
+                    Provider = Core.Entities.AccountProviderNames.Facebook,
+                    AccessToken = accessToken,
+                    Image = GetAvatarUrl((string)user.id),
 
-            };
+                };
+            }
+            catch
+            {
+                return null;
+            }
+            
         }
 
         public async Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid, long since = 1514764800, int limit = 10000)
