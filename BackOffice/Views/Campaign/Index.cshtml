@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model ListCampaignViewModel
+
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
         Campaign Listing
@@ -49,7 +51,7 @@
                     <!--begin::Section-->
                     <div class="m-section">
                         <div class="m-section__content">
-                            
+
                             <table class="table">
                                 <thead>
                                     <tr>
@@ -60,10 +62,7 @@
                                             IMAGE
                                         </th>
                                         <th>
-                                            NAME
-                                        </th>
-                                        <th>
-                                            AGENCY
+                                            TITLE
                                         </th>
                                         <th>
                                             TYPE
@@ -71,11 +70,35 @@
                                         <th>
                                             STATUS
                                         </th>
+                                        <th>
+                                            START DATE
+                                        </th>
+                                        <th>
+                                            END DATE
+                                        </th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        int count = 1;
+                                        foreach (var item in Model.Campaigns)
+                                        {
+                                            <tr>
+                                                <td>@(count)</td>
+                                                <td></td>
+                                                <td>@(item.Title)</td>
+                                                <td>@(item.Type.ToText())</td>
+                                                <td>@(item.Status.ToString())</td>
+                                                <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
+                                                <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
+                                            </tr>
+                                            count++;
+                                        }
+                                    }
+                                </tbody>
                             </table>
-
+                            <pager pager="@Model.Pager" asp-action="Index"></pager>
                         </div>
                     </div>
                     <!--end::Section-->
