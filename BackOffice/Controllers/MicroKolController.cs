@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
+using Common.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -117,6 +118,44 @@ namespace BackOffice.Controllers
 
             return View(microkol);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(AccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var entity = _IAccountRepository.GetById(model.Id);
+
+                if (entity != null)
+                {
+                    var oldpw = Common.Helpers.SecurityHelper.HashPassword(entity.Salt, model.OldPassword);
+                    if (oldpw.Contains(entity.Password))
+                    {
+                        var newpw = SecurityHelper.HashPassword(entity.Salt, model.NewPassword);
+
+                        entity.Password = newpw;
+                        entity.DateModified = DateTime.Now;
+
+                        entity.UserModified = HttpContext.User.Identity.Name;
+
+                        await _IAccountRepository.UpdateAsync(entity);
+
+                        TempData["MessageError"] = "Change password success!";
+
+                    }
+
+                }
+                else
+                {
+                    TempData["MessageError"] = "MicroKol do not exist!";
+                }                
+            }
+
+            return RedirectToAction("changepassword", "microkol", new { id = model.Id });
+
+          
+        }
+
 
 
         public async Task<IActionResult> ChangeType(int id = 0)

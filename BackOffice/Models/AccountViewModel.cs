@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -109,6 +110,25 @@ namespace BackOffice.Models
         public string BankAccountNumber { get; set; }
         public string BankAccountBank { get; set; }
         public string BankAccountBranch { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [DataType(DataType.Password)]
+        [Display(Name = "Mật khẩu cũ")]
+        public string OldPassword { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [StringLength(100, ErrorMessage = "Độ dài {0} phải lớn hơn {2} ký tự.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Mật khẩu mới")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Nhập lại mật khẩu mới")]
+        [Compare("NewPassword", ErrorMessage = "Mật khẩu và xác nhận mật khẩu không trùng nhau.")]
+        public string ConfirmPassword { get; set; }
+
+
 
 
     }
