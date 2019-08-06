@@ -183,11 +183,35 @@ namespace BackOffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CampaignCharge(List<AccountCampaignChargeViewModel> model)
+        public JsonResult CampaignCharge([FromBody] List<AccountCampaignChargeViewModel> model)
         {
-            
+            try {
+                foreach (var item in model)
+                {
+                    var obj = _IAccountCampaignChargeRepository.GetById(item.Id);
+                    obj.AccountChargeAmount = item.AccountChargeAmount;
+                    _IAccountCampaignChargeRepository.Update(obj);
+                }
+                TempData["MessageSuccess"] = "Update Success!";
 
-            return View(model);
+
+            }
+            catch(Exception ex)
+            {
+                TempData["MessageError"] = ex.Message;
+                return Json(new
+                {
+                    state = 0,
+                    msg = ex.Message
+                });
+                
+            }
+
+            return Json(new
+            {
+                state = 0,
+                msg = string.Empty
+            });
         }
 
     }
