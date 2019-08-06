@@ -133,16 +133,20 @@
                         }
 
                     </div>
-                    <div class="m-portlet__foot m-portlet__foot--fit">
-                        <div class="m-form__actions">
-                            <button id="btnSubmit" type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                            <button type="reset" class="btn btn-secondary">
-                                Cancel
-                            </button>
+                    @if (ViewBag.Microkol.Type != 0)
+                    {
+                        <div class="m-portlet__foot m-portlet__foot--fit">
+                            <div class="m-form__actions">
+                                <button id="btnSubmit" type="submit" class="btn btn-primary">
+                                    Submit
+                                </button>
+                                <button type="reset" class="btn btn-secondary">
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    }
+
                 </form>
                 <!--end::Form-->
             </div>
