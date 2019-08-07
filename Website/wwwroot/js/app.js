@@ -120,7 +120,7 @@
             showDropdowns: true,
             //startDate: "01/01/2000",
             locale: {
-                format: 'hh:mm DD/MM/YYYY'
+                format: 'hh:mm A DD/MM/YYYY'
             }
         }, function (start, end, label) {
                 var years = moment().diff(start, 'years');

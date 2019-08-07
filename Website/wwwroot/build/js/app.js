@@ -120,7 +120,7 @@ var App = (function () {
             showDropdowns: true,
             //startDate: "01/01/2000",
             locale: {
-                format: 'hh:mm DD/MM/YYYY'
+                format: 'hh:mm A DD/MM/YYYY'
             }
         }, function (start, end, label) {
                 var years = moment().diff(start, 'years');
@@ -734,6 +734,16 @@ var AgencyCreateCampaignPage = (function () {
 
             suggestAccount();
         });
+
+        $('#ExecutionTime').daterangepicker({
+            timePicker: true,
+            minDate: moment().startOf('hour').add(5, 'hour'),
+            startDate: moment().startOf('hour').add(5, 'hour'),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        })
 
     }
     function createCampaign(callback) {
