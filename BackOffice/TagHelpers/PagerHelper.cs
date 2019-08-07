@@ -31,10 +31,10 @@ namespace BackOffice.TagHelpers
 
             int adjacents = 3;
             var prevtag = new TagBuilder("i");
-            prevtag.AddCssClass("fas fa-chevron-left");
+            prevtag.AddCssClass("fa fa-chevron-left");
 
             var nexttag = new TagBuilder("i");
-            nexttag.AddCssClass("fas fa-chevron-right");
+            nexttag.AddCssClass("fa fa-chevron-right");
 
             var result = new StringBuilder();
 

@@ -58,9 +58,7 @@
                                         <th>
                                             #
                                         </th>
-                                        <th>
-                                            IMAGE
-                                        </th>
+                                        <th></th>
                                         <th>
                                             TITLE
                                         </th>
@@ -86,10 +84,51 @@
                                         {
                                             <tr>
                                                 <td>@(count)</td>
-                                                <td></td>
+                                                <td id="item_@(item.Id)">
+                                                    @if (item.Status == CampaignStatus.Created)
+                                                    {
+                                                        <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-sticky-note"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.Status == CampaignStatus.Started)
+                                                    {
+                                                        <a href="#" class="btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-heartbeat"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.Status == CampaignStatus.Ended)
+                                                    {
+                                                        <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-stop"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.Status == CampaignStatus.Error)
+                                                    {
+                                                        <a href="#" class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-times-circle"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.Status == CampaignStatus.Completed)
+                                                    {
+                                                        <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-check-circle-o"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.Status == CampaignStatus.Canceled)
+                                                    {
+                                                        <a href="#" class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-ban"></i>
+                                                        </a>
+                                                    }
+
+
+                                                </td>
                                                 <td>@(item.Title)</td>
                                                 <td>@(item.Type.ToText())</td>
-                                                <td>@(item.Status.ToString())</td>
+                                                <td>                                                    
+                                                    <select id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
+                                                </td>
                                                 <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
                                                 <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
                                             </tr>
@@ -108,3 +147,20 @@
             <!--end::Portlet-->
         </div>
     </div>
+
+@section Scripts{ 
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('.m-section__content select').each(function (index, item) {
+                $(item).change(function () {
+
+                    console.log($(this).val());
+
+                });
+            });
+        });
+
+    </script>
+}
