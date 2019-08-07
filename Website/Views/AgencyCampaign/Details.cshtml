@@ -94,25 +94,19 @@
             </div>
 
             <div>
-                Ngày khởi tạo:  <span class="text-info">@Model.DateCreated.ToViDate()</span>
+                Ngày tạo:  <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
             </div>
             @if (Model.DateStart.HasValue)
             {
                 <div>
-                    Ngày bắt đầu:  <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span>
-                </div>
-            }
-
-
-            @if (Model.DateEnd.HasValue)
-            {
-                <div>
-                    Ngày kết thúc:
+                    Thời gian thực hiện: <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> - 
                     <span class="text-info">
                         @Model.DateEnd.Value.ToViDateTime()
                     </span>
                 </div>
             }
+
+
         </div>
         <div class="col-md-6">
             <div class="mb-2">
@@ -193,13 +187,13 @@
 
                     @if (Model.AccountTypes.Contains(AccountType.HotMom))
                     {
-                     
+
                         <li>
                             Con cái:
 
-                            @(Model.ChildType  == 0 ? "Tất cả giới tính ": Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" :"")
+                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                            Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax 
+                            Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
                         </li>
                     }
 
@@ -222,8 +216,8 @@
         if (Model.Payment.TotalChargeAmount > balance)
         {
 
-        
-                    <input type="button" value ="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+
+            <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
         }
         else
         {

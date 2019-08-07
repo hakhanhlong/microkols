@@ -36,6 +36,17 @@ namespace Website.ViewModels
                 }
             }
 
+            var start = "";
+            var end = "";
+            if (!string.IsNullOrEmpty(ExecutionTime))
+            {
+                var arrDate = ExecutionTime.Split('-');
+                if(arrDate.Length== 2)
+                {
+                    start = arrDate[0].Trim();
+                    end = arrDate[1].Trim();
+                }
+            }
             return new Campaign()
             {
                 DateCreated = DateTime.Now,
@@ -61,7 +72,8 @@ namespace Website.ViewModels
                 AccountChargeTime = AccountChargeTime ?? 1,
                 Code = code,
                 Quantity = Quantity,
-                DateStart = DateStart.ToViDateTime(),
+                DateStart = start.ToViDateTime(),
+                DateEnd = end.ToViDateTime(),
                 AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
                 CustomKolNames = CustomKolNames.ToListString()
                 
@@ -154,8 +166,8 @@ namespace Website.ViewModels
         public string Code { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Ngày bắt đầu")]
-        public string DateStart { get; set; }
+        [Display(Name = "Thời gian thực hiện")]
+        public string ExecutionTime { get; set; }
 
 
         [Display(Name = "Phản hồi trước")]
