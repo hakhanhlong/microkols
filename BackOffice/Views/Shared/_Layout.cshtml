@@ -86,7 +86,7 @@
                             <i class="la la-close"></i>
                         </button>
                         <div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-light m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-dark m-aside-header-menu-mobile--submenu-skin-dark ">
-                                @RenderSection("HorizontalMenu", required: false)
+                            @RenderSection("HorizontalMenu", required: false)
                         </div>
                         <!-- END: Horizontal Menu -->								<!-- BEGIN: Topbar -->
                         <div id="m_header_topbar" class="m-topbar  m-stack m-stack--ver m-stack--general m-stack--fluid">
@@ -112,12 +112,12 @@
                                                         </div>
                                                         <div class="m-card-user__details">
 
-                                                            
+
 
                                                             <span class="m-card-user__name m--font-weight-500">
                                                                 @(User?.Identity?.Name)
                                                             </span>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -128,7 +128,7 @@
                                                                 <span class="m-nav__section-text">
                                                                     Section
                                                                 </span>
-                                                            </li>                                                            
+                                                            </li>
                                                             <li class="m-nav__item">
                                                                 <a href="/authen/changepassword" class="m-nav__link">
                                                                     <i class="m-nav__link-icon flaticon-share"></i>
@@ -136,7 +136,7 @@
                                                                         Change Password
                                                                     </span>
                                                                 </a>
-                                                            </li>                                                       
+                                                            </li>
                                                             <li class="m-nav__item">
                                                                 <a href="/Authen/Logout" class="btn m-btn--pill btn-secondary m-btn m-btn--custom m-btn--label-brand m-btn--bolder">
                                                                     Logout
@@ -179,8 +179,8 @@
                                     </span>
                                 </span>
                             </a>
-                        </li>                        
-                       
+                        </li>
+
 
                         @await Html.PartialAsync("~/Views/Shared/_Partial/_MenuLeft.cshtml")
 
@@ -271,6 +271,7 @@
     <script src="/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
     <script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
     <script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
+    <script src="/assets/demo/default/custom/components/base/sweetalert2.js" type="text/javascript"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -121,13 +121,11 @@
                                                             <i class="fa fa-ban"></i>
                                                         </a>
                                                     }
-
-
                                                 </td>
                                                 <td>@(item.Title)</td>
                                                 <td>@(item.Type.ToText())</td>
                                                 <td>                                                    
-                                                    <select id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
+                                                    <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
                                                 </td>
                                                 <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
                                                 <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
@@ -156,7 +154,44 @@
             $('.m-section__content select').each(function (index, item) {
                 $(item).change(function () {
 
-                    console.log($(this).val());
+                 
+
+                    var campaignid = $(this).attr('campaign-id');
+                    var status = $(this).val();
+                    var data = {};
+                    data['id'] = campaignid;
+                    data['status'] = status;
+                  
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ChangeStatus", "Campaign")',
+                        data: data,
+                        success: function (data) {
+
+                            if (data.code == 1) {
+
+                                $('#item_' + campaignid).html(data.str_icon);
+                                Swal.fire(
+                                    'Good job!',
+                                    data.message,
+                                    'success'
+                                );
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: data.message
+                                });
+                            }
+                            
+                        },                                            
+                        dataType: "json",
+                        traditional: true
+                    });
+
 
                 });
             });
