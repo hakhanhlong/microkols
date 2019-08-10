@@ -10,14 +10,12 @@
 
                 <ul class="navbar-nav  mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
+                        <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Introduce">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Doanh nghiệp</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Tin tức</a>
-                    </li>
+                   
                 </ul>
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)

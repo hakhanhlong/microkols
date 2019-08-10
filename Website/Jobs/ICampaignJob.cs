@@ -6,5 +6,10 @@ namespace Website.Jobs
     {
         Task UpdateCompletedCampagin(int campaignid = 0);
         Task UpdateCampaignAccountExpired();
+
+        Task UpdateCampaignProcess();
+
+        Task UpdateCampaignStart();
+        Task UpdateCampaignEnd();
     }
 }

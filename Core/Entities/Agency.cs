@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Core.Entities
@@ -13,13 +14,27 @@ namespace Core.Entities
         public string Description { get; set; }
         public string Image { get; set; }
         public string TaxIdNumber { get; set; }
-
+  
         public bool Deleted { get; set; }
         public bool Actived { get; set; }
+        public AgencyType? Type { get; set; }
 
+
+        public string Address { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
 
         private List<Campaign> _Campaign = new List<Campaign>();
         public IEnumerable<Campaign> Campaign => _Campaign.AsReadOnly();
         
+    }
+
+    public  enum AgencyType
+    {
+
+        [DisplayName("Doanh nghiệp")]
+        DoanhNghiep = 1,
+        [DisplayName("Hộ kinh doanh/Cá thể kinh doanh")]
+        HoKinhDoanh = 2
     }
 }

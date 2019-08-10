@@ -32,7 +32,15 @@ namespace Website.Controllers
             return View();
         }
 
-     
+        public IActionResult Introduce()
+        {
+            return View();
+        }
+        public IActionResult Policy()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

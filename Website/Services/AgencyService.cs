@@ -104,6 +104,9 @@ namespace Website.Services
                 agency.Image = model.Image;
                 agency.Description = model.Description;
                 agency.TaxIdNumber = model.TaxIdNumber;
+                agency.Phone = model.Phone;
+                agency.Address = model.Address;
+                agency.Type = model.Type;
                 await _agencyRepository.UpdateAsync(agency);
 
                 return true;

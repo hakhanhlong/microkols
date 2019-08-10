@@ -24,6 +24,7 @@ namespace Core.Models
             Phone = settings.FirstOrDefault(m => m.Name == SettingName.Phone)?.Value;
 
             Address = settings.FirstOrDefault(m => m.Name == SettingName.Address)?.Value;
+            Email = settings.FirstOrDefault(m => m.Name == SettingName.Email)?.Value;
         }
         public int CampaignServiceChargePercent { get => _serviceCharge; set => _serviceCharge = value; }
         public int CampaignExtraOptionChargePercent { get => _extraOptionCharge; set => _extraOptionCharge = value; }

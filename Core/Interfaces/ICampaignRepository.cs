@@ -18,5 +18,8 @@ namespace Core.Interfaces
         Task<List<Campaign>> GetCampaignsMatchedAccount(int accountid);
         Task<IQueryable<Campaign>> QueryCampaignByAccount(int accountid, int type, string keyword);
         int CountAll();
+
+        Task<List<int>> GetCampaignIdNeedToStart();
+        Task<List<int>> GetCampaignIdNeedToEnd();
     }
 }

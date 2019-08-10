@@ -76,9 +76,6 @@ namespace Website.ViewModels
                 DateEnd = end.ToViDateTime(),
                 AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
                 CustomKolNames = CustomKolNames.ToListString()
-                
-                
-
 
             };
 

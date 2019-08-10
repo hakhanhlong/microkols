@@ -24,8 +24,9 @@ namespace Website.Controllers
         private readonly IPaymentService _paymentService;
         private readonly IFileHelper _fileHelper;
         private readonly IWalletService _walletService;
+        private readonly IAgencyService _agencyService;
         public AgencyCampaignController(ISharedService sharedService, IWalletService walletService,
-             IAccountService accountService, IFileHelper fileHelper, IPaymentService paymentService,
+             IAccountService accountService, IFileHelper fileHelper, IPaymentService paymentService, IAgencyService agencyService,
             ICampaignService campaignService, INotificationService notificationService)
         {
             _campaignService = campaignService;
@@ -35,6 +36,7 @@ namespace Website.Controllers
             _fileHelper = fileHelper;
             _paymentService = paymentService;
             _walletService = walletService;
+            _agencyService = agencyService;
         }
 
 
@@ -52,6 +54,13 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Create()
         {
+            var agencyinfo = await _agencyService.GetAgency(CurrentUser.Id);
+            if (!agencyinfo.Type.HasValue)
+            {
+                return View("CreateError");
+            }
+
+
             await ViewbagData();
             var model = await _campaignService.GetCreateCampaign(CurrentUser.Id);
             return View(model);

@@ -37,13 +37,17 @@ namespace Website.ViewModels
             Description = entity.Description;
             Image = entity.Image;
             TaxIdNumber = entity.TaxIdNumber;
+            Type = entity.Type;
+            Address = entity.Address;
+            Email = entity.Email;
+            Phone = entity.Phone;
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên doanh nghiệp",Prompt ="Tên doanh nghiệp")]
+        [Display(Name = "Tên doanh nghiệp", Prompt = "Tên doanh nghiệp")]
         public string Name { get; set; }
 
-        [Display(Name = "Mô tả")]
+        [Display(Name = "Lĩnh vực hoạt động")]
         public string Description { get; set; }
 
         [Display(Name = "Ảnh đại diện")]
@@ -52,6 +56,24 @@ namespace Website.ViewModels
 
         [Display(Name = "Mã số thuế")]
         public string TaxIdNumber { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Loại Tài khoản")]
+        public AgencyType? Type { get; set; }
+
+
+        [Display(Name = "Địa chỉ")]
+        public string Address { get; set; }
+
+
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Số điện thoại")]
+        public string Phone { get; set; }
+
     }
 
     public class RegisterAgencyViewModel : UpdateAgencyViewModel
@@ -66,12 +88,12 @@ namespace Website.ViewModels
         [Display(Name = "Xác nhận mật khẩu", Prompt = "Xác nhận mật khẩu")]
         [DataType(DataType.Password)]
         [StringLength(20, ErrorMessage = "{0} Có độ dài từ {2} - {1} ký tự.", MinimumLength = 6)]
-        [Compare("Password", ErrorMessage ="{0} và {1} không trùng nhau")]
+        [Compare("Password", ErrorMessage = "{0} và {1} không trùng nhau")]
         public string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Email đăng nhập", Prompt = "Email đăng nhập")]
-        [EmailAddress( ErrorMessage = "{0} không đúng")]
+        [EmailAddress(ErrorMessage = "{0} không đúng")]
         [Remote("VerifyAgencyUsername", "Auth", ErrorMessage = "{0} đã tồn tại hoặc không phải Email doanh nghiệp")]
         public string Username { get; set; }
 

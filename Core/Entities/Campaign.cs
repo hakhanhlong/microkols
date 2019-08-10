@@ -58,7 +58,9 @@ namespace Core.Entities
     public enum CampaignStatus
     {
         [DisplayName("Chờ phê duyệt")]
-        Created = 1,
+        Created = 0,
+        [DisplayName("Đã phê duyệt")]
+        Confirmed = 1,
         [DisplayName("Bắt đầu")]
         Started = 2,
         [DisplayName("Kết thúc")]

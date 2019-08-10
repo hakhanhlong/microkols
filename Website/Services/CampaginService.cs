@@ -65,6 +65,8 @@ namespace Website.Services
             return campaignAccounts.Select(m => m.AccountId).ToList();
         }
 
+
+
         #endregion
 
         #region Campaign By Account
@@ -279,10 +281,7 @@ namespace Website.Services
             }
         }
 
-        private async Task CreateCampaignAccount(int campaignId, int accountid, string username)
-        {
 
-        }
 
         #endregion
 
@@ -616,7 +615,7 @@ namespace Website.Services
                     return -1;
                 }
 
-                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Created)
+                if (status == CampaignStatus.Started && campaign.Status != CampaignStatus.Confirmed)
                 {
                     return -1;
                 }
@@ -672,14 +671,14 @@ namespace Website.Services
 
 
 
-                if (status == CampaignStatus.Started)
-                {
-                    campaign.DateStart = DateTime.Now;
-                }
-                if (status == CampaignStatus.Ended)
-                {
-                    campaign.DateEnd = DateTime.Now;
-                }
+                //if (status == CampaignStatus.Started)
+                //{
+                //    campaign.DateStart = DateTime.Now;
+                //}
+                //if (status == CampaignStatus.Ended)
+                //{
+                //    campaign.DateEnd = DateTime.Now;
+                //}
 
 
                 campaign.Status = status;
@@ -820,6 +819,27 @@ namespace Website.Services
             return 1;
         }
 
+        public async Task<int> CancelCampaignAccount(int campaignid, int accountid, string note, string username)
+        {
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+
+            campaignAccount.Status = CampaignAccountStatus.Canceled;
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            //notification
+            await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
+                EntityType.Account, campaignAccount.AccountId, campaignid,
+                 NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText(username, campaignid.ToString()),
+                 campaignAccount.Id.ToString());
+
+            return 1;
+        }
 
 
         #endregion
@@ -830,6 +850,126 @@ namespace Website.Services
             var list = await _campaignTypeChargeRepository.ListAllAsync();
             return CampaignTypeChargeViewModel.GetList(list);
         }
+        #endregion
+
+        #region Auto Update campaign Status
+
+        public async Task AutoUpdateStartedStatus(int campaignid)
+        {
+            if (campaignid == 0)
+            {
+                var campaignids = await _campaignRepository.GetCampaignIdNeedToStart();
+
+                foreach (var id in campaignids)
+                {
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.AutoUpdateStartedStatus(id));
+
+
+                }
+            }
+            else
+            {
+                var username = "system";
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
+                {
+                    campaign.Status = CampaignStatus.Started;
+                    campaign.UserModified = username;
+                    campaign.DateModified = DateTime.Now;
+                    await _campaignRepository.UpdateAsync(campaign);
+
+
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+
+
+                    //huy campaing account chua confirms 
+                    var needCancelCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus> {
+                            CampaignAccountStatus.AccountRequest,
+                            CampaignAccountStatus.AgencyRequest,
+                    }, null));
+
+                    foreach (var campaignAccount in needCancelCampaignAccounts)
+                    {
+                        campaignAccount.Status = CampaignAccountStatus.Canceled;
+                        campaignAccount.DateModified = DateTime.Now;
+                        campaignAccount.UserModified = username;
+                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                        //notification
+                        await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
+                            EntityType.Account, campaignAccount.AccountId, campaignid,
+                             NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaignid.ToString()),
+                             campaignAccount.Id.ToString());
+
+                    }
+
+
+
+
+                }
+            }
+
+        }
+
+        public async Task AutoUpdateEndedStatus(int campaignid)
+        {
+            if (campaignid == 0)
+            {
+                var campaignids = await _campaignRepository.GetCampaignIdNeedToEnd();
+
+                foreach (var id in campaignids)
+                {
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.AutoUpdateEndedStatus(id));
+
+
+                }
+            }
+            else
+            {
+                var username = "system";
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                if (campaign != null && campaign.Status == CampaignStatus.Started)
+                {
+                    campaign.Status = CampaignStatus.Ended;
+                    campaign.UserModified = username;
+                    campaign.DateModified = DateTime.Now;
+                    await _campaignRepository.UpdateAsync(campaign);
+
+
+                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+
+
+                    //huy campaing account chua hoan thanh 
+                    var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
+                        , new List<CampaignAccountStatus> {
+                            CampaignAccountStatus.Finished,
+                            CampaignAccountStatus.Canceled,
+                            CampaignAccountStatus.Unfinished
+                        }));
+
+                    foreach (var campaignAccount in needUnFinishedCampaignAccounts)
+                    {
+                        campaignAccount.Status = CampaignAccountStatus.Unfinished;
+                        campaignAccount.DateModified = DateTime.Now;
+                        campaignAccount.UserModified = username;
+                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                        //notification
+                        await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
+                            EntityType.Account, campaignAccount.AccountId, campaignid,
+                             NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
+                             campaignAccount.Id.ToString());
+
+                    }
+
+
+
+
+                }
+            }
+
+        }
+
         #endregion
     }
 }

@@ -24,7 +24,7 @@ namespace Website.Jobs
             _accountService = accountService;
         }
 
-        
+
         public async Task UpdateCompletedCampagin(int campaignid = 0)
         {
             if (campaignid == 0)
@@ -58,11 +58,11 @@ namespace Website.Jobs
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    await _campaignService.UpdateCampaignError(campaignid,$"Lỗi khi hoàn thành chiến dịch: {ex.Message}" , AppConstants.USERNAME);
+                    await _campaignService.UpdateCampaignError(campaignid, $"Lỗi khi hoàn thành chiến dịch: {ex.Message}", AppConstants.USERNAME);
                 }
-                
+
             }
 
         }
@@ -70,14 +70,26 @@ namespace Website.Jobs
 
         public async Task UpdateCampaignAccountExpired()
         {
-           await _campaignService.UpdateCampaignAccountExpired();
+            await _campaignService.UpdateCampaignAccountExpired();
 
         }
 
-
-        public async Task UpdateCampaignAccountStart()
+        public async Task UpdateCampaignProcess()
         {
 
+            BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignStart());
+            BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignEnd());
+            BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(2));
+        }
+        public async Task UpdateCampaignStart()
+        {
+            await _campaignService.AutoUpdateStartedStatus(0);
+
+        }
+
+        public async Task UpdateCampaignEnd()
+        {
+            await _campaignService.AutoUpdateEndedStatus(0);
 
         }
     }

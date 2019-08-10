@@ -29,8 +29,19 @@ namespace Common.Extensions
 
         public static string ToDisplayName(this Enum value)
         {
-            var attribute = value.GetAttribute<DisplayNameAttribute>();
-            return attribute == null ? value.ToString() : attribute.DisplayName;
+
+            try
+            {
+
+                var attribute = value.GetAttribute<DisplayNameAttribute>();
+                return attribute == null ? value.ToString() : attribute.DisplayName;
+            }
+            catch
+            {
+                return value.ToString();
+            }
+
+          
         }
 
         public static string ToPriceText(this int price, string currency = "đ")

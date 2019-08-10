@@ -102,8 +102,9 @@ namespace Website
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCompletedCampagin(0), Cron.Hourly);
             RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignAccountExpired(), Cron.Hourly);
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), "*/10 * * * *");
+
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.ExtendAccessToken(), Cron.Daily);
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), Cron.Daily);
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbInfo(), Cron.Monthly);

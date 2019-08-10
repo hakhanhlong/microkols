@@ -93,6 +93,9 @@ namespace Core.Entities
         Finished = 6,
         [DisplayName("Hủy tham gia")]
         Canceled = 7,
+        [DisplayName("Chưa hoàn thành")]
+        Unfinished = 8,
+
 
     }
     public static class CampaignAccountExt
