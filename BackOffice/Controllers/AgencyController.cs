@@ -26,6 +26,12 @@ namespace BackOffice.Controllers
             return View(list_agency);
         }
 
+        public IActionResult Search(string keyword, int pageindex = 1)
+        {
+            var list_agency = _IAgencyBusiness.Search(keyword, pageindex, 25);
+            return View(list_agency);
+        }
+
         public IActionResult Active(int id)
         {
             

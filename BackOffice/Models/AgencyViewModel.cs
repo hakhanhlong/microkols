@@ -28,6 +28,8 @@ namespace BackOffice.Models
             Name = agency.Name;
             Description = agency.Description;
             Image = agency.Image;
+            TaxNumber = agency.TaxIdNumber;
+            Phone = agency.Phone;
         }
 
         public int Id { get; set; }
@@ -44,7 +46,11 @@ namespace BackOffice.Models
         public string Description { get; set; }
         public string Image { get; set; }
 
-        
+        public string TaxNumber { get; set; }
+        public string Phone { get; set; }
+
+
+
 
     }
 

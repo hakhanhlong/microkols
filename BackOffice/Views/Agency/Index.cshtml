@@ -33,6 +33,11 @@
                     </div>
                 </div>
                 <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active">
+                            @await Html.PartialAsync("~/Views/Agency/_FilterPartial.cshtml")
+                        </div>
+                    </div>
                     <!--begin::Section-->
                     <div class="m-section">
                         <div class="m-section__content">
@@ -49,13 +54,13 @@
                                             USER MODIFIED
                                         </th>
                                         <th>
-                                            DATE MODIFIED
+                                            TAX NUMBER
+                                        </th>
+                                        <th>
+                                            PHONE
                                         </th>
                                         <th>
                                             ACTIVED
-                                        </th>
-                                        <th>
-                                            DELETED
                                         </th>
                                     </tr>
                                 </thead>
@@ -70,12 +75,13 @@
                                                 <td>@count</td>
                                                 <td>@item.Name</td>
                                                 <td>@item.UserModified</td>
-                                                <td>@item.DateModified</td>
+                                                <td>@item.TaxNumber</td>
+                                                <td>@item.Phone</td>
                                                 <td>
-                                                    
+
                                                     @if (item.Actived)
                                                     {
-                                                        
+
                                                         <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
                                                             True
                                                         </a>
@@ -88,7 +94,7 @@
 
                                                     }
                                                 </td>
-                                                <td>@item.Deleted</td>
+
                                             </tr>
 
                                         }

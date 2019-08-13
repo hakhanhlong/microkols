@@ -16,8 +16,11 @@ namespace BackOffice.Controllers
 
         IAccountBusiness _IAccountBusiness;
         IAccountRepository _IAccountRepository;
+
         IAccountCampaignChargeRepository _IAccountCampaignChargeRepository;
+
         IAccountCampaignChargeBusiness _IAccountCampaignChargeBusiness;
+
         public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
             IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness)
         {

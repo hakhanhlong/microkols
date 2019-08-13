@@ -30,7 +30,8 @@ namespace BackOffice.Controllers
 
             ViewBag.CampaignStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Confirmed", Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Started", Value = "2"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Ended", Value = "3"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "4"},
@@ -69,6 +70,10 @@ namespace BackOffice.Controllers
                 else if (status == CampaignStatus.Ended)
                 {
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\">< i class=\"fa fa-stop\"></i></a>";
+                }
+                else if (status == CampaignStatus.Confirmed)
+                {
+                    str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-check-circle-o\"></i></a>";
                 }
                 else if (status == CampaignStatus.Error)
                 {

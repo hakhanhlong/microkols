@@ -58,6 +58,9 @@
                                                 EMAIL
                                             </th>
                                             <th>
+                                                PHONE
+                                            </th>
+                                            <th>
                                                 NAME
                                             </th>
                                             <th>
@@ -73,15 +76,16 @@
                                         @{ int count = 1;}
                                         @foreach (var item in Model.Accounts)
                                         {
-                                            <tr>
-                                                <td>@(count)</td>
-                                                <td></td>
-                                                <td>@item.Email</td>
-                                                <td>@item.Name</td>
-                                                <td>@item.Type.ToString()</td>
-                                                <td>@(item.Actived == true ? "Active" : "Not Active")</td>
-                                                <td><a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">View</a></td>
-                                            </tr>
+                                        <tr>
+                                            <td>@(count)</td>
+                                            <td></td>
+                                            <td>@item.Email</td>
+                                            <td>@item.Phone</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Type.ToString()</td>
+                                            <td>@(item.Actived == true ? "Active" : "Not Active")</td>
+                                            <td><a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">Detail</a></td>
+                                        </tr>
                                             count++;
                                         }
                                     </tbody>

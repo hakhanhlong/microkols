@@ -1,25 +1,12 @@
-﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/microkol/search">
+﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/agency/search" method="get">
     <div class="row m--margin-bottom-20">
-        <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
+        <div class="col-lg-12 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Name:
+                Search by:
             </label>
-            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Email or Name" data-col-index="0">
-        </div>
-        <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
-            <label>
-                Type:
-            </label>
-            <select class="form-control m-input" data-col-index="7" name="type">
-                <option value="All">All</option>
-                <option value="Regular">Regular</option>
-                <option value="HotTeen">HotTeen</option>
-                <option value="HotMom">HotMom</option>
-                <option value="HotFacebooker">HotFacebooker</option>
-                <option value="Kols">Kols</option>
-            </select>
-        </div>
-    </div>    
+            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Name or Tax Number" data-col-index="0">
+        </div>        
+    </div>
     <div class="m-separator m-separator--md m-separator--dashed"></div>
     <div class="row">
         <div class="col-lg-12">

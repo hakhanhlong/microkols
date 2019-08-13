@@ -2,6 +2,7 @@
 using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,24 @@ namespace BackOffice.Business
             return new ListAgencyViewModel()
             {
                 Agencies = agencies.Select(a=> new AgencyViewModel(a)).ToList(),
+
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
+
+        public ListAgencyViewModel Search(string kw, int pageindex, int pagesize)
+        {
+            var specification = new AgencySpecification(kw, kw);
+
+            var agencies = _IAgencyRepository.ListPaged(specification, "DateModified_desc", pageindex, pagesize);
+
+            var total = _IAgencyRepository.Count(specification);
+
+
+            return new ListAgencyViewModel()
+            {
+                Agencies = agencies.Select(a => new AgencyViewModel(a)).ToList(),
 
                 Pager = new PagerViewModel(pageindex, pagesize, total)
             };
