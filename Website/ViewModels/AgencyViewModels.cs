@@ -76,7 +76,7 @@ namespace Website.ViewModels
 
     }
 
-    public class RegisterAgencyViewModel : UpdateAgencyViewModel
+    public class RegisterAgencyViewModel 
     {
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Mật khẩu", Prompt = "Mật khẩu")]
@@ -98,6 +98,10 @@ namespace Website.ViewModels
         public string Username { get; set; }
 
 
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên doanh nghiệp", Prompt = "Tên doanh nghiệp")]
+        public string Name { get; set; }
+
         public Agency GetEntity()
         {
             var salt = SecurityHelper.GenerateSalt();
@@ -109,8 +113,8 @@ namespace Website.ViewModels
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Actived = false,
-                Description = Description,
-                Image = Image,
+                Description = string.Empty,
+                Image = string.Empty,
                 Name = Name,
                 Salt = salt,
                 Password = pwhash,
