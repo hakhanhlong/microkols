@@ -67,6 +67,11 @@ namespace Website
             services.AddAppServices();
 
 
+            services.AddHttpsRedirection(options =>
+            {
+                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+                options.HttpsPort = 443;
+            });
 
             services.AddSession();
             services.AddMvc(options =>
