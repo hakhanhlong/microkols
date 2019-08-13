@@ -218,7 +218,7 @@ namespace Infrastructure.Data
 
             if (type == 1)
             {
-                query = query.Where(m => m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.AccountRequest);
+                query = query.Where(m => m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.WaitToPay);
             }
             else if (type == 2)
             {

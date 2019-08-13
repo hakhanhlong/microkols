@@ -31,7 +31,7 @@ namespace Website.Controllers
             _accountService = accountService;
         }
 
-        public async Task<IActionResult> Index(string kw,int type =0, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> Index(string kw,int type = 0, int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Type = type;
             ViewBag.Kw = kw;
