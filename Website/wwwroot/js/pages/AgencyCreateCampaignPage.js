@@ -21,6 +21,24 @@
 
         });
 
+
+        $('#addonImages').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                datas.forEach(function (item) {
+                    var html = '<img src="' + item.url +'" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="AddonImages" value="' + item.path +'" />';
+                    $(target).append(html);
+                })
+               
+            });
+
+        });
+        
+
+
         $('#btnCreateCampaign').click(function () {
 
             $('#submittype').val(1);
@@ -81,7 +99,12 @@
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
-        })
+        });
+
+        $('#CategoryId').select2({
+            maximumSelectionLength: 3,
+            theme: "bootstrap4" 
+        });
 
     }
     function createCampaign(callback) {
@@ -151,6 +174,10 @@
         var type = $('#Type').val();
         console.log('type', type);
         $('#enabledExtraTypeWrap,#requirementWrap,#changeAvatarWrap').addClass('d-none');
+
+        $('.d-type').hide();
+        $('.d-type-' + type).show();
+
         var selectedOption = $('#Type').children('option:selected');
         var accountpricetext = selectedOption.data('accountpricetext');
         var datatext = selectedOption.data('datatext');

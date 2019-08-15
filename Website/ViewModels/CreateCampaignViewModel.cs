@@ -47,6 +47,16 @@ namespace Website.ViewModels
                     end = arrDate[1].Trim();
                 }
             }
+            var image = string.Empty;
+
+            if(Type == CampaignType.ChangeAvatar)
+            {
+                image = Image;
+            }
+            else if(Type== CampaignType.ShareContentWithCaption)
+            {
+                image = AddonImages.ToListString();
+            }
             return new Campaign()
             {
                 DateCreated = DateTime.Now,
@@ -55,7 +65,7 @@ namespace Website.ViewModels
                 DateModified = DateTime.Now,
                 Deleted = false,
                 Description = Description,
-                Image = Type== CampaignType.ChangeAvatar ? Image : string.Empty,
+                Image = image,
                 Published = true,
                 Status = CampaignStatus.Created,
                 Title = Title,
@@ -110,6 +120,11 @@ namespace Website.ViewModels
         public int? AccountChargeTime { get; set; } = 1;
 
         public string Image { get; set; } = string.Empty;
+
+
+
+        [Display(Name = "Hình ảnh đính kèm")]
+        public List<string> AddonImages { get; set; } = new List<string>();
 
         [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }
