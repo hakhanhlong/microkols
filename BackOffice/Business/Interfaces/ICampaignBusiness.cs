@@ -10,6 +10,10 @@ namespace BackOffice.Business.Interfaces
     {
         ListCampaignViewModel GetListCampaign(int index, int pagesize);
 
+        Task<CampaignDetailsViewModel> GetCampaign(int agencyid, int campaignid);
+
+
+
 
     }
 }

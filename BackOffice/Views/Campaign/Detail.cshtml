@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var categories = (List<CategoryViewModel>)ViewBag.Categories;
+    var cities = (List<EntityViewModel>)ViewBag.Cities;
+
+}
+
+@model CampaignDetailsViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Campaign Detail
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/campaign" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Campaign Listing
+                </span>
+            </a>
+        </li>
+        @if (Model.Id > 0)
+        {
+            <li class="m-nav__separator">
+                -
+            </li>
+            <li class="m-nav__item">
+                <a href="javascript:;" class="m-nav__link">
+                    <span class="m-nav__link-text">
+                        Chiến dichj "@(Model.Title)"
+                    </span>
+                </a>
+            </li>
+        }
+
+    </ul>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--tab">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                @if(Model.Id > 0)
+                                {
+                                    <span>Chiến dịch "@(Model.Title)"</span>
+                                }
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <!--begin::Section-->
+                    <div class="m-section">                        
+                        <div class="m-section__content">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>
+                                        <span class="m-badge m-badge--info">
+                                            +
+                                        </span> Mã chiến dịch : @Model.Code
+                                    </h6>
+                                    <div class="m--space-10"></div>
+                                    <h6>
+                                        <span class="m-badge m-badge--info">
+                                            +
+                                        </span> Tên chiến dịch: @Model.Title
+                                    </h6>
+                                    <div class="m--space-10"></div>
+                                    <h6>
+                                        <span class="m-badge m-badge--info">
+                                            +
+                                        </span> Trạng thái: <span class="m-badge m-badge--info m-badge--wide">@Model.Status.ToString()</span>
+                                    </h6>
+                                    <div class="m--space-10"></div>
+                                    <h6>
+                                        <div>
+                                            <span class="m-badge m-badge--info">
+                                                +
+                                            </span>
+                                            Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
+                                            ( Phí dịch vụ: <span class="text-danger">@Model.Payment.ServiceChargeAmount.ToPriceText()</span>
+
+                                            - Phí thành viên: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText() </span>)
+                                        </div>
+                                        <div class="m--space-10"></div>
+                                        <div>
+                                            <span class="m-badge m-badge--info">
+                                                +
+                                            </span>
+                                        Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
+                                        @if (Model.Payment.TotalChargeValue > 0)
+                                        {
+                                            <div class="m--space-10"></div>
+                                            <div><span class="m-badge m-badge--info">
+                                                +
+                                            </span> Còn thiếu: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
+                                        }
+                                    </h6>
+                                    <div class="m--space-10"></div>
+                                    <h6>
+                                        <span class="m-badge m-badge--info">
+                                            +
+                                        </span> Ngày tạo: @Model.DateCreated.ToViDateTime()
+                                    </h6>
+                                    @if (Model.DateStart.HasValue)
+                                    {
+
+                                        <div class="m--space-10"></div>
+                                        <h6>
+                                            <span class="m-badge m-badge--info">
+                                                +
+                                            </span>
+                                            Thời gian thực hiện: <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
+                                            <span class="text-info">
+                                                @Model.DateEnd.Value.ToViDateTime()
+                                            </span>
+                                        </h6>
+                                    }
+
+                                </div>
+                                <div class="col-md-6">
+                                    <span class="text-primary"> @Model.Type.ToDisplayName()</span>
+                                    <div class="m--space-10"></div>
+                                    @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+                                    {
+                                        if (Model.EnabledAccountChargeExtra)
+                                        {
+                                            <br /> <small class="text-info"> Đính kèm hình ảnh cá nhân</small>
+                                        }
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.Data))
+                                    {
+                                        <div class="m--space-10"></div>
+                                        <div>
+                                            @Model.Type.ToDataText():  <a href="@Model.Data" target="_blank">@Model.Data</a>
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.Description))
+                                    {
+                                        <div class="m--space-10"></div>
+                                        <div>
+                                            Mô tả:  @Model.Description
+                                        </div>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(Model.Image))
+                                    {
+                                        <div class="m--space-10"></div>
+                                        <div>
+                                            <img src="Model.Image" class="img-thumbnail" style="height:200px" />
+                                        </div>
+                                    }
+
+
+                                    @if (Model.CountOption > 0)
+                                    {
+                                        <h6>Tiêu chí</h6>
+                                        <ul>
+                                            @if (Model.Gender.HasValue)
+                                            {
+                                                <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
+                                            }
+                                            @if (Model.CityId.Count > 0)
+                                            {
+                                                var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
+                                                if (listcity.Any())
+                                                {
+                                                    <li>
+                                                        Khu vực:
+
+                                                        @foreach (var city in listcity)
+                                                        {
+                                                            <strong>@city.Name</strong>
+                                                        }
+
+                                                    </li>
+                                                }
+                                            }
+                                            @if (Model.AgeStart.HasValue)
+                                            {
+                                                <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
+                                            }
+
+                                            @if (Model.CategoryIds.Count > 0)
+                                            {
+                                                var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+
+                                                <li>
+                                                    Lĩnh vực quan tâm/thế mạnh:
+                                                    @foreach (var cat in cats)
+                                                    {
+                                                        <strong>@cat.Name</strong>
+                                                    }
+                                                </li>
+                                            }
+
+
+                                            @if (Model.AccountTypes.Contains(AccountType.HotMom))
+                                            {
+
+                                                <li>
+                                                    Con cái:
+
+                                                    @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+
+                                                    Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                                                </li>
+                                            }
+
+                                        </ul>
+
+                                    }
+
+                                </div>
+
+                           
+                            </div>
+
+                            <div class="row">
+
+
+                                @if (Model.Status == CampaignStatus.Canceled)
+                                {
+                                    <div class="col-md-12">
+                                        <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
+                                    </div>
+
+                                    
+                                }
+                                else
+                                {
+                                    <div class="col-md-12">
+                                        <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
+                                            <li class="nav-item m-tabs__item">
+                                                <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_6_1" role="tab">
+                                                    Thực hiện chiến dịch
+                                                </a>
+                                            </li>
+                                            
+                                            <li class="nav-item m-tabs__item">
+                                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_3" role="tab">
+                                                    Theo dõi chiến dịch
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="m_tabs_6_1" role="tabpanel">
+                                                <partial name="_DetailsAccountsProcessPartial" model="Model" />
+                                            </div>                                            
+                                            <div class="tab-pane" id="m_tabs_6_3" role="tabpanel">
+                                                <partial name="_DetailsAccountsReviewPartial" model="Model" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Section-->
+                                  
+                </div>
+            </div>
+            <!--end::Portlet-->
+      </div>
+</div>
+
+
+

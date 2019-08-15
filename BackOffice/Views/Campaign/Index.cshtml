@@ -59,6 +59,7 @@
                                             #
                                         </th>
                                         <th></th>
+                                        <th>CODE</th>
                                         <th>
                                             TITLE
                                         </th>
@@ -115,6 +116,12 @@
                                                             <i class="fa fa-check-circle-o"></i>
                                                         </a>
                                                     }
+                                                    else if (item.Status == CampaignStatus.Confirmed)
+                                                    {
+                                                        <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                            <i class="fa fa-check-circle-o"></i>
+                                                        </a>
+                                                    }
                                                     else if (item.Status == CampaignStatus.Canceled)
                                                     {
                                                         <a href="#" class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
@@ -122,7 +129,12 @@
                                                         </a>
                                                     }
                                                 </td>
-                                                <td>@(item.Title)</td>
+                                                <td>
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
+                                                </td>
+                                                <td>
+                                                    @(item.Title)
+                                                </td>
                                                 <td>@(item.Type.ToText())</td>
                                                 <td>                                                    
                                                     <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>

@@ -52,6 +52,18 @@ namespace BackOffice.Models
             BankAccountBranch = _Account.BankAccountBranch;
         }
 
+        public AccountViewModel(Account customer, AccountCountingModel accountCounting)
+        {
+            Id = customer.Id;
+            Email = customer.Email;
+            Name = customer.Name;
+            Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
+            Type = customer.Type;
+            AccountCounting = new AccountCountingViewModel(accountCounting);
+        }
+
+        public AccountCountingViewModel AccountCounting { get; set; }
+
         public int Id { get; set; }
 
         public DateTime DateCreated { get; set; }

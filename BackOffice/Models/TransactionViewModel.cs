@@ -50,6 +50,10 @@ namespace BackOffice.Models
             IsCashOut = t.IsCashOut;
         }
 
+        public static List<TransactionViewModel> GetList(IEnumerable<Transaction> transactions)
+        {
+            return transactions.Select(m => new TransactionViewModel(m)).ToList();
+        }
 
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }

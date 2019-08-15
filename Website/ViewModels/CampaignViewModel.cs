@@ -41,6 +41,7 @@ namespace Website.ViewModels
             Data = campaign.Data;
             Code = campaign.Code;
             Title = campaign.Title;
+
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
             {

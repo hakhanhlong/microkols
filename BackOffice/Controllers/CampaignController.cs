@@ -46,6 +46,15 @@ namespace BackOffice.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0)
+        {
+
+            var campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
+
+
+            return View(campaign);
+        }
+
 
         [HttpPost]
         public JsonResult ChangeStatus(int id, CampaignStatus status)

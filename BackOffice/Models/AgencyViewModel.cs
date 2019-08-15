@@ -30,7 +30,11 @@ namespace BackOffice.Models
             Image = agency.Image;
             TaxNumber = agency.TaxIdNumber;
             Phone = agency.Phone;
+            Email = agency.Email;
+            UserName = agency.Username;
         }
+
+        public string UserName { get; set; }
 
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
@@ -43,6 +47,9 @@ namespace BackOffice.Models
 
         public bool Deleted { get; set; }
         public string Name { get; set; }
+
+        public string Email { get; set; }
+
         public string Description { get; set; }
         public string Image { get; set; }
 
