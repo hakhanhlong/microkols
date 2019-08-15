@@ -26,36 +26,36 @@
             </div>
 
             <div class="pt-2">
-                    @if (Model.Status == CampaignStatus.Created)
-                    {
-                        <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Hủy chiến dịch</button>
+                @if (Model.Status == CampaignStatus.Created)
+                {
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">Hủy chiến dịch</button>
 
 
-                        <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form asp-action="UpdateCampaignStatus" method="post">
-                                        <div class="modal-body">
-                                            Bạn có chắc chắn muốn hủy chiến dịch?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                            <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
-                                            <input type="hidden" name="status" value="@CampaignStatus.Canceled" />
-                                            <input type="hidden" name="campaignid" value="@Model.Id" />
-                                        </div>
-                                    </form>
+                    <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
+                                <form asp-action="UpdateCampaignStatus" method="post">
+                                    <div class="modal-body">
+                                        Bạn có chắc chắn muốn hủy chiến dịch?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-danger">Xác nhận hủy</button>
+                                        <input type="hidden" name="status" value="@CampaignStatus.Canceled" />
+                                        <input type="hidden" name="campaignid" value="@Model.Id" />
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
+            </div>
 
         </div>
     </div>
@@ -99,7 +99,7 @@
             @if (Model.DateStart.HasValue)
             {
                 <div>
-                    Thời gian thực hiện: <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> - 
+                    Thời gian thực hiện: <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
                     <span class="text-info">
                         @Model.DateEnd.Value.ToViDateTime()
                     </span>
@@ -136,8 +136,15 @@
 
             @if (!string.IsNullOrEmpty(Model.Image))
             {
+                var imgarr = Model.Image.ToListString();
                 <div>
-                    <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" class="img-thumbnail" style="height:200px" />
+
+                    @foreach (var imgItem in imgarr)
+                    {
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                    }
+
+
                 </div>
             }
 
@@ -223,7 +230,7 @@
                 <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
             }
         }
-     
+
 
     }
 

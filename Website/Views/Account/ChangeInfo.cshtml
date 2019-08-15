@@ -25,6 +25,21 @@
     </div>
 }
 
+@section Scripts{ 
+
+    <script type="text/javascript">
+        $().ready(function(){
+        
+        $('#CategoryId').select2({
+            maximumSelectionLength: 5,
+            theme: "bootstrap4" 
+        });
+
+        });
+    </script>
+
+}
+
 
 <partial name="_SettingNavPartial" model="0" />
 <div class="tab-content mt-3">
@@ -72,7 +87,7 @@
             <div class="form-group">
                 <label asp-for="CategoryId"></label>
 
-                <select asp-for="CategoryId" multiple class="form-control form-select2">
+                <select asp-for="CategoryId" multiple class="form-control">
                     @foreach (var category in categories)
                     {
                         var isselected = Model.CategoryId != null && Model.CategoryId.Contains(category.Id);

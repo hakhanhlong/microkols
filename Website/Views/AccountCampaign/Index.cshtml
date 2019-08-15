@@ -26,13 +26,14 @@
 }
 
 @{ 
-    var type = ViewBag.Type!= null ? (int)ViewBag.Type :  0;
+    var type = ViewBag.Type!= null ? (int)ViewBag.Type :  1;
     var arrType = new string[] { "Tất cả","Chiến dịch mới", "Đang thực hiện", "Đã thực hiện", "Đã hủy" };
 }
 
     <ul class="nav nav-tabs nav-linetabs">
-        @for (var i = 0; i < arrType.Length; i++)
+        @for (var i = 1; i < arrType.Length; i++)
         {
+          
             <li class="nav-item">
                 <a class="nav-link @(type== i? "active":"")" asp-action="Index" asp-route-type="@i">@arrType[i]</a>
             </li>
