@@ -29,6 +29,13 @@ namespace Core.Specifications
         }
     }
 
+    public class CampaignSearchSpecification: BaseSpecification<Campaign>
+    {
+        public CampaignSearchSpecification(string kw, CampaignType? type, CampaignStatus? status): base (m=> (string.IsNullOrEmpty(kw) || m.Title.Contains(kw)) 
+        && (!type.HasValue || m.Type == type) && (!status.HasValue || m.Status == status))
+        {}
+    }
+
     public class CampaignByAccountSpecification : BaseSpecification<Campaign>
     {
         public CampaignByAccountSpecification(int accountid, string kw)

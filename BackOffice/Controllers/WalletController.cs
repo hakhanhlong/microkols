@@ -37,7 +37,7 @@ namespace BackOffice.Controllers
                     if(item.EntityType == Core.Entities.EntityType.Account)
                     {
                         var account = _IAccountBusiness.GetAccount(item.EntityId);
-                        if (account != null)
+                        if (account.Result != null)
                         {
                             item.Name = account.Result.Name;
                         }
@@ -45,7 +45,7 @@ namespace BackOffice.Controllers
                     else if(item.EntityType == Core.Entities.EntityType.Agency)
                     {
                         var agency = _IAgencyBusiness.GetAgency(item.EntityId);
-                        if (agency != null)
+                        if (agency.Result != null)
                         {
                             item.Name = agency.Result.Name;
                         }

@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ListCampaignViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Campaign Listing
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/campaign" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Campaign Listing
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/campaign" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Search
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Campaign Listing
+                        </h3>
+                    </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_tab_1_1" role="tab" aria-selected="true">
+                                Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/Campaign/_SearchPartial.cshtml")
+                    </div>
+                </div>
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th></th>
+                                    <th>CODE</th>
+                                    <th>
+                                        TITLE
+                                    </th>
+                                    <th>
+                                        TYPE
+                                    </th>
+                                    <th>
+                                        STATUS
+                                    </th>
+                                    <th>
+                                        START DATE
+                                    </th>
+                                    <th>
+                                        END DATE
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int count = 1;
+                                    foreach (var item in Model.Campaigns)
+                                    {
+                                        <tr>
+                                            <td>@(count)</td>
+                                            <td id="item_@(item.Id)">
+                                                @if (item.Status == CampaignStatus.Created)
+                                                {
+                                                    <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-sticky-note"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Started)
+                                                {
+                                                    <a href="#" class="btn btn-success m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-heartbeat"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Ended)
+                                                {
+                                                    <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-stop"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Error)
+                                                {
+                                                    <a href="#" class="btn btn-danger m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-times-circle"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Completed)
+                                                {
+                                                    <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-check-circle-o"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Confirmed)
+                                                {
+                                                    <a href="#" class="btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-check-circle-o"></i>
+                                                    </a>
+                                                }
+                                                else if (item.Status == CampaignStatus.Canceled)
+                                                {
+                                                    <a href="#" class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air">
+                                                        <i class="fa fa-ban"></i>
+                                                    </a>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
+                                            </td>
+                                            <td>
+                                                @(item.Title)
+                                            </td>
+                                            <td>@(item.Type.ToText())</td>
+                                            <td>
+                                                <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
+                                            </td>
+                                            <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
+                                            <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
+                                        </tr>
+                                        count++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <pager pager="@Model.Pager" asp-action="Index"></pager>
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+            $('.m-section__content select').each(function (index, item) {
+                $(item).change(function () {
+
+
+
+                    var campaignid = $(this).attr('campaign-id');
+                    var status = $(this).val();
+                    var data = {};
+                    data['id'] = campaignid;
+                    data['status'] = status;
+
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("ChangeStatus", "Campaign")',
+                        data: data,
+                        success: function (data) {
+
+                            if (data.code == 1) {
+
+                                $('#item_' + campaignid).html(data.str_icon);
+                                Swal.fire(
+                                    'Good job!',
+                                    data.message,
+                                    'success'
+                                );
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: data.message
+                                });
+                            }
+
+                        },
+                        dataType: "json",
+                        traditional: true
+                    });
+
+
+                });
+            });
+        });
+
+    </script>
+}
+
+
+

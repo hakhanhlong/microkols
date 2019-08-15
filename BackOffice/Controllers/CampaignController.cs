@@ -27,9 +27,15 @@ namespace BackOffice.Controllers
         {
 
             var listing = _ICampaignBusiness.GetListCampaign(pageindex, 25);
+            DataSelectionStatusAndType();
+            return View(listing);
+        }
 
+        private void DataSelectionStatusAndType()
+        {
             ViewBag.CampaignStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Confirmed", Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Started", Value = "2"},
@@ -38,12 +44,27 @@ namespace BackOffice.Controllers
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "5"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "6"},
             };
-            return View(listing);
+
+            ViewBag.CampaignTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContent", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContentWithCaption", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ChangeAvatar", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "PostComment", Value = "4"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "JoinEvent", Value = "5"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareStreamUrl", Value = "6"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "CustomService", Value = "7"},
+            };
         }
 
-        public IActionResult Search()
+        public IActionResult Search(string kw, CampaignType? type, CampaignStatus? status, int pageindex = 1)
         {
-            return View();
+
+            DataSelectionStatusAndType();
+            var list = _ICampaignBusiness.Search(kw, type, status, pageindex, 25);
+
+            return View(list);
         }
 
         public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0)

@@ -35,7 +35,11 @@
                 <td>@item.SenderName</td>
                 <td>@item.ReceiverName</td>
                 <td>@item.Code</td>
-                <td>@item.Amount</td>
+                <td>
+                    <h6 class="m--font-danger">
+                        @item.Amount.ToPriceText()
+                    </h6>                    
+                </td>
                 <td>@item.Status</td>
                 <td>
 

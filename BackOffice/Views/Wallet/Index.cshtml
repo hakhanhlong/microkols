@@ -70,7 +70,11 @@
                                             <td>@count</td>
                                             <td>@item.EntityType.ToString()</td>
                                             <td>@item.Name</td>
-                                            <td>@item.Balance</td>
+                                            <td>
+                                                <h6 class="m--font-danger">
+                                                    @item.Balance.ToPriceText()
+                                                </h6>                                                
+                                            </td>
                                             <td>@item.DateCreated</td>
                                             <td>@item.UserCreated</td>
                                         </tr>                                        

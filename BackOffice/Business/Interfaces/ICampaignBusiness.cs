@@ -1,4 +1,5 @@
 ﻿using BackOffice.Models;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BackOffice.Business.Interfaces
 
         Task<CampaignDetailsViewModel> GetCampaign(int agencyid, int campaignid);
 
-
+        ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, int index, int pagesize);
 
 
     }

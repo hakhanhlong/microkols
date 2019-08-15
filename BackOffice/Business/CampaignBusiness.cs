@@ -1,5 +1,6 @@
 ﻿using BackOffice.Business.Interfaces;
 using BackOffice.Models;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.Extensions.Logging;
@@ -28,6 +29,21 @@ namespace BackOffice.Business
         {
             var agencies = _ICampaignRepository.ListPaging("DateModified_desc", pageindex, pagesize);
             var total = _ICampaignRepository.CountAll();
+
+
+            return new ListCampaignViewModel()
+            {
+                Campaigns = agencies.Select(a => new CampaignViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
+        public ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, int pageindex, int pagesize)
+        {
+            var filter = new CampaignSearchSpecification(kw, type, status);
+
+            var agencies = _ICampaignRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+            var total = _ICampaignRepository.Count(filter);
 
 
             return new ListCampaignViewModel()
