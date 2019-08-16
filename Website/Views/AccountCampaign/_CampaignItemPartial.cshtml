@@ -5,41 +5,156 @@
 <div class="card mb-3">
     <div class="card-header d-flex">
         <div class="mr-auto">
-            Chiến dịch @Model.Id
+            <a asp-action="Details" asp-route-id="@Model.Id">
+                Chiến dịch @Model.Code
+            </a>
         </div>
         <div>
             @Model.Status.ToBadge()
         </div>
     </div>
     <div class="card-body">
-        <div class="card-text">
-            <div>
-                Doanh nghiệp: <span class="text-primary">@Model.UserCreated</span>
+        @{
+            var col1 = "col-md-3";
+            var col2 = "col-md-9";
+            var colwrap1 = "col-md-12";
+            var colwrap2 = "";
+            if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ChangeAvatar)
+            {
+                colwrap1 = "col-md-9";
+                colwrap2 = "col-md-3";
+            }
+        }
+
+        <div class="row">
+            <div class="@colwrap1">
+                <div class="row">
+                    <div class="@col1">Doanh nghiệp:</div>
+                    <div class="@col2"><span>@Model.UserCreated</span></div>
+                </div>
+                <div class="row">
+                    <div class="@col1">Công việc:</div>
+                    <div class="@col2"> <strong class="text-primary">@Model.Type.ToDisplayName()</strong></div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    <div class="row">
+                        <div class="@col1">Miêu tả chi tiết:</div>
+                        <div class="@col2">@Model.Description</div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="@col1">Số tiền nhận:</div>
+                    <div class="@col2"><span class="text-danger">@Model.CampaignAccount.AccountChargeAmount.ToPriceText()</span></div>
+                </div>
+                @if (Model.DateStart.HasValue && Model.DateEnd.HasValue)
+                {
+                    <div class="row">
+                        <div class="@col1">Thời gian thực hiện:</div>
+                        <div class="@col2"> <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span>  - <span class="text-info">@Model.DateEnd.Value.ToViDateTime()</span> </div>
+                    </div>
+                }
+                @if (Model.Type.IsShareCampaign())
+                {
+                    <div class="row">
+                        <div class="@col1">Link chương trình</div>
+                        <div class="@col2">
+                            <a href="@Model.Data" target="_blank">@Model.Data</a>
+                        </div>
+
+                    </div>
+                }
+
+                @if (Model.Type == CampaignType.ShareContentWithCaption && !string.IsNullOrEmpty(Model.CampaignAccount.RefContent))
+                {
+                    <div class="row">
+                        <div class="@col1">Nội dung Caption</div>
+                        <div class="@col2">
+                            @Model.CampaignAccount.RefContent
+                        </div>
+
+                    </div>
+
+                }
+
+
+                @if (Model.CampaignAccount.DateFinished.HasValue)
+                {
+                    <div class="row">
+                        <div class="@col1">Thời điểm hoàn thành</div>
+                        <div class="@col2">
+                            @Model.CampaignAccount.DateFinished.Value.ToViDateTime()
+                        </div>
+                    </div>
+                }
+
+
+                @if (Model.CampaignAccount.Rating.HasValue)
+                {
+                    <div class="row">
+                        <div class="@col1">Đánh giá của doanh nghiệp</div>
+                        <div class="@col2">
+                            <span class="badge badge-danger">@Model.CampaignAccount.Rating.Value.ToDisplayName()</span>
+                        </div>
+
+                    </div>
+                }
+
+
             </div>
 
-            <div>
-               Công việc: @Model.Type.ToDisplayName()
-            </div>
 
-            <div>@Model.CampaignAccount.Status.ToBadge()</div>
-            <div>
-                Số tiền nhận:  <span class="text-success">@Model.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
-            </div>
+
+            @if (!string.IsNullOrEmpty(colwrap2))
+            {
+                <div class="@colwrap2">
+                    @foreach (var img in Model.Image.Take(1))
+                    {
+                        <div class="item">
+                            <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
+                        </div>
+                    }
+                </div>
+
+            }
+
         </div>
 
-        <div class="d-flex  mt-3">
-            <div class="text-muted mr-auto">
-                <small>
-                    @Model.DateCreated.ToTimeAgo()
-                </small>
 
-            </div>
-            <div class="text-right">
-                <a asp-action="Details" asp-route-id="@Model.Id" class=" btn btn-primary btn-sm">Chi tiết</a>
-            </div>
-        </div>
 
 
 
     </div>
+    <div class="card-footer d-flex">
+
+        <div class="text-muted mr-auto">
+            <small>
+                @Model.DateCreated.ToTimeAgo()
+            </small>
+
+        </div>
+        <div class="text-right">
+            @if (Model.CampaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+            {
+
+
+
+                <form asp-action="FeedbackJoinCampaign">
+                    <input type="hidden" value="@Model.Id" name="campaignid" />
+                    <button class="btn btn-primary" name="type" value="1">Xác nhận tham gia </button>
+                    <button class="btn btn-secondary" name="type" value="0">Hủy </button>
+                </form>
+
+
+            }
+            else
+            {
+
+                @Model.CampaignAccount.Status.ToBadge()
+            }
+
+        </div>
+
+    </div>
+
 </div>

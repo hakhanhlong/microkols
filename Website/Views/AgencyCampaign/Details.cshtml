@@ -134,12 +134,12 @@
                 </div>
             }
 
-            @if (!string.IsNullOrEmpty(Model.Image))
+            @if (Model.Image.Count > 0)
             {
-                var imgarr = Model.Image.ToListString();
+
                 <div>
 
-                    @foreach (var imgItem in imgarr)
+                    @foreach (var imgItem in Model.Image)
                     {
                         <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
                     }

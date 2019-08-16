@@ -45,7 +45,7 @@ namespace Core.Entities
         CampaignServiceCharge = 3,
         [DisplayName("Phí thành viên")]
         CampaignAccountCharge = 4,
-        [DisplayName("Chiến dịch trả thành viên")]
+        [DisplayName("Bạn nhận được thanh toán cho chiến dịch")]
         CampaignAccountPayback = 5,
     }
 
