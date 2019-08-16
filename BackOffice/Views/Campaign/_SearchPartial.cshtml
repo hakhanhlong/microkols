@@ -4,7 +4,7 @@
             <label>
                 Title:
             </label>
-            <input type="text" name="kw" class="form-control m-input" placeholder="Title Campaign" data-col-index="0">
+            <input type="text" name="kw" class="form-control m-input" placeholder="Title Campaign" data-col-index="0" value="@(Context.Request.Query["kw"])">
         </div>              
     </div>
     <div class="row m--margin-bottom-20">        
@@ -12,13 +12,38 @@
             <label>
                 Status:
             </label>
-            <select name="status" class="form-control m-input" asp-items="@ViewBag.CampaignStatus"></select>
+            <select name="status" class="form-control m-input">
+                @foreach (var item in ViewBag.CampaignStatus)
+                {
+                    if (item.Value == Context.Request.Query["status"])
+                    {
+                        <option value="@item.Value" selected>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+
+                }
+            </select>
         </div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Type:
             </label>
-            <select name="type" class="form-control m-input" asp-items="@ViewBag.CampaignTypes"></select>
+            <select name="type" class="form-control m-input">
+                @foreach (var item in ViewBag.CampaignTypes)
+                {
+                    if (item.Value == Context.Request.Query["type"])
+                    {
+                        <option value="@item.Value" selected>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+            </select>
         </div>
     </div>
     <div class="m-separator m-separator--md m-separator--dashed"></div>

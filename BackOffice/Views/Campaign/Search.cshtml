@@ -166,7 +166,8 @@
                                 }
                             </tbody>
                         </table>
-                        <pager pager="@Model.Pager" asp-action="Index"></pager>
+                        <pager pager="@Model.Pager" asp-action="Search" asp-route-kw="@(Context.Request.Query["kw"])" asp-route-status="@(Context.Request.Query["status"])" 
+                        asp-route-type="@(Context.Request.Query["type"])"></pager>
                     </div>
                 </div>
                 <!--end::Section-->
