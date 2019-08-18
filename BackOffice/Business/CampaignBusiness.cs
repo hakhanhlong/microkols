@@ -3,6 +3,8 @@ using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Infrastructure.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,12 +18,20 @@ namespace BackOffice.Business
         private readonly ILogger<CampaignBusiness> _logger;
         private readonly ICampaignRepository _ICampaignRepository;
         private readonly ITransactionRepository _ITransactionRepository;
+        private readonly ICampaignAccountRepository _ICampaignAccountRepository;
+        private readonly IAccountBusiness _IAccountBusiness;
+        private readonly IAccountRepository _IAccountRepository;
 
-        public CampaignBusiness(ILoggerFactory _loggerFactory, ICampaignRepository __ICampaignRepository, ITransactionRepository __ITransactionRepository)
+
+        public CampaignBusiness(ILoggerFactory _loggerFactory, ICampaignRepository __ICampaignRepository, 
+            ITransactionRepository __ITransactionRepository, ICampaignAccountRepository __ICampaignAccountRepository, IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository)
         {
             _logger = _loggerFactory.CreateLogger<CampaignBusiness>();
             _ICampaignRepository = __ICampaignRepository;
             _ITransactionRepository = __ITransactionRepository;
+            _ICampaignAccountRepository = __ICampaignAccountRepository;
+            _IAccountBusiness = __IAccountBusiness;
+            _IAccountRepository = __IAccountRepository;
         }
 
 
@@ -64,6 +74,65 @@ namespace BackOffice.Business
                     campaign.CampaignAccount, transactions);
             }
             return null;
+        }
+
+
+        //public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAllAccount(int type, string keyword, int page, int pagesize)
+        //{
+        //    var query = await _ICampaignRepository.QueryCampaignByAllAccount(type, keyword);
+
+        //    var total = await query.CountAsync();
+        //    var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+
+        //    //var filter = new CampaignByAccountSpecification(accountid, keyword);
+        //    //var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
+        //    //var total = await _campaignRepository.CountAsync(filter);
+
+
+        //    var list = new List<CampaignWithAccountViewModel>();
+
+        //    foreach (var campaign in campaigns)
+        //    {
+                
+        //        var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaign.Id));
+        //        if (campaignAccount != null)
+        //        {
+        //            list.Add(new CampaignWithAccountViewModel(campaign, campaignAccount));
+        //        }
+        //    }
+
+        //    return new ListCampaignWithAccountViewModel()
+        //    {
+        //        Campaigns = list,
+        //        Pager = new PagerViewModel(page, pagesize, total)
+        //    };
+        //}
+
+
+        public ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus status, int pageindex, int pagesize)
+        {
+            var filter = new CampaignAccountByStatusSpecification(status);
+            var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+            var total = _ICampaignAccountRepository.Count(filter);
+            var list = new List<CampaignWithAccountViewModel>();
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                var account = _IAccountRepository.GetById(campaignAccount.AccountId);
+                var campaign = _ICampaignRepository.GetSingleBySpec(new CampaignSpecification(campaignAccount.CampaignId));
+                if(campaign != null && account!=null)
+                {
+                    campaignAccount.Account = account;
+
+                    list.Add(new CampaignWithAccountViewModel(campaign, campaignAccount));
+                }
+            }
+
+            return new ListCampaignWithAccountViewModel()
+            {
+                Campaigns = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
         }
 
     }

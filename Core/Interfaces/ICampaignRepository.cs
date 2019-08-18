@@ -17,6 +17,10 @@ namespace Core.Interfaces
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
         Task<List<Campaign>> GetCampaignsMatchedAccount(int accountid);
         Task<IQueryable<Campaign>> QueryCampaignByAccount(int accountid, int type, string keyword);
+
+        Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword);
+
+
         int CountAll();
 
         Task<List<int>> GetCampaignIdNeedToStart();

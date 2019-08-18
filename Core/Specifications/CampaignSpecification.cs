@@ -36,6 +36,12 @@ namespace Core.Specifications
         {}
     }
 
+    public class CampaignSpecification : BaseSpecification<Campaign>
+    {
+        public CampaignSpecification(int campaignid) : base(m => m.Id == campaignid)
+        { }
+    }
+
     public class CampaignByAccountSpecification : BaseSpecification<Campaign>
     {
         public CampaignByAccountSpecification(int accountid, string kw)

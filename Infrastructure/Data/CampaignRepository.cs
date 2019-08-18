@@ -248,6 +248,45 @@ namespace Infrastructure.Data
             return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
         }
 
+        public async Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword)
+        {
+            var query = _dbContext.CampaignAccount.AsQueryable();
+
+
+            if (type == 1)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.WaitToPay);
+            }
+            else if (type == 2)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.Confirmed || m.Status == CampaignAccountStatus.SubmittedContent
+                || m.Status == CampaignAccountStatus.DeclinedContent || m.Status == CampaignAccountStatus.ApprovedContent);
+
+            }
+            else if (type == 3)
+            {
+
+                query = query.Where(m => m.Status == CampaignAccountStatus.UpdatedContent || m.Status == CampaignAccountStatus.Finished);
+
+            }
+            else if (type == 4)
+            {
+                query = query.Where(m => m.Status == CampaignAccountStatus.Canceled);
+            }
+
+            var campaignids = query.Select(m => m.CampaignId).Distinct();
+
+
+            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id));
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                queryCampaign = queryCampaign.Where(m => m.Code.Contains(keyword) || m.Description.Contains(keyword));
+            }
+
+            return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
+        }
+
         public int CountAll()
         {
             return _dbContext.Campaign.Count();

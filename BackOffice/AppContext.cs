@@ -30,6 +30,7 @@ namespace BackOffice
             services.AddScoped<IPayoutExportRepository, PayoutExportRepository>();
 
             services.AddScoped<IAccountCampaignChargeRepository, AccountCampaignChargeRepository>();
+            services.AddScoped<ICampaignAccountRepository, CampaignAccountRepository>();
 
 
             //business
