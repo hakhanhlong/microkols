@@ -183,56 +183,36 @@ namespace BackOffice.Controllers
                 int count_row_header = 1;
                 int number_stt = 1;
                 int turn = 1;
-                foreach(var transaction in _listTransaction)
+
+
+                //First add the headers
+                worksheet.Cells[count_row_header, 1].Value = "STT";
+                worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 2].Value = "BANK ACCOUNT NAME";
+                worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 3].Value = "BANK NUMBER";
+                worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 4].Value = "BANK NAME";
+                worksheet.Cells[count_row_header, 4].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 5].Value = "TOTAL";
+                worksheet.Cells[count_row_header, 5].Style.Font.Bold = true;
+
+
+                foreach (var transaction in _listTransaction)
                 {
-                    //First add the headers
-                    worksheet.Cells[count_row_header, 1].Value = "STT";
-                    worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
-                    worksheet.Cells[count_row_header, 2].Value = "DATETIME";
-                    worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
-                    worksheet.Cells[count_row_header, 3].Value = "AMOUNT";
-                    worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
 
-                    //Second add the headers                    
-                    worksheet.Cells[(count_row_header + 1), 1].Value = "NAME";
-                    worksheet.Cells[(count_row_header + 1), 1].Style.Font.Bold = true;
-                    worksheet.Cells[(count_row_header + 1), 2].Value = transaction.Account.BankAccountName;
-                    worksheet.Cells[(count_row_header + 1), 3].Value = "BANK NUMBER";
-                    worksheet.Cells[(count_row_header + 1), 3].Style.Font.Bold = true;
-                    worksheet.Cells[(count_row_header + 1), 4].Value = transaction.Account.BankAccountNumber;
+                    count_row_header++;
+
+                    
+
+                    worksheet.Cells[count_row_header, 1].Value = number_stt;
+                    worksheet.Cells[count_row_header, 2].Value = transaction.Account.BankAccountName;
+                    worksheet.Cells[count_row_header, 3].Value = transaction.Account.BankAccountNumber;
+                    worksheet.Cells[count_row_header, 4].Value = transaction.Account.BankAccountBank;
+                    worksheet.Cells[count_row_header, 5].Value = transaction.Transactions.Sum(s=>s.Amount).ToString();
 
 
-
-                    int count = turn;
-                    long total_amount = 0;
-                    foreach(var item in transaction.Transactions)
-                    {
-                        //for the first item
-                        if (count_row_header == 1)
-                            count_row_header = 2;                        
-
-                        worksheet.Cells[count_row_header + count, 1].Value = number_stt;                        
-                        worksheet.Cells[count_row_header + count, 2].Value = item.DateModified.ToString("dd/MM/yyyy");                        
-                        worksheet.Cells[count_row_header + count, 3].Value = item.Amount;
-
-                        total_amount += item.Amount;
-                        count++;
-                        number_stt++;
-                    }
-                    if(count == transaction.Transactions.Count() + turn)
-                    {                        
-                        worksheet.Cells[count_row_header + count, 2].Value = "TOTAL";
-                        worksheet.Cells[count_row_header + count, 2].Style.Font.Bold = true;
-                        worksheet.Cells[count_row_header + count, 2].Style.Font.Color.SetColor(Color.Red);
-                        worksheet.Cells[count_row_header + count, 3].Value = total_amount;
-                        worksheet.Cells[count_row_header + count, 3].Style.Font.Bold = true;
-                        worksheet.Cells[count_row_header + count, 3].Style.Font.Color.SetColor(Color.Red);
-
-                    }
-
-                    count_row_header += transaction.Transactions.Count() + 4;
-                    turn++;
-
+                    number_stt++;
                 }
 
 

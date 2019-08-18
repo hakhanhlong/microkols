@@ -141,7 +141,7 @@
                                                             <tr>
                                                                 <td>@(count)</td>
                                                                 <td>@transaction.DateModified</td>
-                                                                <td>@transaction.Amount.ToPriceText()</td>
+                                                                <td><span style="color:red;">@transaction.Amount.ToPriceText()</span></td>
                                                                 <td>@(transaction.IsCashOut.HasValue ? transaction.IsCashOut.Value : false)</td>
                                                             </tr>
                                                             count++;

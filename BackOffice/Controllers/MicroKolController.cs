@@ -20,14 +20,20 @@ namespace BackOffice.Controllers
         IAccountCampaignChargeRepository _IAccountCampaignChargeRepository;
 
         IAccountCampaignChargeBusiness _IAccountCampaignChargeBusiness;
+        ICampaignBusiness _ICampaignBusiness;
+        ICampaignAccountRepository _ICampaignAccountRepository;
 
-        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
-            IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness)
+        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
+            IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
+            IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
+            ICampaignAccountRepository __ICampaignAccountRepository)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
             _IAccountCampaignChargeRepository = __IAccountCampaignChargeRepository;
             _IAccountCampaignChargeBusiness = __IAccountCampaignChargeBusiness;
+            _ICampaignBusiness = __ICampaignBusiness;
+            _ICampaignAccountRepository = __ICampaignAccountRepository;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -254,6 +260,40 @@ namespace BackOffice.Controllers
                 state = 0,
                 msg = string.Empty
             });
+        }
+
+
+        public IActionResult CampaignMicrokol(CampaignAccountStatus status = CampaignAccountStatus.WaitToPay, int pageindex = 1)
+        {
+            ViewBag.Status = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chờ trả tiền", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Thành viên xin tham gia chiến dịch", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Doanh nghiệp mời tham gia chiến dịch", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đã xác nhận tham gia chiến dịch", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đang gửi xét duyệt", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Yêu cầu sửa nội dung", Value = "31"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đã duyệt nội dung", Value = "32"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đã duyệt và cập nhật nội dung", Value = "33"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đã hoàn thành", Value = "6"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Hủy tham gia", Value = "7"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chưa hoàn thành", Value = "8"}
+            };
+
+
+            var list = _ICampaignBusiness.GetCampaignAccountByStatus(status, pageindex, 25);
+
+            return View(list);
+        }
+
+        public  IActionResult MicroKolSubstractMoney(int caid = 0)
+        {
+            var campaignaccount = _ICampaignAccountRepository.GetById(caid);
+
+            var campaignaccountmodel = new CampaignAccountViewModel(campaignaccount);
+
+
+            return View(campaignaccountmodel);
         }
 
     }

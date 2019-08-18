@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "CampaignMicrokol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model ListCampaignWithAccountViewModel
+
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Campaign MicroKOL
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+    </ul>
+}
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet m-portlet--tabs">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <h3 class="m-portlet__head-text">
+                                Campaign MicroKOL
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-portlet__body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="m_portlet_tab_1_1">
+                            @await Html.PartialAsync("~/Views/MicroKol/_FilterCampaignMicroKOLPartial.cshtml")
+                        </div>
+                    </div>
+                    <!--begin::Section-->
+                    <div class="m-section">
+                        <div class="m-section__content">
+
+
+
+                            @if (Model != null)
+                            {
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>
+                                                CAMPAIGN
+                                            </th>
+                                            <th>
+                                                CAMPAIGN STATUS
+                                            </th>
+                                            <th>
+                                                TYPE
+                                            </th>
+                                            <th>
+                                                MICROKOL
+                                            </th>
+                                            <th>
+                                                STATUS
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{ int count = 1;}
+                                        @foreach (var item in Model.Campaigns)
+                                        {
+                                        <tr>
+                                            <td>@(count)</td>
+                                            <td>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a>
+                                            </td>
+                                            <td>
+
+                                                @if (item.Status == CampaignStatus.Canceled)
+                                                {
+                                                    <span class="m-badge m-badge--danger m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+                                                else if (item.Status == CampaignStatus.Completed)
+                                                {
+                                                    <span class="m-badge m-badge--info m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="m-badge m-badge--primary m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+
+                                            </td>
+                                            <td>@item.Type.ToText()</td>
+                                            <td>
+                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                            </td>
+                                            <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
+                                            <td>
+                                                @if(item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
+                                                {
+                                                    <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Substract $</a>
+
+                                                }
+                                            </td>
+
+                                        </tr>
+                                            count++;
+                                        }
+                                    </tbody>
+                                </table>
+                                <pager pager="@Model.Pager" asp-action="CampaignMicrokol" asp-route-status="@(Context.Request.Query["status"])"></pager>
+                            }
+
+
+                        </div>
+                    </div>
+                    <!--end::Section-->
+                </div>
+                <!--end::Form-->
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+

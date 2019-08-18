@@ -76,7 +76,6 @@ namespace BackOffice.Controllers
             return View(campaign);
         }
 
-
         [HttpPost]
         public JsonResult ChangeStatus(int id, CampaignStatus status)
         {
@@ -132,5 +131,18 @@ namespace BackOffice.Controllers
                 str_icon = ""
             });
         }
+
+
+
+        public IActionResult Microkol(string kw, CampaignType? type, CampaignStatus? status, int pageindex = 1)
+        {
+
+            DataSelectionStatusAndType();
+            var list = _ICampaignBusiness.Search(kw, type, status, pageindex, 25);
+
+            return View(list);
+        }
+
+
     }
 }

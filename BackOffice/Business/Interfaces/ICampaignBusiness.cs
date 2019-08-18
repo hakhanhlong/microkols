@@ -16,5 +16,14 @@ namespace BackOffice.Business.Interfaces
         ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, int index, int pagesize);
 
 
+        ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus status, int pageindex, int pagesize);
+
+
+        //Task<ListCampaignWithAccountViewModel> GetListCampaignByAllAccount(int type, string keyword, int page, int pagesize);
+
+
+
+
+
     }
 }

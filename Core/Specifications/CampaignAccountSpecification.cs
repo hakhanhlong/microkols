@@ -11,7 +11,12 @@ namespace Core.Specifications
         public CampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
         }
+
         public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status ) : base(m => m.CampaignId == campaignid && m.Status== status)
+        {
+        }
+
+        public CampaignAccountSpecification(CampaignAccountStatus status) : base(m =>m.Status == status)
         {
         }
 
@@ -22,6 +27,20 @@ namespace Core.Specifications
 
         }
     }
+
+
+    public class CampaignAccountByStatusSpecification : BaseSpecification<CampaignAccount>
+    {
+      
+
+        public CampaignAccountByStatusSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
+        {
+        }
+
+      
+    }
+
+
 
 
     public class CampaignAccountByAgencySpecification : BaseSpecification<CampaignAccount>
