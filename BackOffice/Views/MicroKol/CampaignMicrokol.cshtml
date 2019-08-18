@@ -103,8 +103,6 @@
                                                     </span>
                                                 }
 
-
-
                                             </td>
                                             <td>@item.Type.ToText()</td>
                                             <td>
@@ -114,7 +112,7 @@
                                             <td>
                                                 @if(item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
                                                 {
-                                                    <a class="btn btn-danger btn-sm">Substract $</a>
+                                                    <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Substract $</a>
 
                                                 }
                                             </td>

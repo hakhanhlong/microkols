@@ -21,15 +21,19 @@ namespace BackOffice.Controllers
 
         IAccountCampaignChargeBusiness _IAccountCampaignChargeBusiness;
         ICampaignBusiness _ICampaignBusiness;
+        ICampaignAccountRepository _ICampaignAccountRepository;
 
-        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
-            IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness)
+        public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
+            IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
+            IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
+            ICampaignAccountRepository __ICampaignAccountRepository)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
             _IAccountCampaignChargeRepository = __IAccountCampaignChargeRepository;
             _IAccountCampaignChargeBusiness = __IAccountCampaignChargeBusiness;
             _ICampaignBusiness = __ICampaignBusiness;
+            _ICampaignAccountRepository = __ICampaignAccountRepository;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -280,6 +284,16 @@ namespace BackOffice.Controllers
             var list = _ICampaignBusiness.GetCampaignAccountByStatus(status, pageindex, 25);
 
             return View(list);
+        }
+
+        public  IActionResult MicroKolSubstractMoney(int caid = 0)
+        {
+            var campaignaccount = _ICampaignAccountRepository.GetById(caid);
+
+            var campaignaccountmodel = new CampaignAccountViewModel(campaignaccount);
+
+
+            return View(campaignaccountmodel);
         }
 
     }
