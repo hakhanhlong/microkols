@@ -873,7 +873,26 @@ namespace Website.Services
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
-                    campaign.Status = CampaignStatus.Started;
+
+                    var countCampaignAccountToProcess =  await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
+                            CampaignAccountStatus.AccountRequest,
+                            CampaignAccountStatus.AgencyRequest,
+                            CampaignAccountStatus.Canceled,
+                            CampaignAccountStatus.WaitToPay,
+                            
+                    }));
+
+                    // neu ko co ai thuc hien thi huy ko start nua
+                    if(countCampaignAccountToProcess== 0)
+                    {
+                        campaign.Status = CampaignStatus.Canceled;
+
+                    }
+                    else
+                    {
+                        campaign.Status = CampaignStatus.Started;
+                    }
+
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);

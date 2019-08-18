@@ -281,6 +281,7 @@
                 $.get(renewUrl + ignoreids, function (html) {
                     if (html.length < 100) {
                         $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
+                        $tr.remove();
                     } else {
                         $tr.replaceWith(html);
                         handlerSuggestAccount();
