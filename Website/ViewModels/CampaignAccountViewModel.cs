@@ -29,7 +29,7 @@ namespace Website.ViewModels
             RefId = campaignAccount.RefId;
             RefContent = campaignAccount.RefContent;
             RefData = campaignAccount.RefDataObj;
-
+            DateFinished = campaignAccount.DateFinished;
             Rating = campaignAccount.Rating;
             ReportStatus = campaignAccount.ReportStatus;
             ReportNote = campaignAccount.ReportNote;
@@ -52,7 +52,7 @@ namespace Website.ViewModels
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 
-
+        public DateTime? DateFinished { get; set; }
 
         public string RefUrl { get; set; }
         public string RefId { get; set; }
@@ -103,7 +103,7 @@ namespace Website.ViewModels
 
         }
         [Required( ErrorMessage ="Hãy nhập {0}")]
-        [Display(Name = "Link trên Facebook")]
+        [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây")]
         //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
 

@@ -218,7 +218,7 @@ namespace Infrastructure.Data
 
             if (type == 1)
             {
-                query = query.Where(m => m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.WaitToPay);
+                query = query.Where(m => m.Status == CampaignAccountStatus.AgencyRequest || m.Status == CampaignAccountStatus.AccountRequest || m.Status == CampaignAccountStatus.WaitToPay);
             }
             else if (type == 2)
             {
@@ -239,7 +239,7 @@ namespace Infrastructure.Data
             var campaignids = query.Select(m => m.CampaignId).Distinct();
 
 
-            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id));
+            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id) && m.Status!= CampaignStatus.Canceled);
 
             if (!string.IsNullOrEmpty(keyword))
             {

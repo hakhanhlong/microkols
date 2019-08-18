@@ -48,10 +48,13 @@ namespace Core.Entities
         public string UserCreated { get; set; }
         public string UserModified { get; set; }
 
+        public DateTime? DateFinished { get; set; }
+
         public CampaignAccountRating? Rating { get; set; }
         public CampaignAccountReportStatus? ReportStatus { get; set; }
         public string ReportNote { get; set; }
         public string ReportImages { get; set; }
+        public string Note { get; set; }
     }
 
     public enum CampaignAccountReportStatus

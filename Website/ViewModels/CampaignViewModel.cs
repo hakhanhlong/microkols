@@ -37,7 +37,7 @@ namespace Website.ViewModels
             DateCreated = campaign.DateCreated;
             UserCreated = campaign.UserCreated;
             CountOption = campaign.CampaignOption.Count();
-            Image = campaign.Image;
+            Image = campaign.Image.ToListString();
             Data = campaign.Data;
             Code = campaign.Code;
             Title = campaign.Title;
@@ -134,7 +134,7 @@ namespace Website.ViewModels
         public string Title { get; set; }
         public string Code { get; set; }
 
-        public string Image { get; set; }
+        public List<string> Image { get; set; } = new List<string>();
         public string Data { get; set; }
         public DateTime DateCreated { get; set; }
 
