@@ -79,11 +79,38 @@
                                         {
                                         <tr>
                                             <td>@(count)</td>
-                                            <td>@item.Title</td>
-                                            <td>@item.Status.ToDisplayName()</td>
+                                            <td>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a>
+                                            </td>
+                                            <td>
+
+                                                @if (item.Status == CampaignStatus.Canceled)
+                                                {
+                                                    <span class="m-badge m-badge--danger m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+                                                else if (item.Status == CampaignStatus.Completed)
+                                                {
+                                                    <span class="m-badge m-badge--info m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="m-badge m-badge--primary m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                }
+
+
+
+                                            </td>
                                             <td>@item.Type.ToText()</td>
-                                            <td>@item.CampaignAccount.Account.Name</td>
-                                            <td>@item.CampaignAccount.Status.ToDisplayName()</td>
+                                            <td>
+                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                            </td>
+                                            <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
                                             <td>
                                                 @if(item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
                                                 {
@@ -97,7 +124,7 @@
                                         }
                                     </tbody>
                                 </table>
-                                @*<pager pager="@Model.Pager" asp-action="Index"></pager>*@
+                                <pager pager="@Model.Pager" asp-action="CampaignMicrokol" asp-route-status="@(Context.Request.Query["status"])"></pager>
                             }
 
 
