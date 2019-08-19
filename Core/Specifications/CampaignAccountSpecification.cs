@@ -12,22 +12,31 @@ namespace Core.Specifications
         {
         }
 
-        public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status ) : base(m => m.CampaignId == campaignid && m.Status== status)
+        public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)
         {
         }
 
-        public CampaignAccountSpecification(CampaignAccountStatus status) : base(m =>m.Status == status)
+        public CampaignAccountSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
         {
         }
 
         public CampaignAccountSpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
            : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
-           (ignoreStatus == null  || !ignoreStatus.Contains(m.Status)))
+           (ignoreStatus == null || !ignoreStatus.Contains(m.Status)))
         {
 
         }
     }
 
+
+    public class CampaignAccountByIdSpecification:BaseSpecification<CampaignAccount>{
+        public CampaignAccountByIdSpecification(int id) : base(m => m.Id == id)
+        {
+            AddInclude(c=>c.Account);
+            AddInclude(c => c.Campaign);
+
+        }
+    }
 
     public class CampaignAccountByStatusSpecification : BaseSpecification<CampaignAccount>
     {
@@ -35,6 +44,8 @@ namespace Core.Specifications
 
         public CampaignAccountByStatusSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
         {
+            AddInclude(c => c.Account);
+            AddInclude(c => c.Campaign);
         }
 
       

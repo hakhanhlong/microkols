@@ -117,14 +117,7 @@ namespace BackOffice.Business
             var list = new List<CampaignWithAccountViewModel>();
             foreach (var campaignAccount in campaignAccounts)
             {
-                var account = _IAccountRepository.GetById(campaignAccount.AccountId);
-                var campaign = _ICampaignRepository.GetSingleBySpec(new CampaignSpecification(campaignAccount.CampaignId));
-                if(campaign != null && account!=null)
-                {
-                    campaignAccount.Account = account;
-
-                    list.Add(new CampaignWithAccountViewModel(campaign, campaignAccount));
-                }
+                list.Add(new CampaignWithAccountViewModel(campaignAccount.Campaign, campaignAccount));
             }
 
             return new ListCampaignWithAccountViewModel()

@@ -13,6 +13,7 @@ namespace BackOffice.Models
         {
             Id = campaignAccount.Id;
             Account = new AccountViewModel(campaignAccount.Account, null);
+            Campaign = new CampaignViewModel(campaignAccount.Campaign);
             Status = campaignAccount.Status;
             DateCreated = campaignAccount.DateCreated;
             Type = campaignAccount.Type;
@@ -44,6 +45,9 @@ namespace BackOffice.Models
         public List<string> ReportImages { get; set; }
 
         public AccountViewModel Account { get; set; }
+
+        public CampaignViewModel Campaign { get; set; }
+
         public int AccountId { get; set; }
         public int CampaignId { get; set; }
         public CampaignAccountStatus Status { get; set; }

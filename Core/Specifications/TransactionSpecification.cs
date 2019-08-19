@@ -24,6 +24,9 @@ namespace Core.Specifications
         public TransactionSpecification(TransactionType type, TransactionStatus status, DateTime startDate, DateTime endDate) : base(t => t.Status == status && t.Type == type 
         && t.DateModified >= startDate && t.DateModified <= endDate) { }
 
+
+        public TransactionSpecification(int senderid, int receiverid, TransactionType type, int RefId) : base(t => t.SenderId == senderid && t.ReceiverId == receiverid && t.Type == type && t.RefId == RefId) { }
+
     }
 
     public class TransactionByCampaignSpecification : BaseSpecification<Transaction>

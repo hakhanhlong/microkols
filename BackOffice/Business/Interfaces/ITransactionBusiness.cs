@@ -24,6 +24,8 @@ namespace BackOffice.Business.Interfaces
 
         Task<int> CalculateBalance(int transactionid, long transactionAmount, int senderid, int receiverid, string header_log, string username);
 
+        bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId);
+
 
     }
 }

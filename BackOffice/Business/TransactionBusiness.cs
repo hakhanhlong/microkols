@@ -135,6 +135,17 @@ namespace BackOffice.Business
             return retValue;
         }
 
+        public bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId)
+        {
+            var filter = new TransactionSpecification(senderid, receiverid, type, RefId);
+            var transactions = _ITransactionRepository.GetSingleBySpec(filter);
+
+            var reValue =  transactions?.Id;
+            if (reValue > 0)
+                return true;
+            return false;
+        }
+
         public async Task<int> UpdateStatus(TransactionStatus status, int id, string username)
         {
             int retValue = -1;
@@ -190,6 +201,9 @@ namespace BackOffice.Business
             int retValue = -1;
             var walletSender = _IWalletRepository.GetById(senderid);// get wallet sender
             var walletRecevier = _IWalletRepository.GetById(receiverid); // get wallet receiver
+
+            
+
             long newamount_sender = 0;
             long newamount_receiver = 0;
 

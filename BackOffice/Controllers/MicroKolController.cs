@@ -7,6 +7,7 @@ using BackOffice.Models;
 using Common.Helpers;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackOffice.Controllers
@@ -22,11 +23,14 @@ namespace BackOffice.Controllers
         IAccountCampaignChargeBusiness _IAccountCampaignChargeBusiness;
         ICampaignBusiness _ICampaignBusiness;
         ICampaignAccountRepository _ICampaignAccountRepository;
+        ITransactionRepository _ITransactionRepository;
+        ITransactionBusiness _ITransactionBusiness;
 
         public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
             IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
             IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
-            ICampaignAccountRepository __ICampaignAccountRepository)
+            ICampaignAccountRepository __ICampaignAccountRepository, ITransactionRepository __ITransactionRepository,
+            ITransactionBusiness __ITransactionBusiness)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
@@ -34,6 +38,8 @@ namespace BackOffice.Controllers
             _IAccountCampaignChargeBusiness = __IAccountCampaignChargeBusiness;
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignAccountRepository = __ICampaignAccountRepository;
+            _ITransactionRepository = __ITransactionRepository;
+            _ITransactionBusiness = __ITransactionBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -288,13 +294,83 @@ namespace BackOffice.Controllers
 
         public  IActionResult MicroKolSubstractMoney(int caid = 0)
         {
-            var campaignaccount = _ICampaignAccountRepository.GetById(caid);
 
+            var filter = new CampaignAccountByIdSpecification(caid);
+            var campaignaccount = _ICampaignAccountRepository.GetSingleBySpec(filter);
             var campaignaccountmodel = new CampaignAccountViewModel(campaignaccount);
-
-
             return View(campaignaccountmodel);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> MicroKolSubstractMoney(long money_number, string txt_note, int caid)
+        {
+
+            var filter = new CampaignAccountByIdSpecification(caid);
+            var campaignaccount = _ICampaignAccountRepository.GetSingleBySpec(filter);
+
+            try
+            {
+
+
+                if(_ITransactionBusiness.CheckExist(campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, TransactionType.SubstractMoney, caid))
+                {
+                    TempData["MessageError"] = "You was substract money!";
+                }
+                else
+                {
+                    //caid = campaignaccount id
+                    if (campaignaccount != null)
+                    {
+                        int transactionid = await _ITransactionRepository.CreateTransaction(campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, money_number, TransactionType.SubstractMoney, txt_note, "", HttpContext.User.Identity.Name, caid);
+                        if (transactionid > 0)
+                        {
+                            int retValue = await _ITransactionBusiness.CalculateBalance(transactionid, money_number, campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, "[Trừ Tiền][SubstractMoney]", HttpContext.User.Identity.Name);
+                            /*
+                            * 09: success
+                            * 10: wallet do not exist
+                            * 11: wallet balance sender or receiver less then zero or amount could be abstract
+                            * 
+                            */
+
+                            switch (retValue)
+                            {
+                                case 9:
+                                    TempData["MessageError"] = "Success Substract Money";
+                                    break;
+                                case 10:
+                                    TempData["MessageError"] = "Wallet do not exist";
+                                    break;
+                                case 11:
+                                    TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            TempData["MessageError"] = "Can't created transaction!";
+                        }
+
+                    }
+                    else
+                    {
+                        TempData["MessageError"] = "Campaign Account NULL!";
+                    }
+                }
+
+              
+            }
+            catch(Exception ex)
+            {
+                TempData["MessageError"] = ex.Message;
+            }
+            
+
+
+            return RedirectToAction("MicroKolSubstractMoney", "MicroKol", new { caid = caid });
+        }
+
+
 
     }
 }

@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewData["Title"] = "MicroKolSubstractMoney";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model CampaignAccountViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Campaign MicroKOL
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/campaign" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Campaign MicroKOL
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="javascript:;" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Substract $
+                </span>
+            </a>
+        </li>
+
+    </ul>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet m-portlet--tab">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <span class="m-portlet__head-icon m--hide">
+                            <i class="la la-gear"></i>
+                        </span>
+                        <h3 class="m-portlet__head-text">
+                            @if (Model.Id > 0)
+                            {
+                                <span>Substract $ "@(Model.Account.Name)" from campaign "@(Model.Campaign.Title)"</span>
+                            }
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>
+                                    <span class="m-badge m-badge--info">
+                                        +
+                                    </span> Mã chiến dịch :<a href="/campaign/detail/?agencyid=@(Model.Campaign.AgencyId)&campaignid=@(Model.CampaignId)"> @Model.Campaign.Code</a>
+                                </h6>
+                                <div class="m--space-10"></div>
+                                <h6>
+                                    <span class="m-badge m-badge--info">
+                                        +
+                                    </span> Tên chiến dịch: @Model.Campaign.Title
+                                </h6>
+                                <div class="m--space-10"></div>
+                                <h6>
+                                    <span class="m-badge m-badge--info">
+                                        +
+                                    </span> Trạng thái chiên dịch: <span class="m-badge m-badge--info m-badge--wide">@Model.Campaign.Status.ToString()</span>
+                                </h6>
+                                <div class="m--space-10"></div>
+                                <h6>
+                                    <span class="m-badge m-badge--info">
+                                        +
+                                    </span> MicroKOL :<a href="/microkol/detail/?id=@(Model.Account.Id)"> @Model.Account.Name </a>
+                                </h6>
+                                <div class="m--space-10"></div>
+                                <h6>
+                                    <span class="m-badge m-badge--info">
+                                        +
+                                    </span> MicroKOL Status: <span class="m-badge m-badge--info m-badge--wide">@Model.Status</span>
+                                </h6>
+
+                            </div>
+                            <div class="col-md-6">
+                                <form class="m-form" method="post">
+                                    <input type="hidden" name="caid" value="@Model.Id"/>
+                                    <div class="m-portlet__body" style="padding-top:0;">
+                                        <div class="m-form__section m-form__section--first">
+                                            <div class="form-group m-form__group">
+                                                <label for="example_input_full_name">
+                                                    Account Charge Amount:
+                                                </label>
+                                                <input type="text" disabled name="money_number" class="form-control m-input" value="@(Model.AccountChargeAmount)">
+                                                <span class="m-form__help">
+                                                    Money need to substract
+                                                </span>
+                                            </div>
+                                            <div class="form-group m-form__group">
+                                                <label>
+                                                    Note:
+                                                </label>
+                                                <textarea class="form-control m-input" name="txt_note" rows="3"></textarea>
+                                                <span class="m-form__help">
+                                                    Note why need substract money
+                                                </span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="m-portlet__foot m-portlet__foot--fit">
+                                        <div class="m-form__actions m-form__actions">
+                                            <button type="submit" class="btn btn-primary">
+                                                Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-secondary">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+
+                        </div>
+
+                      
+
+
+                    </div>
+                </div>
+            </div>
+            <!--end::Section-->
+
+        </div>
+    </div>
+    <!--end::Portlet-->
+</div>
+
