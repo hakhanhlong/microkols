@@ -25,12 +25,15 @@ namespace BackOffice.Controllers
         ICampaignAccountRepository _ICampaignAccountRepository;
         ITransactionRepository _ITransactionRepository;
         ITransactionBusiness _ITransactionBusiness;
+        IWalletBusiness _IWalletBusiness;
+        IWalletRepository _IWalletRepository;
+
 
         public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
             IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
             IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
             ICampaignAccountRepository __ICampaignAccountRepository, ITransactionRepository __ITransactionRepository,
-            ITransactionBusiness __ITransactionBusiness)
+            ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IWalletRepository __IWalletRepository)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
@@ -40,6 +43,8 @@ namespace BackOffice.Controllers
             _ICampaignAccountRepository = __ICampaignAccountRepository;
             _ITransactionRepository = __ITransactionRepository;
             _ITransactionBusiness = __ITransactionBusiness;
+            _IWalletBusiness = __IWalletBusiness;
+            _IWalletRepository = __IWalletRepository;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -309,23 +314,27 @@ namespace BackOffice.Controllers
             var filter = new CampaignAccountByIdSpecification(caid);
             var campaignaccount = _ICampaignAccountRepository.GetSingleBySpec(filter);
 
-            try
+            //caid = campaignaccount id
+            if (campaignaccount != null)
             {
 
+                try
+                {
+                    int senderid = await _IWalletRepository.GetWalletId(EntityType.Account, campaignaccount.AccountId);
+                    int recieverid = await _IWalletRepository.GetWalletId(EntityType.Agency, campaignaccount.Campaign.AgencyId);
 
-                if(_ITransactionBusiness.CheckExist(campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, TransactionType.SubstractMoney, caid))
-                {
-                    TempData["MessageError"] = "You was substract money!";
-                }
-                else
-                {
-                    //caid = campaignaccount id
-                    if (campaignaccount != null)
+                    //check xem đã trừ tiền chưa?
+                    if (_ITransactionBusiness.CheckExist(senderid, recieverid, TransactionType.SubstractMoney, caid))
                     {
-                        int transactionid = await _ITransactionRepository.CreateTransaction(campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, money_number, TransactionType.SubstractMoney, txt_note, "", HttpContext.User.Identity.Name, caid);
+                        TempData["MessageError"] = "You was substract money!";
+                    }
+                    else
+                    {
+                       
+                        int transactionid = await _ITransactionRepository.CreateTransaction(senderid, recieverid, money_number, TransactionType.SubstractMoney, txt_note, "", HttpContext.User.Identity.Name, caid);
                         if (transactionid > 0)
                         {
-                            int retValue = await _ITransactionBusiness.CalculateBalance(transactionid, money_number, campaignaccount.AccountId, campaignaccount.Campaign.AgencyId, "[Trừ Tiền][SubstractMoney]", HttpContext.User.Identity.Name);
+                            int retValue = await _ITransactionBusiness.CalculateBalance(transactionid, money_number, senderid, recieverid, "[Trừ Tiền][SubstractMoney]", HttpContext.User.Identity.Name);
                             /*
                             * 09: success
                             * 10: wallet do not exist
@@ -336,7 +345,7 @@ namespace BackOffice.Controllers
                             switch (retValue)
                             {
                                 case 9:
-                                    TempData["MessageError"] = "Success Substract Money";
+                                    TempData["MessageSuccess"] = "Success Substract Money";
                                     break;
                                 case 10:
                                     TempData["MessageError"] = "Wallet do not exist";
@@ -350,20 +359,27 @@ namespace BackOffice.Controllers
                         {
                             TempData["MessageError"] = "Can't created transaction!";
                         }
+                    }
 
-                    }
-                    else
-                    {
-                        TempData["MessageError"] = "Campaign Account NULL!";
-                    }
+
+                }
+                catch (Exception ex)
+                {
+                    TempData["MessageError"] = ex.Message;
                 }
 
-              
+
+
             }
-            catch(Exception ex)
+            else
             {
-                TempData["MessageError"] = ex.Message;
+                TempData["MessageError"] = "Campaign Account NULL!";
             }
+
+
+            
+
+           
             
 
 

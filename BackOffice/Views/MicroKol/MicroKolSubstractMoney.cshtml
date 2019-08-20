@@ -98,14 +98,15 @@
                             </div>
                             <div class="col-md-6">
                                 <form class="m-form" method="post">
-                                    <input type="hidden" name="caid" value="@Model.Id"/>
+                                    <input type="hidden" name="caid" value="@Model.Id" />
+                                    <input type="hidden" name="money_number" value="@Model.AccountChargeAmount" />
                                     <div class="m-portlet__body" style="padding-top:0;">
                                         <div class="m-form__section m-form__section--first">
                                             <div class="form-group m-form__group">
                                                 <label for="example_input_full_name">
                                                     Account Charge Amount:
                                                 </label>
-                                                <input type="text" disabled name="money_number" class="form-control m-input" value="@(Model.AccountChargeAmount)">
+                                                <input type="text" disabled class="form-control m-input" value="@(Model.AccountChargeAmount)">
                                                 <span class="m-form__help">
                                                     Money need to substract
                                                 </span>
@@ -119,7 +120,7 @@
                                                     Note why need substract money
                                                 </span>
                                             </div>
-                                            
+
                                         </div>
                                     </div>
                                     <div class="m-portlet__foot m-portlet__foot--fit">
