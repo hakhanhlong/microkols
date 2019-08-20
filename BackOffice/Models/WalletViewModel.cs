@@ -25,8 +25,11 @@ namespace BackOffice.Models
             DateCreated = _wallet.DateCreated;
             DateModified = _wallet.DateModified;
             UserCreated = _wallet.UserCreated;
-            UserModified = _wallet.UserModified;            
+            UserModified = _wallet.UserModified;
+            Id = _wallet.Id;
         }
+
+        public int Id { get; set; }
 
         public EntityType EntityType { get; set; }
         public int EntityId { get; set; }

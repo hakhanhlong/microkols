@@ -27,6 +27,8 @@ namespace Core.Specifications
 
         public TransactionSpecification(int senderid, int receiverid, TransactionType type, int RefId) : base(t => t.SenderId == senderid && t.ReceiverId == receiverid && t.Type == type && t.RefId == RefId) { }
 
+        public TransactionSpecification(int senderid, int receiverid) : base(t => t.SenderId == senderid || t.ReceiverId == receiverid) { }
+
     }
 
     public class TransactionByCampaignSpecification : BaseSpecification<Transaction>

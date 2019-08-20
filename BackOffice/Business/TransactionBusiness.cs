@@ -135,6 +135,20 @@ namespace BackOffice.Business
             return retValue;
         }
 
+
+        public async Task<ListTransactionViewModel> GetTransactions(int sender_wallet_id, int reciever_wallet_id, int pageindex, int pagesize)
+        {
+            var filter = new TransactionSpecification(sender_wallet_id, reciever_wallet_id);
+            var transactions = await _ITransactionRepository.ListPagedAsync(filter, "DateModified_desc", pageindex, 25);
+            var total = _ITransactionRepository.Count(filter);
+
+            return new ListTransactionViewModel()
+            {
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
         public bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId)
         {
             var filter = new TransactionSpecification(senderid, receiverid, type, RefId);

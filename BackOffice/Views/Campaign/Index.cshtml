@@ -75,6 +75,7 @@
                                         <th>
                                             END DATE
                                         </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -136,11 +137,12 @@
                                                     @(item.Title)
                                                 </td>
                                                 <td>@(item.Type.ToText())</td>
-                                                <td>                                                    
+                                                <td>
                                                     <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
                                                 </td>
                                                 <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
                                                 <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
+                                                <td><a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" class="btn btn-sm btn-info">Detail</a></td>
                                             </tr>
                                             count++;
                                         }

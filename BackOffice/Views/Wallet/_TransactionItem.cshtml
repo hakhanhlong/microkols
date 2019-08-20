@@ -1,0 +1,73 @@
+﻿@model ListTransactionViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                SENDER
+            </th>
+            <th>
+                RECEIVER
+            </th>
+            <th>
+                CODE
+            </th>
+            <th>
+                AMOUNT
+            </th>
+            <th>
+                STATUS
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int count = 0; }
+        @foreach (var item in Model.Transactions)
+        {
+            count++;
+            item.Number = count;
+            <tr id="transaction_@(item.Id)">
+                <td>@item.Number</td>
+                <td>@item.SenderName</td>
+                <td>@item.ReceiverName</td>
+                <td>@item.Code</td>
+                <td>
+                    <h6 class="m--font-danger">
+                        @item.Amount.ToPriceText()
+                    </h6>
+                </td>
+                <td>@item.Status</td>
+                <td>
+
+            
+
+
+                </td>
+            </tr>
+            @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
+            {
+                <tr id="transaction_note_@(item.Id)">
+                    <td colspan="7">
+                        @if (!string.IsNullOrEmpty(item.Note))
+                        {
+                            @("Note:" + item.Note)
+                        }
+                        @if (!string.IsNullOrEmpty(item.AdminNote))
+                        {
+                            <br />
+                            @("Admin Note:" + item.AdminNote)
+                        }
+                    </td>
+                </tr>
+            }
+
+        }
+
+    </tbody>
+</table>
+
+
