@@ -230,10 +230,10 @@ namespace BackOffice.Business
                 if (newamount_sender > 0 && newamount_receiver > 0)
                 {
                     //tạo transactionhistory trừ ví người gửi
-                    string _note = string.Format("{4} - Trừ ví người gửi: walletid = {0}, amount = {1}, old_sender_wallet_balance={2}, transactionId={3}", walletSender.Id, transactionAmount, _old_sender_wallet_balance, transactionid, header_log);
+                    string _note = string.Format("{4} - Trừ ví người gửi: walletid = {0}, amount = {1}, old_sender_wallet_balance={2}, transactionId={3}", walletSender.Id, 0 - transactionAmount, _old_sender_wallet_balance, transactionid, header_log);
                     await _ITransactionRepository.UpdateTransactionHistory(transactionid, walletSender.Id, 0 - transactionAmount, _old_sender_wallet_balance, _note);
                     //tạo transactionhistory cộng ví người nhận
-                    _note = string.Format("{4} - Cộng ví người nhận: walletid = {0}, amount = {1}, _old_receiver_wallet_balance={2}, transactionId={3}", walletRecevier.Id, transactionAmount, _old_receiver_wallet_balance, transactionid, header_log);
+                    _note = string.Format("{4} - Cộng ví người nhận: walletid = {0}, amount = {1}, old_receiver_wallet_balance={2}, transactionId={3}", walletRecevier.Id, transactionAmount, _old_receiver_wallet_balance, transactionid, header_log);
                     await _ITransactionRepository.UpdateTransactionHistory(transactionid, walletRecevier.Id, transactionAmount, _old_receiver_wallet_balance, _note);
 
                     retValue = 9;
