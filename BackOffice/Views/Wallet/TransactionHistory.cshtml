@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewData["Title"] = "TransactionHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model ListTransactionHistoryViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Wallet Transaction
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/wallet" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Wallet
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/wallet/transaction?walletid=@(Context.Request.Query["walletid"])" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/wallet/transactionhistory?walletid=@(Context.Request.Query["walletid"])" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction History
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+<div class="col-xl-12">
+    <div class="m-portlet m-portlet--tabs">
+        <div class="m-portlet__head">
+            <div class="m-portlet__head-caption">
+                <div class="m-portlet__head-title">
+                    <h3 class="m-portlet__head-text">
+                        Wallet Transaction History
+                    </h3>
+                </div>
+            </div>            
+        </div>
+        <div class="m-portlet__body">
+
+            @if (ViewBag.Wallet != null)
+            {
+                <h6>
+
+                    @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
+                    {
+                        <span>Name: </span> <span class="m--font-danger mr-2">System</span>
+                    }
+                    else
+                    {
+                        <span>Name: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
+                    }
+
+                    Balance: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
+                </h6>
+            }
+
+
+            <div class="tab-content">
+                <div class="tab-pane active show">
+
+                    @if (Model != null)
+                    {
+
+                        @await Html.PartialAsync("~/Views/Wallet/_TransactionHistoryItem.cshtml", Model)
+                    }
+                    else
+                    {
+                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                            <div class="m-demo__preview">
+                                Sorry, do not have transaction for binding!
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="m-portlet__foot">
+            <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionhistory"></pager>
+        </div>
+    </div>
+</div>
+</div>
+
