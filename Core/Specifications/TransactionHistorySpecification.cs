@@ -14,6 +14,13 @@ namespace Core.Specifications
             AddInclude(m => m.Transaction);
         }
 
+
+        public TransactionHistorySpecification(int walletid) : base(m => m.WalletId == walletid)
+        {
+            AddInclude(m => m.Transaction);
+            AddInclude(m => m.Wallet);
+        }
+
     }
 
    

@@ -5,13 +5,7 @@
         <tr>
             <th>
                 #
-            </th>
-            <th>
-                SENDER
-            </th>
-            <th>
-                RECEIVER
-            </th>
+            </th>      
             <th>
                 CODE
             </th>
@@ -19,32 +13,45 @@
                 AMOUNT
             </th>
             <th>
-                STATUS
+                TYPE
             </th>
-            <th></th>
+            <th>TIME</th>
         </tr>
     </thead>
     <tbody>
-        @{int count = 0; }
+        @{
+
+            int count = 0;
+            int current_walletid = Convert.ToInt32(Context.Request.Query["walletid"]);
+        }
         @foreach (var item in Model.Transactions)
         {
             count++;
             item.Number = count;
             <tr id="transaction_@(item.Id)">
-                <td>@item.Number</td>
-                <td>@item.SenderName</td>
-                <td>@item.ReceiverName</td>
+                <td>@item.Number</td>                
                 <td>@item.Code</td>
                 <td>
-                    <h6 class="m--font-danger">
-                        @item.Amount.ToPriceText()
-                    </h6>
+
+                    @if (item.SenderId == current_walletid)
+                    {
+                        <h6 class="m--font-danger">
+                            - @item.Amount.ToPriceText()
+                        </h6>
+                    }
+                    else if (item.ReceiverId == current_walletid)
+                    {
+                        <h6 class="m--font-info">
+                            @item.Amount.ToPriceText()
+                        </h6>
+                    }
+
                 </td>
-                <td>@item.Status</td>
+                <td>@item.Type.ToDisplayName()</td>
                 <td>
 
             
-
+                    @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
 
                 </td>
             </tr>
