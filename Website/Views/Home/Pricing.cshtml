@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Cơ chế tính phí";
+}
+
+
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a asp-action="Index">Nội dung</a></li>
+
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<div class="my-3">
+
+
+    <h2>I – Doanh Nghiệp</h2>
+
+    <p>
+        + Tính thêm luôn 15% trên chi phí cho mỗi tài khoản <br />
+        + Thông tin trả về cho người dùng trong phần thông báo chiến dịch sẽ trừ đi 15%<br />
+        + Thông tin chi phí trả cho doanh nghiệp sẽ chỉ show ra tổng chi phí<br />
+        + Phần phí dịch vụ sẽ không cần show ra nữa vì đã tính luôn vào đơn giá trả cho người dùng<br />
+        + Trong giai đoạn đầu tiên, tiêu chí mà doanh nghiệp lựa chọn sẽ không bị tính thêm phí (phí = 0)<br />
+    </p>
+
+
+</div>

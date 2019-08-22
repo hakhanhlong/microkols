@@ -40,6 +40,15 @@ namespace Website.Controllers
         {
             return View();
         }
+        public IActionResult Pricing()
+        {
+            return View();
+        }
+
+        public IActionResult QnA()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
