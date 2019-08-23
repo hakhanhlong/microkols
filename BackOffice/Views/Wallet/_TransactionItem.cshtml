@@ -15,7 +15,7 @@
             <th>
                 TYPE
             </th>
-            <th>TIME</th>
+            <th>TIME</th>            
         </tr>
     </thead>
     <tbody>
@@ -28,37 +28,37 @@
         {
             count++;
             item.Number = count;
-            <tr id="transaction_@(item.Id)">
-                <td>@item.Number</td>                
-                <td>@item.Code</td>
-                <td>
+        <tr id="transaction_@(item.Id)">
+            <td>@item.Number</td>
+            <td>@item.Code</td>
+            <td>
 
-                    @if (item.SenderId == current_walletid)
-                    {
-                        <h6 class="m--font-danger">
-                            - @item.Amount.ToPriceText()
-                        </h6>
-                    }
-                    else if (item.ReceiverId == current_walletid)
-                    {
-                        <h6 class="m--font-info">
-                            @item.Amount.ToPriceText()
-                        </h6>
-                    }
+                @if (item.SenderId == current_walletid)
+                {
+                    <h6 class="m--font-danger">
+                        - @item.Amount.ToPriceText()
+                    </h6>
+                }
+                else if (item.ReceiverId == current_walletid)
+                {
+                    <h6 class="m--font-info">
+                        + @item.Amount.ToPriceText()
+                    </h6>
+                }
 
-                </td>
-                <td>@item.Type.ToDisplayName()</td>
-                <td>
+            </td>
+            <td>@item.Type.ToDisplayName()</td>
+            <td>
 
-            
-                    @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
 
-                </td>
-            </tr>
+                @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
+
+            </td>     
+        </tr>
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
-                    <td colspan="7">
+                    <td colspan="7" class="m--font-info">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)

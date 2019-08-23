@@ -16,9 +16,10 @@
                 AMOUNT
             </th>
             <th>
-                NOTE
-            </th>
+                BALANCE
+            </th>         
             <th>TIME</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -50,9 +51,20 @@
                     }
 
                 </td>
-                <td>@item.Note</td>
+                <td>
+                    <h6 class="m--font-info">
+                        @item.Balance.ToPriceText()
+                    </h6>
+                </td>                
                 <td>@item.DateCreated.ToString("dd/MM/yyyy hh:mm tt")</td>
+                <td>                   
+                    <button type="button" class="btn btn-outline-primary m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill m-btn--air btn-sm" data-container="body" 
+                            data-toggle="m-popover" data-placement="top" data-content="@item.Note" data-original-title="" title="">
+                        <i class="fa fa-history"></i>
+                    </button>
+                </td>
             </tr>
+            
 
 
         }
