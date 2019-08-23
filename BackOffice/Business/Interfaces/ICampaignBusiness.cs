@@ -9,7 +9,9 @@ namespace BackOffice.Business.Interfaces
 {
     public interface ICampaignBusiness
     {
-        ListCampaignViewModel GetListCampaign(int index, int pagesize);
+        ListCampaignViewModel GetListCampaign(int pageindex, int pagesize);
+
+        Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int pageindex, int pagesize);
 
         Task<CampaignDetailsViewModel> GetCampaign(int agencyid, int campaignid);
 

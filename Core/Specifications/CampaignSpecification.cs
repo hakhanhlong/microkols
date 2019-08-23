@@ -27,6 +27,15 @@ namespace Core.Specifications
             AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
             AddInclude(m => m.CampaignAccountType);
         }
+
+
+        public CampaignByAgencySpecification(int agencyid)
+          : base(m => m.AgencyId == agencyid)
+        {
+            
+        }
+
+
     }
 
     public class CampaignSearchSpecification: BaseSpecification<Campaign>

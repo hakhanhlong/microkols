@@ -35,15 +35,28 @@ namespace BackOffice.Business
         }
 
 
+        public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, int pageindex, int pagesize)
+        {
+            var filter = new CampaignByAgencySpecification(agencyid);
+            var campaigns = await _ICampaignRepository.ListPagedAsync(filter, "DateModified_desc", pageindex, pagesize);
+            var total = await _ICampaignRepository.CountAsync(filter);
+
+            return new ListCampaignViewModel()
+            {
+                Campaigns = campaigns.Select(a => new CampaignViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
         public ListCampaignViewModel GetListCampaign(int pageindex, int pagesize)
         {
-            var agencies = _ICampaignRepository.ListPaging("DateModified_desc", pageindex, pagesize);
+            var campaigns = _ICampaignRepository.ListPaging("DateModified_desc", pageindex, pagesize);
             var total = _ICampaignRepository.CountAll();
 
 
             return new ListCampaignViewModel()
             {
-                Campaigns = agencies.Select(a => new CampaignViewModel(a)).ToList(),
+                Campaigns = campaigns.Select(a => new CampaignViewModel(a)).ToList(),
                 Pager = new PagerViewModel(pageindex, pagesize, total)
             };
         }

@@ -16,17 +16,28 @@ namespace BackOffice.Controllers
 
         ICampaignBusiness _ICampaignBusiness;
         ICampaignRepository _ICampaignRepository;
+        IAgencyBusiness _IAgencyBusiness;
 
-        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository)
+        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
+            _IAgencyBusiness = __IAgencyBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
         {
 
             var listing = _ICampaignBusiness.GetListCampaign(pageindex, 25);
+            DataSelectionStatusAndType();
+            return View(listing);
+        }
+
+        public async Task<IActionResult> CampaignFollowAgency(int agencyid = 0, int pageindex = 1)
+        {
+            var listing = await _ICampaignBusiness.GetListCampaignByAgency(agencyid, pageindex, 25);
+            var agency = await _IAgencyBusiness.GetAgency(agencyid);
+            ViewBag.Agency = agency;
             DataSelectionStatusAndType();
             return View(listing);
         }
