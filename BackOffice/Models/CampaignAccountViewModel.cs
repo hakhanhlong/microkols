@@ -32,6 +32,8 @@ namespace BackOffice.Models
             ReportStatus = campaignAccount.ReportStatus;
             ReportNote = campaignAccount.ReportNote;
             ReportImages = campaignAccount.ReportImages.ToListString();
+
+            IsRefundToAgency = campaignAccount.IsRefundToAgency;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -62,6 +64,8 @@ namespace BackOffice.Models
 
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+
+        public bool? IsRefundToAgency { get; set; }
     }
 
 

@@ -55,6 +55,8 @@ namespace Core.Entities
         public string ReportNote { get; set; }
         public string ReportImages { get; set; }
         public string Note { get; set; }
+
+        public bool? IsRefundToAgency { get; set; }
     }
 
     public enum CampaignAccountReportStatus

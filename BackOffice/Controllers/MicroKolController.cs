@@ -326,7 +326,7 @@ namespace BackOffice.Controllers
                     //check xem đã trừ tiền chưa?
                     if (_ITransactionBusiness.CheckExist(senderid, recieverid, TransactionType.SubstractMoney, caid))
                     {
-                        TempData["MessageError"] = "You was substract money!";
+                        TempData["MessageError"] = "You was Refund money!";
                     }
                     else
                     {
@@ -345,7 +345,9 @@ namespace BackOffice.Controllers
                             switch (retValue)
                             {
                                 case 9:
-                                    TempData["MessageSuccess"] = "Success Substract Money";
+                                    TempData["MessageSuccess"] = "Success Refund Money";
+                                    campaignaccount.IsRefundToAgency = true;
+                                    await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
                                     break;
                                 case 10:
                                     TempData["MessageError"] = "Wallet do not exist";
