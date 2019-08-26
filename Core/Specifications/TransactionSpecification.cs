@@ -25,7 +25,8 @@ namespace Core.Specifications
         && t.DateModified >= startDate && t.DateModified <= endDate) { }
 
 
-        public TransactionSpecification(int senderid, int receiverid, TransactionType type, int RefId) : base(t => t.SenderId == senderid && t.ReceiverId == receiverid && t.Type == type && t.RefId == RefId) { }
+        public TransactionSpecification(int senderid, int receiverid, TransactionType type, int RefId) : 
+            base(t => t.SenderId == senderid && t.ReceiverId == receiverid && t.Type == type && t.RefId == RefId && t.Status!= TransactionStatus.Error) { }
 
         public TransactionSpecification(int senderid, int receiverid) : base(t => t.SenderId == senderid || t.ReceiverId == receiverid) { }
 

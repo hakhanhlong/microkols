@@ -115,7 +115,7 @@
                                                 <label>
                                                     Note:
                                                 </label>
-                                                <textarea class="form-control m-input" name="txt_note" rows="3"></textarea>
+                                                <textarea class="form-control m-input" name="txt_note" rows="3">@(string.Format("Hoàn tiền {0} đ, vì \"{1}\" chưa hoàn thành chiến dịch {2}", Model.AccountChargeAmount, Model.Account.Name, Model.Campaign.Code))</textarea>
                                                 <span class="m-form__help">
                                                     Note why need substract money
                                                 </span>

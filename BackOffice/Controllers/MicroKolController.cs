@@ -303,9 +303,13 @@ namespace BackOffice.Controllers
             var filter = new CampaignAccountByIdSpecification(caid);
             var campaignaccount = _ICampaignAccountRepository.GetSingleBySpec(filter);
             var campaignaccountmodel = new CampaignAccountViewModel(campaignaccount);
+
+
             return View(campaignaccountmodel);
         }
 
+
+     
 
         [HttpPost]
         public async Task<IActionResult> MicroKolSubstractMoney(long money_number, string txt_note, int caid)
@@ -342,20 +346,31 @@ namespace BackOffice.Controllers
                             * 
                             */
 
-                            switch (retValue)
+                            try
                             {
-                                case 9:
-                                    TempData["MessageSuccess"] = "Success Refund Money";
-                                    campaignaccount.IsRefundToAgency = true;
-                                    await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
-                                    break;
-                                case 10:
-                                    TempData["MessageError"] = "Wallet do not exist";
-                                    break;
-                                case 11:
-                                    TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
-                                    break;
+                                
+                                switch (retValue)
+                                {
+                                    case 9:
+                                        TempData["MessageSuccess"] = "Success Refund Money";
+                                        campaignaccount.IsRefundToAgency = true;
+                                        await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
+                                        break;
+                                    case 10:
+                                        TempData["MessageError"] = "Wallet do not exist";
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Trừ Tiền][SubstractMoney]Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
+                                        break;
+                                    case 11:
+                                        TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Trừ Tiền][SubstractMoney]Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
+                                        break;
+                                }
                             }
+                            catch(Exception ex) {
+                                TempData["MessageError"] = ex.Message;
+                            }
+
+                           
                         }
                         else
                         {
