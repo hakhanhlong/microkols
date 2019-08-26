@@ -17,12 +17,14 @@ namespace BackOffice.Controllers
         ICampaignBusiness _ICampaignBusiness;
         ICampaignRepository _ICampaignRepository;
         IAgencyBusiness _IAgencyBusiness;
+        private readonly ISharedBusiness _ISharedBusiness;
 
-        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness)
+        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, ISharedBusiness __ISharedBusiness)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
             _IAgencyBusiness = __IAgencyBusiness;
+            _ISharedBusiness = __ISharedBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -82,8 +84,8 @@ namespace BackOffice.Controllers
         {
 
             var campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
-
-
+            ViewBag.Categories = await _ISharedBusiness.GetCategories();            
+            ViewBag.Cities = await _ISharedBusiness.GetCities();
             return View(campaign);
         }
 
