@@ -105,7 +105,12 @@
 
                         <div class="custom-control custom-radio">
                             <input type="radio" id="@radioId" value="@accountType" name="Type" @attrChecked class="custom-control-input">
-                            <label class="custom-control-label" for="@radioId">@accountType.ToDisplayName()</label>
+                            <label class="custom-control-label" for="@radioId">@accountType.ToDisplayName()
+                            
+                            
+                            <span  data-toggle="tooltip" data-html="true" title="@accountType.ToDescription()"><i class="fa fa-question-circle"></i></span>
+                            
+                            </label>
                         </div>
                         <div class="ml-3 pl-5">
 

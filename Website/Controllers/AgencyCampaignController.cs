@@ -115,7 +115,7 @@ namespace Website.Controllers
 
                         for (var i = 0; i < model.AccountIds.Count; i++)
                         {
-                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[0];
+                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
                             BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
 
                         }
@@ -254,6 +254,8 @@ namespace Website.Controllers
             return PartialView(model);
 
         }
+       
+        
         #endregion
 
 

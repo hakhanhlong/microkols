@@ -47,7 +47,12 @@ namespace Website.Controllers
 
         public IActionResult QnA()
         {
-            return View();
+            string contentRootPath = _hostingEnvironment.ContentRootPath;
+
+            var jsonstr = System.IO.File.ReadAllText(contentRootPath + "/qna.json");
+
+            var model = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ViewModels.QnAGroupViewModel>>(jsonstr);
+            return View(model);
         }
 
         public IActionResult Privacy()

@@ -164,7 +164,7 @@ namespace Website.ViewModels
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Địa chỉ")]
+        [Display(Name = "Địa chỉ (Nơi bạn sinh sống)")]
         public string Address { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]

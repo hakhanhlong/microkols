@@ -200,7 +200,7 @@
 
                             @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                            Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                            -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
                         </li>
                     }
 
@@ -250,6 +250,34 @@
     {
         var tab2Active = "2" == ViewBag.activedTab ? "active show" : "";
         var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
+
+
+
+        var canceledAccounts = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Canceled).ToList();
+
+        if (canceledAccounts.Count > 0)
+        {
+
+            <div class="alert alert-danger">
+                <h5> Có @canceledAccounts.Count Thành viên hủy không tham gia</h5>
+
+                <div class="table-responsive">
+                    <table >
+
+                    </table>
+
+                </div>
+
+                <div>
+
+                    <button class="btn btn-primary"> Rút tiền thừa</button>
+                    <button class="btn btn-primary"> Tìm thêm thành viên mới</button>
+                </div>
+
+            </div>
+
+        }
+
 
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">

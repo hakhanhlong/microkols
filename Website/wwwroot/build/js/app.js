@@ -43,6 +43,13 @@ var App = (function () {
         $('[data-toggle="tooltip"]').tooltip()
 
 
+        $('.campaign-image-carousel').owlCarousel({
+            margin: 10,
+            items: 1, autoHeight: true
+
+        });
+
+
         $('.btn-facebook').click(function () {
             var $frm = $($(this).data('target'));
             FB.login(function (response) {
@@ -943,13 +950,19 @@ var AgencyCreateCampaignPage = (function () {
                 $.get(renewUrl + ignoreids, function (html) {
                     if (html.length < 100) {
                         $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
-                        $tr.remove();
+                        
                     } else {
                         $tr.replaceWith(html);
                         handlerSuggestAccount();
                     }
                 });
             });
+        });
+
+        $('.btn-removeaccount').unbind('click');
+        $('.btn-removeaccount').click(function () {
+            var $tr = $(this).closest('tr');
+            $tr.remove();
         });
 
         handlerAccountType();

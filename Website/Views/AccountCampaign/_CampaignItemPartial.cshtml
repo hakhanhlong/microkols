@@ -108,12 +108,14 @@
             @if (!string.IsNullOrEmpty(colwrap2))
             {
                 <div class="@colwrap2">
-                    @foreach (var img in Model.Image.Take(1))
-                    {
-                        <div class="item">
-                            <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
-                        </div>
-                    }
+                    <div class="owl-carousel campaign-image-carousel owl-theme">
+                        @foreach (var img in Model.Image)
+                        {
+                            <div class="item">
+                                <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
+                            </div>
+                        }
+                    </div>
                 </div>
 
             }

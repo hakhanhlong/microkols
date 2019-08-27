@@ -190,18 +190,20 @@ namespace Website.Code.Extensions
             var campaignNotifTypes = new List<NotificationType>()
             {
                 NotificationType.AgencyRequestJoinCampaign,
-        NotificationType.AgencyConfirmJoinCampaign,
-        NotificationType.AccountRequestJoinCampaign,
-        NotificationType.AccountConfirmJoinCampaign,
-        NotificationType.CampaignStarted,
-        NotificationType.CampaignEnded,
-        NotificationType.CampaignCompleted,
-        NotificationType.AccountSubmitCampaignRefContent,
-        NotificationType.AccountFinishCampaignRefContent,
-        NotificationType.AgencyApproveCampaignRefContent,
-        NotificationType.AgencyDeclineCampaignRefContent,
-        NotificationType.AgencyCancelAccountJoinCampaign,
-        NotificationType.AccountDeclineJoinCampaign,
+                NotificationType.AgencyConfirmJoinCampaign,
+                NotificationType.AccountRequestJoinCampaign,
+                NotificationType.AccountConfirmJoinCampaign,
+                NotificationType.CampaignStarted,
+                NotificationType.CampaignEnded,
+                NotificationType.CampaignCompleted,
+                NotificationType.AccountSubmitCampaignRefContent,
+                NotificationType.AccountFinishCampaignRefContent,
+                NotificationType.AgencyApproveCampaignRefContent,
+                NotificationType.AgencyDeclineCampaignRefContent,
+                NotificationType.AgencyCancelAccountJoinCampaign,
+                NotificationType.AccountDeclineJoinCampaign,
+                NotificationType.SystemUpdateUnfinishedAccountCampaign,
+        
             };
             if (campaignNotifTypes.Contains(model.Type))
             {

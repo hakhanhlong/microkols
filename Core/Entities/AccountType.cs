@@ -38,16 +38,22 @@ namespace Core.Entities
     public enum AccountType
     {
         [DisplayName("Tất cả")]
+        [Description("")]
         All = -1,
         [DisplayName("Tài khoản thường")]
+        [Description("Mô tả tài khoản thường")]
         Regular = 0,
         [DisplayName("Hot Teen")]
+        [Description("Mô tả Hotteen")]
         HotTeen = 1,
         [DisplayName("Hot Mom")]
+        [Description("Mô tả Hotmom")]
         HotMom = 2,
         [DisplayName("Hot Facebooker")]
+        [Description("Mô tả Facebooker")]
         HotFacebooker = 3,
         [DisplayName("Kols")]
+        [Description("Mô tả Kols")]
         Kols = 4,
     }
     public class AccountTypeHotMomData

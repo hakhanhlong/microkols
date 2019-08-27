@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    <div class="form-group row d-type d-type-ShareContentWithCaption" style="display:none">
+    <div class="form-group row d-type d-type-ShareContentWithCaption d-type-JoinEvent" style="display:none">
         <label asp-for="AddonImages" class="col-md-2 col-form-label" id="dataText"></label>
         <div class="col-md-10">
 
@@ -226,28 +226,30 @@
 
         <label class="col-md-2">Tiêu chí lựa chọn KOLs</label>
         <div class="col-md-10">
-            <div class="d-flex py-1">
+            <div class="d-withoutHotMom">
+                <div class="d-flex py-1 ">
 
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
-                    <label class="custom-control-label" asp-for="EnabledGender"></label>
-                </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target='#collapseEnabledGender' asp-for="EnabledGender">
+                        <label class="custom-control-label" asp-for="EnabledGender"></label>
+                    </div>
 
-                <div id="collapseEnabledGender" class="collapse ml-4">
-                    <div>
-                        @{
-                            i = 0;
-                        }
-                        @foreach (var gender in genderList)
-                        {
-                            var radioId = $"Gender{gender}";
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" @(i == 0 ? "checked" : "") value="@gender" name="Gender" id="@radioId" class="custom-control-input">
-                                <label class="custom-control-label" for="@radioId">@gender.ToDisplayName()</label>
-                            </div>
-                            i++;
-                        }
-                        <span asp-validation-for="Gender"></span>
+                    <div id="collapseEnabledGender" class="collapse ml-4">
+                        <div>
+                            @{
+                                i = 0;
+                            }
+                            @foreach (var gender in genderList)
+                            {
+                                var radioId = $"Gender{gender}";
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" @(i == 0 ? "checked" : "") value="@gender" name="Gender" id="@radioId" class="custom-control-input">
+                                    <label class="custom-control-label" for="@radioId">@gender.ToDisplayName()</label>
+                                </div>
+                                i++;
+                            }
+                            <span asp-validation-for="Gender"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -340,11 +342,11 @@
 
                 <label class="col-md-3 col-form-label">Chi phí tối thiểu</label>
                 <div class="col-md-3">
-                    <input type="number" id="amountMin" value="0" min="0" step="10000" class="form-control" />
+                    <input type="number" id="amountMin" value="0" min="0" class="form-control" />
                 </div>
                 <label class="col-md-3 col-form-label">Chi phí tối đa</label>
                 <div class="col-md-3">
-                    <input type="number" id="amountMax" value="100000000" min="0" max="@int.MaxValue" step="10000" class="form-control" />
+                    <input type="number" id="amountMax" value="100000000" min="0" max="@int.MaxValue" class="form-control" />
                 </div>
             </div>
         </div>

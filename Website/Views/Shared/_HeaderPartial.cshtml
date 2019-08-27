@@ -12,20 +12,27 @@
                     <li class="nav-item">
                         <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Introduce">Giới thiệu</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    @*<li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
 
                         <div class="dropdown-menu">
-                            <a class="dropdown-item"  asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Pricing" >Cơ chế tính phí</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
+                            <a class="dropdown-item" asp-controller="Home" asp-action="Pricing">Cơ chế tính phí</a>
 
                         </div>
-                    </li>
-
+                    </li>*@
+                <li class="nav-item">
+                    <a class="nav-link"  asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
+                </li>
                     <li class="nav-item">
-
-                        <a class="nav-link" asp-action="AgencyLogin" asp-controller="Auth"> Doanh nghiệp</a>
+                        <a class="nav-link " asp-area="" asp-controller="Home" asp-action="QnA">Hỏi & đáp</a>
                     </li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="AgencyLogin" asp-controller="Auth"> Doanh nghiệp</a>
+                        </li>
+                    }
                 </ul>
                 <ul class="navbar-nav">
                     @if (User.Identity.IsAuthenticated)
@@ -62,12 +69,8 @@
                     else
                     {
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" asp-action="AgencyLogin" asp-controller="Auth" data-toggle="dropdown">Tài khoản</a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" asp-action="AgencyLogin" asp-controller="Auth"> Doanh nghiệp</a>
-                                <a class="dropdown-item" asp-action="Login" asp-controller="Auth"> Thành viên</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Login" asp-controller="Auth" >Tài khoản</a>
                         </li>
                        
                     }

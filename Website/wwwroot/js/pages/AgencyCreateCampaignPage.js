@@ -281,13 +281,19 @@
                 $.get(renewUrl + ignoreids, function (html) {
                     if (html.length < 100) {
                         $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
-                        $tr.remove();
+                        
                     } else {
                         $tr.replaceWith(html);
                         handlerSuggestAccount();
                     }
                 });
             });
+        });
+
+        $('.btn-removeaccount').unbind('click');
+        $('.btn-removeaccount').click(function () {
+            var $tr = $(this).closest('tr');
+            $tr.remove();
         });
 
         handlerAccountType();

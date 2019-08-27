@@ -13,14 +13,14 @@ namespace Infrastructure.Data
 {
     public class CampaignAccountRepository : EfRepository<CampaignAccount>, ICampaignAccountRepository
     {
-     
+
         public CampaignAccountRepository(AppDbContext dbContext) : base(dbContext)
         {
 
         }
         #region Campaign Account
 
-        public async Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid,int amount, string username)
+        public async Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username)
         {
             var campaign = await _dbContext.Campaign.FirstOrDefaultAsync(m => m.Id == campaignid && m.AgencyId == agencyid);
             if (campaign == null)
@@ -33,19 +33,25 @@ namespace Infrastructure.Data
             if (account.Type != AccountType.Regular)
             {
                 var accountPrice = await _dbContext.AccountCampaignCharge.Where(m => m.AccountId == account.Id && m.Type == campaign.Type).FirstOrDefaultAsync();
-                if (accountPrice == null) return -1;
-                accountChargeAmount = accountPrice.AccountChargeAmount;
-                if(amount> accountChargeAmount)
+                if (accountPrice == null)
                 {
                     accountChargeAmount = amount;
                 }
+                else
+                {
+                    accountChargeAmount = accountPrice.AccountChargeAmount;
+                    if (amount > accountChargeAmount)
+                    {
+                        accountChargeAmount = amount;
+                    }
+                }
             }
 
-            if(campaign.Type== CampaignType.ChangeAvatar)
+            if (campaign.Type == CampaignType.ChangeAvatar)
             {
                 accountChargeAmount = campaign.AccountChargeTime * accountChargeAmount;
             }
-            else if(campaign.Type== CampaignType.ShareContentWithCaption || campaign.Type== CampaignType.ShareContent)
+            else if (campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ShareContent)
             {
                 if (campaign.EnabledAccountChargeExtra)
                 {
@@ -76,9 +82,9 @@ namespace Infrastructure.Data
                 await _dbContext.SaveChangesAsync();
                 return 1;
             }
-            else 
+            else
             {
-                if(campaignAccount.Status== CampaignAccountStatus.Canceled)
+                if (campaignAccount.Status == CampaignAccountStatus.Canceled)
                 {
                     campaignAccount.Status = CampaignAccountStatus.WaitToPay;
                     campaignAccount.DateModified = DateTime.Now;
@@ -91,7 +97,7 @@ namespace Infrastructure.Data
             }
             return 0;
         }
-        
+
         #endregion
 
     }
