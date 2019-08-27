@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
+using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -18,13 +19,16 @@ namespace BackOffice.Controllers
         ICampaignRepository _ICampaignRepository;
         IAgencyBusiness _IAgencyBusiness;
         private readonly ISharedBusiness _ISharedBusiness;
+        private readonly INotificationBusiness _INotificationBusiness;
 
-        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, ISharedBusiness __ISharedBusiness)
+        public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, 
+            ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
             _IAgencyBusiness = __IAgencyBusiness;
             _ISharedBusiness = __ISharedBusiness;
+            _INotificationBusiness = __INotificationBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -88,6 +92,60 @@ namespace BackOffice.Controllers
             ViewBag.Cities = await _ISharedBusiness.GetCities();
             return View(campaign);
         }
+
+        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status)
+        {            
+            var campaign = await _ICampaignRepository.GetByIdAsync(id);
+            DataSelectionStatusAndType();
+            return View(new CampaignViewModel(campaign));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status, string txt_note)
+        {
+            var campaign = await _ICampaignRepository.GetByIdAsync(id);
+            DataSelectionStatusAndType();
+
+            try {
+                if (campaign != null)
+                {
+                    campaign.Status = status;
+                    campaign.UserModified = HttpContext.User.Identity.Name;
+                    _ICampaignRepository.Update(campaign);
+
+                    NotificationType notificationType = NotificationType.CampaignCanceled;
+
+                    if (status == CampaignStatus.Canceled)
+                    {
+                        notificationType = NotificationType.CampaignCanceled;
+                    }
+                    else if(status == CampaignStatus.Error)
+                    {
+                        notificationType = NotificationType.CampaignError;
+                    }
+                    else if(status == CampaignStatus.Ended)
+                    {
+                        notificationType = NotificationType.CampaignEnded;
+                    }
+
+
+                }
+                else
+                {
+                    TempData["MessageError"] = "Campaign do not exist!";
+                }
+            }
+            catch(Exception ex) {
+                TempData["MessageError"] = ex.Message;
+            }
+
+
+
+
+            return View(new CampaignViewModel(campaign));
+        }
+
+
 
         [HttpPost]
         public JsonResult ChangeStatus(int id, CampaignStatus status)

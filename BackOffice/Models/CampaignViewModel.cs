@@ -66,7 +66,7 @@ namespace BackOffice.Models
             Title = c.Title;
             Description = c.Description;
             Data = c.Data;
-            Image = c.Image;
+            Image = c.Image.ToListString();
             Requirement = c.Requirement;
             SystemNote = c.SystemNote;
             ServiceChargePercent = c.ServiceChargePercent;
@@ -194,7 +194,7 @@ namespace BackOffice.Models
         public int? AgeEnd { get; set; }
 
         public string Data { get; set; }
-        public string Image { get; set; }
+        public List<string> Image { get; set; } = new List<string>();
 
         public string Requirement { get; set; }
 

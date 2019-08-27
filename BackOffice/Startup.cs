@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using BackOffice.Security;
 using BackOffice.Security.Data;
 using Infrastructure.Data;
+using BackOffice.CommonHelpers;
 
 namespace BackOffice
 {
@@ -39,6 +40,9 @@ namespace BackOffice
             services.Configure<CookieTempDataProviderOptions>(options => {
                 options.Cookie.IsEssential = true;
             });
+
+
+            services.Configure<AppHelpers>(Configuration.GetSection("AppHelpers"));
 
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Database:MicroKOLsSecurity:ConnectionString"]));

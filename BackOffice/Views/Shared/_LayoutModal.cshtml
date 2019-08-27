@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MicroKOL</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
+    </environment>
+    <link rel="stylesheet" href="~/css/site.css" />
+
+
+    <!--begin::Web font -->
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700%7CRoboto:300,400,500,600,700" media="all">
+    <script>
+        WebFont.load({
+            google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+    <!--end::Web font -->
+    <link rel="shortcut icon" href="/assets/demo/default/media/img/logo/favicon.ico">
+    <link href="/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
+
+</head>
+<body class="m-page--fluid">
+    <div class="m-content" style="padding-top:5px;">
+        @if (TempData["MessageSuccess"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <strong>
+                    Success!
+                </strong>
+                @TempData["MessageSuccess"]
+            </div>
+        }
+
+        @if (TempData["MessageError"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>
+                    Error!
+                </strong>
+                @TempData["MessageError"]
+            </div>
+        }
+        @RenderBody()
+    </div>
+
+</body>
+</html>

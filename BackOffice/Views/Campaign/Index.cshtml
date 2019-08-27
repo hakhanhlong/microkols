@@ -62,10 +62,7 @@
                                         <th>CODE</th>
                                         <th>
                                             TITLE
-                                        </th>
-                                        <th>
-                                            TYPE
-                                        </th>
+                                        </th>                                    
                                         <th>
                                             STATUS
                                         </th>
@@ -134,9 +131,9 @@
                                                     <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
                                                 </td>
                                                 <td>
-                                                    @(item.Title)
-                                                </td>
-                                                <td>@(item.Type.ToText())</td>
+                                                    <b>@(item.Title)</b>
+                                                    <div>@(item.Type.ToText())</div>
+                                                </td>                                                
                                                 <td>
                                                     <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
                                                 </td>
@@ -160,6 +157,28 @@
         </div>
     </div>
 
+    <div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Take note change status campaign
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="iframenotestatus" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+
+
 @section Scripts{ 
     <script type="text/javascript">
 
@@ -175,9 +194,17 @@
                     var data = {};
                     data['id'] = campaignid;
                     data['status'] = status;
-                  
+
+
+                    var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;                    
+                    $('#iframenotestatus').attr('src', url);
+                    $('#m_modal_4').modal({ show: true });
+                    $('#m_modal_4').on('hidden.bs.modal', function (e) {
+                        document.location = document.location.href;
+                    })
+
                     
-                    $.ajax({
+                    @*$.ajax({
                         type: "POST",
                         url: '@Url.Action("ChangeStatus", "Campaign")',
                         data: data,
@@ -204,7 +231,7 @@
                         },                                            
                         dataType: "json",
                         traditional: true
-                    });
+                    });*@
 
 
                 });
