@@ -163,12 +163,18 @@
                                             Mô tả:  @Model.Description
                                         </div>
                                     }
-
-                                    @if (!string.IsNullOrEmpty(Model.Image))
+                              
+                                    @if (Model.Image.Count > 0)
                                     {
                                         <div class="m--space-10"></div>
                                         <div>
-                                            <img src="Model.Image" class="img-thumbnail" style="height:200px" />
+
+                                            @foreach (var imgItem in Model.Image)
+                                            {
+                                                <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                                            }
+
+
                                         </div>
                                     }
 

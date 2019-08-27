@@ -7,6 +7,22 @@ namespace BackOffice.CommonHelpers
 {
     public class AppHelpers
     {
+   
 
+        public string ResourceServer { get; set; }
+        public string ResourcePath { get; set; }
+        public string ResourceTempDir { get; set; }
+
+        public string GetImageUrl(string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (path.StartsWith("http")) return path;
+                return $"{ResourceServer}/{path}";
+            }
+            return string.Empty;
+
+
+        }
     }
 }

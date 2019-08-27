@@ -5,8 +5,12 @@
 @using System.Security.Claims
 @using Core.Entities
 @using Common.Extensions
+@using Microsoft.Extensions.Options
+@using BackOffice.CommonHelpers
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@inject IOptionsMonitor<AppHelpers> AppHelpers
 
 @addTagHelper "BackOffice.TagHelpers.*, BackOffice"
 @addTagHelper "BackOffice.TagHelpers.PagerHelper, BackOffice"

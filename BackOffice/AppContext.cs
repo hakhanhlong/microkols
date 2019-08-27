@@ -23,6 +23,7 @@ namespace BackOffice
             services.AddScoped<IWalletRepository, WalletRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICampaignRepository, CampaignRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             services.AddScoped<ICampaignTypeChargeRepository, CampaignTypeChargeRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
@@ -46,6 +47,8 @@ namespace BackOffice
             services.AddScoped<ICampaignBusiness, CampaignBusiness>();
 
             services.AddScoped<ISharedBusiness, SharedBusiness>();
+            services.AddScoped<INotificationBusiness, NotificationBusiness>();
+            
 
 
             //website
