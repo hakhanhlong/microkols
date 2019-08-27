@@ -1,0 +1,149 @@
+﻿[
+  {
+    "Title": "Câu hỏi chung về hệ thống Microkols",
+    "QnAs": [
+      {
+        "Question": "Tôi có thể sử dụng hệ thống của bạn cho mục đích gì?",
+        "Answer": "Hệ thống là công cụ kết nối những người sử dụng facebook với doanh nghiệp. Thông qua tài khoản facebook  của mình, người dùng có thể giúp doanh nghiệp quảng bá thông tin của tới những người bạn bè của mình, qua đó có thêm một nguồn thu nhập chủ động."
+      },
+      {
+        "Question": "Hệ thống Microkols có làm ảnh hưởng tới tài khoản facebook của người dùng hay doanh nghiệp không?",
+        "Answer": "Hệ thống không gây bất cứ ảnh hưởng nào tới tài khoản người dùng, hệ thống chỉ sử dụng những thông tin mà bạn công khai trên tài khoản cá nhân cũng như trên hệ thống giúp doanh nghiệp tìm được những người phù hợp cho chiến dịch của mình. Bản thân những chiến dịch này có thể đã được bạn công khai với facebook từ trước đó, ngoài ra những thông tin khác chỉ nhằm giúp chúng tôi thanh toán các khoản thuế - phí cho bạn một cách chính xác, hiệu quả nhất"
+      }
+    ]
+  },
+  {
+    "Title": "Câu hỏi về tài khoản cá nhân",
+    "QnAs": [
+      {
+        "Question": "Làm thế nào để tôi nhận được tiền của chiến dịch",
+        "Answer": "Sau khi khai báo đầy đủ thông tin trên hệ thống ở phần “cấu hình” tài khoản của bạn, bạn sẽ nhận được thông tin các chiến dịch phù hợp với mình, bạn cần xác nhận sẽ đăng ký thực hiện khi có thông báo chiến dịch mới để thực hiện các chiến dịch đúng - đủ theo yêu cầu của doanh nghiệp, chụp hình nghiệm thu nội dung bài post của mình và up lên ở phần thực hiện chiến dịch sau đó xác nhận hoàn thành chiến dịch là bạn có thể nhận được 1 khoản thanh toán rồi. Lưu ý, hệ thống sẽ không chi trả cho các chiến dịch mà bạn thực hiện sai yêu cầu của doanh nghiệp. "
+      },
+      {
+        "Question": "Tôi sẽ nhận được bao nhiêu tiền cho mỗi chiến dịch",
+        "Answer": "Số tiền bạn nhận được phụ thuộc vào từng chiến dịch, bên cạnh đó phụ thuộc vào tài khoản facebook của bạn thuộc nhóm KOLs nào."
+      },
+      {
+        "Question": "Khi nào tôi sẽ nhận được thanh toán?",
+        "Answer": "Sau khi kết thúc chiến dịch đúng và đủ bạn sẽ nhận được khoản thanh toán trong khoảng từ ngày 10 - 15 của tháng tiếp theo. Ví dụ, ngày 10-15 tháng 9 bạn sẽ nhận được khoản thanh toán của tháng 7"
+      },
+      {
+        "Question": "Tôi có thể đăng ký cùng lúc nhiều loại KOLs hay không?",
+        "Answer": "Không, bạn chỉ có thể đăng ký một loại tài khoản KOLs phù hợp với bạn"
+      },
+      {
+        "Question": "Tôi sẽ phải chịu khoản thuế, phí nào?",
+        "Answer": "Bạn sẽ phải chịu thuế TNCN 10% trên số tiền bạn nhận được mỗi tháng, và phí chuyển khoản (nếu có) tuy nhiên hệ thống sẽ cố gắng tối ưu hóa chi phí chuyển khoản. Những khoản thuế - phí này hệ thống sẽ trừ trực tiếp khi thanh toán cho bạn, thông tin cụ thể sẽ được gửi tới tài khoản của bạn trước khi hệ thống chuyển khoản"
+      },
+      {
+        "Question": "Tôi có thể thay đổi tài khoản ngân hàng nhận tiền không?",
+        "Answer": "Bạn có thể thay đổi tài khoản nhận tiền theo nhu cầu của mình, tuy nhiên việc thay đổi tài khoản chỉ được chấp nhận từ ngày 11-30 của tháng, hệ thống sẽ chuyển khoản cho bạn theo thông tin mà bạn cung cấp từ ngày 01-09"
+      },
+      {
+        "Question": "Tôi có thể thay đổi loại tài khoản KOLs của mình hay không?",
+        "Answer": "Có, một số tài khoản sẽ có thể thay đổi khi hết hạn về độ tuổi hoặc bạn đạt ngưỡng phù hợp của mỗi loại tài khoản theo yêu cầu của hệ thống <br> TK Thường => các tài khoản khác<br> Hotmom => Hotfacebookers, KOLs <br> Hotteen => tài khoản khác, khi bạn hết tuổi teen hoặc tài khoản facebook đạt ngưỡng phù hợp<br> Hotfacbook => KOLs<br> KOLs => không thể thay đổi"
+      },
+      {
+        "Question": "Tôi có thể dùng bao nhiêu tài khoản facebook để đăng ký?",
+        "Answer": "Bạn chỉ có thể dùng một tài khooản facebook duy nhất để đăng ký với hệ thống, nên chọn tài khoản có lượng tương tác tốt nhất để đảm bảo hiệu quả cho các chiến dịch. Lượng tương tác là một trong những yếu tố giúp doanh nghiệp và hệ thống lựa chọn bạn cho các chiến dịch"
+      },
+      {
+        "Question": "Tôi có cần tương tác với các nội dung mình post cho doanh nghiệp không?",
+        "Answer": "Q9 - Có, bạn nên tương tác và chủ động tạo tương tác để bài post của bạn trở nên hiệu quả hơn, qua đó giúp bạn có thể nhận được nhiều chiến dịch hơn vì lượng tương tác là một trong những căn cứ để hệ thống gửi thông báo chiến dịch mới cho bạn. "
+      },
+      {
+        "Question": "Tôi bị mất tài khoản facebook (hack), nếu muốn đăng ký lại thì phải làm thế nào?",
+        "Answer": "Tài khoản facebook của bạn sẽ là duy nhất, nếu bạn bị mất tài khoản, bạn phải tạo tài khoản facebook mới, hãy thông báo cho chúng tôi khi tài khoản mới đạt đủ ngưỡng tối thiểu về lượt friends hoặc lượt theo dõi thì hệ thống sẽ chấp nhận tài khoản mới. Hãy đảm bảo tài khoản cũ của bạn không còn do bạn kiểm soát, nếu hệ thống phát hiện tài khoản cũ vẫn do bạn kiểm soát (vẫn là tài khoản chính bạn đang sử dụng) bạn có thể bị đánh tụt hạng về mức độ ưu tiên nhận chiến dịch"
+      },
+      {
+        "Question": "Những hành vi nào bị cấm khi tôi thực hiện chiến dịch",
+        "Answer": "Post sai nội dung, sai thời điểm theo yêu cầu, có hành vi gây ảnh hưởng xấu tới doanh nghiệp trong bài post....đều bị cấm,bạn có thể bị trừ tiền cho chiến dịch mình đã thực hiện hoặc bị xóa tài khoản vĩnh viễn. Những nội dung không tốt cho doanh nghiệp trước hoặc sau khi thực hiện chiến dịch có thể bị doanh nghiệp báo cáo để loại bạn khỏi chiến dịch của họ"
+      },
+      {
+        "Question": "Những yếu tố nào được ưu tiên để nhận được nhiều chiến dịch",
+        "Answer": "Bên cạnh việc tài khoản của bạn phù hợp với yêu cầu của mỗi chiến dịch, những yếu tố mà hệ thống ưu tiên để gửi thông báo chiến dịch có thể gồm: Tài khoản hợp tác độc quyền của hệ thống, tương tác trong các bài post của bạn và bài post trước đó của doanh nghiệp, lượng theo dõi, lượng friends, đánh giá của doanh nghiệp, lịch sử thực hiện chiến dịch...."
+      },
+      {
+        "Question": "Tôi đã đăng ký thực hiện chiến dịch, nhưng có việc đột xuất nên không thể thực hiện chiến dịch, vậy tôi có thể hủy việc thực hiện không?",
+        "Answer": "Bạn nên cân nhắc khi đăng ký thực hiện chiến dịch, nếu trường hợp đột xuất bạn hãy thông báo hủy chiến dịch càng sớm càng tốt để đảm bảo không ảnh hưởng tới doanh nghiệp cũng như hệ thống. Tuy nhiên chắc chắn bạn sẽ bị đánh giá thấp cho việc ưu tiên nhận chiến dịch tiếp theo"
+      },
+      {
+        "Question": "Tôi muốn nhận tiền sớm hơn ngày nhận tiền của hệ thống được không?",
+        "Answer": "Không, hệ thống sẽ trả thu nhập cho bạn vào ngày 10-15 hàng tháng cho những chiến dịch bạn đã thực hiện tháng trước đó và sẽ không trả trước thời điểm trên cho người dùng"
+      },
+      {
+        "Question": "Làm sao để tôi theo dõi khi có chiến dịch mới",
+        "Answer": "Bạn chỉ có cách vào website của hệ thống https://microkols.com và đăng nhập tài khoản của mình. Hãy thường xuyên truy cập vào website để cập nhật thông báo chiến dịch nhé"
+      },
+      {
+        "Question": "Tại sao tôi không thể thực hiện chiến dịch của mình khi đã khai báo đầy đủ thông tin ở phần “cấu hình”",
+        "Answer": "Bạn hãy kiểm tra lại những thông tin cần khai báo ở phần cấu hình xem đã đúng và đủ hay chưa đã liên kết với tài khoản facebook của mình hay chưa? Nếu bạn chưa liên kết với tài khoản facebook  của mình, hãy thoát ra và đăng nhập lại - ở phần đăng nhập sẽ có biểu tượng liên kết với tài khoản facebook - click vào đó bạn nhé. Nếu vẫn không được hãy gửi thông báo phản hồi qua email cho hệ thống ở cuối website ngay lập tức nhé"
+      },
+      {
+        "Question": "Tôi có một vài ý kiến muốn đóng góp với hệ thống, tôi sẽ trao đổi với ai?",
+        "Answer": "Tuyệt quá, hãy gửi email cho hệ thống ở cuối website nhé. Cảm ơn bạn nhiều"
+      },
+      {
+        "Question": "Tôi muốn trở thành thành viên tích cực để nhận nhiều chiến dịch hơn, tôi phải làm thế nào?",
+        "Answer": "Trở thành thành viên tích cực của hệ thống bạn sẽ được ưu tiên nhận chiến dịch nhiều hơn, bạn có thể đăng ký sau khi thực hiện chiến dịch đầu tiên và có tương tác tốt bằng cách đăng ký ở phần cấu “cấu hình”"
+      },
+      {
+        "Question": "Tôi là một trong số “hotteen”, “hotmoms”, “hotfacebooker”, “KOLs” tôi muốn hợp tác độc quyền với hệ thống, tôi sẽ được quyền lợi gì và cần làm gì?",
+        "Answer": "hãy click vào đó và đọc kỹ các điều khoản của hệ thống, nếu bạn đồng ý 2 bên sẽ ký một hợp đồng độc quyền. Bạn sẽ nhận được nhiều ưu tiên khi thực hiện các chiến dịch từ cả trong và ngoài hệ thống với mức phí cũng như thời gian thanh toán linh động hơn, ngoài ra là những hỗ trợ về mặt truyền thông khác"
+      },
+      {
+        "Question": "Cho tôi hỏi chi tiết các công việc sẽ cần làm có trên hệ thống?",
+        "Answer": "Chi tiết các công việc sẽ cần làm: ...."
+      }
+    ]
+  },
+  {
+    "Title": "Doanh nghiệp",
+    "QnAs": [
+      {
+        "Question": "Ngoài những loại chiến dịch có trong list, còn có loại chiến dịch nào khác",
+        "Answer": "Ngoài chiến dịch có trong list, nếu quý doanh nghiệp muốn thực hiện chiến dịch khác có thể click vào dòng “yêu cầu khác” rồi ghi rõ nhu cầu kèm theo các tiêu chí phía dưới. Hệ thống sẽ xem xét khả năng của mình và thông báo lại cho doanh nghiệp"
+      },
+      {
+        "Question": "Tôi có thể xem kết quả của chiến dịch được không?",
+        "Answer": "Có, bạn có thể xem kết quả sau khi chiến dịch đã kết thúc qua file excel hoặc phần theo dõi chiến dịch. Bạn cũng có thể đánh giá người thực hiện chiến dịch để cung cấp thông tin cũng như mức độ hài lòng của mình với hệ thống"
+      },
+      {
+        "Question": "Sau khi thanh toán, do thay đổi kế hoạch đột xuất, tôi có thể lấy lại tiền được không",
+        "Answer": "Nếu bạn đã thanh toán và rồi muốn lấy lại số tiền đã chuyển khoản, bạn sẽ phải chịu 20% phí sử dụng dịch vụ của hệ thống, chi phí này đã bao gồm phí chuyển khoản từ tài khoản của hệ thống tới tài khoản doanh nghiệp của bạn"
+      },
+      {
+        "Question": "Nếu có một người dùng nào đó hủy bỏ việc thực hiện chiến dịch giữa chừng, doanh nghiệp có thể lấy lại tiền hoặc hủy bỏ chiến dịch đó không? Có mất phí gì không? Khi nào được nhận lại?",
+        "Answer": "Việc chiến dịch không thực hiện được theo kế hoạch mà không phải lỗi do doanh nghiêp, doanh nghiệp có thể lấy lại số tiền còn lại của chiến dịch (số tiền dư do một tài khoản nào đó đã đăng ký nhưng không thực hiện hoặc thực hiện xong xuôi chiến dịch nhưng không đúng) mà không phải chịu bất cứ chi phí nào, bao gồm cả chi phí chuyển khoản từ hệ thống tới tài khoản của doanh nghiệp. Ngay sau khi chiến dịch kết thúc, doanh nghiệp có thể yêu cầu hoàn trả phần tiền dư, hệ thống sẽ trả lại phần tiền này trong vòng ít ngày sau đó"
+      },
+      {
+        "Question": "Hệ thống có cam kết KPIs không?",
+        "Answer": "Hệ thống không cam kết KPIs, do hệ thống đã đề xuất các tài khoản phục vụ các chiến dịch của doanh nghiệp đều là những KOLs có lượng tương tác trên mỗi bài post là cao nhất đồng thời hệ thống cũng đã lựa chọn những người phù hợp và có trách nhiệm cao nhất với công việc. Bên cạnh đó, chi phí mà doanh nghiệp phải trả là mức phí trên cơ sở không cam kết KPIs"
+      },
+      {
+        "Question": "Doanh nghiệp muốn thanh toán sau khi sử dụng dịch vụ của hệ thống",
+        "Answer": "Hệ thống bắt buộc tất cả các doanh nghiệp cần thanh toán trước khi sử dụng dịch vụ"
+      },
+      {
+        "Question": "Tôi muốn xuất hóa đơn GTGT về cho doanh nghiệp của mình có được không?",
+        "Answer": "Chi phí mà doanh nghiệp phải trả khi sử dụng dịch vụ là chi phi đã tính 10% VAT, hệ thống sẽ tự động xuất VAT gửi về cho cho doanh nghiệp. Doanh nghiệp cần kê khai đúng thông tin của mình để đảm bảo hóa đơn VAT xuất ra không bị nhầm lẫn. "
+      },
+      {
+        "Question": "Tại sao tôi không thực hiện được chiến dịch",
+        "Answer": "Bạn hãy xem lại phần “cấu hình” và kê khai đầy đủ thông tin doanh nghiệp của mình, sau đó click “đồng ý”. Khi tạo chiến dịch, hãy xem xét nhu cầu của bạn để lựa chọn yêu cầu phù hợp"
+      },
+      {
+        "Question": "Tôi cần lưu ý gì khi tạo chiến dịch",
+        "Answer": "Bạn cần: <br>+ Xác định nhu cầu, đối tượng và ngân sách phù hợp<br>+ Phần mô tả chi tiết, hãy viết rõ ràng và chi tiết nội dung bạn muốn người dùng thực hiện <br>+ Đưa ra mức chi phí phù hợp và thay đổi mức chi phí khi không tìm được tài khoản như ý<br>+ Bạn cần thanh toán trước khi thực hiện chiến dịch"
+      },
+      {
+        "Question": "Nếu người dùng đăng sai thông điệp họ đã soạn trước đó, doanh nghiệp có bị tính phí không?",
+        "Answer": "Hệ thống sẽ báo cho người dùng biết việc họ đăng sai thông điệp của bạn và yêu cầu người dùng sửa. Chỉ khi nào thông điệp chính xác, người dùng mới được cộng tiền - nghĩa là lúc đó doanh nghiệp mới thực sự mất phí. Tương tự với trường hợp chia sẻ link livestream hoặc check-in sự kiện"
+      },
+      {
+        "Question": "Doanh nghiệp có thể tương tác những gì với người dùng, như thế nào?",
+        "Answer": "Có. Doanh nghiệp có thể theo dõi và báo cáo nội người dùng nếu thấy họ có hành vi làm ảnh hưởng xấu tới doanh nghiệp tại chiến dịch của doanh nghiệp. Doanh Nghiệp có thể liên hệ trao đổi trực tiếp, tuy nhiên những vấn đề ngoài công việc của hệ thống thì hệ thống sẽ không chịu trách nhiệm"
+      }
+    ]
+  }
+]
