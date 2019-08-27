@@ -10,6 +10,7 @@ namespace Core.Models
     {
         private int _serviceCharge = 0;
         private int _extraOptionCharge = 0;
+        private int _vatCharge = 0;
 
         public SettingModel()
         {
@@ -20,15 +21,16 @@ namespace Core.Models
         {
             int.TryParse(settings.FirstOrDefault(m => m.Name == SettingName.CampaignServiceChargePercent)?.Value, out _serviceCharge);
             int.TryParse(settings.FirstOrDefault(m => m.Name == SettingName.CampaignExtraOptionChargePercent)?.Value, out _extraOptionCharge);
+            int.TryParse(settings.FirstOrDefault(m => m.Name == SettingName.CampaignVATChargePercent)?.Value, out _vatCharge);
 
             Phone = settings.FirstOrDefault(m => m.Name == SettingName.Phone)?.Value;
-
             Address = settings.FirstOrDefault(m => m.Name == SettingName.Address)?.Value;
             Email = settings.FirstOrDefault(m => m.Name == SettingName.Email)?.Value;
         }
         public int CampaignServiceChargePercent { get => _serviceCharge; set => _serviceCharge = value; }
         public int CampaignExtraOptionChargePercent { get => _extraOptionCharge; set => _extraOptionCharge = value; }
 
+        public int CampaignVATChargePercent { get => _vatCharge; set => _vatCharge = value; }
         public string Phone { get; set; }
 
         public string Address { get; set; }

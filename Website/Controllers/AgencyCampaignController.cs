@@ -60,7 +60,6 @@ namespace Website.Controllers
                 return View("CreateError");
             }
 
-
             await ViewbagData();
             var model = await _campaignService.GetCreateCampaign(CurrentUser.Id);
             return View(model);
@@ -111,11 +110,12 @@ namespace Website.Controllers
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
-
-
                         for (var i = 0; i < model.AccountIds.Count; i++)
                         {
                             var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
+                          
+
+                            
                             BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
 
                         }

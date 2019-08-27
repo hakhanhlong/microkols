@@ -203,7 +203,8 @@ namespace Website.Code.Extensions
                 NotificationType.AgencyCancelAccountJoinCampaign,
                 NotificationType.AccountDeclineJoinCampaign,
                 NotificationType.SystemUpdateUnfinishedAccountCampaign,
-        
+                NotificationType.AgencyUpdatedCampaignRefContent
+
             };
             if (campaignNotifTypes.Contains(model.Type))
             {

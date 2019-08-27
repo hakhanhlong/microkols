@@ -659,6 +659,21 @@ var AccountDetailsCampaignPage = (function () {
                 });
             }
         });
+
+        $('#addonImages').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                datas.forEach(function (item) {
+                    var html = '<img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="RefImage" value="' + item.path + '" />';
+                    $(target).append(html);
+                })
+
+            });
+
+        });
     }
 
     return {

@@ -14,27 +14,26 @@ namespace Website.ViewModels
     {
         public Campaign GetEntity(int agencyid, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
         {
-            var accountChargeAmount = 0;
-            if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
-            {
-                accountChargeAmount = AccountChargeAmount ?? 0;
+            //var accountChargeAmount = 0;
+            //if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
+            //{
+            //    accountChargeAmount = AccountChargeAmount ?? 0;
+            //}
+            //else
+            //{
+            //    accountChargeAmount = campaignTypeCharge.AccountChargeAmount;
+            //}
 
-            }
-            else
-            {
-                accountChargeAmount = campaignTypeCharge.AccountChargeAmount;
-            }
 
+            //var accountChargeExtraPercent = 0;
 
-            var accountChargeExtraPercent = 0;
-
-            if (Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
-            {
-                if (EnabledExtraType)
-                {
-                    accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
-                }
-            }
+            //if (Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
+            //{
+            //    if (EnabledExtraType)
+            //    {
+            //        accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
+            //    }
+            //}
 
             var start = "";
             var end = "";
@@ -73,13 +72,17 @@ namespace Website.ViewModels
                 UserModified = username,
                 ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
                 ServiceChargePercent = setting.CampaignServiceChargePercent,
-                ServiceChargeAmount = campaignTypeCharge.ServiceChargeAmount,
-                AccountChargeExtraPercent = accountChargeExtraPercent,
-                AccountChargeAmount = accountChargeAmount,
-                EnabledAccountChargeExtra = Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption ? EnabledExtraType : false,
+                ServiceVATPercent = setting.CampaignVATChargePercent,
+
+
+                ServiceChargeAmount =0,
+                AccountChargeExtraPercent = 0,
+                AccountChargeAmount = 0,
+                EnabledAccountChargeExtra = false,
+                AccountChargeTime = 0,
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
                 Type = Type,
-                AccountChargeTime = AccountChargeTime ?? 1,
+                
                 Code = code,
                 Quantity = Quantity,
                 DateStart = start.ToViDateTime(),

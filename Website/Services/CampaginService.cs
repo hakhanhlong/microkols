@@ -198,7 +198,8 @@ namespace Website.Services
                 await _campaignAccountTypeRepository.AddAsync(new CampaignAccountType()
                 {
                     AccountType = accountType,
-                    CampaignId = campaignId
+                    CampaignId = campaignId,
+                    
                 });
             }
         }
@@ -742,8 +743,7 @@ namespace Website.Services
                 campaignAccount.RefId = model.RefId;
             }
             campaignAccount.RefUrl = model.RefUrl;
-
-
+            campaignAccount.RefImage = model.RefImage.ToListString();
             campaignAccount.Status = CampaignAccountStatus.Finished;
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;

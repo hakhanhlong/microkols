@@ -20,101 +20,37 @@ namespace Core.Models
             IEnumerable<Transaction> transactions)
         {
             CampaignId = campaign.Id;
-            ServiceChargeAmount = campaign.ToServiceChargeAmount(campaignOptions);
-            long servicePaidAmount = 0, accountPaidAmount = 0, accountChargeAmount = 0;
-            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions, out servicePaidAmount, out accountPaidAmount);
-            ServicePaidAmount = servicePaidAmount;
-            AccountPaidAmount = accountPaidAmount;
-            
-
-            // tru tien account luon 
-
-            var campaginAccountStatusArr = new List<CampaignAccountStatus>()
-            {
-                CampaignAccountStatus.WaitToPay,
-                CampaignAccountStatus.AccountRequest,
-                CampaignAccountStatus.AgencyRequest,
-                CampaignAccountStatus.Confirmed,
-                CampaignAccountStatus.SubmittedContent ,
-                CampaignAccountStatus.UpdatedContent ,
-                CampaignAccountStatus.DeclinedContent,
-                CampaignAccountStatus.ApprovedContent,
-                CampaignAccountStatus.Finished,
-                
-            };
-            campaignAccounts = campaignAccounts.Where(m => campaginAccountStatusArr.Contains(m.Status));
-
-            foreach (var campaignAccount in campaignAccounts)
-            {
-                var campaignAccountAmount = 0;
-                if (campaignAccount.Account.Type == AccountType.Regular)
-                {
-                    campaignAccountAmount = campaign.AccountChargeAmount;
-                }
-                else
-                {
-                    campaignAccountAmount = campaignAccount.AccountChargeAmount;
-                }
-
-                accountChargeAmount += campaignAccountAmount;
-                //if (campaign.EnabledAccountChargeExtra)
-                //{
-                //    accountChargeAmount += campaignAccountAmount * campaign.AccountChargeExtraPercent / 100;
-                //}
-            }
-
-            AccountChargeAmount = accountChargeAmount;
+            TotalChargeAmount = campaign.ToServiceChargeAmount(campaignAccounts, campaignOptions);
+            CampaignCode = campaign.Code;
+            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions);
         }
 
         public int CampaignId { get; set; }
-        public int CampaignCode { get; set; }
-        public long ServiceChargeAmount { get; set; } = 0;
-        public long AccountChargeAmount { get; set; } = 0;
-        public long TotalChargeAmount { get { return AccountChargeAmount + ServiceChargeAmount; } }
+        public string CampaignCode { get; set; }
+        public long TotalChargeAmount { get; set; } = 0;
 
-        public long ServicePaidAmount { get; set; }
-        public long AccountPaidAmount { get; set; }
+
         public long TotalPaidAmount { get; set; }
 
-        public long ServiceChargeValue
+        public bool IsValid
         {
             get
             {
-                return ServiceChargeAmount - ServicePaidAmount;
+                return TotalChargeValue != 0;
             }
         }
-        public long AccountChargeValue
-        {
-            get
-            {
-                return AccountChargeAmount - AccountPaidAmount;
-            }
-        }
-        public long TotalChargeValue { get { return ServiceChargeValue + AccountChargeValue; } }
 
-        public bool IsValidServiceCharge
+        public long TotalChargeValue
         {
             get
             {
-                if (ServiceChargeValue > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-        public bool IsValidAccountCharge
-        {
-            get
-            {
-                if (AccountChargeValue > 0)
-                {
-                    return true;
-                }
+                return TotalChargeAmount - TotalPaidAmount;
 
-                return false;
             }
         }
+
+
+
     }
 
 }

@@ -22,45 +22,67 @@ namespace Infrastructure.Data
 
         public async Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username)
         {
+
             var campaign = await _dbContext.Campaign.FirstOrDefaultAsync(m => m.Id == campaignid && m.AgencyId == agencyid);
             if (campaign == null)
                 return -1;
-            var account = await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == accountid);
-            if (account == null) return -1;
+            /*
+           var account = await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == accountid);
+           if (account == null) return -1;
 
-            var accountChargeAmount = campaign.AccountChargeAmount;
-            //check la KOLs
-            if (account.Type != AccountType.Regular)
-            {
-                var accountPrice = await _dbContext.AccountCampaignCharge.Where(m => m.AccountId == account.Id && m.Type == campaign.Type).FirstOrDefaultAsync();
-                if (accountPrice == null)
-                {
-                    accountChargeAmount = amount;
-                }
-                else
-                {
-                    accountChargeAmount = accountPrice.AccountChargeAmount;
-                    if (amount > accountChargeAmount)
-                    {
-                        accountChargeAmount = amount;
-                    }
-                }
-            }
+           var accountChargeAmount = campaign.AccountChargeAmount;
+           //check la KOLs
+           if (account.Type != AccountType.Regular)
+           {
+               var accountPrice = await _dbContext.AccountCampaignCharge.Where(m => m.AccountId == account.Id && m.Type == campaign.Type).FirstOrDefaultAsync();
+               if (accountPrice == null)
+               {
+                   accountChargeAmount = amount;
+               }
+               else
+               {
+                   accountChargeAmount = accountPrice.AccountChargeAmount;
+                   if (amount > accountChargeAmount)
+                   {
+                       accountChargeAmount = amount;
+                   }
+               }
+           }
 
-            if (campaign.Type == CampaignType.ChangeAvatar)
+           if (campaign.Type == CampaignType.ChangeAvatar)
+           {
+               accountChargeAmount = campaign.AccountChargeTime * accountChargeAmount;
+           }
+           else if (campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ShareContent)
+           {
+               if (campaign.EnabledAccountChargeExtra)
+               {
+                   var extraCharge = accountChargeAmount * campaign.AccountChargeExtraPercent / 100;
+                   accountChargeAmount = accountChargeAmount + extraCharge;
+               }
+           }
+           */
+            var accountChargeAmount = amount;
+            if(accountChargeAmount== 0)
             {
-                accountChargeAmount = campaign.AccountChargeTime * accountChargeAmount;
-            }
-            else if (campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ShareContent)
-            {
-                if (campaign.EnabledAccountChargeExtra)
-                {
-                    var extraCharge = accountChargeAmount * campaign.AccountChargeExtraPercent / 100;
-                    accountChargeAmount = accountChargeAmount + extraCharge;
-                }
-            }
 
-            var campaignAccount = await _dbContext.CampaignAccount.FirstOrDefaultAsync(m => m.CampaignId == campaign.Id && m.AccountId == account.Id);
+                var charge = await _dbContext.CampaignTypeCharge.FirstOrDefaultAsync(m => m.Type == campaign.Type);
+                if(charge!= null)
+                {
+                    accountChargeAmount = charge.AccountChargeAmount;
+                }
+
+            }
+            //var settingcharge = await _dbContext.Setting.Where(m => m.Name == SettingName.CampaignServiceChargePercent).FirstOrDefaultAsync();
+            //if (settingcharge != null)
+            //{
+            //    var percent = 100 - int.Parse(settingcharge.Value);
+
+            //    accountChargeAmount = amount * percent / 100;
+            //}
+
+
+            var campaignAccount = await _dbContext.CampaignAccount.FirstOrDefaultAsync(m => m.CampaignId == campaign.Id && m.AccountId == accountid);
             if (campaignAccount == null)
             {
                 campaignAccount = new CampaignAccount()
@@ -70,7 +92,7 @@ namespace Infrastructure.Data
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     CampaignId = campaign.Id,
-                    AccountId = account.Id,
+                    AccountId = accountid,
                     RefUrl = string.Empty,
                     AccountChargeAmount = accountChargeAmount,
                     Status = CampaignAccountStatus.WaitToPay,

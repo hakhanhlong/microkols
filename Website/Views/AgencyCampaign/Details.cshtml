@@ -73,25 +73,13 @@
                 Trạng thái:  @Model.Status.ToBadge()
             </div>
 
-
-
-
             <div>
-
-                <div>
-                    Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                    ( Phí dịch vụ: <span class="text-danger">@Model.Payment.ServiceChargeAmount.ToPriceText()</span>
-
-                    - Phí thành viên: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText() </span>)
-                </div>
-
-                <div>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
-                @if (Model.Payment.TotalChargeValue > 0)
-                {
-                    <div>Còn thiếu: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
-                }
-
+                Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
             </div>
+            <div>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
+            <div>Còn lại: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
+
+
 
             <div>
                 Ngày tạo:  <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
@@ -217,9 +205,9 @@
 
 
 <div class="mt-2">
-    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Error)
+    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Error && Model.Status != CampaignStatus.Created)
     {
-        if (Model.Payment.IsValidAccountCharge || Model.Payment.IsValidServiceCharge)
+        if (Model.Payment.IsValid)
         {
             if (Model.Payment.TotalChargeAmount > balance)
             {
@@ -259,19 +247,14 @@
         {
 
             <div class="alert alert-danger">
-                <h5> Có @canceledAccounts.Count Thành viên hủy không tham gia</h5>
-
-                <div class="table-responsive">
-                    <table >
-
-                    </table>
-
-                </div>
+                <div> Có @canceledAccounts.Count Thành viên hủy không tham gia chiến dịch</div>
 
                 <div>
-
-                    <button class="btn btn-primary"> Rút tiền thừa</button>
-                    <button class="btn btn-primary"> Tìm thêm thành viên mới</button>
+                    @if (Model.Payment.TotalChargeValue < 0)
+                    {
+                        <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                        <button class="btn btn-info"> Tìm thêm thành viên mới</button>
+                    }
                 </div>
 
             </div>

@@ -49,6 +49,8 @@ namespace Core.Entities
         CampaignAccountPayback = 5,
         [DisplayName("Trừ tiền")]
         SubstractMoney = 6,
+        [DisplayName("Rút tiền thừa chiến dịch")]
+        CampaignServiceCashBack = 7,
     }
 
 }
