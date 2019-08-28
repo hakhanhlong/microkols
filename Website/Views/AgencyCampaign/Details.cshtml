@@ -209,13 +209,27 @@
     {
         if (Model.Payment.IsValid)
         {
-            if (Model.Payment.TotalChargeAmount > balance)
+
+            if (Model.Payment.TotalChargeValue > 0)
             {
-                <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+
+                if (Model.Payment.TotalChargeValue < balance)
+                {
+                    <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+                }
+                else
+                {
+                    <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+                }
+
             }
             else
             {
-                <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+
+                <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+
+
+                @*<button class="btn btn-info"> Tìm thêm thành viên mới</button>*@
             }
         }
 
@@ -238,30 +252,6 @@
     {
         var tab2Active = "2" == ViewBag.activedTab ? "active show" : "";
         var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
-
-
-
-        var canceledAccounts = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Canceled).ToList();
-
-        if (canceledAccounts.Count > 0)
-        {
-
-            <div class="alert alert-danger">
-                <div> Có @canceledAccounts.Count Thành viên hủy không tham gia chiến dịch</div>
-
-                <div>
-                    @if (Model.Payment.TotalChargeValue < 0)
-                    {
-                        <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
-                        <button class="btn btn-info"> Tìm thêm thành viên mới</button>
-                    }
-                </div>
-
-            </div>
-
-        }
-
-
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
 
