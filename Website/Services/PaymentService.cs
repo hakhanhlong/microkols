@@ -145,6 +145,11 @@ namespace Website.Services
         }
         public async Task<PaymentResultViewModel> CreatePaybackCampaignAccount(int campaignid, int accountid, string username)
         {
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign == null)
+            {
+                return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
+            }
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
 
 
@@ -153,8 +158,7 @@ namespace Website.Services
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
 
-
-            long amount = campaignAccount.AccountChargeAmount;
+            long amount = campaign.GetAccountChagreAmount(campaignAccount);
             var senderId = await _walletRepository.GetSystemId();
             var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId);
             var transactionType = TransactionType.CampaignAccountPayback;

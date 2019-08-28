@@ -1,7 +1,7 @@
 ﻿@model CampaignDetailsViewModel
 @{
     ViewData["Title"] = $"Chiến dịch {Model.Id}";
-    var campaignAccount = (CampaignAccountViewModel)ViewBag.CampaignAccount;
+    var campaignAccount = (CampaignAccountByAccountViewModel)ViewBag.CampaignAccount;
 
     var facebookid = (string)ViewBag.FacebookId;
     var categories = (List<CategoryViewModel>)ViewBag.Categories;

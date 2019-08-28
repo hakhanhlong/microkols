@@ -15,6 +15,7 @@ using Common.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Infrastructure.Extensions;
 using Newtonsoft.Json;
+using Core.Extensions;
 
 namespace Website.Services
 {
@@ -25,11 +26,13 @@ namespace Website.Services
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
         private readonly IAccountFbPostRepository _accountFbPostRepository;
         private readonly IAsyncRepository<AccountCampaignCharge> _accountCampaignChargeRepository;
+        private readonly ISettingRepository _settingRepository;
         private readonly IWalletRepository _walletRepository;
         public AccountService(ILoggerFactory loggerFactory,
           IAccountRepository accountRepository, IWalletRepository walletRepository,
            IAsyncRepository<AccountCampaignCharge> accountCampaignChargeRepository,
           IAccountFbPostRepository accountFbPostRepository,
+          ISettingRepository settingRepository,
              IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _logger = loggerFactory.CreateLogger<AccountService>();
@@ -38,7 +41,7 @@ namespace Website.Services
             _accountCampaignChargeRepository = accountCampaignChargeRepository;
             _walletRepository = walletRepository;
             _accountFbPostRepository = accountFbPostRepository;
-
+            _settingRepository = settingRepository;
         }
         public async Task<List<int>> GetActivedAccountIds()
         {
@@ -705,10 +708,20 @@ namespace Website.Services
         public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType)
         {
 
+
+
             var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
             var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
+            if(accountCharge!= null)
+            {
 
-            return accountCharge != null ? accountCharge.AccountChargeAmount : 0;
+                var settings = await _settingRepository.GetSetting();
+
+                return settings.GetAccountChagreAmount(accountCharge.AccountChargeAmount); 
+            }
+            
+
+            return 0;
         }
 
         public async Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model)
