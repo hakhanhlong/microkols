@@ -109,26 +109,40 @@ namespace BackOffice.Controllers
             try {
                 if (campaign != null)
                 {
-                    campaign.Status = status;
-                    campaign.UserModified = HttpContext.User.Identity.Name;
-                    _ICampaignRepository.Update(campaign);
-
-                    NotificationType notificationType = NotificationType.CampaignCanceled;
-
-                    if (status == CampaignStatus.Canceled)
+                    if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)
                     {
-                        notificationType = NotificationType.CampaignCanceled;
+                        campaign.Status = status;
+                        campaign.UserModified = HttpContext.User.Identity.Name;
+                        _ICampaignRepository.Update(campaign);
+
+                        NotificationType notificationType = NotificationType.CampaignCanceled;
+                        string msg = string.Empty;
+                        if (status == CampaignStatus.Canceled)
+                        {
+                            notificationType = NotificationType.CampaignCanceled;
+                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã bị hủy, bởi hệ thống", campaign.Title);
+                        }
+                        else if (status == CampaignStatus.Error)
+                        {
+                            notificationType = NotificationType.CampaignError;
+                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã có lỗi, hệ thống đã phát hiện lỗi và gửi thông báo đến bạn", campaign.Title);
+                        }
+                        else if (status == CampaignStatus.Ended)
+                        {
+                            notificationType = NotificationType.CampaignEnded;
+                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã kết thúc", campaign.Title);
+                        }
+
+                        await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+
+                        TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
                     }
-                    else if(status == CampaignStatus.Error)
+                    else
                     {
-                        notificationType = NotificationType.CampaignError;
-                    }
-                    else if(status == CampaignStatus.Ended)
-                    {
-                        notificationType = NotificationType.CampaignEnded;
+                        TempData["MessageError"] = "Status campaign do not fit";
                     }
 
-
+                 
                 }
                 else
                 {
@@ -142,13 +156,13 @@ namespace BackOffice.Controllers
 
 
 
-            return View(new CampaignViewModel(campaign));
+            return RedirectToAction("TakeNoteChangeStatus", "Campaign", new { id = id, status = (int)status });
         }
 
 
 
         [HttpPost]
-        public JsonResult ChangeStatus(int id, CampaignStatus status)
+        public async Task<JsonResult> ChangeStatus(int id, CampaignStatus status)
         {
             var campaign = _ICampaignRepository.GetById(id);
             if(campaign!= null)
@@ -159,7 +173,9 @@ namespace BackOffice.Controllers
 
 
                 string str_icon = string.Empty;
-                if(status == CampaignStatus.Created)
+                NotificationType notificationType = NotificationType.CampaignConfirmed;
+                string msg = string.Empty;
+                if (status == CampaignStatus.Created)
                 {
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\">< i class=\"fa fa-sticky-note\"></i></a>";
                 }
@@ -174,6 +190,9 @@ namespace BackOffice.Controllers
                 else if (status == CampaignStatus.Confirmed)
                 {
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-check-circle-o\"></i></a>";
+                    msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã được duyệt bởi hệ thống", campaign.Title);
+                    notificationType = NotificationType.CampaignConfirmed;
+                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, "");
                 }
                 else if (status == CampaignStatus.Error)
                 {
@@ -182,6 +201,9 @@ namespace BackOffice.Controllers
                 else if (status == CampaignStatus.Completed)
                 {
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-check-circle-o\"></i></a>";
+                    msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
+                    notificationType = NotificationType.CampaignCompleted;
+                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, "");
                 }
                 else if (status == CampaignStatus.Canceled)
                 {

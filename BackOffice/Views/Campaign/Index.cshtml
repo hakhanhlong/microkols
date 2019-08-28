@@ -196,42 +196,51 @@
                     data['status'] = status;
 
 
-                    var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;                    
-                    $('#iframenotestatus').attr('src', url);
-                    $('#m_modal_4').modal({ show: true });
-                    $('#m_modal_4').on('hidden.bs.modal', function (e) {
-                        document.location = document.location.href;
-                    })
+               
 
+
+
+                    //3: Ended, 5: Canceled, 6: Error
+                    if (status == 3 || status == 5 || status == 6) {
+                        var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
+                        $('#iframenotestatus').attr('src', url);
+                        $('#m_modal_4').modal({ show: true });
+                        $('#m_modal_4').on('hidden.bs.modal', function (e) {
+                            document.location = document.location.href;
+                        })
+                    }
+                    else {
+                         $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("ChangeStatus", "Campaign")',
+                            data: data,
+                            success: function (data) {
+
+                                if (data.code == 1) {
+
+                                    $('#item_' + campaignid).html(data.str_icon);
+                                    Swal.fire(
+                                        'Good job!',
+                                        data.message,
+                                        'success'
+                                    );
+
+                                }
+                                else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Oops...',
+                                        text: data.message
+                                    });
+                                }
+
+                            },
+                            dataType: "json",
+                            traditional: true
+                        });
+                    }
                     
-                    @*$.ajax({
-                        type: "POST",
-                        url: '@Url.Action("ChangeStatus", "Campaign")',
-                        data: data,
-                        success: function (data) {
-
-                            if (data.code == 1) {
-
-                                $('#item_' + campaignid).html(data.str_icon);
-                                Swal.fire(
-                                    'Good job!',
-                                    data.message,
-                                    'success'
-                                );
-
-                            }
-                            else {
-                                Swal.fire({
-                                    type: 'error',
-                                    title: 'Oops...',
-                                    text: data.message
-                                });
-                            }
-                            
-                        },                                            
-                        dataType: "json",
-                        traditional: true
-                    });*@
+                  
 
 
                 });
