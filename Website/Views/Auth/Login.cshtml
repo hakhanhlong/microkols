@@ -22,7 +22,7 @@
 
             <alert></alert>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <form asp-action="Login" method="post">
+            @*<form asp-action="Login" method="post">
 
                 <div class="form-group">
                     <div class="input-group">
@@ -63,15 +63,12 @@
                     </button>
                 </div>
 
-                @*<p>
-                        <a class="text-primary" href="@Url.Action("ForgotPassword")"> Quên mật khẩu? <i class="fal fa-angle-right"></i></a>
-                    </p>*@
-            </form>
+            </form>*@
 
             <partial name="_SocialLoginPartial" />
 
 
-            <p>
+            @*<p>
                 <a class="text-primary" href="@Url.Action("Register")">
                     Bạn chưa có tài khoản?
                     Đăng ký  ngay <i class="fal fa-angle-right"></i>
@@ -79,7 +76,7 @@
             </p>
             <p>
                 Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="@Url.Action("Privacy","Home")">điều khoản sử dụng</a>
-            </p>
+            </p>*@
 
         </div>
         <div class="col-md-5 offset-1">

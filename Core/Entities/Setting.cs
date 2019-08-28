@@ -16,7 +16,8 @@ namespace Core.Entities
         CampaignExtraOptionChargePercent,
         Phone,
         Address,
-        Email
-        
+        Email,
+        CampaignVATChargePercent
+
     }
 }

@@ -10,13 +10,24 @@
         <div class="modal-body">
             @if (paymentResult.Status == Core.Entities.TransactionStatus.Completed)
             {
-                <div class="alert alert-success">
-                    <p>Thanh toán @paymentResult.Type.ToDisplayName() thành công</p>
+            <div class="alert alert-success">
+
+                <p>Giao dịch @paymentResult.Type.ToDisplayName() thành công</p>
+
+                @if (paymentResult.Amount > 0)
+                {
+
                     <p>Số tiền thanh toán: <span class="text-success">@paymentResult.Amount.ToPriceText()</span></p>
-           
-                        <p>Số tiền còn lại trong ví: <span class="text-danger">@paymentResult.SenderBalance.ToPriceText()</span> </p>
-           
-                </div>
+                }
+                else
+                {
+                    var amount2 = 0 - paymentResult.Amount;
+                    <p>Số tiền rút: <span class="text-success">@amount2.ToPriceText()</span></p>
+                }
+
+                <p>Số dư ví: <span class="text-danger">@paymentResult.SenderBalance.ToPriceText()</span> </p>
+
+            </div>
 
             }
             else if (paymentResult.Status == Core.Entities.TransactionStatus.Error)

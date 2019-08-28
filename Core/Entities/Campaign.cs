@@ -24,14 +24,23 @@ namespace Core.Entities
         // Lay o settings
         public int ServiceChargePercent { get; set; }
         // Lay o settings
-        public int ExtraOptionChargePercent { get; set; }
+        public int ExtraOptionChargePercent { get; set; }        
+        // Lay o settings
+        public int? ServiceVATPercent { get; set; }
 
         public CampaignType Type { get; set; }
+
+
+
+
+        // các trường này ko dùng trong cách tính mới nữa
         public int ServiceChargeAmount { get; set; }
         public int AccountChargeAmount { get; set; }
         public int AccountChargeExtraPercent { get; set; }
         public bool EnabledAccountChargeExtra { get; set; }
         public int AccountChargeTime { get; set; } //default = 1 --> Số lần thực hiện --> Nếu = kiểu = thay avatar thì mới lên số lần
+        //end cac truong ko dung
+
 
         public CampaignStatus Status { get; set; }
         public DateTime? DateStart { get; set; }

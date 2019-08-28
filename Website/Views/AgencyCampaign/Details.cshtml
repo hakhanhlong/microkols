@@ -73,25 +73,13 @@
                 Trạng thái:  @Model.Status.ToBadge()
             </div>
 
-
-
-
             <div>
-
-                <div>
-                    Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                    ( Phí dịch vụ: <span class="text-danger">@Model.Payment.ServiceChargeAmount.ToPriceText()</span>
-
-                    - Phí thành viên: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText() </span>)
-                </div>
-
-                <div>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
-                @if (Model.Payment.TotalChargeValue > 0)
-                {
-                    <div>Còn thiếu: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
-                }
-
+                Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
             </div>
+            <div>Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
+            <div>Còn lại: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
+
+
 
             <div>
                 Ngày tạo:  <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
@@ -200,7 +188,7 @@
 
                             @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                            Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                            -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
                         </li>
                     }
 
@@ -217,17 +205,31 @@
 
 
 <div class="mt-2">
-    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Error)
+    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Error && Model.Status != CampaignStatus.Created)
     {
-        if (Model.Payment.IsValidAccountCharge || Model.Payment.IsValidServiceCharge)
+        if (Model.Payment.IsValid)
         {
-            if (Model.Payment.TotalChargeAmount > balance)
+
+            if (Model.Payment.TotalChargeValue > 0)
             {
-                <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+
+                if (Model.Payment.TotalChargeValue > balance)
+                {
+                    <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
+                }
+                else
+                {
+                    <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+                }
+
             }
             else
             {
-                <btnpayment campaign-id="Model.Id" text="Thanh toán ngay"></btnpayment>
+
+                <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+
+
+                @*<button class="btn btn-info"> Tìm thêm thành viên mới</button>*@
             }
         }
 
@@ -250,7 +252,6 @@
     {
         var tab2Active = "2" == ViewBag.activedTab ? "active show" : "";
         var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
-
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
 

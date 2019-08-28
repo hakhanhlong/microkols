@@ -29,6 +29,8 @@ namespace Website.ViewModels
             RefId = campaignAccount.RefId;
             RefContent = campaignAccount.RefContent;
             RefData = campaignAccount.RefDataObj;
+            RefImage = campaignAccount.RefImage.ToListString();
+
             DateFinished = campaignAccount.DateFinished;
             Rating = campaignAccount.Rating;
             ReportStatus = campaignAccount.ReportStatus;
@@ -57,6 +59,7 @@ namespace Website.ViewModels
         public string RefUrl { get; set; }
         public string RefId { get; set; }
         public string RefContent { get; set; }
+        public List<string> RefImage { get; set; } = new List<string>();
         public object RefData { get; set; }
 
         public DateTime DateCreated { get; set; }
@@ -106,6 +109,10 @@ namespace Website.ViewModels
         [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây")]
         //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
+
+
+        [Display(Name = "Hình ảnh thực hiện chiến dịch")]
+        public List<string> RefImage { get; set; } = new List<string>();
 
         public string RefId { get; set; }
 

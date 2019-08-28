@@ -105,6 +105,7 @@ namespace Website.Jobs
                                 Note = string.Empty,
                                 RefId = fbPost.PostId,
                                 RefUrl = fbPost.Permalink,
+                                RefImage = new List<string>()
 
                             }, username);
                         }

@@ -211,7 +211,7 @@ namespace Infrastructure.Data
         }
              */
 
-            var query = _dbContext.CampaignAccount.Where(m => m.AccountId == accountid);
+            var query = _dbContext.CampaignAccount.Where(m => m.AccountId == accountid && m.Status!= CampaignAccountStatus.WaitToPay);
 
 
 

@@ -19,7 +19,7 @@ namespace Website.ViewModels
 
             AccountChargeTime = campaign.AccountChargeTime;
 
-            campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
+            //campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
             Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
             Transactions = TransactionViewModel.GetList(transactions);
 

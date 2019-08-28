@@ -70,7 +70,7 @@
                 <td>
                     <div class="input-group input-group-sm">
                         <input type="number" min="@chargeAmount" class="form-control" max="@int.MaxValue"
-                               value="@chargeAmount" step="10000" name="AccountChargeAmounts" />
+                               value="@chargeAmount" name="AccountChargeAmounts" />
                         <div class="input-group-append">
                             <span class="input-group-text">đ</span>
                         </div>
@@ -83,6 +83,7 @@
                     }
                     <input type="hidden" name="AccountIds" id="@tbid" value="@account.Id" class="form-accountid" />
                     <button type="button" class="btn btn-info btn-sm btn-renewaccount"><i class="fal fa-redo"></i> Đổi</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-removeaccount"><i class="fal fa-times"></i></button>
 
                 </td>
             }

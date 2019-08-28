@@ -51,35 +51,18 @@ namespace Website.Services
             var refId = payment.CampaignId;
             var refData = string.Empty;
 
-            if (payment.IsValidServiceCharge)
+            if (payment.IsValid)
             {
                 //service charge --> tru tien cho agency ; + tien cho he thong
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
-                amount = payment.ServiceChargeValue;
-                transactionType = Core.Entities.TransactionType.CampaignServiceCharge;
+                amount = payment.TotalChargeValue;
+                transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
 
-            }
-            else if (payment.IsValidAccountCharge)
-            {
-
-                //service charge --> tru tien cho agency ; + tien cho he thong
-                receiverId = await _walletRepository.GetSystemId();
-                senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
-                amount = payment.AccountChargeValue;
-                transactionType = Core.Entities.TransactionType.CampaignAccountCharge;
-                //....
-            }
-
-            if (amount > 0 && senderId > 0 && receiverId > 0 && transactionType != TransactionType.Undefined)
-            {
                 return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
             }
 
-
-            return new PaymentResultViewModel(senderId == 0 || receiverId == 0 ? PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac :
-
-                PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
+            return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
         }
 
         public async Task<PaymentResultViewModel> Pay(int senderId, int receiverId, long amount, TransactionType transactionType,
@@ -173,7 +156,7 @@ namespace Website.Services
 
             long amount = campaignAccount.AccountChargeAmount;
             var senderId = await _walletRepository.GetSystemId();
-            var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId); 
+            var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId);
             var transactionType = TransactionType.CampaignAccountPayback;
             var refId = campaignAccount.CampaignId;
             var refData = campaignAccount.Id.ToString();

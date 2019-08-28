@@ -34,27 +34,11 @@ namespace Website.Controllers
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
-            if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Type == Core.Entities.TransactionType.CampaignServiceCharge)
+            if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Amount > 0)
             {
-                var paymentResult2 = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
-
-                paymentResult2.Amount += paymentResult.Amount;
-                ViewBag.PaymentResult = paymentResult2;
-
-                if (paymentResult2.Status == Core.Entities.TransactionStatus.Completed)
-                {
-
-
-                    BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
-
-                }
+                BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
             }
-            else
-            {
-                ViewBag.PaymentResult = paymentResult;
-            }
-
-
+            ViewBag.PaymentResult = paymentResult;
             return PartialView("ModalPaymentMessage");
         }
 

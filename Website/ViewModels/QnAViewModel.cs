@@ -16,7 +16,7 @@ namespace Website.ViewModels
     public class QnAGroupViewModel
     {
         public string Title { get; set; }
-        public List<QnAViewModel> QuAs { get; set; }
+        public List<QnAViewModel> QnAs { get; set; }
 
 
     }

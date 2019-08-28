@@ -53,6 +53,9 @@ namespace Website.Controllers
             ViewBag.CampaignAccount = campaignAccount;
             ViewBag.FacebookId = await _accountService.GetProviderIdByAccount(CurrentUser.Id, AccountProviderNames.Facebook);
 
+            ViewBag.Categories = await _sharedService.GetCategories();
+            ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
+            ViewBag.Cities = await _sharedService.GetCities();
             return View(model);
         }
 

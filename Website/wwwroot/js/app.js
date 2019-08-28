@@ -43,6 +43,13 @@
         $('[data-toggle="tooltip"]').tooltip()
 
 
+        $('.campaign-image-carousel').owlCarousel({
+            margin: 10,
+            items: 1, autoHeight: true
+
+        });
+
+
         $('.btn-facebook').click(function () {
             var $frm = $($(this).data('target'));
             FB.login(function (response) {

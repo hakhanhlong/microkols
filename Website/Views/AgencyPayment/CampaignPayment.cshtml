@@ -48,36 +48,34 @@
                     <div class="form-group row">
                         <label class="col-4">Mã Chiến dịch</label>
                         <div class="col-8">
-                            @payment.CampaignId
+                            @payment.CampaignCode
                         </div>
                     </div>
 
-                    @if (payment.IsValidServiceCharge)
+                
+
+                    @if (payment.TotalChargeValue >= 0)
                     {
+
                         <div class="form-group row">
-                            <label class="col-4">Phí dịch vụ</label>
+                            <label class="col-4">Tổng tiền chiến dịch</label>
                             <div class="col-8 text-danger">
-                                @payment.ServiceChargeValue.ToPriceText()
+                                @payment.TotalChargeValue.ToPriceText()
                             </div>
                         </div>
+
                     }
-                    @if (payment.IsValidAccountCharge)
+                    else
                     {
+                        var val = 0 - payment.TotalChargeValue;
                         <div class="form-group row">
-                            <label class="col-4">Phí thành viên</label>
+                            <label class="col-4">Số tiền rút</label>
                             <div class="col-8 text-danger">
-                                @payment.AccountChargeValue.ToPriceText()
+                                @val.ToPriceText()
                             </div>
                         </div>
+
                     }
-
-                    <div class="form-group row">
-                        <label class="col-4">Tổng tiền cần thanh toán</label>
-                        <div class="col-8 text-danger">
-                            @payment.TotalChargeValue.ToPriceText()
-                        </div>
-                    </div>
-
 
                     <div class="form-group row">
                         <label asp-for="Note" class="col-4 col-form-label"></label>

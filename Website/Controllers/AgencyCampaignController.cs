@@ -60,7 +60,6 @@ namespace Website.Controllers
                 return View("CreateError");
             }
 
-
             await ViewbagData();
             var model = await _campaignService.GetCreateCampaign(CurrentUser.Id);
             return View(model);
@@ -101,9 +100,6 @@ namespace Website.Controllers
                 }
                 else
                 {
-
-
-
                     if (!string.IsNullOrEmpty(model.Image))
                     {
                         model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
@@ -111,11 +107,9 @@ namespace Website.Controllers
                     var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
                     if (id > 0)
                     {
-
-
                         for (var i = 0; i < model.AccountIds.Count; i++)
                         {
-                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[0];
+                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
                             BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
 
                         }
@@ -127,47 +121,6 @@ namespace Website.Controllers
                             url = Url.Action("Details", new { id = id})
                         });
 
-
-                        /*
-                        //this.AddAlertSuccess("Thêm chiến dịch mới thành công");
-                        //return RedirectToAction("Details", new { id = id });
-
-                        if (submittype == 1)
-                        {
-                            var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, new CreateCampaignPaymentViewModel()
-                            {
-                                CampaignId = id,
-                                Note = string.Empty
-                            }, CurrentUser.Username);
-
-
-                            if (paymentResult.Status == TransactionStatus.Completed)
-                            {
-
-                                // tam thoi chua khac phuc dc loi tracking id
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.Created, CurrentUser.Username));
-                                //await _campaignService.UpdateCampaignStatusByAgency(CurrentUser.Id, id, CampaignStatus.Created , CurrentUser.Name);
-                                return Json(new
-                                {
-                                    status = 1,
-                                    message = "Thêm chiến dịch mới thành công",
-                                    campaignid = id,
-                                    url = Url.Action("Details", new { id = id })
-                                });
-
-                            }
-                            else
-                            {
-                                error = $"{paymentResult.ErrorMessage} - Mã lỗi: {paymentResult.ErrorCode}";
-                            }
-
-                        }
-                        else
-                        {
-                         
-                        }
-                        //payment luon
-                        */
 
                     }
                     else
@@ -254,6 +207,27 @@ namespace Website.Controllers
             return PartialView(model);
 
         }
+
+        public async Task<IActionResult> RenewAccountModal
+            
+            (IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
+          IEnumerable<int> cityid, int? agestart, int? ageend,
+           IEnumerable<int> ignoreIds, CampaignType campaignType, int min = 0, int max = 0)
+        {
+
+
+            ViewBag.CampaignType = campaignType;
+            ViewBag.AccountTypes = accountTypes;
+            ViewBag.Min = min;
+            ViewBag.Max = max;
+            var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid,
+                agestart, ageend, string.Empty, 1, 1, ignoreIds, min, max);
+
+
+            return PartialView(model);
+
+        }
+
         #endregion
 
 
