@@ -267,6 +267,10 @@ namespace Website.ViewModels
             {
                 HotMomData = (List<AccountTypeHotMomData>)entity.TypeDataObj;
             }
+            else
+            {
+                HotMomData = new List<AccountTypeHotMomData>();
+            }
 
         }
         [Display(Name ="Loại tài khoản")]
