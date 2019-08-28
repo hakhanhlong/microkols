@@ -97,23 +97,23 @@
                                                 +
                                             </span>
                                             Tổng phí: <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                                            ( Phí dịch vụ: <span class="text-danger">@Model.Payment.ServiceChargeAmount.ToPriceText()</span>
 
-                                            - Phí thành viên: <span class="text-danger">@Model.Payment.AccountChargeAmount.ToPriceText() </span>)
+
+
                                         </div>
                                         <div class="m--space-10"></div>
                                         <div>
                                             <span class="m-badge m-badge--info">
                                                 +
                                             </span>
-                                        Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span> </div>
-                                        @if (Model.Payment.TotalChargeValue > 0)
-                                        {
-                                            <div class="m--space-10"></div>
-                                            <div><span class="m-badge m-badge--info">
+                                            Đã thanh toán: <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                                        </div>
+                                        <div class="m--space-10"></div>
+                                        <div>
+                                            <span class="m-badge m-badge--info">
                                                 +
-                                            </span> Còn thiếu: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span> </div>
-                                        }
+                                            </span> Còn lại: <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
+                                        </div>
                                     </h6>
                                     <div class="m--space-10"></div>
                                     <h6>
