@@ -15,6 +15,7 @@ namespace BackOffice.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            //index home controller dashboard
             return View();
         }
 
