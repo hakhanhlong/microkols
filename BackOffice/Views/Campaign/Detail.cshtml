@@ -163,12 +163,17 @@
                                             Mô tả:  @Model.Description
                                         </div>
                                     }
-                              
+                                    <div>
+                                        Đối tượng tham gia:  @foreach (var item in Model.AccountTypes)
+                                        {
+                                            <span>@item.ToDisplayName()</span>
+                                        }
+                                    </div>
                                     @if (Model.Image.Count > 0)
                                     {
                                         <div class="m--space-10"></div>
                                         <div>
-
+                                            Hình ảnh đính kèm bài post <br />
                                             @foreach (var imgItem in Model.Image)
                                             {
                                                 <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
