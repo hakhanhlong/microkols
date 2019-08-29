@@ -16,18 +16,35 @@ namespace Core.Extensions
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
             long totalAccountPrice = accounts.Select(m => m.AccountChargeAmount).Sum();
+            return totalAccountPrice;
+        }
 
-            long serviceCharge = totalAccountPrice * campaign.ServiceChargePercent / 100;
+        public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
+        {
 
-            var total1 = totalAccountPrice + serviceCharge;
-            long vat = total1 * (campaign.ServiceVATPercent ?? 0) / 100;
+            var t1 = campaign.ServiceChargePercent;
+            var t2 = campaign.ServiceVATPercent;
+            var amount = campaignAccount.AccountChargeAmount;
 
+            //tien sau VAT 
+            var val1 = (amount * 100) / (100 + t2);
 
-            return total1 + vat;
+            var val2 = (val1 * (100 - t1)) / 100;
+            return Convert.ToInt32(val2);
+
+        }
+
+        public static int GetAccountChagreAmount(this Models.SettingModel setting, int amount)
+        {
+
+            var val1 = (amount * (100 + setting.CampaignServiceChargePercent)) / 100;
+
+            var val2 = (val1 * (100 + setting.CampaignVATChargePercent)) / 100; 
+
+            return Convert.ToInt32(val2);
         }
 
 
-      
         public static long ToTotalPaidAmount(this Campaign campaign, IEnumerable<Transaction> transactions)
         {
             var completedTransactions = transactions.Where(m => m.RefId == campaign.Id && m.Status == TransactionStatus.Completed);

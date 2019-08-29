@@ -343,13 +343,20 @@ namespace Website.Services
         }
 
 
-        public async Task<CampaignAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
+        public async Task<CampaignAccountByAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
         {
-            var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
-            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if(campaign!= null)
+            {
 
-            return campaignAccount != null ? new CampaignAccountViewModel(campaignAccount) : null;
 
+                var filter = new CampaignAccountByAccountSpecification(accountid, campaignid);
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+
+                if (campaignAccount != null)
+                    return new CampaignAccountByAccountViewModel(campaignAccount, campaign);
+            }
+            return null;
         }
 
         public async Task<bool> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username)

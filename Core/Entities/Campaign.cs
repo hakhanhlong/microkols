@@ -76,7 +76,7 @@ namespace Core.Entities
         Ended = 3,
         [DisplayName("Hoàn thành")]
         Completed = 4,
-        [DisplayName("Hủy")]
+        [DisplayName("Chiến dịch đã bị hủy")]
         Canceled = 5,
         [DisplayName("Lỗi")]
         Error = 6,
