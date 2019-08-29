@@ -316,7 +316,15 @@ namespace BackOffice.Controllers
             foreach(var item in _listTransactionViewModel.Transactions)
             {
                 try {
-                    item.SenderName = _IWalletBusiness.Get(item.SenderId).Name;
+                    if(item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        item.SenderName = _IWalletBusiness.Get(item.SenderId).Name;
+                    }
+                    
                 }
                 catch { } 
                 try {
