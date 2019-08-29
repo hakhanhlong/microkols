@@ -36,8 +36,11 @@ namespace Core.Entities
         AgencyUpdatedCampaignRefContent,
         AgencyCancelAccountJoinCampaign,
         AccountDeclineJoinCampaign,
-
         SystemUpdateUnfinishedAccountCampaign,
+
+        TransactionDepositeApprove,
+        TransactionDepositeProcessing,
+        TransactionDepositeCancel,
     }
     public enum NotificationStatus
     {

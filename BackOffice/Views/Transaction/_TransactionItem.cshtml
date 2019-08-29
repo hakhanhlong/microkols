@@ -21,7 +21,10 @@
             <th>
                 STATUS
             </th>
+            <th>TIME CREATED</th>
+            <th>TIME MODIFIED</th>
             <th></th>
+
         </tr>
     </thead>
     <tbody>
@@ -38,26 +41,25 @@
                 <td>
                     <h6 class="m--font-danger">
                         @item.Amount.ToPriceText()
-                    </h6>                    
+                    </h6>
                 </td>
                 <td>@item.Status</td>
+                <td>@item.DateCreated.ToString()</td>
+                <td>@item.DateModified.ToString()</td>
                 <td>
 
                     @if (item.Status == TransactionStatus.Created)
-                    {
-                        <div class="btn-group btn-group-toggle pull-right" data-toggle="buttons">
-                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');">
-                                <input type="radio" name="options" id="option1" autocomplete="off">
-                                Approve
-                            </label>
-                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');">
-                                <input type="radio" name="options" id="option2" autocomplete="off">
-                                Processing
-                            </label>
-                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');">
-                                <input type="radio" name="options" id="option3" autocomplete="off">
-                                Cancel
-                            </label>
+                    {                       
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Completed">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');" title="Processing">
+                                <i class="fa fa-clock-o"></i>
+                            </button>
+                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                                <i class="fa fa-remove"></i>
+                            </button>                         
                         </div>
                     }
                     @if (item.Status == TransactionStatus.Processing)
@@ -66,7 +68,7 @@
                             <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');">
                                 <input type="radio" name="options" id="option1" autocomplete="off">
                                 Approve
-                            </label>                            
+                            </label>
                             <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');">
                                 <input type="radio" name="options" id="option3" autocomplete="off">
                                 Cancel
@@ -81,7 +83,7 @@
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
-                    <td colspan="7">
+                    <td colspan="9">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)

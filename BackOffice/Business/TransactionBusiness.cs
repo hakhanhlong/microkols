@@ -167,6 +167,7 @@ namespace BackOffice.Business
             if(_transaction != null)
             {
                 _transaction.Status = status;
+                _transaction.DateModified = DateTime.Now;
 
                 try {
                     
