@@ -113,6 +113,7 @@ namespace BackOffice.Controllers
                     {
                         campaign.Status = status;
                         campaign.UserModified = HttpContext.User.Identity.Name;
+                        campaign.SystemNote = txt_note;
                         _ICampaignRepository.Update(campaign);
 
                         NotificationType notificationType = NotificationType.CampaignCanceled;
@@ -169,7 +170,7 @@ namespace BackOffice.Controllers
             {
                 campaign.Status = status;
                 campaign.UserModified = HttpContext.User.Identity.Name;
-                _ICampaignRepository.Update(campaign);
+                
 
 
                 string str_icon = string.Empty;
@@ -192,6 +193,7 @@ namespace BackOffice.Controllers
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-check-circle-o\"></i></a>";
                     msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã được duyệt bởi hệ thống", campaign.Title);
                     notificationType = NotificationType.CampaignConfirmed;
+                    campaign.SystemNote = msg;
                     await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, "");
                 }
                 else if (status == CampaignStatus.Error)
@@ -203,12 +205,15 @@ namespace BackOffice.Controllers
                     str_icon = "<a href=\"#\" class=\"btn btn-primary m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-check-circle-o\"></i></a>";
                     msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
                     notificationType = NotificationType.CampaignCompleted;
+                    campaign.SystemNote = msg;
                     await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, "");
                 }
                 else if (status == CampaignStatus.Canceled)
                 {
                     str_icon = "<a href=\"#\" class=\"btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--pill m-btn--air\"><i class=\"fa fa-ban\"></i></a>";
                 }
+
+                _ICampaignRepository.Update(campaign);
 
                 return Json(new
                 {

@@ -20,7 +20,7 @@ namespace BackOffice.Business.Interfaces
 
         Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype);
 
-        Task<int> UpdateStatus(TransactionStatus status, int id, string username);
+        Task<int> UpdateStatus(TransactionStatus status, int id, string username, string adminnote);
 
         int UpdateCashOut(int transactionid);
 

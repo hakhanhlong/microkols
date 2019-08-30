@@ -20,17 +20,22 @@ namespace BackOffice.Controllers
     public class TransactionController : Controller
     {
         ITransactionBusiness _ITransactionBussiness;
+        ITransactionRepository _ITransactionRepository;
         IWalletBusiness _IWalletBusiness;
         private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private readonly IHostingEnvironment _hostingEnvironment;
         IPayoutExportRepository _IPayoutExportRepository;
+        private readonly INotificationBusiness _INotificationBusiness;
 
 
-        public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IPayoutExportRepository __IPayoutExportRepository)
+        public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
+            IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
             _IPayoutExportRepository = __IPayoutExportRepository;
+            _ITransactionRepository = __ITransactionRepository;
+            _INotificationBusiness = __INotificationBusiness;
         }
 
         public IActionResult Index()
@@ -276,10 +281,101 @@ namespace BackOffice.Controllers
             return RedirectToAction("AccountPayback", "Transaction", new { type = type });
         }
 
+
+
+        //dùng cho nap tiền agency
+        public async Task<IActionResult> TransactionUpdateStatus(int id, TransactionStatus status)
+        {         
+            ViewBag.TransactionStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Processing", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "3"}
+            };
+            var transaction = await _ITransactionRepository.GetByIdAsync(id);
+            return View(new TransactionViewModel(transaction));
+        }
+
+
+        //dùng cho nạp tiền agency
+        [HttpPost]
+        public async Task<IActionResult> TransactionUpdateStatus(TransactionViewModel model)
+        {
+            var transaction = await _ITransactionRepository.GetByIdAsync(model.Id);
+
+            try
+            {
+                var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
+                int agencyid = wallet.EntityType == EntityType.Agency? wallet.EntityId:0;
+
+                if(agencyid > 0)
+                {
+                    if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
+                    {
+                        
+
+                        int code = await _ITransactionBussiness.UpdateStatus(model.Status, model.Id, HttpContext.User.Identity.Name, model.AdminNote);
+                        if (code == 9)
+                        {
+                            TempData["MessageSuccess"] = "Update Status Success";
+                            string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                            await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+
+                        }
+                        else if (code == 10)
+                        {
+                            TempData["MessageError"] = "Wallet do not exist";
+                        }
+                        else if (code == 11)
+                        {
+                            TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                        }
+                    }
+                    else
+                    {
+
+                        NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
+                        if(model.Status == TransactionStatus.Processing)
+                            _notifyType = NotificationType.TransactionDepositeProcessing;
+
+
+                        transaction.Status = model.Status;
+                        transaction.DateModified = DateTime.Now;
+
+                        transaction.AdminNote = model.AdminNote;
+
+
+
+                        transaction.UserModified = HttpContext.User.Identity.Name;
+                        await _ITransactionRepository.UpdateAsync(transaction);
+                        TempData["MessageSuccess"] = "Update Status Success";
+
+                        string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                        await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                    }
+                }
+                else
+                {
+                    TempData["MessageError"] = "Do not fit with any agency!";
+                }
+
+               
+
+            
+            }
+            catch(Exception ex) {
+                TempData["MessageError"] = ex.Message;
+            }
+
+            return RedirectToAction("TransactionUpdateStatus", "Transaction", new { id = model.Id, status = model.Status });
+        }
+
+
+
         [HttpPost]
         public async Task<JsonResult> ChangeStatus(TransactionStatus status, int id)
         {
-            int code = await _ITransactionBussiness.UpdateStatus(status, id, HttpContext.User.Identity.Name);
+            int code = await _ITransactionBussiness.UpdateStatus(status, id, HttpContext.User.Identity.Name, "adminnote");
             string _msg_code = "{\"Code\": -1, \"Message\": \"Update Status Error\"}";
             if(code == 9)
             {

@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewData["Title"] = "TransactionUpdateStatus";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+
+@model TransactionViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/Transaction/TransactionUpdateStatus">
+            <input type="hidden" asp-for="Id" />
+            <div class="m-portlet__body">
+                <div class="form-group m-form__group">
+                 
+                </div>
+
+                <div class="form-group m-form__group">
+                    <label for="exampleInputPassword1">
+                        Change Transaction Status To
+                    </label>
+                    <select class="form-control m-input" asp-for="Status" asp-items="@ViewBag.TransactionStatus"></select>
+                </div>
+                <div class="form-group m-form__group">
+                    <label for="exampleInputPassword1">
+                        Note
+                    </label>
+                    <textarea class="form-control m-input" rows="3" required asp-for="AdminNote"></textarea>
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="m-form__actions">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

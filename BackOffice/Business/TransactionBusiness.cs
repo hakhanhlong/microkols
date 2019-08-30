@@ -160,7 +160,7 @@ namespace BackOffice.Business
             return false;
         }
 
-        public async Task<int> UpdateStatus(TransactionStatus status, int id, string username)
+        public async Task<int> UpdateStatus(TransactionStatus status, int id, string username, string adminnote)
         {
             int retValue = -1;
             var _transaction = _ITransactionRepository.GetById(id);
@@ -168,6 +168,8 @@ namespace BackOffice.Business
             {
                 _transaction.Status = status;
                 _transaction.DateModified = DateTime.Now;
+                _transaction.UserModified = username;
+                _transaction.AdminNote = adminnote;
 
                 try {
                     

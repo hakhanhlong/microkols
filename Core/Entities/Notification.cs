@@ -22,13 +22,7 @@ namespace Core.Entities
         AgencyRequestJoinCampaign,
         AgencyConfirmJoinCampaign,
         AccountRequestJoinCampaign,
-        AccountConfirmJoinCampaign,
-        CampaignStarted,
-        CampaignEnded,
-        CampaignCompleted,
-        CampaignCanceled,
-        CampaignConfirmed,
-        CampaignError,
+        AccountConfirmJoinCampaign,      
         AccountSubmitCampaignRefContent,
         AccountFinishCampaignRefContent,
         AgencyApproveCampaignRefContent,
@@ -41,6 +35,12 @@ namespace Core.Entities
         TransactionDepositeApprove,
         TransactionDepositeProcessing,
         TransactionDepositeCancel,
+        CampaignStarted,
+        CampaignEnded,
+        CampaignCompleted,
+        CampaignCanceled,
+        CampaignConfirmed,
+        CampaignError
     }
     public enum NotificationStatus
     {

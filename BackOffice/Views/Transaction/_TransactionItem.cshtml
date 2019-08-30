@@ -49,9 +49,9 @@
                 <td>
 
                     @if (item.Status == TransactionStatus.Created)
-                    {                       
+                    {
                         <div class="btn-group btn-group-sm pull-right" role="group">
-                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Completed">
+                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
                                 <i class="fa fa-check"></i>
                             </button>
                             <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');" title="Processing">
@@ -59,20 +59,18 @@
                             </button>
                             <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
                                 <i class="fa fa-remove"></i>
-                            </button>                         
+                            </button>
                         </div>
                     }
                     @if (item.Status == TransactionStatus.Processing)
                     {
-                        <div class="btn-group btn-group-toggle pull-right" data-toggle="buttons">
-                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');">
-                                <input type="radio" name="options" id="option1" autocomplete="off">
-                                Approve
-                            </label>
-                            <label class="btn btn-primary m-btn m-btn--air" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');">
-                                <input type="radio" name="options" id="option3" autocomplete="off">
-                                Cancel
-                            </label>
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
+                                <i class="fa fa-check"></i>
+                            </button>                         
+                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                                <i class="fa fa-remove"></i>
+                            </button>
                         </div>
                     }
 
