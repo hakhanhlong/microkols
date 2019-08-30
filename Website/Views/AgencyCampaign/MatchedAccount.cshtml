@@ -18,10 +18,7 @@ else
     }
     else
     {
-        var min = (int)ViewBag.Min;
-        var max = (int)ViewBag.Max;
-        var campaignId = (int)ViewBag.CampaignId;
-        var campaignType = (CampaignType)ViewBag.CampaignType;
+      
         var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
         <div class="table-responsive" id="tblMatchedAccounts" data-renewurl="@ViewBag.RenewUrl">
             <table class="table table-hover">

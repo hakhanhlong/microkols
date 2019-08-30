@@ -18,6 +18,8 @@ namespace Website.ViewModels
             EnabledAccountChargeExtra = campaign.EnabledAccountChargeExtra;
 
             AccountChargeTime = campaign.AccountChargeTime;
+            SystemNote = campaign.SystemNote;
+
 
             //campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
             Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
@@ -29,6 +31,7 @@ namespace Website.ViewModels
         public bool EnabledAccountChargeExtra { get; set; }
         public int AccountChargeTime { get; set; }
 
+        public string SystemNote { get; set; }
 
         public CampaignPaymentModel Payment { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }

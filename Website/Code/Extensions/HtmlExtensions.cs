@@ -196,6 +196,7 @@ namespace Website.Code.Extensions
                 NotificationType.CampaignStarted,
                 NotificationType.CampaignEnded,
                 NotificationType.CampaignCompleted,
+                NotificationType.CampaignCanceled,
                 NotificationType.AccountSubmitCampaignRefContent,
                 NotificationType.AccountFinishCampaignRefContent,
                 NotificationType.AgencyApproveCampaignRefContent,

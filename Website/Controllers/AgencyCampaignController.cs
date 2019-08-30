@@ -175,15 +175,19 @@ namespace Website.Controllers
             ViewBag.Pagesize = pagesize;
 
             if (pagesize > 0)
-            {
+            {  //lam tam phan nay phai dieu chinh lai sau 
+
+                var pagesize2 = pagesize + 10;
                 var model = await _accountService.GetListAccount(accountTypes, categoryid, gender, cityid, agestart, ageend,
-                    string.Empty, pageindex, pagesize, null, min, max);
+                    string.Empty, pageindex, pagesize2, null, min, max);
 
                 ViewBag.CampaignId = campaignId;
                 ViewBag.CampaignType = campaignType;
                 ViewBag.AccountTypes = accountTypes;
                 ViewBag.Min = min;
                 ViewBag.Max = max;
+              
+                ViewBag.Pagesize = pagesize;
                 ViewBag.RenewUrl = Url.Action("RenewAccount", new { accountTypes, categoryid, gender, cityid, agestart, ageend, campaignType, min, max });
                 return PartialView(model);
             }

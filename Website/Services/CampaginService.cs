@@ -69,6 +69,13 @@ namespace Website.Services
 
         #endregion
 
+        public async Task<string> GetCampaignCode(int id)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(id);
+
+            return campaign != null ? campaign.Code : string.Empty;
+
+        }
         #region Campaign By Account
         public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, int type, string keyword, int page, int pagesize)
         {

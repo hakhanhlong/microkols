@@ -1,5 +1,5 @@
 ﻿@model ListTransactionHistoryViewModel
-
+@inject Website.Interfaces.ICampaignService  CampaignService
 @{
 
 }
@@ -52,16 +52,30 @@
                             <td class="text-primary">@item.Balance.ToPriceText()</td>
 
 
-                            <td>
-                                @if (CurrentUser.Type == EntityType.Account)
-                                {
-                                    <a asp-action="Details" asp-controller="AccountCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a>
+                            <td data-refid="@item.RefId">
+                                @{ 
+                                    var url = "";
+                                    if(CurrentUser.Type== EntityType.Account)
+                                    {
+                                        url = Url.Action("Details", "AccountCampaign", new { id = item.RefId });
+                                    }
+                                    else
+                                    {
+                                        url = Url.Action("Details", "AgencyCampaign", new { id = item.RefId });
+                                    }
                                 }
-                                else if (CurrentUser.Type == EntityType.Agency)
-                                {
-                                    <a asp-action="Details" asp-controller="AgencyCampaign" asp-route-id="@item.RefId">@item.Type.ToDisplayName()</a>
-                                }
+                            
 
+                                @if (item.Type.ToString().Contains("Campaign"))
+                                {
+                                    var code = await CampaignService.GetCampaignCode(item.RefId);
+                                    <a href="@url"> @item.Type.ToDisplayName() chiến dịch @code</a>
+
+                                }
+                                else
+                                {
+                                    <span>@item.Type.ToDisplayName()</span>
+                                }
 
                             </td>
                         </tr>

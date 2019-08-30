@@ -775,10 +775,20 @@ var AgencyCreateCampaignPage = (function () {
             suggestAccount();
         });
 
+        //$('#ExecutionTime').daterangepicker({
+        //    timePicker: true,
+        //    minDate: moment().startOf('hour').add(5, 'hour'),
+        //    startDate: moment().startOf('hour').add(5, 'hour'),
+        //    endDate: moment().startOf('hour').add(10, 'hour'),
+        //    locale: {
+        //        format: 'hh:mm A DD/MM/YYYY'
+        //    }
+        //});
+
         $('#ExecutionTime').daterangepicker({
             timePicker: true,
-            minDate: moment().startOf('hour').add(5, 'hour'),
-            startDate: moment().startOf('hour').add(5, 'hour'),
+            minDate: moment(),
+            startDate: moment(),
             endDate: moment().startOf('hour').add(10, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'

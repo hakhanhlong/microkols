@@ -45,11 +45,11 @@ namespace Core.Entities
         CampaignServiceCharge = 3,
         [DisplayName("Phí thành viên")]
         CampaignAccountCharge = 4,
-        [DisplayName("Bạn nhận được thanh toán cho chiến dịch")]
+        [DisplayName("Bạn nhận được thanh toán")]
         CampaignAccountPayback = 5,
         [DisplayName("Trừ tiền")]
         SubstractMoney = 6,
-        [DisplayName("Rút tiền thừa chiến dịch")]
+        [DisplayName("Rút tiền thừa")]
         CampaignServiceCashBack = 7,
     }
 
