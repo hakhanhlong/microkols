@@ -44,5 +44,16 @@ namespace BackOffice.Business
             };
 
         }
+
+        public async Task<ListTransactionHistoryViewModel> GetByTransactionID(int transactionid)
+        {
+            var filter = new TransactionHistoryWithTransactionSpecification(transactionid);
+            var list_history = await _ITransactionHistoryRepository.ListPagedAsync(filter, "DateCreated_desc");            
+
+            return new ListTransactionHistoryViewModel()
+            {
+                TransactionHistories = list_history.Select(t => new TransactionHistoryViewModel(t)).ToList()                
+            };
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace BackOffice.Business.Interfaces
     {
 
         Task<ListTransactionHistoryViewModel> GetByWalletID(int walletid, int pageindex);
+        Task<ListTransactionHistoryViewModel> GetByTransactionID(int transactionid);
     }
 }

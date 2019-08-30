@@ -62,7 +62,7 @@
                             </button>
                         </div>
                     }
-                    @if (item.Status == TransactionStatus.Processing)
+                    else if (item.Status == TransactionStatus.Processing)
                     {
                         <div class="btn-group btn-group-sm pull-right" role="group">
                             <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
@@ -71,6 +71,14 @@
                             <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
                                 <i class="fa fa-remove"></i>
                             </button>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                                <i class="fa fa-history"></i>
+                            </button>                            
                         </div>
                     }
 

@@ -26,16 +26,19 @@ namespace BackOffice.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         IPayoutExportRepository _IPayoutExportRepository;
         private readonly INotificationBusiness _INotificationBusiness;
+        private readonly ITransactionHistoryBusiness _ITransactionHistoryBusiness;
 
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
-            IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness)
+            IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
+            ITransactionHistoryBusiness __ITransactionHistoryBusiness)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
             _IPayoutExportRepository = __IPayoutExportRepository;
             _ITransactionRepository = __ITransactionRepository;
             _INotificationBusiness = __INotificationBusiness;
+            _ITransactionHistoryBusiness = __ITransactionHistoryBusiness;
         }
 
         public IActionResult Index()
@@ -66,6 +69,13 @@ namespace BackOffice.Controllers
         {
             var _listTransaction = await FillTransactions(TransactionType.CampaignAccountCharge, status, pageindex);
             return View(_listTransaction);
+        }
+
+        public async Task<IActionResult> History(int transactionid, int walletid)
+        {
+            var transactionhistories = await _ITransactionHistoryBusiness.GetByTransactionID(transactionid);
+
+            return View(transactionhistories);
         }
 
         public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All)
@@ -187,7 +197,7 @@ namespace BackOffice.Controllers
 
                 int count_row_header = 1;
                 int number_stt = 1;
-                int turn = 1;
+                
 
 
                 //First add the headers

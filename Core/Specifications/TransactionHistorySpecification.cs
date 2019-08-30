@@ -23,6 +23,19 @@ namespace Core.Specifications
 
     }
 
-   
+    public class TransactionHistoryWithTransactionSpecification : BaseSpecification<TransactionHistory>
+    {
+        
+
+
+        public TransactionHistoryWithTransactionSpecification(int transactionid) : base(m => m.TransactionId == transactionid)
+        {
+            AddInclude(m => m.Transaction);
+            AddInclude(m => m.Wallet);
+        }
+
+    }
+
+
 
 }

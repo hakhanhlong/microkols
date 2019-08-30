@@ -1,4 +1,13 @@
-﻿function UpdateTransactionStatus(status, id) {
+﻿
+function ShowHistory(transactionid, walletid) {
+    var url = '/transaction/history?transactionid=' + transactionid + "&walletid=" + walletid;
+    $('#iframehistory').attr('src', url);
+    $('#m_modal_5').modal({ show: true });
+
+    
+}
+
+function UpdateTransactionStatus(status, id) {
 
 
 
