@@ -6,6 +6,8 @@
     var max = (int)ViewBag.Max;
     var campaignType = (CampaignType)ViewBag.CampaignType;
     var accountTypes = (IEnumerable<AccountType>)ViewBag.AccountTypes;
+    var pagesize = (int)ViewBag.Pagesize;
+    var i = 0;
 }
 
 
@@ -33,10 +35,19 @@
                 isvalid = false;
             }
         }
+
+
     }
 
     if (isvalid)
     {
+        i++;
+
+        if(i> pagesize)
+        {
+            continue;
+        }
+
         <tr>
             <td>
                 <div class="d-flex  align-items-center">

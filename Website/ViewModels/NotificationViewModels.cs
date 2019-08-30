@@ -43,7 +43,7 @@ namespace Website.ViewModels
             Status = notification.Status;
             EntityType = notification.EntityType;
             EntityId = notification.EntityId;
-            Message = notification.Message;
+            Message  = (notification.Type== NotificationType.CampaignCanceled) ? $"{notification.Message} với lý do {notification.Data}" : $"{notification.Message}"  ;
 
         }
 
