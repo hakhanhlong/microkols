@@ -34,12 +34,32 @@ namespace BackOffice.Controllers
             _ITransactionHistoryBusiness = __ITransactionHistoryBusiness;
         }
 
+
+        private void BuildFilterDataControl()
+        {
+            ViewBag.EntityTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Agency", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Account", Value = "1"},                
+            };
+
+            ViewBag.AccountTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Regular", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotTeen", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotMom", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotFacebooker", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Kols", Value = "4"},
+            };
+        }
+
         public IActionResult Index(int pageindex = 1)
         {
             var list_wallet = _IWalletBusiness.GetListWallet(pageindex, 20);
 
-
-            if(list_wallet!= null)
+            BuildFilterDataControl();
+            if (list_wallet!= null)
             {
                 foreach (var item in list_wallet.Wallets)
                 {
@@ -66,10 +86,11 @@ namespace BackOffice.Controllers
             return View(list_wallet);            
         }
 
-        public IActionResult Search(string keyword, EntityType entitytype, AccountType type, int pageindex = 1)
+        public IActionResult Search(string keyword, EntityType EntityType, AccountType AccountType, int pageindex = 1)
         {            
 
-            var list_wallet = _IWalletBusiness.Search(keyword, entitytype, type, pageindex, 20);
+            var list_wallet = _IWalletBusiness.Search(keyword, EntityType, AccountType, pageindex, 20);
+            BuildFilterDataControl();
             if (list_wallet != null)
             {
                 foreach (var item in list_wallet.Wallets)

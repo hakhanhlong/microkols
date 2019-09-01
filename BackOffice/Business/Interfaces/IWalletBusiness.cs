@@ -12,7 +12,7 @@ namespace BackOffice.Business.Interfaces
         ListWalletViewModel GetListWallet(int pageindex, int pagesize);
         WalletViewModel Get(int id);
 
-        ListWalletViewModel Search(string keyword, EntityType entityType, AccountType? type, int pageindex, int pagesize);
+        ListWalletViewModel Search(string keyword, EntityType entityType, AccountType type, int pageindex, int pagesize);
 
     }
 }

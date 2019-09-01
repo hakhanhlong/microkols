@@ -1,4 +1,5 @@
-﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/wallet/search" method="get">
+﻿@model ListWalletViewModel
+<form class="m-form m-form--fit m--margin-bottom-20" action="/wallet/search" method="get">
     <div class="row m--margin-bottom-20">
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
@@ -9,11 +10,9 @@
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Entity Type:
-            </label>
-            <select class="form-control m-input" data-col-index="7" name="entitytype" id="sl-entity-type">                
-                <option value="Agency">Agency</option>
-                <option value="Account">Microkol</option>
-            </select>
+            </label>            
+            <select id="sl-entity-type" class="form-control m-input" asp-for="@Model.EntityType" asp-items="@ViewBag.EntityTypes"></select>
+
         </div>
     </div>    
     <div class="row m--margin-bottom-20" id="div-select-type" style="display:none;">
@@ -21,15 +20,8 @@
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Type:
-            </label>
-            <select class="form-control m-input" data-col-index="7" name="type" id="sl-type">
-                <option value="All">All</option>
-                <option value="Regular">Regular</option>
-                <option value="HotTeen">HotTeen</option>
-                <option value="HotMom">HotMom</option>
-                <option value="HotFacebooker">HotFacebooker</option>
-                <option value="Kols">Kols</option>
-            </select>
+            </label>           
+            <select id="sl-type" class="form-control m-input" asp-for="@Model.AccountType" asp-items="@ViewBag.AccountTypes"></select>
         </div>
     </div>
     <div class="row">

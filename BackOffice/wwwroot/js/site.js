@@ -3,7 +3,7 @@
 $(document).ready(function () {
     $('#sl-entity-type').change(function () {
 
-        if ($(this).val() === 'Account') {
+        if ($(this).val() === '1') {
             $('#div-select-type').show();
         }
         else {

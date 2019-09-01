@@ -10,6 +10,11 @@ namespace BackOffice.Models
     {
         public List<WalletViewModel> Wallets { get; set; }
         public PagerViewModel Pager { get; set; }
+
+        public string keyword { get; set; }
+        public EntityType EntityType { get; set; }
+
+        public AccountType AccountType { get; set; }
     }
 
 

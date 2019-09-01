@@ -42,14 +42,17 @@ namespace BackOffice.Business
             };
         }
 
-        public ListWalletViewModel Search(string keyword, EntityType entityType, AccountType? type, int pageindex, int pagesize)
+        public ListWalletViewModel Search(string keyword, EntityType entityType, AccountType type, int pageindex, int pagesize)
         {
             int total = 0;
             var wallets = _IWalletRepository.Search(keyword, entityType, type, pageindex, pagesize, out total);
             return new ListWalletViewModel()
             {
                 Wallets = wallets.Select(a => new WalletViewModel(a)).ToList(),
-                Pager = new PagerViewModel(pageindex, pagesize, total)
+                Pager = new PagerViewModel(pageindex, pagesize, total),
+                AccountType = type,
+                EntityType = entityType,
+                keyword = keyword
             };
         }
 
