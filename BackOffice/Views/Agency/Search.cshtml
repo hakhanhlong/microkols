@@ -65,7 +65,7 @@
                                         NAME
                                     </th>
                                     <th>
-                                        USERNAMEf
+                                        USERNAME
                                     </th>
                                     <th>
                                         TAX NUMBER
@@ -76,6 +76,7 @@
                                     <th>
                                         ACTIVED
                                     </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,31 +86,34 @@
                                     foreach (var item in Model.Agencies)
                                     {
                                         count++;
-                                        <tr>
-                                            <td>@count</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.UserName</td>
-                                            <td>@item.TaxNumber</td>
-                                            <td>@item.Phone</td>
-                                            <td>
+                                    <tr>
+                                        <td>@count</td>
+                                        <td><a href="/agency/detail?id=@item.Id">@item.Name</a></td>
+                                        <td>@item.UserName</td>
+                                        <td>@item.TaxNumber</td>
+                                        <td>@item.Phone</td>
+                                        <td>
 
-                                                @if (item.Actived)
-                                                {
+                                            @if (item.Actived)
+                                            {
 
-                                                    <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
-                                                        True
-                                                    </a>
-                                                }
-                                                else
-                                                {
-                                                    <a href="/agency/active?id=@(item.Id)" class="m-badge m-badge--danger m-badge--wide" style="text-decoration:none;">
-                                                        False
-                                                    </a>
+                                                <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
+                                                    True
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/agency/active?id=@(item.Id)" class="m-badge m-badge--danger m-badge--wide" style="text-decoration:none;">
+                                                    False
+                                                </a>
 
-                                                }
-                                            </td>
+                                            }
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm" href="/campaign/campaignfollowagency?agencyid=@item.Id">Campaigns</a>
+                                        </td>
 
-                                        </tr>
+                                    </tr>
 
                                     }
                                 }

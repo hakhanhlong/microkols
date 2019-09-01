@@ -32,6 +32,7 @@ namespace BackOffice.Models
             Phone = agency.Phone;
             Email = agency.Email;
             UserName = agency.Username;
+            Address = agency.Address;
         }
 
         public string UserName { get; set; }
@@ -55,6 +56,8 @@ namespace BackOffice.Models
 
         public string TaxNumber { get; set; }
         public string Phone { get; set; }
+
+        public string Address { get; set; }
 
 
 

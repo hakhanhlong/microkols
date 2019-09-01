@@ -32,6 +32,12 @@ namespace BackOffice.Controllers
             return View(list_agency);
         }
 
+        public async Task<IActionResult> Detail(int id = 0)
+        {
+            var agency = await _IAgencyBusiness.GetAgency(id);
+            return View(agency);
+        }
+
         public IActionResult Active(int id)
         {
             

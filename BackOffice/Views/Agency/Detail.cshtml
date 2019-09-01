@@ -1,0 +1,153 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model AgencyViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Agency Listing
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="/agency" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/agency" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Agency Listing
+                </span>
+            </a>
+        </li>
+        @if (Model != null && Model.Id > 0)
+        {
+            <li class="m-nav__separator">
+                -
+            </li>
+            <li class="m-nav__item">
+                <a href="/agency/detail?id=@(Model.Id)" class="m-nav__link">
+                    <span class="m-nav__link-text">
+                        @Model.Name
+                    </span>
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <!--begin::Portlet-->
+            <div class="m-portlet">
+                <div class="m-portlet__head">
+                    <div class="m-portlet__head-caption">
+                        <div class="m-portlet__head-title">
+                            <span class="m-portlet__head-icon m--hide">
+                                <i class="la la-gear"></i>
+                            </span>
+                            <h3 class="m-portlet__head-text">
+                                Detail @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Form-->
+                <form class="m-form m-form--fit" action="/microkol/detail" method="post">
+                    <input type="hidden" asp-for="Id">
+                    <div class="m-portlet__body">
+                        <div class="m-form__section m-form__section--first">
+                            <div class="m-form__heading">
+                                <h3 class="m-form__heading-title">
+                                    1. Agency Info:
+                                </h3>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label for="example_input_full_name">
+                                    Full Name:
+                                </label>
+                                <input class="form-control m-input" placeholder="Enter full name" asp-for="Name">
+                                <span class="m-form__help">
+                                    Please enter your full name
+                                </span>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Email address:
+                                </label>
+                                <input class="form-control m-input" placeholder="Enter email" asp-for="Email">
+                                <span class="m-form__help">
+                                    We'll never share your email with anyone else
+                                </span>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Address:
+                                </label>
+                                <input class="form-control m-input" placeholder="Address" asp-for="Address">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Tax Number:
+                                </label>
+                                <input class="form-control m-input" placeholder="Address" asp-for="TaxNumber">
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Phone:
+                                </label>
+                                <div class="m-input-icon m-input-icon--left">
+                                    <input class="form-control m-input" placeholder="Phone number" asp-for="Phone">
+                                    <span class="m-input-icon__icon m-input-icon__icon--left">
+                                        <span>
+                                            <i class="la la-bell"></i>
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="m-form__group form-group">
+                                <label for="">
+                                    Status:
+                                </label>
+                                <div class="m-checkbox-list">
+                                    <label class="m-checkbox">
+                                        <input type="checkbox" asp-for="Actived">
+                                        Actived
+                                        <span></span>
+                                    </label>
+                                    <label class="m-checkbox">
+                                        <input type="checkbox" asp-for="Deleted">
+                                        Deleted
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>                                                                      
+                    </div>
+                    @*<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                        <div class="m-form__actions m-form__actions--solid">
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                            <button type="reset" class="btn btn-secondary">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>*@
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Portlet-->
+        </div>
+    </div>
+
+
+
