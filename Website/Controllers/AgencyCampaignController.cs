@@ -233,7 +233,15 @@ namespace Website.Controllers
         }
 
         #endregion
+        #region Search Account
 
+        public async Task<IActionResult> GetAccounts(AccountType type, string kw, int page = 1, int pagesize = 20)
+        {
+            var model = await _accountService.GetAccounts(type, kw, string.Empty, page, pagesize);
+
+            return Ok(model);
+        }
+        #endregion
 
         #region Action
 

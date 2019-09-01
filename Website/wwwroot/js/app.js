@@ -33,9 +33,15 @@
         }
         else if (currentPage === 'accountcampaign_details') {
             AccountDetailsCampaignPage.Init();
-        } else if (currentPage === 'home_index') {
+        }
+        else if (currentPage === 'accountcampaign_index') {
+            AccountIndexCampaignPage.Init();
+        }
+        else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
         }
+
+        
     }
     function handler() {
 

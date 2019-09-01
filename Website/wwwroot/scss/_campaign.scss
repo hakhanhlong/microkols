@@ -18,3 +18,25 @@
         }
     }
 }
+
+
+#addonimagewrap {
+    display: flex;
+
+    .addonimage {
+        position: relative;
+
+        .remove {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: $danger;
+            font-size:1.5rem;
+            cursor:pointer;
+        }
+
+        img {
+            max-height: 250px;
+        }
+    }
+}

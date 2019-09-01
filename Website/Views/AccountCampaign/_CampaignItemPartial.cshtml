@@ -133,28 +133,9 @@
             <small>
                 @Model.DateCreated.ToTimeAgo()
             </small>
-
         </div>
-        <div class="text-right">
-            @if (Model.CampaignAccount.Status == CampaignAccountStatus.AgencyRequest)
-            {
-
-
-
-                <form asp-action="FeedbackJoinCampaign">
-                    <input type="hidden" value="@Model.Id" name="campaignid" />
-                    <button class="btn btn-primary" name="type" value="1">Xác nhận tham gia </button>
-                    <button class="btn btn-secondary" name="type" value="0">Hủy </button>
-                </form>
-
-
-            }
-            else
-            {
-
-                @Model.CampaignAccount.Status.ToBadge()
-            }
-
+        <div>
+            <partial name="_CampaignActionPartial" model="@Model" />
         </div>
 
     </div>

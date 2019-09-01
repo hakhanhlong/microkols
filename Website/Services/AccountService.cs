@@ -61,6 +61,22 @@ namespace Website.Services
             var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
             return new AccountViewModel(account, accountCouting);
         }
+        public async Task<List<AccountViewModel>> GetAccounts(AccountType type, string kw, string order,int page,int pagesize)
+        {
+            var filter = new AccountSpecification(kw, type);
+            var accounts = await _accountRepository.ListPagedAsync(filter, order,page,pagesize);
+            var list = new List<AccountViewModel>();
+
+            foreach (var account in accounts)
+            {
+                var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+
+                list.Add(new AccountViewModel(account, accountCouting));
+            }
+
+
+            return list;
+        }
 
 
         public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> 
