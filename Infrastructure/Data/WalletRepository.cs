@@ -47,6 +47,60 @@ namespace Infrastructure.Data
         }
 
 
+        public List<Wallet> Search(string keyword, EntityType entityType, AccountType? type, int pageindex, int pagesize, out int total)
+        {
+            var wallet = from w in _dbContext.Wallet
+                         where w.EntityType == entityType
+                         select w;
+            
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                if(entityType == EntityType.Account)
+                {
+
+                    var list_account = from a in _dbContext.Account
+                                       where (a.Name.Contains(keyword) || a.Email.Contains(keyword))
+                                       && (type.Value == AccountType.All || a.Type == type.Value)
+                                       select a;
+
+                    wallet = from w in wallet
+                             where list_account.Select(a => a.Id).Contains(w.EntityId)
+                             select w;
+
+
+                }
+                else if(entityType == EntityType.Agency)
+                {
+                    var list_agency = from a in _dbContext.Agency
+                                   where a.Name.Contains(keyword) || a.Email.Contains(keyword)
+                                   select a;
+
+
+                    wallet = from w in wallet
+                             where list_agency.Select(a => a.Id).Contains(w.EntityId)
+                             select w;
+                }
+            }
+            else
+            {
+                if(entityType == EntityType.Account)
+                {
+                    var list_account = from a in _dbContext.Account
+                                       where (type.Value == AccountType.All || a.Type == type.Value)
+                                       select a;
+
+                    wallet = from w in wallet
+                             where list_account.Select(a => a.Id).Contains(w.EntityId)
+                             select w;
+                }
+               
+            }
+
+            total = wallet.Count();
+
+            return wallet.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+        }
+
         public async Task<int> GetWalletId(EntityType entityType, int entityId)
         {
             var entity = await GetWallet(entityType, entityId);

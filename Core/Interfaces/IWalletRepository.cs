@@ -17,6 +17,9 @@ namespace Core.Interfaces
         Task<long> Exchange(int walletid, long value, string username);
         Task<int> CreateWallet(EntityType entityType, int entityId);
 
+
+        List<Wallet> Search(string keyword, EntityType entityType, AccountType? type, int pageindex, int pagesize, out int total);
+
         int CountAll();
     }
 }

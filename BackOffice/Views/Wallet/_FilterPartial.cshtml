@@ -1,0 +1,61 @@
+﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/wallet/search" method="get">
+    <div class="row m--margin-bottom-20">
+        <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Name:
+            </label>
+            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Name or Email" data-col-index="0">
+        </div>
+        <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Entity Type:
+            </label>
+            <select class="form-control m-input" data-col-index="7" name="entitytype" id="sl-entity-type">                
+                <option value="Agency">Agency</option>
+                <option value="Account">Microkol</option>
+            </select>
+        </div>
+    </div>    
+    <div class="row m--margin-bottom-20" id="div-select-type" style="display:none;">
+        <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile"></div>
+        <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Type:
+            </label>
+            <select class="form-control m-input" data-col-index="7" name="type" id="sl-type">
+                <option value="All">All</option>
+                <option value="Regular">Regular</option>
+                <option value="HotTeen">HotTeen</option>
+                <option value="HotMom">HotMom</option>
+                <option value="HotFacebooker">HotFacebooker</option>
+                <option value="Kols">Kols</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="float-right">
+                <button class="btn btn-brand m-btn m-btn--icon" id="m_search" type="submit">
+                    <span>
+                        <i class="la la-search"></i>
+                        <span>
+                            Search
+                        </span>
+                    </span>
+                </button>
+                &nbsp;&nbsp;
+                <a href="/wallet" class="btn btn-secondary m-btn m-btn--icon">
+                    
+                        <span>
+                            <i class="la la-close"></i>
+                            <span>
+                                Reset
+                            </span>
+                        </span>
+                    
+                </a>
+            </div>
+
+        </div>
+    </div>
+</form>

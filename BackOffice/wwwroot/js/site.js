@@ -1,4 +1,18 @@
 ﻿
+
+$(document).ready(function () {
+    $('#sl-entity-type').change(function () {
+
+        if ($(this).val() === 'Account') {
+            $('#div-select-type').show();
+        }
+        else {
+            $('#div-select-type').hide();
+        }
+
+    });
+});
+
 function ShowHistory(transactionid, walletid) {
     var url = '/transaction/history?transactionid=' + transactionid + "&walletid=" + walletid;
     $('#iframehistory').attr('src', url);

@@ -1,5 +1,6 @@
 ﻿using BackOffice.Business.Interfaces;
 using BackOffice.Models;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
@@ -21,7 +22,6 @@ namespace BackOffice.Business
             IAgencyBusiness __IAgencyBusiness, IAccountBusiness __IAccountBusiness)
         {
             _logger = _loggerFactory.CreateLogger<WalletBusiness>();
-
             _IWalletRepository = __IWalletRepository;
             _IAgencyBusiness = __IAgencyBusiness;
             _IAccountBusiness = __IAccountBusiness;
@@ -35,6 +35,17 @@ namespace BackOffice.Business
             var total = _IWalletRepository.CountAll();
 
 
+            return new ListWalletViewModel()
+            {
+                Wallets = wallets.Select(a => new WalletViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
+        public ListWalletViewModel Search(string keyword, EntityType entityType, AccountType? type, int pageindex, int pagesize)
+        {
+            int total = 0;
+            var wallets = _IWalletRepository.Search(keyword, entityType, type, pageindex, pagesize, out total);
             return new ListWalletViewModel()
             {
                 Wallets = wallets.Select(a => new WalletViewModel(a)).ToList(),

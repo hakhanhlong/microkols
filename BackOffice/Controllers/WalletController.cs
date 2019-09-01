@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,7 @@ namespace BackOffice.Controllers
                         if (account.Result != null)
                         {
                             item.Name = account.Result.Name;
+                            item.Type = account.Result.Type.ToString();
                         }
                     }
                     else if(item.EntityType == Core.Entities.EntityType.Agency)
@@ -63,6 +65,38 @@ namespace BackOffice.Controllers
 
             return View(list_wallet);            
         }
+
+        public IActionResult Search(string keyword, EntityType entitytype, AccountType type, int pageindex = 1)
+        {            
+
+            var list_wallet = _IWalletBusiness.Search(keyword, entitytype, type, pageindex, 20);
+            if (list_wallet != null)
+            {
+                foreach (var item in list_wallet.Wallets)
+                {
+                    if (item.EntityType == Core.Entities.EntityType.Account)
+                    {
+                        var account = _IAccountBusiness.GetAccount(item.EntityId);
+                        if (account.Result != null)
+                        {
+                            item.Name = account.Result.Name;
+                            item.Type = account.Result.Type.ToString();
+                        }
+                    }
+                    else if (item.EntityType == Core.Entities.EntityType.Agency)
+                    {
+                        var agency = _IAgencyBusiness.GetAgency(item.EntityId);
+                        if (agency.Result != null)
+                        {
+                            item.Name = agency.Result.Name;
+                        }
+                    }
+                }
+            }
+            return View(list_wallet);
+        }
+
+
 
         public async Task<IActionResult> Transaction(int walletid, int pageindex = 1)
         {

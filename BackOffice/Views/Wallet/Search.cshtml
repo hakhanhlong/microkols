@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Wallet Listing
+        Wallet Searching
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -27,7 +27,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Listing
+                            Wallet Searching
                         </h3>
                     </div>
                 </div>
@@ -90,7 +90,8 @@
                                 }
                             </tbody>
                         </table>
-                        <pager pager="@Model.Pager" asp-action="Index"></pager>
+                        <pager pager="@Model.Pager" asp-action="Search" asp-route-keyword="@(Context.Request.Query["keyword"])" asp-route-entitytype="@(Context.Request.Query["entitytype"])"
+                        asp-route-type="@(Context.Request.Query["type"])"></pager>
                     </div>
                 </div>
                 <!--end::Section-->
