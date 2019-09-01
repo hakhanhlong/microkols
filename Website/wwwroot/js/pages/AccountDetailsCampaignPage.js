@@ -3,10 +3,14 @@ var AccountDetailsCampaignPage = (function () {
 
     function init() {
 
-
         handler();
     }
     function handler() {
+        handlerAction();
+
+    }
+
+    function handlerAction() {
         $('.btn-updateref').click(function () {
             var url = $(this).data('url');
             AppBsModal.Init('static');
@@ -40,8 +44,8 @@ var AccountDetailsCampaignPage = (function () {
                     }
                 });
         });
-
     }
+
     function handlerUpdateRef() {
         $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
         $('#frmUpdateCampaignAccountRef').submit(function (e) {
@@ -75,7 +79,8 @@ var AccountDetailsCampaignPage = (function () {
     }
 
     return {
-        Init: init
+        Init: init,
+        HandlerAction: handlerAction
     };
 
 })();

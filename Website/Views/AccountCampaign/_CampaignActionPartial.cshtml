@@ -1,0 +1,55 @@
+﻿@model CampaignWithAccountViewModel
+@{
+    var campaignAccount = Model.CampaignAccount;
+}
+
+    @if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+    {
+    <div>
+
+        <form asp-action="FeedbackJoinCampaign">
+            <input type="hidden" value="@Model.Id" name="campaignid" />
+            <button class="btn btn-primary" name="type" value="1">Đồng ý tham gia </button>
+            <button class="btn btn-secondary" name="type" value="0">Không đồng ý </button>
+        </form>
+    </div>
+    }
+    else if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
+        || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+    {
+
+        if (Model.Type != CampaignType.ShareContentWithCaption || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
+            || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+        {
+            if (Model.Status == CampaignStatus.Started)
+            {
+                <div>
+                    @if (Model.Type.IsShareCampaign())
+                    {
+                        <button class="btn btn-primary btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Data"> <i class="fab fa-facebook"></i> Chia sẻ ngay</button>
+                    }
+                    <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Bạn đã thực hiện công việc </button>
+                </div>
+            }
+        }
+        else
+        {
+            <div>
+                <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Bắt đầu bằng việc viết Caption chiến dịch </button>
+            </div>
+        }
+
+    }
+    else if (campaignAccount.Status == CampaignAccountStatus.DeclinedContent)
+    {
+
+        <div>
+            <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Id, campaigntype = Model.Type })"> Gửi lại nội dung Caption </button>
+        </div>
+    }
+    else
+    {
+        <div>
+            @Model.CampaignAccount.Status.ToBadge()
+        </div>
+    }

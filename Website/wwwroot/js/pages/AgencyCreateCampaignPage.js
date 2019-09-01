@@ -29,9 +29,14 @@
 
             AppCommon.uploadTempImage(files, function (datas) {
                 datas.forEach(function (item) {
-                    var html = '<img src="' + item.url +'" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="AddonImages" value="' + item.path +'" />';
+                    var html = '<div class="addonimage"><span class="remove"><i class="fal fa-times"></i></span> <img src="' + item.url + '" id="imagePreview" class="img-thumbnail mt-2" style="" /><input type="hidden" name="AddonImages" value="' + item.path + '" /></div>';
                     $(target).append(html);
-                })
+                });
+
+                $('.addonimage .remove').unbind('click');
+                $('.addonimage .remove').click(function () {
+                    $(this).closest('.addonimage').remove();
+                });
                
             });
 
@@ -116,7 +121,59 @@
             theme: "bootstrap4" 
         });
 
+
+        $('#CustomKolNames').select2({
+            theme: "bootstrap4",
+            ajax: {
+                url: AppConstants.UrlGetAccounts,
+                data: function (params) {
+                    var accouttype = $('input[name=AccountType]:checked').val();
+
+                    var query = {
+                        kw: params.term,
+                        type: accouttype
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                }
+                /*
+                processResults: function (data) {
+
+                    var list = [];
+
+                    data.forEach(function (item) {
+                        list.push(new {
+                            id: item.id,
+                            text: item.name
+                            
+                        })
+                    });
+                    console.log('123', list);
+                    return {
+                        results: list
+                    };
+                }
+                */
+                
+            }
+        });
+
     }
+
+
+
+
     function createCampaign(callback) {
 
 

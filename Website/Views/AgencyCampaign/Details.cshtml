@@ -121,22 +121,12 @@
                     Mô tả:  @Model.Description
                 </div>
             }
-            <div>Đối tượng tham gia:  @foreach (var item in Model.AccountTypes) {
-                <span>@item.ToDisplayName()</span>
-            }</div>
-            @if (Model.Image.Count > 0)
-            {
-
-                <div>
-                    Hình ảnh đính kèm bài post <br />
-                    @foreach (var imgItem in Model.Image)
-                    {
-                        <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-                    }
-
-
-                </div>
-            }
+            <div>
+                Đối tượng tham gia:  @foreach (var item in Model.AccountTypes)
+                {
+                    <strong>@item.ToDisplayName()</strong>
+                }
+            </div>
 
 
             @if (Model.CountOption > 0)
@@ -196,6 +186,20 @@
 
                 </ul>
 
+            }
+
+            @if (Model.Image.Count > 0)
+            {
+
+                <div>
+                    Hình ảnh đính kèm bài post <br />
+                    @foreach (var imgItem in Model.Image)
+                    {
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                    }
+
+
+                </div>
             }
 
 
