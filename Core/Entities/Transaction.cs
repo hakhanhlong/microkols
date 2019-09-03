@@ -51,6 +51,8 @@ namespace Core.Entities
         SubstractMoney = 6,
         [DisplayName("Rút tiền thừa")]
         CampaignServiceCashBack = 7,
+        [DisplayName("Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
+        CampaignAccountRefundAgency = 8,
     }
 
 }

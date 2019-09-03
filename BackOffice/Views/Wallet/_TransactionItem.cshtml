@@ -16,7 +16,8 @@
                 TYPE
             </th>
             <th>STATUS</th>
-            <th>TIME</th>            
+            <th>TIME</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -36,14 +37,22 @@
 
                 @if (item.SenderId == current_walletid)
                 {
-                    <h6 class="m--font-danger">
-                        - @item.Amount.ToPriceText()
-                    </h6>
+                <h6 class="m--font-danger">
+                    @if (item.Amount < 0)
+                    {
+                        <span>@item.Amount.ToPriceText()</span>
+                    }
+                    else
+                    {
+                        <span>-@item.Amount.ToPriceText()</span>
+                    }
+
+                </h6>
                 }
                 else if (item.ReceiverId == current_walletid)
                 {
                     <h6 class="m--font-info">
-                        + @item.Amount.ToPriceText()
+                        +@item.Amount.ToPriceText()
                     </h6>
                 }
 
@@ -56,11 +65,18 @@
                 @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
 
             </td>
+            <td>
+                <div class="btn-group btn-group-sm pull-right" role="group">
+                    <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                        <i class="fa fa-history"></i>
+                    </button>
+                </div>
+            </td>
         </tr>
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
-                    <td colspan="7" class="m--font-info">
+                    <td colspan="8" class="m--font-info">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)

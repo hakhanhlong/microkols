@@ -63,6 +63,21 @@
                 <!--begin::Section-->
                 <div class="m-section">
                     <div class="m-section__content">
+                        @if (Model.IsRefundToAgency.HasValue)
+                        {
+                            if (Model.IsRefundToAgency.Value == true)
+                            {
+                                <div class="m-alert m-alert--outline alert alert-info alert-dismissible fade show" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                                    <strong>
+                                        Warning!
+                                    </strong>
+                                    You were refund to Agency
+                                </div>
+                                <br />
+                            }
+
+                        }
                         <div class="row">
                             <div class="col-md-6">
                                 <h6>
@@ -115,7 +130,7 @@
                                                 <label>
                                                     Note:
                                                 </label>
-                                                <textarea class="form-control m-input" name="txt_note" rows="3">@(string.Format("Hoàn tiền {0} đ, vì \"{1}\" chưa hoàn thành chiến dịch {2}", Model.AccountChargeAmount, Model.Account.Name, Model.Campaign.Code))</textarea>
+                                                <textarea class="form-control m-input" name="txt_note" rows="3">@(string.Format("Hoàn tiền {0} đ tới Agency {1}, vì \"{2}\" chưa hoàn thành chiến dịch {3}", Model.AccountChargeAmount, Model.Campaign.AgencyId, Model.Account.Name, Model.Campaign.Code))</textarea>
                                                 <span class="m-form__help">
                                                     Note why need substract money
                                                 </span>
@@ -123,16 +138,21 @@
 
                                         </div>
                                     </div>
-                                    <div class="m-portlet__foot m-portlet__foot--fit">
-                                        <div class="m-form__actions m-form__actions">
-                                            <button type="submit" class="btn btn-primary">
-                                                Submit
-                                            </button>
-                                            <button type="reset" class="btn btn-secondary">
-                                                Cancel
-                                            </button>
+                                    @if (!Model.IsRefundToAgency.HasValue)
+                                    {
+                                        <div class="m-portlet__foot m-portlet__foot--fit">
+                                            <div class="m-form__actions m-form__actions">
+                                                <button type="submit" class="btn btn-primary">
+                                                    Submit
+                                                </button>
+                                                <button type="reset" class="btn btn-secondary">
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
+
+                                    }
+
                                 </form>
 
                             </div>
@@ -140,7 +160,7 @@
 
                         </div>
 
-                      
+
 
 
                     </div>

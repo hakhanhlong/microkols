@@ -73,7 +73,7 @@
                             </button>
                         </div>
                     }
-                    else
+                    else if(item.Status == TransactionStatus.Completed)
                     {
                         <div class="btn-group btn-group-sm pull-right" role="group">
                             <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">

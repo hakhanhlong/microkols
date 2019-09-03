@@ -326,19 +326,19 @@ namespace BackOffice.Controllers
                 {
                     int senderid = await _IWalletRepository.GetWalletId(EntityType.Account, campaignaccount.AccountId);
                     int recieverid = await _IWalletRepository.GetWalletId(EntityType.Agency, campaignaccount.Campaign.AgencyId);
-
+                    int campaignid = campaignaccount.Campaign.Id;
                     //check xem đã trừ tiền chưa?
-                    if (_ITransactionBusiness.CheckExist(senderid, recieverid, TransactionType.SubstractMoney, caid))
+                    if (_ITransactionBusiness.CheckExist(senderid, recieverid, TransactionType.CampaignAccountRefundAgency, campaignid))
                     {
                         TempData["MessageError"] = "You was Refund money!";
                     }
                     else
                     {
                        
-                        int transactionid = await _ITransactionRepository.CreateTransaction(senderid, recieverid, money_number, TransactionType.SubstractMoney, txt_note, "", HttpContext.User.Identity.Name, caid);
+                        int transactionid = await _ITransactionRepository.CreateTransaction(senderid, recieverid, money_number, TransactionType.CampaignAccountRefundAgency, txt_note, string.Format("Campaign ID = {0}", campaignid), HttpContext.User.Identity.Name, campaignid);
                         if (transactionid > 0)
                         {
-                            int retValue = await _ITransactionBusiness.CalculateBalance(transactionid, money_number, senderid, recieverid, "[Trừ Tiền][SubstractMoney]", HttpContext.User.Identity.Name);
+                            int retValue = await _ITransactionBusiness.CalculateBalance(transactionid, money_number, senderid, recieverid, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency]", HttpContext.User.Identity.Name);
                             /*
                             * 09: success
                             * 10: wallet do not exist
@@ -348,21 +348,22 @@ namespace BackOffice.Controllers
 
                             try
                             {
-                                
+                                                            
                                 switch (retValue)
                                 {
                                     case 9:
                                         TempData["MessageSuccess"] = "Success Refund Money";
                                         campaignaccount.IsRefundToAgency = true;
                                         await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Success", HttpContext.User.Identity.Name);// delete transaction if case error
                                         break;
                                     case 10:
                                         TempData["MessageError"] = "Wallet do not exist";
-                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Trừ Tiền][SubstractMoney]Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
                                         break;
                                     case 11:
                                         TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
-                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Trừ Tiền][SubstractMoney]Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
                                         break;
                                 }
                             }

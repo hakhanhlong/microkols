@@ -72,7 +72,7 @@ namespace Infrastructure.Data
                 else if(entityType == EntityType.Agency)
                 {
                     var list_agency = from a in _dbContext.Agency
-                                   where a.Name.Contains(keyword) || a.Email.Contains(keyword)
+                                   where a.Name.Contains(keyword) || a.Email.Contains(keyword) || a.TaxIdNumber.Contains(keyword)
                                    select a;
 
 
