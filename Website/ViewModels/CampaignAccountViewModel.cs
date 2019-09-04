@@ -124,6 +124,23 @@ namespace Website.ViewModels
 
     }
 
+
+    public class UpdateCampaignAccountRefImagesViewModel
+    {
+        public UpdateCampaignAccountRefImagesViewModel()
+        {
+
+        }
+     
+        [Display(Name = "Hình ảnh thực hiện chiến dịch")]
+        public List<string> RefImage { get; set; } = new List<string>();
+        public int CampaignId { get; set; }
+        public CampaignType CampaignType { get; set; }
+
+    }
+
+
+
     public class ReportCampaignAccountViewModel
     {
 

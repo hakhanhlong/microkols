@@ -391,7 +391,18 @@ else
                     }
                     else
                     {
-                        <div class="alert alert-info">Bạn đã hoàn thành công việc. Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản</div>
+                        <div class="alert alert-info">
+                            <p>
+                                Bạn đã hoàn thành công việc. Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
+                            </p>
+                            <p>
+
+                                <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Id, campaigntype = Model.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+
+                            </p>
+                </div>
+
+                        
                     }
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Unfinished)
