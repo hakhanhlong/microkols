@@ -55,6 +55,8 @@ namespace BackOffice.Models
             return transactions.Select(m => new TransactionViewModel(m)).ToList();
         }
 
+        public WalletViewModel Wallet { get; set; }
+
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }

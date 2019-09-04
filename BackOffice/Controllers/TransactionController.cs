@@ -46,11 +46,31 @@ namespace BackOffice.Controllers
             return View();
         }
 
+
+        private void BindingTransactionOptions()
+        {
+            ViewBag.TransactionStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Processing", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "4"},
+            };
+        }
+
         public async Task<IActionResult> WalletRecharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
 
+            BindingTransactionOptions();
             var _listTransaction = await FillTransactions(TransactionType.WalletRecharge, status, pageindex);
             return View(_listTransaction);
+        }
+
+        public async Task<IActionResult>  WalletRechargeSearch(string keyword, TransactionStatus status)
+        {
+            return View();
         }
 
         public async Task<IActionResult> WalletWithdraw(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
@@ -146,7 +166,7 @@ namespace BackOffice.Controllers
                         int retValue = _ITransactionBussiness.UpdateCashOut(item.Id);
                         if (retValue > 0)
                         {
-                            await _ITransactionBussiness.CalculateBalance(item.Id, item.Amount, item.ReceiverId, item.SenderId, "[Trả tiền mặt][AccountPayback]", HttpContext.User.Identity.Name);
+                            await _ITransactionBussiness.CalculateBalance(item.Id, item.Amount, item.ReceiverId, item.SenderId, "[Nhận thanh toán][CampaignAccountPayback]", HttpContext.User.Identity.Name);
                         }
                     }
                 }
@@ -428,13 +448,17 @@ namespace BackOffice.Controllers
                     }
                     else
                     {
-                        item.SenderName = _IWalletBusiness.Get(item.SenderId).Name;
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
                     }
                     
                 }
                 catch { } 
                 try {
-                    item.ReceiverName = _IWalletBusiness.Get(item.ReceiverId).Name;
+                    var wallet = _IWalletBusiness.Get(item.ReceiverId);
+                    item.ReceiverName = wallet.Name;
+                    item.Wallet = wallet;
                 }
                 catch { }
             }

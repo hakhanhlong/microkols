@@ -20,6 +20,7 @@ namespace BackOffice.Business.Interfaces
 
         ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus status, int pageindex, int pagesize);
 
+        Task<CampaignDetailsViewModel> GetCampaign(int campaignid);
 
         //Task<ListCampaignWithAccountViewModel> GetListCampaignByAllAccount(int type, string keyword, int page, int pagesize);
 

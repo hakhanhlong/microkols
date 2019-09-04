@@ -87,7 +87,18 @@ namespace BackOffice.Controllers
         public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0)
         {
 
-            var campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
+            CampaignDetailsViewModel campaign;
+
+            if(agencyid > 0)
+            {
+                campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
+            }
+            else
+            {
+                campaign = await _ICampaignBusiness.GetCampaign(campaignid);
+            }
+
+            
             ViewBag.Categories = await _ISharedBusiness.GetCategories();            
             ViewBag.Cities = await _ISharedBusiness.GetCities();
             return View(campaign);

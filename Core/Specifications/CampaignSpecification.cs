@@ -48,7 +48,12 @@ namespace Core.Specifications
     public class CampaignSpecification : BaseSpecification<Campaign>
     {
         public CampaignSpecification(int campaignid) : base(m => m.Id == campaignid)
-        { }
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccount);
+            AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
+            AddInclude(m => m.CampaignAccountType);
+        }
     }
 
     public class CampaignByAccountSpecification : BaseSpecification<Campaign>

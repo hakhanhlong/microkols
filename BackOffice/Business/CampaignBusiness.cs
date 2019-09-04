@@ -89,6 +89,19 @@ namespace BackOffice.Business
             return null;
         }
 
+        public async Task<CampaignDetailsViewModel> GetCampaign(int campaignid)
+        {
+            var filter = new CampaignSpecification(campaignid);
+            var campaign = await _ICampaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null)
+            {
+                var transactions = await _ITransactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
+                    campaign.CampaignAccount, transactions);
+            }
+            return null;
+        }
+
 
         //public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAllAccount(int type, string keyword, int page, int pagesize)
         //{
@@ -106,7 +119,7 @@ namespace BackOffice.Business
 
         //    foreach (var campaign in campaigns)
         //    {
-                
+
         //        var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaign.Id));
         //        if (campaignAccount != null)
         //        {

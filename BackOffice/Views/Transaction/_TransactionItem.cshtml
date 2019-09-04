@@ -11,10 +11,7 @@
             </th>
             <th>
                 RECEIVER
-            </th>
-            <th>
-                CODE
-            </th>
+            </th>        
             <th>
                 AMOUNT
             </th>
@@ -36,8 +33,18 @@
             <tr id="transaction_@(item.Id)">
                 <td>@item.Number</td>
                 <td>@item.SenderName</td>
-                <td>@item.ReceiverName</td>
-                <td>@item.Code</td>
+
+                <td>
+                    @if (item.Wallet.EntityType == EntityType.Agency)
+                    {
+                        <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
+                    else
+                    {
+                        <a href="/microkol/detail?id=item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
+
+                </td>                
                 <td>
                     <h6 class="m--font-danger">
                         @item.Amount.ToPriceText()
@@ -89,7 +96,7 @@
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
-                    <td colspan="9">
+                    <td colspan="8">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)

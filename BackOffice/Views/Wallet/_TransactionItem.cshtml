@@ -5,9 +5,12 @@
         <tr>
             <th>
                 #
-            </th>      
+            </th>
             <th>
                 CODE
+            </th>
+            <th>
+                CAMPAIGN
             </th>
             <th>
                 AMOUNT
@@ -34,20 +37,24 @@
             <td>@item.Number</td>
             <td>@item.Code</td>
             <td>
+                
+                <a href="/campaign/detail/?campaignid=@item.RefId">@item.RefId</a>
+            </td>
+            <td>
 
                 @if (item.SenderId == current_walletid)
                 {
-                <h6 class="m--font-danger">
-                    @if (item.Amount < 0)
-                    {
-                        <span>@item.Amount.ToPriceText()</span>
-                    }
-                    else
-                    {
-                        <span>-@item.Amount.ToPriceText()</span>
-                    }
+                    <h6 class="m--font-danger">
+                        @if (item.Amount < 0)
+                        {
+                            <span>@item.Amount.ToPriceText()</span>
+                        }
+                        else
+                        {
+                            <span>-@item.Amount.ToPriceText()</span>
+                        }
 
-                </h6>
+                    </h6>
                 }
                 else if (item.ReceiverId == current_walletid)
                 {
@@ -76,7 +83,7 @@
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
-                    <td colspan="8" class="m--font-info">
+                    <td colspan="9" class="m--font-info">
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
                             @("Note:" + item.Note)
