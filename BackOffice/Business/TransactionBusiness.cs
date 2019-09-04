@@ -72,6 +72,13 @@ namespace BackOffice.Business
             };
         }
 
+        public async Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime StartDate, DateTime EndDate, int pageindex, int pagesize)
+        {
+
+
+            return new ListTransactionViewModel();
+        }
+
         public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype)
         {
             var lastDateTime = DateTime.Now.AddMonths(-1);

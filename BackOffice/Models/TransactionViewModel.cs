@@ -12,6 +12,16 @@ namespace BackOffice.Models
     {
         public List<TransactionViewModel> Transactions { get; set; }
         public PagerViewModel Pager { get; set; }
+
+        public string keyword { get; set; }
+
+        public TransactionStatus TransactionStatus  { get; set; }
+
+        public string StartDate { get; set; }
+
+        public string EndDate { get; set; }
+
+
     }
 
     public class GroupTransactionViewModel

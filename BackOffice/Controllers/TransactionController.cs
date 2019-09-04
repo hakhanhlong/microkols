@@ -58,6 +58,7 @@ namespace BackOffice.Controllers
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "3"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "4"},
             };
+        
         }
 
         public async Task<IActionResult> WalletRecharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
