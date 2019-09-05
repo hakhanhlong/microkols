@@ -74,7 +74,7 @@ namespace BackOffice.Controllers
             BindingTransactionOptions();
 
 
-            var _listTransaction = await _ITransactionBussiness.TransactionAgencyWalletRechargeSearch(keyword, status, StartDate, EndDate, pageindex, 5);
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyWalletRechargeSearch(keyword, status, StartDate, EndDate, pageindex, 25);
 
             foreach (var item in _listTransaction.Transactions)
             {

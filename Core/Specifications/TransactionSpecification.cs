@@ -24,7 +24,7 @@ namespace Core.Specifications
         public TransactionSpecification(TransactionType type, TransactionStatus status, DateTime startDate, DateTime endDate) : base(t => t.Status == status && t.Type == type 
         && t.DateModified >= startDate && t.DateModified <= endDate) { }
 
-        public TransactionSpecification(DateTime? startDate, DateTime? endDate) : base(t => (!startDate.HasValue || t.DateModified >= startDate.Value) && (!endDate.HasValue || t.DateModified <= endDate.Value))
+        public TransactionSpecification(DateTime? startDate, DateTime? endDate) : base(t => (!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date))
         { }
 
         public TransactionSpecification(int senderid, int receiverid, TransactionType type, int RefId) : 
