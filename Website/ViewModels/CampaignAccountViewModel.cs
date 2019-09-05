@@ -58,6 +58,7 @@ namespace Website.ViewModels
 
         public string RefUrl { get; set; }
         public string RefId { get; set; }
+
         public string RefContent { get; set; }
         public List<string> RefImage { get; set; } = new List<string>();
         public object RefData { get; set; }

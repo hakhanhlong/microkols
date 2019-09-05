@@ -223,13 +223,13 @@ namespace Infrastructure.Data
             else if (type == 2)
             {
                 query = query.Where(m => m.Status == CampaignAccountStatus.Confirmed || m.Status == CampaignAccountStatus.SubmittedContent
-                || m.Status == CampaignAccountStatus.DeclinedContent || m.Status == CampaignAccountStatus.ApprovedContent);
+                || m.Status == CampaignAccountStatus.DeclinedContent || m.Status == CampaignAccountStatus.UpdatedContent || m.Status == CampaignAccountStatus.ApprovedContent);
 
             }
             else if (type == 3)
             {
 
-                query = query.Where(m => m.Status == CampaignAccountStatus.UpdatedContent || m.Status == CampaignAccountStatus.Finished);
+                query = query.Where(m => m.Status == CampaignAccountStatus.Finished);
 
             }
             else if (type == 4)

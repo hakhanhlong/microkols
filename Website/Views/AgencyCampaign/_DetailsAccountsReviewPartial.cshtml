@@ -63,6 +63,13 @@
                                             <span data-toggle="tooltip" title="Lượt bình luận">
                                                 @post.CommentCount <i class="fal fa-comment"></i>
                                             </span>
+
+                                            @if(Model.Type== CampaignType.ShareContentWithCaption)
+                                            {
+                                                var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
+                                                <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
+
+                                            }
                                         </div>
                                     }
                                 }
