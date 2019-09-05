@@ -69,9 +69,40 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
-        public async Task<IActionResult>  WalletRechargeSearch(string keyword, TransactionStatus status)
+        public async Task<IActionResult>  WalletRechargeSearch(string keyword, DateTime? StartDate, DateTime? EndDate, TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
-            return View();
+            BindingTransactionOptions();
+
+
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyWalletRechargeSearch(keyword, status, StartDate, EndDate, pageindex, 25);
+
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                try
+                {
+                    var wallet = _IWalletBusiness.Get(item.ReceiverId);
+                    item.ReceiverName = wallet.Name;
+                    item.Wallet = wallet;
+                }
+                catch { }
+            }
+
+            return View(_listTransaction);
         }
 
         public async Task<IActionResult> WalletWithdraw(TransactionStatus status = TransactionStatus.All, int pageindex = 1)

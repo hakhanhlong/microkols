@@ -48,6 +48,7 @@ namespace Infrastructure.Data
 
         }
 
+       
 
         public async Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username)
         {
@@ -86,6 +87,8 @@ namespace Infrastructure.Data
 
             return await _dbContext.Transaction.Where(m => m.Type == transactionType && m.RefId == refid && m.Status == TransactionStatus.Completed).Select(m => m.Amount).DefaultIfEmpty(0).SumAsync();
         }
+
+       
 
         public int CountAll()
         {
