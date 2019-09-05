@@ -772,6 +772,25 @@ namespace Website.Services
             return 1;
         }
 
+        public async Task<int> UpdateCampaignAccountRefImages(int accountid, UpdateCampaignAccountRefImagesViewModel model, string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
+            if (campaign == null) return -1;
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaign.Id);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+           
+            campaignAccount.RefImage = model.RefImage.ToListString();
+            campaignAccount.DateModified = DateTime.Now;
+            campaignAccount.UserModified = username;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+            return 1;
+        }
+
+
         public async Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username)
         {
             // thiều phần verify .... 

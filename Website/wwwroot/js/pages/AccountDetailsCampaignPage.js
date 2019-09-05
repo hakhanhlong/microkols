@@ -18,7 +18,13 @@ var AccountDetailsCampaignPage = (function () {
                 handlerUpdateRef();
             });
         });
-
+        $('.btn-updaterefimages').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerUpdateRefImages();
+            });
+        });
 
         $('.btn-shareui').click(function () {
             AppBsModal.Init('static');
@@ -45,6 +51,37 @@ var AccountDetailsCampaignPage = (function () {
                 });
         });
     }
+    function handlerUpdateRefImages() {
+        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRefImages'));
+       
+        $('#addonImages').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                datas.forEach(function (item) {
+                    var html = '<img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="RefImage" value="' + item.path + '" />';
+                    $(target).append(html);
+                })
+
+            });
+
+        });
+        $('#frmUpdateCampaignAccountRefImages').submit(function (e) {
+            e.preventDefault();
+            var isvalid = $(this).valid();
+            if (isvalid) {
+                var url = $(this).data('action');
+                var data = $(this).serialize();
+                AppBsModal.ShowLoading();
+                $.post(url, data, function (html) {
+                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
+
+                });
+            }
+        });
+    }
 
     function handlerUpdateRef() {
         $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
@@ -62,20 +99,6 @@ var AccountDetailsCampaignPage = (function () {
             }
         });
 
-        $('#addonImages').change(function () {
-            var id = $(this).attr('id');
-            var target = $(this).data('target');
-            var files = document.getElementById(id).files;
-
-            AppCommon.uploadTempImage(files, function (datas) {
-                datas.forEach(function (item) {
-                    var html = '<img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="RefImage" value="' + item.path + '" />';
-                    $(target).append(html);
-                })
-
-            });
-
-        });
     }
 
     return {

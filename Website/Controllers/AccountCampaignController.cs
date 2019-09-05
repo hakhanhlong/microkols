@@ -152,9 +152,27 @@ namespace Website.Controllers
             return PartialView("UpdateCampaignAccountMessage");
         }
 
-
-
-
+        public async Task<IActionResult> UpdateCampaignAccountRefImages(int campaignid)
+        {
+            return PartialView(new UpdateCampaignAccountRefImagesViewModel()
+            {
+                CampaignId = campaignid
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCampaignAccountRefImages(UpdateCampaignAccountRefImagesViewModel model)
+        {
+            var r = await _campaignService.UpdateCampaignAccountRefImages(CurrentUser.Id, model, CurrentUser.Username);
+            if (r > 0)
+            {
+                ViewBag.Success = "Cập nhật thành công hình ảnh";
+            }
+            else
+            {
+                ViewBag.Error = "Thông tin chiến dịch không đúng";
+            }
+            return PartialView("UpdateCampaignAccountMessage");
+        }
         public async Task<IActionResult> UpdateCampaignAccountRef(int campaignid, CampaignType campaignType)
         {
 
