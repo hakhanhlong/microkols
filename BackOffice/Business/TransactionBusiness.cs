@@ -17,15 +17,18 @@ namespace BackOffice.Business
         ITransactionRepository _ITransactionRepository;
         IWalletRepository _IWalletRepository;
         IAccountRepository _IAccountRepository;
+        IAgencyRepository _IAgencyRepository;
 
         private readonly ILogger<TransactionBusiness> _logger;
 
         public TransactionBusiness(ITransactionRepository __ITransactionRepository, 
-            ILoggerFactory _loggerFactory, IWalletRepository __IWalletRepository, IAccountRepository __IAccountRepository) {
+            ILoggerFactory _loggerFactory, IWalletRepository __IWalletRepository, IAccountRepository __IAccountRepository,
+            IAgencyRepository __IAgencyRepository) {
             _ITransactionRepository = __ITransactionRepository;
             _logger = _loggerFactory.CreateLogger<TransactionBusiness>();
             _IWalletRepository = __IWalletRepository;
             _IAccountRepository = __IAccountRepository;
+            _IAgencyRepository = __IAgencyRepository;
         }
 
         public async Task<ListTransactionViewModel> GetTransactionByType(TransactionType type, int pageindex, int pagesize)
@@ -72,11 +75,69 @@ namespace BackOffice.Business
             };
         }
 
-        public async Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime StartDate, DateTime EndDate, int pageindex, int pagesize)
+
+        // đang làm dở
+        public async Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
         {
+            var filter = new TransactionSpecification(StartDate, EndDate);
+            var transactions = await _ITransactionRepository.ListAsync(filter);
+            int total = 0;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var agencies = _IAgencyRepository.ListAll().Where(a => a.Name.Contains(keyword) || a.Username.Contains(keyword)).Select(a => a.Id).ToList();
+                var list_wallet = _IWalletRepository.ListAll().Where(w => w.EntityType == EntityType.Agency && agencies.Contains(w.EntityId)).Select(w => w.Id).ToList();
+
+                if (status == TransactionStatus.All)
+                {
+                    var query_transaction = (from t in transactions
+                                             where list_wallet.Contains(t.ReceiverId)
+                                             && t.Type == TransactionType.WalletRecharge
+                                             select t);
+
+                    total = query_transaction.Count();
+
+                    transactions = query_transaction.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else {
+                    var query_transactions = (from t in transactions
+                                    where list_wallet.Contains(t.ReceiverId)
+                                    && t.Status == status && t.Type == TransactionType.WalletRecharge
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+            }                            
+            else
+            {
+                if (status != TransactionStatus.All)
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Status == status
+                                              && t.Type == TransactionType.WalletRecharge
+                                              select t);
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                
+            }
 
 
-            return new ListTransactionViewModel();
+
+
+            return new ListTransactionViewModel()
+            {
+                keyword = keyword,
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : "",
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                TransactionStatus = status,
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+
+            };
         }
 
         public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype)
