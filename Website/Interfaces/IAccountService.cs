@@ -14,7 +14,7 @@ namespace Website.Interfaces
         Task<List<int>> GetActivedAccountIds();
         Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender, IEnumerable<int> cityid, int? agestart, int? ageend,
                     string order, int page, int pagesize, IEnumerable<int> ignoreIds, int min, int max);
-
+        Task<AccountFbPostViewModel> GetAccountFbPost(int id);
         Task<bool> ChangeAvatar(int id, ChangeAvatarViewModel model);
         Task<bool> ChangeContact(int id, ChangeContactViewModel model, string username);
         Task<bool> ChangeIDCard(int id, ChangeIDCardViewModel model, string username);

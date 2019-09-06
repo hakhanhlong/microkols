@@ -239,7 +239,16 @@ namespace Website.Services
 
         #endregion
         #region AccountFacebookPost
+        public async Task<AccountFbPostViewModel> GetAccountFbPost(int id)
+        {
+            var post = await _accountFbPostRepository.GetByIdAsync(id);
 
+            if (post != null)
+            {
+                return new AccountFbPostViewModel(post);
+            }
+            return null;
+        }
         public async Task<AccountFbPostViewModel> GetAccountFbPost(int accountid, string postid)
         {
             var filter = new AccountFbPostSpecification(accountid, postid);

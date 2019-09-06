@@ -146,6 +146,7 @@ namespace Website.Services
             if (campaign != null)
             {
                 var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
+
                 return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
                     campaign.CampaignAccount, transactions);
             }

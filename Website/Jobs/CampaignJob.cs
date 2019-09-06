@@ -46,17 +46,16 @@ namespace Website.Jobs
                         await _paymentService.CreatePaybackCampaignAccount(campaignid, accountid, AppConstants.USERNAME);
                     }
 
-                    var isvalid = await _paymentService.VerifyPaybackCampaignAccount(campaignid);
-                    if (isvalid)
-                    {
+                    //var isvalid = await _paymentService.VerifyPaybackCampaignAccount(campaignid);
+                    //if (isvalid)
+                    //{
                         await _campaignService.UpdateCampaignCompleted(campaignid, AppConstants.USERNAME);
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignCompleted(campaignid));
-                    }
-                    else
-                    {
-                        throw new Exception("Payback Invalid");
-
-                    }
+                    //}
+                    //else
+                    //{
+                    //    throw new Exception("Payback Invalid");
+                    //}
                 }
                 catch (Exception ex)
                 {
