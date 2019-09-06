@@ -365,6 +365,10 @@ namespace BackOffice.Controllers
                                         TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
                                         await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
                                         break;
+                                    case 12:
+                                        TempData["MessageError"] = "Wallet balance sender do not enought balance";
+                                        await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Wallet balance sender do not enought balance", HttpContext.User.Identity.Name);// delete transaction if case error
+                                        break;
                                 }
                             }
                             catch(Exception ex) {

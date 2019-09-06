@@ -53,6 +53,8 @@ namespace Core.Entities
         CampaignServiceCashBack = 7,
         [DisplayName("Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
         CampaignAccountRefundAgency = 8,
+        [DisplayName("Đã thực hiện chuyển tiền tới tài khoản ngân hàng của thành viên")] // tương ứng với việc trừ tiền trên ví của các thành viên này
+        ExcecutedPaymentToAccountBanking = 9,
     }
 
 }

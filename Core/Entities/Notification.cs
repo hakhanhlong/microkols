@@ -40,7 +40,8 @@ namespace Core.Entities
         CampaignCompleted,
         CampaignCanceled,
         CampaignConfirmed,
-        CampaignError
+        CampaignError,
+        ExcecutedPaymentToAccountBanking
     }
     public enum NotificationStatus
     {

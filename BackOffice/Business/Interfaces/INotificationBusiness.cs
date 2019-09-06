@@ -10,6 +10,7 @@ namespace BackOffice.Business.Interfaces
     {
         Task CreateNotificationCampaignByStatus(int campaignid, int entityid, NotificationType notificationType, string msg, string text);
         Task CreateNotificationTransactionDepositeByStatus(int transaction, int agency_entityid, NotificationType notificationType, string msg, string text);
+        Task CreateNotificationExcecutedPaymentToAccountBanking(int campaignid, int entityid, NotificationType notificationType, string msg, string text);
 
     }
 }

@@ -36,6 +36,25 @@ namespace BackOffice.Business
 
         }
 
+
+        public async Task CreateNotificationExcecutedPaymentToAccountBanking(int campaignid, int entityid, NotificationType notificationType, string msg, string text)
+        {
+
+            Notification _notification = new Notification();
+            _notification.EntityType = EntityType.Account;
+            _notification.EntityId = entityid;
+            _notification.DataId = campaignid;
+            _notification.Message = msg;
+            _notification.DateCreated = DateTime.Now;
+            _notification.Status = NotificationStatus.Created;
+            _notification.Type = notificationType;
+            _notification.Data = text;
+            await _INotificationRepository.AddAsync(_notification);
+
+        }
+
+
+
         public async Task CreateNotificationTransactionDepositeByStatus(int transactionid, int agency_entityid, NotificationType notificationType, string msg, string text)
         {
             Notification _notification = new Notification();

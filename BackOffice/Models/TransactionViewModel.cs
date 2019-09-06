@@ -32,6 +32,8 @@ namespace BackOffice.Models
         public AccountViewModel Account { get; set; }
         public bool IsCashOut { get; set; }
 
+        public Wallet Wallet { get; set; }
+
     }
 
     public class TransactionViewModel
