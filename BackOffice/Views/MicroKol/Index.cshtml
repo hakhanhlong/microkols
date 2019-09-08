@@ -52,7 +52,7 @@
                                                 #
                                             </th>
                                             <th>
-                                                IMAGE
+                                                CAMPAIGNS
                                             </th>
                                             <th>
                                                 EMAIL
@@ -78,13 +78,17 @@
                                         {
                                         <tr>
                                             <td>@(count)</td>
-                                            <td></td>
+                                            <td>
+                                                <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary">CAMPAIGNS</a>
+                                            </td>
                                             <td>@item.Email</td>
                                             <td>@item.Phone</td>
                                             <td>@item.Name</td>
                                             <td>@item.Type.ToString()</td>
                                             <td>@(item.Actived == true ? "Active" : "Not Active")</td>
-                                            <td><a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">Detail</a></td>
+                                            <td>
+                                                <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">DETAIL</a>
+                                            </td>
                                         </tr>
                                             count++;
                                         }
