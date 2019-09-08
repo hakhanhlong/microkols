@@ -154,5 +154,27 @@ namespace BackOffice.Business
 
         }
 
+
+        public ListCampaignWithAccountViewModel GetCampaignAccountByAccount(CampaignAccountStatus? status, int accountid, int pageindex, int pagesize)
+        {
+            var filter = new CampaignAccountSpecification(status, accountid);
+            var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+            var total = _ICampaignAccountRepository.Count(filter);
+            var list = new List<CampaignWithAccountViewModel>();
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                list.Add(new CampaignWithAccountViewModel(campaignAccount.Campaign, campaignAccount));
+            }
+
+            return new ListCampaignWithAccountViewModel()
+            {
+                Campaigns = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+        }
+
+
+
     }
 }

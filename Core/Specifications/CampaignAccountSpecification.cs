@@ -20,6 +20,12 @@ namespace Core.Specifications
         {
         }
 
+        public CampaignAccountSpecification(CampaignAccountStatus? status, int accountid) : base(m => (!status.HasValue || m.Status == status.Value) && m.AccountId == accountid)
+        {
+            AddInclude(c => c.Account);
+            AddInclude(c => c.Campaign);
+        }
+
         public CampaignAccountSpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
            : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
            (ignoreStatus == null || !ignoreStatus.Contains(m.Status)))
@@ -39,9 +45,7 @@ namespace Core.Specifications
     }
 
     public class CampaignAccountByStatusSpecification : BaseSpecification<CampaignAccount>
-    {
-      
-
+    {      
         public CampaignAccountByStatusSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
         {
             AddInclude(c => c.Account);
