@@ -32,6 +32,19 @@ namespace Core.Specifications
 
         public TransactionSpecification(int senderid, int receiverid) : base(t => t.SenderId == senderid || t.ReceiverId == receiverid) { }
 
+
+        public TransactionSpecification(int? senderid, int? receiverid, DateTime? startDate, DateTime? endDate) : base(t => ((!senderid.HasValue || t.SenderId == senderid.Value) 
+        || (!receiverid.HasValue || t.ReceiverId == receiverid.Value)) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date))) { }
+
+
+        public TransactionSpecification(int? senderid, DateTime? startDate, DateTime? endDate) : 
+        base(t => (!senderid.HasValue || t.SenderId == senderid.Value) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date)))
+        { }
+
+        public TransactionSpecification(int? receiverid, DateTime? startDate, DateTime? endDate, string strreceiverid = "receiverid") :
+        base(t => (!receiverid.HasValue || t.ReceiverId == receiverid.Value) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date)))
+        { }
+
     }
 
     public class TransactionByCampaignSpecification : BaseSpecification<Transaction>

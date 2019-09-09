@@ -21,6 +21,8 @@ namespace BackOffice.Models
 
         public string EndDate { get; set; }
 
+        public string SearchType { get; set; }
+
 
     }
 

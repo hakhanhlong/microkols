@@ -121,6 +121,13 @@ namespace BackOffice.Controllers
 
         public async Task<IActionResult> Transaction(int walletid, int pageindex = 1)
         {
+            ViewBag.SearchTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Cộng tiền", Value = "CongTien"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Trừ tiền", Value = "Trừ tiền"},
+            };
+
             var list = await _ITransactionBusiness.GetTransactions(walletid, walletid, pageindex, 25);
 
             var wallet = _IWalletRepository.GetById(walletid);
@@ -148,6 +155,53 @@ namespace BackOffice.Controllers
             {
                 TempData["MessageError"] = "Don't have transaction!";
             }
+
+            return View(list);
+        }
+
+        public async Task<IActionResult> TransactionSearch(int walletid, string SearchType, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
+        {
+            ViewBag.SearchTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Cộng tiền", Value = "CongTien"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Trừ tiền", Value = "TruTien"},
+            };
+
+            ListTransactionViewModel list = null;
+
+            list = await _ITransactionBusiness.GetTransactions(SearchType, walletid, walletid, StartDate, EndDate, pageindex, 25);
+
+            list.SearchType = SearchType;
+
+            var wallet = _IWalletRepository.GetById(walletid);
+            if (wallet != null)
+            {
+                ViewBag.Wallet = wallet;
+                if (wallet.EntityType == Core.Entities.EntityType.Account)
+                {
+                    var account = _IAccountBusiness.GetAccount(wallet.EntityId);
+                    if (account.Result != null)
+                    {
+                        ViewBag.Account = account.Result;
+                    }
+                }
+                if (wallet.EntityType == Core.Entities.EntityType.Agency)
+                {
+                    var agency = _IAgencyBusiness.GetAgency(wallet.EntityId);
+                    if (agency.Result != null)
+                    {
+                        ViewBag.Account = agency.Result;
+                    }
+                }
+            }
+
+
+            if (list == null)
+            {
+                TempData["MessageError"] = "Don't have transaction!";
+            }
+
             return View(list);
         }
 

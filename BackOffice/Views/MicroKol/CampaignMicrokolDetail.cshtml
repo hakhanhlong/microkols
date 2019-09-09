@@ -17,6 +17,16 @@
                 <i class="m-nav__link-icon la la-home"></i>
             </a>
         </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/microkol" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    MicroKOls Listing
+                </span>
+            </a>
+        </li>
     </ul>
 }
 
@@ -59,13 +69,11 @@
                                         </th>
                                         <th>
                                             CAMPAIGN STATUS
-                                        </th>
-                                        <th>
-                                            TYPE
-                                        </th>
+                                        </th>                                        
                                         <th>
                                             MICROKOL
                                         </th>
+                                        <th>$</th>
                                         <th>
                                             STATUS
                                         </th>
@@ -82,7 +90,9 @@
                                         <tr>
                                             <td>@(count)</td>
                                             <td>
-                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
+                                                <span>@item.Type.ToText()</span><br />
+                                                <span>@item.DateCreated.ToString()</span>
                                             </td>
                                             <td>
 
@@ -105,10 +115,12 @@
                                                     </span>
                                                 }
 
-                                            </td>
-                                            <td>@item.Type.ToText()</td>
+                                            </td>                                            
                                             <td>
                                                 <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                            </td>
+                                            <td>
+                                                <span class="m--font-danger">@item.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
                                             </td>
                                             <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
                                             <td>

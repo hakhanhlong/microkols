@@ -49,94 +49,96 @@
 
                             @if (Model != null)
                             {
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                #
-                                            </th>
-                                            <th>
-                                                CAMPAIGN
-                                            </th>
-                                            <th>
-                                                CAMPAIGN STATUS
-                                            </th>
-                                            <th>
-                                                TYPE
-                                            </th>
-                                            <th>
-                                                MICROKOL
-                                            </th>
-                                            <th>
-                                                STATUS
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{ int count = 1;}
-                                        @foreach (var item in Model.Campaigns)
-                                        {
-                                        <tr>
-                                            <td>@(count)</td>
-                                            <td>
-                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a>
-                                            </td>
-                                            <td>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            CAMPAIGN
+                                        </th>
+                                        <th>
+                                            CAMPAIGN STATUS
+                                        </th>
+                                        <th>
+                                            MICROKOL
+                                        </th>
+                                        <th>$</th>
+                                        <th>
+                                            STATUS
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int count = 1;}
+                                    @foreach (var item in Model.Campaigns)
+                                    {
+                                    <tr>
+                                        <td>@(count)</td>
+                                        <td>
+                                            <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
+                                            <span>@item.Type.ToText()</span><br />
+                                            <span>@item.DateCreated.ToString()</span>
+                                        </td>
+                                        <td>
 
-                                                @if (item.Status == CampaignStatus.Canceled)
+                                            @if (item.Status == CampaignStatus.Canceled)
+                                            {
+                                                <span class="m-badge m-badge--danger m-badge--wide">
+                                                    @item.Status.ToString()
+                                                </span>
+                                            }
+                                            else if (item.Status == CampaignStatus.Completed)
+                                            {
+                                                <span class="m-badge m-badge--info m-badge--wide">
+                                                    @item.Status.ToString()
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="m-badge m-badge--primary m-badge--wide">
+                                                    @item.Status.ToString()
+                                                </span>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                        </td>
+                                        <td>
+                                            <span class="m--font-danger">@item.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
+                                        </td>
+                                        <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
+                                        <td>
+                                            @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
+                                            {
+                                                if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
                                                 {
-                                                    <span class="m-badge m-badge--danger m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-                                                else if (item.Status == CampaignStatus.Completed)
-                                                {
-                                                    <span class="m-badge m-badge--info m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
+                                                    <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
                                                 }
                                                 else
                                                 {
-                                                    <span class="m-badge m-badge--primary m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-
-                                            </td>
-                                            <td>@item.Type.ToText()</td>
-                                            <td>
-                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
-                                            </td>
-                                            <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
-                                            <td>
-                                                @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
-                                                {
-                                                    if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
+                                                    if (item.CampaignAccount.IsRefundToAgency.Value == false)
                                                     {
                                                         <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
                                                     }
                                                     else
                                                     {
-                                                        if (item.CampaignAccount.IsRefundToAgency.Value == false)
-                                                        {
-                                                            <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
-                                                        }
+                                                        <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
                                                     }
-
-
                                                 }
-                                            </td>
 
-                                        </tr>
-                                            count++;
-                                        }
-                                    </tbody>
-                                </table>
+
+                                            }
+                                        </td>
+
+                                    </tr>
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
                                 <pager pager="@Model.Pager" asp-action="CampaignMicrokol" asp-route-status="@(Context.Request.Query["status"])"></pager>
                             }
 

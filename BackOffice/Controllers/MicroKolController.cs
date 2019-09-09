@@ -278,6 +278,7 @@ namespace BackOffice.Controllers
         {
             ViewBag.Status = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = "-2"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chờ trả tiền", Value = "-1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Thành viên xin tham gia chiến dịch", Value = "0"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Doanh nghiệp mời tham gia chiến dịch", Value = "1"},
@@ -301,6 +302,7 @@ namespace BackOffice.Controllers
         {
             ViewBag.Status = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = "-2"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chờ trả tiền", Value = "-1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Thành viên xin tham gia chiến dịch", Value = "0"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Doanh nghiệp mời tham gia chiến dịch", Value = "1"},
@@ -314,7 +316,7 @@ namespace BackOffice.Controllers
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chưa hoàn thành", Value = "8"}
             };
 
-            var list = _ICampaignBusiness.GetCampaignAccountByAccount(status, accountid, pageindex, 25);
+            var list = _ICampaignBusiness.GetCampaignAccountByAccount(status, accountid, pageindex, 20);
 
             return View(list);
         }

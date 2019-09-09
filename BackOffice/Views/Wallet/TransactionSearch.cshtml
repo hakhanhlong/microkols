@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Transaction";
+    ViewData["Title"] = "TransactionSearch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -49,7 +49,7 @@
                             Wallet Transaction
                         </h3>
                     </div>
-                </div> 
+                </div>
                 <div class="m-portlet__head-tools">
                     <a href="/wallet/transactionhistory?walletid=@(Context.Request.Query["walletid"])" class="btn btn-info m-btn m-btn--icon">
                         <span>
@@ -90,7 +90,7 @@
                         @if (Model != null)
                         {
 
-                            @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model)
+                            @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model);
                         }
                         else
                         {
@@ -105,7 +105,8 @@
                 </div>
             </div>
             <div class="m-portlet__foot">
-                <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transaction"></pager>
+                <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionsearch" asp-route-searchtype="@Model.SearchType" asp-route-startdate="@Model.StartDate"
+                    asp-route-enddate="@Model.EndDate"></pager>
             </div>
         </div>
     </div>
@@ -131,3 +132,5 @@
         </div>
     </div>
 </div>
+
+
