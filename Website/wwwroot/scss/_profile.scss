@@ -1,0 +1,15 @@
+.profilesection {
+
+    .img {
+        position: relative;
+        img{
+            height:60px;
+        }
+        i {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            color:$primary;
+        }
+    }
+}

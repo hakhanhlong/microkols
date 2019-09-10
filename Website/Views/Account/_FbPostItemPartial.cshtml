@@ -1,0 +1,82 @@
+﻿@model AccountFbPostViewModel
+@{
+    ViewData["Title"] = "Facebook Post";
+}
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a asp-action="Index">Tài khoản</a></li>
+
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<ul class="nav nav-tabs nav-linetabs">
+    <li class="nav-item">
+        <a class="nav-link " asp-action="Index">Tài khoản</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link active" asp-action="FbPost">Facebook Post</a>
+    </li>
+
+</ul>
+
+
+
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+
+        <div class="row">
+
+
+            @foreach (var item in Model.Posts)
+            {
+                <div class="col-md-3">
+
+                    <div class="card mb-3">
+                        <img src="@item.Picture" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <p class="card-text">@item.Message</p>
+
+
+                            <div class="d-flex align-items-center">
+                                <span>
+
+                                    @item.LikeCount <i class="fal fa-thumbs-up"></i>
+                                </span>
+
+
+                                <span class="px-2">
+
+                                    @item.ShareCount <i class="fal fa-share"></i>
+                                </span>
+
+
+                                <span>
+
+                                    @item.CommentCount <i class="fal fa-comment"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <pager pager="@Model.Pager" asp-action="Index"></pager>
+
+    </div>
+</div>

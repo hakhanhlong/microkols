@@ -7557,6 +7557,16 @@ a.text-dark:hover, a.text-dark:focus {
     #addonimagewrap .addonimage img {
       max-height: 250px; }
 
+.profilesection .img {
+  position: relative; }
+  .profilesection .img img {
+    height: 60px; }
+  .profilesection .img i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #3C5A99; }
+
 .homeslider {
   background: url(/img/home/celebrity-list.jpg) center;
   background-size: cover;
