@@ -843,6 +843,12 @@ namespace Website.Services
             return false;
         }
 
+        public async Task<string> GetFacebookProfileUrl(int id)
+        {
+            var entity = await _accountProviderRepository.GetSingleBySpecAsync(new AccountProviderSpecification(id, AccountProviderNames.Facebook));
+            return entity != null ? entity.Link : string.Empty;
+        }
+
         #endregion
 
 

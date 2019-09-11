@@ -97,7 +97,7 @@ namespace Website.Controllers
 
 
             await SignIn(auth);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
 
@@ -237,7 +237,7 @@ namespace Website.Controllers
             {
                 return RedirectToAction("AgencyLogin");
             }
-            return RedirectToAction("Login");
+            return RedirectToAction("Index","Home");
         }
     }
 }

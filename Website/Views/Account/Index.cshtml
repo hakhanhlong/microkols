@@ -56,25 +56,25 @@
                 </h5>
                 <div>
 
-
-                    <a href="@ViewBag.ProfileUrl" class="btn btn-sm btn-link"> <i class="fal fa-external-link-square"></i> </a>
+                    @Model.AccountCounting.FriendsCount.ToPriceText(" bạn") -
+                    <a href="@ViewBag.ProfileUrl" class="btn btn-sm btn-link"> Liên kết <i class="fal fa-external-link-square"></i> </a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-8">
-        <div class="d-flex">
-            <div class="counting">
+        <div class="row">
+            <div class="counting col">
                 <h3>@Model.AccountCounting.AvgLikeCount</h3>
-                <div class="">lượt thích trung bình</div>
+                <div class="small">lượt thích trung bình</div>
             </div>
-            <div class="counting">
+            <div class="counting col">
                 <h3>@Model.AccountCounting.AvgShareCount</h3>
-                <div class="">lượt chia sẻ trung bình</div>
+                <div class="small">lượt chia sẻ trung bình</div>
             </div>
-            <div class="counting">
+            <div class="counting col">
                 <h3>@Model.AccountCounting.AvgCommentCount</h3>
-                <div class="">lượt bình luận trung bình</div>
+                <div class="small">lượt bình luận trung bình</div>
             </div>
         </div>
     </div>
@@ -83,12 +83,13 @@
 
 <hr>
 <section class="fbpostSection">
-    <div class="owl-carousel campaign-image-carousel owl-theme">
+    <h5>Bài chia sẻ <i class="fal fa-angle-down"></i></h5>
+    <div class="owl-carousel fbpost-carousel owl-theme">
         @foreach (var post in fbPosts.Posts)
         {
             <div class="item">
 
-
+                <partial name="_FbPostItemPartial" model="@post" />
             </div>
         }
     </div>

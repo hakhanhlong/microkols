@@ -24,8 +24,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\img\kols\" />
-    <Folder Include="wwwroot\resources\account\2019\" />
-    <Folder Include="wwwroot\resources\temp\" />
+    <Folder Include="wwwroot\resources\" />
   </ItemGroup>
 
 </Project>

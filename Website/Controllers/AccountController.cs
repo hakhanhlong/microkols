@@ -42,6 +42,7 @@ namespace Website.Controllers
             ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
 
             ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 1, 20);
+            ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
             return View(account);
         }
 

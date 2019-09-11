@@ -46,32 +46,8 @@
             {
                 <div class="col-md-3">
 
-                    <div class="card mb-3">
-                        <img src="@item.Picture" class="card-img-top" alt="">
-                        <div class="card-body">
-                            <p class="card-text">@item.Message</p>
-
-
-                            <div class="d-flex align-items-center">
-                                <span>
-
-                                    @item.LikeCount <i class="fal fa-thumbs-up"></i>
-                                </span>
-
-
-                                <span class="px-2">
-
-                                    @item.ShareCount <i class="fal fa-share"></i>
-                                </span>
-
-
-                                <span>
-
-                                    @item.CommentCount <i class="fal fa-comment"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <partial name="_FbPostItemPartial" model="@item" />
+                  
                 </div>
             }
 

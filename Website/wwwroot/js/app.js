@@ -55,6 +55,12 @@
 
         });
 
+        $('.fbpost-carousel').owlCarousel({
+            margin: 10,
+            items: 4
+
+        });
+
 
         $('.btn-facebook').click(function () {
             var $frm = $($(this).data('target'));
@@ -65,7 +71,7 @@
                     $frm.find('input[name=token]').val(response.authResponse.accessToken);
                     $frm.submit();
                 }
-            }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts' });
+            }, { scope: 'public_profile,email,user_friends,user_link,user_posts' });
         });
 
         $('.btn-linkfacebook').click(function () {
