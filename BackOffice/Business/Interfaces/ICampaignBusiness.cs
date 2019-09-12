@@ -19,6 +19,8 @@ namespace BackOffice.Business.Interfaces
 
 
         ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus status, int pageindex, int pagesize);
+        ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
+
         ListCampaignWithAccountViewModel GetCampaignAccountByAccount(CampaignAccountStatus? status, int accountid, int pageindex, int pagesize);
         ListCampaignWithAccountViewModel GetCampaignAccountByAccount(CampaignAccountStatus? status, int accountid, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
 

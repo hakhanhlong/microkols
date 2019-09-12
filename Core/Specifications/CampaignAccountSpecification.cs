@@ -63,7 +63,15 @@ namespace Core.Specifications
             AddInclude(c => c.Campaign);
         }
 
-      
+        public CampaignAccountByStatusSpecification(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate) :
+            base(m => (!status.HasValue || m.Status == status.Value) &&
+            ((!StartDate.HasValue || m.DateCreated.Date >= StartDate.Value.Date) && (!EndDate.HasValue || m.DateCreated.Date <= EndDate.Value.Date)))
+        {
+            AddInclude(c => c.Account);
+            AddInclude(c => c.Campaign);
+        }
+
+
     }
 
 

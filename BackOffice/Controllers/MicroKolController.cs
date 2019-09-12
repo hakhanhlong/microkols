@@ -294,10 +294,10 @@ namespace BackOffice.Controllers
             };
         }
 
-        public IActionResult CampaignMicrokol(CampaignAccountStatus status = CampaignAccountStatus.WaitToPay, int pageindex = 1)
+        public IActionResult CampaignMicrokol(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
         {
             BindMicroKolStatusData();
-            var list = _ICampaignBusiness.GetCampaignAccountByStatus(status, pageindex, 25);
+            var list = _ICampaignBusiness.GetCampaignAccountByStatus(status, StartDate, EndDate , pageindex, 25);
 
             return View(list);
         }
