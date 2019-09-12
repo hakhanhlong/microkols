@@ -146,6 +146,7 @@
                                         }
                                     </td>
                                     <td>
+                                        <span>@(item.DateCreated)</span><br />
                                         <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
                                     </td>
                                     <td>
@@ -164,7 +165,7 @@
                             </tbody>
                         </table>
                         <pager pager="@Model.Pager" asp-action="Search" asp-route-kw="@(Context.Request.Query["kw"])" asp-route-status="@(Context.Request.Query["status"])" 
-                        asp-route-type="@(Context.Request.Query["type"])"></pager>
+                        asp-route-type="@(Context.Request.Query["type"])" asp-route-startdate="@(Context.Request.Query["startdate"])" asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
                     </div>
                 </div>
                 <!--end::Section-->

@@ -43,6 +43,14 @@ namespace Core.Specifications
         public CampaignSearchSpecification(string kw, CampaignType? type, CampaignStatus? status): base (m=> (string.IsNullOrEmpty(kw) || m.Title.Contains(kw)) 
         && (!type.HasValue || m.Type == type) && (!status.HasValue || m.Status == status))
         {}
+
+
+        public CampaignSearchSpecification(string kw, CampaignType? type, CampaignStatus? status, DateTime? StartDate, DateTime? EndDate) : base(m => (string.IsNullOrEmpty(kw) || m.Title.Contains(kw))
+        && (!type.HasValue || m.Type == type) && (!status.HasValue || m.Status == status) &&
+        (!StartDate.HasValue || m.DateCreated.Date >= StartDate.Value.Date) && (!EndDate.HasValue || m.DateCreated.Date <= EndDate.Value.Date))
+        { }
+
+
     }
 
     public class CampaignSpecification : BaseSpecification<Campaign>

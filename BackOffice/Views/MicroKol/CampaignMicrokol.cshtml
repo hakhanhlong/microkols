@@ -139,7 +139,8 @@
                                     }
                                 </tbody>
                             </table>
-                                <pager pager="@Model.Pager" asp-action="CampaignMicrokol" asp-route-status="@(Context.Request.Query["status"])"></pager>
+                                <pager pager="@Model.Pager" asp-action="CampaignMicrokol" asp-route-status="@(Context.Request.Query["status"])" asp-route-startdate="@(Context.Request.Query["startdate"])" 
+                                asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
                             }
 
 

@@ -1,5 +1,5 @@
 ﻿<form class="m-form m-form--fit m--margin-bottom-20" action="/microkol/CampaignMicrokol" method="get">
-    <div class="row m--margin-bottom-20">        
+    <div class="row m--margin-bottom-20">
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
                 Status:
@@ -18,6 +18,20 @@
 
                 }
             </select>
+        </div>
+        <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Select DateTime:
+            </label>
+            <div class="input-daterange input-group" id="m_datepicker_5">
+                <input type="text" class="form-control m-input" name="StartDate" value="@Context.Request.Query["StartDate"]">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-ellipsis-h"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" name="EndDate" value="@Context.Request.Query["EndDate"]">
+            </div>
         </div>
     </div>    
     <div class="m-separator m-separator--md m-separator--dashed"></div>

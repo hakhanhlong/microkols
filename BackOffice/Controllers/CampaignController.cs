@@ -52,7 +52,7 @@ namespace BackOffice.Controllers
         {
             ViewBag.CampaignStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = ""},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Confirmed", Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Started", Value = "2"},
@@ -64,7 +64,7 @@ namespace BackOffice.Controllers
 
             ViewBag.CampaignTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = ""},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContent", Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContentWithCaption", Value = "2"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ChangeAvatar", Value = "3"},
@@ -75,11 +75,11 @@ namespace BackOffice.Controllers
             };
         }
 
-        public IActionResult Search(string kw, CampaignType? type, CampaignStatus? status, int pageindex = 1)
+        public IActionResult Search(string kw, CampaignType? type, CampaignStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
         {
 
             DataSelectionStatusAndType();
-            var list = _ICampaignBusiness.Search(kw, type, status, pageindex, 25);
+            var list = _ICampaignBusiness.Search(kw, type, status, StartDate, EndDate, pageindex, 25);
 
             return View(list);
         }

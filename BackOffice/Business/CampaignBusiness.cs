@@ -76,6 +76,23 @@ namespace BackOffice.Business
             };
         }
 
+
+        public ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            var filter = new CampaignSearchSpecification(kw, type, status, StartDate, EndDate);
+
+            var agencies = _ICampaignRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+            var total = _ICampaignRepository.Count(filter);
+
+
+            return new ListCampaignViewModel()
+            {
+                Campaigns = agencies.Select(a => new CampaignViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
+
         public async Task<CampaignDetailsViewModel> GetCampaign(int agencyid, int campaignid)
         {
             var filter = new CampaignByAgencySpecification(agencyid, campaignid);
@@ -153,6 +170,27 @@ namespace BackOffice.Business
             };
 
         }
+
+        public ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            var filter = new CampaignAccountByStatusSpecification(status, StartDate, EndDate);
+            var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+            var total = _ICampaignAccountRepository.Count(filter);
+            var list = new List<CampaignWithAccountViewModel>();
+            foreach (var campaignAccount in campaignAccounts)
+            {
+                list.Add(new CampaignWithAccountViewModel(campaignAccount.Campaign, campaignAccount));
+            }
+
+            return new ListCampaignWithAccountViewModel()
+            {
+                Campaigns = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+        }
+
+
 
 
         public ListCampaignWithAccountViewModel GetCampaignAccountByAccount(CampaignAccountStatus? status, int accountid, int pageindex, int pagesize)
