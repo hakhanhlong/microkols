@@ -9,6 +9,7 @@
             <th>
                 CODE
             </th>
+            <th></th>
             <th>
                 TYPE
             </th>
@@ -34,6 +35,20 @@
             <tr>
                 <td>@count</td>
                 <td>@item.Transaction.Code</td>
+                <td>
+                    @if (item.Transaction.SenderId == current_walletid)
+                    {
+                        <h6 class="m--font-danger">
+                            Trừ tiền
+                        </h6>
+                    }
+                    else if (item.Transaction.ReceiverId == current_walletid)
+                    {
+                        <h6 class="m--font-info">
+                            Cộng tiền
+                        </h6>
+                    }
+                </td>
                 <td>@item.Transaction.Type.ToString()</td>
                 <td>
 

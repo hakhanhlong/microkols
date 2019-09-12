@@ -26,6 +26,17 @@ namespace Core.Specifications
             AddInclude(c => c.Campaign);
         }
 
+
+        public CampaignAccountSpecification(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int accountid) : 
+            base(m => ((!status.HasValue || m.Status == status.Value) && m.AccountId == accountid) &&
+            ((!StartDate.HasValue || m.DateCreated.Date >= StartDate.Value.Date) && (!EndDate.HasValue || m.DateCreated.Date <= EndDate.Value.Date)))
+        {
+            AddInclude(c => c.Account);
+            AddInclude(c => c.Campaign);
+        }
+
+
+
         public CampaignAccountSpecification(int campaignid, IEnumerable<CampaignAccountStatus> status, IEnumerable<CampaignAccountStatus> ignoreStatus)
            : base(m => m.CampaignId == campaignid && (status == null || status.Contains(m.Status)) &&
            (ignoreStatus == null || !ignoreStatus.Contains(m.Status)))
