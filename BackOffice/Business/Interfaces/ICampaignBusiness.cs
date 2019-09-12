@@ -16,6 +16,7 @@ namespace BackOffice.Business.Interfaces
         Task<CampaignDetailsViewModel> GetCampaign(int agencyid, int campaignid);
 
         ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, int index, int pagesize);
+        ListCampaignViewModel Search(string kw, CampaignType? type, CampaignStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
 
 
         ListCampaignWithAccountViewModel GetCampaignAccountByStatus(CampaignAccountStatus status, int pageindex, int pagesize);
