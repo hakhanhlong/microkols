@@ -1,0 +1,38 @@
+.profilesection {
+
+    .img {
+        position: relative;
+
+        img {
+            height: 60px;
+        }
+
+        i {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            color: $primary;
+        }
+    }
+}
+
+.card-fbpost {
+    .img {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        background:$gray-300;
+        img {
+            width: 100%;
+        }
+    }
+
+    .card-text {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

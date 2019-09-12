@@ -37,9 +37,13 @@ namespace Website.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var account = await _accountService.GetAccount(CurrentUser.Id);
 
             ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
-            return View();
+
+            ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 1, 20);
+            ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
+            return View(account);
         }
 
         public async Task<IActionResult> FbPost(int page = 1, int pagesize = 20)

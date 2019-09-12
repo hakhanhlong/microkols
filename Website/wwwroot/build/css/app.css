@@ -7557,6 +7557,32 @@ a.text-dark:hover, a.text-dark:focus {
     #addonimagewrap .addonimage img {
       max-height: 250px; }
 
+.profilesection .img {
+  position: relative; }
+  .profilesection .img img {
+    height: 60px; }
+  .profilesection .img i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #3C5A99; }
+
+.card-fbpost .img {
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #dee2e6; }
+  .card-fbpost .img img {
+    width: 100%; }
+
+.card-fbpost .card-text {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }
+
 .homeslider {
   background: url(/img/home/celebrity-list.jpg) center;
   background-size: cover;

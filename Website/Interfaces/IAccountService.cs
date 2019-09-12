@@ -29,6 +29,7 @@ namespace Website.Interfaces
 
         Task<int> Register(RegisterViewModel model);
         Task<AuthViewModel> GetAuth(LoginViewModel model);
+        Task<string> GetFacebookProfileUrl(int id);
         Task<AuthViewModel> GetAuth(LoginProviderViewModel model);
         Task<AuthViewModel> GetAuth(int id);
 

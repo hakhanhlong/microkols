@@ -1,0 +1,36 @@
+﻿@model AccountFbPostViewModel
+
+
+<div class="card mb-3 card-fbpost">
+    <div class="img card-img-top">
+        <img src="@Model.Picture" alt="">
+    </div>
+
+    <div class="card-body">
+        <div class="d-flex align-Models-center">
+            <span>
+
+                @Model.LikeCount <i class="fal fa-thumbs-up"></i>
+            </span>
+
+
+            <span class="px-2">
+
+                @Model.ShareCount <i class="fal fa-share"></i>
+            </span>
+
+
+            <span>
+
+                @Model.CommentCount <i class="fal fa-comment"></i>
+            </span>
+        </div>
+        <div class="card-text small">
+            @Model.Message
+        </div>
+        <div class="small">
+            <a href="@Model.Permalink" target="_blank" class="text-primary"> Xem liên kết <i class="fal fa-external-link"></i></a>
+        </div>
+
+    </div>
+</div>
