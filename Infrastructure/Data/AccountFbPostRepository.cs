@@ -23,10 +23,12 @@ namespace Infrastructure.Data
             var accountProvider = await _dbContext.AccountProvider.FirstOrDefaultAsync(m => m.Provider == AccountProviderNames.Facebook && m.AccountId == accountid);
             var followersCount = 0;
             var friendsCount = 0;
+            var fblink = string.Empty;
             if(accountProvider != null)
             {
                 followersCount = accountProvider.FollowersCount ?? 0;
                 friendsCount = accountProvider.FriendsCount ?? 0;
+                fblink = accountProvider.Link;
             }
             var queryFbPost = _dbContext.AccountFbPost.Where(m => m.AccountId == accountid);
 
@@ -41,7 +43,8 @@ namespace Infrastructure.Data
                 AvgShareCount = avgShareCount,
                 FollowersCount = followersCount,
                 FriendsCount = friendsCount,
-                AccountId = accountid
+                AccountId = accountid,
+                FacebookLink = fblink
             };
         }
 

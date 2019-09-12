@@ -11,9 +11,15 @@
     <td>
         <div class="d-flex  align-items-center">
             <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(Model.Avatar)" width="32">
-            <div class="mr-3 font-weight-normal">@Model.Name </div>
+            <div class="mr-3 font-weight-normal">@Model.Name
+            
+            <a href="@Model.AccountCounting.FacebookLink" target="_blank" class="text-primary"><i class="fab fa-facebook"> </i></a>
+            </div>
 
             <div class="small">
+                <span data-toggle="tooltip" title="Tổng số bạn bè">
+                    @Model.AccountCounting.FriendsCount <i class="fal fa-user-friends"></i>
+                </span>
                 <span data-toggle="tooltip" title="Lượt thích trung bình">
                     @Model.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
                 </span>

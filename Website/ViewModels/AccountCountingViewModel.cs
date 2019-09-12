@@ -21,6 +21,7 @@ namespace Website.ViewModels
                 AvgCommentCount = Math.Round(model.AvgCommentCount, 2);
                 FriendsCount = model.FriendsCount;
                 FollowersCount = model.FollowersCount;
+                FacebookLink = model.FacebookLink;
 
             }
         }

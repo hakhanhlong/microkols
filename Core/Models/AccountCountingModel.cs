@@ -12,5 +12,6 @@ namespace Core.Models
         public double AvgCommentCount { get; set; }
         public int FriendsCount { get; set; }
         public int FollowersCount { get; set; }
+        public string FacebookLink { get; set; }
     }
 }

@@ -43,7 +43,7 @@
     {
         i++;
 
-        if(i> pagesize)
+        if (i > pagesize)
         {
             continue;
         }
@@ -52,23 +52,34 @@
             <td>
                 <div class="d-flex  align-items-center">
                     <img class="mr-3" src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32">
-                    <div class="mr-3 font-weight-normal">@account.Name </div>
+                    <div class="mr-3 font-weight-normal">
+                        @account.Name
 
-                    <div class="small">
-                        <span data-toggle="tooltip" title="Lượt thích trung bình">
+
+                        <a href="@account.AccountCounting.FacebookLink" target="_blank" class="text-primary"><i class="fab fa-facebook"> </i></a>
+                    </div>
+
+
+                    <div class="small ml-auto">
+                        <span class="pr-2" data-toggle="tooltip" title="Tổng số bạn bè">
+                            @account.AccountCounting.FriendsCount <i class="fal fa-user-friends"></i>
+                        </span>
+
+                        <span class="pr-2" data-toggle="tooltip" title="Lượt thích trung bình">
                             @account.AccountCounting.AvgLikeCount <i class="fal fa-thumbs-up"></i>
                         </span>
 
-                        <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
+                        <span class="pr-2" data-toggle="tooltip" title="Lượt Chia sẻ trung bình">
 
                             @account.AccountCounting.AvgShareCount <i class="fal fa-share"></i>
                         </span>
 
 
-                        <span data-toggle="tooltip" title="Lượt bình luận trung bình">
+                        <span class="pr-2" data-toggle="tooltip" title="Lượt bình luận trung bình">
                             @account.AccountCounting.AvgCommentCount <i class="fal fa-comment"></i>
                         </span>
                     </div>
+
                 </div>
                 @if (accountTypes.Contains(AccountType.Regular))
                 {
