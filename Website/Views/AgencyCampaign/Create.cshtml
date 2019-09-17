@@ -3,7 +3,7 @@
     ViewData["Title"] = "Thêm chiến dịch";
 
     var campaignTypes = StringHelper.GetEnumArray<CampaignType>();
-    var accountTypes = StringHelper.GetEnumArray<AccountType>().Where(m => m != AccountType.All);
+    var accountTypes = StringHelper.GetEnumArray<AccountType>().Where(m => m == AccountType.HotMom || m == AccountType.Kols); //.Where(m => m != AccountType.All);
 
     var categories = (List<CategoryViewModel>)ViewBag.Categories;
     var cities = (List<EntityViewModel>)ViewBag.Cities;

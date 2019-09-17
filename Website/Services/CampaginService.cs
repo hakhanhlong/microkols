@@ -166,7 +166,7 @@ namespace Website.Services
             return new CreateCampaignViewModel()
             {
                 Code = code,
-                AccountType = new List<AccountType>() { AccountType.Regular },
+                AccountType = new List<AccountType>() { AccountType.HotMom },
                 Quantity = 10,
 
             };
