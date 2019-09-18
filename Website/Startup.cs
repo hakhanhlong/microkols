@@ -55,6 +55,17 @@ namespace Website
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.None;
 
+            }).AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["AppOptions:FacebookAppId"];
+                facebookOptions.AppSecret = Configuration["AppOptions:FacebookAppSecret"];
+                facebookOptions.SaveTokens = true;
+                facebookOptions.Scope.Add("public_profile");
+                facebookOptions.Scope.Add("email");
+                facebookOptions.Scope.Add("user_friends");
+                facebookOptions.Scope.Add("user_link");
+                facebookOptions.Scope.Add("user_posts");
+
             });
 
             var connection = Configuration.GetConnectionString("AppContext");

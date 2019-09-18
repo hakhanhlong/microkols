@@ -16,17 +16,17 @@
                         <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Introduce">Giới thiệu</a>
                     </li>
                     @*<li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
+                            <a class="nav-link" data-toggle="dropdown" asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
 
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
-                            <a class="dropdown-item" asp-controller="Home" asp-action="Pricing">Cơ chế tính phí</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
+                                <a class="dropdown-item" asp-controller="Home" asp-action="Pricing">Cơ chế tính phí</a>
 
-                        </div>
-                    </li>*@
-                <li class="nav-item">
-                    <a class="nav-link"  asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
-                </li>
+                            </div>
+                        </li>*@
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Policy">Chính sách & Quy định</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link " asp-area="" asp-controller="Home" asp-action="QnA">Hỏi & đáp</a>
                     </li>
@@ -73,20 +73,23 @@
                     {
 
                         <li class="nav-item">
-                            @*<a class="nav-link" asp-action="Login" asp-controller="Auth">Tài khoản</a>*@
+                            <a class="btn btn-block" asp-action="LoginFb" asp-controller="Auth">
+                                <i class="fab fa-facebook"></i> Đăng nhập qua Facebook
 
-                                <button type="button" class="btn btn-block btn-facebook" data-target="#frmFbLogin">
+                            </a>
+
+                            @*<button type="button" class="btn btn-block btn-facebook" data-target="#frmFbLogin">
                                     <i class="fab fa-facebook"></i> Đăng nhập qua Facebook
                                 </button>
 
                                 <form action="@Url.Action("GetUserInfo","Auth")" id="frmFbLogin" method="post">
                                     <input type="hidden" name="provider" value="Facebook" />
                                     <input type="hidden" name="token" value="" />
-                                </form>
-                       
+                                </form>*@
+
 
                         </li>
-                       
+
                     }
 
                     <li>
@@ -129,19 +132,19 @@
                             </a>
                         </li>
                         @*<li class="nav-item">
-                            <a class="nav-link wallet-recharge" href="#">
-                                <i class="fal fa-coins"></i>
-                                Nạp tiền
-                            </a>
-                        </li>*@
+                                <a class="nav-link wallet-recharge" href="#">
+                                    <i class="fal fa-coins"></i>
+                                    Nạp tiền
+                                </a>
+                            </li>*@
                     }
                     else if (CurrentUser.Type == EntityType.Account)
                     {
                         @*<li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="Account">
-                    <i class="fal fa-tachometer-alt"></i> Trang chủ
-                </a>
-            </li>*@
+                                <a class="nav-link" asp-action="Index" asp-controller="Account">
+                                    <i class="fal fa-tachometer-alt"></i> Trang chủ
+                                </a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Index" asp-controller="Notification">
                                 <i class="fal fa-bell"></i> Thông báo
