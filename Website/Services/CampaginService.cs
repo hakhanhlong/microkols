@@ -125,7 +125,7 @@ namespace Website.Services
         #region Campaign By Agency
 
 
-
+    
         public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize)
         {
             var filter = new CampaignByAgencySpecification(agencyid, type, status, keyword);
@@ -450,6 +450,14 @@ namespace Website.Services
                             Status = NotificationStatus.Created
                         });
 
+
+                        /*  --> Cập nhật campaign thành start luon de cho Fb duyet */
+                        if (confirmed)
+                        {
+                            campaign.Status = CampaignStatus.Started;
+                            await _campaignRepository.UpdateAsync(campaign);
+
+                        }
                         return true;
                     }
 
@@ -506,6 +514,21 @@ namespace Website.Services
             }
 
             return false;
+        }
+
+
+        public async Task<CampaignViewModel> GetCampaignByRefId(int accountid, string facebookid)
+        {
+            var spec = new CampaignAccountByRefIdSpecification(facebookid);
+            var accountCampaign = await _campaignAccountRepository.GetSingleBySpecAsync(spec);
+            if(accountCampaign!= null)
+            {
+
+                var campaign = await _campaignRepository.GetByIdAsync(accountCampaign.CampaignId);
+
+                return new CampaignViewModel(campaign);
+            }
+            return null;
         }
 
 

@@ -66,15 +66,14 @@ namespace Website.ViewModels
                 Description = Description,
                 Image = image,
                 Published = true,
-                Status = CampaignStatus.Created,
+                //Status = CampaignStatus.Created, // cap nhat status da duyet luon de facebook check,
+                Status = CampaignStatus.Confirmed,
                 Title = Title,
                 UserCreated = username,
                 UserModified = username,
                 ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
                 ServiceChargePercent = setting.CampaignServiceChargePercent,
                 ServiceVATPercent = setting.CampaignVATChargePercent,
-
-
                 ServiceChargeAmount =0,
                 AccountChargeExtraPercent = 0,
                 AccountChargeAmount = 0,

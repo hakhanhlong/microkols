@@ -173,6 +173,8 @@ namespace Website.Services
             }
             else
             {
+                accountprovider.AccessToken = model.AccessToken;
+                await _accountProviderRepository.UpdateAsync(accountprovider);
 
                 return await GetAuth(accountprovider.AccountId);
             }
@@ -345,7 +347,13 @@ namespace Website.Services
         {
             var filter = new AccountProviderSpecification(provider, providerid);
             var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
-            return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
+
+            if (accountProvider != null)
+            {
+
+                return new AccountProviderViewModel(accountProvider);
+            }
+            return  null;
         }
 
         public async Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider)

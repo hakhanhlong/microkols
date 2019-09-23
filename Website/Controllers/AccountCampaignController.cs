@@ -31,7 +31,7 @@ namespace Website.Controllers
             _accountService = accountService;
         }
 
-        public async Task<IActionResult> Index(string kw,int type = 1, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> Index(string kw, int type = 1, int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Type = type;
             ViewBag.Kw = kw;
@@ -69,7 +69,7 @@ namespace Website.Controllers
             var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, type == 1);
 
 
-            //this.AddAlert(result);
+            this.AddAlert(true, type == 1 ? "Bạn đã đồng ý tham gia chiến dịch" : "Bạn đã từ chối tham gia chiến dịch");
 
             return RedirectToAction("Details", new { id = campaignid });
         }
@@ -191,7 +191,7 @@ namespace Website.Controllers
             {
                 return RedirectToAction("SubmitCampaignAccountRefContent", new { campaignid });
             }
-            
+
 
             return PartialView(new UpdateCampaignAccountRefViewModel()
             {

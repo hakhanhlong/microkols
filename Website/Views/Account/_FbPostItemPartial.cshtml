@@ -1,5 +1,8 @@
 ﻿@model AccountFbPostViewModel
 
+@inject Website.Interfaces.ICampaignService CampaignService
+
+
 
 <div class="card mb-3 card-fbpost">
     <div class="img card-img-top">
@@ -28,8 +31,17 @@
         <div class="card-text small">
             @Model.Message
         </div>
-        <div class="small">
+        <div class="small d-flex">
+
             <a href="@Model.Permalink" target="_blank" class="text-primary"> Xem liên kết <i class="fal fa-external-link"></i></a>
+
+            @{
+                var campaign = await CampaignService.GetCampaignByRefId(Model.AccountId, Model.PostId);
+                if (campaign != null)
+                {
+                    <a href="@Url.Action("Details", "AccountCampaign", new { id = campaign.Id})" class="btn btn-sm btn-success ml-auto" target="_blank"> Chiến dịch @campaign.Id</a>
+                }
+            }
         </div>
 
     </div>

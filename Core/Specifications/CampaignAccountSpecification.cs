@@ -27,7 +27,7 @@ namespace Core.Specifications
         }
 
 
-        public CampaignAccountSpecification(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int accountid) : 
+        public CampaignAccountSpecification(CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int accountid) :
             base(m => ((!status.HasValue || m.Status == status.Value) && m.AccountId == accountid) &&
             ((!StartDate.HasValue || m.DateCreated.Date >= StartDate.Value.Date) && (!EndDate.HasValue || m.DateCreated.Date <= EndDate.Value.Date)))
         {
@@ -44,19 +44,26 @@ namespace Core.Specifications
 
         }
     }
+    public class CampaignAccountByRefIdSpecification : BaseSpecification<CampaignAccount>
+    {
+        public CampaignAccountByRefIdSpecification(string refid) : base(m => m.RefId == refid)
+        {
 
+        }
+    }
 
-    public class CampaignAccountByIdSpecification:BaseSpecification<CampaignAccount>{
+    public class CampaignAccountByIdSpecification : BaseSpecification<CampaignAccount>
+    {
         public CampaignAccountByIdSpecification(int id) : base(m => m.Id == id)
         {
-            AddInclude(c=>c.Account);
+            AddInclude(c => c.Account);
             AddInclude(c => c.Campaign);
 
         }
     }
 
     public class CampaignAccountByStatusSpecification : BaseSpecification<CampaignAccount>
-    {      
+    {
         public CampaignAccountByStatusSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
         {
             AddInclude(c => c.Account);
@@ -93,7 +100,7 @@ namespace Core.Specifications
 
     public class ConfirmedCampaignAccountSpecification : BaseSpecification<CampaignAccount>
     {
-        public ConfirmedCampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid 
+        public ConfirmedCampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid
         && m.Status != CampaignAccountStatus.AccountRequest && m.Status != CampaignAccountStatus.AgencyRequest)
         {
         }
@@ -103,7 +110,7 @@ namespace Core.Specifications
     public class CampaignAccountByAccountSpecification : BaseSpecification<CampaignAccount>
     {
 
-        public CampaignAccountByAccountSpecification(int accountid, int campaignid) 
+        public CampaignAccountByAccountSpecification(int accountid, int campaignid)
             : base(m => m.CampaignId == campaignid && m.AccountId == accountid)
         {
             AddInclude(m => m.Account);
@@ -116,6 +123,6 @@ namespace Core.Specifications
         }
     }
 
-    
+
 
 }

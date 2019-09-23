@@ -50,7 +50,7 @@ namespace Website.Interfaces
         Task<CampaignCounterViewModel> GetCampaignCounterByAccount(int accountid);
         Task<int> UpdateCampaignAccountRefImages(int accountid, UpdateCampaignAccountRefImagesViewModel model, string username);
 
-
+        Task<CampaignViewModel> GetCampaignByRefId(int accountid, string facebookid);
         Task AutoUpdateStartedStatus(int campaignid);
         Task AutoUpdateEndedStatus(int campaignid);
     }
