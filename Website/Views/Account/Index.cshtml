@@ -1,9 +1,11 @@
 ﻿@model AccountViewModel
+@inject Website.Interfaces.IWalletService WalletService
 @{
     ViewData["Title"] = "Tài khoản";
 
     var counter = (CampaignCounterViewModel)ViewBag.Counter;
     var fbPosts = (ListAccountFbPostViewModel)ViewBag.FbPosts;
+    var accounts = (List<AccountViewModel>)ViewBag.Accounts;
 
 }
 @section Top{
@@ -24,6 +26,7 @@
         </div>
     </div>
 }
+
 
 
 @*<ul class="nav nav-tabs nav-linetabs">
@@ -132,8 +135,82 @@
         </div>
     </div>
 </div>
+<br />
+
+<section class="accountSection">
+    <h5> <i class="fal fa-star"></i> Thành viên nổi bật</h5>
+    <div class="owl-carousel fbpost-carousel owl-theme">
+        @foreach (var account in accounts)
+        {
+            if (string.IsNullOrEmpty(account.AccountCounting.FacebookLink))
+            {
+                continue;
+            }
+
+            var balance = await WalletService.GetAmount(EntityType.Account, account.Id);
+            <div class="item">
+
+                <div class="card mb-3 card-fbpost">
+                    <div class="img card-img-top" style="height:250px;">
+                        <img src="@account.Avatar" alt="">
+                    </div>
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mt-0">
+                            <a href="@account.AccountCounting.FacebookLink" target="_blank" class="text-primary">
+
+                                <i class="fab fa-facebook"></i>
+                                @account.Name
+                            </a>
+
+                        </h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <i class="fal fa-users"></i>
+                                <span class="text-info">
+                                    @account.AccountCounting.FriendsCount    bạn
+                                </span>
+                             
+                            </div>
+                            <div class="col-6">
+                                <i class="fal fa-wallet"></i>
+                                <span class="text-danger">@balance.ToPriceText()</span>
+                            </div>
+
+                        </div>
+                        <div class="row small mt-2">
+                            <div class="col-4">
+                                <span>
+                                    @account.AccountCounting.AvgLikeCount
+                                </span>
+                                <i class="fal fa-thumbs-up"></i>
+                            </div>
+                            <div class="col-4">
+                                <span>
+                                    @account.AccountCounting.AvgShareCount
+                                </span> <i class="fal fa-share"></i>
+                            </div>
+
+                            <div class="col-4">
+                                <span>
+
+                                    @account.AccountCounting.AvgCommentCount
+                                </span> <i class="fal fa-comment"></i>
+                            </div>
 
 
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+<hr>
 <div class="row mt-4">
 
     <div class="col-md-8">

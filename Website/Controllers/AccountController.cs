@@ -43,6 +43,7 @@ namespace Website.Controllers
 
             ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 1, 20);
             ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
+            ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
             return View(account);
         }
 

@@ -10,6 +10,7 @@ namespace Core.Interfaces
 {
     public interface IAccountFbPostRepository : IRepository<AccountFbPost>, IAsyncRepository<AccountFbPost>
     {
+        Task<string> GetAccessToken(int acountid);
         Task<AccountCountingModel> GetAccountCounting(int accountid);
     }
 }

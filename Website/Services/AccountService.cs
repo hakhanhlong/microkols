@@ -53,6 +53,13 @@ namespace Website.Services
             return await GetAccountViewModel(account);
         }
 
+
+        public async Task<string> GetAccessToken(int id)
+        {
+            return await _accountFbPostRepository.GetAccessToken(id);
+          
+        }
+
         private async Task<AccountViewModel> GetAccountViewModel(Account account)
         {
 

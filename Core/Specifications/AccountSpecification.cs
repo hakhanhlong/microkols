@@ -16,7 +16,8 @@ namespace Core.Specifications
 
         }
 
-        public AccountSpecification(string keyword, AccountType type) : base(m => (string.IsNullOrEmpty(keyword) || m.Email.Contains(keyword) || m.Name.Contains(keyword)) && m.Type == type)
+        public AccountSpecification(string keyword, AccountType type) :
+            base(m => (string.IsNullOrEmpty(keyword) || m.Email.Contains(keyword) || m.Name.Contains(keyword)) && ( type== AccountType.All ||m.Type == type))
         {
 
         }

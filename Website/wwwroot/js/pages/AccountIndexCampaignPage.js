@@ -5,7 +5,6 @@ var AccountIndexCampaignPage = (function () {
         AccountDetailsCampaignPage.HandlerAction();
     }
     
-
     return {
         Init: init
     };

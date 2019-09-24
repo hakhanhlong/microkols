@@ -40,7 +40,9 @@
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
         }
-
+        else if (currentPage === 'account_index') {
+            AccountIndexPage.Init();
+        }
         
     }
     function handler() {

@@ -16,6 +16,15 @@ namespace Infrastructure.Data
         {
 
         }
+        public async Task<string> GetAccessToken(int accountid)
+        {
+            var accountProvider = await _dbContext.AccountProvider.FirstOrDefaultAsync(m => m.Provider == AccountProviderNames.Facebook && m.AccountId == accountid);
+            if(accountProvider!= null)
+            {
+                return accountProvider.AccessToken;
+            }
+            return string.Empty;
+        }
 
         public async Task<AccountCountingModel> GetAccountCounting(int accountid)
         {
