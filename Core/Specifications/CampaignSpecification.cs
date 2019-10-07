@@ -61,6 +61,7 @@ namespace Core.Specifications
             AddInclude(m => m.CampaignAccount);
             AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
             AddInclude(m => m.CampaignAccountType);
+            AddInclude(m => m.Agency);
         }
     }
 

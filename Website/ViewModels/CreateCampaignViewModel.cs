@@ -87,7 +87,10 @@ namespace Website.ViewModels
                 DateStart = start.ToViDateTime(),
                 DateEnd = end.ToViDateTime(),
                 AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
-                CustomKolNames = CustomKolNames.ToListString()
+                CustomKolNames = CustomKolNames.ToListString(),
+                Method = Method,
+                SampleContent = SampleContent.ToListString(),
+                Hashtag = HashTag.ToListString()
 
             };
 
@@ -201,6 +204,13 @@ namespace Website.ViewModels
         [Display(Name = "Độ tuổi")]
         public int? ChildAgeMin { get; set; }
         public int? ChildAgeMax { get; set; }
+
+
+        public List<string> HashTag { get; set; }
+        public List<string> SampleContent { get; set; }
+
+        [Display(Name = "Phương thức")]
+        public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
     }
 
 }

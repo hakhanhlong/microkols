@@ -29,8 +29,9 @@ namespace Core.Entities
         public int? ServiceVATPercent { get; set; }
 
         public CampaignType Type { get; set; }
-
-
+        public CampaignMethod? Method { get; set; }
+        public string Hashtag { get; set; }
+        public string SampleContent { get; set; }
 
 
         // các trường này ko dùng trong cách tính mới nữa
@@ -62,6 +63,13 @@ namespace Core.Entities
         private List<CampaignAccountType> _CampaignAccountType = new List<CampaignAccountType>();
         public IEnumerable<CampaignAccountType> CampaignAccountType => _CampaignAccountType.AsReadOnly();
 
+    }
+    public enum CampaignMethod
+    {
+        [DisplayName("Tự chọn thành viên")]
+        ChooseAccount = 0,
+        [DisplayName("Thành viên tự đăng ký")]
+        OpenJoined = 1
     }
 
     public enum CampaignStatus

@@ -248,6 +248,21 @@ namespace Infrastructure.Data
             return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
         }
 
+
+        public async Task<IQueryable<Campaign>> QueryMarketPlaceCampaignByAccount(int accountid, string keyword)
+        {
+
+
+            
+            var queryCampaign = _dbContext.Campaign.Where(m =>  m.Method == CampaignMethod.OpenJoined);
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                queryCampaign = queryCampaign.Where(m => m.Code.Contains(keyword) || m.Description.Contains(keyword));
+            }
+            return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.Agency);
+        }
+
         public async Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword)
         {
             var query = _dbContext.CampaignAccount.AsQueryable();

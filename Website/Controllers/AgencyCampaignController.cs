@@ -70,35 +70,49 @@ namespace Website.Controllers
             var error = "";
             if (ModelState.IsValid)
             {
-                if (model.AccountType.Contains(AccountType.Regular))
+
+                var valid = true;
+
+                if(model.Method == CampaignMethod.ChooseAccount)
                 {
-
-                    //generate accountids
-
-                    var matchedAccountIds = new List<int>();
-                    var matchedAccountChargeAmounts = new List<int>();
-                    var matchedAccounts = await _accountService.GetListAccount(model.AccountType, model.CategoryId, model.Gender, model.CityId, model.AgeStart, model.AgeEnd, string.Empty, 1, model.Quantity, null, 0, 0);
-
-                    foreach (var matchedAccount in matchedAccounts.Accounts)
+                    if (model.AccountType.Contains(AccountType.Regular))
                     {
-                        matchedAccountIds.Add(matchedAccount.Id);
-                        matchedAccountChargeAmounts.Add(0);
+
+                        //generate accountids
+
+                        var matchedAccountIds = new List<int>();
+                        var matchedAccountChargeAmounts = new List<int>();
+                        var matchedAccounts = await _accountService.GetListAccount(model.AccountType, model.CategoryId, model.Gender, model.CityId, model.AgeStart, model.AgeEnd, string.Empty, 1, model.Quantity, null, 0, 0);
+
+                        foreach (var matchedAccount in matchedAccounts.Accounts)
+                        {
+                            matchedAccountIds.Add(matchedAccount.Id);
+                            matchedAccountChargeAmounts.Add(0);
+                        }
+                        model.AccountIds = matchedAccountIds;
+                        model.AccountChargeAmounts = matchedAccountChargeAmounts;
                     }
-                    model.AccountIds = matchedAccountIds;
-                    model.AccountChargeAmounts = matchedAccountChargeAmounts;
-                }
 
 
 
-                if (model.AccountType == null || model.AccountType.Count == 0)
-                {
-                    error = "Hãy chọn đối tượng ";
-                }
-                else if (model.AccountIds == null || model.AccountIds.Count == 0 || model.AccountIds.Count != model.AccountChargeAmounts.Count)
-                {
-                    error = "Không có Kol phù hợp. Vui lòng chộn các tiêu chí khác";
+                    if (model.AccountType == null || model.AccountType.Count == 0)
+                    {
+                        valid = false;
+                           error = "Hãy chọn đối tượng ";
+                    }
+                    else if (model.AccountIds == null || model.AccountIds.Count == 0 || model.AccountIds.Count != model.AccountChargeAmounts.Count)
+                    {
+                        valid = false;
+                        error = "Không có Kol phù hợp. Vui lòng chộn các tiêu chí khác";
+                    }
                 }
                 else
+                {
+                    model.AccountIds = new List<int>();
+                    model.AccountChargeAmounts = new List<int>();
+                }
+
+                if (valid)
                 {
                     if (!string.IsNullOrEmpty(model.Image))
                     {
@@ -118,7 +132,7 @@ namespace Website.Controllers
                             status = 1,
                             message = "Thêm chiến dịch mới thành công",
                             campaignid = id,
-                            url = Url.Action("Details", new { id = id})
+                            url = Url.Action("Details", new { id = id })
                         });
 
 
@@ -127,7 +141,6 @@ namespace Website.Controllers
                     {
                         error = "Lỗi khi khởi tạo chiến dịch. Vui lòng thử lại";
                     }
-
                 }
 
             }

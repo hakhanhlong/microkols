@@ -107,6 +107,45 @@ namespace Website.Services
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
+        public async Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, string keyword, int page, int pagesize)
+        {
+
+            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, keyword);
+
+            var total = await query.CountAsync();
+            var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+
+            //var filter = new CampaignByAccountSpecification(accountid, keyword);
+            //var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
+            //var total = await _campaignRepository.CountAsync(filter);
+
+
+            var list = new List<MarketPlaceViewModel>();
+
+            foreach (var campaign in campaigns)
+            {
+                var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
+
+                list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+
+            }
+
+            return new ListMarketPlaceViewModel()
+            {
+                MarketPlaces = list,
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+        }
+
+        public async Task<MarketPlaceViewModel> GetCampaignMarketPlace(int id)
+        {
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignSpecification(id));
+
+            if (campaign == null) return null;
+            return new MarketPlaceViewModel(campaign, campaign.CampaignAccount.ToList(), campaign.Agency);
+
+        }
+
         public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id)
         {
             var filter = new CampaignByAccountSpecification(accountid, id);
@@ -125,7 +164,7 @@ namespace Website.Services
         #region Campaign By Agency
 
 
-    
+
         public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize)
         {
             var filter = new CampaignByAgencySpecification(agencyid, type, status, keyword);
@@ -168,7 +207,7 @@ namespace Website.Services
                 Code = code,
                 AccountType = new List<AccountType>() { AccountType.HotMom },
                 Quantity = 10,
-
+                Method = CampaignMethod.OpenJoined
             };
         }
 
@@ -207,7 +246,7 @@ namespace Website.Services
                 {
                     AccountType = accountType,
                     CampaignId = campaignId,
-                    
+
                 });
             }
         }
@@ -354,7 +393,7 @@ namespace Website.Services
         public async Task<CampaignAccountByAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid)
         {
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-            if(campaign!= null)
+            if (campaign != null)
             {
 
 
@@ -521,7 +560,7 @@ namespace Website.Services
         {
             var spec = new CampaignAccountByRefIdSpecification(facebookid);
             var accountCampaign = await _campaignAccountRepository.GetSingleBySpecAsync(spec);
-            if(accountCampaign!= null)
+            if (accountCampaign != null)
             {
 
                 var campaign = await _campaignRepository.GetByIdAsync(accountCampaign.CampaignId);
@@ -805,7 +844,7 @@ namespace Website.Services
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
             if (campaignAccount == null) return -1;
 
-           
+
             campaignAccount.RefImage = model.RefImage.ToListString();
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;
@@ -931,16 +970,16 @@ namespace Website.Services
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
 
-                    var countCampaignAccountToProcess =  await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
+                    var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
                             CampaignAccountStatus.AccountRequest,
                             CampaignAccountStatus.AgencyRequest,
                             CampaignAccountStatus.Canceled,
                             CampaignAccountStatus.WaitToPay,
-                            
+
                     }));
 
                     // neu ko co ai thuc hien thi huy ko start nua
-                    if(countCampaignAccountToProcess== 0)
+                    if (countCampaignAccountToProcess == 0)
                     {
                         campaign.Status = CampaignStatus.Canceled;
 

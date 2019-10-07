@@ -7543,18 +7543,18 @@ a.text-dark:hover, a.text-dark:focus {
 #editAccountPriceWrap.openedit input {
   display: inline; }
 
-#addonimagewrap {
+#addonimagewrap, #sampleContentWrap {
   display: flex; }
-  #addonimagewrap .addonimage {
+  #addonimagewrap .addonimage, #sampleContentWrap .addonimage {
     position: relative; }
-    #addonimagewrap .addonimage .remove {
+    #addonimagewrap .addonimage .remove, #sampleContentWrap .addonimage .remove {
       position: absolute;
       right: 10px;
       top: 10px;
       color: red;
       font-size: 1.5rem;
       cursor: pointer; }
-    #addonimagewrap .addonimage img {
+    #addonimagewrap .addonimage img, #sampleContentWrap .addonimage img {
       max-height: 250px; }
 
 .profilesection .img {

@@ -18,6 +18,7 @@ namespace Website.Interfaces
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
+        Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, string keyword, int page, int pagesize);
         Task<CampaignAccountByAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid);
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
         Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed);
@@ -36,6 +37,7 @@ namespace Website.Interfaces
         Task<int> SubmitCampaignAccountRefContent(int accountid, SubmitCampaignAccountRefContentViewModel model, string username);
         Task<int> SubmmitCampaignAccountChangeAvatar(int accountid, SubmmitCampaignAccountChangeAvatarViewModel model, string username);
 
+        Task<MarketPlaceViewModel> GetCampaignMarketPlace(int id);
         Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newrefContent);
 
         Task<List<int>> GetEndedCampaignIds();

@@ -10,6 +10,9 @@
     var campaignTypeCharges = (List<CampaignTypeChargeViewModel>)ViewBag.CampaignTypeCharges;
     var genderList = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>();
 
+    
+    var methodList = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.CampaignMethod>();
+
 
     var i = 0;
 }
@@ -35,6 +38,30 @@
 <form method="post" action="javascript:;" data-action="@Url.Action("Create")" enctype="multipart/form-data" id="frmCreateCampaign">
     <input type="hidden" value="@AppSettings.CampaignExtraOptionChargePercent" id="settingExtraOptionCharge" />
     <input type="hidden" value="@AppSettings.CampaignServiceChargePercent" id="settingServiceCharge" />
+
+
+
+    <div class="form-group row">
+        <label asp-for="Method" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+
+            @foreach (var methodItem in methodList)
+            {
+
+                var checkboxId = $"Method{methodItem}";
+
+                <div class="custom-control custom-radio custom-control">
+                    <input type="radio" @(Model.Method == methodItem ? "checked" : "") value="@methodItem"
+                           name="Method" id="@checkboxId" class="custom-control-input">
+                    <label class="custom-control-label" for="@checkboxId">
+                        @methodItem.ToDisplayName()
+                    </label>
+                </div>
+            }
+
+        </div>
+    </div>
+
     <div class="form-group row">
         <label asp-for="Type" class="col-md-2 col-form-label"></label>
         <div class="col-md-10">
@@ -115,10 +142,10 @@
     </div>
 
     <div class="form-group row d-type d-type-ShareContentWithCaption d-type-JoinEvent" style="display:none">
-        <label asp-for="AddonImages" class="col-md-2 col-form-label" id="dataText"></label>
+        <label asp-for="AddonImages" class="col-md-2 col-form-label"></label>
         <div class="col-md-10">
 
-            <div class="mb-2"> 
+            <div class="mb-2">
                 <input type="file" id="addonImages" class="form-control" data-target="#addonimagewrap" multiple />
             </div>
 
@@ -331,11 +358,8 @@
     <div class="form-group row">
         <label asp-for="Quantity" class="col-md-2 col-form-label"></label>
         <div class="col-md-2">
-
-
-
             <input type="number" asp-for="Quantity" min="0" class="form-control" />
-            <span asp-validation-for="Description"></span>
+            <span asp-validation-for="Quantity"></span>
         </div>
         <div class="col-md-8 d-none d-withoutRegular">
             <div class="row">
@@ -352,44 +376,66 @@
         </div>
 
     </div>
+    <div class="d-withoutOpenJoined">
+        <div class="d-none d-withoutRegular">
 
-    <div class="d-none d-withoutRegular">
+            <hr />
 
-        <hr />
+            <div class="form-group row">
 
-        <div class="form-group row">
+                <label class="col-md-2 col-form-label">Danh sách Kols phù hợp</label>
+                <div class="col-md-10">
+                    <div class="mb-2">
+                        <button type="button" class="btn btn-success btn-success btn-suggestaccount btn-sm"> <i class="fal fa-search-plus"></i> Tìm kiếm</button>
+                    </div>
 
-            <label class="col-md-2 col-form-label">Danh sách Kols phù hợp</label>
-            <div class="col-md-10">
-                <div class="mb-2">
-                    <button type="button" class="btn btn-success btn-success btn-suggestaccount btn-sm"> <i class="fal fa-search-plus"></i> Tìm kiếm</button>
+                    <div id="suggestAccount" data-url="@Url.Action("MatchedAccount")">
+
+
+                    </div>
                 </div>
 
-                <div id="suggestAccount" data-url="@Url.Action("MatchedAccount")">
+            </div>
 
+            <div class="form-group row">
+                <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
+                <div class="col-md-10">
+                    <select asp-for="CustomKolNames" multiple class="form-control"></select>
 
+                    <span asp-validation-for="CustomKolNames"></span>
                 </div>
             </div>
 
         </div>
-
+    </div>
         <div class="form-group row">
-            <label asp-for="CustomKolNames" class="col-md-2 col-form-label"></label>
-            <div class="col-md-10">
-                <select asp-for="CustomKolNames" multiple class="form-control"></select>
-
-                <span asp-validation-for="CustomKolNames"></span>
-            </div>
+        <label asp-for="HashTag" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <select asp-for="HashTag" multiple class="form-control"></select>
+            <span asp-validation-for="HashTag"></span>
         </div>
-        <div class="form-group row ">
-            <label asp-for="FeedbackBefore" class="col-md-2 col-form-label"></label>
-            <div class="col-md-10">
-                <input type="text" class="form-control form-datetimepicker" asp-for="FeedbackBefore" />
-                <span asp-validation-for="FeedbackBefore"></span>
+    </div>
+    <div class="form-group row">
+        <label asp-for="SampleContent" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+
+            <div class="mb-2">
+                <input type="file" id="sampleContent" class="form-control" data-target="#sampleContentWrap" multiple />
             </div>
+
+            <div id="sampleContentWrap">
+
+
+            </div>
+
         </div>
-
-
+    </div>
+    <div class="form-group row ">
+        <label asp-for="FeedbackBefore" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <input type="text" class="form-control form-datetimepicker" asp-for="FeedbackBefore" />
+            <span asp-validation-for="FeedbackBefore"></span>
+        </div>
     </div>
     <hr />
 

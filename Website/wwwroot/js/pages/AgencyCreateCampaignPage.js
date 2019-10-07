@@ -43,6 +43,29 @@
         });
         
 
+        $('#sampleContent').change(function () {
+            var id = $(this).attr('id');
+            var target = $(this).data('target');
+            var files = document.getElementById(id).files;
+
+            AppCommon.uploadTempImage(files, function (datas) {
+                datas.forEach(function (item) {
+                    var html = '<div class="addonimage"><span class="remove"><i class="fal fa-times"></i></span> <img src="' + item.url + '" class="img-thumbnail mt-2" style="" /><input type="hidden" name="SampleContent" value="' + item.path + '" /></div>';
+                    $(target).append(html);
+                });
+
+                $('.addonimage .remove').unbind('click');
+                $('.addonimage .remove').click(function () {
+                    $(this).closest('.addonimage').remove();
+                });
+
+            });
+
+        });
+
+
+
+
 
         $('#btnCreateCampaign').click(function () {
 
@@ -77,7 +100,10 @@
             handlerAccountType();
         });
 
-
+        handlerMethod();
+        $('input[name=Method]').change(function () {
+            handlerMethod();
+        });
         /*
         $('#frmCreateCampaign input,#frmCreateCampaign select').change(function () {
             console.log('input change');
@@ -119,6 +145,10 @@
         $('#CategoryId').select2({
             maximumSelectionLength: 3,
             theme: "bootstrap4" 
+        });
+        $('#HashTag').select2({
+            maximumSelectionLength: 3,
+            theme: "bootstrap4", tags: true
         });
 
 
@@ -236,6 +266,22 @@
 
             
     }
+
+    function handlerMethod() {
+        var method = $('input[name=Method]:checked').val();
+        if (method == 'OpenJoined') {
+            $('.d-withoutOpenJoined').addClass('d-none');
+            $('#actionWrap').removeClass('d-none');
+        } else {
+            $('.d-withoutOpenJoined').removeClass('d-none');
+
+        }
+        
+
+
+
+    }
+
 
     function handlerType() {
         var type = $('#Type').val();

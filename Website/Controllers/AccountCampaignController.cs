@@ -40,6 +40,19 @@ namespace Website.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> MarketPlace(string kw,  int pageindex = 1, int pagesize = 20)
+        {
+            ViewBag.Kw = kw;
+            var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, kw, pageindex, pagesize);
+
+            return View(model);
+        }
+        public async Task<IActionResult> MarketPlaceDetails(int id)
+        {
+            var model = await _campaignService.GetCampaignMarketPlace(id);
+
+            return View(model);
+        }
 
         #region Details
 
