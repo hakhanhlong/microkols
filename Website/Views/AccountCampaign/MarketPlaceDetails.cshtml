@@ -1,5 +1,30 @@
 ﻿@model MarketPlaceViewModel
+@{
 
+    ViewData["Title"] = $"Chiến dịch {Model.Campaign.Code}";
+}
+@section Top{
+
+    <div class="pagetitle">
+        <div class="container d-flex">
+            <div class="mr-auto">
+
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="MarketPlace">Chiến dịch</a></li>
+                    <li class="breadcrumb-item active">@ViewData["Title"]</li>
+                </ol>
+
+                <h1>@ViewData["Title"]</h1>
+
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<div class="mt-3"></div>
 <alert></alert>
 <div class="card card-body marketplacedetail">
     <div class="row">
@@ -23,12 +48,12 @@
                 if (campaignAccount != null)
                 {
                     @*<div>
-                        <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new { campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })"> Bạn đã thực hiện công việc </button>
-                    </div>*@
+                            <button class="btn btn-info btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new { campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })"> Bạn đã thực hiện công việc </button>
+                        </div>*@
 
                     <div>
                         @if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
-           || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+          || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                         {
 
                             if (Model.Campaign.Type != CampaignType.ShareContentWithCaption || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
@@ -146,7 +171,7 @@
             }
 
 
-            
+
         </div>
     </div>
     <hr />
@@ -155,7 +180,7 @@
             <i class="fal fa-2x fa-info-circle"></i>
         </div>
         <div class="col">
-            <h6>Mô tả:</h6> 
+            <h6>Mô tả:</h6>
             <div>
                 @Model.Campaign.Type.ToDataText():  <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
             </div>
@@ -163,7 +188,7 @@
 
                 @Model.Campaign.Description
             </div>
-            
+
         </div>
     </div>
 

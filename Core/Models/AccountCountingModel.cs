@@ -13,5 +13,6 @@ namespace Core.Models
         public int FriendsCount { get; set; }
         public int FollowersCount { get; set; }
         public string FacebookLink { get; set; }
+        public string FacebookId { get; set; }
     }
 }

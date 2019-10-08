@@ -33,11 +33,13 @@ namespace Infrastructure.Data
             var followersCount = 0;
             var friendsCount = 0;
             var fblink = string.Empty;
+            var fbid = string.Empty;
             if(accountProvider != null)
             {
                 followersCount = accountProvider.FollowersCount ?? 0;
                 friendsCount = accountProvider.FriendsCount ?? 0;
                 fblink = accountProvider.Link;
+                fbid = accountProvider.ProviderId;
             }
             var queryFbPost = _dbContext.AccountFbPost.Where(m => m.AccountId == accountid);
 
@@ -53,7 +55,8 @@ namespace Infrastructure.Data
                 FollowersCount = followersCount,
                 FriendsCount = friendsCount,
                 AccountId = accountid,
-                FacebookLink = fblink
+                FacebookLink = fblink,
+                FacebookId = fbid
             };
         }
 

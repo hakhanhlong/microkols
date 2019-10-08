@@ -22,6 +22,7 @@ namespace Website.ViewModels
                 FriendsCount = model.FriendsCount;
                 FollowersCount = model.FollowersCount;
                 FacebookLink = model.FacebookLink;
+                FacebookId = model.FacebookId;
 
             }
         }

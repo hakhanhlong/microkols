@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Tài khoản Facebook";
+    ViewData["Title"] = "Bạn bè";
 
     var accounts = (List<AccountViewModel>)ViewBag.Accounts;
 }
@@ -28,10 +28,13 @@
 
 
 
-<section class="accountSection">
-    <h5> <i class="fal fa-user-friends"></i> Bạn bè của bạn trên MicroKols</h5>
-    <div class="accountfriendSection">
-        <div class="alert alert-info">Bạn chưa có bạn bè trên Facebook</div>
+<section class="accountSection mt-3">
+    <h5> <i class="fal fa-user-friends"></i> Bạn của bạn trên MicroKols</h5>
+    <div class="accountfriendSection row">
+        <div class="col-12">
+            <div class="alert alert-info">Bạn chưa có bạn trên Facebook</div>
+        </div>
+        
     </div>
 </section>
 
@@ -47,7 +50,7 @@
             }
 
             var balance = await WalletService.GetAmount(EntityType.Account, account.Id);
-            <div class="item" id="item@(account.Id)">
+            <div class="item" id="item@(account.AccountCounting.FacebookId)">
 
                 <div class="card mb-3 card-fbpost">
                     <div class="img card-img-top" style="height:250px;">
