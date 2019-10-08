@@ -489,7 +489,6 @@ namespace Website.Services
                             Status = NotificationStatus.Created
                         });
 
-
                         /*  --> Cập nhật campaign thành start luon de cho Fb duyet */
                         if (confirmed)
                         {
@@ -499,7 +498,30 @@ namespace Website.Services
                         }
                         return true;
                     }
+                }
+                else
+                {
+                    //tu them khi chua co @@
 
+                    campaignAccount = new CampaignAccount()
+                    {
+                        CampaignId = campaign.Id,
+                        DateCreated = DateTime.Now,
+                        DateModified = DateTime.Now,
+                        AccountChargeAmount = 100000,
+                        Note = string.Empty,
+                        AccountId = accountid,
+                        UserModified = username,
+                        UserCreated = username,
+                        Type = campaign.Type,
+                        Status = CampaignAccountStatus.Confirmed
+                    };
+                    await _campaignAccountRepository.AddAsync(campaignAccount);
+
+
+                    /*  --> Cập nhật campaign thành start luon de cho Fb duyet */
+                    campaign.Status = CampaignStatus.Started;
+                    await _campaignRepository.UpdateAsync(campaign);
                 }
             }
 

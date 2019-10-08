@@ -40,7 +40,7 @@ namespace Website.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> MarketPlace(string kw,  int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> MarketPlace(string kw, int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Kw = kw;
             var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, kw, pageindex, pagesize);
@@ -85,6 +85,16 @@ namespace Website.Controllers
             this.AddAlert(true, type == 1 ? "Bạn đã đồng ý tham gia chiến dịch" : "Bạn đã từ chối tham gia chiến dịch");
 
             return RedirectToAction("Details", new { id = campaignid });
+        }
+
+        public async Task<IActionResult> JoinCampaign(int campaignid)
+        {
+            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, true);
+
+
+            this.AddAlert(true, "Bạn đã đồng ý tham gia chiến dịch");
+
+            return RedirectToAction("MarketPlaceDetails", new { id = campaignid });
         }
 
         public async Task<IActionResult> SubmitCampaignAccountRefContent(int campaignid)

@@ -31,7 +31,7 @@
         } else if (currentPage === 'agencycampaign_details') {
             AgencyDetailsCampaignPage.Init();
         }
-        else if (currentPage === 'accountcampaign_details') {
+        else if (currentPage === 'accountcampaign_details' || currentPage === 'accountcampaign_marketplacedetails') {
             AccountDetailsCampaignPage.Init();
         }
         else if (currentPage === 'accountcampaign_index') {

@@ -46,7 +46,11 @@ namespace Website.Controllers
             ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
             return View(account);
         }
-
+        public async Task<IActionResult> FbAccount()
+        {
+            ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
+            return View();
+        }
         public async Task<IActionResult> FbPost(int page = 1, int pagesize = 20)
         {
             var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, page, pagesize);

@@ -32,11 +32,11 @@
                     <input type="text" asp-for="RefUrl" class="form-control" />
                     <span asp-validation-for="RefUrl" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <label asp-for="RefImage"></label>
                     <input type="hidden" asp-for="RefImage" class="form-control" />
                     <span asp-validation-for="RefImage" class="text-danger"></span>
-                </div>
+                </div>*@
 
                 @if (Model.CampaignType == CampaignType.ShareContentWithCaption || Model.CampaignType == CampaignType.ShareContent)
                 {

@@ -7657,3 +7657,12 @@ a.text-dark:hover, a.text-dark:focus {
 .homecounting .ics.teal {
   color: #20c9a6;
   border-color: #20c9a6; }
+
+.marketplacedetail .row {
+  align-items: center;
+  margin-bottom: 1rem; }
+  .marketplacedetail .row i {
+    color: #6c757d; }
+
+.marketplacedetail h6 {
+  font-weight: 600; }
