@@ -32,6 +32,7 @@ namespace Core.Entities
         public CampaignMethod? Method { get; set; }
         public string Hashtag { get; set; }
         public string SampleContent { get; set; }
+        public string SampleContentText { get; set; }
 
 
         // các trường này ko dùng trong cách tính mới nữa

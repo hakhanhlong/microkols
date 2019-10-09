@@ -90,7 +90,8 @@ namespace Website.ViewModels
                 CustomKolNames = CustomKolNames.ToListString(),
                 Method = Method,
                 SampleContent = SampleContent.ToListString(),
-                Hashtag = HashTag.ToListString()
+                Hashtag = HashTag.ToListString(),
+                SampleContentText   = SampleContentText
 
             };
 
@@ -209,6 +210,7 @@ namespace Website.ViewModels
         public List<string> HashTag { get; set; }
         public List<string> SampleContent { get; set; }
 
+        public string SampleContentText { get; set; }
         [Display(Name = "Phương thức")]
         public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
     }

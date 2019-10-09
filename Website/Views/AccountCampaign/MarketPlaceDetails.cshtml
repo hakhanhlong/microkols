@@ -53,7 +53,7 @@
 
                     <div>
                         @if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
-          || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                         {
 
                             if (Model.Campaign.Type != CampaignType.ShareContentWithCaption || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
@@ -188,6 +188,19 @@
 
                 @Model.Campaign.Description
             </div>
+            @{ 
+                var images = Model.Campaign.Image.ToListString();
+            }
+            @if (images.Count > 0)
+            {
+                <div>
+                    @foreach (var imgItem in images)
+                    {
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                    }
+                </div>
+            }
+
 
         </div>
     </div>
@@ -258,5 +271,28 @@
             }
         </div>
     </div>
+    <div class="row">
+        <div class="col-1">
+            <i class="fal fa-tag fa-2x"></i>
+        </div>
+        <div class="col">
 
+            <h6>Nội dung mẫu: </h6>
+            <div>
+                @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText))
+                {
+                    <p>@Model.Campaign.SampleContentText</p>
+                }
+
+            </div>
+            <div>
+
+                @foreach (var item in Model.Campaign.SampleContent.Split('|'))
+                {
+                    <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
+                }
+            </div>
+
+        </div>
+    </div>
 </div>

@@ -408,11 +408,18 @@
 
         </div>
     </div>
-        <div class="form-group row">
+    <div class="form-group row">
         <label asp-for="HashTag" class="col-md-2 col-form-label"></label>
         <div class="col-md-10">
             <select asp-for="HashTag" multiple class="form-control"></select>
             <span asp-validation-for="HashTag"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="SampleContentText" class="col-md-2 col-form-label"></label>
+        <div class="col-md-10">
+            <textarea class="form-control" asp-for="SampleContentText" ></textarea>
+            <span asp-validation-for="SampleContentText"></span>
         </div>
     </div>
     <div class="form-group row">
