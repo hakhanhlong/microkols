@@ -41,7 +41,7 @@ namespace Website.Controllers
 
             ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
 
-            ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 1, 20);
+            ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 0, 1, 20);
             ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
             ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
             return View(account);
@@ -51,9 +51,10 @@ namespace Website.Controllers
             ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
             return View();
         }
-        public async Task<IActionResult> FbPost(int page = 1, int pagesize = 20)
+        public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 20)
         {
-            var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, page, pagesize);
+            var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, type, page, pagesize);
+            ViewBag.Type = type;
             return View(model);
         }
 
@@ -188,7 +189,7 @@ namespace Website.Controllers
         #endregion
 
         #region ChangeAccountType
-        
+
         public async Task<IActionResult> UpdateIgnoreCampaignTypes(CampaignType type, bool removed)
         {
             var result = await _accountService.UpdateIgnoreCampaignTypes(CurrentUser.Id, type, !removed, CurrentUser.Username);
@@ -230,10 +231,11 @@ namespace Website.Controllers
         {
             if (ModelState.IsValid)
             {
-                for(var i = 0;i< model.Id.Count; i++)
+                for (var i = 0; i < model.Id.Count; i++)
                 {
 
-                    await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, new AccountCampaignChargeViewModel() {
+                    await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, new AccountCampaignChargeViewModel()
+                    {
                         Id = model.Id[i],
                         AccountChargeAmount = model.AccountChargeAmount[i],
                         Type = model.Type[i]
@@ -291,7 +293,7 @@ namespace Website.Controllers
         #endregion
 
 
-       
+
 
         #region Helper
         private async Task ReSignIn(int id)

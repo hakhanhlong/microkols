@@ -1,6 +1,7 @@
 ﻿@model ListAccountFbPostViewModel
 @{
-    ViewData["Title"] = "Facebook Post";
+    ViewData["Title"] = "Bài viết đã chia sẻ trên Facebook";
+    var type = (int) ViewBag.Type;
 }
 @section Top{
 
@@ -29,7 +30,7 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link active" asp-action="FbPost">Facebook Post</a>
+        <a class="nav-link active" asp-action="FbPost">@ViewData["Title"]</a>
     </li>
 
 </ul>
@@ -39,20 +40,27 @@
 <div class="tab-content mt-3">
     <div class="tab-pane fade show active">
 
-        <div class="row">
+        @if (Model.Posts.Count > 0)
+        {<div class="row">
 
 
-            @foreach (var item in Model.Posts)
-            {
-                <div class="col-md-3">
+                @foreach (var item in Model.Posts)
+                {
+                    <div class="col-md-3">
 
-                    <partial name="_FbPostItemPartial" model="@item" />
-                  
-                </div>
-            }
+                        <partial name="_FbPostItemPartial" model="@item" />
 
-        </div>
-        <pager pager="@Model.Pager" asp-action="Index"></pager>
+                    </div>
+                }
 
+            </div>
+
+
+            <pager pager="@Model.Pager" asp-action="Index"></pager>
+        }
+        else
+        {
+            <div class="alert alert-info">Bạn chưa có bài viết nào</div>
+        }
     </div>
 </div>

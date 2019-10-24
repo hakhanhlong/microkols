@@ -12,5 +12,6 @@ namespace Core.Interfaces
     {
         Task<string> GetAccessToken(int acountid);
         Task<AccountCountingModel> GetAccountCounting(int accountid);
+        Task<List<AccountFbPost>> GetAccountFbPostsByHasCampaign(int accountid, int page, int pagesize);
     }
 }

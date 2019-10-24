@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
 using Core.Models;
+using Infrastructure.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,14 @@ namespace Infrastructure.Data
                 return accountProvider.AccessToken;
             }
             return string.Empty;
+        }
+
+        public async Task<List<AccountFbPost>> GetAccountFbPostsByHasCampaign(int accountid, int page, int pagesize)
+        {
+
+            var refid =  _dbContext.CampaignAccount.Where(m => m.AccountId == accountid && !string.IsNullOrEmpty(m.RefId)).Select(m => m.RefId);
+
+            return await _dbContext.AccountFbPost.Where(m => refid.Contains(m.PostId)).OrderByDescending(m => m.DateCreated).GetPagedAsync(page, pagesize);
         }
 
         public async Task<AccountCountingModel> GetAccountCounting(int accountid)

@@ -26,7 +26,10 @@ namespace Core.Specifications
 
         }
 
+        public AccountFbPostByAccountSpecification(List<string> refid) : base(m => refid.Contains(m.PostId))
+        {
 
+        }
     }
 
 }

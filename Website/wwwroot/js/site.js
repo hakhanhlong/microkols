@@ -6,7 +6,7 @@
         success: function () {
             FB.init({
                 appId: appId,
-                version: 'v3.2'
+                version: 'v4.0'
             });
             App.Init();
         },

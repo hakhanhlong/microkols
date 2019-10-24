@@ -270,12 +270,25 @@ namespace Website.Services
             }
             return null;
         }
-        public async Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int page, int pagesize)
+        public async Task<ListAccountFbPostViewModel> GetAccountFbPosts(int accountid, int type, int page, int pagesize)
         {
-            var filter = new AccountFbPostByAccountSpecification(accountid);
-            var total = await _accountFbPostRepository.CountAsync(filter);
-            var posts = await _accountFbPostRepository.ListPagedAsync(filter, "PostTime_desc", page, pagesize);
-            return new ListAccountFbPostViewModel(posts, page, pagesize, total);
+            if(type== 1)
+            {
+                var posts = await _accountFbPostRepository.GetAccountFbPostsByHasCampaign(accountid, page, pagesize);
+                var total = posts.Count;
+
+                return new ListAccountFbPostViewModel(posts, page, pagesize, total);
+
+
+            }
+            else
+            {
+
+                var filter = new AccountFbPostByAccountSpecification(accountid);
+                var total = await _accountFbPostRepository.CountAsync(filter);
+                var posts = await _accountFbPostRepository.ListPagedAsync(filter, "PostTime_desc", page, pagesize);
+                return new ListAccountFbPostViewModel(posts, page, pagesize, total);
+            }
         }
         public async Task UpdateFbPost(int accountid, AccountFbPostViewModel model, string username)
         {

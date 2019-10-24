@@ -132,19 +132,19 @@
                             </a>
                         </li>
                         @*<li class="nav-item">
-                <a class="nav-link wallet-recharge" href="#">
-                    <i class="fal fa-coins"></i>
-                    Nạp tiền
-                </a>
-            </li>*@
+                                <a class="nav-link wallet-recharge" href="#">
+                                    <i class="fal fa-coins"></i>
+                                    Nạp tiền
+                                </a>
+                            </li>*@
                     }
                     else if (CurrentUser.Type == EntityType.Account)
                     {
                         @*<li class="nav-item">
-                <a class="nav-link" asp-action="Index" asp-controller="Account">
-                    <i class="fal fa-tachometer-alt"></i> Trang chủ
-                </a>
-            </li>*@
+                                <a class="nav-link" asp-action="Index" asp-controller="Account">
+                                    <i class="fal fa-tachometer-alt"></i> Trang chủ
+                                </a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link" asp-action="Index" asp-controller="Notification">
                                 <i class="fal fa-bell"></i> Thông báo
@@ -157,20 +157,27 @@
                             </a>
                         </li>
                         @*<li class="nav-item ">
-                            <a class="nav-link" asp-controller="AccountCampaign" asp-action="Index">
-                                <i class="fal fa-object-group"></i>  Chiến dịch
-                            </a>
-                        </li>*@
+                                <a class="nav-link" asp-controller="AccountCampaign" asp-action="Index">
+                                    <i class="fal fa-object-group"></i>  Chiến dịch
+                                </a>
+                            </li>*@
 
                         <li class="nav-item ">
                             <a class="nav-link" asp-controller="AccountCampaign" asp-action="MarketPlace">
                                 <i class="fal fa-star"></i> MarketPlace
                             </a>
                         </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" asp-controller="Account" asp-action="FbPost" asp-route-type="1">
+                                <i class="fal fa-newspaper"></i>
+                                Bài viết đã chia sẻ trên FaceBook
+                            </a>
+                        </li>
+
 
                         <li class="nav-item ">
                             <a class="nav-link" asp-controller="Account" asp-action="FbAccount">
-                                <i class="fal fa-user-friends"></i> Bạn bè 
+                                <i class="fal fa-user-friends"></i> Bạn bè
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -178,11 +185,11 @@
                                 <i class="fal fa-cogs"></i>  Cấu hình
                             </a>
                         </li>
-                        <li class="nav-item ">
+                        @*<li class="nav-item ">
                             <a class="nav-link" asp-controller="Home" asp-action="Privacy">
                                 <i class="fal fa-sticky-note"></i>  Quan trọng
                             </a>
-                        </li>
+                        </li>*@
 
                     }
 
