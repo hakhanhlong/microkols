@@ -7,6 +7,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +66,20 @@ namespace Website
                 facebookOptions.Scope.Add("user_friends");
                 facebookOptions.Scope.Add("user_link");
                 facebookOptions.Scope.Add("user_posts");
+                facebookOptions.Events = new OAuthEvents()
+                {
+                    OnRemoteFailure = ctx =>
+                    {
+                        var authProperties = facebookOptions.StateDataFormat.Unprotect(ctx.Request.Query["state"]);
+                        // doc something
+                        
+                        ctx.HandleResponse();
+                        ctx.Response.Redirect("/AccessDenied");
+                        ctx.HandleResponse();
 
+                        return Task.FromResult(0);
+                    }
+                };
             });
 
             var connection = Configuration.GetConnectionString("AppContext");

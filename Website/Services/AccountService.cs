@@ -155,7 +155,7 @@ namespace Website.Services
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
-                        Type = AccountType.Regular
+                        Type = AccountType.HotMom
                         
 
                     };

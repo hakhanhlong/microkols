@@ -32,6 +32,13 @@ namespace Website.Controllers
             return View();
         }
 
+        [Route("/AccessDenied")]
+        public IActionResult AccessDenied()
+        {
+
+            return View();
+        }
+
         public IActionResult Introduce()
         {
             return View();
