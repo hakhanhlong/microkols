@@ -68,6 +68,14 @@ namespace Website.Controllers
 
 
         #region Social login
+
+
+        public IActionResult SigninFacebook()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(AccountProviderNames provider, string token)
         {

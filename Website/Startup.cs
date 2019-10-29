@@ -74,7 +74,7 @@ namespace Website
                         // doc something
                         
                         ctx.HandleResponse();
-                        ctx.Response.Redirect("/AccessDenied");
+                        ctx.Response.Redirect("/auth/signinfacebook");
                         ctx.HandleResponse();
 
                         return Task.FromResult(0);
