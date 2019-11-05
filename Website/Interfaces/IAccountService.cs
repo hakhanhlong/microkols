@@ -51,7 +51,7 @@ namespace Website.Interfaces
 
 
         #region Account Provider
-        Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid);
+        Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid, string newtoken);
         Task<List<AccountProviderViewModel>> GetAccountProvidersByExpiredToken(AccountProviderNames provider);
         Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
         Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider);

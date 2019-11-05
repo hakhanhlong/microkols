@@ -133,16 +133,32 @@
                             }
                             else
                             {
-                                <div class="alert alert-info">
-                                    <p>
-                                        Bạn đã hoàn thành công việc. Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
-                                    </p>
-                                    <p>
+                    <div class="alert alert-info">
+                        <p>
+                            Bạn thực hiện thành công  của chiến dịch.
 
-                                        <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
 
-                                    </p>
-                                </div>
+
+                        </p>
+
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                        {
+                            <p>Facebook Id thực hiện: @campaignAccount.RefId</p>
+                        }
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                        {
+                            <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank"> <i class="fab fa-facebook"></i> @campaignAccount.RefUrl</a></p>
+                        }
+                      
+                        <p>
+                            Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
+                        </p>
+                        <p>
+
+                            <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+
+                        </p>
+                    </div>
 
 
                             }

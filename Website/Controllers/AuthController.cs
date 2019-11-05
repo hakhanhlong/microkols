@@ -87,7 +87,7 @@ namespace Website.Controllers
                 return RedirectToAction("Login");
             }
 
-            var accountProvider = await _accountService.GetAccountProviderByProvider(provider, loginInfo.ProviderId);
+            var accountProvider = await _accountService.GetAccountProviderByProvider(provider, loginInfo.ProviderId, token);
             var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
@@ -134,7 +134,7 @@ namespace Website.Controllers
                 return BadRequest(); // TODO: Handle this better.
 
             var token = string.Empty;
-            var val =  authenticateResult.Ticket.Properties.Items.TryGetValue(".Token.access_token",out token);
+            var val = authenticateResult.Ticket.Properties.Items.TryGetValue(".Token.access_token", out token);
 
             var loginInfo = await _facebookHelper.GetLoginProviderAsync(token);
             if (loginInfo == null)
@@ -143,7 +143,7 @@ namespace Website.Controllers
                 return RedirectToAction("Login");
             }
 
-            var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId);
+            var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId, token);
             var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
@@ -153,13 +153,13 @@ namespace Website.Controllers
                 return RedirectToAction("Login");
             }
 
-          
-                BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
-                if (!accountProviderExist)
-                {
-                    BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, auth.Username, 1));
-                }
-         
+
+            BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
+            if (!accountProviderExist)
+            {
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, auth.Username, 1));
+            }
+
 
 
             await SignIn(auth);
@@ -282,7 +282,7 @@ namespace Website.Controllers
 
         public async Task<IActionResult> VerifyAgencyUsername(string username)
         {
-            if(username.Contains("google") || username.Contains("yahoo")|| username.Contains("gmail"))
+            if (username.Contains("google") || username.Contains("yahoo") || username.Contains("gmail"))
             {
                 return Json(false);
             }
@@ -307,7 +307,7 @@ namespace Website.Controllers
             {
                 return RedirectToAction("AgencyLogin");
             }
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

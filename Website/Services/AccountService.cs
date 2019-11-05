@@ -364,7 +364,7 @@ namespace Website.Services
             var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
             return accountProvider != null ? new AccountProviderViewModel(accountProvider) : null;
         }
-        public async Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid)
+        public async Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid,string newtoken)
         {
             var filter = new AccountProviderSpecification(provider, providerid);
             var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);

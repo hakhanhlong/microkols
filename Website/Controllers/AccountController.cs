@@ -22,15 +22,17 @@ namespace Website.Controllers
         private readonly IFileHelper _fileHelper;
         private readonly IFacebookHelper _facebookHelper;
         private readonly ICampaignService _campaignService;
+        private readonly IFacebookJob _facebookJob;
         public AccountController(IAccountService accountService, ISharedService sharedService,
             ICampaignService campaignService,
-            IFileHelper fileHelper, IFacebookHelper facebookHelper)
+            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob)
         {
             _campaignService = campaignService;
             _accountService = accountService;
             _sharedService = sharedService;
             _fileHelper = fileHelper;
             _facebookHelper = facebookHelper;
+            _facebookJob = facebookJob;
 
 
         }
@@ -50,6 +52,14 @@ namespace Website.Controllers
         {
             ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateFbPost()
+        {
+            await _facebookJob.UpdateFbPost(CurrentUser.Id, CurrentUser.Username,2);
+            this.AddAlertSuccess("Bạn đã đặt lệnh cập nhật thông tin Facebook thành công. Vui lòng chờ 1 - 2 phút để hệ thống tự động cập nhật thông tin bài chia sẻ của bạn");
+            return RedirectToAction("FbPost", new { type = 1 });
         }
         public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 20)
         {

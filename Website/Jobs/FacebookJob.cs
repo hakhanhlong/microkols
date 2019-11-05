@@ -72,11 +72,14 @@ namespace Website.Jobs
             var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
             if (accountProvider != null)
             {
-                var since = type == 1 ? new DateTime(2018, 1, 1).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
+                var since = type == 1 ? new DateTime(2019, 1, 1).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
                 // chi lay 1000 bai`
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
-
+                if(fbPosts== null || fbPosts.Count== 0)
+                {
+                    return;
+                }
                 foreach (var fbPost in fbPosts)
                 {
                     if (!string.IsNullOrEmpty(fbPost.PostId))
