@@ -76,7 +76,7 @@ namespace Website.Jobs
                 // chi lay 1000 bai`
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
-                if(fbPosts== null || fbPosts.Count== 0)
+                if (fbPosts == null || fbPosts.Count == 0)
                 {
                     return;
                 }
@@ -91,30 +91,62 @@ namespace Website.Jobs
 
                 if (type == 2)
                 {
-                    var listcampaigns = await _campaignService.GetListCampaignByAccount(accountid,0, string.Empty, 1, 100);
-                    var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
 
-
-                    foreach (var campaign in campaigns)
+                    var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, 100);
+                    foreach (var campaign in campaignAccounts.Campaigns)
                     {
-                        var fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
-                        if(fbPost!= null)
+                        var refurl = campaign.CampaignAccount.RefUrl;
+                        var refid = campaign.CampaignAccount.RefId;
+                        if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                         {
 
-                            await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                            var fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
+                            if (fbPost != null)
                             {
-                                CampaignId = campaign.Id,
-                                CampaignType = campaign.Type,
-                                Note = string.Empty,
-                                RefId = fbPost.PostId,
-                                RefUrl = fbPost.Permalink,
-                                RefImage = new List<string>()
-
-                            }, username);
+                                await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                                {
+                                    CampaignId = campaign.Id,
+                                    CampaignType = campaign.Type,
+                                    Note = string.Empty,
+                                    RefId = fbPost.PostId,
+                                    RefUrl = "",
+                                    RefImage = new List<string>()
+                                }, username);
+                            }
                         }
 
-                     
                     }
+
+                    /*
+                      * Day la keiu check cu - check lai theo FbPostid
+                    var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
+
+                 foreach (var campaign in campaigns)
+                 {
+
+
+
+                     var fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
+                     if(fbPost!= null)
+                     {
+
+
+                         await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                         {
+                             CampaignId = campaign.Id,
+                             CampaignType = campaign.Type,
+                             Note = string.Empty,
+                             RefId = fbPost.PostId,
+                             RefUrl = fbPost.Permalink,
+                             RefImage = new List<string>()
+
+                         }, username);
+                     }
+
+
+
+                 }
+                     */
 
                 }
             }
@@ -145,7 +177,7 @@ namespace Website.Jobs
 
         public async Task UpdateFbInfo(int accountid)
         {
-            if(accountid== 5)
+            if (accountid == 5)
             {
 
             }
@@ -154,7 +186,7 @@ namespace Website.Jobs
             {
 
                 var info = await _facebookHelper.GetInfo(accountProvider.AccessToken, accountProvider.ProviderId);
-                if(info!= null)
+                if (info != null)
                 {
                     await _accountService.UpdateAccountProviderInfo(accountProvider.Id, info.Link, info.FriendsCount, "bot");
                 }

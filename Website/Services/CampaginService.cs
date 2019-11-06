@@ -841,7 +841,10 @@ namespace Website.Services
             {
                 campaignAccount.RefId = model.RefId;
             }
-            campaignAccount.RefUrl = model.RefUrl;
+            if (!string.IsNullOrEmpty(model.RefUrl))
+            {
+                campaignAccount.RefUrl = model.RefUrl;
+            }
             campaignAccount.RefImage = model.RefImage.ToListString();
             campaignAccount.Status = CampaignAccountStatus.Finished;
             campaignAccount.DateModified = DateTime.Now;

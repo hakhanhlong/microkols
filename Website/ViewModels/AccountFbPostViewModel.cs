@@ -12,7 +12,7 @@ namespace Website.ViewModels
         {
 
         }
-        public ListAccountFbPostViewModel(IEnumerable<AccountFbPost> posts, int page,int pagesize, int total)
+        public ListAccountFbPostViewModel(IEnumerable<AccountFbPost> posts, int page, int pagesize, int total)
         {
             Posts = AccountFbPostViewModel.GetList(posts);
             Pager = new PagerViewModel(page, pagesize, total);
@@ -40,7 +40,7 @@ namespace Website.ViewModels
     public class AccountFbPostViewModel
     {
 
-        public  AccountFbPostViewModel(dynamic obj)
+        public AccountFbPostViewModel(dynamic obj)
         {
             Id = 0;
             AccountId = 0;
@@ -53,7 +53,7 @@ namespace Website.ViewModels
             try { CommentCount = (int)obj.comments.summary.total_count; } catch { }
             try { PostId = (string)obj.id; } catch { }
             try { Permalink = (string)obj.permalink_url; } catch { }
-            
+
         }
         public AccountFbPostViewModel(AccountFbPost accountFbPost)
         {
@@ -84,6 +84,22 @@ namespace Website.ViewModels
         public string Link { get; set; }
         public string Permalink { get; set; }
         public string PostId { get; set; }
+        public string PostId2
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(PostId))
+                {
+                    var arr = PostId.Split('_');
+                    if(arr.Length== 2)
+                    {
+                        return arr[1];
+                    }
+                }
+
+                return "";
+            }
+        }
         public DateTime PostTime { get; set; }
 
         public int ShareCount { get; set; }

@@ -39,7 +39,7 @@
                 var campaign = await CampaignService.GetCampaignByRefId(Model.AccountId, Model.PostId);
                 if (campaign != null)
                 {
-                    <a href="@Url.Action("Details", "AccountCampaign", new { id = campaign.Id})" class="btn btn-sm btn-success ml-auto" target="_blank"> Chiến dịch @campaign.Id</a>
+                    <a href="@Url.Action("MarketPlaceDetails", "AccountCampaign", new { id = campaign.Id})" class="btn btn-sm btn-success ml-auto" target="_blank"> Chiến dịch @campaign.Id</a>
                 }
             }
         </div>

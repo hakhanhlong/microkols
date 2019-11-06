@@ -108,9 +108,11 @@
                                         {
                                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                                             {
-                                                <a class="btn btn-light" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết chia sẻ lên Facebook">
+                                                <a class="btn btn-light" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
 
                                                       <i class="fab fa-facebook-f"></i>
+
+
                                                 </a>
                                             }
                                             <a class="btn btn-primary" asp-action="MarketPlaceDetails"  asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Chi tiết</a>
