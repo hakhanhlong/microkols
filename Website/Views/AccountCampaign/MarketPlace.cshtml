@@ -108,14 +108,26 @@
                                         {
                                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                                             {
-                                                <a class="btn btn-light" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
+                                                                        <a class="btn btn-primary" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
 
-                                                      <i class="fab fa-facebook-f"></i>
+                                                                            <span class="mr-3">
+                                                                                <i class="fab fa-facebook-f"></i>
+                                                                            </span>
+                                                                            
 
+                                                                            <span>
+                                                                                0 <i class="fal fa-thumbs-up"></i>
+                                                                            </span>
+                                                                            <span class="px-2">
+                                                                                0 <i class="fal fa-share"></i>
+                                                                            </span>
+                                                                            <span>
 
-                                                </a>
+                                                                                0 <i class="fal fa-comment"></i>
+                                                                            </span>
+                                                                        </a>
                                             }
-                                            <a class="btn btn-primary" asp-action="MarketPlaceDetails"  asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Chi tiết</a>
+                                            <a class="btn btn-info" asp-action="MarketPlaceDetails"  asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Chi tiết</a>
                                         }
                                         else
                                         {
