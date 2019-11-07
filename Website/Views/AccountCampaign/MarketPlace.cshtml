@@ -1,4 +1,5 @@
 ﻿@model ListMarketPlaceViewModel
+@inject Website.Interfaces.IAccountService AccountService
 @{
     ViewData["Title"] = "Chiến dịch";
 
@@ -70,7 +71,7 @@
                             <h4 class="h5">
 
                                 <a asp-action="MarketPlaceDetails" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@item.Campaign.Title</a>
-                                
+
                             </h4>
                             <hr />
                             <p class="text-black-50">@item.Campaign.Description</p>
@@ -108,30 +109,34 @@
                                         {
                                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                                             {
-                                                                        <a class="btn btn-primary" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
+                                                var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
 
-                                                                            <span class="mr-3">
-                                                                                <i class="fab fa-facebook-f"></i>
-                                                                            </span>
-                                                                            
+                                                <a class="btn btn-primary" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
 
-                                                                            <span>
-                                                                                0 <i class="fal fa-thumbs-up"></i>
-                                                                            </span>
-                                                                            <span class="px-2">
-                                                                                0 <i class="fal fa-share"></i>
-                                                                            </span>
-                                                                            <span>
+                                                    <span class="mr-3">
+                                                        <i class="fab fa-facebook-f"></i>
+                                                    </span>
 
-                                                                                0 <i class="fal fa-comment"></i>
-                                                                            </span>
-                                                                        </a>
+                                                    @if (fbPost != null)
+                                                    {
+                                                        <span>
+                                                            @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                        </span>
+                                                        <span class="px-2">
+                                                            @fbPost.ShareCount <i class="fal fa-share"></i>
+                                                        </span>
+                                                        <span>
+                                                            @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                                        </span>
+                                                    }
+
+                                                </a>
                                             }
-                                            <a class="btn btn-info" asp-action="MarketPlaceDetails"  asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Chi tiết</a>
+                                            <a class="btn btn-info" asp-action="MarketPlaceDetails" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Chi tiết</a>
                                         }
                                         else
                                         {
-                                            <a class="btn btn-primary"  asp-action="MarketPlaceDetails" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
+                                            <a class="btn btn-primary" asp-action="MarketPlaceDetails" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
                                         }
                                     }
                                 </div>

@@ -1,4 +1,5 @@
 ﻿@model MarketPlaceViewModel
+@inject Website.Interfaces.IAccountService AccountService
 @{
 
     ViewData["Title"] = $"Chiến dịch {Model.Campaign.Code}";
@@ -133,44 +134,49 @@
                             }
                             else
                             {
-                    <div class="alert alert-info">
-                        <p>
-                            Bạn thực hiện thành công  của chiến dịch.
+                                <div class="alert alert-info">
+                                    <p>
+                                        Bạn thực hiện thành công  của chiến dịch.
 
 
 
-                        </p>
+                                    </p>
 
-                        @if (!string.IsNullOrEmpty(campaignAccount.RefId))
-                        {
-                            <p>Facebook Id thực hiện: @campaignAccount.RefId</p>
-                        }
-                        @if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
-                        {
-                            <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank"> <i class="fab fa-facebook"></i> @campaignAccount.RefUrl</a></p>
-                            <p>
-                                <span>
-                                    0 <i class="fal fa-thumbs-up"></i>
-                                </span>
-                                <span class="px-2">
-                                    0 <i class="fal fa-share"></i>
-                                </span>
-                                <span>
+                                    @if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                                    {
+                                        <p>Facebook Id thực hiện: @campaignAccount.RefId</p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                                    {
+                                        
+                                                var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+                                        <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank"> <i class="fab fa-facebook"></i> @campaignAccount.RefUrl</a></p>
+                                        <p>
+                                            @if (fbPost != null)
+                                            {
+                                                <span>
+                                                    @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                </span>
+                                                <span class="px-2">
+                                                    @fbPost.ShareCount <i class="fal fa-share"></i>
+                                                </span>
+                                                <span>
+                                                    @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                                </span>
+                                            }
 
-                                    0 <i class="fal fa-comment"></i>
-                                </span>
-                            </p>
-                            }
-                      
-                        <p>
-                            Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
-                        </p>
-                        <p>
+                                        </p>
+                                    }
 
-                            <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+                                    <p>
+                                        Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
+                                    </p>
+                                    <p>
 
-                        </p>
-                    </div>
+                                        <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+
+                                    </p>
+                                </div>
 
 
                             }

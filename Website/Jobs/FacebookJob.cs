@@ -101,6 +101,11 @@ namespace Website.Jobs
                         {
 
                             var fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
+
+                            if(fbPost== null)
+                            {
+                                fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
+                            }
                             if (fbPost != null)
                             {
                                 await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
