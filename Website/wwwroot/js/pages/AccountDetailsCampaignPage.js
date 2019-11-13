@@ -32,13 +32,22 @@ var AccountDetailsCampaignPage = (function () {
             AppBsModal.ShowLoading();
             var href = $(this).data('href');
             var urlsubmit = $(this).data('urlsubmit');
+            var title = $(this).data('title');
+            var picture = $(this).data('picture');
+            var description = $(this).data('description');
+            var caption = $(this).data('caption');
+            
             //var caption = $(this).data('caption');
 
             FB.ui(
                 {
                     method: 'share',
-                    href: href
+                    href: href,
                     //quote: caption,
+                    title: title,  // The same than name in feed method
+                    picture: picture,
+                    caption: caption,
+                    description: description,
                 },
                 function (response) {
                     if (response && !response.error_message) {

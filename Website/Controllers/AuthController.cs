@@ -153,6 +153,8 @@ namespace Website.Controllers
                 return RedirectToAction("Login");
             }
 
+            /*
+             * Ko update token - lay pots fb nua 
 
             BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
             if (!accountProviderExist)
@@ -160,6 +162,7 @@ namespace Website.Controllers
                 BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, auth.Username, 1));
             }
 
+            */
 
 
             await SignIn(auth);

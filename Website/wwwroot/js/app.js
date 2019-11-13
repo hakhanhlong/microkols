@@ -45,6 +45,9 @@
         else if (currentPage === 'account_index') {
             AccountIndexPage.Init();
         }
+        else if (currentPage === 'account_fbpost') {
+            AccountFbPost.Init();
+        }
         
     }
     function handler() {

@@ -55,10 +55,24 @@ namespace Website.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateFbPost()
+        public async Task<IActionResult> UpdateFbPost(string accessToken)
         {
-            await _facebookJob.UpdateFbPost(CurrentUser.Id, CurrentUser.Username,2);
-            this.AddAlertSuccess("Bạn đã đặt lệnh cập nhật thông tin Facebook thành công. Vui lòng chờ 1 - 2 phút để hệ thống tự động cập nhật thông tin bài chia sẻ của bạn");
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                var r = await _accountService.UpdateAccountProvidersAccessToken(CurrentUser.Id, accessToken, 0);
+
+
+                await _facebookJob.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2);
+                this.AddAlertSuccess("Bạn đã đặt lệnh cập nhật thông tin Facebook thành công. Vui lòng chờ 1 - 2 phút để hệ thống tự động cập nhật thông tin bài chia sẻ của bạn");
+
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.ExtendAccessToken());
+            }
+            else
+            {
+                this.AddAlertDanger("Hãy chấp nhận quyền trên Facebook");
+            }
+
+
             return RedirectToAction("FbPost", new { type = 1 });
         }
         public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 20)

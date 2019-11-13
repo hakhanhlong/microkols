@@ -351,7 +351,11 @@ namespace Website.Services
             if (accountProvider != null)
             {
                 accountProvider.AccessToken = accessToken;
-                accountProvider.Expired = DateTime.Now.AddSeconds(expiredIn);
+                if (expiredIn > 0)
+                {
+                    accountProvider.Expired = DateTime.Now.AddSeconds(expiredIn);
+                }
+                
                 await _accountProviderRepository.UpdateAsync(accountProvider);
                 return true;
             }

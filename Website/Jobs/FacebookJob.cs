@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Website.Code;
 using Website.Code.Helpers;
 using Website.Interfaces;
+using Website.ViewModels;
 
 namespace Website.Jobs
 {
@@ -95,34 +96,41 @@ namespace Website.Jobs
                     var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, 100);
                     foreach (var campaign in campaignAccounts.Campaigns)
                     {
+                        AccountFbPostViewModel fbPost;
                         var refurl = campaign.CampaignAccount.RefUrl;
                         var refid = campaign.CampaignAccount.RefId;
                         if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                         {
 
-                            var fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
+                            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
                             if (fbPost == null)
                             {
                                 fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Link)).FirstOrDefault();
                             }
-                            if (fbPost== null)
+                            if (fbPost == null)
                             {
                                 fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
                             }
-                       
-                            if (fbPost != null)
-                            {
-                                await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
-                                {
-                                    CampaignId = campaign.Id,
-                                    CampaignType = campaign.Type,
-                                    Note = string.Empty,
-                                    RefId = fbPost.PostId,
-                                    RefUrl = "",
-                                    RefImage = new List<string>()
-                                }, username);
-                            }
                         }
+                        else
+                        {
+                            fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
+                        }
+
+
+                        if (fbPost != null)
+                        {
+                            await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                            {
+                                CampaignId = campaign.Id,
+                                CampaignType = campaign.Type,
+                                Note = string.Empty,
+                                RefId = fbPost.PostId,
+                                RefUrl = "",
+                                RefImage = new List<string>()
+                            }, username);
+                        }
+
 
                     }
 

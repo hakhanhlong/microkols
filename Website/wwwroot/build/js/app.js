@@ -45,6 +45,9 @@ var App = (function () {
         else if (currentPage === 'account_index') {
             AccountIndexPage.Init();
         }
+        else if (currentPage === 'account_fbpost') {
+            AccountFbPost.Init();
+        }
         
     }
     function handler() {
@@ -650,13 +653,22 @@ var AccountDetailsCampaignPage = (function () {
             AppBsModal.ShowLoading();
             var href = $(this).data('href');
             var urlsubmit = $(this).data('urlsubmit');
+            var title = $(this).data('title');
+            var picture = $(this).data('picture');
+            var description = $(this).data('description');
+            var caption = $(this).data('caption');
+            
             //var caption = $(this).data('caption');
 
             FB.ui(
                 {
                     method: 'share',
-                    href: href
+                    href: href,
                     //quote: caption,
+                    title: title,  // The same than name in feed method
+                    picture: picture,
+                    caption: caption,
+                    description: description,
                 },
                 function (response) {
                     if (response && !response.error_message) {
@@ -784,6 +796,43 @@ var AccountFbAccountPage = (function () {
 
 
 
+
+
+    }
+
+    return {
+        Init: init
+    };
+
+})();
+
+var AccountFbPost = (function () {
+
+    function init() {
+        updateFbPost();
+    }
+
+    function updateFbPost() {
+
+
+        $('.btn-updateFbPost').click(function (e) {
+            e.preventDefault();
+
+
+            FB.login(function (response) {
+                if (response.status === 'connected') {
+                    var token = response.authResponse.accessToken;
+
+                    $('#frmUpdatefbpostToken').val(token);
+                    $('#frmUpdatefbpost').submit();
+                } else {
+                    alert('Bạn cần cập nhật quyền trên hệ thống của Facebook');
+                }
+
+            }, { scope: 'user_posts' });
+
+
+        });
 
 
     }
@@ -1504,7 +1553,7 @@ $().ready(function () {
         success: function () {
             FB.init({
                 appId: appId,
-                version: 'v3.2'
+                version: 'v4.0'
             });
             App.Init();
         },
