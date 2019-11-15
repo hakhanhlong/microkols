@@ -1,6 +1,6 @@
 ﻿@model ListAccountFbPostViewModel
 @{
-    ViewData["Title"] = "Bài viết đã thực hiện theo chiến dịch";
+    ViewData["Title"] = "Facebook Feed của bạn";
     var type = (int)ViewBag.Type;
 }
 @section Top{
@@ -24,13 +24,13 @@
 }
 
 <alert></alert>
-<div class="mt-2">
+@*<div class="mt-2">
     <form asp-action="UpdateFbPost" asp-controller="Account" method="post" id="frmUpdatefbpost">
         <input type="button" value="Cập Nhật Từ Facebook" class="btn btn-success btn-updateFbPost" />
         <span class="d-none">@CurrentUser.Id</span>
         <input type="hidden" name="accessToken" id="frmUpdatefbpostToken" />
     </form>
-</div>
+</div>*@
 
 
 <ul class="nav nav-tabs nav-linetabs">

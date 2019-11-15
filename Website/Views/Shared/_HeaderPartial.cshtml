@@ -168,10 +168,20 @@
                             </a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link" asp-controller="Account" asp-action="FbPost" asp-route-type="1">
-                                <i class="fal fa-newspaper"></i>
+                            @*<a class="nav-link" asp-controller="Account" asp-action="FbPost" asp-route-type="1">
+            <i class="fal fa-newspaper"></i>
+            Facebook Feed
+        </a>*@
+
+                            <a class="nav-link nav-fbfeed" href="javascript:;">
+                                <i class="fab fa-facebook"></i>
                                 Facebook Feed
                             </a>
+
+                            <form asp-action="UpdateFbPost" asp-controller="Account" method="post" id="frmUpdatefbpost">
+                                <span class="d-none">@CurrentUser.Id</span>
+                                <input type="hidden" name="accessToken" id="frmUpdatefbpostToken" />
+                            </form>
                         </li>
 
 
