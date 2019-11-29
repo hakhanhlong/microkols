@@ -37,7 +37,13 @@ var AccountFbAccountPage = (function () {
                             }
 
                         });
+
+
+                        $('.kolfriend-count').html('' + data.friends.data.length);
+                        $('.friends-count').html('/ ' + data.friends.summary.total_count + ' bạn bè trên Facebook');
                     }
+
+
                    
 
                 });

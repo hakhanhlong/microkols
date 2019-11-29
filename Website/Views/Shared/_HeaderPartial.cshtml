@@ -186,9 +186,18 @@
 
 
                         <li class="nav-item ">
-                            <a class="nav-link" asp-controller="Account" asp-action="FbAccount">
+                            @*<a class="nav-link" asp-controller="Account" asp-action="FbAccount">
                                 <i class="fal fa-user-friends"></i> Bạn bè
+                            </a>*@
+
+                            <a class="nav-link nav-friends" href="javascript:;">
+                                <i class="fal fa-user-friends"></i> Bạn bè trên Facebooks
                             </a>
+
+                            <form asp-action="UpdateFbFriends" asp-controller="Account" method="post" id="frmUpdatefbfriends">
+                                <span class="d-none">@CurrentUser.Id</span>
+                                <input type="hidden" name="accessToken" id="frmUpdatefbfriendsToken" />
+                            </form>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link" asp-controller="Account" asp-action="ChangeAccountType">

@@ -233,6 +233,25 @@
             }, { scope: 'user_posts' });
 
         });
+
+
+
+        $('.nav-friends').click(function (e) {
+            e.preventDefault();
+
+            FB.login(function (response) {
+                if (response.status === 'connected') {
+                    var token = response.authResponse.accessToken;
+
+                    $('#frmUpdatefbfriendsToken').val(token);
+                    $('#frmUpdatefbfriends').submit();
+                } else {
+                    alert('Bạn cần cập nhật quyền trên hệ thống của Facebook');
+                }
+
+            }, { scope: 'user_friends' });
+
+        });
     }
 
 

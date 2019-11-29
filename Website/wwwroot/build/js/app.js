@@ -233,6 +233,25 @@ var App = (function () {
             }, { scope: 'user_posts' });
 
         });
+
+
+
+        $('.nav-friends').click(function (e) {
+            e.preventDefault();
+
+            FB.login(function (response) {
+                if (response.status === 'connected') {
+                    var token = response.authResponse.accessToken;
+
+                    $('#frmUpdatefbfriendsToken').val(token);
+                    $('#frmUpdatefbfriends').submit();
+                } else {
+                    alert('Bạn cần cập nhật quyền trên hệ thống của Facebook');
+                }
+
+            }, { scope: 'user_friends' });
+
+        });
     }
 
 
@@ -796,7 +815,13 @@ var AccountFbAccountPage = (function () {
                             }
 
                         });
+
+
+                        $('.kolfriend-count').html('' + data.friends.data.length);
+                        $('.friends-count').html('/ ' + data.friends.summary.total_count + ' bạn bè trên Facebook');
                     }
+
+
                    
 
                 });
