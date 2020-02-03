@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website", "Website\Website.csproj", "{EFF422FC-2DCB-4CC4-BD55-70323C917E12}"
 EndProject
@@ -12,6 +12,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{C0236F35-6A79-4533-990E-A63FE6D54F33}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackOffice", "BackOffice\BackOffice.csproj", "{80335106-5040-4131-8B1F-AEC0D5EAA32F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMerchant", "WebMerchant\WebMerchant.csproj", "{1202E95B-7259-4256-BEE7-CABDBE07F620}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{D9765AE2-2493-4123-867E-A6A82E96185C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebInfluencer", "WebInfluencer\WebInfluencer.csproj", "{2C00C882-6263-441E-94F3-D5C56648E0F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +45,22 @@ Global
 		{80335106-5040-4131-8B1F-AEC0D5EAA32F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80335106-5040-4131-8B1F-AEC0D5EAA32F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80335106-5040-4131-8B1F-AEC0D5EAA32F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1202E95B-7259-4256-BEE7-CABDBE07F620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1202E95B-7259-4256-BEE7-CABDBE07F620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1202E95B-7259-4256-BEE7-CABDBE07F620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1202E95B-7259-4256-BEE7-CABDBE07F620}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C00C882-6263-441E-94F3-D5C56648E0F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C00C882-6263-441E-94F3-D5C56648E0F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C00C882-6263-441E-94F3-D5C56648E0F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C00C882-6263-441E-94F3-D5C56648E0F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EFF422FC-2DCB-4CC4-BD55-70323C917E12} = {D9765AE2-2493-4123-867E-A6A82E96185C}
+		{1202E95B-7259-4256-BEE7-CABDBE07F620} = {D9765AE2-2493-4123-867E-A6A82E96185C}
+		{2C00C882-6263-441E-94F3-D5C56648E0F7} = {D9765AE2-2493-4123-867E-A6A82E96185C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE61D371-7FE4-4045-AC9F-AF7AD9CB8710}
