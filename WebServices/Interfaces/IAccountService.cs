@@ -9,6 +9,9 @@ namespace WebServices.Interfaces
 {
     public interface IAccountService
     {
+        Task<ChangeFacebookUrlViewModel> GetChangeFacebookUrl(int id);
+        Task<bool> ChangeFacebookUrl(int id, ChangeFacebookUrlViewModel model);
+        Task<AccountStatus> GetAccountStatus(int id);
         Task<string> GetAccessToken(int id);
         Task CreateDumbAccount(int count = 30);
         Task<AccountCountingViewModel> GetAccountCounting(int accountid);

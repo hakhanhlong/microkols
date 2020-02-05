@@ -33,7 +33,6 @@ namespace WebInfluencer.Controllers
         }
 
 
-        #region Account
 
         #region Login
         public IActionResult Login()
@@ -46,13 +45,6 @@ namespace WebInfluencer.Controllers
 
 
         #region Social login
-
-
-        public IActionResult SigninFacebook()
-        {
-            return View();
-        }
-
 
         [HttpPost]
         public async Task<IActionResult> GetUserInfo(AccountProviderNames provider, string token)
@@ -92,9 +84,9 @@ namespace WebInfluencer.Controllers
 
         public IActionResult LoginFb(string returnUrl)
         {
-            if (!string.IsNullOrEmpty(returnUrl))
+            if (string.IsNullOrEmpty(returnUrl))
             {
-                returnUrl = Url.Action("Index", "Home");
+                returnUrl = "/";
             }
             return new ChallengeResult(
                 FacebookDefaults.AuthenticationScheme,
@@ -121,8 +113,8 @@ namespace WebInfluencer.Controllers
                 return RedirectToAction("Login");
             }
 
-            var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId, token);
-            var accountProviderExist = accountProvider != null;
+            //var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId, token);
+            //var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
             if (auth == null)
@@ -139,23 +131,25 @@ namespace WebInfluencer.Controllers
             {
                 BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, auth.Username, 1));
             }
-
             */
 
 
             await SignIn(auth);
 
-            return RedirectToAction("Index", "Account");
+            var status = await _accountService.GetAccountStatus(auth.Id);
+            if(status== AccountStatus.Normal)
+            {
+                return RedirectToAction("UpdateInfoStep1");
+            }
 
-            //return LocalRedirect("/");
+            return RedirectToAction("Index", "Home");
         }
 
+      
         #endregion
 
 
-        #endregion
-
-
+        #region 
         public async Task<IActionResult> VerifyEmail(string email)
         {
             var r = await _accountService.VerifyEmail(email);

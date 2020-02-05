@@ -43,6 +43,19 @@ namespace WebServices.Services
             _accountFbPostRepository = accountFbPostRepository;
             _settingRepository = settingRepository;
         }
+
+        public async Task<AccountStatus> GetAccountStatus(int id)
+        {
+            var account = await _accountRepository.GetByIdAsync(id);
+            if(account!= null)
+            {
+                if (account.Status.HasValue)
+                {
+                    return account.Status.Value;
+                }
+            }
+            return AccountStatus.Normal;
+        }
         public async Task<List<int>> GetActivedAccountIds()
         {
             return await _accountRepository.GetActivedAccountIds();
@@ -202,7 +215,7 @@ namespace WebServices.Services
 
         #endregion
 
-
+        
         #region Generate Dumb Account
 
         public async Task CreateDumbAccount(int count = 30)
@@ -474,6 +487,34 @@ namespace WebServices.Services
 
         #endregion
 
+        #region Change FbUrl
+        public async Task<ChangeFacebookUrlViewModel> GetChangeFacebookUrl(int id)
+        {
+            var entity = await _accountProviderRepository.GetSingleBySpecAsync(new AccountProviderSpecification(id,AccountProviderNames.Facebook));
+
+            if(entity!= null)
+            {
+                return new ChangeFacebookUrlViewModel()
+                {
+                    FacebookUrl = entity.Link
+                };
+            }
+            return new ChangeFacebookUrlViewModel();
+        }
+
+        public async Task<bool> ChangeFacebookUrl(int id, ChangeFacebookUrlViewModel model)
+        {
+            var entity = await _accountProviderRepository.GetSingleBySpecAsync(new AccountProviderSpecification(id, AccountProviderNames.Facebook));
+
+            if (entity != null)
+            {
+                entity.Link = model.FacebookUrl;
+                await _accountProviderRepository.UpdateAsync(entity);
+                return true;
+            }
+            return false;
+        }
+        #endregion 
 
         #region ChangeContact
 

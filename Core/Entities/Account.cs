@@ -35,6 +35,8 @@ namespace Core.Entities
         }
 
 
+        public AccountStatus? Status { get; set; }
+
         public AccountType Type { get; set; }
 
         public string TypeData { get; set; }
@@ -99,6 +101,11 @@ namespace Core.Entities
         public IEnumerable<AccountProvider> AccountProvider => _AccountProvider.AsReadOnly();
     }
 
+    public enum AccountStatus
+    {
+        Normal = 0,
+        Verified = 1,
+    }
   
     public enum Gender
     {

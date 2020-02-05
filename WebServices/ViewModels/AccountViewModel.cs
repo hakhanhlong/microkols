@@ -148,6 +148,14 @@ namespace WebServices.ViewModels
 
     }
 
+    public class ChangeFacebookUrlViewModel
+    {
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Facebook Link ")]
+        public string FacebookUrl { get; set; }
+
+    }
     public class ChangeContactViewModel
     {
         public ChangeContactViewModel()

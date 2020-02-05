@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebServices.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebInfluencer.Controllers
 {
