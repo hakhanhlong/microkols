@@ -130,6 +130,10 @@ namespace WebInfluencer.Controllers
         {
             var r = await _accountService.ChangeFacebookUrl(CurrentUser.Id, model);
 
+            if (r)
+            {
+                return RedirectToAction("ChangeInfo");
+            }
             this.AddAlert(r);
             return RedirectToAction("ChangeFacebookUrl");
         }
@@ -195,7 +199,10 @@ namespace WebInfluencer.Controllers
             if (ModelState.IsValid)
             {
                 var r = await _accountService.ChangeInformation(CurrentUser.Id, model, CurrentUser.Username);
-
+                if (r)
+                {
+                    return RedirectToAction("ChangeContact");
+                }
                 this.AddAlert(r);
                 return RedirectToAction("ChangeInfo");
 
@@ -254,10 +261,10 @@ namespace WebInfluencer.Controllers
                 if (r)
                 {
                     await ReSignIn(CurrentUser.Id);
-                    this.AddAlert(true);
-                    return RedirectToAction("ChangeContact");
+                    return RedirectToAction("Index","Home");
                 }
 
+                this.AddAlert(r);
             }
             await ViewbagAddress();
             return View(model);

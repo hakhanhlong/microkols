@@ -139,7 +139,7 @@ namespace WebInfluencer.Controllers
             var status = await _accountService.GetAccountStatus(auth.Id);
             if(status== AccountStatus.Normal)
             {
-                return RedirectToAction("UpdateInfoStep1");
+                return RedirectToAction("ChangeFacebookUrl", "Account");
             }
 
             return RedirectToAction("Index", "Home");

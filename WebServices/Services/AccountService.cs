@@ -549,7 +549,7 @@ namespace WebServices.Services
                     entity.DistrictId = null;
 
                 entity.Address = model.Address;
-
+                entity.Status = AccountStatus.Verified;
                 entity.DateModified = DateTime.Now;
                 entity.UserModified = username;
 

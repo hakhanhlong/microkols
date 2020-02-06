@@ -1,0 +1,106 @@
+﻿@model ChangeInformationViewModel
+@{
+    ViewData["Title"] = "Thông tin cá nhân";
+    Layout = "_LayoutAuth";
+    var categories = (List<CategoryViewModel>)ViewBag.Categories;
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $().ready(function () {
+            $('#CategoryId').select2({
+                maximumSelectionLength: 5,
+                //theme: "bootstrap4"
+            });
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-7 mt-5">
+        <h3>Thông tin cá nhân</h3>
+        <form enctype="multipart/form-data" method="post">
+            <alert></alert>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input type="text" class="form-control" asp-for="Name">
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Birthday"></label>
+                <input type="text" class="form-control" asp-for="Birthday">
+                <span asp-validation-for="Birthday"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender"></label>
+
+                <ul class="list-inline">
+                    @{
+                        var genderArr = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.Gender>();
+                        var i = 0;
+                    }
+                    @foreach (var item in genderArr)
+                    {
+                        var radioId = $"genderRadio{item}";
+
+                        <li class="list-inline-item">
+                            <div class="form-check pl-@i">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="@radioId" name="Gender" class="custom-control-input" @(Model != null && item == Model.Gender ? "checked" : "")>
+                                    <label class="custom-control-label" for="@radioId" style="font-weight: 400">@item.ToDisplayName()</label>
+                                </div>
+                            </div>
+                        </li>
+                        i++;
+                    }
+                </ul>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId"></label>
+
+                <select asp-for="CategoryId" multiple class="form-control">
+                    @foreach (var category in categories)
+                    {
+                        var isselected = Model.CategoryId != null && Model.CategoryId.Contains(category.Id);
+                        <!option value="@category.Id" @(isselected ? "selected" : "")>@category.Name</!option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MaritalStatus"></label>
+                @{
+                    var maritalStatusArr = Common.Helpers.StringHelper.GetEnumArray<Core.Entities.MaritalStatus>();
+                    i = 0;
+                }
+                <ul class="list-inline">
+                    @foreach (var item in maritalStatusArr)
+                    {
+                        var radioId = $"MaritalStatus{item}";
+                        <li class="list-inline-item">
+                            <div class="form-check pl-@i">
+                                <div class="custom-control custom-radio custom-control-inline">
+                                    <input type="radio" id="@radioId" name="MaritalStatus" class="custom-control-input" @(Model != null && item == Model.MaritalStatus ? "checked" : "")>
+                                    <label class="custom-control-label" for="@radioId" style="font-weight: 400">@item.ToDisplayName()</label>
+                                </div>
+                            </div>
+                        </li>
+                        i++;
+                    }
+
+                  
+                </ul>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-primary">Tiếp tục</button>
+            </div>
+
+
+        </form>
+    </div>
+    <div class="col-md-5">
+        <img src="/img/signin-2-bg.jpg" class="mb-5 mt-3 img-thumbnail border-0">
+    </div>
+</div>
+

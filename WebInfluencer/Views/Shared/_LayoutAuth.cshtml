@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebInfluencer</title>
+    <partial name="_StylePartial" />
+    <link href="~/css/signin.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="form-signin">
+        <div class="card rounded-0 border-2 shadow">
+            <div class="card-body">
+                <h3 class="card-title">Microkols <small>Influencer</small></h3>
+
+
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <partial name="_ScriptPartial" />
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

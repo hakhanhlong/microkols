@@ -1,0 +1,34 @@
+﻿@model ChangeFacebookUrlViewModel
+@{
+    ViewData["Title"] = "Liên kết với tài khoản Facebook";
+    Layout = "_LayoutAuth";
+}
+
+
+
+<div class="row">
+    <div class="col-md-7 mt-5">
+        <h3>Liên kết với tài khoản Facebook của bạn</h3>
+        <form method="post">
+            <div class="form-group">
+                <div class="alert alert-secondary" role="alert">
+                    <ul class="list-inline mb-n1">
+                        <li class="list-inline-item"><img src="@CurrentUser.Avatar" width="32" height="32" class="rounded-circle"></li>
+                        <li class="list-inline-item">@CurrentUser.Name</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Facebook Link <span style="color: red">*</span></label>
+                <input class="form-control" type="text" placeholder="https://" asp-for="FacebookUrl">
+                <span asp-validation-for="FacebookUrl"></span>
+            </div>
+            <div class="text-right">
+                <input type="submit" class="btn btn-primary" value="Tiếp tục">
+            </div>
+        </form>
+    </div>
+    <div class="col-md-5">
+        <img src="/img/signin-1-bg.jpg" class="mb-5 mt-3 img-thumbnail border-0">
+    </div>
+</div>
