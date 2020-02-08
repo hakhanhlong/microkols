@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
@@ -12,7 +13,7 @@ namespace WebInfluencer.Controllers
     public class NotificationController : BaseController
     {
         private readonly INotificationService _notificationService;
-        private const int pagesize = 20;
+        private const int pagesize = 5;
         public NotificationController(INotificationService notificationService)
         {
             _notificationService = notificationService;
@@ -25,9 +26,11 @@ namespace WebInfluencer.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(NotificationTypeGroup? type,string daterange,int page = 1)
         {
-            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, string.Empty, page, pagesize);
+            ViewBag.type = type;
+            ViewBag.daterange = daterange;
+            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, daterange,string.Empty, page, pagesize);
             return View(model);
         }
 

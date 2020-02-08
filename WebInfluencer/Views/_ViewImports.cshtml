@@ -10,4 +10,9 @@
 @using Common.Helpers
 @using WebInfluencer
 @using WebInfluencer.Models
+
+@inject IOptionsMonitor<WebServices.Code.SharedOptions> AppOptions
+
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "WebInfluencer.Code.TagHelpers.*, WebInfluencer"

@@ -285,6 +285,9 @@ namespace WebServices.ViewModels
         public AccountType Type { get; set; }
 
         public List<AccountTypeHotMomData> HotMomData { get; set; } = new List<AccountTypeHotMomData>();
+
+        [Display(Name = "Bạn có thể/phải là một Reviewer")]
+        public bool Reviewer { get; set; } 
     }
 
     public class AccountCampaignChargeViewModel
@@ -297,7 +300,9 @@ namespace WebServices.ViewModels
         {
             Id = entity.Id;
             Type = entity.Type;
-            AccountChargeAmount = entity.AccountChargeAmount;
+            Min = entity.Min;
+            Max = entity.Max;
+            Kpi = entity.Kpi;
         }
 
         public static List<AccountCampaignChargeViewModel> GetList(IEnumerable<AccountCampaignCharge> entities)
@@ -317,7 +322,9 @@ namespace WebServices.ViewModels
                     result.Add(new AccountCampaignChargeViewModel()
                     {
                         Type = entity.Type,
-                        AccountChargeAmount = entity.AccountChargeAmount,
+                        Min = entity.Min,
+                        Max = entity.Max,
+                        Kpi = entity.Kpi,
                         Id = entity.Id
                     });
                 }
@@ -326,7 +333,9 @@ namespace WebServices.ViewModels
                     result.Add(new AccountCampaignChargeViewModel()
                     {
                         Type = type,
-                        AccountChargeAmount = 0,
+                        Min = 0,
+                        Max = 0,
+                        Kpi = 0,
                         Id = 0
                     });
 
@@ -337,13 +346,17 @@ namespace WebServices.ViewModels
         }
         public int Id { get; set; }
         public CampaignType Type { get; set; }
-        public int AccountChargeAmount { get; set; }
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public int Kpi { get; set; }
     }
 
     public class UpdateAccountCampaignChargeViewModel
     {
         public List<CampaignType> Type { get; set; }
-        public List<int> AccountChargeAmount { get; set; }
+        public List<int> Min { get; set; }
+        public List<int> Max { get; set; }
+        public List<int> Kpi { get; set; }
         public List<int> Id { get; set; }
 
     }

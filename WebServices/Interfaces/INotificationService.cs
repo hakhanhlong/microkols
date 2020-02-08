@@ -10,9 +10,9 @@ namespace WebServices.Interfaces
     public interface INotificationService
     {
         Task UpdateNotificationChecked(EntityType entityType, int entityId);
-
-        Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, int entityId);
-        Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status);
+        Task<ListNotificationViewModel> GetNotifications(EntityType entityType, int entityId, NotificationTypeGroup? typeGroup, string daterange,
+            string order, int page, int pagesize);
+        Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, int entityId); 
         Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status, string order, int page, int pagesize);
         Task<int> GetCountNotification(EntityType entityType, int entityId, NotificationStatus? status);
 

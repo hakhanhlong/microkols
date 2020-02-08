@@ -44,7 +44,7 @@ namespace WebInfluencer.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadImage(List<IFormFile> files)
         {
-            string webRootPath = _hostingEnvironment.WebRootPath;
+           
 
             var result = new List<object>();
 

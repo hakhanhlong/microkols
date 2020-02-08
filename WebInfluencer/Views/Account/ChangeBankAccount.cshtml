@@ -1,0 +1,42 @@
+﻿@model ChangeBankAccountViewModel
+@{
+    ViewData["Title"] = "Tài khoản ngân hàng";
+    Layout = "_LayoutSetting";
+}
+
+
+@section Nav{
+    <partial name="_NavSettingPartial" model="3" />
+}
+<form method="post" asp-action="ChangeBankAccount" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input type="text" class="form-control" asp-for="Name" />
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Number"></label>
+        <input type="text" class="form-control" asp-for="Number" />
+        <span asp-validation-for="Number"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Bank"></label>
+        <input type="text" class="form-control" asp-for="Bank" />
+        <span asp-validation-for="Bank"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Branch"></label>
+        <input type="text" class="form-control" asp-for="Branch" />
+        <span asp-validation-for="Branch"></span>
+    </div>
+    <div class="form-group">
+        <div class="text-right">
+            <button class="btn btn btn-outline-primary" type="submit">Cập nhật</button>
+        </div>
+        
+    </div>
+</form>

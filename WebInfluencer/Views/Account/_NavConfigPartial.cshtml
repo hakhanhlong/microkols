@@ -1,0 +1,9 @@
+﻿@model int
+<ul class="nav nav-tabs nav-campaign">
+    <li class="nav-item">
+        <a class="nav-link @(Model == 0? "active":"")" asp-action="ChangePassword">Thay đổi mật khẩu</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(Model == 1? "active":"")" asp-action="ChangeAccountType">Đăng ký KOLs</a>
+    </li>
+</ul>

@@ -72,6 +72,22 @@ namespace WebInfluencer.Code.Extensions
 
             return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
         }
+
+
+        public static HtmlString ToBadge(this Core.Entities.NotificationTypeGroup accountType)
+        {
+            var type = "primary";
+            if (accountType == NotificationTypeGroup.Campaign)
+            {
+                type = "warning";
+            }
+            else if (accountType == NotificationTypeGroup.Payment)
+            {
+                type = "success";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+        }
         public static HtmlString ToAgencyBadge(this Core.Entities.CampaignAccountStatus status)
         {
             var type = "primary";

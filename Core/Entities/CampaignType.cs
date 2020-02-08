@@ -1,25 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Core.Entities
 {
     public enum CampaignType
     {
-        [DisplayName("Chia sẻ thông điệp, không cần viết caption")]
+        [Display(Name ="Chia sẻ thông điệp, không cần viết caption")]
         ShareContent = 1,
-        [DisplayName("Chia sẻ thông điệp, viết thêm caption")]
+        [Display(Name ="Chia sẻ thông điệp, viết thêm caption")]
         ShareContentWithCaption = 2,
-        [DisplayName("Thay hình Avatar")]
+        [Display(Name ="Thay hình Avatar")]
         ChangeAvatar = 3,
-        [DisplayName("Viết comment seeding cho chiến dịch")]
+        [Display(Name ="Viết comment seeding cho chiến dịch")]
         PostComment = 4,
-        [DisplayName("Đăng ký tham dự sự kiện")]
+        [Display(Name ="Đăng ký tham dự sự kiện")]
         JoinEvent = 5,
-        [DisplayName("Share link livestream chương trình")]
+        [Display(Name ="Share link livestream chương trình")]
         ShareStreamUrl = 6,
-        [DisplayName("Yêu cầu khác")]
+        [Display(Name ="Yêu cầu khác")]
         CustomService = 7
     }
     public static class CampaignTypeExentions

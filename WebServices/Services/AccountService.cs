@@ -603,6 +603,23 @@ namespace WebServices.Services
 
         #region Change Avatar
 
+        public async Task<bool> ChangeAvatar(int id, string path, string username)
+        {
+            var entity = await _accountRepository.GetByIdAsync(id, false);
+
+            if (entity != null && !string.IsNullOrEmpty(path))
+            {
+                entity.Avatar = path;
+                entity.DateModified = DateTime.Now;
+                entity.UserModified = username;
+                await _accountRepository.UpdateAsync(entity);
+
+                return true;
+
+            }
+            return false;
+        }
+
         public async Task<bool> ChangeAvatar(int id, ChangeAvatarViewModel model)
         {
             var entity = await _accountRepository.GetByIdAsync(id, false);
@@ -646,6 +663,7 @@ namespace WebServices.Services
 
         #endregion
 
+       
         #region ForgotPassword
 
         public async Task<ForgotPasswordResultViewModel> ForgotPassword(string email)
@@ -816,7 +834,7 @@ namespace WebServices.Services
 
                 var settings = await _settingRepository.GetSetting();
 
-                return settings.GetAccountChagreAmount(accountCharge.AccountChargeAmount); 
+                return settings.GetAccountChagreAmount(accountCharge.Min); 
             }
             
 
@@ -831,7 +849,9 @@ namespace WebServices.Services
                 {
                     AccountId = accountid,
                     Type = model.Type,
-                    AccountChargeAmount = model.AccountChargeAmount
+                    Min = model.Min,
+                    Kpi = model.Kpi,
+                    Max = model.Max
                 };
                 await _accountCampaignChargeRepository.AddAsync(accountCharge);
             }
@@ -843,7 +863,9 @@ namespace WebServices.Services
                     return false;
                 }
 
-                accountCharge.AccountChargeAmount = model.AccountChargeAmount;
+                accountCharge.Min = model.Min;
+                accountCharge.Max = model.Max;
+                accountCharge.Kpi = model.Kpi;
                 await _accountCampaignChargeRepository.UpdateAsync(accountCharge);
             }
 

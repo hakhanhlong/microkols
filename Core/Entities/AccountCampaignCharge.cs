@@ -8,6 +8,8 @@ namespace Core.Entities
     {
         public int AccountId { get; set; }
         public CampaignType Type { get; set; }
-        public int AccountChargeAmount { get; set; }
+        public int Min { get; set; }
+        public int Max { get; set; }
+        public int Kpi { get; set; }
     }
 }

@@ -97,21 +97,37 @@ namespace WebServices.Services
             return result;
         }
 
-        public async Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status, string campaign, int page, int pagesize)
+        public async Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status, string order, int page, int pagesize)
         {
             var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType, entityId, status),
-                campaign, page, pagesize);
+                order, page, pagesize);
 
             return await GetNotifications(notifications);
         }
 
 
-        public async Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status)
+
+        public async Task<ListNotificationViewModel> GetNotifications(EntityType entityType, int entityId, NotificationTypeGroup? typeGroup,string daterange,
+            string order, int page, int pagesize)
         {
-            var notifications = await _notificationRepository.ListAsync(new NotificationSpecification(entityType, entityId, status));
-            return await GetNotifications(notifications);
+            
+            var statusArr = typeGroup.GetNotificationTypes();
+            var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
+            var filter = new NotificationSpecification(entityType, entityId, statusArr, dtRange);
+
+            var notifications = await _notificationRepository.ListPagedAsync(filter,
+                order, page, pagesize);
+            var total = await _notificationRepository.CountAsync(filter);
+
+            var list = await GetNotifications(notifications);
+            return new ListNotificationViewModel()
+            {
+                Notifications = list,
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
         }
 
+         
 
         public async Task UpdateNotificationChecked(EntityType entityType, int entityId)
         {

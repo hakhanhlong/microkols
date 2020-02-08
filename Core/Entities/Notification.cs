@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 
 namespace Core.Entities
@@ -43,6 +46,17 @@ namespace Core.Entities
         CampaignError,
         ExcecutedPaymentToAccountBanking
     }
+
+    public enum NotificationTypeGroup
+    {
+       
+        [Display(Name="Hệ thống")]
+        System,
+        [Display(Name = "Chiến dịch")]
+        Campaign,
+        [Display(Name = "Thanh toán")]
+        Payment
+    }
     public enum NotificationStatus
     {
         Created = 0,
@@ -51,6 +65,34 @@ namespace Core.Entities
 
     public static class NotificationExt
     {
+        public static NotificationTypeGroup ToTypeGroup(this NotificationType type)
+        {
+
+            var str = type.ToString();
+            if (str.Contains("Campaign"))
+            {
+                return NotificationTypeGroup.Campaign;
+
+            }
+            if (str.Contains("Payment"))
+            {
+                return NotificationTypeGroup.Payment;
+
+            }
+            return NotificationTypeGroup.System;
+        }
+        public static string ToText(this NotificationTypeGroup typeGroup)
+        {
+            return typeGroup.ToDisplayName();
+        }
+        public static List<NotificationType> GetNotificationTypes(this NotificationTypeGroup? group)
+        {
+            if (group.HasValue)
+            {
+
+            }
+            return Common.Helpers.StringHelper.GetEnumArray<NotificationType>().ToList();
+        }
         public static string GetMessageText(this NotificationType type, params string[] args)
         {
             

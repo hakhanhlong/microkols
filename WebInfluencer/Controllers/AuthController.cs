@@ -16,7 +16,7 @@ using WebServices.ViewModels;
 
 namespace WebInfluencer.Controllers
 {
-    public class AuthController : BaseController
+    public class AuthController : BaseAuthController
     {
         private readonly IAccountService _accountService;
         private readonly IAgencyService _agencyService;

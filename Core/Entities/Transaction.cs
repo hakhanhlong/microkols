@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities
 {
@@ -35,25 +36,25 @@ namespace Core.Entities
     }
     public enum TransactionType
     {
-        [DisplayName("Không xác định")]
+        [Display(Name ="Không xác định")]
         Undefined = -1,
-        [DisplayName("Nạp tiền")]
+        [Display(Name ="Nạp tiền")]
         WalletRecharge = 1,
-        [DisplayName("Rút tiền")]
+        [Display(Name ="Rút tiền")]
         WalletWithdraw = 2,
-        [DisplayName("Phí dịch vụ")]
+        [Display(Name ="Phí dịch vụ")]
         CampaignServiceCharge = 3,
-        [DisplayName("Phí thành viên")]
+        [Display(Name ="Phí thành viên")]
         CampaignAccountCharge = 4,
-        [DisplayName("Bạn nhận được thanh toán")]
+        [Display(Name ="Bạn nhận được thanh toán")]
         CampaignAccountPayback = 5,
-        [DisplayName("Trừ tiền")]
+        [Display(Name ="Trừ tiền")]
         SubstractMoney = 6,
-        [DisplayName("Rút tiền thừa")]
+        [Display(Name ="Rút tiền thừa")]
         CampaignServiceCashBack = 7,
-        [DisplayName("Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
+        [Display(Name ="Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
         CampaignAccountRefundAgency = 8,
-        [DisplayName("Đã thực hiện chuyển tiền tới tài khoản ngân hàng của thành viên")] // tương ứng với việc trừ tiền trên ví của các thành viên này
+        [Display(Name ="Đã thực hiện chuyển tiền tới tài khoản ngân hàng của thành viên")] // tương ứng với việc trừ tiền trên ví của các thành viên này
         ExcecutedPaymentToAccountBanking = 9,
     }
 

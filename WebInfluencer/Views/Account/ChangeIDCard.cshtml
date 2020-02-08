@@ -1,0 +1,97 @@
+﻿@model ChangeIDCardViewModel
+@{
+    ViewData["Title"] = "Xác minh tài khoản";
+    Layout = "_LayoutSetting";
+}
+
+@section Nav{
+    <partial name="_NavSettingPartial" model="2" />
+}
+<form method="post" asp-action="ChangeIDCard" enctype="multipart/form-data">
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input type="text" class="form-control" asp-for="Name" />
+                <span asp-validation-for="Name"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Number"></label>
+                <input type="text" class="form-control" asp-for="Number" />
+                <span asp-validation-for="Number"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Time"></label>
+                <input type="text" class="form-control form-datepicker" asp-for="Time" />
+                <span asp-validation-for="Time"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input type="text" class="form-control" asp-for="City" />
+                <span asp-validation-for="City"></span>
+            </div>
+
+
+            <div class="form-group">
+
+                <label asp-for="ImageFront" class="control-label"></label>
+                <input asp-for="ImageFront" type="hidden" />
+                ​<div class="d-flex justify-content-center mb-1 border">
+                    <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageFront)" class="img-fluid align-self-center img-ImageFront" alt="">
+
+                </div>
+
+
+
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input image-upload"
+                               id="uploadimg01" data-target="#ImageFront" data-preview=".img-ImageFront" />
+                        <label class="custom-file-label" for="uploadimg01">
+                            Chọn file
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label asp-for="ImageBack" class="control-label"></label>
+                <input asp-for="ImageBack" type="hidden" />
+                ​<div class="d-flex justify-content-center mb-1 border">
+                    <img src="@AppOptions.CurrentValue.GetImageUrl(Model.ImageBack)" class="img-fluid align-self-center img-ImageBack" alt="">
+
+                </div>
+
+
+
+                <div class="input-group">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input image-upload"
+                               id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack" />
+                        <label class="custom-file-label" for="uploadimg02">
+                            Chọn file
+                        </label>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+            <div class="form-group text-right">
+                <input type="submit" value="Đồng ý" class="btn btn-outline-primary">
+            </div>
+        </div>
+    </div>
+
+
+</form>

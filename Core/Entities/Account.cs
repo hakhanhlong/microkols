@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,19 +111,19 @@ namespace Core.Entities
     public enum Gender
     {
      
-        [DisplayName("Nam")]
+        [Display(Name ="Nam")]
         Male = 1,
-        [DisplayName("Nữ")]
+        [Display(Name = "Nữ")]
         Female = 2
     }
     public enum MaritalStatus
     {
        
-        [DisplayName("Độc thân")]
+        [Display(Name = "Độc thân")]
         Single,
-        [DisplayName("Kết hôn")]
+        [Display(Name = "Kết hôn")]
         Marriage,
-        [DisplayName("Đã có con")]
+        [Display(Name = "Đã có con")]
         HaveChildren
     }
 }

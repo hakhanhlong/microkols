@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Code.Helpers;
 using WebServices.Interfaces;
@@ -39,6 +40,7 @@ namespace WebInfluencer.Controllers
 
         public async Task<IActionResult> Index()
         {
+            return RedirectToAction("ChangeInfo");
             var account = await _accountService.GetAccount(CurrentUser.Id);
 
             ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
@@ -117,14 +119,14 @@ namespace WebInfluencer.Controllers
         #endregion
 
         #region Change Facebook Url
-        [Authorize]
+
         public async Task<IActionResult> ChangeFacebookUrl()
         {
             var model = await _accountService.GetChangeFacebookUrl(CurrentUser.Id);
             return View(model);
         }
 
-        [Authorize]
+
         [HttpPost]
         public async Task<IActionResult> ChangeFacebookUrl(ChangeFacebookUrlViewModel model)
         {
@@ -132,10 +134,28 @@ namespace WebInfluencer.Controllers
 
             if (r)
             {
-                return RedirectToAction("ChangeInfo");
+                return RedirectToAction("ChangeInfo", new { vtype = 1 });
             }
             this.AddAlert(r);
             return RedirectToAction("ChangeFacebookUrl");
+        }
+        #endregion
+        #region Change Avatar
+
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeAvatar(IFormFile file)
+        {
+            var newpath = await _fileHelper.UploadTempFile(file);
+            var avatar = _fileHelper.MoveTempFile(newpath, "avatar");
+
+            var r = await _accountService.ChangeAvatar(CurrentUser.Id, avatar, CurrentUser.Username);
+            this.AddAlert(r);
+            if (r)
+            {
+                await ReSignIn(CurrentUser.Id);
+            }
+            return RedirectToAction("ChangeInfo");
         }
         #endregion
 
@@ -153,7 +173,7 @@ namespace WebInfluencer.Controllers
                 var r = await _accountService.ChangePassword(CurrentUser.Id, model, CurrentUser.Username);
 
                 this.AddAlert(r);
-                return RedirectToAction("ChangeIDCard");
+                return RedirectToAction("ChangePassword");
 
             }
             return View(model);
@@ -187,21 +207,27 @@ namespace WebInfluencer.Controllers
         #endregion
 
         #region Change Info
-        public async Task<IActionResult> ChangeInfo()
+        public async Task<IActionResult> ChangeInfo(int vtype = 0)
         {
             var model = await _accountService.GetInformation(CurrentUser.Id);
             ViewBag.Categories = await _sharedService.GetCategories();
+            if (vtype == 1)
+            {
+                return View("AuthChangeInfo", model);
+            }
+
+
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> ChangeInfo(ChangeInformationViewModel model)
+        public async Task<IActionResult> ChangeInfo(ChangeInformationViewModel model, int vtype = 0)
         {
             if (ModelState.IsValid)
             {
                 var r = await _accountService.ChangeInformation(CurrentUser.Id, model, CurrentUser.Username);
-                if (r)
+                if (vtype == 1 && r)
                 {
-                    return RedirectToAction("ChangeContact");
+                    return RedirectToAction("ChangeContact", new { vtype = 1 });
                 }
                 this.AddAlert(r);
                 return RedirectToAction("ChangeInfo");
@@ -211,6 +237,55 @@ namespace WebInfluencer.Controllers
             return View(model);
         }
         #endregion
+
+
+        #region Change Contact
+        private async Task ViewbagAddress()
+        {
+            var cities = await _sharedService.GetCities();
+            ViewBag.Cities = cities;
+            var city = cities.FirstOrDefault();
+            var districtid = city.Id;
+            ViewBag.Districts = await _sharedService.GetDistricts(districtid);
+        }
+
+
+        public async Task<IActionResult> ChangeContact(int vtype = 0)
+        {
+            var model = await _accountService.GetContact(CurrentUser.Id);
+            await ViewbagAddress();
+            if (vtype == 1)
+            {
+                return View("AuthChangeContact", model);
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeContact(ChangeContactViewModel model, int vtype = 0)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _accountService.ChangeContact(CurrentUser.Id, model, CurrentUser.Username);
+
+                this.AddAlert(r);
+                if (r)
+                {
+                    await ReSignIn(CurrentUser.Id);
+                    if (vtype == 1)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    return RedirectToAction("ChangeContact");
+                }
+
+            }
+            await ViewbagAddress();
+            return View(model);
+        }
+
+        #endregion
+
 
         #region ChangeBankAccount
         public async Task<IActionResult> ChangeBankAccount()
@@ -233,44 +308,6 @@ namespace WebInfluencer.Controllers
         }
         #endregion
 
-
-        #region Change Contact
-        private async Task ViewbagAddress()
-        {
-            var cities = await _sharedService.GetCities();
-            ViewBag.Cities = cities;
-            var city = cities.FirstOrDefault();
-            var districtid = city.Id;
-            ViewBag.Districts = await _sharedService.GetDistricts(districtid);
-        }
-
-
-        public async Task<IActionResult> ChangeContact()
-        {
-            var model = await _accountService.GetContact(CurrentUser.Id);
-            await ViewbagAddress();
-            return View(model);
-        }
-        [HttpPost]
-        public async Task<IActionResult> ChangeContact(ChangeContactViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var r = await _accountService.ChangeContact(CurrentUser.Id, model, CurrentUser.Username);
-
-                if (r)
-                {
-                    await ReSignIn(CurrentUser.Id);
-                    return RedirectToAction("Index","Home");
-                }
-
-                this.AddAlert(r);
-            }
-            await ViewbagAddress();
-            return View(model);
-        }
-
-        #endregion
 
         #region ChangeAccountType
 
@@ -321,7 +358,9 @@ namespace WebInfluencer.Controllers
                     await _accountService.UpdateAccountCampaignCharge(CurrentUser.Id, new AccountCampaignChargeViewModel()
                     {
                         Id = model.Id[i],
-                        AccountChargeAmount = model.AccountChargeAmount[i],
+                        Min = model.Min[i],
+                        Max = model.Max[i],
+                        Kpi = model.Kpi[i],
                         Type = model.Type[i]
                     });
                 }

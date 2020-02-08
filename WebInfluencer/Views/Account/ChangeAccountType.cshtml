@@ -1,0 +1,262 @@
+﻿@model ChangeAccountTypeViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký KOLs";
+    Layout = "_LayoutSetting";
+
+    var ignoreCampaignTypes = (List<CampaignType>)ViewBag.IgnoreCampaignTypes;
+
+    var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>().Where(m => m != AccountType.All);
+
+    if (Model.Type == AccountType.Regular)
+    {
+    }
+    else
+    {
+        accountTypeArr = accountTypeArr.Where(m => m == Model.Type);
+    }
+
+    if (Model.HotMomData == null)
+    {
+        Model.HotMomData = new List<AccountTypeHotMomData>();
+    }
+}
+
+
+@section Nav{
+    <partial name="_NavConfigPartial" model="1" />
+}
+
+@section Scripts {
+
+    @if (Model.Type == AccountType.HotMom)
+    {
+
+        <script type="text/javascript">
+
+            $().ready(function () {
+                var datas = $.parseJSON($('#modelHotMomData').html());
+
+                var vm = new Vue({
+                    el: '#dataHotMom',
+                    data: {
+                        childrens: []
+                    },
+                    created() {
+                        this.childrens = datas;
+                    },
+                    methods: {
+                        createItem: function () {
+                            this.childrens.push({
+                                Gender: 1,
+                                Age: 0,
+                                AgeType: 2
+                            });
+                        },
+                        removeItem: function (idx) {
+                            this.data.splice(idx, 1);
+                        }
+
+                    }
+                });
+            });
+        </script>
+        <script type="text/template" id="modelHotMomData">
+
+            @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.HotMomData))
+        </script>
+    }
+}
+
+
+<form method="post" asp-action="ChangeAccountType" enctype="multipart/form-data">
+
+    <div class="form-group">
+        <label asp-for="Type"></label>
+        @foreach (var accountType in accountTypeArr)
+        {
+            var radioId = $"radio{accountType}";
+            var attrChecked = accountType == Model.Type ? "checked" : "";
+
+
+            <div>
+
+                <div class="custom-control custom-radio">
+                    <input type="radio" id="@radioId" value="@accountType" name="Type" @attrChecked class="custom-control-input">
+                    <label class="custom-control-label" for="@radioId">
+                        @accountType.ToDisplayName()
+
+
+                        <span data-toggle="tooltip" data-html="true" title="@accountType.ToDescription()"><i class="fa fa-question-circle"></i></span>
+
+                    </label>
+                </div>
+                <div class="ml-3 pl-5">
+
+                    @if (accountType == AccountType.HotMom)
+                    {
+
+                        <div id="dataHotMom" class="d-none">
+
+                            <h6 class="mb-2">
+                                Danh sách con cái
+                            </h6>
+                            <div class="mb-2">
+                                <button v-on:click="createItem()" type="button" class="btn btn-primary btn-sm">
+                                    <span class="fal fa-plus"></span> Thêm con cái
+                                </button>
+                            </div>
+                            <div class="d-flex mb-2" v-for="(item,idx) in childrens">
+
+                                <div class="mr-auto form-inline">
+
+                                    <select class="form-control" v-bind:name="'HotMomData['+idx+'].Gender'" v-model="item.Gender">
+                                        <option value="1">@Gender.Male.ToDisplayName()</option>
+                                        <option value="2">@Gender.Female.ToDisplayName()</option>
+                                    </select>
+
+                                    <input type="number" placeholder="Tuổi" class="form-control mx-sm-2" v-bind:name="'HotMomData['+idx+'].Age'" v-model="item.Age" />
+                                    <select class="form-control" name="HotMomData.AgeType" v-bind:name="'HotMomData['+idx+'].AgeType'" v-model="item.AgeType">
+                                        <option value="1">Tháng</option>
+                                        <option value="2">Tuổi</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        }
+        <span asp-validation-for="Type"></span>
+    </div>
+
+
+
+    @if (Model.Type == AccountType.Regular || Model.Type == AccountType.HotMom)
+    {
+
+        <hr />
+
+        <div class="form-group">
+
+
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" asp-for="Reviewer" class="custom-control-input">
+                <label asp-for="Reviewer" class="custom-control-label"></label>
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <input type="submit" value="Đồng ý" class="btn btn-outline-primary">
+        </div>
+    }
+</form>
+
+
+@if (ViewBag.AccountCampaignCharges != null)
+{
+    var accountCampaignCharges = (List<AccountCampaignChargeViewModel>)ViewBag.AccountCampaignCharges;
+    var no = 0;
+    <hr />
+    <h5 class="mb-3"> Nhập chi phí tối thiểu bạn muốn nhận cho mỗi hoạt động của bạn</h5>
+
+    <form asp-action="UpdateAccountCampaignCharge">
+        <div>
+            @foreach (var accountCampaignCharge in accountCampaignCharges)
+            {
+                no++;
+
+                <div>
+                    <strong>@no. @accountCampaignCharge.Type.ToDisplayName()</strong>
+                </div>
+                <div class="row my-2">
+                    <div class="col-md-3">
+                        <label>Tối thiểu</label>
+                        <input type="number" max="@int.MaxValue" min="0" name="Min" value="@accountCampaignCharge.Min" class="form-control" />
+
+                    </div>
+                    <div class="col-md-3">
+                        <label>Tối đa</label>
+                        <input type="number" max="@int.MaxValue" min="0" name="Max" value="@accountCampaignCharge.Max" class="form-control" />
+
+                    </div> <div class="col-md-3">
+
+                        <label>KPI cam kết tối thiểu</label>
+                        <input type="number" max="@int.MaxValue" min="0" name="Kpi" value="@accountCampaignCharge.Kpi" class="form-control" />
+
+                    </div>
+                    <div class="col-md-3">
+                        <label>&nbsp;</label>
+                        <input type="hidden" name="Type" value="@accountCampaignCharge.Type" />
+                        <input type="hidden" name="Id" value="@accountCampaignCharge.Id" />
+
+                        @{
+                            var switchid = $"switch{accountCampaignCharge.Type}";
+                            var ischecked = ignoreCampaignTypes.Contains(accountCampaignCharge.Type);
+                            var checkedstr = ischecked ? "" : "checked=checked";
+                        }
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr
+                                   data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = accountCampaignCharge.Type, removed = !ischecked})" />
+                            <label class="custom-control-label" for="@switchid">Đồng ý</label>
+                        </div>
+
+
+                    </div>
+                </div>
+            }
+
+            <div class="row mt-4">
+
+                <div class="col-md-12">
+
+                    <div class="text-right form-group">
+                        <input type="submit" value="Cập nhật" class="btn btn-outline-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+@if (ViewBag.CampaignTypeCharges != null)
+{
+    var campaignTypeCharges = (List<CampaignTypeChargeViewModel>)ViewBag.CampaignTypeCharges;
+    <hr />
+    <h5 class="mb-3"> Bạn sẽ nhận được khoản thu nhập khi tham gia chiến dịch của chúng tôi</h5>
+
+    @foreach (var campaignTypeCharge in campaignTypeCharges)
+    {
+        if (campaignTypeCharge.Type == CampaignType.CustomService) { continue; }
+
+        <div class="row my-2">
+            <label class="col-md-4">@campaignTypeCharge.Type.ToDisplayName()</label>
+            <div class="col-md-6">
+
+                <input type="number" disabled value="@campaignTypeCharge.AccountChargeAmount" class="form-control" />
+
+
+
+            </div>
+            <div class="col-md-2">
+                @{
+                    var switchid = $"switch{campaignTypeCharge.Type}";
+                    var ischecked = ignoreCampaignTypes.Contains(campaignTypeCharge.Type);
+                    var checkedstr = ischecked ? "" : "checked=checked";
+                }
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input checkbox-ignorecampaigntype" id="@switchid" @checkedstr
+                           data-url="@Url.Action("UpdateIgnoreCampaignTypes","Account", new {  type = campaignTypeCharge.Type, removed = !ischecked})" />
+                    <label class="custom-control-label" for="@switchid">Đồng ý</label>
+                </div>
+
+
+            </div>
+        </div>
+
+    }
+
+}

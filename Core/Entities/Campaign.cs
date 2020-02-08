@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities
 {
@@ -67,44 +68,44 @@ namespace Core.Entities
     }
     public enum CampaignMethod
     {
-        [DisplayName("Tự chọn thành viên")]
+        [Display(Name ="Tự chọn thành viên")]
         ChooseAccount = 0,
-        [DisplayName("Thành viên tự đăng ký")]
+        [Display(Name ="Thành viên tự đăng ký")]
         OpenJoined = 1
     }
 
     public enum CampaignStatus
     {
-        [DisplayName("Chờ phê duyệt")]
+        [Display(Name ="Chờ phê duyệt")]
         Created = 0,
-        [DisplayName("Đã phê duyệt")]
+        [Display(Name ="Đã phê duyệt")]
         Confirmed = 1,
-        [DisplayName("Bắt đầu")]
+        [Display(Name ="Bắt đầu")]
         Started = 2,
-        [DisplayName("Kết thúc")]
+        [Display(Name ="Kết thúc")]
         Ended = 3,
-        [DisplayName("Hoàn thành")]
+        [Display(Name ="Hoàn thành")]
         Completed = 4,
-        [DisplayName("Chiến dịch đã bị hủy")]
+        [Display(Name ="Chiến dịch đã bị hủy")]
         Canceled = 5,
-        [DisplayName("Lỗi")]
+        [Display(Name ="Lỗi")]
         Error = 6,
 
-        //[DisplayName("Chờ phê duyệt")]
+        //[Display(Name ="Chờ phê duyệt")]
         //ChoPheDuyet = 0,
-        //[DisplayName("Bắt đầu")]
+        //[Display(Name ="Bắt đầu")]
         //BatDau = 1,
-        //[DisplayName("Thực hiện")]
+        //[Display(Name ="Thực hiện")]
         //ThucHien = 2,
-        //[DisplayName("Theo dõi")]
+        //[Display(Name ="Theo dõi")]
         //TheoDoi = 3,
-        //[DisplayName("Hoàn thành")]
+        //[Display(Name ="Hoàn thành")]
         //HoanThanh = 4,
-        //[DisplayName("Kết thúc")]
+        //[Display(Name ="Kết thúc")]
         //KetThuc = 5,
-        //[DisplayName("Đã Hủy")]
+        //[Display(Name ="Đã Hủy")]
         //DaHuy = 5,
-        //[DisplayName("Lỗi")]
+        //[Display(Name ="Lỗi")]
         //Loi = 6,
     }
 

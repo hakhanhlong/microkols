@@ -42,7 +42,8 @@ namespace WebServices.ViewModels
             Status = notification.Status;
             EntityType = notification.EntityType;
             EntityId = notification.EntityId;
-            Message  = (notification.Type== NotificationType.CampaignCanceled) ? $"{notification.Message} với lý do {notification.Data}" : $"{notification.Message}"  ;
+            TypeGroup = notification.Type.ToTypeGroup();
+            Message = (notification.Type == NotificationType.CampaignCanceled) ? $"{notification.Message} với lý do {notification.Data}" : $"{notification.Message}";
 
         }
 
@@ -50,6 +51,10 @@ namespace WebServices.ViewModels
 
         public int Id { get; set; }
         public NotificationType Type { get; set; }
+        public NotificationTypeGroup TypeGroup
+        {
+            get;set;
+        }
         public int DataId { get; set; }
         public string Data { get; set; }
         public EntityType EntityType { get; set; }
@@ -57,7 +62,7 @@ namespace WebServices.ViewModels
 
         public NotificationStatus Status { get; set; }
         public string EntityImage { get; set; }
-    
+
 
         public string Message { get; set; }
         public DateTime Date { get; set; }

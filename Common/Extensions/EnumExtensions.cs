@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Common.Extensions
@@ -23,7 +24,7 @@ namespace Common.Extensions
         // Description MetaData attribute.
         public static string ToDescription(this Enum value)
         {
-            var attribute = value.GetAttribute<DescriptionAttribute>();
+            var attribute = value.GetAttribute<DisplayAttribute>();
             return attribute == null ? value.ToString() : attribute.Description;
         }
 
@@ -33,8 +34,8 @@ namespace Common.Extensions
             try
             {
 
-                var attribute = value.GetAttribute<DisplayNameAttribute>();
-                return attribute == null ? value.ToString() : attribute.DisplayName;
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.Name;
             }
             catch
             {

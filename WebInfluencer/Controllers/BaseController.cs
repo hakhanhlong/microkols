@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace WebInfluencer.Controllers
 {
  
-    public class BaseController : Controller
+    public class BaseAuthController : Controller
     {
         protected AuthViewModel CurrentUser => User.Identity.IsAuthenticated ? AuthViewModel.GetModel(User) : null;
 
@@ -40,4 +40,8 @@ namespace WebInfluencer.Controllers
         }
         #endregion
     }
-}
+    public class BaseController : BaseAuthController
+    { 
+    
+    }
+ }

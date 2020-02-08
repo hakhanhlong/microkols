@@ -121,7 +121,7 @@ namespace WebInfluencer.Code.TagHelpers
             }
             var html = result.ToString();
             output.TagName = "ul";
-            output.Attributes.Add("class", "pagination");
+            output.Attributes.Add("class", "pagination justify-content-end");
             output.Content.SetHtmlContent(html);
             output.TagMode = TagMode.StartTagAndEndTag;
 

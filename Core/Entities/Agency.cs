@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Core.Entities
@@ -32,9 +33,9 @@ namespace Core.Entities
     public  enum AgencyType
     {
 
-        [DisplayName("Doanh nghiệp")]
+        [Display(Name ="Doanh nghiệp")]
         DoanhNghiep = 1,
-        [DisplayName("Hộ kinh doanh/Cá thể kinh doanh")]
+        [Display(Name ="Hộ kinh doanh/Cá thể kinh doanh")]
         HoKinhDoanh = 2
     }
 }

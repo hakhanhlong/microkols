@@ -11,6 +11,8 @@ namespace WebServices.Interfaces
     {
         Task<ChangeFacebookUrlViewModel> GetChangeFacebookUrl(int id);
         Task<bool> ChangeFacebookUrl(int id, ChangeFacebookUrlViewModel model);
+
+        Task<bool> ChangeAvatar(int id, string path, string username);
         Task<AccountStatus> GetAccountStatus(int id);
         Task<string> GetAccessToken(int id);
         Task CreateDumbAccount(int count = 30);

@@ -1,104 +1,61 @@
 ﻿@model ChangeContactViewModel
 @{
     ViewData["Title"] = "Thông tin liên lạc";
-    Layout = "_LayoutAuth";
+    Layout = "_LayoutSetting";
 }
 
-@section Scripts{
-    <script type="text/javascript">
-        $().ready(function () {
 
-
-            if ($('#CityId').length > 0) {
-
-                filldistrict();
-                setTimeout(function () {
-                    $('#CityId').change(function () {
-                        console.log('CityId change-');
-                        filldistrict();
-                    });
-                }, 200);
-            }
-        });
-
-        function filldistrict() {
-            var cityid = $('#CityId').val();
-            var districtid = $('#CityId').data('district');
-            $.get('@Url.Action("GetDistricts","Home")'  +'?cityid='+ cityid, function (districts) {
-                if (districts.length === 0) {
-                    $('.pdistrict').hide();
-                    $('#DistrictId').html('');
-                } else {
-                    $('.pdistrict').show();
-                    var html = '';
-                    for (var i = 0; i < districts.length; i++) {
-
-                        var selected = '';
-                        if (districtid === districts[i].id) {
-                            selected += 'selected=selected';
-                        }
-                        html += '<option value="' + districts[i].id + '" ' + selected + '>' + districts[i].name + '</option>';
-                    }
-                    $('#DistrictId').html(html);
-                }
-            });
-        }
-    </script>
+@section Nav{
+    <partial name="_NavSettingPartial" model="1" />
 }
-<div class="row">
-    <div class="col-md-7 mt-5">
-        <h3>@ViewData["Title"]</h3>
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Phone"></label>
-                <input type="text" class="form-control" asp-for="Phone" />
-                <span asp-validation-for="Phone"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Address"></label>
 
-                <input type="text" class="form-control" asp-for="Address" />
 
-                <span asp-validation-for="Address"></span>
-            </div>
-            @{
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Phone"></label>
+        <input type="text" class="form-control" asp-for="Phone" />
+        <span asp-validation-for="Phone"></span>
+    </div>
 
-                var citites = (List<EntityViewModel>)ViewBag.Cities;
-                var districts = (List<EntityViewModel>)ViewBag.Districts;
+    <div class="form-group">
+        <label asp-for="Address"></label>
+
+        <input type="text" class="form-control" asp-for="Address" />
+
+        <span asp-validation-for="Address"></span>
+    </div>
+    @{
+
+        var citites = (List<EntityViewModel>)ViewBag.Cities;
+        var districts = (List<EntityViewModel>)ViewBag.Districts;
+    }
+    <div class="form-group">
+
+        <label asp-for="CityId"></label>
+
+        <select name="CityId" id="CityId" data-district="@Model.DistrictId" class="form-control">
+            @foreach (var c in citites)
+            {
+                <!option value="@c.Id" @(Model != null && c.Id == Model.CityId ? "selected=selected" : "")>
+                    @c.Name
+                </!option>
             }
-            <div class="form-group">
-
-                <label asp-for="CityId"></label>
-
-                <select name="CityId" id="CityId" data-district="@Model.DistrictId" class="form-control">
-                    @foreach (var c in citites)
-                    {
-                        <!option value="@c.Id" @(Model != null && c.Id == Model.CityId ? "selected=selected" : "")>
-                            @c.Name
-                        </!option>
-                    }
-                </select>
-            </div>
-            <div class="pdistrict form-group" style="display:none">
-
-                <label asp-for="DistrictId"></label>
-                <select name="DistrictId" id="DistrictId" class="form-control"></select>
-
-            </div>
-            <p class="small text-danger">
-                * Bạn cẩn đảm bảo thông tin mình khai báo là chính xác. Hệ thống sẽ dựa vào thông tin bạn khai báo để gửi thông báo cũng như thanh toán cho các chiến dịch mà bạn thực hiện.
-                Nếu khai báo sai bạn có thể không nhận được thanh toán hoặc thông báo chiến dịch mới. Chúng tôi không chịu trách nhiệm nếu sự cố do bạn khai báo
-            </p>
-            <div class="text-right">
-                <button class="btn btn-primary">Kết thúc</button>
-            </div>
-
-
-        </form>
+        </select>
     </div>
-    <div class="col-md-5">
-        <img src="/img/signin-2-bg.jpg" class="mb-5 mt-3 img-thumbnail border-0">
-    </div>
-</div>
+    <div class="pdistrict form-group" style="display:none">
 
+        <label asp-for="DistrictId"></label>
+        <select name="DistrictId" id="DistrictId" class="form-control"></select>
+
+    </div>
+    <p class="small text-danger">
+        * Bạn cẩn đảm bảo thông tin mình khai báo là chính xác. Hệ thống sẽ dựa vào thông tin bạn khai báo để gửi thông báo cũng như thanh toán cho các chiến dịch mà bạn thực hiện.
+        Nếu khai báo sai bạn có thể không nhận được thanh toán hoặc thông báo chiến dịch mới. Chúng tôi không chịu trách nhiệm nếu sự cố do bạn khai báo
+    </p>
+    <div class="text-right">
+        <button class="btn btn btn-outline-primary" type="submit">Cập nhật</button>
+    </div>
+
+
+</form>

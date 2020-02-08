@@ -2,7 +2,8 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -66,41 +67,41 @@ namespace Core.Entities
 
     public enum CampaignAccountRating
     {
-        [DisplayName("Tương tác Kém")]
+        [Display(Name ="Tương tác Kém")]
         InteractiveLow = 0,
-        [DisplayName("Tương tác Bình thường")]
+        [Display(Name ="Tương tác Bình thường")]
         InteractiveMedium = 1,
-        [DisplayName("Tương tác Tốt")]
+        [Display(Name ="Tương tác Tốt")]
         InteractiveHigh = 2,
     }
 
 
     public enum CampaignAccountStatus
     {
-        [DisplayName("Tất cả")]
+        [Display(Name ="Tất cả")]
         All = -2,
-        [DisplayName("Chờ trả tiền")]
+        [Display(Name ="Chờ trả tiền")]
         WaitToPay = -1,
-        [DisplayName("Thành viên xin tham gia chiến dịch")]
+        [Display(Name ="Thành viên xin tham gia chiến dịch")]
         AccountRequest = 0,
-        [DisplayName("Doanh nghiệp mời tham gia chiến dịch")]
+        [Display(Name ="Doanh nghiệp mời tham gia chiến dịch")]
         AgencyRequest = 1,
-        [DisplayName("Đã xác nhận tham gia chiến dịch")]
+        [Display(Name ="Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
-        [DisplayName("Đang gửi xét duyệt")]
+        [Display(Name ="Đang gửi xét duyệt")]
         SubmittedContent = 3,
-        [DisplayName("Yêu cầu sửa nội dung")]
+        [Display(Name ="Yêu cầu sửa nội dung")]
         DeclinedContent = 31,
-        [DisplayName("Đã duyệt nội dung")]
+        [Display(Name ="Đã duyệt nội dung")]
         ApprovedContent = 32,
-        [DisplayName("Đã duyệt và cập nhật nội dung")]
+        [Display(Name ="Đã duyệt và cập nhật nội dung")]
         UpdatedContent = 33,
 
-        [DisplayName("Đã hoàn thành")]
+        [Display(Name ="Đã hoàn thành")]
         Finished = 6,
-        [DisplayName("Hủy tham gia")]
+        [Display(Name ="Hủy tham gia")]
         Canceled = 7,
-        [DisplayName("Chưa hoàn thành")]
+        [Display(Name ="Chưa hoàn thành")]
         Unfinished = 8,
 
 

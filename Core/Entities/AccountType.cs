@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -37,23 +38,18 @@ namespace Core.Entities
 
     public enum AccountType
     {
-        [DisplayName("Tất cả")]
+        [Display(Name ="Tất cả")]
         [Description("")]
         All = -1,
-        [DisplayName("Tài khoản thường")]
-        [Description("Mô tả tài khoản thường")]
+        [Display(Name ="Tài khoản thường", Description = "Mô tả tài khoản thường")]
         Regular = 0,
-        [DisplayName("Hot Teen")]
-        [Description("Mô tả Hotteen")]
+        [Display(Name = "Tài khoản Hot Teen", Description = "Mô tả Hotteen")]
         HotTeen = 1,
-        [DisplayName("Hot Mom")]
-        [Description("Mô tả Hotmom")]
+        [Display(Name = "Tài khoản Hot Mom", Description = "Mô tả Hotmom")]
         HotMom = 2,
-        [DisplayName("Hot Facebooker")]
-        [Description("Mô tả Facebooker")]
+        [Display(Name = "Tài khoản Hot Facebooker", Description = "Mô tả Hot Facebooker")]
         HotFacebooker = 3,
-        [DisplayName("Kols")]
-        [Description("Mô tả Kols")]
+        [Display(Name = "Tài khoản Kols", Description = "Mô tả Kols")] 
         Kols = 4,
     }
     public class AccountTypeHotMomData

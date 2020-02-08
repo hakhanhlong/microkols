@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WebInfluencer</title>
+    <partial name="_StylePartial" />
+    <link href="~/css/theme.css" rel="stylesheet" />
+    <link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <partial name="_HeaderPartial" />
+
+    <nav class="shadow-sm">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item "><a asp-action="Index" class="breadcrumb-link">Tài khoản</a></li>
+
+            <li class="breadcrumb-item">
+                @ViewData["Title"]
+            </li>
+            @RenderSection("Breadcrumb", required: false)
+        </ol>
+    </nav>
+
+
+    <alert></alert>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+
+
+                @RenderSection("Nav", required: false)
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="card mb-3 shadow border-0 mt-1">
+                            <div class="card-body">
+
+                                @RenderBody()
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow sticky-top">
+                    <img class="card-img-top" src="@AppOptions.CurrentValue.GetImageUrl(CurrentUser.Avatar)" alt="Card image cap">
+                    <div class="card-body">
+                        <form asp-action="ChangeAvatar" asp-controller="Account" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label>Upload ảnh đại diện</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile" name="file">
+                                    <label class="custom-file-label" for="customFile">Upload ảnh mới</label>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button class="btn btn-outline-primary">Thay ảnh đại diện</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_FooterPartial" />
+
+
+    <partial name="_CookieConsentPartial" />
+    <partial name="_ScriptPartial" />
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
