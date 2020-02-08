@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hangfire;
+using Hangfire.SqlServer;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
@@ -82,8 +83,16 @@ namespace WebInfluencer
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             var hangfireConnectionString = Configuration.GetConnectionString("AppHangfireContext");
-            services.AddHangfire(options => options.UseSqlServerStorage(hangfireConnectionString));
-
+            services.AddHangfire(options => options.UseSqlServerStorage(hangfireConnectionString, new SqlServerStorageOptions
+            {
+                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.Zero,
+                UseRecommendedIsolationLevel = true,
+                UsePageLocksOnDequeue = true,
+                DisableGlobalLocks = true,
+                SchemaName = "Influencer"
+            }));
             services.AddAppServices();
 
             services.AddSession();

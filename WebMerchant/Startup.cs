@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.SqlServer;
+using Infrastructure.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebMerchant.Code;
+using WebServices.Code;
 
 namespace WebMerchant
 {
@@ -32,6 +40,48 @@ namespace WebMerchant
             });
 
 
+            services.Configure<SharedOptions>(Configuration.GetSection("SharedOptions"));
+
+
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/AccessDenied/";
+                options.LoginPath = "/Auth/Login/";
+                options.LogoutPath = "/Auth/Logout/";
+                options.Cookie.Name = "MicroKolCookie";
+                options.Cookie.Path = "/";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+
+            });
+
+            var connection = Configuration.GetConnectionString("AppContext");
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
+
+            var hangfireConnectionString = Configuration.GetConnectionString("AppHangfireContext");
+            services.AddHangfire(options => options.UseSqlServerStorage(hangfireConnectionString, new SqlServerStorageOptions
+            {
+                CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                QueuePollInterval = TimeSpan.Zero,
+                UseRecommendedIsolationLevel = true,
+                UsePageLocksOnDequeue = true,
+                DisableGlobalLocks = true,
+                SchemaName = "Merchant"
+            }));
+            services.AddAppServices();
+
+            services.AddSession();
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -52,6 +102,12 @@ namespace WebMerchant
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+
+            app.UseHangfireServer();
+            app.UseAuthentication();
+            app.UseSession();
+
 
             app.UseMvc(routes =>
             {
