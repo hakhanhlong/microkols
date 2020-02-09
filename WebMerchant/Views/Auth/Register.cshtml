@@ -1,0 +1,52 @@
+﻿@model RegisterAgencyViewModel
+
+@{
+    ViewBag.Title = "Đăng ký tài khoản doanh nghiệp";
+    Layout = "_LayoutAuth";
+
+}
+
+@section Styles{
+
+    <link href="~/css/signin.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<form class="form-signin" method="post">
+    <div class="text-center mb-4">
+        <h1 class="h3 mb-3">MicroKols</h1>
+        <p>Đăng ký tài khoản doanh nghiệp</p>
+    </div>
+
+    <alert></alert>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-label-group">
+
+
+        <input asp-for="Name" class="form-control" />
+        <label asp-for="Name"></label>
+    </div>
+
+    <div class="form-label-group">
+
+        <input asp-for="Username" class="form-control" />
+        <label asp-for="Username"></label>
+    </div>
+
+    <div class="form-label-group">
+
+        <input asp-for="Password" class="form-control" type="password" />
+        <label asp-for="Password"></label>
+    </div>
+    <div class="form-label-group">
+        <input asp-for="ConfirmPassword" class="form-control" type="password" />
+        <label asp-for="ConfirmPassword"></label>
+    </div>
+    <p>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng ký</button>
+    </p>
+    <p class="mt-3 text-muted text-center">Bạn đã có tài khoản doanh nghiệp? <a href="@Url.Action("Login")">Đăng nhập</a></p>
+    <p class="text-muted text-center">
+        Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="#">Chính sách</a> & <a href="#">Quy định</a>
+    </p>
+</form>

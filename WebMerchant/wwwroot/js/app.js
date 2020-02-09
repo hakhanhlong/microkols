@@ -5,7 +5,7 @@
 
             //console.log('AppPayment Init', AppSettings);
             if (AppSettings.IsAuthenticated) {
-                //AppCommon.bindingWalletBalance();
+                AppCommon.bindingWalletBalance();
                 AppNotification.Init();
                 //AppWallet.Init();
 

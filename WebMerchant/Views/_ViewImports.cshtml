@@ -1,3 +1,18 @@
-﻿@using WebMerchant
+﻿@inherits WebMerchant.Code.AppBasePage<TModel>
+
+@using WebServices.ViewModels
+@using WebMerchant.Code
+@using Common.Extensions;
+@using WebMerchant.Code.Extensions
+@using Microsoft.Extensions.Options
+@using Core.Models
+@using Core.Entities
+@using Common.Helpers
+@using WebMerchant
 @using WebMerchant.Models
+
+@inject IOptionsMonitor<WebServices.Code.SharedOptions> AppOptions
+
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "WebMerchant.Code.TagHelpers.*, WebMerchant"

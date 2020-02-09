@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+<div class="mb-5 bg-white rounded">
+    <div class="payment">
+        <div class="row">
+            <div class="col-sm-3">
+                <a href="@Url.Action("Recharge")">
+                    <div class="card shadow bg-white rounded">
+                        <img src="/img/deposite.jpg" width="334" height="209" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Nạp tiền
+                            </h5>
+                            <p>Số lần nạp tiền <strong>5</strong></p>
+                            <p>Tổng tiền đã nạp <strong style="color: red">1,000,000 Vnđ</strong></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-sm-3">
+                <a href="@Url.Action("WithDraw")">
+                    <div class="card shadow bg-white rounded">
+                        <img src="/img/withdraw.jpg" width="334" height="209" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Rút tiền
+                            </h5>
+                            <p>Số lần rút tiền <strong>5</strong></p>
+                            <p>Tổng tiền đã rút <strong style="color: red">1,000,000 Vnđ</strong></p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            @*<div class="col-sm-3">
+                <a href="/bank-account-listing.html">
+                    <div class="card shadow bg-white rounded">
+                        <img src="/img/bank.jpg" width="334" height="209" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Tài khoản ngân hàng
+                            </h5>
+                            <p>Có <strong>5</strong> tài khoản ngân hàng</p>
+                        </div>
+                    </div>
+                </a>
+            </div>*@
+        </div>
+    </div>
+</div>

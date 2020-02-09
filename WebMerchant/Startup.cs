@@ -56,7 +56,7 @@ namespace WebMerchant
                 options.AccessDeniedPath = "/AccessDenied/";
                 options.LoginPath = "/Auth/Login/";
                 options.LogoutPath = "/Auth/Logout/";
-                options.Cookie.Name = "MicroKolCookie";
+                options.Cookie.Name = "MicroKolMerchantCookie";
                 options.Cookie.Path = "/";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.None;

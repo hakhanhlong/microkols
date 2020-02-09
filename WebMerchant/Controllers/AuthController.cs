@@ -32,6 +32,75 @@ namespace WebMerchant.Controllers
 
         }
 
+        #region Login
+        public IActionResult  Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult>  Login(AgencyLoginViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var auth = await _agencyService.GetAuth(model);
+
+                if (auth != null)
+                {
+                    await SignIn(auth);
+                    if (!string.IsNullOrEmpty(returnurl)) return Redirect(returnurl);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                this.AddAlertDanger("Tên đăng nhập hoặc mật khẩu không đúng");
+            }
+            return View(model);
+        }
+
+
+
+        #endregion
+
+        #region Register
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterAgencyViewModel model, string returnurl = "")
+        {
+            if (ModelState.IsValid)
+            {
+                var id = await _agencyService.Register(model);
+
+                if (id > 0)
+                {
+                    this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Vui lòng chờ ban quản trị duyệt");
+                    return RedirectToAction("AgencyRegister");
+                }
+                this.AddAlertDanger("Tên đăng nhập đã tồn tại");
+            }
+            return View(model);
+        }
+
+
+
+        #endregion
+
+        public async Task<IActionResult> VerifyUsername(string username)
+        {
+            if (username.Contains("google") || username.Contains("yahoo") || username.Contains("gmail"))
+            {
+                return Json(false);
+            }
+            var r = await _agencyService.VerifyUsername(username);
+
+            return Json(r);
+
+        }
+
+
 
 
 

@@ -3,6 +3,7 @@ var AppWallet = (function () {
 
 
     function init() {
+        /*
         $('.wallet-recharge').click(function (e) {
             var campaignid = $(this).data('campaignid');
             e.preventDefault();
@@ -21,20 +22,27 @@ var AppWallet = (function () {
             });
 
         });
+        */
     }
 
     function handlerWithdraw() {
         $.validator.unobtrusive.parse($('#frmWithDraw'));
         $('#frmWithDraw').submit(function (e) {
-            e.preventDefault();
+
+
+            //e.preventDefault();
             var isvalid = $(this).valid();
             if (isvalid) {
+
+                $(this).find('.btn-submit').hide();
+                /*
                 var url = $(this).data('action');
                 var data = $(this).serialize();
                 AppBsModal.ShowLoading();
                 $.post(url, data, function (html) {
                     AppBsModal.OpenModal(html);
                 });
+                */
             }
         });
     }
@@ -42,17 +50,24 @@ var AppWallet = (function () {
 
     function handlerRecharge() {
         $.validator.unobtrusive.parse($('#frmRecharge'));
+
         $('#frmRecharge').submit(function (e) {
-            e.preventDefault();
+           
+            //e.preventDefault();
             var isvalid = $(this).valid();
             if (isvalid) {
+
+                $(this).find('.btn-submit').hide();
+                /*
                 var url = $(this).data('action');
                 var data = $(this).serialize();
                 AppBsModal.ShowLoading();
                 $.post(url, data, function (html) {
                     AppBsModal.OpenModal(html);
                 });
+                */
             }
+         
         });
         handlerMethod();
         $('#frmRecharge input[name="Method"]').change(function () {
@@ -82,6 +97,7 @@ var AppWallet = (function () {
 
     return {
         Init: init,
-        HandlerRecharge: handlerRecharge
+        HandlerRecharge: handlerRecharge,
+        HandlerWithdraw: handlerWithdraw
     };
 })();

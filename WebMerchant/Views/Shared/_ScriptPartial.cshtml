@@ -1,0 +1,29 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
+    var action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
+}
+<input id="FbAppId" type="hidden" value="@AppOptions.CurrentValue.FacebookAppId" />
+<input id="CurrentPage" type="hidden" value="@($"{controller}_{action}")" />
+
+<script src="~/lib/daterangepicker/moment.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/lib/bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="~/lib/select2/dist/js/select2.min.js"></script>
+<script src="~/lib/daterangepicker/daterangepicker.js"></script>
+<script src="~/lib/owlcarousel2/dist/owl.carousel.min.js"></script>
+<script src="~/lib/vuejs/vue.js"></script>
+<script src="~/build/js/app.js" asp-append-version="true"></script>
+@if (User.Identity.IsAuthenticated)
+{
+
+    <script type="text/javascript">
+        AppSettings.IsAuthenticated = true;
+        AppSettings.CurrentUser.Username = '@CurrentUser.Username';
+        AppSettings.CurrentUser.Name = '@CurrentUser.Name';
+        AppSettings.CurrentUser.Type = @((int) CurrentUser.Type);
+    </script>
+
+}

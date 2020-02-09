@@ -40,6 +40,9 @@ namespace WebMerchant.Controllers
         }
         #endregion
     }
+
+
+    [Authorize]
     public class BaseController : BaseAuthController
     { 
     
