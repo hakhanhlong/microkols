@@ -198,7 +198,7 @@ namespace WebServices.Services
         }
 
 
-        public async Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid)
+        public async Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid, CampaignType campaignType)
         {
             var code = await _campaignRepository.GetValidCode(agencyid);
 
@@ -207,7 +207,8 @@ namespace WebServices.Services
                 Code = code,
                 AccountType = new List<AccountType>() { AccountType.HotMom },
                 Quantity = 10,
-                Method = CampaignMethod.OpenJoined
+                Method = CampaignMethod.OpenJoined,
+                Type = campaignType
             };
         }
 

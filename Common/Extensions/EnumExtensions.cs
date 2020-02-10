@@ -9,7 +9,7 @@ namespace Common.Extensions
     public static class EnumExtensions
     {
 
-       
+
         // This extension method is broken out so you can use a similar pattern with 
         // other MetaData elements in the future. This is your base method for each.
         public static T GetAttribute<T>(this Enum value) where T : Attribute
@@ -24,8 +24,28 @@ namespace Common.Extensions
         // Description MetaData attribute.
         public static string ToDescription(this Enum value)
         {
-            var attribute = value.GetAttribute<DisplayAttribute>();
-            return attribute == null ? value.ToString() : attribute.Description;
+            try
+            {
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.Description;
+            }
+            catch
+            {
+                return value.ToString();
+            }
+        }
+        public static string ToShortName(this Enum value)
+        {
+            try
+            {
+
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.ShortName;
+            }
+            catch
+            {
+                return value.ToString();
+            }
         }
 
         public static string ToDisplayName(this Enum value)
@@ -42,7 +62,7 @@ namespace Common.Extensions
                 return value.ToString();
             }
 
-          
+
         }
 
         public static string ToPriceText(this int price, string currency = "đ")

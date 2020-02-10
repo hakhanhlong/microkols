@@ -208,8 +208,12 @@ namespace WebServices.ViewModels
 
 
         public List<string> HashTag { get; set; }
+
+
+        [Display(Name = "Hình ảnh chiến dịch cung cấp")]
         public List<string> SampleContent { get; set; }
 
+        [Display(Name = "Nội dung mẫu")]
         public string SampleContentText { get; set; }
         [Display(Name = "Phương thức")]
         public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;

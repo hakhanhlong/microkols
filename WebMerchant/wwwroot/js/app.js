@@ -26,9 +26,10 @@
         if (currentPage === 'account_changeaccounttype') {
             ChangeAccountTypePage.Init();
         }
-        else if (currentPage === 'agencycampaign_create') {
-            AgencyCreateCampaignPage.Init();
-        } else if (currentPage === 'agencycampaign_details') {
+        else if (currentPage === 'campaign_create') {
+            CampaignCreatePage.Init();
+        }
+        else if (currentPage === 'agencycampaign_details') {
             AgencyDetailsCampaignPage.Init();
         } else if (currentPage === 'account_fbaccount') {
             AccountFbAccountPage.Init();

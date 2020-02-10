@@ -1,4 +1,4 @@
-﻿var AgencyCreateCampaignPage = (function () {
+﻿var CampaignCreatePage = (function () {
 
     function init() {
         handler();

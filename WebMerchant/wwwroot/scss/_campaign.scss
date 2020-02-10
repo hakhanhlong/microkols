@@ -1,0 +1,43 @@
+
+#editAccountPriceWrap {
+    span {
+        color: $danger;
+    }
+
+    input {
+        display: none;
+    }
+
+    &.openedit {
+        span {
+            display: none;
+        }
+
+        input {
+            display: inline;
+        }
+    }
+}
+
+
+#addonimagewrap, #sampleContentWrap {
+    display: flex;
+
+    .addonimage {
+        position: relative;
+        width:25%;
+
+        .remove {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: $danger;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        img {
+            max-height: 250px;
+        }
+    }
+}

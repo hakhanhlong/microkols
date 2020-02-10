@@ -1,0 +1,47 @@
+﻿@model CampaignType
+
+@if (Model != CampaignType.ShareContent)
+{
+    <div class="card border-0">
+        <div class="card-body">
+            <h5>Nội dung mẫu</h5>
+            @*<p style="color:red">
+                <small>
+                    1. Nội dung mẫu không hiển thị đối với loại chiến dịch -> "Chia sẻ
+                    ,không viết caption"
+                </small>
+            </p>
+            <p style="color: red"><small>2. Có thể đính kèm "ảnh" vào "nội dung mẫu"</small></p>*@
+            <textarea class="form-control form-control-lg" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây"></textarea>
+        </div>
+        <div class="card-body">
+            <h5>Ảnh chiến dịch cung cấp</h5>
+            <div class="custom-file">
+                <input type="file" class="custom-file-input" id="customFile">
+                <label class="custom-file-label" for="customFile">Tải ảnh chiến dịch</label>
+            </div>
+            <div>
+                <ul class="list-unstyled">
+                    <li>
+                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
+                    </li>
+                    <li>
+                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="list-sample-campaign-images mt-3">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <img src="/img/4.jpg" width="128" class="img-thumbnail">
+                    </li>
+                    <li class="list-inline-item">
+                        <img src="/img/5.jpg" width="128" class="img-thumbnail">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+}
+

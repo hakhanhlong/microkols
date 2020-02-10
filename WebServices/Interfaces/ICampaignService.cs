@@ -14,7 +14,7 @@ namespace WebServices.Interfaces
         Task<bool> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username);
         Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0);
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
-        Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid);
+        Task<CreateCampaignViewModel> GetCreateCampaign(int agencyid, CampaignType campaignType);
         Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);

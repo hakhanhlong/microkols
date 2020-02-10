@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Tạo chiến dịch";
+    var typeArr = StringHelper.GetEnumArray<CampaignType>();
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3 class="mt-4 mb-4">Bước 1: Chọn loại chiến dịch</h3>
+
+<div class="select-campaign-type">
+    <div class="row">
+        @foreach (var item in typeArr)
+        {
+            var img = item.ToShortName();
+            <div class="col-sm-3">
+                <div class="card shadow bg-white rounded">
+                    <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
+                        <img src="@img" width="334" height="209" class="card-img-top" alt="@item.ToDisplayName()">
+                    </a>
+                        <div class="card-body">
+                            <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
+                                <h5 class="card-title">
+                                    @item.ToDisplayName()
+                                </h5>
+                            </a>
+                            <p class="card-text">
+
+                                @item.ToDescription()
+                            </p>
+                        </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
