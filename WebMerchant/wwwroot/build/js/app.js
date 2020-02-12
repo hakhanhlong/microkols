@@ -117,9 +117,9 @@ var App = (function () {
 
         });
 
-        $('.form-select2').select2({ theme: "bootstrap4" });
+        $('.form-select2').select2({ theme: "bootstrap" });
         $('.form-select2-tags').select2({
-            theme: "bootstrap4",
+            theme: "bootstrap",
             tags: true,
             tokenSeparators: [',']
         });
@@ -1196,11 +1196,11 @@ var CampaignCreatePage = (function () {
 
         $('#CategoryId').select2({
             maximumSelectionLength: 3,
-            theme: "bootstrap4" 
+            theme: "bootstrap" 
         });
         $('#HashTag').select2({
             maximumSelectionLength: 3,
-            theme: "bootstrap4", tags: true
+            theme: "bootstrap", tags: true
         });
 
 

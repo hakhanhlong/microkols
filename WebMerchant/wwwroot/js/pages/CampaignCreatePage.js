@@ -144,11 +144,11 @@
 
         $('#CategoryId').select2({
             maximumSelectionLength: 3,
-            theme: "bootstrap4" 
+            theme: "bootstrap" 
         });
         $('#HashTag').select2({
             maximumSelectionLength: 3,
-            theme: "bootstrap4", tags: true
+            theme: "bootstrap", tags: true
         });
 
 

@@ -1,8 +1,8 @@
-﻿@model CreateCampaignViewModel
+﻿@model CreateCampaignInfoViewModel
 @{
-    ViewData["Title"] = "Tạo chiến dịch";
+    var campaignType = Model.Type;
+    ViewData["Title"] = "Tạo chiến dịch " + campaignType.ToText();
 
-    var campaignType = (CampaignType)ViewBag.CampaignType;
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -10,57 +10,102 @@
 <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="row">
         <div class="col-lg-8">
-            <form class="form-create-campaign">
+            <form class="form-create-campaign" asp-action="CreateInfo">
                 <div class="form-group">
-                    <label>Tên chiến dịch</label>
-                    <input type="text" class="form-control form-control-lg" placeholder="Tên chiến dịch">
+
+                    <label asp-for="Title"></label>
+                    <input type="text" class="form-control" asp-for="Title" />
+                    <span asp-validation-for="Title"></span>
+
                 </div>
-                <div class="form-group">
-                    <label>Liên kết URL nội dung</label>
-                    <input type="text" class="form-control form-control-lg" placeholder="Liên kết URL nội dung">
-                </div>
-                <div class="form-group">
-                    <label>Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch</label>
-                    <textarea class="form-control form-control-lg" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Yêu cầu của chiến dịch</label>
-                    <textarea class="form-control form-control-lg" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Thời gian duy trì Avatar</label>
-                    <select class="form-control">
-                        <option>1 Tuần</option>
-                        <option>2 Tuần</option>
-                        <option>3 Tuần</option>
-                        <option>4 Tuần</option>
-                    </select>
-                    <small><i style="color: red">Chỉ hiển thị cho loại chiến dịch "Thay hình Avatar"</i></small>
-                </div>
-                <div class="form-group">
-                    <label>HashTag</label>
-                    <input type="text" class="form-control form-control-lg" placeholder="HashTag">
-                </div>
-                <div class="form-group">
-                    <div class="form-check pl-0">
-                        <div class="custom-control custom-checkbox" data-toggle="modal" data-target="#modal-campaign-time-place">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                            <label class="custom-control-label" for="customCheck1" style="font-weight: 400">
-                                Bạn sẽ gửi sản phẩm trải nghiệm cho influencer hoặc mời họ đến trải nghiệm dịch vụ?
-                            </label>
-                            <p>
-                                <small style="color: red">
-                                    Cái này chỉ dùng cho hai loại chiến dịch sau: "Chia sẻ thông điệp, viết thêm caption",
-                                    "Viết Review một sản phẩm hoặc tham gia trải nghiệm"
-                                </small>
-                            </p>
-                        </div>
+                @if (campaignType == CampaignType.ChangeAvatar)
+                {
+                    <div class="form-group">
+                        <label asp-for="Image"></label>
+
+                        <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" />
+                        <input type="hidden" asp-for="Image" />
+                        <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+
+                        <span asp-validation-for="Image"></span>
                     </div>
+
+                    <input type="hidden" asp-for="Data" />
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="Data"></label>
+                        <input type="text" class="form-control" asp-for="Data" />
+                        <span asp-validation-for="Data"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="Image" />
+                }
+                <div class="form-group">
+
+                    <label asp-for="Description"></label>
+                    <textarea class="form-control" rows="2" asp-for="Description"></textarea>
+                    <span asp-validation-for="Description"></span>
                 </div>
-                <div class="text-center">
-                    <a class="btn btn-outline-primary btn-bold-text" href="/campaign-create-step3.html">
+
+                <div class="form-group">
+
+                    <label asp-for="Requirement"></label>
+                    <textarea class="form-control" rows="2" asp-for="Requirement"></textarea>
+                    <span asp-validation-for="Requirement"></span>
+                </div>
+                @if (campaignType == CampaignType.ChangeAvatar)
+                {
+                    <div class="form-group">
+                        <label asp-for="AccountChargeTime"></label>
+
+                        <input type="text" class="form-control" asp-for="AccountChargeTime" />
+                        <span asp-validation-for="AccountChargeTime"></span>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="AccountChargeTime" />
+                }
+
+                <div class="form-group ">
+                    <label asp-for="HashTag"></label>
+
+                    <select asp-for="HashTag" multiple class="form-control"></select>
+                    <span asp-validation-for="HashTag"></span>
+
+                </div>
+
+
+                @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption)
+                {
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                            <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                        </div>
+
+                    </div>
+                }
+
+                @if (campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
+                {
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" asp-for="SendProduct" />
+                            <label class="custom-control-label" asp-for="SendProduct"></label>
+                        </div>
+
+                    </div>
+                }
+
+                <div class="text-center form-group">
+
+                    <input type="hidden" asp-for="Type" />
+                    <button class="btn btn-outline-primary btn-bold-text" type="submit">
                         Bước 3: Yêu cầu về đối tượng của chiến dịch
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>
@@ -82,7 +127,7 @@
                 <div class="card border-0">
                     <div class="card-body">
                         <h5>Nội dung mẫu</h5>
-                        <textarea class="form-control form-control-lg" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
                     </div>
                     <div class="card-body">
                         <h5>Ảnh chiến dịch cung cấp</h5>
@@ -100,12 +145,12 @@
                                 </li>
                             </ul>
                         </div>
-                        
+
                         <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
 
 
                         </div>
-                       
+
                     </div>
                 </div>
             }

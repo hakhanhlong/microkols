@@ -7,6 +7,7 @@ using Core.Entities;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebServices.Code.Helpers;
 using WebServices.Interfaces;
 using WebServices.Jobs;
@@ -69,6 +70,43 @@ namespace WebMerchant.Controllers
             var model = await _campaignService.GetCreateCampaign(CurrentUser.Id, campaignType.Value);
             return View(model);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateInfo(CreateCampaignInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var paymentModel = new CreateCampaignTargetViewModel()
+                {
+                    InfoModel = JsonConvert.SerializeObject(model),
+                    Type = model.Type,
+                    KPIMin = model.Type.GetKpiMin(),
+                    InteractiveMin = model.Type.GetInteractiveMin()
+                };
+
+                await ViewbagData();
+                return View("CreateTarget", paymentModel);
+
+            }
+            return View("Create", model);
+            //await ViewbagData();
+            //return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateTarget(CreateCampaignTargetViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+            }
+            await ViewbagData();
+            return View("CreateTarget", model);
+            //await ViewbagData();
+            //return View(model);
+        }
+
+
+        /*
         [HttpPost]
         public async Task<IActionResult> Create(CreateCampaignViewModel model, int submittype = 0)
         {
@@ -157,6 +195,7 @@ namespace WebMerchant.Controllers
             //await ViewbagData();
             //return View(model);
         }
+        */
         private async Task ViewbagData()
         {
             ViewBag.Categories = await _sharedService.GetCategories();

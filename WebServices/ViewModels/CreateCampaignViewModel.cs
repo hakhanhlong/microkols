@@ -40,7 +40,7 @@ namespace WebServices.ViewModels
             if (!string.IsNullOrEmpty(ExecutionTime))
             {
                 var arrDate = ExecutionTime.Split('-');
-                if(arrDate.Length== 2)
+                if (arrDate.Length == 2)
                 {
                     start = arrDate[0].Trim();
                     end = arrDate[1].Trim();
@@ -48,11 +48,11 @@ namespace WebServices.ViewModels
             }
             var image = string.Empty;
 
-            if(Type == CampaignType.ChangeAvatar)
+            if (Type == CampaignType.ChangeAvatar)
             {
                 image = Image;
             }
-            else if(Type== CampaignType.ShareContentWithCaption)
+            else if (Type == CampaignType.ShareContentWithCaption)
             {
                 image = AddonImages.ToListString();
             }
@@ -74,14 +74,14 @@ namespace WebServices.ViewModels
                 ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
                 ServiceChargePercent = setting.CampaignServiceChargePercent,
                 ServiceVATPercent = setting.CampaignVATChargePercent,
-                ServiceChargeAmount =0,
+                ServiceChargeAmount = 0,
                 AccountChargeExtraPercent = 0,
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
                 AccountChargeTime = 0,
                 Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
                 Type = Type,
-                
+
                 Code = code,
                 Quantity = Quantity,
                 DateStart = start.ToViDateTime(),
@@ -91,7 +91,7 @@ namespace WebServices.ViewModels
                 Method = Method,
                 SampleContent = SampleContent.ToListString(),
                 Hashtag = HashTag.ToListString(),
-                SampleContentText   = SampleContentText
+                SampleContentText = SampleContentText
 
             };
 
@@ -101,11 +101,11 @@ namespace WebServices.ViewModels
         [Display(Name = "Tên chiến dịch")]
         public string Title { get; set; }
 
-        [Display(Name = "Nội dung, Mô tả thời gian cụ thể chiến dịch")]
+        [Display(Name = "Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch")]
         public string Description { get; set; }
 
-     
-        [Display(Name = "Thông tin đối tượng chiến dịch (Link, hình ảnh,...)")]
+
+        [Display(Name = "Liên kết URL nội dung")]
         public string Data { get; set; }
 
 
@@ -125,6 +125,8 @@ namespace WebServices.ViewModels
         [Display(Name = "Thời gian")]
         public int? AccountChargeTime { get; set; } = 1;
 
+
+        [Display(Name = "Hình ảnh Avatar")]
         public string Image { get; set; } = string.Empty;
 
 
@@ -132,7 +134,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Hình ảnh đính kèm")]
         public List<string> AddonImages { get; set; } = new List<string>();
 
-        [Display(Prompt = "Nhập yêu cầu cụ thể chiến dịch")]
+        [Display(Name = "Yêu cầu của chiến dịch")]
         public string Requirement { get; set; }
 
 
@@ -174,8 +176,8 @@ namespace WebServices.ViewModels
         [Display(Name = "Khu vực")]
         public bool EnabledCity { get; set; } = false;
 
-   
-        
+
+
 
         [Display(Name = "Chọn khu vực")]
         public List<int> CityId { get; set; }
@@ -219,4 +221,155 @@ namespace WebServices.ViewModels
         public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
     }
 
+
+
+    public class CreateCampaignInfoViewModel
+    {
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Tên chiến dịch")]
+        public string Title { get; set; }
+
+        [Display(Name = "Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch")]
+        public string Description { get; set; }
+
+        [Display(Name = "Liên kết URL nội dung")]
+        public string Data { get; set; }
+
+        [Display(Name = "Liên kết URL nội dung")]
+        public string Image { get; set; } = string.Empty;
+
+
+        [Display(Name = "Hình ảnh đính kèm")]
+        public List<string> AddonImages { get; set; } = new List<string>();
+
+        [Display(Name = "Yêu cầu cụ thể chiến dịch")]
+        public string Requirement { get; set; }
+
+        [Display(Name = "Thời gian")]
+        public int? AccountChargeTime { get; set; } = 1;
+
+
+        [Display(Name = "Loại chiến dịch")]
+        public CampaignType Type { get; set; }
+
+        [Display(Name = "Đính kèm hình ảnh cá nhân")]
+        public bool EnabledExtraType { get; set; }
+
+
+        [Display(Name = "Bạn sẽ gửi sản phẩm trải nghiệm cho influencer hoặc mời họ đến trải nghiệm dịch vụ?")]
+        public bool SendProduct { get; set; }
+
+        [Display(Name = "Mã chiến dịch")]
+        public string Code { get; set; }
+
+        public List<string> HashTag { get; set; }
+
+
+        [Display(Name = "Hình ảnh chiến dịch cung cấp")]
+        public List<string> SampleContent { get; set; }
+
+        [Display(Name = "Nội dung mẫu")]
+        public string SampleContentText { get; set; }
+        [Display(Name = "Phương thức")]
+        public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
+    }
+
+    public class CreateCampaignTargetViewModel
+    {
+
+        public string InfoModel { get; set; }
+        public CampaignType Type { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Bạn cần Micro Kols")]
+        public List<AccountType> AccountType { get; set; } = new List<AccountType>();
+
+        public int? AccountChargeAmount { get; set; }
+
+
+        [Display(Name = "Số lượng")]
+        public int Quantity { get; set; }
+
+        [Display(Name = "Chi phí tối thiểu")]
+        public int AmountMin { get; set; }
+        [Display(Name = "Chi phí tối đa")]
+        public int AmountMax { get; set; }
+
+        [Display(Name = "Giới tính")]
+        public bool EnabledGender { get; set; } = false;
+
+
+        [Display(Name = "Chọn giới tính")]
+        public Gender? Gender { get; set; }
+
+        [Display(Name = "Độ tuổi")]
+        public bool EnabledAgeRange { get; set; } = false;
+
+        [Display(Name = "Từ", Prompt = "Từ")]
+        public int? AgeStart { get; set; }
+        [Display(Name = "Đến", Prompt = "Đến")]
+        public int? AgeEnd { get; set; }
+
+        [Display(Name = "Lĩnh vực quan tâm/thế mạnh")]
+        public bool EnabledCategory { get; set; } = false;
+        [Display(Name = "Chọn lĩnh vực")]
+        public List<int> CategoryId { get; set; }
+
+
+        [Display(Name = "Tags")]
+        public bool EnabledTags { get; set; } = false;
+        [Display(Name = "Thêm Tags")]
+        public List<string> AccountTags { get; set; }
+
+
+
+        [Display(Name = "Khu vực")]
+        public bool EnabledCity { get; set; } = false;
+
+
+        [Display(Name = "KPIs(Like + Share + Comments) tối thiểu mà influencer sẽ phải đạt cho mỗi post để được ghi nhận doanh thu")]
+        public int KPIMin { get; set; }
+
+        [Display(Name = "Bạn cần người dùng cam kết lượt tương tác đạt được tối thiểu cho mỗi post sẽ tăng thêm")]
+        public int InteractiveMin { get; set; }
+
+
+        [Display(Name = "Chọn khu vực")]
+        public List<int> CityId { get; set; }
+
+
+        [Display(Name = "Mã chiến dịch")]
+        public string Code { get; set; }
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Thời gian thực hiện")]
+        public string ExecutionTime { get; set; }
+
+
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "Thời gian nhận đăng ký")]
+        public string RegisterTime { get; set; }
+
+        [Display(Name = "Phản hồi trước")]
+        public string FeedbackBefore { get; set; }
+
+
+        [Display(Name = "Kols mà bạn muốn hợp tác")]
+        public List<string> CustomKolNames { get; set; }
+
+        public List<int> AccountIds { get; set; }
+        public List<int> AccountChargeAmounts { get; set; }
+
+
+        [Display(Name = "Giới tính")]
+        public int? ChildType { get; set; }
+
+        [Display(Name = "Độ tuổi")]
+        public int? ChildAgeMin { get; set; }
+        public int? ChildAgeMax { get; set; }
+
+    }
 }

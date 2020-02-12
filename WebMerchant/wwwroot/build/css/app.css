@@ -1,6 +1,9 @@
 .field-validation-error {
   color: red; }
 
+h6, .h6 {
+  font-weight: 600; }
+
 #editAccountPriceWrap span {
   color: red; }
 

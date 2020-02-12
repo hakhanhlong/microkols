@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -14,9 +15,9 @@ namespace Core.Entities
         ShareContentWithCaption = 2,
         [Display(Name ="Thay hình Avatar", Description = "", ShortName = "/img/3.jpg")]
         ChangeAvatar = 3,
-        [Display(Name ="Viết comment seeding cho chiến dịch", Description ="", ShortName = "/img/4.jpg")]
-        PostComment = 4,
-        [Display(Name ="Đăng ký tham dự sự kiện", Description = "", ShortName = "/img/5.jpg")]
+        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệmh", Description ="", ShortName = "/img/4.jpg")]
+        ReviewProduct = 4,
+        [Display(Name = "Tham gia sự kiện và check in", Description = "", ShortName = "/img/5.jpg")]
         JoinEvent = 5,
         [Display(Name ="Share link livestream chương trình", Description = "", ShortName = "/img/6.jpg")]
         ShareStreamUrl = 6,
@@ -31,43 +32,46 @@ namespace Core.Entities
 
         }
 
-
-        public static string ToText(this CampaignType type)
+        public static int GetKpiMin(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent)
+            if(type == CampaignType.ShareContent)
             {
-                return "Chia sẻ thông điệp, không cần viết caption";
+                return 30;
             }
             if (type == CampaignType.ShareContentWithCaption)
             {
-                return "Chia sẻ thông điệp, viết thêm caption";
+                return 100;
             }
-            if (type == CampaignType.ChangeAvatar)
+            if (type == CampaignType.ReviewProduct)
             {
-                return "Thay hình Avatar";
+                return 200;
             }
 
-            if (type == CampaignType.PostComment)
+            return 0;
+        }
+
+        public static int GetInteractiveMin(this CampaignType type)
+        {
+            if (type == CampaignType.ShareContent)
             {
-                return "Viết comment seeding cho chiến dịch";
+                return 0;
+            }
+            if (type == CampaignType.ShareContentWithCaption)
+            {
+                return 100;
+            }
+            if (type == CampaignType.ReviewProduct)
+            {
+                return 200;
             }
 
-            if (type == CampaignType.JoinEvent)
-            {
-                return "Đăng ký tham gia sự kiện";
-            }
+            return 0;
+        }
+        
 
-            if (type == CampaignType.ShareStreamUrl)
-            {
-                return "Share link livestream chương trình";
-            }
-
-            if (type == CampaignType.CustomService)
-            {
-                return "Yêu cầu khác";
-            }
-
-            return type.ToString();
+        public static string ToText(this CampaignType type)
+        {
+            return type.ToDisplayName();
         }
 
         public static string ToActionText(this CampaignType type)
@@ -76,9 +80,9 @@ namespace Core.Entities
             {
                 return "Chia sẻ";
             }
-            if (type == CampaignType.PostComment)
+            if (type == CampaignType.ReviewProduct)
             {
-                return "Viết bình luận";
+                return "Review Sản phẩm";
             }
             if (type == CampaignType.ShareStreamUrl)
             {
@@ -104,7 +108,7 @@ namespace Core.Entities
         }
         public static string ToPriceLabel(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.PostComment || type == CampaignType.ShareStreamUrl)
+            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ReviewProduct || type == CampaignType.ShareStreamUrl)
             {
                 return "/người/lần";
             }
@@ -137,9 +141,9 @@ namespace Core.Entities
             }
           
 
-            if (type == CampaignType.PostComment )
+            if (type == CampaignType.ReviewProduct)
             {
-                return "Link để bình luận";
+                return "Link sản phẩm";
             }
             if ( type == CampaignType.ShareStreamUrl)
             {

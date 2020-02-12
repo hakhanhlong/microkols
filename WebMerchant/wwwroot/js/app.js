@@ -117,9 +117,9 @@
 
         });
 
-        $('.form-select2').select2({ theme: "bootstrap4" });
+        $('.form-select2').select2({ theme: "bootstrap" });
         $('.form-select2-tags').select2({
-            theme: "bootstrap4",
+            theme: "bootstrap",
             tags: true,
             tokenSeparators: [',']
         });
