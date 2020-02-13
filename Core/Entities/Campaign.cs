@@ -46,14 +46,28 @@ namespace Core.Entities
 
 
         public CampaignStatus Status { get; set; }
+
+        public bool? IsSendProduct { get; set; }
+
+
+        public int? KPIMin { get; set; }
+        public int? InteractiveMin { get; set; }
+
+
         public DateTime? DateStart { get; set; }
         public DateTime? DateEnd { get; set; }
 
+        public DateTime? ExecutionStart { get; set; }
+        public DateTime? ExecutionEnd { get; set; }
+        public DateTime? AccountFeedbackBefore { get; set; }
+        public DateTime? FeedbackStart { get; set; }
+        public DateTime? FeedbackEnd { get; set; }
+
+        public int  AmountMin { get; set; }
+        public int AmountMax { get; set; }
+        public int Quantity { get; set; }
 
         public string CustomKolNames { get; set; }
-        public DateTime? AccountFeedbackBefore { get; set; }
-
-        public int Quantity { get; set; }
 
         private List<CampaignOption> _CampaignOption = new List<CampaignOption>();
         public IEnumerable<CampaignOption> CampaignOption => _CampaignOption.AsReadOnly();

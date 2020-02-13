@@ -9,12 +9,12 @@ using WebServices.Jobs;
 using WebServices.ViewModels;
 namespace WebMerchant.Controllers
 {
-    public class AccountController : BaseController
+    public class AgencyController : BaseController
     {
         private readonly IAgencyService _agencyService;
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
-        public AccountController(IAgencyService agencyService, ISharedService sharedService, IFileHelper fileHelper)
+        public AgencyController(IAgencyService agencyService, ISharedService sharedService, IFileHelper fileHelper)
         {
 
             _agencyService = agencyService;

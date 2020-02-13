@@ -210,6 +210,29 @@ namespace WebServices.Services
             };
         }
 
+        public async Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username)
+        {
+            var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(info.Type));
+            if (campaignTypeCharge == null)
+            {
+                return -1;
+            }
+            var settings = await _settingRepository.GetSetting();
+            var code = await _campaignRepository.GetValidCode(agencyid);
+            var campaign = CreateCampaignViewModel.GetEntity(agencyid, info,target, campaignTypeCharge, settings, code, username);
+           
+
+            await _campaignRepository.AddAsync(campaign);
+            if (campaign.Id > 0)
+            {
+                await CreateCampaignAccountType(campaign.Id, target.AccountType, username);
+                await CreateCampaignOptions(campaign.Id, target, username);
+                return campaign.Id;
+            }
+
+            return -1;
+        }
+
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
         {
             var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
@@ -328,6 +351,72 @@ namespace WebServices.Services
             }
         }
 
+        private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username)
+        {
+
+            if (model.AccountType.Contains(AccountType.HotMom))
+            {
+                if (model.ChildType.HasValue)
+                {
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.Child,
+                        Value = $"{model.ChildType}|{model.ChildAgeMin}-{model.ChildAgeMax}"
+                    });
+                }
+            }
+
+            if (model.EnabledCity && model.CityId != null && model.CityId.Count > 0)
+            {
+
+                foreach (var cityId in model.CityId)
+                {
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.City,
+                        Value = cityId.ToString()
+                    });
+                }
+
+
+            }
+            if (model.EnabledGender && model.Gender.HasValue)
+            {
+                await _campaignOptionRepository.AddAsync(new CampaignOption()
+                {
+                    CampaignId = campaignId,
+                    Name = CampaignOptionName.Gender,
+                    Value = model.Gender.Value.ToString()
+                });
+            }
+
+            if (model.EnabledAgeRange && model.AgeEnd.HasValue && model.AgeStart.HasValue)
+            {
+                await _campaignOptionRepository.AddAsync(new CampaignOption()
+                {
+                    CampaignId = campaignId,
+                    Name = CampaignOptionName.AgeRange,
+                    Value = $"{model.AgeStart.Value}-{model.AgeEnd.Value}"
+                });
+            }
+
+            if (model.EnabledCategory && model.CategoryId != null && model.CategoryId.Count > 0)
+            {
+                foreach (var categoryid in model.CategoryId)
+                {
+                    await _campaignOptionRepository.AddAsync(new CampaignOption()
+                    {
+                        CampaignId = campaignId,
+                        Name = CampaignOptionName.Category,
+                        Value = categoryid.ToString()
+                    });
+                }
+
+            }
+           
+        }
 
 
         #endregion

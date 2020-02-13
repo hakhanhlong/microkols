@@ -23,28 +23,17 @@
     }
     function handlerPages() {
         var currentPage = $('#CurrentPage').val();
-        if (currentPage === 'account_changeaccounttype') {
-            ChangeAccountTypePage.Init();
-        }
-        else if (currentPage === 'campaign_create') {
+        if (currentPage === 'campaign_create') {
             CampaignCreatePage.Init();
         }
-        else if (currentPage === 'agencycampaign_details') {
-            AgencyDetailsCampaignPage.Init();
-        } else if (currentPage === 'account_fbaccount') {
-            AccountFbAccountPage.Init();
+        else if (currentPage === 'campaign_createinfo') {
+            CampaignCreateTargetPage.Init();
         }
-        else if (currentPage === 'accountcampaign_details' || currentPage === 'accountcampaign_marketplacedetails') {
-            AccountDetailsCampaignPage.Init();
-        }
-        else if (currentPage === 'accountcampaign_index') {
-            AccountIndexCampaignPage.Init();
-        }
+        else if (currentPage === 'campaign_details') {
+           DetailsCampaignPage.Init();
+        } 
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
-        }
-        else if (currentPage === 'account_index') {
-            AccountIndexPage.Init();
         }
         
         
@@ -67,30 +56,6 @@
 
         });
 
-
-        //$('.btn-facebook').click(function () {
-        //    var $frm = $($(this).data('target'));
-        //    FB.login(function (response) {
-        //        console.log('login-facebook', response);
-        //        // handle the response
-        //        if (response.status === 'connected') {
-        //            $frm.find('input[name=token]').val(response.authResponse.accessToken);
-        //            $frm.submit();
-        //        }
-        //    }, { scope: 'public_profile,email,user_friends,user_link,user_posts' });
-        //});
-
-        //$('.btn-linkfacebook').click(function () {
-        //    var $frm = $($(this).data('target'));
-        //    FB.login(function (response) {
-        //        console.log('login-facebook', response);
-        //        // handle the response
-        //        if (response.status === 'connected') {
-        //            $frm.find('input[name=token]').val(response.authResponse.accessToken);
-        //            $frm.submit();
-        //        }
-        //    }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,user_link' });
-        //});
 
         $('.btn-remotemodal').click(function () {
             var url = $(this).data('url');

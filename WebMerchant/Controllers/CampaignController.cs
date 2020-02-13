@@ -53,6 +53,7 @@ namespace WebMerchant.Controllers
 
         #region Create
 
+
         public async Task<IActionResult> Create(CampaignType? campaignType)
         {
             if (!campaignType.HasValue)
@@ -70,17 +71,27 @@ namespace WebMerchant.Controllers
             var model = await _campaignService.GetCreateCampaign(CurrentUser.Id, campaignType.Value);
             return View(model);
         }
+
+        public IActionResult CreateInfo()
+        {
+            return RedirectToAction("Create");
+        }
         [HttpPost]
         public async Task<IActionResult> CreateInfo(CreateCampaignInfoViewModel model)
         {
             if (ModelState.IsValid)
             {
+                if (!string.IsNullOrEmpty(model.Image))
+                {
+                    model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
+                }
                 var paymentModel = new CreateCampaignTargetViewModel()
                 {
                     InfoModel = JsonConvert.SerializeObject(model),
                     Type = model.Type,
                     KPIMin = model.Type.GetKpiMin(),
-                    InteractiveMin = model.Type.GetInteractiveMin()
+                    InteractiveMin = model.Type.GetInteractiveMin(),
+                    AccountType = new List<AccountType>() { AccountType.Kols }
                 };
 
                 await ViewbagData();
@@ -91,12 +102,39 @@ namespace WebMerchant.Controllers
             //await ViewbagData();
             //return View(model);
         }
+        public IActionResult CreateTarget()
+        {
+            return RedirectToAction("Create");
+        }
         [HttpPost]
         public async Task<IActionResult> CreateTarget(CreateCampaignTargetViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var valid = true;
+                if (valid)
+                {
 
+                    var info = JsonConvert.DeserializeObject<CreateCampaignInfoViewModel>(model.InfoModel);
+
+                    var id = await _campaignService.CreateCampaign(CurrentUser.Id, info, model, CurrentUser.Username);
+                    if (id > 0)
+                    {
+                        if (model.AccountIds != null)
+                            for (var i = 0; i < model.AccountIds.Count; i++)
+                            {
+                                var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
+
+                            }
+                        return RedirectToAction("Details", new { id = id });
+
+                    }
+                    else
+                    {
+                        this.AddAlertDanger("Lỗi khi tạo chiến dịch vui lòng thử lại");
+                    }
+                }
 
             }
             await ViewbagData();
@@ -243,7 +281,7 @@ namespace WebMerchant.Controllers
                 ViewBag.AccountTypes = accountTypes;
                 ViewBag.Min = min;
                 ViewBag.Max = max;
-              
+
                 ViewBag.Pagesize = pagesize;
                 ViewBag.RenewUrl = Url.Action("RenewAccount", new { accountTypes, categoryid, gender, cityid, agestart, ageend, campaignType, min, max });
                 return PartialView(model);
@@ -256,7 +294,7 @@ namespace WebMerchant.Controllers
             IEnumerable<int> ignoreIds, CampaignType campaignType, int min = 0, int max = 0)
         {
 
-         
+
             ViewBag.CampaignType = campaignType;
             ViewBag.AccountTypes = accountTypes;
             ViewBag.Min = min;
@@ -270,7 +308,7 @@ namespace WebMerchant.Controllers
         }
 
         public async Task<IActionResult> RenewAccountModal
-            
+
             (IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
           IEnumerable<int> cityid, int? agestart, int? ageend,
            IEnumerable<int> ignoreIds, CampaignType campaignType, int min = 0, int max = 0)
@@ -351,7 +389,7 @@ namespace WebMerchant.Controllers
 
         public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, int? amount)
         {
-            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid,  CurrentUser.Name);
+            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
             return Json(result ? 1 : 0);
         }
 

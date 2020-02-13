@@ -20,11 +20,11 @@
 <div class="shadow p-3 mb-5 bg-white rounded">
     <div class="row">
         <div class="col-lg-8">
-            <form class="form-create-campaign" asp-action="CreateInfo">
-
+            <form class="form-create-campaign" asp-action="CreateTarget">
+                <div asp-validation-summary="All"></div>
+                
                 <h6>Loại influencer bạn cần</h6>
                 <div class="form-group">
-
 
                     <div>
 
@@ -50,20 +50,22 @@
 
                 @foreach (var accountType in accountTypes)
                 {
-                    <div class="form-group form-group-accounttype d-with@(accountType)" style="display:none">
+                    <div class=" d-accounttype d-accounttype-@(accountType)" style="display:none">
                         @if (accountType == AccountType.Regular)
                         {
-                            <label asp-for="AccountChargeAmount" class="mb-0"></label>
+                        <div class="form-group">
+                            <label asp-for="AccountChargeAmount" ></label>
                             <input type="number" class="form-control " asp-for="AccountChargeAmount" />
                             <span asp-validation-for="AccountChargeAmount"></span>
+                        </div>
                         }
                         else if (accountType == AccountType.HotMom)
                         {
-                            <div class="row">
+                            <div class="row ">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <div>Giới tính con cái</div>
-                                        <select class="form-control" name="ChildType" style="width:100px">
+                                        <label>Giới tính con cái</label>
+                                        <select class="form-control" name="ChildType" >
                                             <option selected value="0">Tất cả</option>
                                             <option value="1">Con trai</option>
                                             <option value="2">Con gái</option>
@@ -71,11 +73,11 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <div>Độ tuổi con cái</div>
+                                    <label>Độ tuổi con cái</label>
                                     <input type="number" class="form-control" asp-for="ChildAgeMin" value="0" />
                                 </div>
                                 <div class="col-3">
-                                    <div>&nbsp;</div>
+                                    <label>&nbsp;</label>
                                     <input type="number" class="form-control" asp-for="ChildAgeMax" value="0" />
                                 </div>
                             </div>
@@ -94,9 +96,7 @@
                 <h6>Tiêu chí</h6>
 
                 <div id="campaignOptions" class="form-group">
-
-
-                    <div class="d-withoutHotMom">
+                    <div class="h-accounttype h-accounttype-HotMom">
                         <div class="d-flex py-1 ">
 
                             <div class="custom-control custom-checkbox">
@@ -187,12 +187,28 @@
                         </div>
 
                     </div>
+                    <div class="d-flex py-1">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input form-option" data-toggle="collapse" data-target="#collapseEnabledAccount" asp-for="EnabledAccount">
+                            <label class="custom-control-label" asp-for="EnabledAccount"></label>
+                        </div>
+                        <div class=" ml-4 flex-grow-1">
+                            <div id="collapseEnabledAccount" class="collapse">
+                                <select asp-for="AccountIds" multiple class="form-control">
+                                  
+                                </select>
+                                <span asp-validation-for="AccountIds"></span>
+                            </div>
+
+                        </div>
+
+                    </div>
                     @*<div class=" py-1 d-none" id="enabledExtraTypeWrap">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                    <label class="custom-control-label" asp-for="EnabledExtraType"></label>
-                </div>
-            </div>*@
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+            </div>
+        </div>*@
 
                 </div>
 
@@ -253,7 +269,7 @@
                 {
                     <div class="form-group ">
                         <label asp-for="FeedbackBefore"></label>
-                        <input type="text" class="form-control form-daterangepicker" asp-for="FeedbackBefore" autocomplete="off" />
+                        <input type="text" class="form-control" asp-for="FeedbackBefore" autocomplete="off" />
                         <span asp-validation-for="FeedbackBefore"></span>
 
                     </div>
@@ -266,7 +282,7 @@
                 <div class="form-group ">
                     <label asp-for="ExecutionTime"></label>
 
-                    <input type="text" class="form-control form-daterangepicker" asp-for="ExecutionTime" autocomplete="off" />
+                    <input type="text" class="form-control" asp-for="ExecutionTime" autocomplete="off" />
                     <span asp-validation-for="ExecutionTime"></span>
 
                 </div>

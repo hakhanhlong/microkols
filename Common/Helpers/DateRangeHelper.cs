@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,7 +76,21 @@ namespace Common.Helpers
 
         public static DateRange? GetDateRange(string input)
         {
+            var arrDate = input.Split('-');
+            if (arrDate.Length == 2)
+            {
+               var start = arrDate[0].Trim().ToViDateTime();
+              var  end = arrDate[1].Trim().ToViDateTime();
+                if(start.HasValue && end.HasValue)
+                {
+                    return new DateRange()
+                    {
+                        End = end.Value,
+                        Start = start.Value
+                    };
+                }
 
+            }
             return null;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using Common.Helpers;
 using Core.Entities;
 using Core.Extensions;
 using System;
@@ -96,6 +97,96 @@ namespace WebServices.ViewModels
             };
 
         }
+
+        public static Campaign GetEntity(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
+        {
+            //var accountChargeAmount = 0;
+            //if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
+            //{
+            //    accountChargeAmount = AccountChargeAmount ?? 0;
+            //}
+            //else
+            //{
+            //    accountChargeAmount = campaignTypeCharge.AccountChargeAmount;
+            //}
+
+
+            //var accountChargeExtraPercent = 0;
+
+            //if (Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
+            //{
+            //    if (EnabledExtraType)
+            //    {
+            //        accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
+            //    }
+            //}
+         
+            var executionTime = DateRangeHelper.GetDateRange(target.ExecutionTime);
+            var regTime = DateRangeHelper.GetDateRange(target.RegisterTime);
+            var feedbackTime = DateRangeHelper.GetDateRange(target.FeedbackBefore);
+
+            var image = string.Empty;
+
+            if (info.Type == CampaignType.ChangeAvatar)
+            {
+                image = info.Image;
+            }
+            else if (info.Type == CampaignType.ShareContentWithCaption)
+            {
+                image = info.AddonImages.ToListString();
+            }
+            return new Campaign()
+            {
+                DateCreated = DateTime.Now,
+                AgencyId = agencyid,
+                Data = info.Data,
+                DateModified = DateTime.Now,
+                Deleted = false,
+                Description = info.Description,
+                Image = image,
+                Published = true,
+                Status = CampaignStatus.Created, // cap nhat status da duyet luon de facebook check,
+                //Status = CampaignStatus.Confirmed,
+                Title = info.Title,
+                UserCreated = username,
+                UserModified = username,
+                ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
+                ServiceChargePercent = setting.CampaignServiceChargePercent,
+                ServiceVATPercent = setting.CampaignVATChargePercent,
+                ServiceChargeAmount = 0,
+                AccountChargeExtraPercent = 0,
+                AccountChargeAmount = 0,
+                EnabledAccountChargeExtra = false,
+                AccountChargeTime = 0,
+                Requirement = info.Type == CampaignType.CustomService ? info.Requirement : string.Empty,
+                Type = info.Type,
+                Code = code,
+                Quantity =target.Quantity,
+                DateStart = regTime != null ? (DateTime?) regTime.Value.Start:null,
+                DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null,
+                //AccountFeedbackBefore = target.FeedbackBefore.ToViDateTime(),
+                CustomKolNames = target.CustomKolNames.ToListString(),
+                Method = CampaignMethod.OpenJoined,
+                SampleContent = info.SampleContent.ToListString(),
+                Hashtag =info.HashTag.ToListString(),
+                SampleContentText = info.SampleContentText,
+                KPIMin = target.KPIMin,
+                InteractiveMin = target.InteractiveMin,
+                ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
+                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null,
+                FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
+                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null,
+                AmountMax = target.AmountMax,
+                AmountMin = target.AmountMin,
+                IsSendProduct = info.SendProduct
+               
+
+
+
+            };
+
+        }
+
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Tên chiến dịch")]
@@ -300,10 +391,9 @@ namespace WebServices.ViewModels
 
         [Display(Name = "Giới tính")]
         public bool EnabledGender { get; set; } = false;
-
-
         [Display(Name = "Chọn giới tính")]
         public Gender? Gender { get; set; }
+
 
         [Display(Name = "Độ tuổi")]
         public bool EnabledAgeRange { get; set; } = false;
@@ -319,15 +409,14 @@ namespace WebServices.ViewModels
         public List<int> CategoryId { get; set; }
 
 
-        [Display(Name = "Tags")]
-        public bool EnabledTags { get; set; } = false;
-        [Display(Name = "Thêm Tags")]
-        public List<string> AccountTags { get; set; }
-
-
 
         [Display(Name = "Khu vực")]
         public bool EnabledCity { get; set; } = false;
+
+        [Display(Name = "Lựa chọn những Influencer/KOLs mà bạn muốn hợp tác/chỉ định")]
+        public bool EnabledAccount { get; set; } = false;
+  
+
 
 
         [Display(Name = "KPIs(Like + Share + Comments) tối thiểu mà influencer sẽ phải đạt cho mỗi post để được ghi nhận doanh thu")]

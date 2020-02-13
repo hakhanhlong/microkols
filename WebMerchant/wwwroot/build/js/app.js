@@ -23,28 +23,17 @@ var App = (function () {
     }
     function handlerPages() {
         var currentPage = $('#CurrentPage').val();
-        if (currentPage === 'account_changeaccounttype') {
-            ChangeAccountTypePage.Init();
-        }
-        else if (currentPage === 'campaign_create') {
+        if (currentPage === 'campaign_create') {
             CampaignCreatePage.Init();
         }
-        else if (currentPage === 'agencycampaign_details') {
-            AgencyDetailsCampaignPage.Init();
-        } else if (currentPage === 'account_fbaccount') {
-            AccountFbAccountPage.Init();
+        else if (currentPage === 'campaign_createinfo') {
+            CampaignCreateTargetPage.Init();
         }
-        else if (currentPage === 'accountcampaign_details' || currentPage === 'accountcampaign_marketplacedetails') {
-            AccountDetailsCampaignPage.Init();
-        }
-        else if (currentPage === 'accountcampaign_index') {
-            AccountIndexCampaignPage.Init();
-        }
+        else if (currentPage === 'campaign_details') {
+           DetailsCampaignPage.Init();
+        } 
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
-        }
-        else if (currentPage === 'account_index') {
-            AccountIndexPage.Init();
         }
         
         
@@ -67,30 +56,6 @@ var App = (function () {
 
         });
 
-
-        //$('.btn-facebook').click(function () {
-        //    var $frm = $($(this).data('target'));
-        //    FB.login(function (response) {
-        //        console.log('login-facebook', response);
-        //        // handle the response
-        //        if (response.status === 'connected') {
-        //            $frm.find('input[name=token]').val(response.authResponse.accessToken);
-        //            $frm.submit();
-        //        }
-        //    }, { scope: 'public_profile,email,user_friends,user_link,user_posts' });
-        //});
-
-        //$('.btn-linkfacebook').click(function () {
-        //    var $frm = $($(this).data('target'));
-        //    FB.login(function (response) {
-        //        console.log('login-facebook', response);
-        //        // handle the response
-        //        if (response.status === 'connected') {
-        //            $frm.find('input[name=token]').val(response.authResponse.accessToken);
-        //            $frm.submit();
-        //        }
-        //    }, { scope: 'public_profile,email,user_likes,user_friends,user_link,user_posts,user_link' });
-        //});
 
         $('.btn-remotemodal').click(function () {
             var url = $(this).data('url');
@@ -389,7 +354,7 @@ var AppConstants = {
     UrlUpdateNotificationChecked: "/Notification/UpdateChecked",
     UrlGetNotification: "/Notification/IndexPartial",
     UrlUploadTempImage: "/Home/UploadImage",
-    UrlGetAccounts: "/AgencyCampaign/GetAccounts",
+    UrlGetAccounts: "/Campaign/GetAccounts",
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
     UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>',
@@ -675,249 +640,6 @@ var AppWallet = (function () {
 })();
 
 
-var AccountDetailsCampaignPage = (function () {
-
-    function init() {
-
-        handler();
-    }
-    function handler() {
-        handlerAction();
-
-    }
-
-    function handlerAction() {
-        $('.btn-updateref').click(function () {
-            var url = $(this).data('url');
-            AppBsModal.Init('static');
-            AppBsModal.OpenRemoteModal(url, function () {
-                handlerUpdateRef();
-            });
-        });
-        $('.btn-updaterefimages').click(function () {
-            var url = $(this).data('url');
-            AppBsModal.Init('static');
-            AppBsModal.OpenRemoteModal(url, function () {
-                handlerUpdateRefImages();
-            });
-        });
-
-        $('.btn-shareui').click(function () {
-            AppBsModal.Init('static');
-            AppBsModal.OpenModal('');
-            AppBsModal.ShowLoading();
-            var href = $(this).data('href');
-            var urlsubmit = $(this).data('urlsubmit');
-            var title = $(this).data('title');
-            var picture = $(this).data('picture');
-            var description = $(this).data('description');
-            var caption = $(this).data('caption');
-            
-            //var caption = $(this).data('caption');
-
-            FB.ui(
-                {
-                    method: 'share',
-                    href: href,
-                    //quote: caption,
-                    title: title,  // The same than name in feed method
-                    picture: picture,
-                    caption: caption,
-                    description: description,
-                },
-                function (response) {
-                    if (response && !response.error_message) {
-                        $.post(urlsubmit, function (html) {
-                            AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
-                        });
-                    } else {
-                        AppBsModal.HideModal();
-                    }
-                });
-        });
-    }
-    function handlerUpdateRefImages() {
-        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRefImages'));
-       
-        $('#addonImages').change(function () {
-            var id = $(this).attr('id');
-            var target = $(this).data('target');
-            var files = document.getElementById(id).files;
-
-            AppCommon.uploadTempImage(files, function (datas) {
-                datas.forEach(function (item) {
-                    var html = '<img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="RefImage" value="' + item.path + '" />';
-                    $(target).append(html);
-                })
-
-            });
-
-        });
-        $('#frmUpdateCampaignAccountRefImages').submit(function (e) {
-            e.preventDefault();
-            var isvalid = $(this).valid();
-            if (isvalid) {
-                var url = $(this).data('action');
-                var data = $(this).serialize();
-                AppBsModal.ShowLoading();
-                $.post(url, data, function (html) {
-                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
-
-                });
-            }
-        });
-    }
-
-    function handlerUpdateRef() {
-        $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRef'));
-        $('#frmUpdateCampaignAccountRef').submit(function (e) {
-            e.preventDefault();
-            var isvalid = $(this).valid();
-            if (isvalid) {
-                var url = $(this).data('action');
-                var data = $(this).serialize();
-                AppBsModal.ShowLoading();
-                $.post(url, data, function (html) {
-                    AppBsModal.OpenModal(html, function () { AppCommon.handlerBtnReload(); });
-
-                });
-            }
-        });
-
-    }
-
-    return {
-        Init: init,
-        HandlerAction: handlerAction
-    };
-
-})();
-
-
-var AccountFbAccountPage = (function () {
-
-    function init() {
-        loadFriends();
-    }
-    
-    function loadFriends() {
-      
-        FB.getLoginStatus(function (response) {
-
-            console.log('getLoginStatus', response);
-            if (response.status === 'connected') {
-                // The user is logged in and has authenticated your
-                // app, and response.authResponse supplies
-                // the user's ID, a valid access token, a signed
-                // request, and the time the access token
-                // and signed request each expire.
-                var uid = response.authResponse.userID;
-                var accessToken = response.authResponse.accessToken;
-
-                FB.api('/me?fields=friends.limit(40){id,link,name}', function (data) {
-
-                    console.log('loadfriend', data);
-
-                    if (data.friends &&  data.friends.data.length > 0) {
-                        $('.accountfriendSection').html('');
-
-                        data.friends.data.forEach(function (item) {
-
-                            console.log('friends', item);
-                            var $id = $('#item' + item.id);
-
-                            if ($id.length > 0) {
-
-                                $('.accountfriendSection').append('<div class="col-md-3">' + $id.html() + '</div>');
-                            }
-
-                        });
-
-
-                        $('.kolfriend-count').html('' + data.friends.data.length);
-                        $('.friends-count').html('/ ' + data.friends.summary.total_count + ' bạn bè trên Facebook');
-                    }
-
-
-                   
-
-                });
-            } else if (response.status === 'not_authorized') {
-                // The user hasn't authorized your application.  They
-                // must click the Login button, or you must call FB.login
-                // in response to a user gesture, to launch a login dialog.
-            } else {
-                // The user isn't logged in to Facebook. You can launch a
-                // login dialog with a user gesture, but the user may have
-                // to log in to Facebook before authorizing your application.
-            }
-
-
-        });
-
-
-
-
-
-    }
-
-    return {
-        Init: init
-    };
-
-})();
-
-var AccountFbPost = (function () {
-
-    function init() {
-        updateFbPost();
-    }
-
-    function updateFbPost() {
-
-
-        $('.btn-updateFbPost').click(function (e) {
-            e.preventDefault();
-
-
-            FB.login(function (response) {
-                if (response.status === 'connected') {
-                    var token = response.authResponse.accessToken;
-
-                    $('#frmUpdatefbpostToken').val(token);
-                    $('#frmUpdatefbpost').submit();
-                } else {
-                    alert('Bạn cần cập nhật quyền trên hệ thống của Facebook');
-                }
-
-            }, { scope: 'user_posts' });
-
-
-        });
-
-
-    }
-
-    return {
-        Init: init
-    };
-
-})();
-
-
-var AccountIndexCampaignPage = (function () {
-
-    function init() {
-        AccountDetailsCampaignPage.HandlerAction();
-    }
-    
-    return {
-        Init: init
-    };
-
-})();
-
-
 var AccountIndexPage = (function () {
 
     function init() {
@@ -1089,11 +811,11 @@ var CampaignCreatePage = (function () {
                 $('.addonimage .remove').click(function () {
                     $(this).closest('.addonimage').remove();
                 });
-               
+
             });
 
         });
-        
+
 
         $('#sampleContent').change(function () {
             var id = $(this).attr('id');
@@ -1184,20 +906,8 @@ var CampaignCreatePage = (function () {
         //    }
         //});
 
-        $('#ExecutionTime').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            }
-        });
+       
 
-        $('#CategoryId').select2({
-            maximumSelectionLength: 3,
-            theme: "bootstrap" 
-        });
         $('#HashTag').select2({
             maximumSelectionLength: 3,
             theme: "bootstrap", tags: true
@@ -1247,10 +957,11 @@ var CampaignCreatePage = (function () {
                     };
                 }
                 */
-                
+
             }
         });
 
+        handlerAccountType();
     }
 
 
@@ -1289,34 +1000,17 @@ var CampaignCreatePage = (function () {
         var accouttype = $('input[name=AccountType]:checked').val();
         console.log('accouttype', accouttype);
         if (accouttype === 'Regular') {
-            $('.d-withoutRegular').addClass('d-none');
-            $('#actionWrap').removeClass('d-none');
-            $('.d-withRegular').removeClass('d-none');
-        } else  {
-
-            $('.d-withoutRegular').removeClass('d-none');
-            $('.d-withRegular').addClass('d-none');
-
-            if ($('#suggestAccount tr').length > 1) {
-                $('#actionWrap').removeClass('d-none');
-            } else {
-
-                $('#actionWrap').addClass('d-none');
-            }
-
-        }
-
-        if (accouttype === 'HotMom') {
+            $('.d-withoutRegular').hide();
+            $('.d-withRegular').show();
+        } else if (accouttype === 'HotMom') {
             $('.d-withoutHotMom').addClass('d-none');
             $('.d-withHotMom').removeClass('d-none');
         } else {
-
-            $('.d-withoutHotMom').removeClass('d-none');
-            $('.d-withHotMom').addClass('d-none');
+            $('.d-withRegular').hide();
 
         }
 
-            
+
     }
 
     function handlerMethod() {
@@ -1328,7 +1022,7 @@ var CampaignCreatePage = (function () {
             $('.d-withoutOpenJoined').removeClass('d-none');
 
         }
-        
+
 
 
 
@@ -1446,7 +1140,7 @@ var CampaignCreatePage = (function () {
                 $.get(renewUrl + ignoreids, function (html) {
                     if (html.length < 100) {
                         $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
-                        
+
                     } else {
                         $tr.replaceWith(html);
                         handlerSuggestAccount();
@@ -1522,6 +1216,125 @@ var CampaignCreatePage = (function () {
 
 })();
 
+
+var CampaignCreateTargetPage = (function () {
+
+    function init() {
+        handler();
+    }
+
+    function handler() {
+
+        $('#CategoryId').select2({
+            maximumSelectionLength: 3,
+            theme: "bootstrap"
+        });
+
+        $('#RegisterTime').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
+        $('#FeedbackBefore').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
+        $('#ExecutionTime').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
+
+        $('#AccountIds').select2({
+            theme: "bootstrap",
+            ajax: {
+                url: AppConstants.UrlGetAccounts,
+                data: function (params) {
+                    var accouttype = $('input[name=AccountType]:checked').val();
+
+                    var query = {
+                        kw: params.term,
+                        type: accouttype
+                    }
+                    // Query parameters will be ?search=[term]&type=public
+                    return query;
+                },
+                dataType: 'json',
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                }
+                /*
+                processResults: function (data) {
+
+                    var list = [];
+
+                    data.forEach(function (item) {
+                        list.push(new {
+                            id: item.id,
+                            text: item.name
+                            
+                        })
+                    });
+                    console.log('123', list);
+                    return {
+                        results: list
+                    };
+                }
+                */
+
+            }
+        });
+        handlerAccountType();
+        $('input[name=AccountType]').change(function () {
+
+            handlerAccountType();
+        });
+    }
+
+
+
+    function handlerAccountType() {
+        var accouttype = $('input[name=AccountType]:checked').val();
+        console.log('accouttype', accouttype);
+        $('.d-accounttype').hide();
+        $('.d-accounttype-' + accouttype).show();
+        $('.h-accounttype').show();
+        $('.h-accounttype-' + accouttype).hide();
+
+    }
+
+
+
+
+    return {
+        Init: init
+    };
+
+})();
+
 var ChangeAccountTypePage = (function () {
 
     function init() {
@@ -1589,17 +1402,11 @@ var HomeIndexPage = (function () {
     function init() {
         handler();
 
-        $('#main').css('min-height', '0');
     }
 
 
     function handler() {
-        $('.owl-carousel').owlCarousel({
-            margin: 10,
-            loop: true,
-            autoWidth: true,
-            items: 4
-        });
+       
     }
     return {
         Init: init

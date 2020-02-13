@@ -37,11 +37,11 @@
                 $('.addonimage .remove').click(function () {
                     $(this).closest('.addonimage').remove();
                 });
-               
+
             });
 
         });
-        
+
 
         $('#sampleContent').change(function () {
             var id = $(this).attr('id');
@@ -132,20 +132,8 @@
         //    }
         //});
 
-        $('#ExecutionTime').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            }
-        });
+       
 
-        $('#CategoryId').select2({
-            maximumSelectionLength: 3,
-            theme: "bootstrap" 
-        });
         $('#HashTag').select2({
             maximumSelectionLength: 3,
             theme: "bootstrap", tags: true
@@ -195,10 +183,11 @@
                     };
                 }
                 */
-                
+
             }
         });
 
+        handlerAccountType();
     }
 
 
@@ -237,34 +226,17 @@
         var accouttype = $('input[name=AccountType]:checked').val();
         console.log('accouttype', accouttype);
         if (accouttype === 'Regular') {
-            $('.d-withoutRegular').addClass('d-none');
-            $('#actionWrap').removeClass('d-none');
-            $('.d-withRegular').removeClass('d-none');
-        } else  {
-
-            $('.d-withoutRegular').removeClass('d-none');
-            $('.d-withRegular').addClass('d-none');
-
-            if ($('#suggestAccount tr').length > 1) {
-                $('#actionWrap').removeClass('d-none');
-            } else {
-
-                $('#actionWrap').addClass('d-none');
-            }
-
-        }
-
-        if (accouttype === 'HotMom') {
+            $('.d-withoutRegular').hide();
+            $('.d-withRegular').show();
+        } else if (accouttype === 'HotMom') {
             $('.d-withoutHotMom').addClass('d-none');
             $('.d-withHotMom').removeClass('d-none');
         } else {
-
-            $('.d-withoutHotMom').removeClass('d-none');
-            $('.d-withHotMom').addClass('d-none');
+            $('.d-withRegular').hide();
 
         }
 
-            
+
     }
 
     function handlerMethod() {
@@ -276,7 +248,7 @@
             $('.d-withoutOpenJoined').removeClass('d-none');
 
         }
-        
+
 
 
 
@@ -394,7 +366,7 @@
                 $.get(renewUrl + ignoreids, function (html) {
                     if (html.length < 100) {
                         $.notify('Hệ thóng không có thành viên khác phù hợp các tiêu chí');
-                        
+
                     } else {
                         $tr.replaceWith(html);
                         handlerSuggestAccount();
