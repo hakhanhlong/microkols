@@ -14,13 +14,13 @@ using WebServices.ViewModels;
 namespace WebInfluencer.Controllers
 {
 
-    public class AccountCampaignController : BaseController
+    public class CampaignController : BaseController
     {
         private readonly ICampaignService _campaignService;
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
         private readonly IFacebookHelper _facebookHelper;
-        public AccountCampaignController(ISharedService sharedService,
+        public CampaignController(ISharedService sharedService,
             IFacebookHelper facebookHelper,
              IAccountService accountService,
             ICampaignService campaignService)
@@ -31,6 +31,25 @@ namespace WebInfluencer.Controllers
             _accountService = accountService;
         }
 
+
+
+        public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
+        {
+            ViewBag.Kw = kw;
+            ViewBag.type = type;
+            var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, kw, pageindex, pagesize);
+
+            return View(model);
+        }
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = await _campaignService.GetCampaignMarketPlace(id);
+
+            return View(model);
+        }
+
+        /*
+        #region Details
         public async Task<IActionResult> Index(string kw, int type = 1, int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Type = type;
@@ -39,23 +58,6 @@ namespace WebInfluencer.Controllers
 
             return View(model);
         }
-
-        public async Task<IActionResult> MarketPlace(string kw, int pageindex = 1, int pagesize = 20)
-        {
-            ViewBag.Kw = kw;
-            var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, kw, pageindex, pagesize);
-
-            return View(model);
-        }
-        public async Task<IActionResult> MarketPlaceDetails(int id)
-        {
-            var model = await _campaignService.GetCampaignMarketPlace(id);
-
-            return View(model);
-        }
-
-        #region Details
-
         public async Task<IActionResult> Details(int id)
         {
             var model = await _campaignService.GetCampaignDetailsByAccount(CurrentUser.Id, id);
@@ -76,6 +78,8 @@ namespace WebInfluencer.Controllers
 
         #endregion
 
+        */
+
         #region Action
         public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
         {
@@ -87,14 +91,26 @@ namespace WebInfluencer.Controllers
             return RedirectToAction("Details", new { id = campaignid });
         }
 
-        public async Task<IActionResult> JoinCampaign(int campaignid)
+        public async Task<IActionResult> RequestJoinCampaign(RequestJoinCampaignViewModel model)
         {
-            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, true);
+            if (ModelState.IsValid)
+            {
+                var result = await _campaignService.RequestJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username);
+                if (result)
+                {
+                    this.AddAlertSuccess("Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xác nhận");
+                }
+                else
+                {
+                    this.AddAlertDanger("Bạn đã tham gia chiến dịch");
+                }
+            }
+            else
+            {
 
-
-            this.AddAlert(true, "Bạn đã đồng ý tham gia chiến dịch");
-
-            return RedirectToAction("MarketPlaceDetails", new { id = campaignid });
+                this.AddAlertDanger("Thông tin không đúng vui lòng thử lại");
+            }
+            return RedirectToAction("Details", new { id = model.CampaignId });
         }
 
         public async Task<IActionResult> SubmitCampaignAccountRefContent(int campaignid)

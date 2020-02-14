@@ -41,6 +41,12 @@ namespace WebServices.ViewModels
             Data = campaign.Data;
             Code = campaign.Code;
             Title = campaign.Title;
+            Quantity = campaign.Quantity;
+            Requirement = campaign.Requirement;
+            SampleContentText = campaign.SampleContentText;
+
+            SampleContent = campaign.SampleContent.ToListString();
+            Hashtag = campaign.Hashtag.ToListString();
 
             var genderOpt = campaign.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
@@ -133,9 +139,11 @@ namespace WebServices.ViewModels
         public int Id { get; set; }
         public string Title { get; set; }
         public string Code { get; set; }
+        public string Requirement { get; set; }
 
         public List<string> Image { get; set; } = new List<string>();
         public string Data { get; set; }
+        public int Quantity { get; set; }
         public DateTime DateCreated { get; set; }
 
         public DateTime? DateStart { get; set; }
@@ -159,9 +167,9 @@ namespace WebServices.ViewModels
 
         public CampaignStatus Status { get; set; }
 
-
-
-
+        public List<string> Hashtag { get; set; }
+        public List<string> SampleContent { get; set; }
+        public string SampleContentText { get; set; }
     }
 
    

@@ -1,0 +1,145 @@
+﻿@model ListCampaignViewModel
+@inject WebServices.Interfaces.ICampaignService CampaignService
+@{
+    ViewData["Title"] = "Danh sách chiến dịch";
+    var campaignTypes = StringHelper.GetEnumArray<CampaignType>();
+
+    var kw = (string)ViewBag.Kw;
+    var type = (CampaignType?)ViewBag.type;
+
+    var stautusArr = StringHelper.GetEnumArray<CampaignStatus>();
+    var status = (CampaignStatus?)ViewBag.Status;
+}
+
+<h2>@ViewData["Title"]</h2>
+<div class="card mb-3 mt-4 shadow card-search border-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <form method="get">
+                    <div class="form-group mb-2">
+                        <div class="form-row">
+                            <div class="col-md-3">
+
+                                <select class="custom-select custom-select-lg" name="type">
+                                    <option value="">Tất cả loại</option>
+                                    @foreach (var campaignType in campaignTypes)
+                                    {
+                                        <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="kw" value="@kw" class="form-control form-control-lg" placeholder="Tìm kiếm chiến dịch">
+
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="btn btn-primary btn-lg">Tìm kiếm</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{ var countall = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, null, kw); }
+
+<ul class="nav nav-pills mb-3 nav-campaign">
+    <li class="nav-item">
+        <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">Tất cả <span>(@countall)</span></a>
+    </li>
+    @foreach (var statusItem in stautusArr)
+    {
+        var isactived = statusItem == status;
+        var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
+        <li class="nav-item">
+            <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">@statusItem.ToDisplayName() <span>(@count)</span></a>
+        </li>
+    }
+</ul>
+
+<div class="mb-5 bg-white rounded">
+    <div class="table-responsive">
+        <table class="table table-bordered shadow">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mã chiến dịch</th>
+                    <th scope="col">Tên chiến dịch</th>
+                    <th scope="col">Loại chiến dịch</th>
+                    <th scope="col">Thời gian thực hiện</th>
+                    <th scope="col">Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var stt = 0;
+                }
+
+                @foreach (var item in Model.Campaigns)
+                {
+                    stt++;
+                    var url = Url.Action("Details", new { id = item.Id });
+                    <tr>
+                        <td>@stt</td>
+                        <td>
+                            <a href="@url">
+                                @item.Code
+                            </a>
+                        </td>
+
+                        <td>@item.Title</td>
+                        <td>@item.Type.ToDisplayName()</td>
+                        <td>
+                            @if (item.DateStart.HasValue)
+                            {
+                                <span>@item.DateStart.Value.ToViDate()</span>
+                            }
+                        </td>
+                        <td>@item.Status.ToBadge()</td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            @{
+                                var counting = await CampaignService.GetCampaignAccountCounting(item.Id);
+                            }
+                            <ul class="list-inline campaign-row-item">
+                                <li class="list-inline-item">Người đăng ký tham gia:</li>
+                                <li class="list-inline-item">
+
+                                    <a href="javascript:;" class="kol-join"><i class="fa fa-users"></i> @(counting.Total)/@item.Quantity</a>
+                                </li>
+
+                                @if (item.Type == CampaignType.ShareContentWithCaption)
+                                {
+                                    if (counting.TotalProcessing > 0)
+                                    {
+
+                                        <li class="list-inline-item">Nội dung đã duyệt:</li>
+                                        <li class="list-inline-item"><a href="javascript:;"><i class="fa fa-file"></i> @counting.TotalApproved/@counting.TotalProcessing</a></li>
+                                        <li class="list-inline-item">Nội dung cần duyệt:</li>
+                                        <li class="list-inline-item"><a href="/campaign-content-approve.html" class="text-danger" ><i class="fa fa-file"></i> @counting.TotalApproved/@counting.TotalProcessing</a></li>
+
+                                    }
+
+                                }
+                            </ul>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
+
+
+
+    </div>
+</div>

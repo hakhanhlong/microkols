@@ -93,6 +93,9 @@ namespace Core.Specifications
         public CampaignAccountByAgencySpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)
         {
         }
+        public CampaignAccountByAgencySpecification(int campaignid, IEnumerable<CampaignAccountStatus> status) : base(m => m.CampaignId == campaignid &&  status.Contains(m.Status))
+        {
+        }
     }
 
 

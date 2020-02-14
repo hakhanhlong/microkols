@@ -10,6 +10,9 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+        Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username);
+        Task<CampaignAccountCountingViewModel> GetCampaignAccountCounting(int campaignid);
+        Task<int> GetCountCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword);
         Task<string> GetCampaignCode(int id);
         Task<bool> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username);
         Task UpdateCampaignAccountExpired(int campaignid = 0, int agencyid = 0);

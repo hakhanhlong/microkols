@@ -1,0 +1,238 @@
+﻿@model MarketPlaceViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@{
+
+    ViewData["Title"] = $"Chiến dịch {Model.Campaign.Code}";
+    var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+    var campaignType = Model.Campaign.Type;
+}
+@section Top{
+
+    <nav class="shadow-sm">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item "><a asp-action="Index" asp-controller="Home" class="breadcrumb-link">Trang chủ</a></li>
+            <li class="breadcrumb-item "><a asp-action="MarketPlace" asp-controller="Campaign" class="breadcrumb-link">Chiến dịch</a></li>
+
+            <li class="breadcrumb-item">
+                @ViewData["Title"]
+            </li>
+        </ol>
+    </nav>
+
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+
+            <ul class="nav nav-tabs nav-campaign">
+                <li class="nav-item">
+                    <a class="nav-link active" id="campaign-info-tab" data-toggle="tab" href="#campaign-info" role="tab" aria-selected="true">Thông tin chung</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="campaign-statistic-tab" data-toggle="tab" href="#campaign-statistic" role="tab" aria-selected="false">Thống kê</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="campaign-caption-tab" data-toggle="tab" href="#campaign-caption" role="tab" aria-selected="false">Caption</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="campaign-content-tab" data-toggle="tab" href="#campaign-content" role="tab" aria-selected="false">Nội dung</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade active show" id="campaign-info" role="tabpanel">
+                    <div class="card mb-3 shadow border-0 mt-1">
+                        <img src="@Model.Campaign.Type.ToShortName()" class="card-img-top img-radious-remove" alt="...">
+                        <div class="card-body">
+                            <h4 class="mb-3">@Model.Campaign.Type.ToText()</h4>
+                            <div class="d-flex">
+                                <div><small>by</small><span class="ml-2"><img src="@AppOptions.CurrentValue.GetImageUrl(Model.Agency.Image)" width="32" height="32" class="rounded-circle"> @(Model.Agency.Name)</span></div>
+                                <div class="ml-auto text-right"><small class="ml-5">@Model.Campaign.Status.ToDisplayName()</small></div>
+                            </div>
+                            <hr>
+                            <div class="d-flex">
+
+                                <div class="campaign-facebook"><h1><i class="fab fa-facebook"></i></h1></div>
+                                <div>
+                                    <ul class="list-unstyled">
+                                        <li class="ml-2">@Model.Campaign.Status.ToDisplayName()</li>
+                                        <li class="ml-2"><small>@Model.CountApplied/@Model.Campaign.Quantity tham gia</small></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <strong>Giới thiệu:</strong>
+                            <p>
+                                @Model.Campaign.Description
+                            </p>
+                            <strong>Công việc cần làm:</strong>
+                            <p>
+                                @Model.Campaign.Requirement
+                            </p>
+                            @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                            {
+                                <strong>@Model.Campaign.Type.ToActionText():</strong>
+                                <p>
+                                    <a target="blank" href="@Model.Campaign.Data">
+                                        @Model.Campaign.Data
+                                    </a>
+                                </p>
+                            }
+                            @{
+                                var images = Model.Campaign.Image.ToListString();
+                                if (images.Count > 0)
+                                {
+                                    <strong>Hình ảnh:</strong>
+                                    <ul class="list-inline">
+                                        @foreach (var imgItem in images)
+                                        {
+                                            <li class="list-inline-item">
+                                                <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" width="128" class="img-thumbnail">
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            }
+
+                            @{
+                                var hashtags = Model.Campaign.Hashtag.ToListString();
+                                if (hashtags.Count > 0)
+                                {
+                                    <strong>Hashtag</strong>
+                                    <p>
+                                        @foreach (var item in Model.Campaign.Hashtag.Split('|'))
+                                        {
+                                            <span>#@item.Trim('#')</span>
+                                        }
+                                    </p>
+                                }
+                            }
+
+
+                            @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
+                            {
+                                <strong> Thời gian đăng ký</strong>
+                                <p>
+                                </p><ul class="list-unstyled">
+                                    <li>  @Model.Campaign.DateStart.Value.ToViDateTime() -  @Model.Campaign.DateEnd.Value.ToViDateTime()</li>
+                                </ul>
+                            }
+
+                            @if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
+                            {
+                                if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                {
+
+                                    <strong> Thời gian viết nội dung</strong>
+                                    <p>
+                                    </p><ul class="list-unstyled">
+                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                                    <p>
+                                    </p><ul class="list-unstyled">
+                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+
+                                    </ul>
+                                }
+
+                            }
+
+                            @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
+                            {
+                                <strong> Thời gian thực hiện chiến dịch</strong>
+                                <p>
+                                </p><ul class="list-unstyled">
+                                    <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionStart.Value.ToViDateTime()</li>
+                                </ul>
+                            }
+
+
+                            <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
+
+                            <ul class="list-unstyled">
+                                <li>
+                                    @*<input type="text" class="form-control" value="@Model.Campaign.KPIMin">*@
+                                    @Model.Campaign.KPIMin
+                                </li>
+                            </ul>
+
+
+                            <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
+
+
+
+                            <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    Chi phí tối thiểu: <span style="color: red">@Model.Campaign.AmountMin.ToPriceText()</span>
+                                </li>
+                                <li class="list-inline-item">
+                                    Chi phí tối đa: <span style="color: red">@Model.Campaign.AmountMax.ToPriceText()</span>
+                                </li>
+                            </ul>
+                            @if (campaignAccount != null)
+                            {
+                                <div>
+                                    <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
+
+                                    <div class="text-danger">
+                                        <strong>
+                                            @campaignAccount.AccountChargeAmount.ToPriceText();
+                                        </strong>
+
+                                    </div>
+                                </div>
+                            }
+
+                            @{
+                                var sampleimages = Model.Campaign.SampleContent.ToListString();
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText) || sampleimages.Count > 0)
+                            {
+
+                                <strong>Nội dung mẫu  :</strong>
+                                <div>
+                                    @Model.Campaign.SampleContentText
+
+
+
+                                </div>
+                                <div>
+
+                                    @foreach (var item in sampleimages)
+                                    {
+                                        <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
+                                    }
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="campaign-statistic" role="tabpanel">
+
+                </div>
+                <div class="tab-pane fade" id="campaign-caption" role="tabpanel">
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow sticky-top">
+                <div class="card-body">
+                    <partial name="_DetailSidebarPartial" model="Model" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

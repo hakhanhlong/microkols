@@ -1,0 +1,138 @@
+﻿@model ListMarketPlaceViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@{
+    ViewData["Title"] = "MarketPlace";
+
+    var campaignTypes = StringHelper.GetEnumArray<CampaignType>();
+
+    var kw = (string)ViewBag.Kw;
+    var type = (CampaignType?)ViewBag.type;
+}
+
+@section Top{
+
+    <nav class="shadow-sm">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item "><a asp-action="Index" asp-controller="Home" class="breadcrumb-link">Trang chủ</a></li>
+
+            <li class="breadcrumb-item">
+                @ViewData["Title"]
+            </li>
+        </ol>
+    </nav>
+
+}
+
+<div class="card mb-3 shadow border-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
+                <form method="get">
+                    <div class="form-group mb-2">
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <select class="custom-select custom-select-lg" name="type">
+                                    <option value="">Tất cả loại</option>
+                                    @foreach (var campaignType in campaignTypes)
+                                    {
+                                        <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="kw" value="@kw" class="form-control form-control-lg" placeholder="Tìm kiếm chiến dịch">
+
+
+                            </div>
+                            <div class="col-md-1">
+                                <button type="submit" class="shadow btn btn-warning btn-lg">Tìm kiếm</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-4">
+    @foreach (var item in Model.MarketPlaces)
+    {
+        <div class="col mb-4">
+            <div class="card shadow bg-white rounded">
+                <img src="@item.Campaign.Type.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <a asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id" class="campaign-link">
+                        <h5 class="card-title">@item.Campaign.Title</h5>
+                    </a>
+                    <p>@item.Campaign.Type.ToText()</p>
+                    <div class="d-flex">
+                        <div>
+                            <small> bởi </small>
+                            <span class="ml-2"><img src="@AppOptions.CurrentValue.GetImageUrl(item.Agency.Image)" width="24" height="24" class="rounded-circle"> @item.Agency.Name</span>
+                        </div>
+                        @if (item.Campaign.DateEnd.HasValue)
+                        {
+                            <div class="ml-auto text-right"><small class="ml-5">@item.Campaign.Status.ToDisplayName()</small></div>
+                        }
+
+                    </div>
+                    <hr>
+                    <div class="d-flex">
+                        <div class="campaign-facebook"><h1><i class="fab fa-facebook"></i></h1></div>
+                        <div>
+                            <ul class="list-unstyled">
+                                <li class="ml-2">@item.Campaign.Status.ToDisplayName()</li>
+                                <li class="ml-2"><small>@item.CountApplied/@item.Campaign.Quantity tham gia</small></li>
+                            </ul>
+                        </div>
+                        <div class="ml-auto text-right">
+
+                            @{
+                                var campaignAccount = item.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+                                if (campaignAccount != null)
+                                {
+                                    @*if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                                    {
+                                        var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+
+                                        <a class="btn btn-primary" href="@campaignAccount.RefUrl" target="_blank" data-toggle="tooltip" title="Bài viết đã thực hiện theo chiến dịch">
+
+                                            <span class="mr-3">
+                                                <i class="fab fa-facebook-f"></i>
+                                            </span>
+
+                                            @if (fbPost != null)
+                                            {
+                                                <span>
+                                                    @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                </span>
+                                                <span class="px-2">
+                                                    @fbPost.ShareCount <i class="fal fa-share"></i>
+                                                </span>
+                                                <span>
+                                                    @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                                </span>
+                                            }
+
+                                        </a>
+                                    }*@
+                                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Đã tham gia</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</div>

@@ -7,10 +7,11 @@
 
 <h2>@ViewData["Title"]</h2>
 <h3 class="mt-4 mb-4">Bước 2: Thông tin về chiến dịch</h3>
-<div class="shadow p-3 mb-5 bg-white rounded">
-    <div class="row">
-        <div class="col-lg-8">
-            <form class="form-create-campaign" asp-action="CreateInfo">
+<form class="form-create-campaign" asp-action="CreateInfo">
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+            <div class="col-lg-8">
+
                 <div class="form-group">
 
                     <label asp-for="Title"></label>
@@ -107,53 +108,54 @@
                         Bước 3: Yêu cầu về đối tượng của chiến dịch
                     </button>
                 </div>
-            </form>
-        </div>
-        <div class="col-lg-4">
-            <div class="card border-0">
-                <img src="@campaignType.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        @campaignType.ToDisplayName()
-                    </h5>
-                    <p class="card-text">
 
-                        @campaignType.ToDescription()
-                    </p>
-                </div>
             </div>
-            @if (campaignType != CampaignType.ShareContent)
-            {
+            <div class="col-lg-4">
                 <div class="card border-0">
+                    <img src="@campaignType.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5>Nội dung mẫu</h5>
-                        <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
-                    </div>
-                    <div class="card-body">
-                        <h5>Ảnh chiến dịch cung cấp</h5>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
-                            <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
-                        </div>
-                        <div>
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
-                                </li>
-                                <li>
-                                    <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <h5 class="card-title">
+                            @campaignType.ToDisplayName()
+                        </h5>
+                        <p class="card-text">
 
-                        <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
-
-
-                        </div>
-
+                            @campaignType.ToDescription()
+                        </p>
                     </div>
                 </div>
-            }
+                @if (campaignType != CampaignType.ShareContent)
+                {
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <h5>Nội dung mẫu</h5>
+                            <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
+                        </div>
+                        <div class="card-body">
+                            <h5>Ảnh chiến dịch cung cấp</h5>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
+                                <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
+                            </div>
+                            <div>
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
-</div>
+</form>

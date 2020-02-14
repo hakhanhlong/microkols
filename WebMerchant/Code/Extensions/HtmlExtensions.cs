@@ -228,11 +228,11 @@ namespace WebMerchant.Code.Extensions
 
                 if (model.EntityType == EntityType.Account)
                 {
-                    return urlHelper.Action("Details", "AccountCampaign", new { id = model.DataId });
+                    return urlHelper.Action("Details", "Campaign", new { id = model.DataId });
                 }
                 else if (model.EntityType == EntityType.Agency)
                 {
-                    return urlHelper.Action("Details", "AgencyCampaign", new { id = model.DataId });
+                    return urlHelper.Action("Details", "Campaign", new { id = model.DataId });
                 }
 
             }

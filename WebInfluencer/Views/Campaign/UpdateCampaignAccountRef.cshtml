@@ -1,0 +1,60 @@
+﻿@model UpdateCampaignAccountRefViewModel
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <form method="post" action="javascript:;" data-action="@Url.Action("UpdateCampaignAccountRef","Campaign")" id="frmUpdateCampaignAccountRef">
+            <div class="modal-header">
+                <h5 class="modal-title">Thực hiện công việc</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if (Model.CampaignType.IsShareCampaign())
+                {
+                    <div class="text-center">Chờ hệ thống tự động lấy dữ liệu chia sẻ của bạn </div>
+
+                    <div class="text-center  py-4"> --- Hoặc ---- </div>
+                }
+
+                @{
+                    var hideRefUrl = "";
+                }
+                @if (Model.CampaignType == CampaignType.JoinEvent)
+                {
+
+                    hideRefUrl = "d-none";
+                    <div class="alert alert-info">Bạn xác nhận đã tham gia Sự kiện</div>
+                    Model.RefUrl = "Joined";
+
+                }
+                <div class="form-group @hideRefUrl">
+                    <label asp-for="RefUrl"></label>
+                    <input type="text" asp-for="RefUrl" class="form-control" />
+                    <span asp-validation-for="RefUrl" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+                    <label asp-for="RefImage"></label>
+                    <input type="hidden" asp-for="RefImage" class="form-control" />
+                    <span asp-validation-for="RefImage" class="text-danger"></span>
+                </div>*@
+
+                @if (Model.CampaignType == CampaignType.ShareContentWithCaption || Model.CampaignType == CampaignType.ShareContent)
+                {
+                    //if Avatar
+
+                }
+                <div class="form-group d-none">
+                    <label asp-for="Note"></label>
+                    <textarea asp-for="Note" class="form-control"></textarea>
+                    <span asp-validation-for="Note" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Huỷ</button>
+                <input type="hidden" asp-for="CampaignId" />
+                <input type="hidden" asp-for="CampaignType" />
+                <input type="submit" value="Gửi" class="btn btn-submit btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

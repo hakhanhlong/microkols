@@ -15,7 +15,7 @@ namespace Core.Entities
         ShareContentWithCaption = 2,
         [Display(Name ="Thay hình Avatar", Description = "", ShortName = "/img/3.jpg")]
         ChangeAvatar = 3,
-        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệmh", Description ="", ShortName = "/img/4.jpg")]
+        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệm", Description ="", ShortName = "/img/4.jpg")]
         ReviewProduct = 4,
         [Display(Name = "Tham gia sự kiện và check in", Description = "", ShortName = "/img/5.jpg")]
         JoinEvent = 5,
@@ -24,6 +24,8 @@ namespace Core.Entities
         [Display(Name ="Yêu cầu khác", Description = "", ShortName = "/img/7.png")]
         CustomService = 7
     }
+
+  
     public static class CampaignTypeExentions
     {
         public static bool IsShareCampaign(this CampaignType type)

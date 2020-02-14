@@ -48,7 +48,7 @@ namespace WebInfluencer
                 options.AccessDeniedPath = "/AccessDenied/";
                 options.LoginPath = "/Auth/Login/";
                 options.LogoutPath = "/Auth/Logout/";
-                options.Cookie.Name = "MicroKolCookie";
+                options.Cookie.Name = "MicroKolInfluencerCookie";
                 options.Cookie.Path = "/";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.None;

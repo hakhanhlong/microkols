@@ -26,18 +26,14 @@
         if (currentPage === 'account_changeaccounttype') {
             ChangeAccountTypePage.Init();
         }
-        else if (currentPage === 'agencycampaign_create') {
-            AgencyCreateCampaignPage.Init();
-        } else if (currentPage === 'agencycampaign_details') {
-            AgencyDetailsCampaignPage.Init();
-        } else if (currentPage === 'account_fbaccount') {
+        else if (currentPage === 'account_fbaccount') {
             AccountFbAccountPage.Init();
         }
-        else if (currentPage === 'accountcampaign_details' || currentPage === 'accountcampaign_marketplacedetails') {
-            AccountDetailsCampaignPage.Init();
+        else if (currentPage === 'campaign_details') {
+            CampaignDetailsPage.Init();
         }
-        else if (currentPage === 'accountcampaign_index') {
-            AccountIndexCampaignPage.Init();
+        else if (currentPage === 'campaign_index') {
+            CampaignIndexPage.Init();
         }
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();

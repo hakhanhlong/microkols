@@ -26,11 +26,11 @@ namespace WebMerchant.Controllers
         }
 
 
-        public async Task<IActionResult> Index(NotificationTypeGroup? type,string daterange,int page = 1)
+        public async Task<IActionResult> Index(NotificationTypeGroup? type,string daterange,int pageindex = 1)
         {
             ViewBag.type = type;
             ViewBag.daterange = daterange;
-            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, daterange,string.Empty, page, pagesize);
+            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, type, daterange,string.Empty, pageindex, pagesize);
             return View(model);
         }
 

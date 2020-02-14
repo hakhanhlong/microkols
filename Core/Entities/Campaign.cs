@@ -88,6 +88,7 @@ namespace Core.Entities
         OpenJoined = 1
     }
 
+    
     public enum CampaignStatus
     {
         [Display(Name ="Chờ phê duyệt")]

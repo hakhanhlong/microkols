@@ -13,7 +13,9 @@
     <partial name="_HeaderPartial" />
 
     @RenderSection("Top", required: false)
-    <div class="container">
+
+    <div class="container-fluid">
+        <alert></alert>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

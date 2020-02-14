@@ -69,6 +69,50 @@ namespace WebServices.Services
 
         #endregion
 
+        public async Task<CampaignAccountCountingViewModel> GetCampaignAccountCounting(int campaignid)
+        {
+
+
+
+            var total = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
+            }));
+            var totalRequest = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
+            }));
+            var totalConfirm = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.Confirmed,
+            }));
+
+
+            var totalProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.SubmittedContent,
+                CampaignAccountStatus.SubmittedContent,
+            }));
+
+            var totalFinshed = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.Finished,
+            }));
+
+            var totalApprove = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.ApprovedContent,
+            }));
+            var totalSubmit = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.SubmittedContent,
+            }));
+            return new CampaignAccountCountingViewModel()
+            {
+                Total = total,
+                TotalConfirmed = totalConfirm,
+                TotalFinished = totalFinshed,
+                TotalProcessing = totalProcess,
+                TotalRequest = totalRequest,
+                TotalApproved = totalApprove,
+                TotalSummitted = totalSubmit
+            };
+        }
         public async Task<string> GetCampaignCode(int id)
         {
             var campaign = await _campaignRepository.GetByIdAsync(id);
@@ -163,7 +207,11 @@ namespace WebServices.Services
 
         #region Campaign By Agency
 
-
+        public async Task<int> GetCountCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword)
+        {
+            var filter = new CampaignByAgencySpecification(agencyid, type, status, keyword);
+            return await _campaignRepository.CountAsync(filter);
+        }
 
         public async Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize)
         {
@@ -204,7 +252,7 @@ namespace WebServices.Services
 
             return new CreateCampaignInfoViewModel()
             {
-                Code = code,  
+                Code = code,
                 Method = CampaignMethod.OpenJoined,
                 Type = campaignType
             };
@@ -219,8 +267,8 @@ namespace WebServices.Services
             }
             var settings = await _settingRepository.GetSetting();
             var code = await _campaignRepository.GetValidCode(agencyid);
-            var campaign = CreateCampaignViewModel.GetEntity(agencyid, info,target, campaignTypeCharge, settings, code, username);
-           
+            var campaign = CreateCampaignViewModel.GetEntity(agencyid, info, target, campaignTypeCharge, settings, code, username);
+
 
             await _campaignRepository.AddAsync(campaign);
             if (campaign.Id > 0)
@@ -415,7 +463,7 @@ namespace WebServices.Services
                 }
 
             }
-           
+
         }
 
 
@@ -519,6 +567,42 @@ namespace WebServices.Services
 
             return false;
 
+        }
+
+        public async Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model,string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
+            if (campaign != null)
+            {
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, model.CampaignId));
+
+                if (campaignAccount == null)
+                {
+                    campaignAccount = new CampaignAccount()
+                    {
+                        CampaignId = campaign.Id,
+                        DateCreated = DateTime.Now,
+                        DateModified = DateTime.Now,
+                        AccountChargeAmount = model.AccountChargeAmount,
+                        Note = string.Empty,
+                        AccountId = accountid,
+                        UserModified = username,
+                        UserCreated = username,
+                        Type = campaign.Type,
+                        KPICommitted = model.KPICommitted,
+                        Status = CampaignAccountStatus.AccountRequest
+                    };
+                    await _campaignAccountRepository.AddAsync(campaignAccount);
+
+
+                    await _notificationRepository.CreateNotification(NotificationType.AccountRequestJoinCampaign, EntityType.Agency, campaign.AgencyId, campaign.Id ,
+                        NotificationType.AccountRequestJoinCampaign.GetMessageText(username, campaign.Id.ToString()));
+
+                    return true;
+
+                }
+            }
+            return false;
         }
 
         public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username)

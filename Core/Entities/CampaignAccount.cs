@@ -18,6 +18,7 @@ namespace Core.Entities
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia
+        public int KPICommitted { get; set; }
 
         public string RefImage { get; set; }
         public string RefUrl { get; set; }

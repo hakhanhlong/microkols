@@ -76,18 +76,22 @@ namespace Common.Helpers
 
         public static DateRange? GetDateRange(string input)
         {
-            var arrDate = input.Split('-');
-            if (arrDate.Length == 2)
+            if (!string.IsNullOrEmpty(input))
             {
-               var start = arrDate[0].Trim().ToViDateTime();
-              var  end = arrDate[1].Trim().ToViDateTime();
-                if(start.HasValue && end.HasValue)
+                var arrDate = input.Split('-');
+                if (arrDate.Length == 2)
                 {
-                    return new DateRange()
+                    var start = arrDate[0].Trim().ToViDateTime();
+                    var end = arrDate[1].Trim().ToViDateTime();
+                    if (start.HasValue && end.HasValue)
                     {
-                        End = end.Value,
-                        Start = start.Value
-                    };
+                        return new DateRange()
+                        {
+                            End = end.Value,
+                            Start = start.Value
+                        };
+                    }
+
                 }
 
             }
