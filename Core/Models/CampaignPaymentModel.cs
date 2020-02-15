@@ -40,6 +40,13 @@ namespace Core.Models
             }
         }
 
+        public bool IsValidToProcess
+        {
+            get
+            {
+                return TotalChargeValue <= 0;
+            }
+        }
         public long TotalChargeValue
         {
             get

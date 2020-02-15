@@ -10,9 +10,9 @@ var App = (function () {
                 //AppWallet.Init();
 
 
-                //if (AppSettings.CurrentUser.Type === 2) {
-                //    AppPayment.Init();
-                //}
+                if (AppSettings.CurrentUser.Type === 2) {
+                    AppPayment.Init();
+                }
 
             }
         }, 500);
@@ -30,7 +30,7 @@ var App = (function () {
             CampaignCreateTargetPage.Init();
         }
         else if (currentPage === 'campaign_details') {
-           DetailsCampaignPage.Init();
+            CampaignDetailsPage.Init();
         } 
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
@@ -356,7 +356,7 @@ var AppConstants = {
     UrlUploadTempImage: "/Home/UploadImage",
     UrlGetAccounts: "/Campaign/GetAccounts",
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
-    UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
+    UrlAgencyPayment: function (campaignid) { return "/Payment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>',
     HtmlSpinner: '<div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div>'
 };
@@ -684,88 +684,6 @@ var AccountIndexPage = (function () {
 
     }
 
-    return {
-        Init: init
-    };
-
-})();
-
-
-var AgencyDetailsCampaignPage = (function () {
-
-    function init() {
-
-
-        handler();
-    }
-    function handler() {
-        $('.btn-campaignaccount').click(function () {
-            var url = $(this).data('url');
-            AppBsModal.Init('static');
-            AppBsModal.OpenRemoteModal(url, function () {
-                handlerCampaignAccount();
-            });
-        });
-    }
-
-
-    function handlerCampaignAccount() {
-
-        $('.frm-requestjoin').submit(function () {
-            var $frm = $(this);
-
-            var data = $frm.serialize();
-            var url = $frm.data('action');
-            var $frmbtn = $frm.find('.btn-requestjoin');
-            var $i = $frmbtn.find('i');
-            $frmbtn.prop('disabled', true);
-            $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
-
-            $.post(url, data, function (res) {
-                if (res == 1) {
-
-                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-success');
-                    $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
-                } else {
-
-                    $frmbtn.prop('disabled', false);
-                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-danger');
-                    $i.removeClass('fa-spinner fa-spin').addClass('fa-plus');
-                }
-                handlerReloadBtn(true);
-            })
-
-
-
-        })
-
-        //$('.btn-requestjoin').click(function () {
-        //    var $this = $(this);
-        //    var $i = $(this).find('i');
-        //    $this.prop('disabled', true);
-        //    $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
-        //    var url = $(this).data('url');
-        //    $.get(url, function (res) {
-        //        $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
-        //        $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
-        //        handlerReloadBtn(true);
-        //    });
-        //});
-        handlerReloadBtn();
-
-    }
-
-    function handlerReloadBtn(force) {
-        $('.btn-reload').unbind('click');
-        $('.btn-reload').click(function (e) {
-            if (force) {
-                window.location = window.location;
-            } else {
-                AppBsModal.HideModal();
-
-            }
-        });
-    }
     return {
         Init: init
     };
@@ -1329,6 +1247,88 @@ var CampaignCreateTargetPage = (function () {
 
 
 
+    return {
+        Init: init
+    };
+
+})();
+
+
+var CampaignDetailsPage = (function () {
+
+    function init() {
+
+
+        handler();
+    }
+    function handler() {
+        $('.btn-campaignaccount').click(function () {
+            var url = $(this).data('url');
+            AppBsModal.Init('static');
+            AppBsModal.OpenRemoteModal(url, function () {
+                handlerCampaignAccount();
+            });
+        });
+    }
+
+
+    function handlerCampaignAccount() {
+
+        $('.frm-requestjoin').submit(function () {
+            var $frm = $(this);
+
+            var data = $frm.serialize();
+            var url = $frm.data('action');
+            var $frmbtn = $frm.find('.btn-requestjoin');
+            var $i = $frmbtn.find('i');
+            $frmbtn.prop('disabled', true);
+            $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
+
+            $.post(url, data, function (res) {
+                if (res == 1) {
+
+                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-success');
+                    $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+                } else {
+
+                    $frmbtn.prop('disabled', false);
+                    $frmbtn.removeClass('btn-outline-primary').addClass('btn-outline-danger');
+                    $i.removeClass('fa-spinner fa-spin').addClass('fa-plus');
+                }
+                handlerReloadBtn(true);
+            })
+
+
+
+        })
+
+        //$('.btn-requestjoin').click(function () {
+        //    var $this = $(this);
+        //    var $i = $(this).find('i');
+        //    $this.prop('disabled', true);
+        //    $i.removeClass('fa-plus').addClass('fa-spinner fa-spin');
+        //    var url = $(this).data('url');
+        //    $.get(url, function (res) {
+        //        $this.removeClass('btn-outline-primary').addClass('btn-outline-success');
+        //        $i.removeClass('fa-spinner fa-spin').addClass('fa-check');
+        //        handlerReloadBtn(true);
+        //    });
+        //});
+        handlerReloadBtn();
+
+    }
+
+    function handlerReloadBtn(force) {
+        $('.btn-reload').unbind('click');
+        $('.btn-reload').click(function (e) {
+            if (force) {
+                window.location = window.location;
+            } else {
+                AppBsModal.HideModal();
+
+            }
+        });
+    }
     return {
         Init: init
     };

@@ -4,6 +4,17 @@
 h6, .h6 {
   font-weight: 600; }
 
+.nav-notif .dropdown-menu {
+  width: 350px;
+  z-index: 99999; }
+  .nav-notif .dropdown-menu a {
+    font-size: .9rem; }
+  .nav-notif .dropdown-menu .dropdown-item-text {
+    padding: .5rem 1.5rem;
+    line-height: 1.2rem; }
+    .nav-notif .dropdown-menu .dropdown-item-text:hover {
+      background: #eee; }
+
 #editAccountPriceWrap span {
   color: red; }
 

@@ -22,29 +22,31 @@ namespace Core.Entities
     }
     public enum NotificationType
     {
-        AgencyRequestJoinCampaign,
-        AgencyConfirmJoinCampaign,
-        AccountRequestJoinCampaign,
-        AccountConfirmJoinCampaign,      
-        AccountSubmitCampaignRefContent,
-        AccountFinishCampaignRefContent,
-        AgencyApproveCampaignRefContent,
-        AgencyDeclineCampaignRefContent,
-        AgencyUpdatedCampaignRefContent,
-        AgencyCancelAccountJoinCampaign,
-        AccountDeclineJoinCampaign,
-        SystemUpdateUnfinishedAccountCampaign,
+        AgencyRequestJoinCampaign = 0,
+        AgencyConfirmJoinCampaign = 1,
+        AccountRequestJoinCampaign  = 2, 
+        AccountConfirmJoinCampaign = 3,      
+        AccountSubmitCampaignRefContent = 4,
+        AccountFinishCampaignRefContent =5,
+        AgencyApproveCampaignRefContent = 6,
+        AgencyDeclineCampaignRefContent = 7,
+        AgencyUpdatedCampaignRefContent = 8,
+        AgencyCancelAccountJoinCampaign = 9,
+        AccountDeclineJoinCampaign = 10,
+        SystemUpdateUnfinishedAccountCampaign  = 11,
+        SystemUpdateCanceledAccountCampaign = 111,
 
-        TransactionDepositeApprove,
-        TransactionDepositeProcessing,
-        TransactionDepositeCancel,
-        CampaignStarted,
-        CampaignEnded,
-        CampaignCompleted,
-        CampaignCanceled,
-        CampaignConfirmed,
-        CampaignError,
-        ExcecutedPaymentToAccountBanking
+        TransactionDepositeApprove = 12, 
+        TransactionDepositeProcessing = 13,
+        TransactionDepositeCancel = 14,
+        CampaignStarted  = 15,
+        CampaignCantStarted = 16,
+        CampaignEnded = 17,
+        CampaignCompleted = 18,
+        CampaignCanceled = 19,
+        CampaignConfirmed = 20,
+        CampaignError = 21,
+        ExcecutedPaymentToAccountBanking = 22
     }
 
     public enum NotificationTypeGroup
@@ -154,10 +156,25 @@ namespace Core.Entities
             {
                 message = "Chiến dịch {0} đã bắt đầu thực hiện";
             }
+            else if (type == NotificationType.CampaignCantStarted)
+            {
+                message = "{0} không cập nhật được trạng thái bắt đầu  của Chiến dịch {1} vì lý do: {2}";
+            }
+
+            
             else if (type == NotificationType.CampaignEnded)
             {
                 message = "Chiến dịch {0} đã kết thúc";
             }
+            else if (type == NotificationType.CampaignCanceled)
+            {
+                message = "Chiến dịch {0} bị hủy vì lí do {1}";
+            }
+            else if (type == NotificationType.SystemUpdateCanceledAccountCampaign)
+            {
+                message = "Chiến dịch {0} bị hủy vì lí do {1}";
+            }
+            
             else if (type == NotificationType.CampaignCompleted)
             {
                 message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận {1} ";

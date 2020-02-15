@@ -6,6 +6,9 @@
     var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
     var campaignType = Model.Campaign.Type;
 }
+@section Scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+}
 @section Top{
 
     <nav class="shadow-sm">
@@ -34,12 +37,15 @@
                 <li class="nav-item">
                     <a class="nav-link" id="campaign-statistic-tab" data-toggle="tab" href="#campaign-statistic" role="tab" aria-selected="false">Thống kê</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="campaign-caption-tab" data-toggle="tab" href="#campaign-caption" role="tab" aria-selected="false">Caption</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="campaign-content-tab" data-toggle="tab" href="#campaign-content" role="tab" aria-selected="false">Nội dung</a>
-                </li>
+                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" id="campaign-caption-tab" data-toggle="tab" href="#campaign-caption" role="tab" aria-selected="false">Caption</a>
+                    </li>
+                }
+                @*<li class="nav-item">
+                        <a class="nav-link" id="campaign-content-tab" data-toggle="tab" href="#campaign-content" role="tab" aria-selected="false">Nội dung</a>
+                    </li>*@
             </ul>
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade active show" id="campaign-info" role="tabpanel">
@@ -119,27 +125,31 @@
                                 </ul>
                             }
 
-                            @if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
+                            @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption || Model.Campaign.Type == CampaignType.ReviewProduct)
                             {
-                                if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+
+                                if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
                                 {
+                                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                    {
 
-                                    <strong> Thời gian viết nội dung</strong>
-                                    <p>
-                                    </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
-                                    </ul>
+                                        <strong> Thời gian viết nội dung</strong>
+                                        <p>
+                                        </p><ul class="list-unstyled">
+                                            <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                                        <p>
+                                        </p><ul class="list-unstyled">
+                                            <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+
+                                        </ul>
+                                    }
+
                                 }
-                                else
-                                {
-                                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                                    <p>
-                                    </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
-
-                                    </ul>
-                                }
-
                             }
 
                             @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
@@ -156,13 +166,10 @@
 
                             <ul class="list-unstyled">
                                 <li>
-                                    @*<input type="text" class="form-control" value="@Model.Campaign.KPIMin">*@
                                     @Model.Campaign.KPIMin
                                 </li>
                             </ul>
 
-
-                            <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
 
 
 
@@ -215,11 +222,15 @@
                     </div>
                 </div>
                 <div class="tab-pane fade" id="campaign-statistic" role="tabpanel">
-
+                    <partial name="_DetailStatiticPartial" model="Model" />
                 </div>
-                <div class="tab-pane fade" id="campaign-caption" role="tabpanel">
+                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                {
+                    <div class="tab-pane fade" id="campaign-caption" role="tabpanel">
 
-                </div>
+                        <partial name="_DetailCaptionPartial" model="Model" />
+                    </div>
+                }
 
             </div>
 

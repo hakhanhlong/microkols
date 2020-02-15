@@ -1,0 +1,42 @@
+﻿@model MarketPlaceViewModel
+
+@inject WebServices.Interfaces.IAccountService AccountService
+
+
+@{
+    var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+}
+
+<h5 class=" my-3">@Model.Campaign.Title</h5>
+<p>
+    <i class="fab fa-facebook"></i> @Model.Campaign.Type.ToDisplayName()
+</p>
+@if(campaignAccount!= null){
+
+    var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+    if (fbPost != null)
+    {
+        var total = fbPost.LikeCount + fbPost.ShareCount + fbPost.CommentCount;
+
+
+
+        <p>Tổng tương tác: <strong>@(total)</strong></p>
+
+        if (total > 0)
+        {
+            var chartData = new List<object>();
+            chartData.Add(new object[] { "Loại", "Tổng số" });
+            chartData.Add(new object[] { "Like", fbPost.LikeCount });
+            chartData.Add(new object[] { "Share", fbPost.ShareCount });
+            chartData.Add(new object[] { "Comment", fbPost.CommentCount });
+            <script type="text/template" id="chartModel">
+                @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chartData))
+            </script>
+            <div id="chartStatistic" style="width: 100%; height: 500px"></div>
+        }
+
+
+
+
+    }
+}

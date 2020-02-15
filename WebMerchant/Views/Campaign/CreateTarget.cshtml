@@ -53,11 +53,11 @@
                     <div class=" d-accounttype d-accounttype-@(accountType)" style="display:none">
                         @if (accountType == AccountType.Regular)
                         {
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label asp-for="AccountChargeAmount" ></label>
                             <input type="number" class="form-control " asp-for="AccountChargeAmount" />
                             <span asp-validation-for="AccountChargeAmount"></span>
-                        </div>
+                        </div>*@
                         }
                         else if (accountType == AccountType.HotMom)
                         {

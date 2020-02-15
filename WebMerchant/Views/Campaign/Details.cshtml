@@ -52,14 +52,24 @@
                         {
 
                             <div class="mb-2">
-                                <strong class="mr-2"> Thời gian thực hiện:</strong>
+                                <strong class="mr-2"> Thời gian nhận đăng ký:</strong>
                                 <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
                                 <span class="text-info">
                                     @Model.DateEnd.Value.ToViDateTime()
                                 </span>
                             </div>
                         }
+                        @if (Model.ExecutionStart.HasValue)
+                        {
 
+                            <div class="mb-2">
+                                <strong class="mr-2"> Thời gian thực hiện:</strong>
+                                <span class="text-info">@Model.ExecutionStart.Value.ToViDateTime()</span> -
+                                <span class="text-info">
+                                    @Model.ExecutionEnd.Value.ToViDateTime()
+                                </span>
+                            </div>
+                        }
                         <div class="mb-2">
                             <strong class="mr-2"> Loại chiến dịch:</strong>
 
@@ -88,13 +98,13 @@
                             </span>
                         </div>
                         @*<div class="mb-2">
-                    <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
-                    <span>
-                        Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
-                        <span>
-                        </span>
-                    </span>
-                </div>*@
+            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
+            <span>
+                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
+                <span>
+                </span>
+            </span>
+        </div>*@
                     </div>
 
                     <div class="col-md-6">

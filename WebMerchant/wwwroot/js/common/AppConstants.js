@@ -14,7 +14,7 @@
     UrlUploadTempImage: "/Home/UploadImage",
     UrlGetAccounts: "/Campaign/GetAccounts",
     UrlGetDistricts: function (cityid) { return "/home/GetDistricts?cityid=" + cityid; },
-    UrlAgencyPayment: function (campaignid) { return "/AgencyPayment/CampaignPayment?campaignid=" + campaignid; },
+    UrlAgencyPayment: function (campaignid) { return "/Payment/CampaignPayment?campaignid=" + campaignid; },
     ModalSpinner: '<div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div> </div></div>',
     HtmlSpinner: '<div class="py-5 text-center text-success loading"><i class="fas fa-spinner fa-spin"></i></div>'
 };

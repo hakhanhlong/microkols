@@ -7,6 +7,11 @@ var  CampaignDetailsPage = (function () {
     }
     function handler() {
         handlerAction();
+        if ($('#chartModel').length > 0) {
+
+
+            handlerChart();
+        }
 
     }
 
@@ -109,6 +114,30 @@ var  CampaignDetailsPage = (function () {
         });
 
     }
+
+    function handlerChart() {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+    }
+    function drawChart() {
+        var chartData = JSON.parse($('#chartModel').html());
+        console.log('chartData', chartData);
+        var data = google.visualization.arrayToDataTable(chartData);
+
+
+        var options = {
+            title: 'Thống kê tương tác',
+         
+            width: 600,
+            height: 400
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chartStatistic'));
+
+        chart.draw(data, options);
+    }
+
 
     return {
         Init: init,

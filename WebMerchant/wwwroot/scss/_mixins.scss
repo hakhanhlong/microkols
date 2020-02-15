@@ -5,3 +5,24 @@
 h6,.h6{
     font-weight:600;
 }
+
+
+.nav-notif {
+    .dropdown-menu {
+        width: 350px;
+        z-index: 99999;
+
+        a {
+            font-size: .9rem;
+        }
+
+        .dropdown-item-text {
+            padding: .5rem 1.5rem;
+            line-height: 1.2rem;
+
+            &:hover {
+                background: #eee;
+            }
+        }
+    }
+}

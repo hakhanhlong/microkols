@@ -96,7 +96,7 @@ namespace WebServices.Jobs
                     var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, 100);
                     foreach (var campaign in campaignAccounts.Campaigns)
                     {
-                        AccountFbPostViewModel fbPost;
+                        AccountFbPostViewModel fbPost = null;
                         var refurl = campaign.CampaignAccount.RefUrl;
                         var refid = campaign.CampaignAccount.RefId;
                         if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
@@ -114,7 +114,11 @@ namespace WebServices.Jobs
                         }
                         else
                         {
-                            fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
+                            if (!string.IsNullOrEmpty(campaign.Data))
+                            {
+                                fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
+                            }
+                            
                         }
 
 

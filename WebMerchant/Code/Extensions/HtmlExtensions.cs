@@ -211,6 +211,8 @@ namespace WebMerchant.Code.Extensions
                 NotificationType.AccountConfirmJoinCampaign,
                 NotificationType.CampaignStarted,
                 NotificationType.CampaignEnded,
+                NotificationType.CampaignCanceled,
+                NotificationType.CampaignCantStarted,
                 NotificationType.CampaignCompleted,
                 NotificationType.CampaignCanceled,
                 NotificationType.AccountSubmitCampaignRefContent,

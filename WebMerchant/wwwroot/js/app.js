@@ -10,9 +10,9 @@
                 //AppWallet.Init();
 
 
-                //if (AppSettings.CurrentUser.Type === 2) {
-                //    AppPayment.Init();
-                //}
+                if (AppSettings.CurrentUser.Type === 2) {
+                    AppPayment.Init();
+                }
 
             }
         }, 500);
@@ -30,7 +30,7 @@
             CampaignCreateTargetPage.Init();
         }
         else if (currentPage === 'campaign_details') {
-           DetailsCampaignPage.Init();
+            CampaignDetailsPage.Init();
         } 
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();

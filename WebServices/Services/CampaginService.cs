@@ -569,7 +569,7 @@ namespace WebServices.Services
 
         }
 
-        public async Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model,string username)
+        public async Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username)
         {
             var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
             if (campaign != null)
@@ -595,7 +595,7 @@ namespace WebServices.Services
                     await _campaignAccountRepository.AddAsync(campaignAccount);
 
 
-                    await _notificationRepository.CreateNotification(NotificationType.AccountRequestJoinCampaign, EntityType.Agency, campaign.AgencyId, campaign.Id ,
+                    await _notificationRepository.CreateNotification(NotificationType.AccountRequestJoinCampaign, EntityType.Agency, campaign.AgencyId, campaign.Id,
                         NotificationType.AccountRequestJoinCampaign.GetMessageText(username, campaign.Id.ToString()));
 
                     return true;
@@ -1167,6 +1167,19 @@ namespace WebServices.Services
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
 
+                    //check da thanh toan chua
+                    var isvalid = false;
+
+                    var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
+                    if(payment == null || !payment.IsValidToProcess)
+                    {
+                        await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
+                           EntityType.Agency, campaign.AgencyId, campaign.Id,
+                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaignid.ToString(), "Bạn chưa thanh toán tiền chiến dịch"));
+
+                    }
+
+
                     var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
                             CampaignAccountStatus.AccountRequest,
                             CampaignAccountStatus.AgencyRequest,
@@ -1180,11 +1193,22 @@ namespace WebServices.Services
                     {
                         campaign.Status = CampaignStatus.Canceled;
 
+                        campaign.SystemNote = "Không có thành viên thực hiện chiến dịch";
+                        campaign.UserModified = username;
+                        campaign.DateModified = DateTime.Now;
+                        await _campaignRepository.UpdateAsync(campaign);
+
+                        await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
+                            EntityType.Agency, campaign.AgencyId, campaign.Id,
+                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString(), "Không có thành viên thực hiện chiến dịch"));
+
+                        return;
+
+
                     }
-                    else
-                    {
-                        campaign.Status = CampaignStatus.Started;
-                    }
+
+
+                    campaign.Status = CampaignStatus.Started;
 
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
@@ -1240,40 +1264,73 @@ namespace WebServices.Services
             {
                 var username = "system";
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-                if (campaign != null && campaign.Status == CampaignStatus.Started)
+                if (campaign != null )
                 {
-                    campaign.Status = CampaignStatus.Ended;
-                    campaign.UserModified = username;
-                    campaign.DateModified = DateTime.Now;
-                    await _campaignRepository.UpdateAsync(campaign);
+                    if(campaign.Status == CampaignStatus.Started)
+                    {
+                        campaign.Status = CampaignStatus.Ended;
+                        campaign.UserModified = username;
+                        campaign.DateModified = DateTime.Now;
+                        await _campaignRepository.UpdateAsync(campaign);
 
 
-                    BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+                        BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
 
 
-                    //huy campaing account chua hoan thanh 
-                    var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
-                        , new List<CampaignAccountStatus> {
+                        //huy campaing account chua hoan thanh 
+                        var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
+                            , new List<CampaignAccountStatus> {
                             CampaignAccountStatus.Finished,
                             CampaignAccountStatus.Canceled,
                             CampaignAccountStatus.Unfinished
-                        }));
+                            }));
 
-                    foreach (var campaignAccount in needUnFinishedCampaignAccounts)
-                    {
-                        campaignAccount.Status = CampaignAccountStatus.Unfinished;
-                        campaignAccount.DateModified = DateTime.Now;
-                        campaignAccount.UserModified = username;
-                        await _campaignAccountRepository.UpdateAsync(campaignAccount);
+                        foreach (var campaignAccount in needUnFinishedCampaignAccounts)
+                        {
+                            campaignAccount.Status = CampaignAccountStatus.Unfinished;
+                            campaignAccount.DateModified = DateTime.Now;
+                            campaignAccount.UserModified = username;
+                            await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
-                        //notification
-                        await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
-                            EntityType.Account, campaignAccount.AccountId, campaignid,
-                             NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
-                             campaignAccount.Id.ToString());
+                            //notification
+                            await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
+                                EntityType.Account, campaignAccount.AccountId, campaignid,
+                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
+                                 campaignAccount.Id.ToString());
+
+                        }
 
                     }
+                    else if(campaign.Status== CampaignStatus.Confirmed)
+                    {
+                        campaign.Status = CampaignStatus.Canceled;
+                        campaign.SystemNote = "Hết thời gian thực hiện";
+                        campaign.UserModified = username;
+                        campaign.DateModified = DateTime.Now;
+                        await _campaignRepository.UpdateAsync(campaign);
 
+                        await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
+                            EntityType.Agency, campaign.AgencyId, campaign.Id,
+                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString()), "Hết thời gian thực hiện");
+
+
+                        var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, null));
+
+                        foreach (var campaignAccount in campaignAccounts)
+                        {
+                            campaignAccount.Status = CampaignAccountStatus.Canceled;
+                            campaignAccount.DateModified = DateTime.Now;
+                            campaignAccount.UserModified = username;
+                            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+                            //notification
+                            await _notificationRepository.CreateNotification(NotificationType.SystemUpdateCanceledAccountCampaign,
+                                EntityType.Account, campaignAccount.AccountId, campaignid,
+                                 NotificationType.SystemUpdateCanceledAccountCampaign.GetMessageText(campaignid.ToString(), "Hết thời gian thực hiện"));
+
+                        }
+
+                    }
 
 
 

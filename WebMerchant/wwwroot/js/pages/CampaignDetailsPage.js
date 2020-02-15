@@ -1,5 +1,5 @@
 ﻿
-var AgencyDetailsCampaignPage = (function () {
+var CampaignDetailsPage = (function () {
 
     function init() {
 

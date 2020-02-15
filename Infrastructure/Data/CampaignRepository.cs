@@ -40,7 +40,7 @@ namespace Infrastructure.Data
         public async Task<List<int>> GetCampaignIdNeedToStart()
         {
             var now = DateTime.Now;
-            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.DateStart <= now).Select(m => m.Id).ToListAsync();
+            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart <= now).Select(m => m.Id).ToListAsync();
             return campaignids;
         }
 
@@ -49,14 +49,14 @@ namespace Infrastructure.Data
         public async Task<List<int>> GetCampaignIdNeedToEnd()
         {
             var now = DateTime.Now;
-            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Started && m.DateEnd <= now).Select(m => m.Id).ToListAsync();
+            var campaignids = await _dbContext.Campaign.Where(m => (m.Status == CampaignStatus.Started || m.Status== CampaignStatus.Confirmed  ) && m.ExecutionEnd <= now).Select(m => m.Id).ToListAsync();
             return campaignids;
         }
 
         public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
         {
 
-            var campaign = await _dbContext.Campaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccount).ThenInclude(m => m.Account)
+            var campaign = await _dbContext.Campaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccount).ThenInclude(m => m.Account).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AgencyId == agencyid && m.Published && m.Id == id);
             if (campaign != null)
             {

@@ -34,6 +34,8 @@ namespace WebServices.ViewModels
             AccountTypes = campaign.CampaignAccountType.Select(m => m.AccountType).ToList();
             DateStart = campaign.DateStart;
             DateEnd = campaign.DateEnd;
+            ExecutionEnd = campaign.ExecutionEnd;
+            ExecutionStart = campaign.ExecutionStart;
             DateCreated = campaign.DateCreated;
             UserCreated = campaign.UserCreated;
             CountOption = campaign.CampaignOption.Count();
@@ -145,7 +147,9 @@ namespace WebServices.ViewModels
         public string Data { get; set; }
         public int Quantity { get; set; }
         public DateTime DateCreated { get; set; }
+        public DateTime? ExecutionStart { get; set; }
 
+        public DateTime? ExecutionEnd { get; set; }
         public DateTime? DateStart { get; set; }
 
         public DateTime? DateEnd { get; set; }
