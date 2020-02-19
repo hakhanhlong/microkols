@@ -240,6 +240,25 @@ namespace WebServices.Services
             return null;
         }
 
+        public async Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize)
+        {
+
+            var filter = new CampaignAccountSpecification(campaignid);
+            var total = await _campaignAccountRepository.CountAsync(filter);
+            var campaingAccounts = await _campaignAccountRepository.ListPagedAsync(filter, "Id_desc", page, pagesize);
+
+            return new ListCampaignAccountViewModel()
+            {
+                Pager = new PagerViewModel()
+                {
+                    Page = page,
+                    PageSize = pagesize,
+                    Total = total,
+                },
+                CampaignAccounts = CampaignAccountViewModel.GetList(campaingAccounts)
+            };
+        }
+
         public async Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id)
         {
             return await _campaignRepository.GetCampaignPaymentByAgency(agencyid, id);
@@ -1171,7 +1190,7 @@ namespace WebServices.Services
                     var isvalid = false;
 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
-                    if(payment == null || !payment.IsValidToProcess)
+                    if (payment == null || !payment.IsValidToProcess)
                     {
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
                            EntityType.Agency, campaign.AgencyId, campaign.Id,
@@ -1264,9 +1283,9 @@ namespace WebServices.Services
             {
                 var username = "system";
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-                if (campaign != null )
+                if (campaign != null)
                 {
-                    if(campaign.Status == CampaignStatus.Started)
+                    if (campaign.Status == CampaignStatus.Started)
                     {
                         campaign.Status = CampaignStatus.Ended;
                         campaign.UserModified = username;
@@ -1301,7 +1320,7 @@ namespace WebServices.Services
                         }
 
                     }
-                    else if(campaign.Status== CampaignStatus.Confirmed)
+                    else if (campaign.Status == CampaignStatus.Confirmed)
                     {
                         campaign.Status = CampaignStatus.Canceled;
                         campaign.SystemNote = "Hết thời gian thực hiện";

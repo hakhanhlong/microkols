@@ -59,5 +59,8 @@ namespace WebServices.Interfaces
         Task<CampaignViewModel> GetCampaignByRefId(int accountid, string facebookid);
         Task AutoUpdateStartedStatus(int campaignid);
         Task AutoUpdateEndedStatus(int campaignid);
+
+
+        Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize);
     }
 }

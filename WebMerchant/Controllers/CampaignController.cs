@@ -328,7 +328,15 @@ namespace WebMerchant.Controllers
         }
 
         #endregion
+
         #region Search Account
+
+
+        public async Task<IActionResult> CampaignAccountModal(int campaignid,int pageindex,int pagesize = 20)
+        {
+            var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
+            return PartialView(model);
+        }
 
         public async Task<IActionResult> GetAccounts(AccountType type, string kw, int page = 1, int pagesize = 20)
         {
