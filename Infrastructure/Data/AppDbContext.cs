@@ -34,6 +34,11 @@ namespace Infrastructure.Data
         public virtual DbSet<Campaign> Campaign { get; set; }
         public virtual DbSet<CampaignAccount> CampaignAccount { get; set; }
         public virtual DbSet<CampaignOption> CampaignOption { get; set; }
+        public virtual DbSet<CampaignAccountCaption> CampaignAccountCaption { get; set; }
+        public virtual DbSet<CampaignAccountContent> CampaignAccountContent { get; set; }
+        public virtual DbSet<CampaignAccountStatistic> CampaignAccountStatistic { get; set; }
+
+
         public virtual DbSet<CampaignAccountType> CampaignAccountType { get; set; }
 
 

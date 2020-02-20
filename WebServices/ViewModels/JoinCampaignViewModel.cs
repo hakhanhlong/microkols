@@ -9,5 +9,6 @@ namespace WebServices.ViewModels
         public int CampaignId { get; set; }
         public int KPICommitted { get; set; }
         public int AccountChargeAmount { get; set; }
+        public string Caption { get; set; }
     }
 }

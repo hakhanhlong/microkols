@@ -23,6 +23,7 @@ namespace WebServices.Services
         private readonly ICampaignRepository _campaignRepository;
         private readonly IWalletRepository _walletRepository;
         private readonly IAsyncRepository<CampaignTypeCharge> _campaignTypeChargeRepository;
+        private readonly IAsyncRepository<CampaignAccountCaption> _campaignAccountCaptionRepository;
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly IAsyncRepository<CampaignAccountType> _campaignAccountTypeRepository;
         private readonly ICampaignAccountRepository _campaignAccountRepository;
@@ -37,6 +38,7 @@ namespace WebServices.Services
             IAsyncRepository<CampaignOption> campaignOptionRepository,
             IAsyncRepository<CampaignAccountType> campaignAccountTypeRepository,
             ICampaignAccountRepository campaignAccountRepository,
+            IAsyncRepository<CampaignAccountCaption> campaignAccountCaptionRepository,
             INotificationRepository notificationRepository,
              ISettingRepository settingRepository)
         {
@@ -46,6 +48,7 @@ namespace WebServices.Services
             _campaignRepository = campaignRepository;
             _walletRepository = walletRepository;
             _settingRepository = settingRepository;
+            _campaignAccountCaptionRepository = campaignAccountCaptionRepository;
             _transactionRepository = transactionRepository;
             _campaignAccountRepository = campaignAccountRepository;
             _notificationRepository = notificationRepository;
@@ -593,6 +596,12 @@ namespace WebServices.Services
             var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
             if (campaign != null)
             {
+
+                if (campaign.Type == CampaignType.ShareContentWithCaption && string.IsNullOrEmpty(model.Caption))
+                {
+                    return false;
+                }
+
                 var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, model.CampaignId));
 
                 if (campaignAccount == null)
@@ -614,6 +623,22 @@ namespace WebServices.Services
                     await _campaignAccountRepository.AddAsync(campaignAccount);
 
 
+
+                    if (campaign.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        await _campaignAccountCaptionRepository.AddAsync(new CampaignAccountCaption()
+                        {
+                            CampaignAccountId = campaignAccount.Id,
+                            Content = model.Caption,
+                            DateCreated = DateTime.Now,
+                            DateModified = DateTime.Now,
+                            Status = CampaignAccountCaptionStatus.ChoDuyet,
+                            UserCreated = username,
+                            UserModified = username
+                        });
+                    }
+
+
                     await _notificationRepository.CreateNotification(NotificationType.AccountRequestJoinCampaign, EntityType.Agency, campaign.AgencyId, campaign.Id,
                         NotificationType.AccountRequestJoinCampaign.GetMessageText(username, campaign.Id.ToString()));
 
@@ -632,7 +657,7 @@ namespace WebServices.Services
             if (campaignAccount == null)
             {
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-                if(campaign == null)
+                if (campaign == null)
                 {
                     return false;
                 }
@@ -648,7 +673,7 @@ namespace WebServices.Services
                     UserCreated = username,
                     Type = campaign.Type,
                     Status = CampaignAccountStatus.Confirmed,
-                    
+
                 };
                 await _campaignAccountRepository.AddAsync(campaignAccount);
                 return true;
@@ -656,16 +681,16 @@ namespace WebServices.Services
             else
             {
 
-                    campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
-                    campaignAccount.DateModified = DateTime.Now;
-                    campaignAccount.UserModified = username;
-                    await _campaignAccountRepository.UpdateAsync(campaignAccount);
+                campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
+                campaignAccount.DateModified = DateTime.Now;
+                campaignAccount.UserModified = username;
+                await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
-                    await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
-                        NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+                await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
+                    NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
 
-                    return true;
-              
+                return true;
+
 
             }
 
