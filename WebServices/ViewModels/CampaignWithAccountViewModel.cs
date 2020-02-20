@@ -69,23 +69,6 @@ namespace WebServices.ViewModels
             CampaignAccounts = campaignAccounts;
             Agency = agency;
         }
-        public static List<MarketPlaceViewModel> GetList(List<Campaign> campaign, List<CampaignAccount> campaignAccounts, List<Agency> agency)
-        {
-            var result = new List<MarketPlaceViewModel>();
-
-
-            foreach(var item in campaign)
-            {
-                var itemAccount = campaignAccounts.Where(m => m.CampaignId == item.Id).ToList();
-                var itemAgency = agency.FirstOrDefault(m => m.Id == item.AgencyId);
-
-                result.Add(new MarketPlaceViewModel(item, itemAccount, itemAgency));
-
-            }
-
-            return result;
-
-        }
         public Campaign Campaign { get; set; }
         public List<CampaignAccount> CampaignAccounts { get; set; }
         public Agency Agency { get; set; }

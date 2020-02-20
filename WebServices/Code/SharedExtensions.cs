@@ -33,7 +33,8 @@ namespace WebServices.Code
             services.AddScoped<ICampaignAccountRepository, CampaignAccountRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IAccountFbPostRepository, AccountFbPostRepository>();
-            
+            services.AddScoped<ICampaignAccountStatisticRepository, CampaignAccountStatisticRepository>();
+
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISharedService, SharedService>();
@@ -43,6 +44,8 @@ namespace WebServices.Code
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ICampaignAccountCaptionService, CampaignAccountCaptionService>();
+            services.AddScoped<ICampaignAccountContentService, CampaignAccountContentService>();
 
 
 

@@ -202,7 +202,7 @@ else
     }
     else if (Model.Campaign.Status == CampaignStatus.Confirmed)
     {
-        var now = DateTime.Now;
+        @*var now = DateTime.Now;
         if (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value)
         {
 
@@ -233,7 +233,7 @@ else
         else
         {
             <div class="alert alert-info">Thời gian đăng ký @Model.Campaign.DateStart.Value.ToViDateTime() - @Model.Campaign.DateEnd.Value.ToViDateTime() </div>
-        }
+        }*@
     }
 
 }

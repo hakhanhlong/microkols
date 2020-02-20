@@ -41,42 +41,13 @@ namespace WebInfluencer.Controllers
 
             return View(model);
         }
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> Details(int id,int tab = 0)
         {
             var model = await _campaignService.GetCampaignMarketPlace(id);
-
+            ViewBag.Tab = tab;
             return View(model);
         }
 
-        /*
-        #region Details
-        public async Task<IActionResult> Index(string kw, int type = 1, int pageindex = 1, int pagesize = 20)
-        {
-            ViewBag.Type = type;
-            ViewBag.Kw = kw;
-            var model = await _campaignService.GetListCampaignByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
-
-            return View(model);
-        }
-        public async Task<IActionResult> Details(int id)
-        {
-            var model = await _campaignService.GetCampaignDetailsByAccount(CurrentUser.Id, id);
-            if (model == null) return NotFound();
-            var campaignAccount = await _campaignService.GetCampaignAccountByAccount(CurrentUser.Id, model.Id);
-
-            if (campaignAccount == null) return NotFound();
-            ViewBag.CampaignAccount = campaignAccount;
-            ViewBag.FacebookId = await _accountService.GetProviderIdByAccount(CurrentUser.Id, AccountProviderNames.Facebook);
-
-            ViewBag.Categories = await _sharedService.GetCategories();
-            ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
-            ViewBag.Cities = await _sharedService.GetCities();
-            return View(model);
-        }
-
-        #endregion
-
-        */
 
         #region Action
         public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
@@ -96,7 +67,7 @@ namespace WebInfluencer.Controllers
                 var result = await _campaignService.RequestJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username);
                 if (result)
                 {
-                    this.AddAlertSuccess("Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xác nhận");
+                    TempData["MessageModal"] = "Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xét duyệt";
                 }
                 else
                 {
