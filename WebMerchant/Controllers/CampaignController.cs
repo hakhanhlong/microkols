@@ -262,6 +262,14 @@ namespace WebMerchant.Controllers
         #region MatchedAccount
 
 
+        public async Task<IActionResult> MatchedAccountPartial(int campaignid, int pageindex = 1, int pagesize = 20)
+        {
+
+            ViewBag.CampaignId = campaignid;
+            var model = await _accountService.GetMatchedAccountByCampaignId(campaignid, "", pageindex, pagesize);
+            return PartialView(model);
+
+        }
         public async Task<IActionResult> MatchedAccount(CampaignType campaignType,
             IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
             IEnumerable<int> cityid, int? agestart, int? ageend, int campaignId = 0, int pageindex = 1, int pagesize = 20, int min = 0, int max = 0)
@@ -332,14 +340,14 @@ namespace WebMerchant.Controllers
         #region Search Account
 
 
-        public async Task<IActionResult> CampaignAccountPartial(int campaignid, int pageindex = 1, int pagesize = 1)
+        public async Task<IActionResult> CampaignAccountPartial(int campaignid, int pageindex = 1, int pagesize = 10)
         {
             ViewBag.CampaignId = campaignid;
             var model = await _campaignService.GetCampaignAccount(campaignid, pageindex, pagesize);
             return PartialView(model);
         }
 
-        public async Task<IActionResult> GetAccounts(AccountType type, string kw, int page = 1, int pagesize = 20)
+        public async Task<IActionResult> GetAccounts(AccountType type, string kw, int page = 1, int pagesize = 10)
         {
             var model = await _accountService.GetAccounts(type, kw, string.Empty, page, pagesize);
 
@@ -396,20 +404,62 @@ namespace WebMerchant.Controllers
 
 
 
-        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, int? amount)
+        [HttpPost]
+        public async Task<IActionResult> RequestAccountJoinCampaign(int campaignid, int accountid, string returnurl = "")
         {
-            var result = await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
-            return Json(result ? 1 : 0);
+            await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, CurrentUser.Name);
+
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+        [HttpPost]
+        public async Task<IActionResult> RequestAllAccountJoinCampaign(int campaignid, List<int> accountid, int? amount, string returnurl = "")
+        {
+            foreach (var item in accountid)
+            {
+                await _campaignService.RequestJoinCampaignByAgency(CurrentUser.Id, campaignid, item, CurrentUser.Name);
+            }
+
+
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Details", new { id = campaignid });
         }
 
-        public async Task<IActionResult> FeedbackAccountJoinCampaign(int campaignid, int accountid, int type)
+
+        [HttpPost]
+        public async Task<IActionResult> FeedbackAccountJoinCampaign(int campaignid, int accountid, int type, string returnurl = "")
         {
             var result = await _campaignService.FeedbackJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, type == 1, CurrentUser.Name);
 
             this.AddAlert(result);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
             return RedirectToAction("Details", new { id = campaignid });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FeedbackAllAccountJoinCampaign(int campaignid, List<int> accountid, int type, string returnurl = "")
+        {
+            foreach (var item in accountid)
+            {
+                await _campaignService.FeedbackJoinCampaignByAgency(CurrentUser.Id, campaignid, item, type == 1, CurrentUser.Name);
+            }
+
+            this.AddAlert(true);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Details", new { id = campaignid });
+        }
 
 
         [HttpPost]

@@ -19,6 +19,8 @@ namespace Core.Interfaces
 
         int CountAll();
 
+        Task<IQueryable<Account>> QueryMatchedAccountByCampiagn(int campaignid);
+
         Task UpdateAccountCategory(int accountid, List<int> categoryid);
     }
 }

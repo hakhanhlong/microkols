@@ -48,6 +48,40 @@ namespace Infrastructure.Data
             return await _dbContext.Account.FirstOrDefaultAsync(m => m.Email == email);
         }
 
+        public async Task<IQueryable<Account>> QueryMatchedAccountByCampiagn(int campaignid)
+        {
+            var query = _dbContext.Account.Where(m => m.Actived);
+
+            var campaign = await _dbContext.Campaign.FindAsync(campaignid);
+            if (campaign == null)
+            {
+                return query.Where(m => m.Id == 0);
+            }
+            var accountids = await _dbContext.CampaignAccount.Where(m => m.CampaignId == campaignid).Select(m => m.AccountId).ToListAsync();
+            query = query.Where(m => !accountids.Contains(m.Id));
+
+            var accountTypes = await _dbContext.CampaignAccountType.Where(m => m.CampaignId == campaignid).Select(m => m.AccountType).ToListAsync();
+            query = query.Where(m => accountTypes.Contains(m.Type));
+
+            /*
+            //phan nay query sau - lam truoc logic
+            var campaignOptions = await _dbContext.CampaignOption.Where(m => m.CampaignId == campaignid).ToListAsync();
+            if (campaignOptions.Count > 0)
+            {
+                var categoryids = campaignOptions.Where(m => m.Name == CampaignOptionName.Category).Select(m=>  int.Parse(m.Value)).ToList();
+                if (categoryids.Count > 0)
+                {
+                    query = query.Where(m => m.AccountCategory.Any(i => categoryids.Contains(i.CategoryId)));
+
+                }
+            }
+
+            */
+
+
+            return query;
+
+        }
 
 
         public IQueryable<Account> Query(IEnumerable<AccountType> accountTypes, IEnumerable<int> categoryid, Gender? gender,
@@ -103,15 +137,15 @@ namespace Infrastructure.Data
             await _dbContext.SaveChangesAsync();
 
 
-            if(categoryid!= null && categoryid.Count > 0)
+            if (categoryid != null && categoryid.Count > 0)
             {
-                foreach(var catid in categoryid)
+                foreach (var catid in categoryid)
                 {
-                   await _dbContext.AccountCategory.AddAsync(new AccountCategory()
+                    await _dbContext.AccountCategory.AddAsync(new AccountCategory()
                     {
                         AccountId = accountid,
                         CategoryId = catid
-                   });
+                    });
                 }
                 await _dbContext.SaveChangesAsync();
             }

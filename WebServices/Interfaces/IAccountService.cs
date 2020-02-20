@@ -48,6 +48,7 @@ namespace WebServices.Interfaces
         Task<bool> ChangeBankAccount(int id, ChangeBankAccountViewModel model, string username);
         Task<bool> VerifyEmail(string email);
 
+        Task<ListAccountViewModel> GetMatchedAccountByCampaignId(int campaignid,  string order, int page, int pagesize);
 
         Task<bool> UpdateAccountProviderInfo(int accountproviderid, string link, int friendscount, string username);
         Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid);

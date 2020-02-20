@@ -147,8 +147,8 @@
                                             <h6 class="title-campaign">@item.Title</h6>
                                             <nav class="mb-3">
                                                 <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                                                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-kol-@(item.Id)-join-1" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Kols đã mời tham gia chiến dịch</a>
-                                                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-kol-@(item.Id)-join-2" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">Kols phù hợp với chiến dịch</a>
+                                                    <a class="nav-item nav-link active" data-type="1" data-toggle="tab" href="#nav-kol-@(item.Id)-join-1" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Kols đã mời tham gia chiến dịch</a>
+                                                    <a class="nav-item nav-link" data-type="2" data-toggle="tab" href="#nav-kol-@(item.Id)-join-2" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">Kols phù hợp với chiến dịch</a>
                                                 </div>
                                             </nav>
                                             <div class="tab-content" id="nav-tabContent">
@@ -157,7 +157,11 @@
 
                                                     <div class="list-campaignaccount" data-url="@Url.Action("CampaignAccountPartial", new { campaignid= item.Id})"></div>
                                                 </div>
-                                                <div class="tab-pane fade show active" id="nav-kol-@(item.Id)-join-2" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                <div class="tab-pane fade" id="nav-kol-@(item.Id)-join-2" role="tabpanel" aria-labelledby="nav-home-tab">
+
+
+                                                    <div class="list-matchedaccount" data-url="@Url.Action("MatchedAccountPartial", new { campaignid= item.Id})"></div>
+
                                                 </div>
                                             </div>
                                         </div>

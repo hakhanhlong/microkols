@@ -99,7 +99,30 @@ namespace WebServices.Services
 
             return list;
         }
+        public async Task<ListAccountViewModel> GetMatchedAccountByCampaignId(int campaignid,
 
+           string order, int page, int pagesize)
+        {
+
+            var query = await _accountRepository.QueryMatchedAccountByCampiagn(campaignid);
+
+            var total = await query.CountAsync();
+            var accounts = await query.OrderByDescending(m => m.DateCreated).GetPagedAsync(page, pagesize);
+            var list = new List<AccountViewModel>();
+            foreach (var account in accounts)
+            {
+                var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+
+                list.Add(new AccountViewModel(account, accountCouting));
+            }
+
+
+            return new ListAccountViewModel()
+            {
+                Accounts = list,
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+        }
 
         public async Task<ListAccountViewModel> GetListAccount(IEnumerable<AccountType> accountTypes, IEnumerable<int> 
             categoryid, Gender? gender, IEnumerable<int> cityid, int? agestart, int? ageend,

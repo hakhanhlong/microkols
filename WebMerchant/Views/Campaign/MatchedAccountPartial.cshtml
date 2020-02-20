@@ -1,0 +1,85 @@
+﻿@model ListAccountViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@{
+    var currenturl = Url.Action("MatchedAccountPartial", new { campaignid = ViewBag.Campaignid, pageindex = Model.Pager.Page, pagesize = Model.Pager.PageSize });
+}
+@if (Model.Accounts.Count > 0)
+{
+
+    <div class="table-responsive">
+
+        <table class="table table-borderless mt-3">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="cb-checkall" /></th>
+                    <th>#</th>
+                    <th>Họ và Tên</th>
+                    <th>Bạn bè</th>
+                    <th>Thống kê trung bình</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var stt = 0; }
+
+                @foreach (var account in Model.Accounts)
+                {
+                    stt++;
+                    var counting = await AccountService.GetAccountCounting(account.Id);
+                    <tr>
+                        <td><input type="checkbox" class="cb-checkitem cb-checkitemAccountRequest" value="@account.Id" /></td>
+                        <td>@stt</td>
+                        <td>
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">
+                            @account.Name
+                        </td>
+
+                        <td>@counting.FriendsCount</td>
+                        <td class="statistic-social">
+                            <span title="Lượt thích trung bình">@counting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+                            <span class="px-2" title="Lượt chia sẻ trung bình">@counting.AvgShareCount <i class="fa fa-share"></i></span>
+                            <span title="Lượt bình luận trung bình">@counting.AvgCommentCount <i class="fa fa-comment"></i></span>
+                        </td>
+                        <td>
+                           
+                                <form action="javascript:;" data-action="@Url.Action("RequestAccountJoinCampaign")" class="frmFeedback">
+
+                                    <input type="hidden" name="returnurl" value="@currenturl" />
+                                    <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
+                                    <input type="hidden" name="accountid" value="@account.Id" />
+                                    <button class="btn btn-sm btn-primary" type="submit" name="type" value="1">Mời tham gia</button>
+                                </form>
+                         
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-6">
+                <form action="javascript:;" data-action="@Url.Action("RequestAllAccountJoinCampaign")" class="frmFeedbackAll frmFeedback">
+
+                    <input type="hidden" name="returnurl" value="@currenturl" />
+                    <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
+                    <button class="btn btn-sm btn-primary" type="submit">Mời tất cả</button>
+                    <div class="frmFeedbackAll-ids"></div>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+
+                <pager pager="@Model.Pager" asp-action="MatchedAccountPartial" asp-route-campaignid="@ViewBag.CampaignId"></pager>
+            </div>
+
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="alert alert-info">Chưa có thành viên phù hợp</div>
+}
