@@ -114,7 +114,9 @@
                                 <li class="list-inline-item">Người đăng ký tham gia:</li>
                                 <li class="list-inline-item">
 
-                                    <a href="javascript:;" data-toggle="modal" data-target="#accountCampaign@(item.Id)Modal" class="kol-join"><i class="fa fa-users"></i> @(counting.Total)/@item.Quantity</a>
+                                    <a href="javascript:;" data-toggle="modal" data-target="#accountCampaign@(item.Id)Modal" class="kol-join">
+                                    
+                                    <i class="fa fa-users"></i> @(counting.Total)/@item.Quantity</a>
                                 </li>
 
                                 @if (item.Type == CampaignType.ShareContentWithCaption)
@@ -132,8 +134,8 @@
                                 }
                             </ul>
 
-                            <div class="modal modal-accountcampaign" id="accountCampaign@(item.Id)Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
+                            <div class="modal fade modal-accountcampaign" z-index: 9999999; id="accountCampaign@(item.Id)Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Danh sách Kols tham gia chiến dịch</h5>
@@ -151,7 +153,9 @@
                                             </nav>
                                             <div class="tab-content" id="nav-tabContent">
                                                 <div class="tab-pane fade show active" id="nav-kol-@(item.Id)-join-1" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                    <h6><strong>Tham gia:</strong> <span class="text-danger">@(counting.Total)/@item.Quantity</span></h6>
 
+                                                    <div class="list-campaignaccount" data-url="@Url.Action("CampaignAccountPartial", new { campaignid= item.Id})"></div>
                                                 </div>
                                                 <div class="tab-pane fade show active" id="nav-kol-@(item.Id)-join-2" role="tabpanel" aria-labelledby="nav-home-tab">
                                                 </div>

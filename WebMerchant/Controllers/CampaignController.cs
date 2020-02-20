@@ -332,9 +332,10 @@ namespace WebMerchant.Controllers
         #region Search Account
 
 
-        public async Task<IActionResult> CampaignAccountModal(int campaignid,int pageindex,int pagesize = 20)
+        public async Task<IActionResult> CampaignAccountPartial(int campaignid, int pageindex = 1, int pagesize = 1)
         {
-            var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
+            ViewBag.CampaignId = campaignid;
+            var model = await _campaignService.GetCampaignAccount(campaignid, pageindex, pagesize);
             return PartialView(model);
         }
 

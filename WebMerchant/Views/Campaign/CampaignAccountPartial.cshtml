@@ -1,0 +1,76 @@
+﻿@model ListCampaignAccountViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@if (Model.CampaignAccounts.Count > 0)
+{
+
+    <div class="table-responsive">
+
+        <table class="table table-borderless mt-3">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" /></th>
+                    <th>#</th>
+                    <th>Họ và Tên</th>
+                    <th>Bạn bè</th>
+                    <th>Thống kê trung bình</th>
+                    <th>Trạng thái</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ var stt = 0;}
+
+                @foreach (var campaignAccount in Model.CampaignAccounts)
+                {
+                    stt++;
+                    var counting = await AccountService.GetAccountCounting(campaignAccount.AccountId);
+                    <tr>
+                        <td><input type="checkbox" /></td>
+                        <td>@stt</td>
+                        <td>
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
+                            @campaignAccount.Account.Name
+                        </td>
+
+                        <td>@counting.FriendsCount</td>
+                        <td class="statistic-social">
+                            <span title="Lượt thích trung bình">@counting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+                            <span class="px-2" title="Lượt chia sẻ trung bình">@counting.AvgShareCount <i class="fa fa-share"></i></span>
+                            <span title="Lượt bình luận trung bình">@counting.AvgCommentCount <i class="fa fa-comment"></i></span>
+                        </td>
+                        <td>@campaignAccount.Status.ToBadge()</td>
+                        <td>
+
+                            @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
+                            {
+                                <button class="btn btn-sm btn-success">Đồng ý</button>
+                                <button class="btn btn-sm btn-danger">Từ chối</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <button class="btn btn-primary btn-sm">Mời tất cả</button>
+            </div>
+
+            <div class="col-md-6">
+
+                <pager pager="@Model.Pager" asp-action="CampaignAccountPartial" asp-route-campaignid="@ViewBag.CampaignId"></pager>
+            </div>
+
+        </div>
+    </div>
+   
+}
+else
+{
+    <div class="alert alert-info">Chưa có thành viên tham gia chiến dịch</div>
+}

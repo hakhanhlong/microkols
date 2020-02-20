@@ -10,6 +10,7 @@ namespace Core.Specifications
     {
         public CampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
+            AddInclude(c => c.Account);
         }
 
         public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)

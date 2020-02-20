@@ -32,6 +32,9 @@
         else if (currentPage === 'campaign_details') {
             CampaignDetailsPage.Init();
         } 
+        else if (currentPage === 'campaign_index') {
+            CampaignIndexPage.Init();
+        } 
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
         }
