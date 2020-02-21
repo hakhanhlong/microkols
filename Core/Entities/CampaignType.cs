@@ -9,23 +9,23 @@ namespace Core.Entities
 {
     public enum CampaignType
     {
-        [Display(Name ="Chia sẻ thông điệp, không cần viết caption", Description = "" , ShortName = "/img/1.jpg")]
+        [Display(Name = "Chia sẻ thông điệp, không cần viết caption", Description = "", ShortName = "/img/1.jpg")]
         ShareContent = 1,
-        [Display(Name ="Chia sẻ thông điệp, viết thêm caption", Description = "", ShortName = "/img/2.jpg")]
+        [Display(Name = "Chia sẻ thông điệp, viết thêm caption", Description = "", ShortName = "/img/2.jpg")]
         ShareContentWithCaption = 2,
-        [Display(Name ="Thay hình Avatar", Description = "", ShortName = "/img/3.jpg")]
+        [Display(Name = "Thay hình Avatar", Description = "", ShortName = "/img/3.jpg")]
         ChangeAvatar = 3,
-        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệm", Description ="", ShortName = "/img/4.jpg")]
+        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệm", Description = "", ShortName = "/img/4.jpg")]
         ReviewProduct = 4,
         [Display(Name = "Tham gia sự kiện và check in", Description = "", ShortName = "/img/5.jpg")]
         JoinEvent = 5,
-        [Display(Name ="Share link livestream chương trình", Description = "", ShortName = "/img/6.jpg")]
+        [Display(Name = "Share link livestream chương trình", Description = "", ShortName = "/img/6.jpg")]
         ShareStreamUrl = 6,
-        [Display(Name ="Yêu cầu khác", Description = "", ShortName = "/img/7.png")]
+        [Display(Name = "Yêu cầu khác", Description = "", ShortName = "/img/7.png")]
         CustomService = 7
     }
 
-  
+
     public static class CampaignTypeExentions
     {
         public static bool IsShareCampaign(this CampaignType type)
@@ -34,9 +34,22 @@ namespace Core.Entities
 
         }
 
+        public static bool IsHasCaption(this CampaignType type)
+        {
+            return type == CampaignType.ShareContentWithCaption;
+        }
+
+        public static bool IsHasContent(this CampaignType type)
+        {
+            return type == CampaignType.ChangeAvatar || type == CampaignType.JoinEvent
+        || type == CampaignType.ShareStreamUrl || type == CampaignType.ReviewProduct;
+        }
+
+
+
         public static int GetKpiMin(this CampaignType type)
         {
-            if(type == CampaignType.ShareContent)
+            if (type == CampaignType.ShareContent)
             {
                 return 30;
             }
@@ -69,7 +82,7 @@ namespace Core.Entities
 
             return 0;
         }
-        
+
 
         public static string ToText(this CampaignType type)
         {
@@ -132,7 +145,7 @@ namespace Core.Entities
 
         public static string ToDataText(this CampaignType type)
         {
-           
+
             if (type == CampaignType.ChangeAvatar)
             {
                 return "Hình ảnh Avatar";
@@ -141,18 +154,18 @@ namespace Core.Entities
             {
                 return "Link nội dung";
             }
-          
+
 
             if (type == CampaignType.ReviewProduct)
             {
                 return "Link sản phẩm";
             }
-            if ( type == CampaignType.ShareStreamUrl)
+            if (type == CampaignType.ShareStreamUrl)
             {
                 return "Link stream";
             }
 
-            if ( type == CampaignType.JoinEvent)
+            if (type == CampaignType.JoinEvent)
             {
                 return "Link sự kiện";
             }

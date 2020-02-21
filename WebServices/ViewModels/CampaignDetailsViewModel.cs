@@ -42,14 +42,17 @@ namespace WebServices.ViewModels
     
     public class CampaignAccountCountingViewModel
     {
-        public int Total { get; set; }
-        public int TotalRequest { get; set; }
-        public int TotalConfirmed { get; set; }
 
-        public int TotalSummitted { get; set; }
-        public int TotalApproved { get; set; }
-        public int TotalProcessing { get; set; }
-        public int TotalFinished { get; set; }
+        public int TongNguoiThamGia { get; set; } 
+        public int TongNguoi { get; set; }
+        public int TongCaptionDaDuyet { get; set; }
+        public int TongCaptionCanDuyet { get; set; }
+        public int TongCaption { get; set; }
+
+
+        public int TongContentDaDuyet { get; set; }
+        public int TongContentCanDuyet { get; set; }
+        public int TongContent { get; set; }
     }
 
     

@@ -107,70 +107,9 @@
                     </tr>
                     <tr>
                         <td colspan="7">
-                            @{
-                                var counting = await CampaignService.GetCampaignAccountCounting(item.Id);
-                            }
-                            <ul class="list-inline campaign-row-item">
-                                <li class="list-inline-item">Người đăng ký tham gia:</li>
-                                <li class="list-inline-item">
 
-                                    <a href="javascript:;" data-toggle="modal" data-target="#accountCampaign@(item.Id)Modal" class="kol-join">
-                                    
-                                    <i class="fa fa-users"></i> @(counting.Total)/@item.Quantity</a>
-                                </li>
-
-                                @if (item.Type == CampaignType.ShareContentWithCaption)
-                                {
-                                    if (counting.TotalProcessing > 0)
-                                    {
-
-                                        <li class="list-inline-item">Nội dung đã duyệt:</li>
-                                        <li class="list-inline-item"><a href="javascript:;"><i class="fa fa-file"></i> @counting.TotalApproved/@counting.TotalProcessing</a></li>
-                                        <li class="list-inline-item">Nội dung cần duyệt:</li>
-                                        <li class="list-inline-item"><a href="/campaign-content-approve.html" class="text-danger"><i class="fa fa-file"></i> @counting.TotalApproved/@counting.TotalProcessing</a></li>
-
-                                    }
-
-                                }
-                            </ul>
-
-                            <div class="modal fade modal-accountcampaign" z-index: 9999999; id="accountCampaign@(item.Id)Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Danh sách Kols tham gia chiến dịch</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h6 class="title-campaign">@item.Title</h6>
-                                            <nav class="mb-3">
-                                                <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                                                    <a class="nav-item nav-link active" data-type="1" data-toggle="tab" href="#nav-kol-@(item.Id)-join-1" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Kols đã mời tham gia chiến dịch</a>
-                                                    <a class="nav-item nav-link" data-type="2" data-toggle="tab" href="#nav-kol-@(item.Id)-join-2" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">Kols phù hợp với chiến dịch</a>
-                                                </div>
-                                            </nav>
-                                            <div class="tab-content" id="nav-tabContent">
-                                                <div class="tab-pane fade show active" id="nav-kol-@(item.Id)-join-1" role="tabpanel" aria-labelledby="nav-home-tab">
-                                                    <h6><strong>Tham gia:</strong> <span class="text-danger">@(counting.Total)/@item.Quantity</span></h6>
-
-                                                    <div class="list-campaignaccount" data-url="@Url.Action("CampaignAccountPartial", new { campaignid= item.Id})"></div>
-                                                </div>
-                                                <div class="tab-pane fade" id="nav-kol-@(item.Id)-join-2" role="tabpanel" aria-labelledby="nav-home-tab">
-
-
-                                                    <div class="list-matchedaccount" data-url="@Url.Action("MatchedAccountPartial", new { campaignid= item.Id})"></div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <partial name="_CampaignItemCountingPartial" model="@item" />
+                          
                         </td>
 
                     </tr>

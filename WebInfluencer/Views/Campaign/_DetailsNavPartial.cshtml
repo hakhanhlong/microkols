@@ -6,14 +6,13 @@
     <li class="nav-item">
         <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
     </li>
-    @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+    @if (Model.Campaign.Type.IsHasCaption())
     {
         <li class="nav-item">
             <a class="nav-link @(2 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })">Caption</a>
         </li>
     }
-    else if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent
-        || Model.Campaign.Type == CampaignType.ShareStreamUrl || Model.Campaign.Type == CampaignType.ReviewProduct)
+    else if (Model.Campaign.Type.IsHasCaption())
     {
         <li class="nav-item">
             <a class="nav-link @(3 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })">Nội dung</a>

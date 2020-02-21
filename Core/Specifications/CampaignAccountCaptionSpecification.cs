@@ -31,5 +31,11 @@ namespace Core.Specifications
             AddInclude(m => m.CampaignAccount);
         }
 
+        public CampaignAccountCaptionByCampaignIdSpecification(int campaignId, CampaignAccountCaptionStatus status)
+        : base(i => i.CampaignAccount.CampaignId == campaignId && i.Status== status)
+        {
+            AddInclude(m => m.CampaignAccount);
+        }
+
     }
 }

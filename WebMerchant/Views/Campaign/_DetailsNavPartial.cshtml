@@ -1,0 +1,9 @@
+﻿@model CampaignDetailsViewModel
+<ul class="nav nav-tabs nav-campaign">
+    <li class="nav-item">
+        <a class="nav-link @(0 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Id, tab = 0})">CHI TIẾT CHIẾN DỊCH</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Id, tab = 1})">THỐNG KÊ</a>
+    </li>
+</ul>

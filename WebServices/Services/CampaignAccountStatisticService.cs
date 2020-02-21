@@ -44,7 +44,7 @@ namespace WebServices.Services
             var filter = new CampaignAccountStatisticByCampaignIdSpecification(campaignId);
 
             var total = await _CampaignAccountStatisticRepository.CountAsync(filter);
-            var list = await _CampaignAccountStatisticRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);
+            var list = await _CampaignAccountStatisticRepository.ListPagedAsync(filter, "Date_desc", page, pagesize);
 
 
             return CampaignAccountStatisticViewModel.GetList(list);

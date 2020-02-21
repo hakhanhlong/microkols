@@ -26,7 +26,13 @@ namespace WebMerchant.Controllers
         private readonly IFileHelper _fileHelper;
         private readonly IWalletService _walletService;
         private readonly IAgencyService _agencyService;
+        private readonly ICampaignAccountCaptionService _campaignAccountCaptionService;
+        private readonly ICampaignAccountContentService _campaignAccountContentService;
+        private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
         public CampaignController(ISharedService sharedService, IWalletService walletService,
+            ICampaignAccountCaptionService campaignAccountCaptionService,
+            ICampaignAccountContentService campaignAccountContentService,
+            ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService, IFileHelper fileHelper, IPaymentService paymentService, IAgencyService agencyService,
             ICampaignService campaignService, INotificationService notificationService)
         {
@@ -38,6 +44,9 @@ namespace WebMerchant.Controllers
             _paymentService = paymentService;
             _walletService = walletService;
             _agencyService = agencyService;
+            _campaignAccountCaptionService = campaignAccountCaptionService;
+            _campaignAccountContentService = campaignAccountContentService;
+            _campaignAccountStatisticService = campaignAccountStatisticService;
         }
 
 
@@ -246,10 +255,20 @@ namespace WebMerchant.Controllers
 
         #region Details
 
-        public async Task<IActionResult> Details(int id, string vt = "1")
+        public async Task<IActionResult> Details(int id, string vt = "1", int tab = 0)
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
             if (model == null) return NotFound();
+
+
+            ViewBag.Tab = tab;
+            if (tab == 1)
+            {
+                ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatisticsByCampaignId(model.Id, string.Empty, 1, 1000);
+
+                return View("DetailsStatistic", model);
+            }
+
             await ViewbagData();
             ViewBag.activedTab = vt;
             ViewBag.Balance = await _walletService.GetAmount(CurrentUser.Type, CurrentUser.Id);
@@ -533,5 +552,18 @@ namespace WebMerchant.Controllers
 
 
         #endregion
+
+        #region Caption
+        public async Task<IActionResult> Caption(int campaignid, string order, int pageindex, int pagesize)
+        {
+            var campaign = await _campaignService.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();
+            ViewBag.Campaign = campaign;
+            var model = await _campaignAccountCaptionService.GetCampaignAccountCaptionsByCampaignId(campaign.Id, order, pageindex, pagesize);
+
+            return View(model);
+        }
+        #endregion
     }
+
 }

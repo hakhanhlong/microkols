@@ -24,6 +24,9 @@ namespace WebServices.Services
         private readonly IWalletRepository _walletRepository;
         private readonly IAsyncRepository<CampaignTypeCharge> _campaignTypeChargeRepository;
         private readonly IAsyncRepository<CampaignAccountCaption> _campaignAccountCaptionRepository;
+        private readonly IAsyncRepository<CampaignAccountContent> _campaignAccountContentRepository;
+
+
         private readonly IAsyncRepository<CampaignOption> _campaignOptionRepository;
         private readonly IAsyncRepository<CampaignAccountType> _campaignAccountTypeRepository;
         private readonly ICampaignAccountRepository _campaignAccountRepository;
@@ -39,6 +42,7 @@ namespace WebServices.Services
             IAsyncRepository<CampaignAccountType> campaignAccountTypeRepository,
             ICampaignAccountRepository campaignAccountRepository,
             IAsyncRepository<CampaignAccountCaption> campaignAccountCaptionRepository,
+            IAsyncRepository<CampaignAccountContent> campaignAccountContentRepository,
             INotificationRepository notificationRepository,
              ISettingRepository settingRepository)
         {
@@ -49,12 +53,21 @@ namespace WebServices.Services
             _walletRepository = walletRepository;
             _settingRepository = settingRepository;
             _campaignAccountCaptionRepository = campaignAccountCaptionRepository;
+            _campaignAccountContentRepository = campaignAccountContentRepository;
             _transactionRepository = transactionRepository;
             _campaignAccountRepository = campaignAccountRepository;
             _notificationRepository = notificationRepository;
         }
 
         #region Campaigns
+
+        public async Task<CampaignViewModel> GetCampaign(int id)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(id);
+            if(campaign!= null) { return new CampaignViewModel(campaign); }
+            return null;
+        }
+
         public async Task<List<int>> GetEndedCampaignIds()
         {
             return await _campaignRepository.GetCampaignIds(CampaignStatus.Ended);
@@ -72,48 +85,68 @@ namespace WebServices.Services
 
         #endregion
 
-        public async Task<CampaignAccountCountingViewModel> GetCampaignAccountCounting(int campaignid)
+        public async Task<CampaignAccountCountingViewModel> GetCampaignAccountCounting(int campaignid, CampaignType type, int total)
         {
 
-
-
-            var total = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
-                CampaignAccountStatus.AccountRequest,
-                CampaignAccountStatus.AgencyRequest,
-            }));
             var totalRequest = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
                 CampaignAccountStatus.AccountRequest,
                 CampaignAccountStatus.AgencyRequest,
-            }));
-            var totalConfirm = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
-                CampaignAccountStatus.Confirmed,
-            }));
-
-
-            var totalProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
-                CampaignAccountStatus.SubmittedContent,
-                CampaignAccountStatus.SubmittedContent,
-            }));
-
-            var totalFinshed = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
-                CampaignAccountStatus.Finished,
-            }));
-
-            var totalApprove = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
                 CampaignAccountStatus.ApprovedContent,
-            }));
-            var totalSubmit = await _campaignAccountRepository.CountAsync(new CampaignAccountByAgencySpecification(campaignid, new List<CampaignAccountStatus>() {
+                CampaignAccountStatus.Confirmed,
+                CampaignAccountStatus.DeclinedContent,
+                CampaignAccountStatus.Finished,
                 CampaignAccountStatus.SubmittedContent,
+                CampaignAccountStatus.UpdatedContent,
+                CampaignAccountStatus.WaitToPay,
             }));
+
+            if (type.IsHasCaption())
+            {
+                var tongcaption = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid));
+
+                var tongcaptionDaduyet = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid, CampaignAccountCaptionStatus.DaDuyet));
+
+
+                var tongcaptionChuaDuyet = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid, CampaignAccountCaptionStatus.ChuaDuyet));
+
+
+
+
+                return new CampaignAccountCountingViewModel()
+                {
+                    TongCaption = tongcaption,
+                    TongCaptionCanDuyet = tongcaptionChuaDuyet,
+                    TongCaptionDaDuyet = tongcaptionDaduyet,
+                    TongNguoiThamGia = totalRequest,
+                    TongNguoi = total,
+                };
+            }
+            else if (type.IsHasContent())
+            {
+                var tongContent = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid));
+
+                var tongContentDaduyet = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid, CampaignAccountContentStatus.DaDuyet));
+
+
+                var tongContentChuaDuyet = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid, CampaignAccountContentStatus.ChuaDuyet));
+
+
+
+
+                return new CampaignAccountCountingViewModel()
+                {
+                    TongContent = tongContent,
+                    TongContentDaDuyet = tongContentDaduyet,
+                    TongContentCanDuyet = tongContentChuaDuyet,
+                    TongNguoiThamGia = totalRequest,
+                    TongNguoi = total,
+                };
+            }
+
             return new CampaignAccountCountingViewModel()
             {
-                Total = total,
-                TotalConfirmed = totalConfirm,
-                TotalFinished = totalFinshed,
-                TotalProcessing = totalProcess,
-                TotalRequest = totalRequest,
-                TotalApproved = totalApprove,
-                TotalSummitted = totalSubmit
+                TongNguoiThamGia = totalRequest,
+                TongNguoi = total,
             };
         }
         public async Task<string> GetCampaignCode(int id)

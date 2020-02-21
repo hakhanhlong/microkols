@@ -11,12 +11,8 @@
 <h3 class="mt-4 mb-4">Chiến dịch: @Model.Title</h3>
 
 <div class="mb-5 bg-white rounded">
-    <nav>
-        <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-campaign-detail-tab" data-toggle="tab" href="#nav-campaign-detail" aria-controls="nav-campaign-detail" role="tab" aria-selected="true">CHI TIẾT CHIẾN DỊCH</a>
-            <a class="nav-item nav-link" id="nav-campaign-statistic-tab" data-toggle="tab" href="#nav-campaign-statistic" aria-controls="nav-campaign-statistic" role="tab" aria-selected="false">THỐNG KÊ</a>
-        </div>
-    </nav>
+
+    <partial name="_DetailsNavPartial" model="Model" />
 
     <div class="tab-content" id="nav-tab-content-campaign">
         <div class="tab-pane fade active show" id="nav-campaign-detail" role="tabpanel">
@@ -98,13 +94,13 @@
                             </span>
                         </div>
                         @*<div class="mb-2">
-            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
-            <span>
-                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
-                <span>
-                </span>
-            </span>
-        </div>*@
+                                <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
+                                <span>
+                                    Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
+                                    <span>
+                                    </span>
+                                </span>
+                            </div>*@
                     </div>
 
                     <div class="col-md-6">
@@ -319,9 +315,6 @@
 
 
             </div>
-        </div>
-        <div class="tab-pane fade" id="nav-campaign-statistic">
-
-        </div>
+        </div> 
     </div>
 </div>

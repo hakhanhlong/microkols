@@ -1,0 +1,96 @@
+﻿@model CampaignDetailsViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@{
+
+    ViewData["Title"] = $"Chiến dịch {Model.Code}";
+
+}
+@section Scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        $().ready(function () {
+            if ($('#chartModel').length > 0) {
+
+
+                google.charts.load('current', { 'packages': ['corechart'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+
+                    var chartData = JSON.parse($('#chartModel').html());
+                    console.log('chartData', chartData);
+                    var data = google.visualization.arrayToDataTable(chartData);
+
+                    var options = {
+                        title: 'Thống kê',
+                        curveType: 'function',
+                        legend: { position: 'bottom' }
+                    };
+
+                    var chart = new google.visualization.LineChart(document.getElementById('chartStatistic'));
+
+                    chart.draw(data, options);
+                }
+
+            }
+        });
+    </script>
+}
+
+
+
+<h2>Chi tiết chiến dịch</h2>
+
+<h3 class="mt-4 mb-4">Chiến dịch: @Model.Title</h3>
+
+<div class="mb-5 bg-white rounded">
+
+    <partial name="_DetailsNavPartial" model="Model" />
+
+    <div class="tab-content" id="nav-tab-content-campaign">
+        <div class="tab-pane fade active show" id="nav-campaign-detail" role="tabpanel">
+            <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane fade active show">
+                    <div class="card mb-3 shadow border-0 card-body">
+
+                        <h5 class=" my-3">@Model.Title</h5>
+                        <p>
+                            <i class="fab fa-facebook"></i> @Model.Type.ToDisplayName()
+                        </p>
+
+                        @{
+                            var statistics = (List<CampaignAccountStatisticViewModel>)ViewBag.Statistics;
+
+                            var total = statistics.Sum(m => m.CountLike) + statistics.Sum(m => m.CountComment) + statistics.Sum(m => m.CountShare);
+
+
+
+                            <p>Tổng tương tác: <strong>@(total)</strong></p>
+
+                            if (total > 0)
+                            {
+                                var chartData = new List<object>();
+                                chartData.Add(new object[] { "Ngày", "Thích", "Share", "Comment" });
+                                foreach (var item in statistics)
+                                {
+                                    chartData.Add(new object[] { item.Date, item.CountLike, item.CountShare, item.CountComment });
+                                }
+
+                                <script type="text/template" id="chartModel">
+                                    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chartData))
+                                </script>
+                                <div id="chartStatistic" style="width: 100%; height: 500px"></div>
+                            }
+
+
+
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
