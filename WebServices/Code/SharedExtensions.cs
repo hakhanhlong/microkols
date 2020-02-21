@@ -46,7 +46,8 @@ namespace WebServices.Code
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<ICampaignAccountCaptionService, CampaignAccountCaptionService>();
             services.AddScoped<ICampaignAccountContentService, CampaignAccountContentService>();
-
+            services.AddScoped<ICampaignAccountStatisticService, CampaignAccountStatisticService>();
+            
 
 
 

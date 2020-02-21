@@ -72,8 +72,35 @@ namespace WebInfluencer.Code.Extensions
 
             return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
         }
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountContentStatus accountType)
+        {
+            var type = "danger";
+            if (accountType == CampaignAccountContentStatus.ChoDuyet)
+            {
+                type = "warning";
+            }
+            else if (accountType == CampaignAccountContentStatus.DaDuyet)
+            {
+                type = "success";
+            }
 
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+        }
+        
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountCaptionStatus accountType)
+        {
+            var type = "danger";
+            if (accountType == CampaignAccountCaptionStatus.ChoDuyet)
+            {
+                type = "warning";
+            }
+            else if (accountType == CampaignAccountCaptionStatus.DaDuyet)
+            {
+                type = "success";
+            }
 
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+        }
         public static HtmlString ToBadge(this Core.Entities.NotificationTypeGroup accountType)
         {
             var type = "primary";

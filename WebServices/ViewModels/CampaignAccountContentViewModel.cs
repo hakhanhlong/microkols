@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Common.Extensions;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,12 +22,14 @@ namespace WebServices.ViewModels
             UserCreated = CampaignAccountContent.UserCreated;
             UserModified = CampaignAccountContent.UserModified;
             Note = CampaignAccountContent.Note;
+            Image = CampaignAccountContent.Image.ToListString();
         }
         public static List<CampaignAccountContentViewModel> GetList(IEnumerable<CampaignAccountContent> CampaignAccountContents)
         {
             return CampaignAccountContents.Select(m => new CampaignAccountContentViewModel(m)).ToList();
         }
         public string Content { get; set; }
+        public List<string> Image { get; set; }
         public string Note { get; set; }
         public CampaignAccountContentStatus Status { get; set; }
         public DateTime DateCreated { get; set; }
@@ -39,6 +42,8 @@ namespace WebServices.ViewModels
     {
         public int CampaignAccountId { get; set; }
         public string Content { get; set; }
+        public int CampaignId { get; set; }
+        public List<string> Image { get; set; }
     }
 
     public class EditCampaignAccountContentViewModel

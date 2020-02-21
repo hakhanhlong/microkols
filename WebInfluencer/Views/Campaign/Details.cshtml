@@ -13,50 +13,11 @@
 @section Scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    @if (TempData["MessageModal"] != null)
-    {
-        <div class="modal fade" style="z-index: 999999;" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-info">@TempData["MessageModal"]</div>
-
-                      
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
-            $().ready(function () {
-                $('#modal-message').modal('show');
-            })
-        </script>
-
-    }
+   
 }
 @section Top{
 
-    <nav class="shadow-sm">
-        <ol class="breadcrumb">
-
-            <li class="breadcrumb-item "><a asp-action="Index" asp-controller="Home" class="breadcrumb-link">Trang chủ</a></li>
-            <li class="breadcrumb-item "><a asp-action="MarketPlace" asp-controller="Campaign" class="breadcrumb-link">Chiến dịch</a></li>
-
-            <li class="breadcrumb-item">
-                @ViewData["Title"]
-            </li>
-        </ol>
-    </nav>
-
+    <partial name="_DetailBreadcrumbPartial" model="Model" />
 }
 
 
@@ -64,27 +25,7 @@
     <div class="row">
         <div class="col-md-8">
 
-            <ul class="nav nav-tabs nav-campaign">
-                <li class="nav-item">
-                    <a class="nav-link @(0 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 0})">Thông tin chung</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
-                </li>
-                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link @(2 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })">Caption</a>
-                    </li>
-                }
-                else if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent
-                    || Model.Campaign.Type == CampaignType.ShareStreamUrl || Model.Campaign.Type == CampaignType.ReviewProduct)
-                {
-                    <li class="nav-item">
-                        <a class="nav-link @(3 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })">Nội dung</a>
-                    </li>
-                }
-            </ul>
+         <partial name="_DetailsNavPartial" model="Model" />
             <div class="tab-content" id="myTabContent">
 
 
@@ -342,11 +283,9 @@
 
         </div>
         <div class="col-md-4">
-            <div class="card shadow sticky-top">
-                <div class="card-body">
-                    <partial name="_DetailSidebarPartial" model="Model" />
-                </div>
-            </div>
+
+            <partial name="_DetailSidebarPartial" model="Model" />
+
 
         </div>
     </div>

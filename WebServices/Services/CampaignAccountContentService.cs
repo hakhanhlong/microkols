@@ -83,6 +83,7 @@ namespace WebServices.Services
                 Status = CampaignAccountContentStatus.ChoDuyet,
                 UserCreated = username,
                 UserModified = username,
+                Image = model.Image.ToListString()
             };
             await _CampaignAccountContentRepository.AddAsync(entity);
             return entity.Id;

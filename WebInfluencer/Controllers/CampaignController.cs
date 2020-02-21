@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Code.Helpers;
 using WebServices.Interfaces;
@@ -17,16 +18,29 @@ namespace WebInfluencer.Controllers
     public class CampaignController : BaseController
     {
         private readonly ICampaignService _campaignService;
+        private readonly ICampaignAccountCaptionService _campaignAccountCaptionService;
+        private readonly ICampaignAccountContentService _campaignAccountContentService;
+        private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
+
+        
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
         private readonly IFacebookHelper _facebookHelper;
+        private readonly IFileHelper _fileHelper;
         public CampaignController(ISharedService sharedService,
-            IFacebookHelper facebookHelper,
+            IFacebookHelper facebookHelper, IFileHelper fileHelper,
+            ICampaignAccountCaptionService campaignAccountCaptionService,
+            ICampaignAccountContentService campaignAccountContentService,
+            ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService,
             ICampaignService campaignService)
         {
+            _campaignAccountCaptionService = campaignAccountCaptionService;
+            _campaignAccountContentService = campaignAccountContentService;
+            _campaignAccountStatisticService = campaignAccountStatisticService;
             _facebookHelper = facebookHelper;
             _campaignService = campaignService;
+            _fileHelper = fileHelper;
             _sharedService = sharedService;
             _accountService = accountService;
         }
@@ -41,13 +55,81 @@ namespace WebInfluencer.Controllers
 
             return View(model);
         }
-        public async Task<IActionResult> Details(int id,int tab = 0)
+        public async Task<IActionResult> Details(int id, int tab = 0, int pageindex = 1, int pagesize = 20)
         {
             var model = await _campaignService.GetCampaignMarketPlace(id);
             ViewBag.Tab = tab;
+            if (tab == 1)
+            {
+                var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+                if (captionaccount != null)
+                {
+                    ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatistics(captionaccount.Id,string.Empty,pageindex,pagesize);
+                }
+                return View("DetailsStatistic", model);
+            }
+            if (tab == 2)
+            {
+                var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+                if (captionaccount != null)
+                {
+                    var captions = await _campaignAccountCaptionService.GetCampaignAccountCaptions(captionaccount.Id, string.Empty, pageindex, pagesize);
+                    ViewBag.Captions = captions;
+                }
+
+                return View("DetailsCaption", model);
+            }
+            if (tab == 3)
+            {
+                var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+                if (captionaccount != null)
+                {
+                    ViewBag.Contents = await _campaignAccountContentService.GetCampaignAccountContents(captionaccount.Id, string.Empty, pageindex, pagesize);
+                }
+
+                return View("DetailsContent", model);
+            }
             return View(model);
         }
 
+        #region Caption
+        public async Task<IActionResult> CreateCaption(CreateCampaignAccountCaptionViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignAccountCaptionService.CreateCampaignAccountCaption(model, CurrentUser.Username);
+                SetMessageModal("Đã gửi caption thành công, caption của bạn đang chờ được xét duyệt.");
+            }
+            return RedirectToAction("Details", new { id = model.CampaignId, tab = 2 });
+        }
+        #endregion
+
+        #region Content
+        public async Task<IActionResult> CreateContent(CreateCampaignAccountContentViewModel model, List<IFormFile> file)
+        {
+            if (ModelState.IsValid)
+            {
+                var imgs = new List<string>();
+                if(file!= null)
+                foreach(var item in file)
+                {
+
+                        var newpath = await _fileHelper.UploadTempFile(item);
+                        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
+                        if (!string.IsNullOrEmpty(tmp))
+                        {
+                            imgs.Add(tmp);
+                        }
+                    }
+
+                model.Image = imgs;
+
+                var r = await _campaignAccountContentService.CreateCampaignAccountContent(model, CurrentUser.Username);
+                SetMessageModal("Đã gửi nội dung thành công, Nội dung của bạn đang chờ được xét duyệt.");
+            }
+            return RedirectToAction("Details", new { id = model.CampaignId, tab = 3 });
+        }
+        #endregion
 
         #region Action
         public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
@@ -67,7 +149,7 @@ namespace WebInfluencer.Controllers
                 var result = await _campaignService.RequestJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username);
                 if (result)
                 {
-                    TempData["MessageModal"] = "Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xét duyệt";
+                    SetMessageModal("Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xét duyệt");
                 }
                 else
                 {
@@ -81,6 +163,8 @@ namespace WebInfluencer.Controllers
             }
             return RedirectToAction("Details", new { id = model.CampaignId });
         }
+
+
 
         public async Task<IActionResult> SubmitCampaignAccountRefContent(int campaignid)
         {

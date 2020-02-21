@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Core.Entities
@@ -22,8 +23,11 @@ namespace Core.Entities
 
     public enum CampaignAccountContentStatus
     {
+        [Display(Name = "Chờ duyệt")]
         ChoDuyet = 0,
+        [Display(Name = "Chưa duyệt")]
         ChuaDuyet = 1,
+        [Display(Name = "Đã duyệt")]
         DaDuyet = 2,
     }
 }

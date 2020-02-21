@@ -38,6 +38,7 @@ namespace WebServices.ViewModels
     public class CreateCampaignAccountCaptionViewModel
     {
         public int CampaignAccountId { get; set; }
+        public int CampaignId { get; set; }
         public string Content { get; set; }
     }
 

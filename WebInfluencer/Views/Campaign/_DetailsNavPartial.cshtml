@@ -1,0 +1,22 @@
+﻿@model MarketPlaceViewModel
+<ul class="nav nav-tabs nav-campaign">
+    <li class="nav-item">
+        <a class="nav-link @(0 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 0})">Thông tin chung</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
+    </li>
+    @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(2 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })">Caption</a>
+        </li>
+    }
+    else if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent
+        || Model.Campaign.Type == CampaignType.ShareStreamUrl || Model.Campaign.Type == CampaignType.ReviewProduct)
+    {
+        <li class="nav-item">
+            <a class="nav-link @(3 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })">Nội dung</a>
+        </li>
+    }
+</ul>

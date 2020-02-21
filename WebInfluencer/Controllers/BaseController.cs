@@ -43,5 +43,9 @@ namespace WebInfluencer.Controllers
     public class BaseController : BaseAuthController
     { 
     
+        protected void SetMessageModal(string message, int type = 0)
+        {
+            TempData["MessageModal"] = message;
+        }
     }
  }
