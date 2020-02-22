@@ -138,12 +138,20 @@
                             </div>
                             <div>
                                 <ul class="list-unstyled">
-                                    <li>
-                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                    </li>
+                                    @if (campaignType == CampaignType.ChangeAvatar)
+                                    {
+
+                                        <li>
+                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+
+                                        <li>
+                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
 

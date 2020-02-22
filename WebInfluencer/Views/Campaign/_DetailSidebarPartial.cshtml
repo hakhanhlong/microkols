@@ -118,8 +118,7 @@ else
                         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
-                    if (campaignAccount.Status == CampaignAccountStatus.ApprovedContent || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
-                    {
+                    
                         if (Model.Campaign.Status == CampaignStatus.Started)
                         {
                             <div class="alert alert-info">
@@ -153,7 +152,7 @@ else
                                 Vui lòng chờ chiến dịch bắt đầu để thực hiện công việc. Chiến dịch sẽ bắt đầu thực hiện lúc  <strong>@Model.Campaign.ExecutionStart.Value.ToViDateTime()</strong>
                             </div>
                         }
-                    }
+                   
 
 
                 }

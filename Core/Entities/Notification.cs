@@ -213,7 +213,23 @@ namespace Core.Entities
                 message = "Thành viên {0} đã gửi nội dung Caption chiến dịch {1}";
             }
 
+            else if (type == NotificationType.AgencyDeclineCampaignContent)
+            {
+                message = "Doanh nghiệp {0} đã không duyệt nội dung chiến dịch {1} của bạn";
+            }
 
+            else if (type == NotificationType.AgencyApproveCampaignContent)
+            {
+                message = "Doanh nghiệp {0} đã duyệt nội dung  chiến dịch {1} của bạn";
+            }
+            else if (type == NotificationType.AgencyUpdatedCampaignContent)
+            {
+                message = "Doanh nghiệp {0} thêm ghi chú  chiến dịch {1} của bạn";
+            }
+            else if (type == NotificationType.AccountSubmitCampaignContent)
+            {
+                message = "Thành viên {0} đã gửi nội dung chiến dịch {1}";
+            }
             return string.Format(message, args);
         }
     }

@@ -597,6 +597,53 @@ namespace WebMerchant.Controllers
 
 
         #endregion
+
+
+        #region Content
+        public async Task<IActionResult> Content(int campaignid, string order, int pageindex = 1, int pagesize = 1)
+        {
+            var campaign = await _campaignService.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();
+            ViewBag.Campaign = campaign;
+            var model = await _campaignAccountContentService.GetGroupCampaignAccountContentsByCampaignId(campaign.Id, order, pageindex, pagesize);
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FeedbackContent(int campaignid, List<int> ids, int type, string returnurl = "")
+        {
+            foreach (var item in ids)
+            {
+                await _campaignAccountContentService.UpdateStatus(item, type == 1 ? CampaignAccountContentStatus.DaDuyet : CampaignAccountContentStatus.KhongDuyet, CurrentUser.Name);
+            }
+
+            this.AddAlert(true);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Content", new { id = campaignid });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateContentNote(int campaignid, int id, string note, string returnurl = "")
+        {
+
+            await _campaignAccountContentService.UpdateNote(id, note, CurrentUser.Name);
+
+            this.AddAlert(true);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Content", new { id = campaignid });
+        }
+
+
+
+        #endregion
+
     }
 
 }

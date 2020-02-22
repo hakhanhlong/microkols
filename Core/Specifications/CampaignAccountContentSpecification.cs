@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Core.Specifications
@@ -21,7 +22,11 @@ namespace Core.Specifications
         {
             AddInclude(m => m.CampaignAccount);
         }
-
+        public CampaignAccountContentByCampaignAccountIdSpecification(IEnumerable<int> campaignAccountId)
+       : base(i => campaignAccountId.Contains(i.CampaignAccountId))
+        {
+            AddInclude(m => m.CampaignAccount);
+        }
     }
 
     public class CampaignAccountContentByCampaignIdSpecification : BaseSpecification<CampaignAccountContent>

@@ -26,7 +26,7 @@ namespace Core.Entities
         [Display(Name = "Chờ duyệt")]
         ChoDuyet = 0,
         [Display(Name = "Chưa duyệt")]
-        ChuaDuyet = 1,
+        KhongDuyet = 1,
         [Display(Name = "Đã duyệt")]
         DaDuyet = 2,
     }

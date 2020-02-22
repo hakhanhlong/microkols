@@ -1248,6 +1248,8 @@ namespace WebServices.Services
                            EntityType.Agency, campaign.AgencyId, campaign.Id,
                            NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaignid.ToString(), "Bạn chưa thanh toán tiền chiến dịch"));
 
+                        return;
+
                     }
 
 
