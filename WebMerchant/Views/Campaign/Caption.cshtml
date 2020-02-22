@@ -1,0 +1,260 @@
+﻿@model ListGroupCampaignAccountCaptionViewModel
+@inject WebServices.Interfaces.IAccountService  AccountService
+@{
+    ViewData["Title"] = "Duyệt caption chiến dịch";
+    var campaign = (CampaignViewModel)ViewBag.Campaign;
+    
+    var currenturl = Url.Action("Caption", new { campaignid = campaign.Id, pageindex = Model.Pager.Page, pagesize = Model.Pager.PageSize });
+}
+
+<h2>@ViewData["Title"] </h2>
+
+<h3>@campaign.Title</h3>
+
+<alert></alert>
+
+<div class="shadow p-3 mb-5 bg-white rounded">
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-borderless mt-3">
+                <thead>
+                    <tr>
+
+                        <th><input type="checkbox" class="cb-checkall" /></th>
+                        <th scope="col">#</th>
+                        <th scope="col">Họ và Tên</th>
+                        <th scope="col" width="550">Caption</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.CampaignGroupAccountCaptions)
+                    {
+                        var lastCaption = item.LastCaption;
+
+                        var account = await AccountService.GetAccount(lastCaption.AccountId);
+
+                        <tr>
+
+                            <td><input type="checkbox" class="cb-checkitem cb-checkitemChuaDuyet" value="@lastCaption.Id" /></td>
+                            <th scope="row">1</th>
+                            <td><a href="#" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a></td>
+                            <td>
+                                <p class="d-inline-block text-wrap" style="max-width: 550px">
+                                    @lastCaption.Content
+                                </p>
+                                @if (!string.IsNullOrEmpty(lastCaption.Note))
+                                {
+                                    <p>
+                                        <strong>Ghi chú từ doanh nghiệp</strong> <br />
+                                        <em class="text-secondary">@lastCaption.Note</em>
+                                    </p>
+                                }
+                            </td>
+                            <td> @lastCaption.Status.ToBadge() </td>
+                            <td>
+                                @if (lastCaption.Status == CampaignAccountCaptionStatus.ChoDuyet)
+                                {
+                                    <form action="@Url.Action("FeedbackCaption")" class="frmFeedback" method="post">
+
+                                        <input type="hidden" name="returnurl" value="@currenturl" />
+                                        <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
+                                        <input type="hidden" name="ids" value="@lastCaption.Id" />
+                                        <button class="btn btn-sm btn-success" type="submit" name="type" value="1">Duyệt</button>
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit-caption-@lastCaption.AccountId">Yêu cầu sửa caption</button>
+
+                                        <button class="btn btn-sm btn-danger" type="submit" name="type" value="0">Từ chối</button>
+
+
+
+                                    </form>
+                                    <!-- Modal -->
+                                    <div class="modal fade" style="z-index: 9999999;" id="edit-caption-@lastCaption.AccountId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Yêu cầu sửa caption</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="title-campaign">@campaign.Title</h6>
+                                                    <div class="statistic-social mb-3">
+                                                        <a href="#" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a>
+                                                        <span title="Lượt thích trung bình">@account.AccountCounting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+                                                        <span class="px-2" title="Lượt chia sẻ trung bình">@account.AccountCounting.AvgShareCount <i class="fa fa-share"></i></span>
+                                                        <span title="Lượt bình luận trung bình">@account.AccountCounting.AvgCommentCount <i class="fa fa-comment"></i></span>
+                                                    </div>
+                                                    <nav class="mb-3">
+                                                        <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home-@lastCaption.AccountId" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">VIẾT GHI CHÚ</a>
+                                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile-@lastCaption.AccountId" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">LỊCH SỬ YÊU CẦU THAY ĐỔI</a>
+                                                        </div>
+                                                    </nav>
+                                                    <div class="tab-content" id="nav-tabContent">
+                                                        <div class="tab-pane fade show active" id="nav-home-@lastCaption.AccountId" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                                            <form asp-action="UpdateCaptionNote">
+
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Ghi chú sửa caption</label>
+                                                                    <textarea class="form-control" rows="3" name="note" required></textarea>
+                                                                    
+                                                                </div>
+                                                                <div class="text-center">
+                                                                    <input type="hidden" name="id" value="@lastCaption.Id" />
+                                                                    <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
+                                                                    <input type="hidden" name="returnurl" value="@currenturl" />
+                                                                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                                                </div>
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="tab-pane fade" id="nav-profile-@lastCaption.AccountId" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                                            @{ var no = 1;}
+                                                            <table class="table table-borderless mt-3">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col" width="550">Caption</th>
+                                                                        <th scope="col">Ngày tháng</th>
+                                                                        <th scope="col"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach (var item2 in item.Captions)
+                                                                    {
+                                                                        <tr>
+                                                                            <th scope="row">@no</th>
+                                                                            <td>
+                                                                                <p class="d-inline-block text-wrap" style="max-width: 550px;">
+                                                                                    @item2.Content
+                                                                                </p> 
+
+                                                                                @if (!string.IsNullOrEmpty(item2.Note))
+                                                                                {
+                                                                                    <p>
+                                                                                        <strong>Ghi chú từ doanh nghiệp</strong> <br />
+                                                                                        <em class="text-secondary">@item2.Note</em>
+                                                                                    </p>
+                                                                                }
+                                                                            </td>
+                                                                            <td> @item2.DateCreated.ToViDateTime()</td>
+                                                                            <td> @item2.Status.ToBadge()</td>
+                                                                        </tr>
+                                                                        no++;
+                                                                    }
+
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#caption-history-@lastCaption.AccountId">Lịch sử</button>
+
+
+                                    <div class="modal fade" style="z-index: 9999999;" id="caption-history-@lastCaption.AccountId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa caption</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h6 class="title-campaign">@campaign.Title</h6>
+                                                    <div class="statistic-social mb-3">
+                                                        <a href="#" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a>
+                                                        <span title="Lượt thích trung bình">@account.AccountCounting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+                                                        <span class="px-2" title="Lượt chia sẻ trung bình">@account.AccountCounting.AvgShareCount <i class="fa fa-share"></i></span>
+                                                        <span title="Lượt bình luận trung bình">@account.AccountCounting.AvgCommentCount <i class="fa fa-comment"></i></span>
+                                                    </div>
+                                                    @{ var no = 1;}
+                                                    <table class="table table-borderless mt-3">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col" width="550">Caption</th>
+                                                                <th scope="col">Ngày tháng</th>
+                                                                <th scope="col"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item2 in item.Captions)
+                                                            {
+                                                                <tr>
+                                                                    <th scope="row">@no</th>
+                                                                    <td>
+                                                                        <p class="d-inline-block text-wrap" style="max-width: 550px;">
+                                                                            @item2.Content
+                                                                        </p><br />
+                                                                        @if (!string.IsNullOrEmpty(item2.Note))
+                                                                        {
+                                                                            <p>
+                                                                                <strong>Ghi chú từ doanh nghiệp</strong> <br />
+                                                                                <em class="text-secondary">@item2.Note</em>
+                                                                            </p>
+                                                                        }
+                                                                    </td>
+                                                                    <td> @item2.DateCreated.ToViDateTime()</td>
+                                                                    <td> @item2.Status.ToBadge()</td>
+                                                                </tr>
+                                                                no++;
+                                                            }
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <form  action="@Url.Action("FeedbackCaption")" class="frmFeedbackAll frmFeedback" method="post" style="display:none">
+
+                            <input type="hidden" name="returnurl" value="@currenturl" />
+                            <input type="hidden" name="campaignid" value="@campaign.Id" />
+                            <button class="btn btn-sm btn-primary" type="submit" name="type" value="1">Duyệt tất cả</button>
+                            <button class="btn btn-sm btn-danger" type="submit" name="type" value="0">Từ chối tất cả</button>
+                            <div class="frmFeedbackAll-ids"></div>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+
+                        <pager pager="@Model.Pager" asp-action="Caption" asp-route-campaignid="@campaign.Id"></pager>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

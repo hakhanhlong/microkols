@@ -554,15 +554,48 @@ namespace WebMerchant.Controllers
         #endregion
 
         #region Caption
-        public async Task<IActionResult> Caption(int campaignid, string order, int pageindex, int pagesize)
+        public async Task<IActionResult> Caption(int campaignid, string order, int pageindex = 1, int pagesize = 1)
         {
             var campaign = await _campaignService.GetCampaign(campaignid);
             if (campaign == null) return NotFound();
             ViewBag.Campaign = campaign;
-            var model = await _campaignAccountCaptionService.GetCampaignAccountCaptionsByCampaignId(campaign.Id, order, pageindex, pagesize);
+            var model = await _campaignAccountCaptionService.GetGroupCampaignAccountCaptionsByCampaignId(campaign.Id, order, pageindex, pagesize);
 
             return View(model);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FeedbackCaption(int campaignid, List<int> ids, int type, string returnurl = "")
+        {
+            foreach (var item in ids)
+            {
+                await _campaignAccountCaptionService.UpdateStatus(item, type == 1 ? CampaignAccountCaptionStatus.DaDuyet : CampaignAccountCaptionStatus.KhongDuyet, CurrentUser.Name);
+            }
+
+            this.AddAlert(true);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Caption", new { id = campaignid });
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCaptionNote(int campaignid, int id, string note, string returnurl = "")
+        {
+
+            await _campaignAccountCaptionService.UpdateNote(id, note, CurrentUser.Name);
+
+            this.AddAlert(true);
+            if (!string.IsNullOrEmpty(returnurl))
+            {
+                return Redirect(returnurl);
+            }
+            return RedirectToAction("Caption", new { id = campaignid });
+        }
+
+
+
         #endregion
     }
 

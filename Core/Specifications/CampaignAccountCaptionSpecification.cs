@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Core.Specifications
 {
@@ -11,7 +12,7 @@ namespace Core.Specifications
          : base(i => i.Id == id)
         {
         }
-
+      
 
     }
     public class CampaignAccountCaptionByCampaignAccountIdSpecification : BaseSpecification<CampaignAccountCaption>
@@ -19,8 +20,15 @@ namespace Core.Specifications
         public CampaignAccountCaptionByCampaignAccountIdSpecification(int campaignAccountId)
          : base(i => i.CampaignAccountId == campaignAccountId)
         {
+            AddInclude(m => m.CampaignAccount);
         }
 
+
+        public CampaignAccountCaptionByCampaignAccountIdSpecification(IEnumerable<int> campaignAccountId)
+     : base(i => campaignAccountId.Contains(i.CampaignAccountId))
+        {
+            AddInclude(m => m.CampaignAccount);
+        }
     }
 
     public class CampaignAccountCaptionByCampaignIdSpecification : BaseSpecification<CampaignAccountCaption>

@@ -107,7 +107,7 @@ namespace WebServices.Services
                 var tongcaptionDaduyet = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid, CampaignAccountCaptionStatus.DaDuyet));
 
 
-                var tongcaptionChuaDuyet = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid, CampaignAccountCaptionStatus.ChuaDuyet));
+                var tongcaptionChuaDuyet = await _campaignAccountCaptionRepository.CountAsync(new CampaignAccountCaptionByCampaignIdSpecification(campaignid, CampaignAccountCaptionStatus.ChoDuyet));
 
 
 
@@ -128,7 +128,7 @@ namespace WebServices.Services
                 var tongContentDaduyet = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid, CampaignAccountContentStatus.DaDuyet));
 
 
-                var tongContentChuaDuyet = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid, CampaignAccountContentStatus.ChuaDuyet));
+                var tongContentChuaDuyet = await _campaignAccountContentRepository.CountAsync(new CampaignAccountContentByCampaignIdSpecification(campaignid, CampaignAccountContentStatus.ChoDuyet));
 
 
 
@@ -705,8 +705,7 @@ namespace WebServices.Services
                     UserModified = username,
                     UserCreated = username,
                     Type = campaign.Type,
-                    Status = CampaignAccountStatus.Confirmed,
-
+                    Status = CampaignAccountStatus.AgencyRequest,
                 };
                 await _campaignAccountRepository.AddAsync(campaignAccount);
                 return true;

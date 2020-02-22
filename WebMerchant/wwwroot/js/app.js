@@ -38,6 +38,9 @@
         else if (currentPage === 'home_index') {
             HomeIndexPage.Init();
         }
+        else if (currentPage === 'campaign_caption') {
+            CampaignCaptionPage.Init();
+        }
         
         
     }

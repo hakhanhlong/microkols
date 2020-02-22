@@ -31,6 +31,36 @@ namespace WebMerchant.Code.Extensions
 
             return writer.ToString();
         }
+
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountContentStatus accountType)
+        {
+            var type = "danger";
+            if (accountType == CampaignAccountContentStatus.ChoDuyet)
+            {
+                type = "warning";
+            }
+            else if (accountType == CampaignAccountContentStatus.DaDuyet)
+            {
+                type = "success";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+        }
+
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountCaptionStatus accountType)
+        {
+            var type = "danger";
+            if (accountType == CampaignAccountCaptionStatus.ChoDuyet)
+            {
+                type = "warning";
+            }
+            else if (accountType == CampaignAccountCaptionStatus.DaDuyet)
+            {
+                type = "success";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+        }
         public static HtmlString ToBadge(this Core.Entities.CampaignStatus status)
         {
             var type = "primary";
@@ -224,16 +254,34 @@ namespace WebMerchant.Code.Extensions
                 NotificationType.SystemUpdateUnfinishedAccountCampaign,
                 NotificationType.AgencyUpdatedCampaignRefContent
 
+                ,
+                NotificationType.AgencyDeclineCampaignCaption,
+                NotificationType.AgencyApproveCampaignCaption,
+                NotificationType.AccountSubmitCampaignCaption,
+                NotificationType.AccountSubmitCampaignCaption
+
             };
             if (campaignNotifTypes.Contains(model.Type))
             {
+                var type = model.Type.ToString();
 
                 if (model.EntityType == EntityType.Account)
                 {
+                  
+                    if (type.Contains("CampaignCaption"))
+                    {
+                        return urlHelper.Action("Details", "Campaign", new { id = model.DataId , tab = 2 });
+                    }
+
                     return urlHelper.Action("Details", "Campaign", new { id = model.DataId });
                 }
                 else if (model.EntityType == EntityType.Agency)
                 {
+                    if (type.Contains("CampaignCaption"))
+                    {
+                        return urlHelper.Action("Caption", "Campaign", new { campaignid = model.DataId });
+                    }
+
                     return urlHelper.Action("Details", "Campaign", new { id = model.DataId });
                 }
 

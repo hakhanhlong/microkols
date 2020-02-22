@@ -39,7 +39,7 @@ namespace Infrastructure.Data
             return await _dbContext.Set<T>().FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        private IQueryable<T> GetQueryBySpecification(ISpecification<T> spec, bool disableTracking = true)
+        public IQueryable<T> GetQueryBySpecification(ISpecification<T> spec, bool disableTracking = true)
         {
             var queryableResultWithIncludes = spec.Includes
            .Aggregate(_dbContext.Set<T>().AsQueryable(),

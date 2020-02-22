@@ -12,8 +12,6 @@
 }
 else
 {
-
-
     if (campaignAccount != null)
     {
         <div class="card shadow sticky-top">
@@ -32,24 +30,7 @@ else
                 {
                     <div class="alert alert-info">Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xác nhận</div>
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.SubmittedContent)
-                {
-                    <div class="alert alert-info">
-                        Đã gửi nội dung Caption. Vui lòng chờ doanh nghiệp duyệt nội dung
-                    </div>
-                }
-                else if (campaignAccount.Status == CampaignAccountStatus.DeclinedContent)
-                {
-                    <div class="alert alert-danger">
-                        <p>
-                            Doanh nghiệp yêu cầu sửa lại  Nội dung Caption
-                        </p>
-                        <div>
-                            <button class="btn btn-info btn-updateref btn-block" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })"> Gửi lại nội dung Caption </button>
 
-                        </div>
-                    </div>
-                }
                 else if (campaignAccount.Status == CampaignAccountStatus.Finished)
                 {
                     if (Model.Campaign.Status == CampaignStatus.Completed)
@@ -126,10 +107,9 @@ else
                             <p>
                                 Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
                             </p>
-                            <p>
+                            @*<p>
                                 <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
-
-                            </p>
+                            </p>*@
                         </div>
 
                     }
@@ -138,31 +118,7 @@ else
                         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
-                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
-                    {
-                        if (!string.IsNullOrEmpty(campaignAccount.RefContent))
-                        {
-                            <div>
-                                <strong>Nội dung Caption</strong>
-                                <div>@campaignAccount.RefContent</div>
-                            </div>
-                            <hr />
-                        }
-                        else
-                        {
-                            if (campaignAccount.Status == CampaignAccountStatus.Confirmed)
-                            {
-                                <button class="btn btn-info btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })"> Viết Caption chiến dịch </button>
-
-                            }
-                        }
-
-                    }
-
-
-
-                    if (Model.Campaign.Type != CampaignType.ShareContentWithCaption || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
-                        || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+                    if (campaignAccount.Status == CampaignAccountStatus.ApprovedContent || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                     {
                         if (Model.Campaign.Status == CampaignStatus.Started)
                         {
@@ -204,40 +160,4 @@ else
             </div>
         </div>
     }
-    else if (Model.Campaign.Status == CampaignStatus.Confirmed)
-    {
-        @*var now = DateTime.Now;
-            if (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value)
-            {
-
-                <form asp-action="RequestJoinCampaign" method="post">
-                    @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
-                    {
-                        <div class="form-group">
-                            <label>KPIs cam kết:</label>
-                            <input type="text" name="KPICommitted" class="form-control" value="@Model.Campaign.KPIMin" />
-                        </div>
-                    }
-                    else
-                    {
-                        <input type="hidden" name="KPICommitted" value="0" />
-                    }
-                    <div class="form-group">
-                        <label>Chi phí doanh nghiệp sẽ trả cho bạn:</label>
-                        <input type="text" name="AccountChargeAmount" class="form-control" value="@Model.Campaign.AmountMin" min="@Model.Campaign.AmountMin" max="@Model.Campaign.AmountMax" />
-
-                    </div>
-                    <div class="form-group">
-
-                        <button class="btn btn-primary btn-block"> Yêu cầu tham gia chiến dịch</button>
-                        <input type="hidden" name="campaignid" value="@Model.Campaign.Id" />
-                    </div>
-                </form>
-            }
-            else
-            {
-                <div class="alert alert-info">Thời gian đăng ký @Model.Campaign.DateStart.Value.ToViDateTime() - @Model.Campaign.DateEnd.Value.ToViDateTime() </div>
-            }*@
-    }
-
 }

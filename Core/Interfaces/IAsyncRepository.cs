@@ -18,5 +18,7 @@ namespace Core.Interfaces
         Task<T> AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+
+        IQueryable<T> GetQueryBySpecification(ISpecification<T> spec, bool disableTracking = true);
     }
 }

@@ -1,0 +1,1347 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Bank Account Create | Booterator</title>
+
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">  
+  <link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css"> <!--v 5.12 -->
+  <link rel="stylesheet" type="text/css" href="css/theme.css">
+
+  <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300'rel='stylesheet' type='text/css'>
+  
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+    
+	<div class="navbar-default box-shadow fixed-top">
+        <nav class="navbar navbar-dark navbar-expand-lg">
+                <a class="navbar-brand" href="/">MICROKOLS <small>MERCHANT</small></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>              
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">          
+                  <ul class="nav header-link">
+                    <li class="nav-item nav-create-campaign mt-2">
+                        <a class="btn btn-outline-primary my-2 my-sm-0 nav-link box-shadow" href="/campaign-create-step1.html">TẠO CHIẾN DỊCH</a>
+                    </li>                   
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="fa fa-bell"></i> <span class="badge badge-danger">6</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#"><i class="fa fa-credit-card"></i> <span style="color: red;">60,000, 000 vnđ</span></a>
+                    </li>                    
+                    <li class="nav-item">
+                      <div class="nav-link btn-group">                
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                          <img src="img/avatar.png" width="32" height="32" class="rounded-circle"/>
+                          <span class="text-blue500">Hà Khánh Long</span>
+                        </div>        
+                        <div class="dropdown-menu dropdown-menu-right mr-2">                          
+                          <a class="dropdown-item" href="#"><i class="fas fa-key"></i> Thay đổi mật khẩu</a>
+                          <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i> Thoát</a>          
+                        </div>
+                      </div>
+                    </li>            
+                  </ul>          
+                </div>
+        </nav>        
+</div>
+
+
+	<div class="container-fluid page-container">        
+        <div class="row">
+            <div class="col-lg-1 col-sm-1 d-none d-md-block">
+                <div class="sidebar-default">
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a href="/">
+                    <i class="fa fa-home"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/campaign-listing.html">
+                <i class="fa fa-bullhorn"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/merchant-settings.html">
+                <i class="fa fa-user"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="/merchant-payment.html">
+                <i class="fa fa-credit-card"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+                <a href="#">
+                    <i class="fa fa-question-circle"></i>
+                </a>
+        </li>        
+    </ul>
+</div>
+
+
+            </div>
+            <div class="col-lg-11 col-sm-11 mt-3 ml-n4">
+                <h2 class="mb-3">Tài khoản ngân hàng</h2>
+                <h3 class="mt-3 mb-4">Thêm tài khoản ngân hàng</h3>                                             
+                <div class="mb-5 bg-white rounded">
+                  <div class="payment">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                    <form>
+                                            <div class="form-row">
+                                                    <div class="form-group col-lg-7">                                                        
+                                                            <label>Tên tài khoản</label>
+                                                            <input type="text" class="form-control form-control-lg" placeholder="Tên tài khoản">
+                                                            <br>
+                                                            <label>Ngân hàng</label>
+                                                            <input type="text" class="form-control form-control-lg" placeholder="Ngân hàng">
+                                                            <br>
+                                                            <label>Số tài khoản</label>
+                                                            <input type="number" class="form-control form-control-lg" placeholder="Số tài khoản">
+                                                            <br>
+                                                            <label>Chi nhánh ngân hàng</label>
+                                                            <input type="text" class="form-control form-control-lg" placeholder="Chi nhánh ngân hàng">
+                                                    </div>                                                           
+                                            </div>                                                                                                         
+                                            <div class="text-center mt-5">
+                                                <a href="#" class="btn btn-primary">Thêm mới</a>
+                                            </div>               
+                                        </form>
+                            </div>     
+                        </div>       
+                  </div>            
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+	<footer>
+        <div class="text-right mr-3">
+            <a href="#" class="widget-help-online" title="Hỗ trợ trực tuyến"><h1><i class="fa fa-comment"></i></h1></a>
+        </div>
+</footer>
+
+	<!-- javascript //-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="js/popper.min.js" type="text/javascript"></script>
+  <script src="js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="js/bootbox.min.js" type="text/javascript"></script>
+  
+  <script>
+    $(document).ready(function () {
+      // initalize tooltips
+      $('[data-toggle="tooltip"]').tooltip();
+      // initalize popovers
+      $('[data-toggle="popover"]').popover();
+
+      $('#btn-create-campaign').click(function(){        
+          bootbox.alert({
+              size: "small",
+              title: "Thông báo",
+              message: "Hệ thống đã nhận được yêu cầu xét duyệt chiến dịch.",
+              callback: function(){ /* your callback code */ },
+              centerVertical: true,
+              size:"lg"
+          });
+      });
+
+      $('.campaign-lock').click(function(){
+          bootbox.alert({
+              size: "small",
+              title: "Thông báo",
+              message: "Ghi chú:Đến thời điểm bắt đầu chiến dịch mà doanh nghiệp chưa thanh toán thì chiến dịch sẽ bị tạm khóa, song song với đó sẽ có thông báo cho doanh nghiệp với người dùng( chiến dịch tạm dừng do doanh nghiệp chưa thanh toán). Doanh nghiệp có thể thay đổi thời gian bắt đầu chiến dịch đã bị tạm khóa",
+              callback: function(){ /* your callback code */ },
+              centerVertical: true,
+              size:"lg"
+          });
+      });
+
+    });
+  </script>
+
+<!-- Modal -->
+<div class="modal fade" style="z-index: 9999999;" id="modal-edit-caption-kol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Yêu cầu sửa caption</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">              
+                <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+                <div class="statistic-social mb-3">
+                    <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                    <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                    <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                    <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                </div>
+                <nav class="mb-3">
+                        <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">VIẾT GHI CHÚ</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">LỊCH SỬ YÊU CẦU THAY ĐỔI</a>                        
+                        </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <form class="mt-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Ghi chú sửa caption</label>
+                                        <textarea class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    </div>                    
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <table class="table table-borderless mt-3">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Caption</th>                                                                                    
+                                    <th scope="col">Ngày tháng</th>
+                                    <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>                                                            
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                            <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                            <em class="text-secondary">
+                                                Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                            </em>
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                            <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                            <em class="text-secondary">
+                                                Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                            </em>
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                            </table>        
+                        </div>                        
+                </div>                                                                          
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 9999999;" id="modal-edit-content-kol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Yêu cầu sửa nội dung</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">              
+                <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+                <div class="statistic-social mb-3">
+                    <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                    <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                    <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                    <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                </div>
+                <nav class="mb-3">
+                        <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-content-home-tab" data-toggle="tab" href="#nav-content-home" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">VIẾT GHI CHÚ</a>
+                            <a class="nav-item nav-link" id="nav-content-history-tab" data-toggle="tab" href="#nav-content-history" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">LỊCH SỬ YÊU CẦU THAY ĐỔI</a>                        
+                        </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-content-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <form class="mt-3">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Ghi chú sửa nội dung</label>
+                                        <textarea class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="text-center">
+                                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                    </div>                    
+                            </form>
+                        </div>
+                        <div class="tab-pane fade" id="nav-content-history" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <table class="table table-borderless mt-3">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nội dung</th>                                                                                    
+                                    <th scope="col">Ngày tháng</th>
+                                    <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">1</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>                                                            
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-success">Đã duyệt</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                            <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                            <em class="text-secondary">
+                                                Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                            </em>
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>                                    
+                                        <td>
+                                            <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                            chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                            <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                            <em class="text-secondary">
+                                                Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                            </em>
+                                        </td>                                                                               
+                                        <td>12/12/2019 10:20:30 AM</td>
+                                        <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                                    </tr>
+                                    
+                                    
+                                </tbody>
+                            </table>        
+                        </div>                        
+                </div>                                                                          
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-caption-kol" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Duyệt caption</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              
+                <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+         
+                <table class="table table-borderless mt-3">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Họ và Tên</th>
+                            <th scope="col">Caption</th>                                                
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a></td>
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span>
+                            </td>                                       
+                            <td><span class="badge badge-default">Chờ duyệt</span></td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm">Duyệt</button>                                
+                                <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-edit-caption-kol">Yêu cầu sửa caption</button>
+                                <button type="button" class="btn btn-danger btn-sm">Hủy</button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Jacob</a></td>
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span>
+                            </td>                                       
+                            <td><span class="badge badge-success">Đã duyệt</span></td>
+                            <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Larry the Bird</a></td>
+                                <td>
+                                    <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                    chưa kể các ưu đãi khi dùng các dịch vụ</span>
+                                </td>                                       
+                                <td><span class="badge badge-danger">Đã hủy</span></td>
+                                <td></td>
+                            </tr>
+                         
+                        </tbody>
+                      </table>
+             
+             
+                
+    
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-kol-join" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Danh sách Kols tham gia chiến dịch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+            <nav class="mb-3">
+                    <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-kol-join-1" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Kols đã mời tham gia chiến dịch</a>
+                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-kol-join-2" role="tab" aria-controls="nav-profile" aria-selected="false" style="text-transform: uppercase;">Kols phù hợp với chiến dịch</a>                        
+                    </div>
+            </nav>
+                
+            <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-kol-join-1" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <h6><strong>Tham gia:</strong> <span style="color: red;">9/10</span></h6>
+                            <table class="table table-borderless mt-3">
+                                <thead>
+                                  <tr>
+                                    <th><input type="checkbox"/></th>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Họ và Tên</th>
+                                    <th scope="col">Bạn bè</th>
+                                    <th scope="col">Thống kê trung bình</th>                    
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col"></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type="checkbox"/></td>
+                                    <th scope="row">1</th>
+                                    <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a></td>
+                                    <td>123</td>
+                                    <td class="statistic-social">
+                                        <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                        <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                        <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                    </td>                    
+                                    <td><span class="badge badge-success">Đã tham gia</span></td>
+                                    <td><button type="button" class="btn btn-danger btn-sm">Từ chối</button></td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox"/></td>
+                                    <th scope="row">2</th>
+                                    <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Jacob</a></td>
+                                    <td>123</td>
+                                    <td class="statistic-social">
+                                        <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                        <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                        <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                    </td> 
+                                    <td><span class="badge badge-warning">Chưa phản hồi</span></td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox"/></td>
+                                    <th scope="row">3</th>
+                                    <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Larry the Bird</a></td>
+                                    <td>123</td>
+                                    <td class="statistic-social">
+                                        <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                        <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                        <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                    </td> 
+                                    <td><span class="badge badge-primary">Chờ duyệt nội dung</span></td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox"/></td>
+                                    <th scope="row">4</th>
+                                    <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Charles Michel</a></td>
+                                    <td>123</td>
+                                    <td class="statistic-social">
+                                        <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                        <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                        <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                    </td> 
+                                    <td><span class="badge badge-primary">Chờ duyệt caption</span></td>
+                                    <td></td>
+                                  </tr>
+                                  <tr>
+                                    <td><input type="checkbox"/></td>
+                                    <th scope="row">5</th>
+                                    <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Charles Michel</a></td>
+                                    <td>123</td>
+                                    <td class="statistic-social">
+                                        <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                        <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                        <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                    </td> 
+                                    <td><span class="badge badge-danger">Bị từ chối</span></td>
+                                    <td></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <button type="button" class="btn btn-danger btn-sm">Từ chối tất cả</button>
+                                    <small style="color: red;"><i>Khi check all thì mới hiển thị nút này</i></small>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <ul class="pagination justify-content-end">
+                                      <li class="page-item disabled">
+                                        <a class="page-link" href="#" tabindex="-1">Trang trước</a>
+                                      </li>
+                                      <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                      <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                      <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                      <li class="page-item">
+                                        <a class="page-link" href="#">Trang sau</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <small style="color: red;"><i>Những checkbox disable là ko có tác dụng với hành động từ chối,
+                                      tức là chỉ có những Influencer ở trạng thái đã tham gia thì mới có hành động từ chối
+                                    </i></small>
+                                  </div>
+                                </div>
+                              </div>
+                                                                                      
+                    </div>
+                    <div class="tab-pane fade" id="nav-kol-join-2" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <table class="table table-borderless mt-3">
+                                    <thead>
+                                      <tr>
+                                        <th>
+                                          <input type="checkbox"/>
+                                        </th>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Họ và Tên</th>
+                                        <th scope="col">Bạn bè</th>
+                                        <th scope="col">Thống kê trung bình</th>                    
+                                        <th scope="col">Trạng thái</th>
+                                        <th scope="col"></th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <th scope="row">1</th>
+                                        <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a></td>
+                                        <td>123</td>
+                                        <td class="statistic-social">
+                                            <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                            <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                            <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                        </td> 
+                                        <td><span class="badge badge-default">Chưa tham gia</span></td>
+                                        <td><button type="button" class="btn btn-primary btn-sm">Mời tham gia</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <th scope="row">2</th>
+                                        <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Jacob</a></td>
+                                        <td>123</td>
+                                        <td class="statistic-social">
+                                            <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                            <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                            <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                        </td> 
+                                        <td><span class="badge badge-default">Chưa tham gia</span></td>
+                                        <td><button type="button" class="btn btn-primary btn-sm">Mời tham gia</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <th scope="row">3</th>
+                                        <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Larry the Bird</a></td>
+                                        <td>123</td>
+                                        <td class="statistic-social">
+                                            <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                            <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                            <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>        
+                                        </td> 
+                                        <td><span class="badge badge-default">Chưa tham gia</span></td>
+                                        <td><button type="button" class="btn btn-primary btn-sm">Mời tham gia</button></td>
+                                      </tr>
+                                      <tr>
+                                        <td><input type="checkbox"/></td>
+                                        <th scope="row">4</th>
+                                        <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Charles Michel</a></td>
+                                        <td>123</td>
+                                        <td class="statistic-social">
+                                            <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                            <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                            <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                                        </td> 
+                                        <td><span class="badge badge-default">Chưa tham gia</span></td>
+                                        <td><button type="button" class="btn btn-primary btn-sm">Mời tham gia</button></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                  <div class="container">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary btn-sm">Mời tất cả</button>
+                                        <small style="color: red;"><i>Khi check all thì mới hiển thị nút này</i></small>
+                                      </div>                                
+                                    </div>                                    
+                                  </div>
+                    </div>                    
+                </div>                              
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-campaign-report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Báo cáo chiến dịch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">          
+            <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+            
+            <!--#################################-->
+            <nav>
+                <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                  <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-cate-1" role="tab" aria-controls="nav-cate-1" aria-selected="true">Thể thao</a>
+                  <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-cate-2" role="tab" aria-controls="nav-cate-2" aria-selected="false">Pháp luật</a>
+                  <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-cate-3" role="tab" aria-controls="nav-cate-3" aria-selected="false">Bất động sản</a>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-cate-1" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Người chia sẻ</th>
+                          <th scope="col">Link Facebook</th>
+                          <th scope="col">Nội dung chia sẻ</th>
+                          <th scope="col">Lượng tương tác</th>
+                          <th scope="col">Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <th scope="row">1</th>
+                          <td>Mark</td>
+                          <td>Otto</td>
+                          <td>@mdo</td>
+                          <td class="statistic-social">
+                            <span title="Lượt thích">123 <i class="fa fa-thumbs-up"></i></span>
+                            <span class="px-2" title="Lượt chia sẻ">123 <i class="fa fa-share"></i></span>
+                            <span title="Lượt bình luận">123 <i class="fa fa-comment"></i></span>
+                        </td> 
+                          <td>@mdo</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">2</th>
+                          <td>Jacob</td>
+                          <td>Thornton</td>
+                          <td>@fat</td>
+                          <td class="statistic-social">
+                            <span title="Lượt thích">123 <i class="fa fa-thumbs-up"></i></span>
+                            <span class="px-2" title="Lượt chia sẻ">123 <i class="fa fa-share"></i></span>
+                            <span title="Lượt bình luận">123 <i class="fa fa-comment"></i></span>
+                        </td> 
+                          <td>@mdo</td>
+                        </tr>
+                        <tr>
+                          <th scope="row">3</th>
+                          <td>@twitter</td>
+                          <td>Larry the Bird</td>
+                          <td>@twitter</td>
+                          <td class="statistic-social">
+                            <span title="Lượt thích">123 <i class="fa fa-thumbs-up"></i></span>
+                            <span class="px-2" title="Lượt chia sẻ">123 <i class="fa fa-share"></i></span>
+                            <span title="Lượt bình luận">123 <i class="fa fa-comment"></i></span>
+                        </td> 
+                          <td>@mdo</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                </div>
+                <div class="tab-pane fade" id="nav-cate-2" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    2
+                </div>
+                <div class="tab-pane fade" id="nav-cate-3" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    3
+                </div>
+              </div>
+            <!--#################################-->
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-campaign-time-place" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thời gian & địa điểm trải nghiệm sản phẩn/dịch vụ</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+     
+        
+            <form class="form-create-campaign">               
+                <div class="form-group">
+                  <label>Thời gian</label>
+                  <input type="text" class="form-control form-control-lg" placeholder="09:25 AM 09/12/2019 - 07:00 PM 09/12/2019">
+                </div>
+                <div class="form-group">
+                    <label>Địa điểm trải nghiệm</label>
+                    <textarea class="form-control form-control-lg" rows="2"></textarea>
+                </div>                                                                          
+                <div class="text-center">
+                  <a class="btn btn-outline-primary btn-bold-text" href="#">
+                      Đồng ý
+                  </a>
+                </div>                          
+              </form>
+         
+            
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-campaign-payment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thanh toán cho chiến dịch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">          
+          <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+          <nav class="mb-3">
+                  <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-campaign-payment-tab" data-toggle="tab" href="#nav-campaign-payment" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Thanh toán</a>
+                      <a class="nav-item nav-link" id="nav-kol-join-payment-tab" data-toggle="tab" href="#nav-kol-join-1-payment" role="tab" aria-controls="nav-home" aria-selected="true" style="text-transform: uppercase;">Influencer đã tham gia chiến dịch</a>
+                  </div>
+
+          </nav>
+              
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-campaign-payment" role="tabpanel" aria-labelledby="nav-campaign-payment">                           
+              <ul class="list-unstyled">
+                <li class="mb-2">1. Phí thanh toán cho các <strong style="color: red;">20</strong> Influencer tham gia chiến dịch: <strong style="color: red;">200,000 vnđ</strong> </li>
+                <li class="mb-2">2. Tổng phí: <strong style="color: red;">200,000 vnđ</strong></li>                
+                <li class="mb-2">3. Số tiền cần thanh toán: <strong style="color: red;">200,000 vnđ</strong></li>
+                <li class="mb-2">
+                  <button class="btn btn-success btn-sm mr-2">Thanh toán</button>
+                  <a href="/merchant-payment-deposite.html" class="btn btn-danger btn-sm mr-2">Nạp tiền</a>
+                  <small><i style="color: red;">(Đầu tiên ko hiện nút nạp tiền này)</i></small>
+                </li>
+
+                <li>1. Kiểm tra tiền trong ví</li>
+                <li>2. Đủ số tiền thanh toán thì thực hiện thanh toán cho chiến dịch</li>
+                <li>3. Nếu không đủ tiền trong ví hiển thị nút [Nạp tiền]</li>                                              
+              </ul>
+              <small><i>
+                Doanh nghiệp sẽ thanh toán cho hệ thống sau khi chốt số lượng người và nội dung thực hiện chiến dịch. Số tiền phải trả thực tế
+                của doanh nghiệp sẽ dựa trên số tiền phải trả của người được chọn.
+                Nếu doanh nghiệp chưa thanh toán, sẽ có thông báo cho những Influencer được lựa chọn rằng chiến dịch chưa thể thực hiện để họ biết
+              </i>
+              </small>            
+            </div>
+            <div class="tab-pane fade show" id="nav-kol-join-1-payment" role="tabpanel" aria-labelledby="nav-kol-join-payment-tab">
+                    <h6><strong>Tham gia:</strong> <span style="color: red;">10</span></h6>
+                    <table class="table table-borderless mt-3">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Họ và Tên</th>
+                            <th scope="col">Bạn bè</th>
+                            <th scope="col">Thống kê trung bình</th>
+                            <th scope="col">Chi phí</th>                    
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a></td>
+                            <td>123</td>
+                            <td class="statistic-social">
+                                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                            </td>
+                            <td><span style="color: red;">20,000 vnđ</span></td>                    
+                            <td><span class="badge badge-success">Đã tham gia</span></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Jacob</a></td>
+                            <td>123</td>
+                            <td class="statistic-social">
+                                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                            </td>
+                            <td><span style="color: red;">20,000 vnđ</span></td>                     
+                            <td><span class="badge badge-success">Đã tham gia</span></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Larry the Bird</a></td>
+                            <td>123</td>
+                            <td class="statistic-social">
+                                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                            </td>
+                            <td><span style="color: red;">20,000 vnđ</span></td>                     
+                            <td><span class="badge badge-success">Đã tham gia</span></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">4</th>
+                            <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Charles Michel</a></td>
+                            <td>123</td>
+                            <td class="statistic-social">
+                                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                            </td>
+                            <td><span style="color: red;">20,000 vnđ</span></td>                     
+                            <td><span class="badge badge-success">Đã tham gia</span></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td colspan="3"></td>
+                            <td><strong>Tổng tiền</strong></td>
+                            <td colspan="3"><strong style="color: red;">200,000 vnđ</strong></td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    
+            </div>                                    
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-influencer-rating-report" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Đánh giá/báo cáo Influencer</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">          
+            
+            <!--#################################-->
+            <div class="statistic-social mb-3">
+                <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+            </div>
+            <form>
+              <div class="form-row">
+                      <div class="form-group col-lg-12">                                                                                      
+                              <label>Đánh giá</label>
+                              <select class="form-control form-control-lg">
+                                  <option>1.OK/Hoặc không nói gì</option>
+                                  <option>2.Tuyệt vời</option>
+                                  <option>3.Thực hiện chưa đúng</option>
+                                  <option>4.Influencer thực hiện sai hoặc làm ảnh hưởng đến doanh nghiệp</option>
+                              </select>
+                              <br/>
+                              <label>Mô tả chi tiết</label>
+                              <textarea class="form-control" rows="3"></textarea>
+                              <br/>                             
+                             <small>
+                               <i>****Trường hợp 3,4 hệ thống sẽ nhận được thông báo cảnh báo, để theo dõi người dùng và có thể đưa ra các quyết định:
+                                 gửi cảnh báo người dùng, xóa/chặn người dùng, phạt người dùng
+                               </i>
+                             </small>
+                             <br/>
+                             <small>
+                              <i>****Người dùng bị report mà hệ thống xác nhận lý do chính đáng sẽ không nhận được thanh toán
+                              </i>
+                            </small>
+                      </div>                                                           
+              </div>                                                                                                         
+              <div class="text-center mt-5">
+                  <a href="#" class="btn btn-primary">Đánh giá</a>
+              </div>               
+          </form>
+            <!--#################################-->
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-influencer-post-statistic" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thống kê kết quả Influencer thực hiện chiến dịch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">          
+          <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6> 
+            <!--#################################-->
+            <div class="statistic-social mb-3">
+                <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+            </div>
+          
+            <ul class="list-unstyled">
+              <li>Tổng tương tác: 500 <small><i style="color: red;">Bao gồm tổng (likes + shares + comments) </i></small></li>
+              <li>
+                  Vẽ biểu đồ thống kê lượng tương tác bài post của Influencer đã chia sẻ.<br/>
+                  1. Số lượng likes. <br/>
+                  2. Số lương share. <br/>
+                  3. Số lượng comments <br/>
+                  link chart: <a href="https://www.chartjs.org/samples/latest/charts/line/basic.html"
+                  target="_blank">https://www.chartjs.org/samples/latest/charts/line/basic.html</a><br/>
+                  <i style="color: red;">Chart làm theo format này nhé. Cột X -> chỉ thời gian, Cột Y -> chỉ số lượng</i>
+
+              </li>
+              <li>
+                <img src="img/chart_statistic.png" width="720"/>
+              </li>              
+            </ul>
+
+            <!--#################################-->
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-influencer-selection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Danh sách Influencer bạn muốn chỉ định</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">          
+            
+            <!--#################################-->
+           
+            <ul class="list-unstyled">
+              <li><strong>Tìm Kiếm</strong></li>
+              <li class="mt-2 mb-4">
+                <form>
+                  <div class="form-group mb-2">
+                      <div class="form-row">
+                          <div class="col-md-3">
+                              <select class="custom-select">
+                                      <option value="">Tất cả loại</option>
+                                      <option value="">Hot Mom</option>
+                                      <option value="">Kols</option>
+                                      <option value="">Influencer (Hot Facebooker)</option>
+                                      <option value="">Facebooker (người dùng thường)</option>
+                              </select>
+                          </div>
+                          <div class="col-md-7">
+                                  <input type="text" class="form-control" placeholder="Tìm kiếm Influencer">
+                          </div>
+                          <div class="col-md-2">
+                                  <button type="submit" class="btn btn-outline-primary btn-bold-text">Tìm kiếm</button>
+                          </div>
+                      </div>                      
+                  </div>                                                                        
+              </form>              
+              </li>
+              <li>
+                <table class="table table-hover mt-3">
+                  <thead>
+                    <tr>
+                      <th>
+                        <input type="checkbox"/>
+                      </th>
+                      <th scope="col">#</th>                      
+                      <th scope="col">Họ và Tên</th>                      
+                      <th scope="col">Thống kê trung bình</th>                    
+                      <th scope="col">Loại Influencer</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><input type="checkbox"/></td>
+                      <th scope="row">1</th>                      
+                      <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a></td>                      
+                      <td class="statistic-social">
+                          <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                          <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                          <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                      </td>                    
+                      <td>Hot Mom</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox"/></td>
+                      <th scope="row">2</th>                      
+                      <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Jacob</a></td>                      
+                      <td class="statistic-social">
+                          <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                          <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                          <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                      </td> 
+                      <td>Hot Mom</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox"/></td>
+                      <th scope="row">3</th>                      
+                      <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Larry the Bird</a></td>                      
+                      <td class="statistic-social">
+                          <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                          <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                          <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                      </td> 
+                      <td>Hot Mom</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td><input type="checkbox"/></td>
+                      <th scope="row">4</th>                      
+                      <td><a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Charles Michel</a></td>                      
+                      <td class="statistic-social">
+                          <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                          <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                          <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                      </td> 
+                      <td>Hot Mom</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="text-center">
+                  <button type="button" class="btn btn-outline-primary btn-bold-text">Đồng ý</button>                  
+                </div>
+              </li>              
+            </ul>
+
+            <!--#################################-->
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 999999;" id="modal-campaign-set-timeexcecute" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thay đổi thời gian thực hiện chiến dịch</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+            <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+     
+            <form class="form-create-campaign">
+                <div class="form-row mt-2">                                                                
+                    <div class="form-group col-12">
+                        <label style="font-weight: 400;">Thời gian thực hiện chiến dịch</label>
+                        <input type="text" class="form-control form-control-lg" placeholder="09:25 AM 09/12/2019 - 07:00 PM 09/12/2019">
+                      </div>
+                </div>
+                 <div class="text-center">
+                          <button type="submit" class="btn btn-primary">Thay đổi</button>
+                  </div>    
+            </form>
+
+            
+         
+         
+            
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 9999999;" id="modal-campaign-caption-history" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa caption</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">              
+                <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+                <div class="statistic-social mb-3">
+                    <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                    <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                    <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                    <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                </div>
+                <table class="table table-borderless mt-3">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Caption</th>                                                                                    
+                        <th scope="col">Ngày tháng</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>                                                            
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-success">Đã duyệt</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                <em class="text-secondary">
+                                    Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                </em>
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                <em class="text-secondary">
+                                    Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                </em>
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                        </tr>
+                        
+                        
+                    </tbody>
+                </table>                                         
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- Modal -->
+<div class="modal fade" style="z-index: 9999999;" id="modal-campaign-content-history" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa nội dung</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">              
+                <h6 class="title-campaign">Chiến dịch truyền thông cho sản phẩm thẻ Visa Platinum của TPBank</h6>
+                <div class="statistic-social mb-3">
+                    <a href="#" class="kol-join"><img src="img/1.jpg" width="32" height="32">Mark</a>
+                    <span title="Lượt thích trung bình">123 <i class="fa fa-thumbs-up"></i></span>
+                    <span class="px-2" title="Lượt chia sẻ trung bình">123 <i class="fa fa-share"></i></span>
+                    <span title="Lượt bình luận trung bình">123 <i class="fa fa-comment"></i></span>
+                </div>
+                <table class="table table-borderless mt-3">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nội dung</th>                                                                                    
+                        <th scope="col">Ngày tháng</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ...<a href="#"><small>Đọc hết</small></a></span>                                
+                                <br/>                                                            
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-success">Đã duyệt</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ...<a href="#"><small>Đọc hết</small></a></span>                                
+                                <br/>
+                                <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                <em class="text-secondary">
+                                    Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                </em>
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>                                    
+                            <td>
+                                <span class="d-inline-block text-wrap" style="max-width: 550px;">Mình tự hào vì đã có thẻ Visa Platinum của TPbank, dùng nhanh gọn khi rút tiền
+                                chưa kể các ưu đãi khi dùng các dịch vụ</span><br/>
+                                <strong>Ghi chú từ doanh nghiệp</strong><br/>
+                                <em class="text-secondary">
+                                    Sửa lại câu cú cho chuẩn hơn, sai chính tả nhiều quá
+                                </em>
+                            </td>                                                                               
+                            <td>12/12/2019 10:20:30 AM</td>
+                            <td><span class="badge badge-danger">Chưa duyệt</span></td>
+                        </tr>
+                        
+                        
+                    </tbody>
+                </table>                                         
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>          
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+</body>
+</html>

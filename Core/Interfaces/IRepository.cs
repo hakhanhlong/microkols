@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Core.Interfaces
@@ -19,5 +20,7 @@ namespace Core.Interfaces
         T Add(T entity);
         void Update(T entity);
         void Delete(T entity);
+
+        IQueryable<T> GetQueryBySpecification(ISpecification<T> spec, bool disableTracking = true);
     }
 }

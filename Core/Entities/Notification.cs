@@ -26,12 +26,14 @@ namespace Core.Entities
         AgencyConfirmJoinCampaign = 1,
         AccountRequestJoinCampaign  = 2, 
         AccountConfirmJoinCampaign = 3,      
+        
         AccountSubmitCampaignRefContent = 4,
         AccountFinishCampaignRefContent =5,
         AgencyApproveCampaignRefContent = 6,
         AgencyDeclineCampaignRefContent = 7,
         AgencyUpdatedCampaignRefContent = 8,
         AgencyCancelAccountJoinCampaign = 9,
+
         AccountDeclineJoinCampaign = 10,
         SystemUpdateUnfinishedAccountCampaign  = 11,
         SystemUpdateCanceledAccountCampaign = 111,
@@ -46,7 +48,20 @@ namespace Core.Entities
         CampaignCanceled = 19,
         CampaignConfirmed = 20,
         CampaignError = 21,
-        ExcecutedPaymentToAccountBanking = 22
+        ExcecutedPaymentToAccountBanking = 22,
+
+
+        AccountSubmitCampaignCaption = 30,
+        AgencyApproveCampaignCaption = 31,
+        AgencyDeclineCampaignCaption = 32,
+        AgencyUpdatedCampaignCaption = 33,
+
+
+        AccountSubmitCampaignContent = 40,
+        AgencyApproveCampaignContent = 41,
+        AgencyDeclineCampaignContent = 42,
+        AgencyUpdatedCampaignContent = 43,
+
     }
 
     public enum NotificationTypeGroup
@@ -180,7 +195,25 @@ namespace Core.Entities
                 message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận {1} ";
             }
 
-            
+            else if (type == NotificationType.AgencyDeclineCampaignCaption)
+            {
+                message = "Doanh nghiệp {0} đã không duyệt nội dung Caption chiến dịch {1} của bạn";
+            }
+
+            else if (type == NotificationType.AgencyApproveCampaignCaption)
+            {
+                message = "Doanh nghiệp {0} đã duyệt nội dung Caption chiến dịch {1} của bạn";
+            }
+            else if (type == NotificationType.AgencyUpdatedCampaignCaption)
+            {
+                message = "Doanh nghiệp {0} thêm ghi chú Caption chiến dịch {1} của bạn";
+            }
+            else if (type == NotificationType.AccountSubmitCampaignCaption)
+            {
+                message = "Thành viên {0} đã gửi nội dung Caption chiến dịch {1}";
+            }
+
+
             return string.Format(message, args);
         }
     }

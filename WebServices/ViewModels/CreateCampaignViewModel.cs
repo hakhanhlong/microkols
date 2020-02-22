@@ -158,7 +158,7 @@ namespace WebServices.ViewModels
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
                 AccountChargeTime = 0,
-                Requirement = info.Type == CampaignType.CustomService ? info.Requirement : string.Empty,
+                Requirement =  info.Requirement ,
                 Type = info.Type,
                 Code = code,
                 Quantity =target.Quantity,
@@ -178,7 +178,8 @@ namespace WebServices.ViewModels
                 FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null,
                 AmountMax = target.AmountMax,
                 AmountMin = target.AmountMin,
-                IsSendProduct = info.SendProduct
+                IsSendProduct = info.SendProduct,
+
                
 
 

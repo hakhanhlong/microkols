@@ -22,7 +22,7 @@
                 <li class="list-inline-item">Caption đã duyệt:</li>
                 <li class="list-inline-item"><a href="javascript:;" class="kol-caption"><i class="fa fa-font"></i> @counting.TongCaptionDaDuyet/@counting.TongCaption</a></li>
                 <li class="list-inline-item">Caption cần duyệt:</li>
-                <li class="list-inline-item"><a href="@Url.Action("Caption", new { captionid = Model.Id })" class="text-danger"><i class="fa fa-font"></i> @counting.TongCaptionCanDuyet/@counting.TongCaption</a></li>
+                <li class="list-inline-item"><a href="@Url.Action("Caption", new { campaignid = Model.Id })" class="text-danger"><i class="fa fa-font"></i> @counting.TongCaptionCanDuyet/@counting.TongCaption</a></li>
             }
         }
         else if (Model.Type.IsHasContent())
@@ -32,7 +32,7 @@
                 <li class="list-inline-item">Nội dung đã duyệt:</li>
                 <li class="list-inline-item"><a href="javascript:;" class="kol-Content"><i class="fa fa-file"></i> @counting.TongContentDaDuyet/@counting.TongContent</a></li>
                 <li class="list-inline-item">Nội dung cần duyệt:</li>
-                <li class="list-inline-item"><a href="@Url.Action("Content", new { Contentid = Model.Id })" class="text-danger"><i class="fa fa-file"></i> @counting.TongContentCanDuyet/@counting.TongContent</a></li>
+                <li class="list-inline-item"><a href="@Url.Action("Content", new { campaignid = Model.Id })" class="text-danger"><i class="fa fa-file"></i> @counting.TongContentCanDuyet/@counting.TongContent</a></li>
             }
         }
     </ul>

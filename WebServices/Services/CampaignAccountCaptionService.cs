@@ -20,10 +20,19 @@ namespace WebServices.Services
 {
     public class CampaignAccountCaptionService : BaseService, ICampaignAccountCaptionService
     {
+        private readonly ICampaignRepository _campaignRepository;
         private readonly IAsyncRepository<CampaignAccountCaption> _CampaignAccountCaptionRepository;
-        public CampaignAccountCaptionService(IAsyncRepository<CampaignAccountCaption> CampaignAccountCaptionRepository)
+        private readonly IAsyncRepository<CampaignAccount> _campaignAccountRepository;
+        private readonly INotificationRepository _notificationRepository;
+        public CampaignAccountCaptionService(IAsyncRepository<CampaignAccountCaption> CampaignAccountCaptionRepository,
+            ICampaignRepository campaignRepository,
+             IAsyncRepository<CampaignAccount> campaignAccountRepository,
+            INotificationRepository notificationRepository)
         {
             _CampaignAccountCaptionRepository = CampaignAccountCaptionRepository;
+            _notificationRepository = notificationRepository;
+            _campaignRepository = campaignRepository;
+            _campaignAccountRepository = campaignAccountRepository;
         }
 
         #region CampaignAccountCaption
@@ -47,30 +56,27 @@ namespace WebServices.Services
                 }
             };
         }
-        public async Task<ListCampaignAccountCaptionViewModel> GetCampaignAccountCaptionsByCampaignId(int campaignId, string order, int page, int pagesize)
+        public async Task<ListGroupCampaignAccountCaptionViewModel> GetGroupCampaignAccountCaptionsByCampaignId(int campaignId, string order, int page, int pagesize)
         {
 
 
             var filter = new CampaignAccountCaptionByCampaignIdSpecification(campaignId);
+            var query = _CampaignAccountCaptionRepository.GetQueryBySpecification(filter);
 
-            var total = await _CampaignAccountCaptionRepository.CountAsync(filter);
-            var list = await _CampaignAccountCaptionRepository.ListPagedAsync(filter, "DateModified_desc", page, pagesize);
+            var queryCampaignAccounts  = query.Select(m=> m.CampaignAccountId).Distinct();
+            var total = await queryCampaignAccounts.CountAsync();
+            var ids = await queryCampaignAccounts.OrderByDescending(m => m).GetPagedAsync(page, pagesize);
 
-            return new ListCampaignAccountCaptionViewModel()
-            {
-                CampaignAccountCaptions = CampaignAccountCaptionViewModel.GetList(list),
-                Pager = new PagerViewModel()
-                {
-                    Page = page,
-                    PageSize = pagesize,
-                    Total = total
-                }
-            };
+            var list = await _CampaignAccountCaptionRepository.ListAsync(new CampaignAccountCaptionByCampaignAccountIdSpecification(ids));
+
+            return new ListGroupCampaignAccountCaptionViewModel(list, page, pagesize, total);
         }
 
 
         public async Task<int> CreateCampaignAccountCaption(CreateCampaignAccountCaptionViewModel model, string username)
         {
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
+            if (campaign == null) return -1;
             var entity = new CampaignAccountCaption()
             {
                 CampaignAccountId = model.CampaignAccountId,
@@ -83,6 +89,19 @@ namespace WebServices.Services
                 UserModified = username,
             };
             await _CampaignAccountCaptionRepository.AddAsync(entity);
+
+            var notifType = NotificationType.AccountSubmitCampaignCaption;
+            await _notificationRepository.AddAsync(new Notification()
+            {
+                Type = notifType,
+                DataId = campaign.Id,
+                Data = string.Empty,
+                DateCreated = DateTime.Now,
+                EntityType = EntityType.Agency,
+                EntityId = campaign.AgencyId,
+                Message = notifType.GetMessageText(username, campaign.Id.ToString()),
+                Status = NotificationStatus.Created
+            });
             return entity.Id;
         }
         public async Task<EditCampaignAccountCaptionViewModel> GetEditCampaignAccountCaption(int CampaignAccountCaptionId)
@@ -106,6 +125,8 @@ namespace WebServices.Services
             {
                 return false;
             }
+
+
             CampaignAccountCaption.Note = model.Note;
             CampaignAccountCaption.Content = model.Content;
             CampaignAccountCaption.DateModified = DateTime.Now;
@@ -123,15 +144,85 @@ namespace WebServices.Services
                 return false;
             };
 
+            var campaignaccount = await _campaignAccountRepository.GetByIdAsync(CampaignAccountCaption.CampaignAccountId);
+            if (campaignaccount == null)
+            {
+                return false;
+            };
+
+
+
+
+
             CampaignAccountCaption.Status = status;
             CampaignAccountCaption.UserModified = username;
             CampaignAccountCaption.DateModified = DateTime.Now;
             await _CampaignAccountCaptionRepository.UpdateAsync(CampaignAccountCaption);
 
+            if (status == CampaignAccountCaptionStatus.DaDuyet)
+            {
+                campaignaccount.RefContent = CampaignAccountCaption.Content;
+                campaignaccount.UserModified = username;
+                campaignaccount.DateModified = DateTime.Now;
+                campaignaccount.Status = CampaignAccountStatus.ApprovedContent;
+                await _campaignAccountRepository.UpdateAsync(campaignaccount);
+
+            }
+
+            var notifType = status== CampaignAccountCaptionStatus.DaDuyet ? NotificationType.AgencyApproveCampaignCaption : NotificationType.AgencyDeclineCampaignCaption;
+            await _notificationRepository.AddAsync(new Notification()
+            {
+                Type = notifType,
+                DataId = campaignaccount.CampaignId,
+                Data = string.Empty,
+                DateCreated = DateTime.Now,
+                EntityType = EntityType.Account,
+                EntityId = campaignaccount.AccountId,
+                Message = notifType.GetMessageText(username, campaignaccount.CampaignId.ToString()),
+                Status = NotificationStatus.Created
+            });
             return true;
         }
 
 
+        public async Task<bool> UpdateNote(int id, string note, string username)
+        {
+            var CampaignAccountCaption = await _CampaignAccountCaptionRepository.GetByIdAsync(id);
+            if (CampaignAccountCaption == null)
+            {
+                return false;
+            };
+
+            var campaignaccount = await _campaignAccountRepository.GetByIdAsync(CampaignAccountCaption.CampaignAccountId);
+            if (campaignaccount == null)
+            {
+                return false;
+            };
+
+
+
+            CampaignAccountCaption.Note = note;
+            CampaignAccountCaption.UserModified = username;
+            CampaignAccountCaption.DateModified = DateTime.Now;
+            await _CampaignAccountCaptionRepository.UpdateAsync(CampaignAccountCaption);
+
+            var notifType =  NotificationType.AgencyUpdatedCampaignCaption ;
+            await _notificationRepository.AddAsync(new Notification()
+            {
+                Type = notifType,
+                DataId = campaignaccount.CampaignId,
+                Data = string.Empty,
+                DateCreated = DateTime.Now,
+                EntityType = EntityType.Account,
+                EntityId = campaignaccount.AccountId,
+                Message = notifType.GetMessageText(username, campaignaccount.CampaignId.ToString()),
+                Status = NotificationStatus.Created
+            });
+            return true;
+        }
+
+
+        
         #endregion
     }
 }
