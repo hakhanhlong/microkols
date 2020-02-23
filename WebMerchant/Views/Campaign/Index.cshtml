@@ -96,20 +96,50 @@
                         <td>@item.Title</td>
                         <td>@item.Type.ToDisplayName()</td>
                         <td>
-                            @if (item.DateStart.HasValue)
+                            @if (item.ExecutionStart.HasValue)
                             {
-                                <span>@item.DateStart.Value.ToViDate()</span>
+                                <span>@item.ExecutionStart.Value.ToViDate()</span>
                             }
                         </td>
                         <td>@item.Status.ToBadge()</td>
                         <td>
+                            <ul class="list-inline campaign-row-item">
+
+
+                                @if (item.Status == CampaignStatus.Locked)
+                                {
+
+
+                                    <li class="list-inline-item"><a href="javascript:;" class="campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript:;" class="btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch" >
+                                            <i class="fa fa-history"></i>
+                                        </a>
+                                    </li>
+
+                                }
+                                @if (item.Status != CampaignStatus.Canceled && item.Status != CampaignStatus.Created)
+                                {
+                                    var payment = await CampaignService.GetCampaignPaymentByAgency(CurrentUser.Id, item.Id);
+                                    if (payment.IsValid)
+                                    {
+
+                                        <li class="list-inline-item">
+                                            <a href="javascript:;" class="campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
+                                        </li>
+
+                                    }
+                                }
+                            </ul>
+
                         </td>
                     </tr>
                     <tr>
                         <td colspan="7">
 
                             <partial name="_CampaignItemCountingPartial" model="@item" />
-                          
+
+
                         </td>
 
                     </tr>

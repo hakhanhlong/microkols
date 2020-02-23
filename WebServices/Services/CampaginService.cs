@@ -1,5 +1,6 @@
 ﻿
 using Common.Extensions;
+using Common.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Models;
@@ -64,7 +65,7 @@ namespace WebServices.Services
         public async Task<CampaignViewModel> GetCampaign(int id)
         {
             var campaign = await _campaignRepository.GetByIdAsync(id);
-            if(campaign!= null) { return new CampaignViewModel(campaign); }
+            if (campaign != null) { return new CampaignViewModel(campaign); }
             return null;
         }
 
@@ -836,6 +837,26 @@ namespace WebServices.Services
         }
 
 
+        public async Task<bool> UpdateExecutionTime(int agencyid, int campaignid, string date, string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign != null)
+            {
+
+                var executionTime = DateRangeHelper.GetDateRange(date);
+                if (executionTime.HasValue)
+                {
+                    campaign.ExecutionStart = (DateTime?)executionTime.Value.Start;
+                    campaign.ExecutionEnd = (DateTime?)executionTime.Value.End;
+                    campaign.DateModified = DateTime.Now;
+                    campaign.UserModified = username;
+                    await _campaignRepository.UpdateAsync(campaign);
+                    return true;
+                }
+            }
+            return false;
+
+        }
         #endregion
 
 
@@ -1244,6 +1265,13 @@ namespace WebServices.Services
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
                     if (payment == null || !payment.IsValidToProcess)
                     {
+
+                        campaign.Status = CampaignStatus.Locked;
+
+                        campaign.SystemNote = "Chưa thanh toán";
+                        campaign.UserModified = username;
+                        campaign.DateModified = DateTime.Now;
+                        await _campaignRepository.UpdateAsync(campaign);
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
                            EntityType.Agency, campaign.AgencyId, campaign.Id,
                            NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaignid.ToString(), "Bạn chưa thanh toán tiền chiến dịch"));
@@ -1368,7 +1396,7 @@ namespace WebServices.Services
                             //notification
                             await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
+                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Id.ToString()),
                                  campaignAccount.Id.ToString());
 
                         }

@@ -219,14 +219,23 @@
 
                     <div class="form-group">
                         <label asp-for="KPIMin"></label>
-                        <input type="number" asp-for="KPIMin" min="@Model.KPIMin" class="form-control" />
+                        <strong>@Model.KPIMin</strong>
+                        <input type="hidden" asp-for="KPIMin" />
                         <span asp-validation-for="KPIMin"></span>
                     </div>
 
 
                     <div class="form-group">
                         <label asp-for="InteractiveMin"></label>
-                        <input type="number" asp-for="InteractiveMin" min="@Model.InteractiveMin" class="form-control" />
+                         
+                        <div class="d-flex">
+                            <div class="mr-2 p-2">Tương tác/post/influencer</div>
+                            <div class="">
+                                <input type="number" asp-for="InteractiveMin" min="@Model.InteractiveMin" class="form-control" />
+                            </div>
+                            
+                        </div>
+                        
                         <span asp-validation-for="InteractiveMin"></span>
                     </div>
 

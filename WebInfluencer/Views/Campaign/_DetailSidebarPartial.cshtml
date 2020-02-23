@@ -26,6 +26,21 @@ else
                 {
                     <div class="alert alert-danger">Bạn đã không thực hiện công việc được giao</div>
                 }
+                else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                {
+                    <div class="alert alert-info">Bạn đã được mời tham gia chiến dịch </div>
+
+                    <div>
+                        <form action="@Url.Action("FeedbackJoinCampaign")" method="post">
+
+                            <input type="hidden" name="campaignid" value="@Model.Campaign.Id" />
+                            <button type="submit" name="type" value="1" class="btn btn-primary"> Đồng ý</button>
+                            <button type="submit" name="type" value="1" class="btn btn-danger">Từ chối</button>
+
+                        </form>
+
+                    </div>
+                }
                 else if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
                 {
                     <div class="alert alert-info">Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xác nhận</div>
@@ -108,8 +123,8 @@ else
                                 Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được tiền vào tài khoản
                             </p>
                             @*<p>
-                                <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
-                            </p>*@
+                        <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+                    </p>*@
                         </div>
 
                     }
@@ -118,41 +133,41 @@ else
                         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
-                    
-                        if (Model.Campaign.Status == CampaignStatus.Started)
-                        {
-                            <div class="alert alert-info">
 
-                                <p>
-                                    Chiến dịch đã được bắt đầu thực hiện. <br />
-                                    Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-                                </p>
-                            </div>
+                    if (Model.Campaign.Status == CampaignStatus.Started)
+                    {
+                        <div class="alert alert-info">
 
-                            <div>
-                                @if (Model.Campaign.Type.IsShareCampaign())
-                                {
-                                    <button class="btn btn-primary  btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+                            <p>
+                                Chiến dịch đã được bắt đầu thực hiện. <br />
+                                Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
+                            </p>
+                        </div>
 
-                                        <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
-                                    </button>
+                        <div>
+                            @if (Model.Campaign.Type.IsShareCampaign())
+                            {
+                                <button class="btn btn-primary  btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
 
-                                    <hr>
-                                }
-
-                                <button class="btn btn-warning btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                    Cập nhật thông tin công việc
+                                    <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
                                 </button>
 
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-info">
-                                Vui lòng chờ chiến dịch bắt đầu để thực hiện công việc. Chiến dịch sẽ bắt đầu thực hiện lúc  <strong>@Model.Campaign.ExecutionStart.Value.ToViDateTime()</strong>
-                            </div>
-                        }
-                   
+                                <hr>
+                            }
+
+                            <button class="btn btn-warning btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                Cập nhật thông tin công việc
+                            </button>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            Vui lòng chờ chiến dịch bắt đầu để thực hiện công việc. Chiến dịch sẽ bắt đầu thực hiện lúc  <strong>@Model.Campaign.ExecutionStart.Value.ToViDateTime()</strong>
+                        </div>
+                    }
+
 
 
                 }

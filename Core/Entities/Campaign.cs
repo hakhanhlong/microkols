@@ -105,6 +105,8 @@ namespace Core.Entities
         Canceled = 5,
         [Display(Name ="Lỗi")]
         Error = 6,
+        [Display(Name = "Tạm khóa")]
+        Locked = 7,
 
         //[Display(Name ="Chờ phê duyệt")]
         //ChoPheDuyet = 0,

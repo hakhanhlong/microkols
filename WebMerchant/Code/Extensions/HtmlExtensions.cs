@@ -68,7 +68,7 @@ namespace WebMerchant.Code.Extensions
             {
                 type = "dark";
             }
-            else if (status == CampaignStatus.Error)
+            else if (status == CampaignStatus.Error || status == CampaignStatus.Locked)
             {
                 type = "danger";
             }

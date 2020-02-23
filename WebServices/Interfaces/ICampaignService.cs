@@ -10,6 +10,8 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+
+        Task<bool> UpdateExecutionTime(int agencyid, int campaignid, string date, string username);
         Task<CampaignViewModel> GetCampaign(int id);
         Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username);
        

@@ -644,6 +644,36 @@ namespace WebMerchant.Controllers
 
         #endregion
 
+        #region Update  Execution
+
+        public async Task<IActionResult> UpdateExecutionTime(int campaignid)
+        {
+          
+            ViewBag.Campaign = await _campaignService.GetCampaign(campaignid);
+
+            return PartialView();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateExecutionTime(int campaignid, string date)
+        {
+            var r = await _campaignService.UpdateExecutionTime(CurrentUser.Id, campaignid, date, CurrentUser.Username);
+            if (r)
+            {
+                this.AddAlertSuccess("Cập nhật thời gian thực hiện thành công");
+            }
+            else
+            {
+                this.AddAlert(r);
+            }
+            if (!string.IsNullOrEmpty(UrlReferrer))
+            {
+                return Redirect(UrlReferrer);
+            }
+
+
+            return RedirectToAction("Details", new { id = campaignid });
+        }
+        #endregion
     }
 
 }

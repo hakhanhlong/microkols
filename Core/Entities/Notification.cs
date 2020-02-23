@@ -173,7 +173,7 @@ namespace Core.Entities
             }
             else if (type == NotificationType.CampaignCantStarted)
             {
-                message = "{0} không cập nhật được trạng thái bắt đầu  của Chiến dịch {1} vì lý do: {2}";
+                message = "{0} tạm kkhoas chiến dịch {1} vì: {2}";
             }
 
             
