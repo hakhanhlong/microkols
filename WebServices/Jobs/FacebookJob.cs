@@ -133,42 +133,15 @@ namespace WebServices.Jobs
                                 RefUrl = "",
                                 RefImage = new List<string>()
                             }, username);
+
+
+
+
+                           
                         }
 
 
                     }
-
-                    /*
-                      * Day la keiu check cu - check lai theo FbPostid
-                    var campaigns = listcampaigns.Campaigns.Where(m => m.Status == CampaignStatus.Started && (m.Type == CampaignType.ShareContent || m.Type == CampaignType.ShareContentWithCaption || m.Type == CampaignType.ShareStreamUrl));
-
-                 foreach (var campaign in campaigns)
-                 {
-
-
-
-                     var fbPost = fbPosts.Where(m => m.Link.Contains(campaign.Data)).FirstOrDefault();
-                     if(fbPost!= null)
-                     {
-
-
-                         await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
-                         {
-                             CampaignId = campaign.Id,
-                             CampaignType = campaign.Type,
-                             Note = string.Empty,
-                             RefId = fbPost.PostId,
-                             RefUrl = fbPost.Permalink,
-                             RefImage = new List<string>()
-
-                         }, username);
-                     }
-
-
-
-                 }
-                     */
-
                 }
             }
         }
