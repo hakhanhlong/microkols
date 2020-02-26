@@ -1,5 +1,6 @@
 ﻿var AppConstants = {
     UrlUploadFile: "/home/uploadimage",
+    UrlGetAccountUpdateInfoStatus:"/Account/GetAccountUpdateInfoStatus",
     UrlGetAmount: "/wallet/GetAmount",
     UrlRecharge: function (campaignid) {
         if (!campaignid) {

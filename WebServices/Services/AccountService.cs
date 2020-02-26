@@ -56,6 +56,19 @@ namespace WebServices.Services
             }
             return AccountStatus.Normal;
         }
+
+        public async Task<int> GetAccountUpdateInfoStatus(int id)
+        {
+            var account = await _accountRepository.GetByIdAsync(id);
+            if (account != null)
+            {
+                if (string.IsNullOrEmpty(account.IDCardName) || string.IsNullOrEmpty(account.IDCardNumber))
+                {
+                    return 1;
+                } 
+            }
+            return 0;
+        }
         public async Task<List<int>> GetActivedAccountIds()
         {
             return await _accountRepository.GetActivedAccountIds();

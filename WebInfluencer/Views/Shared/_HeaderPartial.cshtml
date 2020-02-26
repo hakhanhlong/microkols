@@ -19,10 +19,12 @@
                 </li>
             </ul>
             <ul class="list-inline my-2 my-md-0 mr-md-3">
-
+                <li class="list-inline-item">
+                    <a class="nav-link menu-link" href="@Url.Action("Index","Wallet")"><i class="fa fa-credit-card"></i> <span class="wallet-balance text-danger ml-2">0</span></a>
+                </li>
                 <li class="list-inline-item dropdown nav-notif">
                     <a class="nav-link menu-link notification" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
-                        <i class="fas fa-bell mr-1"></i> 
+                        <i class="fas fa-bell mr-1"></i>
                         <span class="badge badge-danger" style="display:none">0</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">

@@ -20,7 +20,7 @@ namespace Core.Interfaces
 
         Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword);
 
-        Task<IQueryable<Campaign>> QueryMarketPlaceCampaignByAccount(int accountid, string keyword);
+        Task<IQueryable<Campaign>> QueryMarketPlaceCampaignByAccount(int accountid, CampaignType? type, string keyword);
         int CountAll();
 
         Task<List<int>> GetCampaignIdNeedToStart();

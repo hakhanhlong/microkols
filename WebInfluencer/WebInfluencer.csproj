@@ -17,9 +17,4 @@
     <ProjectReference Include="..\WebServices\WebServices.csproj" />
   </ItemGroup>
 
-
-  <ItemGroup>
-    <Folder Include="ViewComponent\" />
-  </ItemGroup>
-
 </Project>

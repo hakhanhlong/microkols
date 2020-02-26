@@ -249,7 +249,7 @@ namespace Infrastructure.Data
         }
 
 
-        public async Task<IQueryable<Campaign>> QueryMarketPlaceCampaignByAccount(int accountid, string keyword)
+        public async Task<IQueryable<Campaign>> QueryMarketPlaceCampaignByAccount(int accountid, CampaignType? type, string keyword)
         {
 
 
@@ -260,7 +260,11 @@ namespace Infrastructure.Data
 
             if (!string.IsNullOrEmpty(keyword))
             {
-                queryCampaign = queryCampaign.Where(m => m.Code.Contains(keyword) || m.Description.Contains(keyword));
+                queryCampaign = queryCampaign.Where(m => m.Code.Contains(keyword) || m.Description.Contains(keyword) || m.Title.Contains(keyword));
+            }
+            if (type.HasValue)
+            {
+                queryCampaign = queryCampaign.Where(m => m.Type == type.Value);
             }
             return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.Agency);
         }

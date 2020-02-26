@@ -1,0 +1,94 @@
+﻿@model ListTransactionHistoryViewModel
+@inject WebServices.Interfaces.ICampaignService  CampaignService
+
+@{
+    ViewData["Title"] = "Thông tin ví";
+    Layout = "_LayoutSetting";
+}
+
+
+
+
+@section Nav{
+    <ul class="nav nav-tabs nav-campaign">
+        <li class="nav-item">
+            <a class="nav-link active" asp-action="Index">Lịch sử giao dịch</a>
+        </li>
+    </ul>
+}
+
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <div class="media d-flex">
+                <div class="media-body text-left">
+                    <h3 class="text-danger wallet-balance">0</h3>
+                    <span>Trong ví</span>
+                </div>
+                <div class="align-self-center">
+                    <i class="fal fa-wallet fa-2x float-right text-danger"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+<div class="table-responsive">
+    <table class="table table-bordered table-sm">
+        <thead>
+            <tr>
+                <th>Mã giao dịch</th>
+                <th>Số tiền</th>
+                <th>Còn lại</th>
+                <th>Nội dung</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TransactionHistories)
+            {
+                var textcolor = item.Amount >= 0 ? "text-success" : "text-danger";
+                var textsyl = item.Amount > 0 ? "+" : "";
+                <tr>
+                    <td>@item.Code</td>
+                    <td class="@textcolor">@textsyl @item.Amount.ToPriceText()</td>
+                    <td class="text-primary">@item.Balance.ToPriceText()</td>
+
+
+                    <td data-refid="@item.RefId">
+                        @{
+                            var url = "";
+                            if (CurrentUser.Type == EntityType.Account)
+                            {
+                                url = Url.Action("Details", "AccountCampaign", new { id = item.RefId });
+                            }
+                            else
+                            {
+                                url = Url.Action("Details", "AgencyCampaign", new { id = item.RefId });
+                            }
+                        }
+
+
+                        @if (item.Type.ToString().Contains("Campaign"))
+                        {
+                            var code = await CampaignService.GetCampaignCode(item.RefId);
+                            <a href="@url"> @item.Type.ToDisplayName() chiến dịch @code</a>
+
+                        }
+                        else
+                        {
+                            <span>@item.Type.ToDisplayName()</span>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+        @*<tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                </tr>
+            </tfoot>*@
+    </table>
+</div>

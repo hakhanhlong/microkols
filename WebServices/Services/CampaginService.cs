@@ -188,10 +188,10 @@ namespace WebServices.Services
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
-        public async Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, string keyword, int page, int pagesize)
+        public async Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, CampaignType? type, string keyword, int page, int pagesize)
         {
 
-            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, keyword);
+            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type,keyword);
 
             var total = await query.CountAsync();
             var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);

@@ -5,7 +5,7 @@
 
             //console.log('AppPayment Init', AppSettings);
             if (AppSettings.IsAuthenticated) {
-                //AppCommon.bindingWalletBalance();
+                AppCommon.bindingWalletBalance();
                 AppNotification.Init();
                 //AppWallet.Init();
 
@@ -20,6 +20,7 @@
 
         handler();
         handlerPages();
+        handlerAccountUpdateInfo();
     }
     function handlerPages() {
         var currentPage = $('#CurrentPage').val();
@@ -41,8 +42,8 @@
         else if (currentPage === 'account_index') {
             AccountIndexPage.Init();
         }
-        
-        
+
+
     }
     function handler() {
 
@@ -120,7 +121,7 @@
         });
 
 
-        
+
         $('.form-datepicker').daterangepicker({
             singleDatePicker: true,
             showDropdowns: true,
@@ -143,7 +144,7 @@
                 format: 'hh:mm A DD/MM/YYYY'
             }
         }, function (start, end, label) {
-                var years = moment().diff(start, 'years');
+            var years = moment().diff(start, 'years');
 
         });
 
@@ -158,7 +159,7 @@
 
         });
 
-        
+
         //$('.form-datepicker').daterangepicker({
         //    "singleDatePicker": true,
         //    "showWeekNumbers": true,
@@ -251,6 +252,20 @@
         */
     }
 
+
+    function handlerAccountUpdateInfo() {
+
+        $.get(AppConstants.UrlGetAccountUpdateInfoStatus, function (res) {
+
+            if (res == 1) {
+                if ($('#frmChangeIdCard').length == 0) {
+
+                    //tam thoi fix model
+                    $('#modal-update-idcard').modal('show');
+                }
+            }
+        });
+    }
 
     function filldistrict() {
         var cityid = $('#CityId').val();

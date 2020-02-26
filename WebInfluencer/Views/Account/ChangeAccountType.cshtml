@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Đăng ký KOLs";
     Layout = "_LayoutSetting";
-
+    
+    ViewBag.IsConfigPage = 1;
     var ignoreCampaignTypes = (List<CampaignType>)ViewBag.IgnoreCampaignTypes;
 
     var accountTypeArr = Common.Helpers.StringHelper.GetEnumArray<AccountType>().Where(m => m != AccountType.All);
@@ -169,6 +170,8 @@
             {
                 no++;
 
+                var ishideKpi = accountCampaignCharge.Type == CampaignType.ChangeAvatar || accountCampaignCharge.Type == CampaignType.ShareStreamUrl;
+
                 <div>
                     <strong>@no. @accountCampaignCharge.Type.ToDisplayName()</strong>
                 </div>
@@ -182,10 +185,20 @@
                         <label>Tối đa</label>
                         <input type="number" max="@int.MaxValue" min="0" name="Max" value="@accountCampaignCharge.Max" class="form-control" />
 
-                    </div> <div class="col-md-3">
+                    </div> 
+                    
+                    <div class="col-md-3">
+                        @if (ishideKpi)
+                        {
 
-                        <label>KPI cam kết tối thiểu</label>
-                        <input type="number" max="@int.MaxValue" min="0" name="Kpi" value="@accountCampaignCharge.Kpi" class="form-control" />
+                            <input type="hidden"   name="Kpi" value="@accountCampaignCharge.Kpi" />
+                        }
+                        else
+                        {
+                            <label>KPI cam kết tối thiểu</label>
+                            <input type="number" max="@int.MaxValue" min="0" name="Kpi" value="@accountCampaignCharge.Kpi" class="form-control" />
+
+                        }
 
                     </div>
                     <div class="col-md-3">

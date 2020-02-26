@@ -22,7 +22,7 @@ namespace WebInfluencer.Controllers
         private readonly ICampaignAccountContentService _campaignAccountContentService;
         private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
 
-        
+
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
         private readonly IFacebookHelper _facebookHelper;
@@ -51,7 +51,7 @@ namespace WebInfluencer.Controllers
         {
             ViewBag.Kw = kw;
             ViewBag.type = type;
-            var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, kw, pageindex, pagesize);
+            var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
 
             return View(model);
         }
@@ -64,7 +64,7 @@ namespace WebInfluencer.Controllers
                 var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
                 if (captionaccount != null)
                 {
-                    ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatistics(captionaccount.Id,string.Empty,pageindex,pagesize);
+                    ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatistics(captionaccount.Id, string.Empty, pageindex, pagesize);
                 }
                 return View("DetailsStatistic", model);
             }
@@ -110,9 +110,9 @@ namespace WebInfluencer.Controllers
             if (ModelState.IsValid)
             {
                 var imgs = new List<string>();
-                if(file!= null)
-                foreach(var item in file)
-                {
+                if (file != null)
+                    foreach (var item in file)
+                    {
 
                         var newpath = await _fileHelper.UploadTempFile(item);
                         var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");

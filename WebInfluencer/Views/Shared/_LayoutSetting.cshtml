@@ -15,7 +15,15 @@
     <nav class="shadow-sm">
         <ol class="breadcrumb">
 
-            <li class="breadcrumb-item "><a asp-action="Index" class="breadcrumb-link">Tài khoản</a></li>
+            @if (ViewBag.IsConfigPage != null)
+            {
+
+                <li class="breadcrumb-item "><a asp-action="ChangePassword" asp-controller="Account" class="breadcrumb-link">Cấu hình</a></li>
+            }
+            else
+            {
+                <li class="breadcrumb-item "><a asp-action="Index" asp-controller="Account" class="breadcrumb-link">Tài khoản</a></li>
+            }
 
             <li class="breadcrumb-item">
                 @ViewData["Title"]

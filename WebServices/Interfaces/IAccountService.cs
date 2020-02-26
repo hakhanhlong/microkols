@@ -9,6 +9,7 @@ namespace WebServices.Interfaces
 {
     public interface IAccountService
     {
+        Task<int> GetAccountUpdateInfoStatus(int id);
         Task<ChangeFacebookUrlViewModel> GetChangeFacebookUrl(int id);
         Task<bool> ChangeFacebookUrl(int id, ChangeFacebookUrlViewModel model);
 

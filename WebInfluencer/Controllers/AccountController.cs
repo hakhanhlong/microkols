@@ -41,16 +41,21 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> Index()
         {
             return RedirectToAction("ChangeInfo");
-            var account = await _accountService.GetAccount(CurrentUser.Id);
+            //var account = await _accountService.GetAccount(CurrentUser.Id);
 
-            ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
+            //ViewBag.Counter = await _campaignService.GetCampaignCounterByAccount(CurrentUser.Id);
 
-            ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 0, 1, 20);
-            ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
-            ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
-            return View(account);
+            //ViewBag.FbPosts = await _accountService.GetAccountFbPosts(CurrentUser.Id, 0, 1, 20);
+            //ViewBag.ProfileUrl = await _accountService.GetFacebookProfileUrl(CurrentUser.Id);
+            //ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 20);
+            //return View(account);
         }
 
+        public async Task<IActionResult> GetAccountUpdateInfoStatus()
+        {
+            var r = await _accountService.GetAccountUpdateInfoStatus(CurrentUser.Id);
+            return Json(r);
+        }
 
         #region Fb Post
 
@@ -140,6 +145,7 @@ namespace WebInfluencer.Controllers
             return RedirectToAction("ChangeFacebookUrl");
         }
         #endregion
+
         #region Change Avatar
 
 
