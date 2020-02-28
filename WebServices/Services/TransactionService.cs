@@ -34,7 +34,22 @@ namespace WebServices.Services
         }
 
 
+
+
         #region Create Transaction
+
+        public async Task<int> GetCount(int agencyid, TransactionType type)
+        {
+            var query = await _transactionRepository.GetQueryTransaction(EntityType.Agency, agencyid, type);
+            return query.Count();
+        }
+        public async Task<long> GetTotalAmount(int agencyid, TransactionType type)
+        {
+            var query = await _transactionRepository.GetQueryTransaction(EntityType.Agency, agencyid, type);
+            return query.Select(m => m.Amount).Sum();
+        }
+
+
 
         public async Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username)
         {
@@ -44,7 +59,7 @@ namespace WebServices.Services
             if (wallet == null) return -1;
             var systemid = await _walletRepository.GetSystemId();
             var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletRecharge,
-                model.GetTransactionData(), model.Note, username);
+                model.Note, model.GetTransactionData(),  username);
             return transactionId;
 
 
@@ -66,7 +81,7 @@ namespace WebServices.Services
                 BankBranch = model.Branch
             });
             var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletWithdraw,
-              data, model.Note, username);
+             model.Note, data,  username);
             return transactionId;
 
         }
@@ -76,7 +91,7 @@ namespace WebServices.Services
 
         #region TransactionHistory
 
-       
+
         public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, string daterange, int page, int pagesize)
         {
             var date = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
@@ -84,6 +99,24 @@ namespace WebServices.Services
             var walletid = await _walletRepository.GetWalletId(entityType, entityid);
 
             var filter = new TransactionHistorySpecification(walletid, date);
+
+            var total = await _transactionHistoryRepository.CountAsync(filter);
+            var transactionHistory = await _transactionHistoryRepository.ListPagedAsync(filter, "Id_desc", page, pagesize);
+
+            return new ListTransactionHistoryViewModel()
+            {
+                TransactionHistories = TransactionHistoryViewModel.GetList(transactionHistory),
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+
+        }
+
+        public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, TransactionType type, int page, int pagesize)
+        {
+
+            var walletid = await _walletRepository.GetWalletId(entityType, entityid);
+
+            var filter = new TransactionHistorySpecification(walletid, null, type);
 
             var total = await _transactionHistoryRepository.CountAsync(filter);
             var transactionHistory = await _transactionHistoryRepository.ListPagedAsync(filter, "Id_desc", page, pagesize);

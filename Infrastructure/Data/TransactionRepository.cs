@@ -20,6 +20,32 @@ namespace Infrastructure.Data
 
         }
 
+        public async Task<IQueryable<Transaction>> GetQueryTransaction(EntityType entityType, int entityId, TransactionType type)
+        {
+            var wallet = await _dbContext.Wallet.Where(m => m.EntityId == entityId && m.EntityType == entityType).FirstOrDefaultAsync();
+            if (wallet != null)
+            {
+
+
+                var query = _dbContext.Transaction.Where(m => m.Type == type && m.Status == TransactionStatus.Completed);
+                if (type == TransactionType.WalletWithdraw)
+                {
+                    query = query.Where(m => m.SenderId == wallet.Id);
+
+                }
+                else
+                {
+                    query = query.Where(m => m.ReceiverId == wallet.Id);
+                }
+
+                return query;
+
+            }
+            return new List<Transaction>().AsQueryable();
+
+
+        }
+
         public async Task<int> CreateTransaction(int senderid, int receiverid, long amount,
             TransactionType type, string note, string data, string username, int refId = 0, string refData = "")
         {
@@ -48,7 +74,7 @@ namespace Infrastructure.Data
 
         }
 
-       
+
 
         public async Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username)
         {
@@ -88,7 +114,7 @@ namespace Infrastructure.Data
             return await _dbContext.Transaction.Where(m => m.Type == transactionType && m.RefId == refid && m.Status == TransactionStatus.Completed).Select(m => m.Amount).DefaultIfEmpty(0).SumAsync();
         }
 
-       
+
 
         public int CountAll()
         {

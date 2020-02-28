@@ -32,6 +32,24 @@ namespace WebMerchant.Code.Extensions
             return writer.ToString();
         }
 
+        public static HtmlString ToBadge(this Core.Entities.TransactionStatus status)
+        {
+            var type = "light";
+            if (status == TransactionStatus.Error)
+            {
+                type = "danger";
+            }
+            else if (status == TransactionStatus.Created)
+            {
+                type = "info";
+            }
+            else  if (status == TransactionStatus.Completed)
+            {
+                type = "success";
+            }
+
+            return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+        }
         public static HtmlString ToBadge(this Core.Entities.CampaignAccountContentStatus accountType)
         {
             var type = "danger";

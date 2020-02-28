@@ -14,6 +14,14 @@ namespace Core.Specifications
             AddInclude(m => m.Transaction);
         }
 
+        public TransactionHistorySpecification(int walletid, Common.Helpers.DateRange? dateRange,TransactionType? type) : base(m => m.WalletId == walletid &&
+      (!dateRange.HasValue || (m.DateCreated > dateRange.Value.Start && m.DateCreated > dateRange.Value.End)) &&
+          (!type.HasValue || (m.Transaction.Type== type))
+      )
+        {
+            AddInclude(m => m.Transaction);
+        }
+
 
         public TransactionHistorySpecification(int walletid) : base(m => m.WalletId == walletid)
         {

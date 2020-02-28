@@ -15,8 +15,11 @@
                             <h5 class="card-title">
                                 Nạp tiền
                             </h5>
-                            <p>Số lần nạp tiền <strong>5</strong></p>
-                            <p>Tổng tiền đã nạp <strong style="color: red">1,000,000 Vnđ</strong></p>
+                            <p>Số lần nạp tiền <strong>@ViewBag.CountRecharge</strong></p>
+                            @{ 
+                                var total = (long)(long)ViewBag.TotalRecharge;
+                            }
+                            <p>Tổng tiền đã nạp <strong  class="text-danger">@total.ToPriceText()</strong></p>
                         </div>
                     </div>
                 </a>
@@ -29,8 +32,11 @@
                             <h5 class="card-title">
                                 Rút tiền
                             </h5>
-                            <p>Số lần rút tiền <strong>5</strong></p>
-                            <p>Tổng tiền đã rút <strong style="color: red">1,000,000 Vnđ</strong></p>
+                            <p>Số lần rút tiền <strong>@ViewBag.CountWithdraw</strong></p>
+                            @{
+                                 total = (long)(long)ViewBag.TotalWithdraw;
+                            }
+                            <p>Tổng tiền đã rút <strong class="text-danger">@total.ToPriceText()</strong></p>
                         </div>
                     </div>
                 </a>

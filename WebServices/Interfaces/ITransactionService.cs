@@ -9,9 +9,11 @@ namespace WebServices.Interfaces
 {
     public interface ITransactionService
     {
+        Task<int> GetCount(int agencyid, TransactionType type);
+        Task<long> GetTotalAmount(int agencyid, TransactionType type);
         Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username);
         Task<int> CreateTransaction(EntityType entityType, int entityId, WithDrawViewModel model, string username);
-
+        Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, TransactionType type, int page, int pagesize);
         Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, string daterange, int page, int pagesize);
     }
 }

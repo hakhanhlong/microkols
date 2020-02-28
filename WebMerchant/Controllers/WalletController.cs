@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
+using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,7 +13,7 @@ using WebServices.ViewModels;
 
 namespace WebMerchant.Controllers
 {
-    
+
     public class WalletController : BaseController
     {
         private readonly IWalletService _walletService;
@@ -32,13 +33,27 @@ namespace WebMerchant.Controllers
             return User.Identity.IsAuthenticated ? await _walletService.GetAmount(CurrentUser) : 0;
         }
 
-       
+
         public async Task<IActionResult> Index()
         {
+            ViewBag.CountRecharge = await _transactionService.GetCount(CurrentUser.Id, Core.Entities.TransactionType.WalletRecharge);
+            ViewBag.CountWithdraw = await _transactionService.GetCount(CurrentUser.Id, Core.Entities.TransactionType.WalletWithdraw);
+            ViewBag.TotalRecharge = await _transactionService.GetTotalAmount(CurrentUser.Id, Core.Entities.TransactionType.WalletRecharge);
+            ViewBag.TotalWithdraw = await _transactionService.GetTotalAmount(CurrentUser.Id, Core.Entities.TransactionType.WalletWithdraw);
             return View();
         }
 
+        public async Task<IActionResult> History(TransactionType type, int pageindex = 1, int pagesize = 20)
+        {
+            ViewBag.Type = type;
+            var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id, type, pageindex, pagesize);
+
+            ViewBag.Total = await _transactionService.GetTotalAmount(CurrentUser.Id, type);
+            return View(model);
+
+        }
         #region Recharge
+
         public async Task<IActionResult> Recharge(int campaignid = 0)
         {
             long amount = 0;
@@ -52,7 +67,7 @@ namespace WebMerchant.Controllers
                     note = $"Nạp tiền chiến dịch {campaign.Code}";
                     ViewBag.Campaign = campaign;
                 }
-                
+
             }
             var model = new RechargeViewModel()
             {
@@ -70,7 +85,7 @@ namespace WebMerchant.Controllers
         {
             if (ModelState.IsValid)
             {
-            
+
                 if (model.CampaignId > 0)
                 {
                     var campaign = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, model.CampaignId);
@@ -139,7 +154,7 @@ namespace WebMerchant.Controllers
                 if (r > 0)
                 {
                     this.AddAlertSuccess("Yêu cầu rút tiền đã được gửi. Vui lòng chờ quản trị duyệt giao dịch.");
-                   
+
                 }
                 else if (r == -2)
                 {

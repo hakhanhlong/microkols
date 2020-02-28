@@ -22,8 +22,9 @@
             <div class="col-lg-12">
                 <nav>
                     <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">NẠP TIỀN</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">LỊCH SỬ</a>
+                        <a class="nav-item nav-link active" href="">NẠP TIỀN</a>
+
+                        <a class="nav-item nav-link active" href="@Url.Action("History", new { type = TransactionType.WalletWithdraw })">LỊCH SỬ</a>
                     </div>
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">
