@@ -173,7 +173,7 @@ namespace Core.Entities
             }
             else if (type == NotificationType.CampaignCantStarted)
             {
-                message = "{0} tạm kkhoas chiến dịch {1} vì: {2}";
+                message = "{0} tạm khóa chiến dịch {1} vì: {2}";
             }
 
             
