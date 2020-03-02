@@ -81,7 +81,7 @@ namespace Core.Entities
     {
         [Display(Name ="Tất cả")]
         All = -2,
-        [Display(Name ="Chờ trả tiền")]
+        [Display(Name ="Chờ duyệt chiến dịch")]
         WaitToPay = -1,
         [Display(Name ="Thành viên xin tham gia chiến dịch")]
         AccountRequest = 0,

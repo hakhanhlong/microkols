@@ -154,6 +154,7 @@ namespace WebServices.Services
 
 
 
+
             CampaignAccountCaption.Status = status;
             CampaignAccountCaption.UserModified = username;
             CampaignAccountCaption.DateModified = DateTime.Now;
@@ -167,6 +168,13 @@ namespace WebServices.Services
                 campaignaccount.Status = CampaignAccountStatus.ApprovedContent;
                 await _campaignAccountRepository.UpdateAsync(campaignaccount);
 
+            }
+            else if(status == CampaignAccountCaptionStatus.KhongDuyet)
+            {
+                campaignaccount.UserModified = username;
+                campaignaccount.DateModified = DateTime.Now;
+                campaignaccount.Status = CampaignAccountStatus.Canceled;
+                await _campaignAccountRepository.UpdateAsync(campaignaccount);
             }
 
             var notifType = status== CampaignAccountCaptionStatus.DaDuyet ? NotificationType.AgencyApproveCampaignCaption : NotificationType.AgencyDeclineCampaignCaption;
@@ -200,6 +208,7 @@ namespace WebServices.Services
             };
 
 
+            CampaignAccountCaption.Status = CampaignAccountCaptionStatus.YeuCauSua;
 
             CampaignAccountCaption.Note = note;
             CampaignAccountCaption.UserModified = username;

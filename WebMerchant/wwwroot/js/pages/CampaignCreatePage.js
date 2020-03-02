@@ -188,6 +188,34 @@
         });
 
         handlerAccountType();
+
+        $('#SendProduct').change(function () {
+            if ($(this).is(':checked')) {
+
+                $('#modal-timereview').modal('show');
+            }
+
+        });
+        $('#timereview-date').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            },
+            parentEl: "#modal-timereview .modal-body"    
+        });
+
+        $('#timereview-submit').click(function () {
+            var time = $('#timereview-date').val();
+
+            $('#ReviewDate').val(time);
+            var address = $('#timereview-address').val();
+            $('#ReviewAddress').val(address);
+            $('#modal-timereview').modal('hide');
+
+        });
     }
 
 

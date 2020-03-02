@@ -43,6 +43,7 @@ var CampaignCreateTargetPage = (function () {
         });
 
 
+        /*
         $('#AccountIds').select2({
             theme: "bootstrap",
             ajax: {
@@ -68,32 +69,90 @@ var CampaignCreateTargetPage = (function () {
                         })
                     };
                 }
-                /*
-                processResults: function (data) {
-
-                    var list = [];
-
-                    data.forEach(function (item) {
-                        list.push(new {
-                            id: item.id,
-                            text: item.name
-                            
-                        })
-                    });
-                    console.log('123', list);
-                    return {
-                        results: list
-                    };
-                }
-                */
+              
 
             }
         });
+        */
+
         handlerAccountType();
         $('input[name=AccountType]').change(function () {
 
             handlerAccountType();
         });
+
+
+        $('#modal-influencer-selection').on('shown.bs.modal', function (e) {
+            // do something...
+            $('#modal-influencer-selection .frm-search').submit();
+        });
+
+
+        $('#modal-influencer-selection .frm-search').submit(function () {
+            var url = $(this).data('action');
+
+            var parram = $(this).serialize(0);
+            $('#list-influencer').html(AppConstants.HtmlSpinner);
+            $.post(url, parram, function (html) {
+
+                $('#list-influencer').html(html);
+                handlerSearchInfluencer();
+            });
+
+        });
+    }
+
+    function handlerSearchInfluencer() {
+
+        var $target = $('#list-influencer');
+
+        $target.find('.cb-checkall').click(function () {
+            $('.cb-checkitem').prop('checked', this.checked);
+            handlerVisibleCheckItem($target);
+        });
+
+        $target.find('.cb-checkitem').change(function () {      
+            handlerVisibleCheckItem($target);
+        });
+
+        var $btnsubmit = $('#btn-submitInfluencer');
+
+        $btnsubmit.hide();
+
+        $btnsubmit.unbind('click');
+        $btnsubmit.click(function () {
+
+           
+
+            var html = '';
+            var $cb = $('#list-influencer .cb-checkitem:checked');
+            $cb.each(function () {
+                var val = $(this).val(); 
+                var name = '';// $(this).data('name'); 
+                html += '<span><input type="hidden" name="AccountIds" value="' + val + '" />' + name + '</span>';
+            }).promise().done(function () {
+                console.log('html', html);
+                $('#AccountIdsArea').append(html);
+                $('.badge-influencer-count').html($('#AccountIdsArea span').length);
+                $('#modal-influencer-selection').modal('hide');
+            });
+
+
+        });
+
+    }
+
+    function handlerVisibleCheckItem($target) {
+        var cb = '.cb-checkitem:checked';// '.cb-checkitemMatchAccount:checked';
+
+
+        var length = $target.find(cb).length;
+        if (length > 0) {
+            $('#btn-submitInfluencer').show();
+        } else {
+            $('#btn-submitInfluencer').hide();
+        }
+
     }
 
 

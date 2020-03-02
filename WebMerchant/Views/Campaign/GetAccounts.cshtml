@@ -1,0 +1,44 @@
+﻿@model List<AccountViewModel>
+
+@inject WebServices.Interfaces.IAccountService AccountService
+<table class="table table-hover mt-3">
+    <thead>
+        <tr>
+            <th><input type="checkbox" class="cb-checkall" /></th>
+            <th scope="col">#</th>
+            <th scope="col">Họ và Tên</th>
+            <th scope="col">Thống kê trung bình</th>
+            <th scope="col">Loại Influencer</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var no = 0;
+        }
+        @foreach (var account in Model)
+        {
+            no++;
+
+            var counting = account.AccountCounting; //await AccountService.GetAccountCounting(account.Id);
+            <tr>
+                <td><input type="checkbox" class="cb-checkitem"  value="@account.Id" data-name="@account.Name" /></td>
+                <th scope="row">@no</th>
+                <td>
+                    <a href="#" class="kol-join">
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">
+                        @account.Name
+                    </a>
+                </td>
+                <td class="statistic-social">
+                    <span title="Lượt thích trung bình">@counting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+                    <span class="px-2" title="Lượt chia sẻ trung bình">@counting.AvgShareCount <i class="fa fa-share"></i></span>
+                    <span title="Lượt bình luận trung bình">@counting.AvgCommentCount <i class="fa fa-comment"></i></span>
+                </td>
+                <td>@account.Type.ToDisplayName()</td>
+                <td></td>
+            </tr>
+
+        }
+    </tbody>
+</table>

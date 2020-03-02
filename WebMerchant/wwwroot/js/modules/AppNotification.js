@@ -38,6 +38,10 @@ var AppNotification = (function () {
             if (count !== currentcount) {
                 getNotificationDropdown();
             }
+
+            setTimeout(function () {
+                getNotificationCount();
+            }, 5000);
         });
 
     }

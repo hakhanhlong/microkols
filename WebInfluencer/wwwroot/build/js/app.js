@@ -48,7 +48,8 @@ var App = (function () {
     function handler() {
 
 
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
 
 
         $('.campaign-image-carousel').owlCarousel({
@@ -516,6 +517,10 @@ var AppNotification = (function () {
             if (count !== currentcount) {
                 getNotificationDropdown();
             }
+
+            setTimeout(function () {
+                getNotificationCount();
+            }, 5000);
         });
 
     }

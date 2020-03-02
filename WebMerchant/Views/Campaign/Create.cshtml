@@ -58,12 +58,16 @@
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
-                    <div class="form-group">
-                        <label asp-for="AccountChargeTime"></label>
-
-                        <input type="text" class="form-control" asp-for="AccountChargeTime" />
-                        <span asp-validation-for="AccountChargeTime"></span>
+            <div class="form-group">
+                <label asp-for="AccountChargeTime"></label>
+                <div class="input-group">
+                    <input type="number" class="form-control" asp-for="AccountChargeTime" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">Tuần</span>
                     </div>
+                </div>
+                <span asp-validation-for="AccountChargeTime"></span>
+            </div>
                 }
                 else
                 {
@@ -79,18 +83,17 @@
                 </div>
 
 
-                @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption)
+                @if (campaignType == CampaignType.ShareContent)
                 {
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
                             <label class="custom-control-label" asp-for="EnabledExtraType"></label>
                         </div>
-
                     </div>
                 }
 
-                @if (campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
+                @if (campaignType == CampaignType.ReviewProduct)
                 {
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -101,8 +104,46 @@
                     </div>
                 }
 
-                <div class="text-center form-group">
+                @if (campaignType != CampaignType.ShareContent)
+                {
 
+                    <div>
+                        <label>Ảnh chiến dịch cung cấp</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
+                            <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
+                        </div>
+                        <div>
+                            <ul class="list-unstyled">
+                                @if (campaignType == CampaignType.ChangeAvatar)
+                                {
+
+                                    <li>
+                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
+                                    </li>
+                                }
+                                @*else
+                                {
+                                    <li>
+                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                                    </li>
+                                }*@
+                            </ul>
+                        </div>
+
+                        <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
+
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <div class="text-center form-group">
+                    <input type="hidden" asp-for="ReviewAddress" />
+                    <input type="hidden" asp-for="ReviewDate" />
                     <input type="hidden" asp-for="Type" />
                     <button class="btn btn-outline-primary btn-bold-text" type="submit">
                         Bước 3: Yêu cầu về đối tượng của chiến dịch
@@ -130,40 +171,51 @@
                             <h5>Nội dung mẫu</h5>
                             <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
                         </div>
-                        <div class="card-body">
-                            <h5>Ảnh chiến dịch cung cấp</h5>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
-                                <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
-                            </div>
-                            <div>
-                                <ul class="list-unstyled">
-                                    @if (campaignType == CampaignType.ChangeAvatar)
-                                    {
-
-                                        <li>
-                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
-                                        </li>
-                                    }
-                                    else
-                                    {
-
-                                        <li>
-                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                        </li>
-                                    }
-                                </ul>
-                            </div>
-
-                            <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
-
-
-                            </div>
-
-                        </div>
-                    </div>
+                 </div>
                 }
             </div>
         </div>
     </div>
 </form>
+
+
+
+<div class="modal fade" style="z-index: 999999;" id="modal-timereview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thời gian địa điểm trải nghiệm sản phẩm/dịch vụ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <h6 class="title-campaign"></h6>
+
+      
+                    <div class="form-row mt-2">
+                        <div class="form-group col-12">
+                            <label>Thời gian</label>
+                            <input type="text" class="form-control form-control-lg" id="timereview-date" placeholder="Chọn thời gian">
+                        </div>
+                    </div>
+                    <div class="form-row mt-2">
+                        <div class="form-group col-12">
+                            <label>Địa điểm trải nghiệm</label>
+                            <textarea class="form-control form-control-lg" id="timereview-address"></textarea>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary" id="timereview-submit">Đồng ý</button>
+                    </div>
+           
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

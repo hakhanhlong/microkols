@@ -251,7 +251,10 @@ namespace WebInfluencer.Code.Extensions
                 NotificationType.AgencyDeclineCampaignCaption,
                 NotificationType.AgencyApproveCampaignCaption,
                 NotificationType.AccountSubmitCampaignCaption,
-                NotificationType.AccountSubmitCampaignCaption
+                NotificationType.AccountSubmitCampaignCaption,
+                NotificationType.AgencyUpdatedCampaignCaption,
+                NotificationType.AgencyUpdatedCampaignContent,
+                NotificationType.AgencyUpdatedCampaignRefContent
 
             };
             if (campaignNotifTypes.Contains(model.Type))

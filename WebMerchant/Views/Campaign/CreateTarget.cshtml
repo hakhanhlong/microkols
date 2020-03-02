@@ -22,7 +22,7 @@
         <div class="col-lg-8">
             <form class="form-create-campaign" asp-action="CreateTarget">
                 <div asp-validation-summary="All"></div>
-                
+
                 <h6>Loại influencer bạn cần</h6>
                 <div class="form-group">
 
@@ -53,11 +53,11 @@
                     <div class=" d-accounttype d-accounttype-@(accountType)" style="display:none">
                         @if (accountType == AccountType.Regular)
                         {
-                        @*<div class="form-group">
-                            <label asp-for="AccountChargeAmount" ></label>
-                            <input type="number" class="form-control " asp-for="AccountChargeAmount" />
-                            <span asp-validation-for="AccountChargeAmount"></span>
-                        </div>*@
+                            @*<div class="form-group">
+                                    <label asp-for="AccountChargeAmount" ></label>
+                                    <input type="number" class="form-control " asp-for="AccountChargeAmount" />
+                                    <span asp-validation-for="AccountChargeAmount"></span>
+                                </div>*@
                         }
                         else if (accountType == AccountType.HotMom)
                         {
@@ -65,7 +65,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label>Giới tính con cái</label>
-                                        <select class="form-control" name="ChildType" >
+                                        <select class="form-control" name="ChildType">
                                             <option selected value="0">Tất cả</option>
                                             <option value="1">Con trai</option>
                                             <option value="2">Con gái</option>
@@ -193,22 +193,32 @@
                             <label class="custom-control-label" asp-for="EnabledAccount"></label>
                         </div>
                         <div class=" ml-4 flex-grow-1">
-                            <div id="collapseEnabledAccount" class="collapse">
-                                <select asp-for="AccountIds" multiple class="form-control">
-                                  
-                                </select>
-                                <span asp-validation-for="AccountIds"></span>
+
+
+                            <div id="collapseEnabledAccount" class="collapse  text-right">
+
+                                <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modal-influencer-selection">
+                                    Chọn Influencer <span class="badge badge-danger badge-influencer-count">0</span>
+                                </button>
+
+                                @*<select asp-for="AccountIds" multiple class="form-control">
+        </select>
+              <span asp-validation-for="AccountIds"></span>
+                                    *@
+
+                                <div id="AccountIdsArea"></div>
+
                             </div>
 
                         </div>
 
                     </div>
                     @*<div class=" py-1 d-none" id="enabledExtraTypeWrap">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
-            </div>
-        </div>*@
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                            </div>
+                        </div>*@
 
                 </div>
 
@@ -227,15 +237,15 @@
 
                     <div class="form-group">
                         <label asp-for="InteractiveMin"></label>
-                         
+
                         <div class="d-flex">
                             <div class="mr-2 p-2">Tương tác/post/influencer</div>
                             <div class="">
                                 <input type="number" asp-for="InteractiveMin" min="@Model.InteractiveMin" class="form-control" />
                             </div>
-                            
+
                         </div>
-                        
+
                         <span asp-validation-for="InteractiveMin"></span>
                     </div>
 
@@ -322,6 +332,70 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" style="z-index: 999999;" id="modal-influencer-selection"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Danh sách Influencer bạn muốn chỉ định</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!--#################################-->
+
+                <ul class="list-unstyled">
+                    <li><strong>Tìm Kiếm</strong></li>
+                    <li class="mt-2 mb-4">
+                        <form action="javascript:;" data-action="@Url.Action("GetAccounts")" class="frm-search">
+                            <div class="form-group mb-2">
+                                <div class="form-row">
+                                    <div class="col-md-3">
+                                        <select class="custom-select" name="type">
+
+                                            <option value="">Tất cả loại</option>
+                                            @foreach (var item in accountTypes)
+                                            {
+
+                                                <!option value="@item">@item.ToDisplayName()</!option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <input type="text" class="form-control" name="kw" placeholder="Tìm kiếm Influencer">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-outline-primary btn-bold-text">Tìm kiếm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                    <li id="list-influencer">
+                        
+                    </li>
+                    <li>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-outline-primary btn-bold-text" id="btn-submitInfluencer">Đồng ý</button>
+                        </div>
+                    </li>
+                </ul>
+
+                <!--#################################-->
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
         </div>
     </div>
 </div>

@@ -63,6 +63,11 @@ namespace Core.Entities
         public DateTime? FeedbackStart { get; set; }
         public DateTime? FeedbackEnd { get; set; }
 
+        public DateTime? ReviewStart { get; set; }
+        public DateTime? ReviewEnd { get; set; }
+
+        public string ReviewAddress{ get; set; }
+
         public int  AmountMin { get; set; }
         public int AmountMax { get; set; }
         public int Quantity { get; set; }

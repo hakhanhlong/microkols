@@ -709,7 +709,8 @@ namespace WebServices.Services
                     Status = CampaignAccountStatus.AgencyRequest,
                 };
                 await _campaignAccountRepository.AddAsync(campaignAccount);
-                return true;
+
+              
             }
             else
             {
@@ -722,12 +723,14 @@ namespace WebServices.Services
                 await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
                     NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
 
-                return true;
 
 
             }
 
-            return false;
+            await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
+                NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+
+            return true;
 
         }
 

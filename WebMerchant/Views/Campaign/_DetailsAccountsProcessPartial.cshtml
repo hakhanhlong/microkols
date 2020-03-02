@@ -109,7 +109,22 @@
                         <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
                         <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
 
-                        <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
+
+                        @if (Model.Type.IsHasCaption())
+                        {
+
+                            <a class="btn btn-outline-success btn-sm" href="@Url.Action("Caption", new { campaignid= Model.Id })">Duyệt Caption</a>
+                        }
+                        else if (Model.Type.IsHasContent())
+                        {
+                            <a class="btn btn-outline-success btn-sm" href="@Url.Action("Content", new { campaignid= Model.Id })">Duyệt Content</a>
+                        }
+                        else
+                        {
+
+                            <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
+                        }
+
                         <button class="btn btn-outline-danger btn-sm" name="type" value="0">Từ chối</button>
                     </form>
                 </div>

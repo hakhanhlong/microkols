@@ -130,12 +130,18 @@ namespace WebMerchant.Controllers
                     if (id > 0)
                     {
                         if (model.AccountIds != null)
-                            for (var i = 0; i < model.AccountIds.Count; i++)
+                        {
+
+                            var accountids = model.AccountIds.Distinct().ToList();
+
+                            for (var i = 0; i < accountids.Count; i++)
                             {
-                                var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
+                                var amount = model.AmountMax; //model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
+                                BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, accountids[i], amount, CurrentUser.Username));
 
                             }
+                        }
+                           
                         return RedirectToAction("Details", new { id = id });
 
                     }
@@ -366,12 +372,21 @@ namespace WebMerchant.Controllers
             return PartialView(model);
         }
 
+        public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int page = 1, int pagesize = 10)
+        {
+            var model = await _accountService.GetAccounts(type?? AccountType.All, kw, string.Empty, page, pagesize);
+
+            return PartialView(model);
+        }
+        /*
         public async Task<IActionResult> GetAccounts(AccountType type, string kw, int page = 1, int pagesize = 10)
         {
             var model = await _accountService.GetAccounts(type, kw, string.Empty, page, pagesize);
 
             return Ok(model);
         }
+
+        */
         #endregion
 
         #region Action

@@ -125,6 +125,9 @@ namespace WebServices.ViewModels
             var regTime = DateRangeHelper.GetDateRange(target.RegisterTime);
             var feedbackTime = DateRangeHelper.GetDateRange(target.FeedbackBefore);
 
+            var reviewTime = DateRangeHelper.GetDateRange(info.ReviewDate);
+
+
             var image = string.Empty;
 
             if (info.Type == CampaignType.ChangeAvatar)
@@ -180,7 +183,10 @@ namespace WebServices.ViewModels
                 AmountMin = target.AmountMin,
                 IsSendProduct = info.SendProduct,
 
-               
+
+                ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null,
+                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null,
+                ReviewAddress = info.ReviewAddress
 
 
 
@@ -329,7 +335,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Liên kết URL nội dung")]
         public string Data { get; set; }
 
-        [Display(Name = "Liên kết URL nội dung")]
+        [Display(Name = "Hình ảnh hoặc Frame")]
         public string Image { get; set; } = string.Empty;
 
 
@@ -366,6 +372,9 @@ namespace WebServices.ViewModels
         public string SampleContentText { get; set; }
         [Display(Name = "Phương thức")]
         public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
+
+        public string ReviewDate { get; set; }
+        public string ReviewAddress { get; set; }
     }
 
     public class CreateCampaignTargetViewModel
@@ -443,7 +452,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Thời gian nhận đăng ký")]
         public string RegisterTime { get; set; }
 
-        [Display(Name = "Phản hồi trước")]
+        [Display(Name = "Thời gian gửi mẫu nội dung")]
         public string FeedbackBefore { get; set; }
 
 

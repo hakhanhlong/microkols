@@ -47,8 +47,8 @@
     function handler() {
 
 
-        $('[data-toggle="tooltip"]').tooltip()
-
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
 
         $('.campaign-image-carousel').owlCarousel({
             margin: 10,
