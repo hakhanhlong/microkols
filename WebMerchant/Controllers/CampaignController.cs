@@ -93,6 +93,7 @@ namespace WebMerchant.Controllers
                 if (!string.IsNullOrEmpty(model.Image))
                 {
                     model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
+                    ViewBag.Image = model.Image;
                 }
                 var paymentModel = new CreateCampaignTargetViewModel()
                 {
@@ -102,7 +103,6 @@ namespace WebMerchant.Controllers
                     InteractiveMin = model.Type.GetInteractiveMin(),
                     AccountType = new List<AccountType>() { AccountType.Kols }
                 };
-
                 await ViewbagData();
                 return View("CreateTarget", paymentModel);
 

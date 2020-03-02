@@ -202,9 +202,9 @@
                                 </button>
 
                                 @*<select asp-for="AccountIds" multiple class="form-control">
-        </select>
-              <span asp-validation-for="AccountIds"></span>
-                                    *@
+                                    </select>
+                                          <span asp-validation-for="AccountIds"></span>
+                                *@
 
                                 <div id="AccountIdsArea"></div>
 
@@ -284,7 +284,7 @@
                     <span asp-validation-for="RegisterTime"></span>
 
                 </div>
-                @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
+                @if ( campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
                 {
                     <div class="form-group ">
                         <label asp-for="FeedbackBefore"></label>
@@ -330,6 +330,14 @@
                         @campaignType.ToDescription()
                     </p>
                 </div>
+                @if (campaignType== CampaignType.ChangeAvatar && ViewBag.Image != null)
+                        {
+                            var img = (string)ViewBag.Image;
+                    <div class="card-body">
+
+                        <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
+                    </div>
+                }
             </div>
 
         </div>
@@ -337,7 +345,7 @@
 </div>
 
 
-<div class="modal fade" style="z-index: 999999;" id="modal-influencer-selection"   tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" style="z-index: 999999;" id="modal-influencer-selection" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -378,7 +386,7 @@
                         </form>
                     </li>
                     <li id="list-influencer">
-                        
+
                     </li>
                     <li>
 
