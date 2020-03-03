@@ -248,7 +248,7 @@ namespace BackOffice.Controllers
                 foreach (var item in model)
                 {
                     var obj = _IAccountCampaignChargeRepository.GetById(item.Id);
-                    obj.AccountChargeAmount = item.AccountChargeAmount;
+                    //obj.AccountChargeAmount = item.AccountChargeAmount;
                     _IAccountCampaignChargeRepository.Update(obj);
                 }
                 TempData["MessageSuccess"] = "Update Success!";

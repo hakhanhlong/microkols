@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Website.Code.Helpers;
+
 
 namespace BackOffice
 {
@@ -52,10 +52,10 @@ namespace BackOffice
 
 
             //website
-            services.AddSingleton<IFacebookClient, FacebookClient>();
-            services.AddSingleton<IFacebookHelper, FacebookHelper>();
+            
 
-            services.AddScoped<Website.Interfaces.IAccountService, Website.Services.AccountService>();
+
+
             services.AddScoped<IAccountFbPostRepository, AccountFbPostRepository>();
 
 

@@ -15,7 +15,7 @@ namespace BackOffice.Models
             Id = model.Id;
             AccountId = model.AccountId;
             Type = model.Type;
-            AccountChargeAmount = model.AccountChargeAmount;
+            //AccountChargeAmount = model.AccountChargeAmount;
 
         }
 
@@ -23,6 +23,7 @@ namespace BackOffice.Models
         public int AccountId { get; set; }
 
         public CampaignType Type { get; set; }
+
         public int AccountChargeAmount { get; set; }
 
     }
