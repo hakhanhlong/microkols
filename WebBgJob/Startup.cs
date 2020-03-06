@@ -63,9 +63,10 @@ namespace WebBgJob
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
-
-            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), "*/10 * * * *");
-            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), Cron.Daily);
+            var campaignProcessTimer = Configuration.GetValue<string>("CampaignProcessTimer"); 
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer); // "*/10 * * * *"
+            var updateFbPostTimer = Configuration.GetValue<string>("UpdateFbPostTimer");
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), updateFbPostTimer);
 
 
             app.UseMvc(routes =>
