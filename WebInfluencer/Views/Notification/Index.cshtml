@@ -12,8 +12,11 @@
     <nav class="shadow-sm">
         <ol class="breadcrumb">
 
-            <li class="breadcrumb-item "><a asp-action="Index" asp-controller="Home" class="breadcrumb-link">Trang chủ</a></li>
-            <li class="breadcrumb-item">Thông báo</li>
+            <li class="breadcrumb-item">
+                <a href="" class="breadcrumb-link">Thông báo</a>
+            </li>
+
+            <li class="breadcrumb-item">@(type.HasValue ? type.Value.ToText() :"Tất cả")</li>
         </ol>
     </nav>
 }

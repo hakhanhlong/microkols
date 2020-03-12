@@ -47,6 +47,14 @@
     function handler() {
 
 
+        $.notifyDefaults({
+            
+            placement: {
+                from: 'bottom',
+                align: 'right'
+            },
+        });
+
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 

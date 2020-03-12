@@ -40,7 +40,7 @@ namespace WebMerchant.Controllers
 
         #region Api
         [HttpPost]
-        public async Task<IActionResult> UploadImage(List<IFormFile> files)
+        public async Task<IActionResult> UploadImage(List<IFormFile> files,int sizetype =0)
         {
 
 
@@ -48,7 +48,7 @@ namespace WebMerchant.Controllers
 
             foreach (var formFile in files)
             {
-                var newpath = await _fileHelper.UploadTempFile(formFile);
+                var newpath = await _fileHelper.UploadTempFile(formFile, sizetype);
 
                 if (!string.IsNullOrEmpty(newpath))
                 {

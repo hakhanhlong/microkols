@@ -76,7 +76,7 @@
                                         <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
                                         <input type="hidden" name="ids" value="@lastContent.Id" />
                                         <button class="btn btn-sm btn-success" type="submit" name="type" value="1">Duyệt</button>
-                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit-caption-@lastContent.AccountId">Yêu cầu sửa caption</button>
+                                        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#edit-caption-@lastContent.AccountId">Yêu cầu sửa nội dung</button>
 
                                         <button class="btn btn-sm btn-danger" type="submit" name="type" value="0">Từ chối</button>
 
@@ -113,7 +113,7 @@
                                                             <form asp-action="UpdateContentNote">
 
                                                                 <div class="form-group">
-                                                                    <label for="exampleInputEmail1">Ghi chú sửa caption</label>
+                                                                    <label for="exampleInputEmail1">Ghi chú sửa nội dung</label>
                                                                     <textarea class="form-control" rows="3" name="note" required></textarea>
                                                                     
                                                                 </div>

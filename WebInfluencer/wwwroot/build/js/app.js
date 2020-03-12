@@ -47,6 +47,13 @@ var App = (function () {
     }
     function handler() {
 
+        $.notifyDefaults({
+
+            placement: {
+                from: 'bottom',
+                align: 'right'
+            },
+        });
 
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
@@ -534,9 +541,23 @@ var AppNotification = (function () {
         });
     }
     function getNotificationDropdown() {
-
+        console.log('getNotificationDropdown');
         $.get(AppConstants.UrlGetNotification, function (html) {
             $notifDropdown.html(html);
+
+            $notifDropdown.find('.item-Created').each(function () {
+                var id = $(this).data('id');
+                var cookiename = 'notif' + id;
+                var val = Cookies.get(cookiename); // => undefined
+                if (!val) {
+                    Cookies.set(cookiename, '1');
+                    var html = $(this).html();
+                    $.notify(html);
+                }
+
+
+            });
+
             //handleCheckAll();
         });
 

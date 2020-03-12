@@ -21,17 +21,27 @@
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
+            <div class="form-group">
+                <label asp-for="Image"></label>
+
+                <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
+                <input type="hidden" asp-for="Image" />
+                <span asp-validation-for="Image"></span>
+                <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
+
+                <div>
+                    <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+                </div>
+                
+
+            </div>
+
+
                     <div class="form-group">
-                        <label asp-for="Image"></label>
-
-                        <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" />
-                        <input type="hidden" asp-for="Image" />
-                        <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
-
-                        <span asp-validation-for="Image"></span>
+                        <label asp-for="Data">Url Frame</label>
+                        <input type="text" class="form-control" asp-for="Data" />
+                        <span asp-validation-for="Data"></span>
                     </div>
-
-                    <input type="hidden" asp-for="Data" />
                 }
                 else
                 {
@@ -58,16 +68,16 @@
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
-            <div class="form-group">
-                <label asp-for="AccountChargeTime"></label>
-                <div class="input-group">
-                    <input type="number" class="form-control" asp-for="AccountChargeTime" />
-                    <div class="input-group-append">
-                        <span class="input-group-text">Tuần</span>
+                    <div class="form-group">
+                        <label asp-for="AccountChargeTime"></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" asp-for="AccountChargeTime" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">Tuần</span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="AccountChargeTime"></span>
                     </div>
-                </div>
-                <span asp-validation-for="AccountChargeTime"></span>
-            </div>
                 }
                 else
                 {
@@ -104,7 +114,7 @@
                     </div>
                 }
 
-                @if (campaignType != CampaignType.ShareContent)
+                @if (campaignType != CampaignType.ShareContent && campaignType != CampaignType.ChangeAvatar)
                 {
 
                     <div>
@@ -123,11 +133,11 @@
                                     </li>
                                 }
                                 @*else
-                                {
-                                    <li>
-                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                    </li>
-                                }*@
+                        {
+                            <li>
+                                <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                            </li>
+                        }*@
                             </ul>
                         </div>
 
@@ -181,7 +191,7 @@
 
 
 <div class="modal fade" style="z-index: 999999;" id="modal-timereview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Thời gian địa điểm trải nghiệm sản phẩm/dịch vụ</h5>
@@ -209,8 +219,6 @@
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary" id="timereview-submit">Đồng ý</button>
                     </div>
-           
-
 
             </div>
             <div class="modal-footer">

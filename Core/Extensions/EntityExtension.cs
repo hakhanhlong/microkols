@@ -19,29 +19,55 @@ namespace Core.Extensions
             return totalAccountPrice;
         }
 
+        //public static int GetInfuencerAmount(this Campaign campaign, int amount)
+        //{
+        //    var t1 = campaign.ServiceChargePercent;
+        //    return 
+        //}
+
+        public static int GetAgencyChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
+        {
+            var t1 = campaign.ServiceChargePercent;
+            var amount = campaignAccount.AccountChargeAmount;
+            var val1 = (amount *  (100 + t1))/100;
+            return Convert.ToInt32(val1);
+            //var t1 = campaign.ServiceChargePercent;
+            //var t2 = campaign.ServiceVATPercent;
+            //var amount = campaignAccount.AccountChargeAmount;
+
+            ////tien sau VAT 
+            //var val1 = (amount * 100) / (100 + t2);
+
+            //var val2 = (val1 * (100 - t1)) / 100;
+            //return Convert.ToInt32(val2);
+        }
         public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
-
             var t1 = campaign.ServiceChargePercent;
-            var t2 = campaign.ServiceVATPercent;
             var amount = campaignAccount.AccountChargeAmount;
+            var val1 = (amount * (100 - t1)) / 100;
+            return Convert.ToInt32(val1);
+            //var t1 = campaign.ServiceChargePercent;
+            //var t2 = campaign.ServiceVATPercent;
+            //var amount = campaignAccount.AccountChargeAmount;
 
-            //tien sau VAT 
-            var val1 = (amount * 100) / (100 + t2);
+            ////tien sau VAT 
+            //var val1 = (amount * 100) / (100 + t2);
 
-            var val2 = (val1 * (100 - t1)) / 100;
-            return Convert.ToInt32(val2);
-
+            //var val2 = (val1 * (100 - t1)) / 100;
+            //return Convert.ToInt32(val2);
         }
+
+
 
         public static int GetAccountChagreAmount(this Models.SettingModel setting, int amount)
         {
 
             var val1 = (amount * (100 + setting.CampaignServiceChargePercent)) / 100;
+            return Convert.ToInt32(val1);
+            //var val2 = (val1 * (100 + setting.CampaignVATChargePercent)) / 100; 
 
-            var val2 = (val1 * (100 + setting.CampaignVATChargePercent)) / 100; 
-
-            return Convert.ToInt32(val2);
+            //return Convert.ToInt32(val2);
         }
 
 

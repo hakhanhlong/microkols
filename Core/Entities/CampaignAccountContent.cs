@@ -29,5 +29,7 @@ namespace Core.Entities
         KhongDuyet = 1,
         [Display(Name = "Đã duyệt")]
         DaDuyet = 2,
+        [Display(Name = "Yêu cầu sửa")]
+        YeuCauSua = 3,
     }
 }

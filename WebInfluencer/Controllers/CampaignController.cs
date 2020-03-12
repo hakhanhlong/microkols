@@ -59,6 +59,7 @@ namespace WebInfluencer.Controllers
         {
             var model = await _campaignService.GetCampaignMarketPlace(id);
             ViewBag.Tab = tab;
+            
             if (tab == 1)
             {
                 var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
@@ -89,6 +90,7 @@ namespace WebInfluencer.Controllers
 
                 return View("DetailsContent", model);
             }
+            ViewBag.AccountStatus = await _accountService.GetAccountStatus(CurrentUser.Id);
             return View(model);
         }
 

@@ -6,8 +6,9 @@
     foreach (var item in Model)
     {
 
-        <div class="dropdown-item-text">
-            <a href="@Url.GetNotificationUrl(item)" class="demo-@item.Type">
+
+        <div class="dropdown-item-text item-@(item.Status)" data-id="@item.Id">
+            <a href="@Url.GetNotificationUrl(item)" data-type="@item.Type">
                 @item.Message
             </a>
             <br />

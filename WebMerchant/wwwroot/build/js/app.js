@@ -47,6 +47,14 @@ var App = (function () {
     function handler() {
 
 
+        $.notifyDefaults({
+            
+            placement: {
+                from: 'bottom',
+                align: 'right'
+            },
+        });
+
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 
@@ -278,7 +286,7 @@ var AppCommon = {
             window.location = window.location;
         });
     },
-    uploadTempImage: function (files,  callback) {
+    uploadTempImage: function (files,  callback,sizetype) {
         var xhr, formData;
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
@@ -295,6 +303,12 @@ var AppCommon = {
         for (var i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
         }
+
+        if (sizetype) {
+            formData.append('sizetype', sizetype);
+        }
+        
+        
         xhr.send(formData);
     },
   
@@ -494,11 +508,25 @@ var AppNotification = (function () {
     }
     function getNotificationDropdown() {
 
+        console.log('getNotificationDropdown');
         $.get(AppConstants.UrlGetNotification, function (html) {
             $notifDropdown.html(html);
+
+            $notifDropdown.find('.item-Created').each(function () {
+                var id = $(this).data('id');
+                var cookiename = 'notif' + id;
+                var val = Cookies.get(cookiename); // => undefined
+                if (!val) {
+                    Cookies.set(cookiename, '1');
+                    var html = $(this).html();
+                    $.notify(html);
+                }
+
+
+            });
+
             //handleCheckAll();
         });
-
 
     }
 
@@ -767,6 +795,7 @@ var CampaignCreatePage = (function () {
             var id = $(this).attr('id');
             var target = $(this).data('target');
             var preview = $(this).data('preview');
+            var sizetype = $(this).data('sizetype');
             var files = document.getElementById(id).files;
 
             AppCommon.uploadTempImage(files, function (datas) {
@@ -775,7 +804,7 @@ var CampaignCreatePage = (function () {
                     $(target).trigger("change");
                     $(preview).attr('src', datas[0].url);
                 }
-            });
+            }, sizetype);
 
         });
 

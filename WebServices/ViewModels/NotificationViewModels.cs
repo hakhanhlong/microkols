@@ -48,6 +48,7 @@ namespace WebServices.ViewModels
         }
 
 
+        public bool Checked { get; set; } = false;
 
         public int Id { get; set; }
         public NotificationType Type { get; set; }

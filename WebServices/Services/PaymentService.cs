@@ -158,7 +158,7 @@ namespace WebServices.Services
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
 
-            long amount = campaign.GetAccountChagreAmount(campaignAccount);
+            long amount =  campaign.GetAccountChagreAmount(campaignAccount);
             var senderId = await _walletRepository.GetSystemId();
             var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId);
             var transactionType = TransactionType.CampaignAccountPayback;

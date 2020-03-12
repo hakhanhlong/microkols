@@ -7,6 +7,9 @@ using Common.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace WebServices.Code.Helpers
 {
@@ -14,7 +17,7 @@ namespace WebServices.Code.Helpers
     {
         string GetImageUrl(string path);
         string MoveTempFile(string sourceFile, string targetPath);
-        Task<string> UploadTempFile(IFormFile formFile);
+        Task<string> UploadTempFile(IFormFile formFile, int sizetype = 0);
 
     }
     public class FileHelper : IFileHelper
@@ -60,7 +63,7 @@ namespace WebServices.Code.Helpers
             return $"{_options.ResourceServer}/{path}";
         }
 
-        public async Task<string> UploadTempFile(IFormFile formFile)
+        public async Task<string> UploadTempFile(IFormFile formFile, int sizetype = 0)
         {
             if (formFile == null || formFile.Length == 0) return string.Empty;
 
@@ -73,13 +76,56 @@ namespace WebServices.Code.Helpers
                 Directory.CreateDirectory(targetPath);
             }
 
-
-            using (var stream = new FileStream(Path.Combine(targetPath, filename), FileMode.Create))
+            if (sizetype == 0)
             {
-                await formFile.CopyToAsync(stream);
+                using (var stream = new FileStream(Path.Combine(targetPath, filename), FileMode.Create))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+            }
+            else
+            {
+             
+
+                using (Image image = Image.Load(formFile.OpenReadStream()))
+                {
+                    const int size = 640;
+                    /*
+                    int width , height ;
+                    if (image.Width > image.Height && image.Width > size)
+                    {
+                        width = size;
+                        height = Convert.ToInt32(image.Height * size / (double)image.Width);
+                    }
+                    else if (image.Height > size)
+                    {
+                        width = Convert.ToInt32(image.Width * size / (double)image.Height);
+                        height = size;
+                    }
+                    else
+                    {
+                        width = image.Width;
+                        height = image.Height;
+                    }
+                    */
+
+                    image.Mutate(x => x
+                         .Resize(new ResizeOptions
+                         {
+                             Size = new SixLabors.Primitives.Size(size),
+                             Mode = ResizeMode.Crop
+                         }));
+
+                    image.Save(Path.Combine(targetPath, filename)); // Automatic encoder selected based on extension.
+                }
+
+
             }
             return $"{ _options.ResourceTempDir}/{filename}";
         }
+
+
 
         #region Upload Image
         /*

@@ -270,13 +270,19 @@ namespace WebMerchant.Code.Extensions
                 NotificationType.AgencyCancelAccountJoinCampaign,
                 NotificationType.AccountDeclineJoinCampaign,
                 NotificationType.SystemUpdateUnfinishedAccountCampaign,
-                NotificationType.AgencyUpdatedCampaignRefContent
+                NotificationType.AgencyUpdatedCampaignRefContent,
 
-                ,
+
                 NotificationType.AgencyDeclineCampaignCaption,
                 NotificationType.AgencyApproveCampaignCaption,
                 NotificationType.AccountSubmitCampaignCaption,
-                NotificationType.AccountSubmitCampaignCaption
+                NotificationType.AccountSubmitCampaignCaption,
+
+
+                NotificationType.AgencyDeclineCampaignContent,
+                NotificationType.AgencyApproveCampaignContent,
+                NotificationType.AccountSubmitCampaignContent,
+                NotificationType.AccountSubmitCampaignContent,
 
             };
             if (campaignNotifTypes.Contains(model.Type))
@@ -298,6 +304,11 @@ namespace WebMerchant.Code.Extensions
                     if (type.Contains("CampaignCaption"))
                     {
                         return urlHelper.Action("Caption", "Campaign", new { campaignid = model.DataId });
+                    }
+
+                    if (type.Contains("CampaignContent"))
+                    {
+                        return urlHelper.Action("Content", "Campaign", new { campaignid = model.DataId });
                     }
 
                     return urlHelper.Action("Details", "Campaign", new { id = model.DataId });

@@ -69,6 +69,8 @@ namespace WebServices.Services
             }
             return 0;
         }
+
+
         public async Task<List<int>> GetActivedAccountIds()
         {
             return await _accountRepository.GetActivedAccountIds();
@@ -859,25 +861,6 @@ namespace WebServices.Services
             return AccountCampaignChargeViewModel.GetList(accountCampaignCharges);
         }
 
-
-        public async Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType)
-        {
-
-
-
-            var filter = new AccountCampaignChargeByAccountSpecification(accountid, campaignType);
-            var accountCharge = await _accountCampaignChargeRepository.GetSingleBySpecAsync(filter);
-            if(accountCharge!= null)
-            {
-
-                var settings = await _settingRepository.GetSetting();
-
-                return settings.GetAccountChagreAmount(accountCharge.Min); 
-            }
-            
-
-            return 0;
-        }
 
         public async Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model)
         {

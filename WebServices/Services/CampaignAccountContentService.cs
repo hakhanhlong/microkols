@@ -154,6 +154,7 @@ namespace WebServices.Services
                 return false;
             }
             CampaignAccountContent.Note = model.Note;
+            CampaignAccountContent.Status = CampaignAccountContentStatus.YeuCauSua;
             CampaignAccountContent.Content = model.Content;
             CampaignAccountContent.DateModified = DateTime.Now;
             CampaignAccountContent.UserModified = username;
@@ -215,6 +216,7 @@ namespace WebServices.Services
 
             CampaignAccountContent.Note = note;
             CampaignAccountContent.UserModified = username;
+            CampaignAccountContent.Status = CampaignAccountContentStatus.YeuCauSua;
             CampaignAccountContent.DateModified = DateTime.Now;
             await _CampaignAccountContentRepository.UpdateAsync(CampaignAccountContent);
 

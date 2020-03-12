@@ -335,7 +335,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Liên kết URL nội dung")]
         public string Data { get; set; }
 
-        [Display(Name = "Hình ảnh hoặc Frame")]
+        [Display(Name = "Hình ảnh")]
         public string Image { get; set; } = string.Empty;
 
 

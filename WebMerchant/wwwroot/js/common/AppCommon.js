@@ -20,7 +20,7 @@ var AppCommon = {
             window.location = window.location;
         });
     },
-    uploadTempImage: function (files,  callback) {
+    uploadTempImage: function (files,  callback,sizetype) {
         var xhr, formData;
         xhr = new XMLHttpRequest();
         xhr.withCredentials = false;
@@ -37,6 +37,12 @@ var AppCommon = {
         for (var i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
         }
+
+        if (sizetype) {
+            formData.append('sizetype', sizetype);
+        }
+        
+        
         xhr.send(formData);
     },
   

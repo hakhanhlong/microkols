@@ -106,6 +106,7 @@ namespace Core.Entities
     {
         Normal = 0,
         Verified = 1,
+        SystemVerified = 2,
     }
   
     public enum Gender

@@ -54,7 +54,7 @@ namespace WebServices.Interfaces
         Task<bool> UpdateAccountProviderInfo(int accountproviderid, string link, int friendscount, string username);
         Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid);
         Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model);
-        Task<int> GetAcountChargeAmount(int accountid, CampaignType campaignType);
+
 
 
         #region Account Provider

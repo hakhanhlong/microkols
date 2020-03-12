@@ -9,6 +9,7 @@
             var id = $(this).attr('id');
             var target = $(this).data('target');
             var preview = $(this).data('preview');
+            var sizetype = $(this).data('sizetype');
             var files = document.getElementById(id).files;
 
             AppCommon.uploadTempImage(files, function (datas) {
@@ -17,7 +18,7 @@
                     $(target).trigger("change");
                     $(preview).attr('src', datas[0].url);
                 }
-            });
+            }, sizetype);
 
         });
 

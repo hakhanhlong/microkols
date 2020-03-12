@@ -7,8 +7,12 @@
     var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
 
     var now = DateTime.Now;
-    var hasApply = campaignAccount == null && (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value);
     var campaignType = Model.Campaign.Type;
+
+    var accountStatus = (AccountStatus)ViewBag.AccountStatus;
+    var hasProccess = accountStatus == AccountStatus.SystemVerified;
+    
+    var hasApply = hasProccess && campaignAccount == null && (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value);
 }
 @section Scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -21,11 +25,25 @@
 }
 
 
+@if(!hasProccess)
+{
+    <div class="alert alert-info">Tài khoản chưa được duyệt. Vui lòng chờ quản trị viên duyệt để thực hiện chiến dịch</div>
+
+}
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-8">
 
-         <partial name="_DetailsNavPartial" model="Model" />
+            @if (hasProccess)
+            {
+                <partial name="_DetailsNavPartial" model="Model" />
+            }
+
+
+
+
             <div class="tab-content" id="myTabContent">
 
 
@@ -139,7 +157,7 @@
                                     <strong> Thời gian thực hiện chiến dịch</strong>
                                     <p>
                                     </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionStart.Value.ToViDateTime()</li>
+                                        <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
                                     </ul>
                                 }
 
@@ -283,10 +301,11 @@
 
         </div>
         <div class="col-md-4">
+            @if (hasProccess)
+            {
+                <partial name="_DetailSidebarPartial" model="Model" />
+            }
 
-            <partial name="_DetailSidebarPartial" model="Model" />
-
-
-        </div>
+            </div>
     </div>
 </div>
