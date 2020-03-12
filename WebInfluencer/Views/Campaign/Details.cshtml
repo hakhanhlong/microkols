@@ -181,15 +181,18 @@
                                 </ul>
 
 
-
+                                @{ 
+                                    var amountMin = Model.Campaign.GetAccountAmountMin();
+                                    var amountMax = Model.Campaign.GetAccountAmountMax();
+                                }
 
                                 <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
                                 <ul class="list-inline">
                                     <li class="list-inline-item">
-                                        Chi phí tối thiểu: <span style="color: red">@Model.Campaign.AmountMin.ToPriceText()</span>
+                                        Chi phí tối thiểu: <span style="color: red">@amountMin.ToPriceText()</span>
                                     </li>
                                     <li class="list-inline-item">
-                                        Chi phí tối đa: <span style="color: red">@Model.Campaign.AmountMax.ToPriceText()</span>
+                                        Chi phí tối đa: <span style="color: red">@amountMax.ToPriceText()</span>
                                     </li>
                                 </ul>
                                 @if (!hasApply)
@@ -213,7 +216,7 @@
                                 {
                                     <div>
                                         <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
-                                        <input type="number" name="AccountChargeAmount" class="form-control" value="@Model.Campaign.AmountMin" min="@Model.Campaign.AmountMin" max="@Model.Campaign.AmountMax" />
+                                        <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
 
 
                                     </div>
