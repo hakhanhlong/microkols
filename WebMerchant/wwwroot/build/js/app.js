@@ -23,7 +23,7 @@ var App = (function () {
     }
     function handlerPages() {
         var currentPage = $('#CurrentPage').val();
-        if (currentPage === 'campaign_create') {
+        if (currentPage === 'campaign_create' || currentPage == 'campaign_editinfo') {
             CampaignCreatePage.Init();
         }
         else if (currentPage === 'campaign_createinfo') {

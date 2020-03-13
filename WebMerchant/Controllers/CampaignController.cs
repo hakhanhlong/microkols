@@ -259,6 +259,29 @@ namespace WebMerchant.Controllers
 
         #endregion
 
+        #region Edit
+        public async Task<IActionResult> EditInfo(int id)
+        {
+            var model = await _campaignService.GetEditCampaignInfo(CurrentUser.Id, id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditInfo(EditCampaignInfoViewModel model )
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.EditCampaignInfo(model, CurrentUser.Username);
+
+                this.AddAlert(r);
+                return RedirectToAction("Details", new { id = model.Id });
+
+            }
+            return View(model);
+        }
+        #endregion
+
         #region Details
 
         public async Task<IActionResult> Details(int id, string vt = "1", int tab = 0)

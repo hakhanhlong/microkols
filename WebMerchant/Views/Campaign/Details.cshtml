@@ -277,6 +277,11 @@
 
                     }
 
+                    @if(Model.Status == CampaignStatus.Created)
+                    {
+                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa chiến dịch</a>
+                    }
+
 
                 </div>
 

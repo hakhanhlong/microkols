@@ -191,7 +191,7 @@ namespace WebServices.Services
         public async Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, CampaignType? type, string keyword, int page, int pagesize)
         {
 
-            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type,keyword);
+            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type, keyword);
 
             var total = await query.CountAsync();
             var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
@@ -312,6 +312,32 @@ namespace WebServices.Services
                 Method = CampaignMethod.OpenJoined,
                 Type = campaignType
             };
+        }
+
+
+
+
+        public async Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id)
+        {
+            var filter = new CampaignByAgencySpecification(agencyid, id);
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null)
+            {
+                return new EditCampaignInfoViewModel(campaign);
+            }
+            return null;
+        }
+        public async Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username)
+        {
+            var campiagn = await _campaignRepository.GetByIdAsync(model.Id);
+            if (campiagn == null) return false;
+
+            campiagn = model.GetEntity(campiagn);
+            campiagn.UserModified = username;
+            campiagn.DateModified = DateTime.Now;
+            await _campaignRepository.UpdateAsync(campiagn);
+
+            return true;
         }
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username)
@@ -710,7 +736,7 @@ namespace WebServices.Services
                 };
                 await _campaignAccountRepository.AddAsync(campaignAccount);
 
-              
+
             }
             else
             {
@@ -1124,7 +1150,7 @@ namespace WebServices.Services
                 EntityType.Agency, campaign.AgencyId, campaign.Id,
                  NotificationType.AccountFinishCampaignRefContent.GetMessageText(username, campaign.Id.ToString()),
                  campaignAccount.Id.ToString());
-            return 1;
+            return campaignAccount.Id;
         }
 
         public async Task<int> UpdateCampaignAccountRefImages(int accountid, UpdateCampaignAccountRefImagesViewModel model, string username)

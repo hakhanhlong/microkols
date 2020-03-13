@@ -1,0 +1,237 @@
+﻿@model EditCampaignInfoViewModel
+@{
+    var campaignType = Model.Type;
+    ViewData["Title"] = "Thay đổi thông tin chiến dịch " + campaignType.ToText();
+
+}
+
+<h2>@ViewData["Title"]</h2>
+<h3 class="mt-4 mb-4">Thay đổi Thông tin về chiến dịch</h3>
+<form class="form-create-campaign" asp-action="EditInfo">
+    <div class="shadow p-3 mb-5 bg-white rounded">
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="form-group">
+
+                    <label asp-for="Title"></label>
+                    <input type="text" class="form-control" asp-for="Title" />
+                    <span asp-validation-for="Title"></span>
+
+                </div>
+                @if (campaignType == CampaignType.ChangeAvatar)
+                {
+                    <div class="form-group">
+                        <label asp-for="Image"></label>
+
+                        <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
+                        <input type="hidden" asp-for="Image" />
+                        <span asp-validation-for="Image"></span>
+                        <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
+
+                        <div>
+                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Data">Url Frame</label>
+                        <input type="text" class="form-control" asp-for="Data" />
+                        <span asp-validation-for="Data"></span>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="Data"></label>
+                        <input type="text" class="form-control" asp-for="Data" />
+                        <span asp-validation-for="Data"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="Image" />
+                }
+                <div class="form-group">
+
+                    <label asp-for="Description"></label>
+                    <textarea class="form-control" rows="2" asp-for="Description"></textarea>
+                    <span asp-validation-for="Description"></span>
+                </div>
+
+                <div class="form-group">
+
+                    <label asp-for="Requirement"></label>
+                    <textarea class="form-control" rows="2" asp-for="Requirement"></textarea>
+                    <span asp-validation-for="Requirement"></span>
+                </div>
+                @if (campaignType == CampaignType.ChangeAvatar)
+                {
+                    <div class="form-group">
+                        <label asp-for="AccountChargeTime"></label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" asp-for="AccountChargeTime" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">Tuần</span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="AccountChargeTime"></span>
+                    </div>
+                }
+                else
+                {
+                    <input type="hidden" asp-for="AccountChargeTime" />
+                }
+
+                <div class="form-group ">
+                    <label asp-for="HashTag"></label>
+
+                    <select asp-for="HashTag" multiple class="form-control">
+                        @foreach(var item in Model.HashTag)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                    <span asp-validation-for="HashTag"></span>
+
+                </div>
+
+
+                @if (campaignType == CampaignType.ShareContent)
+                {
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                            <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                        </div>
+                    </div>
+                }
+
+                @if (campaignType == CampaignType.ReviewProduct)
+                {
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" asp-for="SendProduct" />
+                            <label class="custom-control-label" asp-for="SendProduct"></label>
+                        </div>
+
+                    </div>
+                }
+
+                @if (campaignType != CampaignType.ShareContent && campaignType != CampaignType.ChangeAvatar)
+                {
+
+                    <div>
+                        <label>Ảnh chiến dịch cung cấp</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
+                            <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
+                        </div>
+                        <div>
+                            <ul class="list-unstyled">
+                                @if (campaignType == CampaignType.ChangeAvatar)
+                                {
+
+                                    <li>
+                                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 640px x 640px, Tối đa: 2048px x 2048px">Kích cỡ ảnh Avatar?</a>
+                                    </li>
+                                }
+                                @*else
+                                    {
+                                        <li>
+                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                                        </li>
+                                    }*@
+                            </ul>
+                        </div>
+
+                        <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
+                            @foreach(var item in Model.SampleContent)
+                            {
+                                <img src="@AppOptions.CurrentValue.GetImageUrl(item)"/>
+                            }
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <div class="text-center form-group">
+                    <input type="hidden" asp-for="ReviewAddress" />
+                    <input type="hidden" asp-for="ReviewDate" />
+                    <input type="hidden" asp-for="Type" />
+                    <button class="btn btn-outline-primary btn-bold-text" type="submit">
+                        Cập nhật
+                    </button>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="card border-0">
+                    <img src="@campaignType.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @campaignType.ToDisplayName()
+                        </h5>
+                        <p class="card-text">
+
+                            @campaignType.ToDescription()
+                        </p>
+                    </div>
+                </div>
+                @if (campaignType != CampaignType.ShareContent)
+                {
+                    <div class="card border-0">
+                        <div class="card-body">
+                            <h5>Nội dung mẫu</h5>
+                            <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<div class="modal fade" style="z-index: 999999;" id="modal-timereview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Thời gian địa điểm trải nghiệm sản phẩm/dịch vụ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <h6 class="title-campaign"></h6>
+
+
+                <div class="form-row mt-2">
+                    <div class="form-group col-12">
+                        <label>Thời gian</label>
+                        <input type="text" class="form-control form-control-lg" id="timereview-date" value="@Model.ReviewDate" placeholder="Chọn thời gian">
+                    </div>
+                </div>
+                <div class="form-row mt-2">
+                    <div class="form-group col-12">
+                        <label>Địa điểm trải nghiệm</label>
+                        <textarea class="form-control form-control-lg" id="timereview-address">@Model.ReviewAddress</textarea>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="timereview-submit">Đồng ý</button>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

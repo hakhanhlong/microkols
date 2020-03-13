@@ -120,7 +120,7 @@ namespace WebServices.ViewModels
             //        accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
             //    }
             //}
-         
+
             var executionTime = DateRangeHelper.GetDateRange(target.ExecutionTime);
             var regTime = DateRangeHelper.GetDateRange(target.RegisterTime);
             var feedbackTime = DateRangeHelper.GetDateRange(target.FeedbackBefore);
@@ -161,17 +161,17 @@ namespace WebServices.ViewModels
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
                 AccountChargeTime = 0,
-                Requirement =  info.Requirement ,
+                Requirement = info.Requirement,
                 Type = info.Type,
                 Code = code,
-                Quantity =target.Quantity,
-                DateStart = regTime != null ? (DateTime?) regTime.Value.Start:null,
+                Quantity = target.Quantity,
+                DateStart = regTime != null ? (DateTime?)regTime.Value.Start : null,
                 DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null,
                 //AccountFeedbackBefore = target.FeedbackBefore.ToViDateTime(),
                 CustomKolNames = target.CustomKolNames.ToListString(),
                 Method = CampaignMethod.OpenJoined,
                 SampleContent = info.SampleContent.ToListString(),
-                Hashtag =info.HashTag.ToListString(),
+                Hashtag = info.HashTag.ToListString(),
                 SampleContentText = info.SampleContentText,
                 KPIMin = target.KPIMin,
                 InteractiveMin = target.InteractiveMin,
@@ -321,6 +321,96 @@ namespace WebServices.ViewModels
 
 
 
+    public class EditCampaignInfoViewModel : CreateCampaignInfoViewModel
+    {
+        public EditCampaignInfoViewModel()
+        {
+
+        }
+        public EditCampaignInfoViewModel(Campaign campaign)
+        {
+
+            Id = campaign.Id;
+            Title = campaign.Title;
+            Description = campaign.Description;
+            Data = campaign.Data;
+            if (campaign.Type == CampaignType.ChangeAvatar)
+            {
+                Image = campaign.Image;
+            }
+            else
+            {
+                Image = string.Empty;
+            }
+            if (campaign.Type == CampaignType.ShareContentWithCaption)
+            {
+                AddonImages = campaign.Image.ToListString();
+            }
+            else
+            {
+                AddonImages = new List<string>();
+            }
+            Requirement = campaign.Requirement;
+
+            AccountChargeTime = campaign.AccountChargeTime;
+            Type = campaign.Type;
+            SendProduct = campaign.IsSendProduct ?? false;
+            Code = campaign.Code;
+            HashTag = campaign.Hashtag.ToListString();
+            SampleContent = campaign.SampleContent.ToListString();
+            SampleContentText = campaign.SampleContentText;
+            Method = campaign.Method ?? CampaignMethod.OpenJoined;
+            if (campaign.ReviewStart.HasValue && campaign.ReviewEnd.HasValue)
+            {
+                ReviewDate = $"{campaign.ReviewStart.Value.ToViDateTime()} - {campaign.ReviewEnd.Value.ToViDateTime()}";
+
+                ReviewAddress = campaign.ReviewAddress;
+            }
+        }
+        public int Id { get; set; }
+
+        public Campaign GetEntity(Campaign campaign)
+        {
+            campaign.Title = Title;
+            campaign.Description = Description;
+            campaign.Data = Data;
+            var image = string.Empty;
+
+            if (Type == CampaignType.ChangeAvatar)
+            {
+                image = Image;
+            }
+            else if (Type == CampaignType.ShareContentWithCaption)
+            {
+                image = AddonImages.ToListString();
+            }
+            campaign.Image = image;
+            campaign.Requirement = Requirement;
+
+            campaign.AccountChargeTime = AccountChargeTime ?? 0;
+            campaign.Type = Type;
+            campaign.IsSendProduct = SendProduct;
+            campaign.Code = Code;
+            campaign.Hashtag = HashTag.ToListString();
+            campaign.SampleContent = SampleContent.ToListString();
+            campaign.SampleContentText = SampleContentText;
+            campaign.Method = Method;
+
+            var reviewTime = DateRangeHelper.GetDateRange(ReviewDate);
+
+
+            campaign.ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null;
+            campaign.ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null;
+            campaign.ReviewAddress = ReviewAddress;
+            return campaign;
+        }
+    }
+
+    public class EditCampaignTargetViewModel : CreateCampaignTargetViewModel
+    {
+        public int Id { get; set; }
+    }
+
     public class CreateCampaignInfoViewModel
     {
 
@@ -425,7 +515,7 @@ namespace WebServices.ViewModels
 
         [Display(Name = "Lựa chọn những Influencer/KOLs mà bạn muốn hợp tác/chỉ định")]
         public bool EnabledAccount { get; set; } = false;
-  
+
 
 
 

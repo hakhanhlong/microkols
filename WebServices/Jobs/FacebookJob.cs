@@ -25,8 +25,9 @@ namespace WebServices.Jobs
         private readonly SharedOptions _options;
         private readonly IAccountService _accountService;
         private readonly ICampaignService _campaignService;
+        private readonly ICampaignAccountStatisticRepository _campaignAccountStatisticRepository;
         public FacebookJob(ILoggerFactory loggerFactory, IFacebookHelper facebookHelper,
-             IAccountService accountService,
+             IAccountService accountService, ICampaignAccountStatisticRepository campaignAccountStatisticRepository,
              ICampaignService campaignService,
             IOptionsMonitor<SharedOptions> optionsAccessor)
         {
@@ -35,6 +36,7 @@ namespace WebServices.Jobs
             _facebookHelper = facebookHelper;
             _options = optionsAccessor.CurrentValue;
             _campaignService = campaignService;
+            _campaignAccountStatisticRepository = campaignAccountStatisticRepository;
         }
 
         #region ExtendAccessToken
@@ -124,7 +126,7 @@ namespace WebServices.Jobs
 
                         if (fbPost != null)
                         {
-                            await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                            var campaignAccountId =  await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
                             {
                                 CampaignId = campaign.Id,
                                 CampaignType = campaign.Type,
@@ -135,9 +137,13 @@ namespace WebServices.Jobs
                             }, username);
 
 
+                            if (campaignAccountId > 0)
+                            {
+                                await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
+                            }
+                            
 
 
-                           
                         }
 
 
