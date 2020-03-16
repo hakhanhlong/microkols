@@ -7,7 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using WebServices.Interfaces;
+using WebServices.Services;
 
 namespace BackOffice
 {
@@ -45,14 +46,17 @@ namespace BackOffice
             services.AddScoped<ITransactionHistoryBusiness, TransactionHistoryBusiness>();
             services.AddScoped<IAccountCampaignChargeBusiness, AccountCampaignChargeBusiness>();
             services.AddScoped<ICampaignBusiness, CampaignBusiness>();
-
             services.AddScoped<ISharedBusiness, SharedBusiness>();
             services.AddScoped<INotificationBusiness, NotificationBusiness>();
-            
+
+
+
+            // webservice
+            services.AddScoped<ICampaignService, CampaignService>();
 
 
             //website
-            
+
 
 
 

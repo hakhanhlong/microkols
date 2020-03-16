@@ -63,13 +63,18 @@
                                 {
                                     <span>Chiến dịch "@(Model.Title)"</span>
                                 }
-                            </h3>
+                            </h3>                          
                         </div>
                     </div>
                 </div>
                 <div class="m-portlet__body">
+                    <div class="text-right mb-3">
+                        <a class="btn btn-primary" href="/campaign/configuration/?campaignid=@Model.Id">
+                            CONFIGURATION
+                        </a>
+                    </div>
                     <!--begin::Section-->
-                    <div class="m-section">                        
+                    <div class="m-section">
                         <div class="m-section__content">
                             <div class="row">
                                 <div class="col-md-6">
@@ -245,7 +250,7 @@
 
                                 </div>
 
-                           
+
                             </div>
 
                             <div class="row">
@@ -257,7 +262,7 @@
                                         <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
                                     </div>
 
-                                    
+
                                 }
                                 else
                                 {
@@ -268,7 +273,7 @@
                                                     Thực hiện chiến dịch
                                                 </a>
                                             </li>
-                                            
+
                                             <li class="nav-item m-tabs__item">
                                                 <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_3" role="tab">
                                                     Theo dõi chiến dịch
@@ -278,7 +283,7 @@
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="m_tabs_6_1" role="tabpanel">
                                                 <partial name="_DetailsAccountsProcessPartial" model="Model" />
-                                            </div>                                            
+                                            </div>
                                             <div class="tab-pane" id="m_tabs_6_3" role="tabpanel">
                                                 <partial name="_DetailsAccountsReviewPartial" model="Model" />
                                             </div>
@@ -291,9 +296,9 @@
 
 
 
-                            </div>
                         </div>
                     </div>
+                </div>
                     <!--end::Section-->
                                   
                 </div>

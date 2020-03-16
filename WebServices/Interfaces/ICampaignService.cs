@@ -67,5 +67,8 @@ namespace WebServices.Interfaces
 
 
         Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize);
+
+        Task UpdateCampaignServiceChargePercent(int ServiceChargePercent, int campaignid);
+
     }
 }

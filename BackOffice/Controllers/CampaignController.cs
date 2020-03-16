@@ -8,6 +8,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebServices.Interfaces;
 
 namespace BackOffice.Controllers
 {
@@ -21,14 +22,19 @@ namespace BackOffice.Controllers
         private readonly ISharedBusiness _ISharedBusiness;
         private readonly INotificationBusiness _INotificationBusiness;
 
+        ICampaignService _ICampaignService;
+
+
         public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, 
-            ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness)
+            ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
             _IAgencyBusiness = __IAgencyBusiness;
             _ISharedBusiness = __ISharedBusiness;
             _INotificationBusiness = __INotificationBusiness;
+            _ICampaignService = __ICampaignService;
+
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -100,9 +106,34 @@ namespace BackOffice.Controllers
 
             
             ViewBag.Categories = await _ISharedBusiness.GetCategories();            
+
             ViewBag.Cities = await _ISharedBusiness.GetCities();
             return View(campaign);
         }
+
+
+        public async Task<IActionResult> Configuration(int campaignid = 0)
+        {
+
+            WebServices.ViewModels.CampaignViewModel campaign;
+            campaign = await _ICampaignService.GetCampaign(campaignid);            
+            return View(campaign);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Configuration(WebServices.ViewModels.CampaignViewModel model)
+        {
+
+            await _ICampaignService.UpdateCampaignServiceChargePercent(model.ServiceChargePercent, model.Id);
+            TempData["MessageSuccess"] = string.Format("Configudation Campaign {0} Success!", model.Title);
+            return RedirectToAction("Configuration", "Campaign", new { campaignid = model.Id });
+        }
+
+
+
+
+
+
 
         public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status)
         {            

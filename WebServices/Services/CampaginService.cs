@@ -928,6 +928,14 @@ namespace WebServices.Services
 
         #region Action
 
+
+        public async Task UpdateCampaignServiceChargePercent(int ServiceChargePercent, int campaignid)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            campaign.ServiceChargePercent = ServiceChargePercent;
+            await _campaignRepository.UpdateAsync(campaign);            
+        }
+
         public async Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);

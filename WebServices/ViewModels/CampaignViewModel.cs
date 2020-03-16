@@ -46,6 +46,8 @@ namespace WebServices.ViewModels
             Quantity = campaign.Quantity;
             Requirement = campaign.Requirement;
             SampleContentText = campaign.SampleContentText;
+            ServiceChargePercent = campaign.ServiceChargePercent;
+
 
             SampleContent = campaign.SampleContent.ToListString();
             Hashtag = campaign.Hashtag.ToListString();
@@ -174,6 +176,10 @@ namespace WebServices.ViewModels
         public List<string> Hashtag { get; set; }
         public List<string> SampleContent { get; set; }
         public string SampleContentText { get; set; }
+
+
+        //longhk addition
+        public int ServiceChargePercent { get; set; }
     }
 
    
