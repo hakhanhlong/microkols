@@ -69,6 +69,9 @@
                                             <th>
                                                 ACTIVED
                                             </th>
+                                            <th>
+                                                VERIFY
+                                            </th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -85,7 +88,26 @@
                                             <td>@item.Phone</td>
                                             <td>@item.Name</td>
                                             <td>@item.Type.ToString()</td>
-                                            <td>@(item.Actived == true ? "Active" : "Not Active")</td>
+
+                                            <td>
+
+                                                @(item.Actived == true ? "Active" : "Not Active")
+
+                                            </td>
+                                            <td>
+
+                                                @if(item.Status == AccountStatus.Verified || item.Status == AccountStatus.Normal)
+                                                {
+                                                    <a href="/microkols/verify/?id=@item.Id">Need Verify</a>
+                                                }
+                                                else
+                                                {
+                                                    <span>Verified</span>
+                                                }
+
+                                            </td>
+
+
                                             <td>
                                                 <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">DETAIL</a>
                                             </td>

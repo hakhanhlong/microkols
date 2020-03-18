@@ -16,6 +16,7 @@ namespace BackOffice.Controllers
     {
 
         IAccountBusiness _IAccountBusiness;
+
         IAccountRepository _IAccountRepository;
 
         IAccountCampaignChargeRepository _IAccountCampaignChargeRepository;
@@ -27,13 +28,15 @@ namespace BackOffice.Controllers
         ITransactionBusiness _ITransactionBusiness;
         IWalletBusiness _IWalletBusiness;
         IWalletRepository _IWalletRepository;
+        INotificationBusiness _INotificationBusiness;
 
 
         public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
             IAccountCampaignChargeRepository __IAccountCampaignChargeRepository,
             IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
             ICampaignAccountRepository __ICampaignAccountRepository, ITransactionRepository __ITransactionRepository,
-            ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IWalletRepository __IWalletRepository)
+            ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IWalletRepository __IWalletRepository,
+            INotificationBusiness __INotificationBusiness)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
@@ -45,6 +48,7 @@ namespace BackOffice.Controllers
             _ITransactionBusiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
             _IWalletRepository = __IWalletRepository;
+            _INotificationBusiness = __INotificationBusiness;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -57,6 +61,56 @@ namespace BackOffice.Controllers
             }
             return View(list);
         }
+
+
+        public async Task<IActionResult> Verify(int id = 1)
+        {
+
+            var microkol = await _IAccountBusiness.GetAccount(id);
+            if (microkol == null)
+            {
+                TempData["MessageError"] = "MicroKol do not exist!";
+            }
+            return View(microkol);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Verify(AccountViewModel model, int chkConfirmVerify = 0, string txtMessage = "")
+        {
+
+            var microkol = _IAccountRepository.GetById(model.Id);
+            if (microkol == null)
+            {
+                TempData["MessageError"] = "MicroKol do not exist!";
+            }
+            else
+            {
+                if(chkConfirmVerify == 0)
+                {
+                    microkol.Status = AccountStatus.Verified;
+                    TempData["MessageError"] = "MicroKol need Re-Verify!";
+                    await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifyDenied, txtMessage, "");
+                    
+                }
+                else
+                {
+                    microkol.Status = AccountStatus.SystemVerified;
+                    TempData["MessageSuccess"] = "Verified Success!";
+                    await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifySuccess, "Verified Success!", "");
+                }
+
+                await _IAccountRepository.UpdateAsync(microkol);
+            }
+
+            return RedirectToAction("Verify", "Microkol", new { id = model.Id });
+        }
+
+
+
+
+
+
 
 
         public IActionResult Search(string keyword, AccountType type, int pageindex = 1)

@@ -50,6 +50,8 @@ namespace BackOffice.Models
             BankAccountNumber = _Account.BankAccountNumber;
             BankAccountBank = _Account.BankAccountBank;
             BankAccountBranch = _Account.BankAccountBranch;
+
+            Status = _Account.Status;
         }
 
         public AccountViewModel(Account customer, AccountCountingModel accountCounting)
@@ -72,6 +74,9 @@ namespace BackOffice.Models
         public string UserModified { get; set; }
 
         public AccountType Type { get; set; }
+
+        public AccountStatus? Status { get; set; }
+
 
         public string TypeData { get; set; }
 

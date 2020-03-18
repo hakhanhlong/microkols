@@ -62,6 +62,10 @@ namespace Core.Entities
         AgencyDeclineCampaignContent = 42,
         AgencyUpdatedCampaignContent = 43,
 
+        AccountVerifyDenied = 44,
+        AccountVerifySuccess = 45,
+
+
     }
 
     public enum NotificationTypeGroup
