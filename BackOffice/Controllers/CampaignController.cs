@@ -130,11 +130,6 @@ namespace BackOffice.Controllers
         }
 
 
-
-
-
-
-
         public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status)
         {            
             var campaign = await _ICampaignRepository.GetByIdAsync(id);
