@@ -75,7 +75,7 @@ namespace WebServices.Jobs
             var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
             if (accountProvider != null)
             {
-                var since = type == 1 ? new DateTime(2019, 1, 1).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
+                var since = type == 1 ? new DateTime(2019, 1, 1).ToUnixTime() : DateTime.Now.AddDays(-5).ToUnixTime();
                 // chi lay 1000 bai`
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
@@ -132,7 +132,7 @@ namespace WebServices.Jobs
                                 CampaignType = campaign.Type,
                                 Note = string.Empty,
                                 RefId = fbPost.PostId,
-                                RefUrl = "",
+                                RefUrl = fbPost.Permalink,
                                 RefImage = new List<string>()
                             }, username);
 
