@@ -5,6 +5,7 @@ using System.Text;
 using Core.Entities;
 namespace Core.Extensions
 {
+    
     public static class EntityExtension
     {
         public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
@@ -17,7 +18,7 @@ namespace Core.Extensions
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
 
-            foreach(var item in accounts)
+            foreach (var item in accounts)
             {
                 result += campaign.GetAgencyChagreAmount(item);
             }
@@ -35,12 +36,17 @@ namespace Core.Extensions
 
         public static int GetAgencyChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
+
             var t1 = campaign.ServiceChargePercent;
             var amount = campaignAccount.AccountChargeAmount;
-            var val1 = (amount *  (100 + t1))/100;
-            return Convert.ToInt32(val1);
+            var val1 = (amount * (100 + t1)) / 100;
+
+            var t2 = campaign.ServiceVATPercent ?? 0;
+            var val2 = (val1 * t2) / 100;
+            return Convert.ToInt32(val1 + val2);
+
             //var t1 = campaign.ServiceChargePercent;
-            //var t2 = campaign.ServiceVATPercent;
+            //var t2 = campaign.ServiceVATPercent ?? 0;
             //var amount = campaignAccount.AccountChargeAmount;
 
             ////tien sau VAT 

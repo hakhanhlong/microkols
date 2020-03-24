@@ -43,11 +43,16 @@ namespace WebMerchant.Controllers
             return View();
         }
 
-        public async Task<IActionResult> History(TransactionType type, int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> History(TransactionType type,string daterange="", int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Type = type;
-            var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id, type, pageindex, pagesize);
+            if (string.IsNullOrEmpty(daterange))
+            {
+                daterange = string.Format("{0} - {1}", new DateTime(2019, 1, 1).ToViDate(), DateTime.Now.ToViDate());
+            }
+            var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id, type, daterange,pageindex, pagesize);
 
+            ViewBag.DateRange = daterange;
             ViewBag.Total = await _transactionService.GetTotalAmount(CurrentUser.Id, type);
             return View(model);
 

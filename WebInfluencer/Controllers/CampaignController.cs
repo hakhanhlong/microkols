@@ -201,7 +201,7 @@ namespace WebInfluencer.Controllers
         }
 
 
-        [HttpPost]
+       // [HttpPost]
         public async Task<IActionResult> SubmitCampaignAccountSharedContent()
         {
             BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));

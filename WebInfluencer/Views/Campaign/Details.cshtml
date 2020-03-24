@@ -11,13 +11,13 @@
 
     var accountStatus = (AccountStatus)ViewBag.AccountStatus;
     var hasProccess = accountStatus == AccountStatus.SystemVerified;
-    
+
     var hasApply = hasProccess && campaignAccount == null && (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value);
 }
 @section Scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-   
+
 }
 @section Top{
 
@@ -25,7 +25,7 @@
 }
 
 
-@if(!hasProccess)
+@if (!hasProccess)
 {
     <div class="alert alert-info">Tài khoản chưa được duyệt. Vui lòng chờ quản trị viên duyệt để thực hiện chiến dịch</div>
 
@@ -116,6 +116,7 @@
                                 }
 
 
+
                                 @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
                                 {
                                     <strong> Thời gian đăng ký</strong>
@@ -139,17 +140,38 @@
                                                 <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
                                             </ul>
                                         }
-                                        else
-                                        {
-                                            <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                                            <p>
-                                            </p><ul class="list-unstyled">
-                                                <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+                                        @*else
+                {
+                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                    <p>
+                    </p><ul class="list-unstyled">
+                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
 
+                    </ul>
+                }*@
+
+                                    }
+
+                                    <div>
+
+                                        @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+                                        {
+                                            <strong> Thời gian trải nghiệm</strong>
+
+                                            <ul class="list-unstyled">
+                                                <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
                                             </ul>
                                         }
 
-                                    }
+                                        @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                                        {
+                                            <strong> Địa điểm trải nghiệm</strong>
+                                            <p>
+                                                @Model.Campaign.ReviewAddress
+                                            </p>
+                                        }
+
+                                    </div>
                                 }
 
                                 @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
@@ -162,26 +184,35 @@
                                 }
 
 
-                                <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
+                                @if (Model.Campaign.Type != CampaignType.ChangeAvatar)
+                                {
 
-                                <ul class="list-unstyled">
-                                    @if (!hasApply)
-                                    {
-                                        <li>
-                                            @Model.Campaign.KPIMin
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li>
-                                            <input type="number" name="KPICommitted" class="form-control" value="@Model.Campaign.KPIMin" min="@Model.Campaign.KPIMin" />
-                                        </li>
+                                    <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
 
-                                    }
-                                </ul>
+                                    <ul class="list-unstyled">
+                                        @if (!hasApply)
+                                        {
+                                            <li>
+                                                @Model.Campaign.KPIMin
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <input type="number" name="KPICommitted" class="form-control" value="@Model.Campaign.KPIMin" min="@Model.Campaign.KPIMin" />
+                                            </li>
+
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <input type="number" name="KPICommitted" class="form-control" value="0" />
+
+                                }
 
 
-                                @{ 
+                                @{
                                     var amountMin = Model.Campaign.GetAccountAmountMin();
                                     var amountMax = Model.Campaign.GetAccountAmountMax();
                                 }
@@ -226,13 +257,17 @@
                                 }
                                 @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText) || sampleimages.Count > 0)
                                 {
+                                    @if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                    {
+                                        <strong>Hình ảnh:</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>Nội dung mẫu  :</strong>
+                                    }
 
-                                    <strong>Nội dung mẫu  :</strong>
                                     <div>
                                         @Model.Campaign.SampleContentText
-
-
-
                                     </div>
                                     <div>
 
@@ -309,6 +344,6 @@
                 <partial name="_DetailSidebarPartial" model="Model" />
             }
 
-            </div>
+        </div>
     </div>
 </div>

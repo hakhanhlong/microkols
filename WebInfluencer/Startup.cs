@@ -119,6 +119,9 @@ namespace WebInfluencer
             }
             app.UseAppMiddlewares();
 
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

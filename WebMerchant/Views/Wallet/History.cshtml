@@ -39,6 +39,19 @@
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">
                     <div class="tab-pane fade show active">
+
+                        <div class="form-group">
+                            <form asp-action="History" method="get" class="form-inline">
+                                <input type="text" class="form-control form-daterangepicker" autocomplete="off" name="daterange" value="@ViewBag.DateRange" placeholder="Từ ngày ... đến ngày">
+                               
+                                <input type="hidden" name="type" value="@type" />
+                                <input type="submit" class="btn btn-outline-primary" value="Tìm kiếm" />
+                            </form>
+                        </div>
+
+
+
+
                         <table class="table table-bordered shadow">
                             <thead>
                                 <tr>
@@ -55,19 +68,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @{ 
+                                @{
                                     var no = 0;
                                 }
                                 @foreach (var item in Model.TransactionHistories)
-                                        {
-                                            no++;
+                                {
+                                    no++;
                                     <tr>
                                         <th scope="row">@no</th>
                                         <td>@item.Code</td>
                                         <td class="text-danger">@item.Amount.ToPriceText()</td>
                                         <td class="text-success">@item.Balance.ToPriceText()</td>
                                         <td>
-                                        @item.Status.ToBadge() </td>
+                                            @item.Status.ToBadge()
+                                        </td>
                                         <td>@item.Note</td>
                                         <td>@item.DateCreated.ToViDateTime()</td>
                                     </tr>
@@ -83,7 +97,7 @@
                                     </li>
                                     <li class="list-inline-item">
                                         @{
-                                          var  total = (long)ViewBag.Total;
+                                            var total = (long)ViewBag.Total;
                                         }
                                         <strong style="color: red">@total.ToPriceText()</strong>
                                     </li>
@@ -91,7 +105,7 @@
                             </div>
                             <div class="col-lg-6 col-sm-6">
 
-                                <pager pager="@Model.Pager" asp-action="History"  asp-route-type="@type"></pager>
+                                <pager pager="@Model.Pager" asp-action="History" asp-route-type="@type" asp-route-pagesize="@Model.Pager.PageSize"></pager>
 
                             </div>
                         </div>

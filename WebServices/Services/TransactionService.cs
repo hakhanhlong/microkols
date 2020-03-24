@@ -94,7 +94,7 @@ namespace WebServices.Services
 
         public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, string daterange, int page, int pagesize)
         {
-            var date = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
+            var date = Common.Helpers.DateRangeHelper.GetDateRangeByDate(daterange);
 
             var walletid = await _walletRepository.GetWalletId(entityType, entityid);
 
@@ -111,12 +111,14 @@ namespace WebServices.Services
 
         }
 
-        public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, TransactionType type, int page, int pagesize)
+        public async Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, TransactionType type,
+            string daterange, int page, int pagesize)
         {
+            var date = Common.Helpers.DateRangeHelper.GetDateRangeByDate(daterange);
 
             var walletid = await _walletRepository.GetWalletId(entityType, entityid);
 
-            var filter = new TransactionHistorySpecification(walletid, null, type);
+            var filter = new TransactionHistorySpecification(walletid, date, type);
 
             var total = await _transactionHistoryRepository.CountAsync(filter);
             var transactionHistory = await _transactionHistoryRepository.ListPagedAsync(filter, "Id_desc", page, pagesize);
