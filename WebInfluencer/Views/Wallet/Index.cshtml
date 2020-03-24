@@ -33,6 +33,13 @@
     </div>
 </div>
 <br />
+<div class="form-group">
+    <form asp-action="Index" method="get" class="form-inline">
+        <input type="text" class="form-control form-daterangepicker" autocomplete="off" name="daterange" value="@ViewBag.DateRange" placeholder="Từ ngày ... đến ngày">
+        <input type="submit" class="btn btn-outline-primary" value="Tìm kiếm" />
+    </form>
+</div>
+
 
 <div class="table-responsive">
     <table class="table table-bordered table-sm">
@@ -91,4 +98,7 @@
                 </tr>
             </tfoot>*@
     </table>
+
+    <pager pager="@Model.Pager" asp-action="Index" asp-route-daterange="@ViewBag.DateRange"></pager>
+
 </div>

@@ -158,7 +158,7 @@
 
         $('.form-daterangepicker').daterangepicker({
 
-            autoUpdateInput: false,
+           // autoUpdateInput: false,
             locale: {
                 format: 'DD/MM/YYYY'
             }

@@ -282,6 +282,10 @@ namespace WebInfluencer.Code.Extensions
                 }
 
             }
+            else if (model.Type.ToString().Contains("Transaction"))
+            {
+                return urlHelper.Action("Index", "Wallet");
+            }
 
 
             return "#";

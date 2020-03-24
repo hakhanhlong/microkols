@@ -230,13 +230,20 @@
                                     @if (Model.AccountTypes.Contains(AccountType.HotMom))
                                     {
 
-                                        <li>
-                                            Con cái:
+                                <li>
+                                    Con cái:
 
-                                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+                                    @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
+                                    @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                    {
+
+                                        <span>
                                             -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
-                                        </li>
+                                        </span>
+                                    }
+
+                                </li>
                                     }
 
                                 </ul>
@@ -246,7 +253,7 @@
                 </div>
 
                 <div class="mt-2">
-                    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Error && Model.Status != CampaignStatus.Created)
+                    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Created && Model.Status != CampaignStatus.Started)
                     {
                         if (Model.Payment.IsValid)
                         {
@@ -296,25 +303,32 @@
                     {
                         var tab2Active = "2" == ViewBag.activedTab ? "active show" : "";
                         var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
+                        var tab3Active = "3" == ViewBag.activedTab ? "active show" : "";
 
-                        <ul class="nav nav-tabs nav-campaign" id="myTab" role="tablist">
+            <ul class="nav nav-tabs nav-campaign" id="myTab" role="tablist">
 
-                            <li class="nav-item">
-                                <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link @tab2Active" data-toggle="tab" href="#tabReview">Theo dõi chiến dịch</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade @tab1Active" id="tabProcess">
-                                <partial name="_DetailsAccountsProcessPartial" model="Model" />
+                <li class="nav-item">
+                    <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @tab2Active" data-toggle="tab" href="#tabReview">Theo dõi chiến dịch</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link @tab3Active" data-toggle="tab" href="#tabPayment">Thanh toán</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade @tab1Active" id="tabProcess">
+                    <partial name="_DetailsAccountsProcessPartial" model="Model" />
 
-                            </div>
-                            <div class="tab-pane fade @tab2Active" id="tabReview">
-                                <partial name="_DetailsAccountsReviewPartial" model="Model" />
-                            </div>
-                        </div>
+                </div>
+                <div class="tab-pane fade @tab2Active" id="tabReview">
+                    <partial name="_DetailsAccountsReviewPartial" model="Model" />
+                </div>
+                <div class="tab-pane fade @tab3Active" id="tabPayment">
+                    <partial name="_DetailsAccountsPaymentPartial" model="Model" />
+                </div>
+            </div>
                     }
                 }
 

@@ -20,6 +20,7 @@ namespace WebServices.ViewModels
             DateCreated = campaignAccount.DateCreated;
             Type = campaignAccount.Type;
             AccountChargeAmount = campaignAccount.AccountChargeAmount;
+         
             DateModified = campaignAccount.DateModified;
             AccountId = campaignAccount.AccountId;
             CampaignId = campaignAccount.CampaignId;
@@ -54,6 +55,9 @@ namespace WebServices.ViewModels
         public CampaignAccountStatus Status { get; set; }
         public CampaignType Type { get; set; }
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 
+
+        public int AgencyChagreAmount { get; set; }
+
         public DateTime? DateFinished { get; set; }
 
         public string RefUrl { get; set; }

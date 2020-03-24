@@ -1,0 +1,54 @@
+﻿@model CampaignDetailsViewModel
+@inject WebServices.Interfaces.ICampaignService CampaignService
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="w-">
+                STT
+            </th>
+            <th>
+                Người chia sẻ
+            </th>
+
+            <th>
+                Trạng thái
+            </th>
+            <th>
+                Chi phí
+            </th>
+
+        </tr>
+
+
+    </thead>
+    <tbody>
+        @{ var stt = 0;
+            long total = 0;
+            }
+
+        @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status != CampaignAccountStatus.AccountRequest && m.Status != CampaignAccountStatus.AgencyRequest))
+        {
+            stt++;
+
+            var agencyCharge = await CampaignService.GetAgencyChagreAmount(campaignAccount.Id);
+            total += agencyCharge;
+            <tr>
+                <td>@stt</td>
+                <td>@campaignAccount.Account.Name</td>
+
+                <td>
+                    @campaignAccount.Status.ToAgencyBadge()
+                </td>
+                <td class="text-danger">
+                    @agencyCharge.ToPriceText()
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="3" class="text-right">Tổng</td>
+            <td class="text-danger">@total.ToPriceText()</td>
+        </tr>
+    </tbody>
+
+</table>

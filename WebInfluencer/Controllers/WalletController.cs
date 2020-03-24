@@ -35,7 +35,12 @@ namespace WebInfluencer.Controllers
        
         public async Task<IActionResult> Index(string daterange, int pageindex = 1, int pagesize  = 20)
         {
-            var model = await _transactionService.GetTransactionHistory(CurrentUser.Type, CurrentUser.Id, daterange, pageindex, 20);
+            if (string.IsNullOrEmpty(daterange))
+            {
+                daterange = string.Format("{0} - {1}", new DateTime(2019, 1, 1).ToViDate(), DateTime.Now.ToViDate());
+            }
+            var model = await _transactionService.GetTransactionHistory(CurrentUser.Type, CurrentUser.Id, daterange, pageindex, pagesize);
+          
             ViewBag.DateRange = daterange;
             return View(model);
         }

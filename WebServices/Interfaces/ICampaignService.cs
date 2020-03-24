@@ -10,6 +10,7 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+        Task<int> GetAgencyChagreAmount(int campaignAccountId);
         Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id);
         Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username);
         Task<bool> UpdateExecutionTime(int agencyid, int campaignid, string date, string username);

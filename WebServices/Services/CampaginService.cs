@@ -2,6 +2,7 @@
 using Common.Extensions;
 using Common.Helpers;
 using Core.Entities;
+using Core.Extensions;
 using Core.Interfaces;
 using Core.Models;
 using Core.Specifications;
@@ -481,6 +482,20 @@ namespace WebServices.Services
             }
         }
 
+        public async Task<int> GetAgencyChagreAmount(int campaignAccountId)
+        {
+            var campaignAccount = await _campaignAccountRepository.GetByIdAsync(campaignAccountId);
+            if(campaignAccount!= null)
+            {
+                var campaign = await _campaignRepository.GetByIdAsync(campaignAccount.CampaignId);
+                if(campaign!= null)
+                {
+                    return campaign.GetAgencyChagreAmount(campaignAccount);
+                }
+            }
+            return 0;
+        }
+
         private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username)
         {
 
@@ -933,7 +948,7 @@ namespace WebServices.Services
         {
             var campaign = await _campaignRepository.GetByIdAsync(campaignid);
             campaign.ServiceChargePercent = ServiceChargePercent;
-            await _campaignRepository.UpdateAsync(campaign);            
+            await _campaignRepository.UpdateAsync(campaign);
         }
 
         public async Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username)

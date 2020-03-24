@@ -118,7 +118,7 @@
                                     </li>
 
                                 }
-                                @if (item.Status != CampaignStatus.Canceled && item.Status != CampaignStatus.Created)
+                                @if (item.Status != CampaignStatus.Canceled && item.Status != CampaignStatus.Created && item.Status!= CampaignStatus.Started)
                                 {
                                     var payment = await CampaignService.GetCampaignPaymentByAgency(CurrentUser.Id, item.Id);
                                     if (payment.IsValid)
