@@ -78,7 +78,6 @@ namespace BackOffice.Controllers
         [HttpPost]
         public async Task<IActionResult> Verify(AccountViewModel model, int chkConfirmVerify = 0, string txtMessage = "")
         {
-
             var microkol = _IAccountRepository.GetById(model.Id);
             if (microkol == null)
             {
@@ -105,13 +104,6 @@ namespace BackOffice.Controllers
 
             return RedirectToAction("Verify", "Microkol", new { id = model.Id });
         }
-
-
-
-
-
-
-
 
         public IActionResult Search(string keyword, AccountType type, int pageindex = 1)
         {
