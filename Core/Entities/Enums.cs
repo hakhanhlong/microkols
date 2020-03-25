@@ -9,7 +9,8 @@ namespace Core.Entities
     {
         System = 0,
         Account = 1,
-        Agency = 2
+        Agency = 2,
+        Campaign = 3
     }
 
 

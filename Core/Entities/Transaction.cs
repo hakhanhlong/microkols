@@ -38,8 +38,10 @@ namespace Core.Entities
     {
         [Display(Name ="Không xác định")]
         Undefined = -1,
+
         [Display(Name ="Nạp tiền")]
         WalletRecharge = 1,
+
         [Display(Name ="Rút tiền")]
         WalletWithdraw = 2,
         [Display(Name ="Phí dịch vụ")]

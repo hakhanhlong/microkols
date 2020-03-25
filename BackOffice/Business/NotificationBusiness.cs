@@ -26,6 +26,7 @@ namespace BackOffice.Business
             Notification _notification = new Notification();
             _notification.EntityType = EntityType.Agency;
             _notification.EntityId = entityid;
+
             _notification.DataId = campaignid;
             _notification.Message = msg;
             _notification.DateCreated = DateTime.Now;

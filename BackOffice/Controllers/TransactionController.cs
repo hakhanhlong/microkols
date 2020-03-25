@@ -482,7 +482,7 @@ namespace BackOffice.Controllers
                         await _ITransactionRepository.UpdateAsync(transaction);
                         TempData["MessageSuccess"] = "Update Status Success";
 
-                        string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                        string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
                         await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
                     }
                 }

@@ -39,9 +39,7 @@ namespace Core.Entities
         SystemUpdateCanceledAccountCampaign = 111,
 
         TransactionDepositeApprove = 12, 
-
         TransactionDepositeProcessing = 13,
-
         TransactionDepositeCancel = 14,
 
         CampaignStarted  = 15,
@@ -67,6 +65,8 @@ namespace Core.Entities
 
         AccountVerifyDenied = 44,
         AccountVerifySuccess = 45,
+
+        AgencyWalletDeposite = 46
 
 
     }
@@ -237,6 +237,17 @@ namespace Core.Entities
             {
                 message = "Thành viên {0} đã gửi nội dung chiến dịch {1}";
             }
+
+            else if (type == NotificationType.AccountVerifyDenied)
+            {
+                message = "Thành viên {0} đã bị từ chối xác thực bởi hệ thống {1} vì thông tin chưa hợp lệ";
+            }
+
+            else if (type == NotificationType.AccountVerifySuccess)
+            {
+                message = "Thành viên {0} đã được xác thực bởi hệ thống {1}";
+            }
+
             return string.Format(message, args);
         }
     }

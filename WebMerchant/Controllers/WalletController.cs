@@ -20,12 +20,16 @@ namespace WebMerchant.Controllers
         private readonly ITransactionService _transactionService;
         private readonly IAccountService _accountService;
         private readonly ICampaignService _campaignService;
-        public WalletController(IWalletService walletService, ICampaignService campaignService, ITransactionService transactionService, IAccountService accountService)
+        private readonly INotificationService _INotificationService;
+
+        public WalletController(IWalletService walletService, ICampaignService campaignService, 
+            ITransactionService transactionService, IAccountService accountService, INotificationService __INotificationService)
         {
             _transactionService = transactionService;
             _walletService = walletService;
             _accountService = accountService;
             _campaignService = campaignService;
+            _INotificationService = __INotificationService;
         }
 
         public async Task<long> GetAmount()

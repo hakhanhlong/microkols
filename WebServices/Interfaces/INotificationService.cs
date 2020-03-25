@@ -16,7 +16,7 @@ namespace WebServices.Interfaces
         Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status, string order, int page, int pagesize);
         Task<int> GetCountNotification(EntityType entityType, int entityId, NotificationStatus? status);
 
-
+        Task CreateNotification(int dataid, EntityType entityType, int entityid, NotificationType notificationType, string msg, string text);
 
         Task CreateNotificationCampaignStarted(int campaignid);
         Task CreateNotificationCampaignEnded(int campaignid);
