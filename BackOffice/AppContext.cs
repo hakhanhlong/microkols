@@ -53,6 +53,8 @@ namespace BackOffice
 
             // webservice
             services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            
 
 
             //website

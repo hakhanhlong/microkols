@@ -10,6 +10,8 @@ namespace Core.Interfaces
 {
     public interface ITransactionRepository : IRepository<Transaction>, IAsyncRepository<Transaction>
     {
+        Task<Transaction> GetTransaction(TransactionType type, int RefId);
+
         Task<IQueryable<Transaction>> GetQueryTransaction(EntityType entityType, int entityId, TransactionType type);
 
         Task<int> CreateTransaction(int senderid, int receiverid, long amount,

@@ -39,8 +39,11 @@ namespace Core.Entities
         SystemUpdateCanceledAccountCampaign = 111,
 
         TransactionDepositeApprove = 12, 
+
         TransactionDepositeProcessing = 13,
+
         TransactionDepositeCancel = 14,
+
         CampaignStarted  = 15,
         CampaignCantStarted = 16,
         CampaignEnded = 17,

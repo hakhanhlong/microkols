@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
+
+
 @model CampaignViewModel
 
 
@@ -13,6 +15,8 @@
             <input type="hidden" name="id" value="@Model.Id"/>
             <div class="m-portlet__body">
                 <div class="form-group m-form__group">
+                    <div><strong>Thông tin chiến dịch:</strong></div>
+                    <div class="m--space-10"></div>
                     <div>
                         <span class="m-badge m-badge--info">
                             +
@@ -28,8 +32,34 @@
                     <div>
                         <span class="m-badge m-badge--info">
                             +
-                        </span> Trạng thái chiên dịch: <span class="m-badge m-badge--info m-badge--wide">@Model.Status.ToString()</span>
+                        </span> Trạng thái chiến dịch: <span class="m-badge m-badge--info m-badge--wide">@Model.Status.ToString()</span>
                     </div>
+
+                    <div class="m--space-10"></div>
+                    <div><strong>Thanh toán:</strong></div>
+                    @if (ViewBag.Payment != null)
+                    {
+
+                        <div class="m--space-10"></div>
+                        <div>
+                            <span class="m-badge m-badge--info">
+                                +
+                            </span> Đã thanh toán: <strong style="color:red;">@ViewBag.Payment.AmountToText</strong>
+                        </div>
+                        <div class="m--space-10"></div>
+                        <div>
+                            <span class="m-badge m-badge--info">
+                                +
+                            </span> Trạng thái: <strong style="color:red;">@ViewBag.Payment.StatusToText</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <strong style="color:red;">Chưa có thông tin thanh toán</strong>
+                        </div>
+                    }
+
                 </div>
                 
                 <div class="form-group m-form__group">

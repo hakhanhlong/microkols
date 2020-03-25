@@ -9,6 +9,7 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
+using WebServices.Services;
 
 namespace BackOffice.Controllers
 {
@@ -18,15 +19,19 @@ namespace BackOffice.Controllers
 
         ICampaignBusiness _ICampaignBusiness;
         ICampaignRepository _ICampaignRepository;
+        ITransactionRepository _ITransactionRepository;
+
         IAgencyBusiness _IAgencyBusiness;
         private readonly ISharedBusiness _ISharedBusiness;
         private readonly INotificationBusiness _INotificationBusiness;
 
         ICampaignService _ICampaignService;
+        ITransactionService _TransactionService;
 
 
         public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, 
-            ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService)
+            ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService, 
+            ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
@@ -34,6 +39,8 @@ namespace BackOffice.Controllers
             _ISharedBusiness = __ISharedBusiness;
             _INotificationBusiness = __INotificationBusiness;
             _ICampaignService = __ICampaignService;
+            _ITransactionRepository = __ITransactionRepository;
+            _TransactionService = __ITransactionService;
 
         }
 
@@ -133,6 +140,14 @@ namespace BackOffice.Controllers
         public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status)
         {            
             var campaign = await _ICampaignRepository.GetByIdAsync(id);
+            //get info payment from agency fee service on campaign
+            //id = campaignid
+            var payment = await _TransactionService.GetTransaction(TransactionType.CampaignServiceCharge, id);
+            if (payment != null) {
+                ViewBag.Payment = payment;
+            }
+            
+
             DataSelectionStatusAndType();
             return View(new CampaignViewModel(campaign));
         }
@@ -146,41 +161,55 @@ namespace BackOffice.Controllers
             try {
                 if (campaign != null)
                 {
-                    if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)
+
+                    campaign.Status = status;
+                    campaign.UserModified = HttpContext.User.Identity.Name;
+                    campaign.SystemNote = txt_note;
+                    _ICampaignRepository.Update(campaign);
+
+                    NotificationType notificationType = NotificationType.CampaignCanceled;
+                    string msg = string.Empty;
+                    if (status == CampaignStatus.Canceled)
                     {
-                        campaign.Status = status;
-                        campaign.UserModified = HttpContext.User.Identity.Name;
-                        campaign.SystemNote = txt_note;
-                        _ICampaignRepository.Update(campaign);
-
-                        NotificationType notificationType = NotificationType.CampaignCanceled;
-                        string msg = string.Empty;
-                        if (status == CampaignStatus.Canceled)
-                        {
-                            notificationType = NotificationType.CampaignCanceled;
-                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã bị hủy, bởi hệ thống", campaign.Title);
-                        }
-                        else if (status == CampaignStatus.Error)
-                        {
-                            notificationType = NotificationType.CampaignError;
-                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã có lỗi, hệ thống đã phát hiện lỗi và gửi thông báo đến bạn", campaign.Title);
-                        }
-                        else if (status == CampaignStatus.Ended)
-                        {
-                            notificationType = NotificationType.CampaignEnded;
-                            msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã kết thúc", campaign.Title);
-                        }
-
-                        await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
-
-                        TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+                        notificationType = NotificationType.CampaignCanceled;
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã bị hủy, bởi hệ thống", campaign.Title);
                     }
-                    else
+                    else if (status == CampaignStatus.Error)
                     {
-                        TempData["MessageError"] = "Status campaign do not fit";
+                        notificationType = NotificationType.CampaignError;
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã có lỗi, hệ thống đã phát hiện lỗi và gửi thông báo đến bạn", campaign.Title);
+                    }
+                    else if (status == CampaignStatus.Ended)
+                    {
+                        notificationType = NotificationType.CampaignEnded;
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã kết thúc", campaign.Title);
+                    }
+                    else if(status == CampaignStatus.Confirmed)
+                    {
+                        notificationType = NotificationType.CampaignConfirmed;
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã được duyệt bởi hệ thống", campaign.Title);
+                    }
+                    else if (status == CampaignStatus.Completed)
+                    {
+                        notificationType = NotificationType.CampaignCompleted;
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
                     }
 
-                 
+                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+
+                    TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+
+
+                    //if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)
+                    //{
+
+                    //}
+                    //else
+                    //{
+                    //    TempData["MessageError"] = "Status campaign do not fit";
+                    //}
+
+
                 }
                 else
                 {

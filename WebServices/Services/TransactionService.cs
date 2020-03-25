@@ -36,6 +36,20 @@ namespace WebServices.Services
 
 
 
+        public async Task<TransactionViewModel> GetTransaction(TransactionType type, int RefId)
+        {
+            var transaction = await _transactionRepository.GetTransaction(type, RefId);
+            if(transaction != null)
+            {
+                return new TransactionViewModel(transaction);
+            }
+
+            return null;
+            
+
+        }
+
+
         #region Create Transaction
 
         public async Task<int> GetCount(int agencyid, TransactionType type)

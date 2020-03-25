@@ -10,6 +10,9 @@ namespace WebServices.Interfaces
     public interface ITransactionService
     {
         Task<int> GetCount(int agencyid, TransactionType type);
+
+        Task<TransactionViewModel> GetTransaction(TransactionType type, int RefId);
+
         Task<long> GetTotalAmount(int agencyid, TransactionType type);
         Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username);
         Task<int> CreateTransaction(EntityType entityType, int entityId, WithDrawViewModel model, string username);

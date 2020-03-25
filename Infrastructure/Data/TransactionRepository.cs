@@ -20,6 +20,13 @@ namespace Infrastructure.Data
 
         }
 
+        public async Task<Transaction> GetTransaction(TransactionType type, int RefId)
+        {
+            var query = await _dbContext.Transaction.FirstOrDefaultAsync(m => m.Type == type && m.RefId == RefId);
+            return query;
+
+        }
+
         public async Task<IQueryable<Transaction>> GetQueryTransaction(EntityType entityType, int entityId, TransactionType type)
         {
             var wallet = await _dbContext.Wallet.Where(m => m.EntityId == entityId && m.EntityType == entityType).FirstOrDefaultAsync();

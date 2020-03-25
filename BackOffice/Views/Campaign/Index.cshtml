@@ -202,7 +202,17 @@
 
 
                     //3: Ended, 5: Canceled, 6: Error
-                    if (status == 3 || status == 5 || status == 6) {
+
+
+                    var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
+                    $('#iframenotestatus').attr('src', url);
+                    $('#m_modal_4').modal({ show: true });
+                    $('#m_modal_4').on('hidden.bs.modal', function (e) {
+                        document.location = document.location.href;
+                    })
+
+
+                    @*if (status == 3 || status == 5 || status == 6) {
                         var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
                         $('#iframenotestatus').attr('src', url);
                         $('#m_modal_4').modal({ show: true });
@@ -239,7 +249,7 @@
                             dataType: "json",
                             traditional: true
                         });
-                    }
+                    }*@
                     
                   
 

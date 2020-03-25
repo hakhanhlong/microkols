@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 
 namespace WebServices.ViewModels
 {
@@ -23,6 +24,10 @@ namespace WebServices.ViewModels
             Data = transaction.Data;
             RefId = transaction.RefId;
             Note = transaction.Note;
+
+            AmountToText = Amount.ToPriceText();
+
+            StatusToText = Status.ToString();
         }
         public static List<TransactionViewModel> GetList(IEnumerable<Transaction> transactions)
         {
@@ -33,6 +38,11 @@ namespace WebServices.ViewModels
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public long Amount { get; set; }
+
+        public string AmountToText { get; set; }
+
+        public string StatusToText { get; set; }
+
         public TransactionType Type { get; set; }
         public TransactionStatus Status { get; set; }
         public string Data { get; set; }

@@ -38,6 +38,7 @@ namespace WebMerchant.Controllers
             {
                 BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
             }
+
             ViewBag.PaymentResult = paymentResult;
             return PartialView("ModalPaymentMessage");
         }
