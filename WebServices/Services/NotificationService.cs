@@ -44,6 +44,11 @@ namespace WebServices.Services
         #region Notification
 
 
+        public async Task<Notification> GetNotification(int notificationid)
+        {
+            return await _notificationRepository.GetByIdAsync(notificationid);
+        }
+
         public async Task CreateNotification(int dataid, EntityType entityType, int entityid, NotificationType notificationType, string msg, string text)
         {
             Notification _notification = new Notification();

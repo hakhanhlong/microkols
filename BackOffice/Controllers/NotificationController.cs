@@ -12,5 +12,10 @@ namespace BackOffice.Controllers
         {
             return View();
         }
+
+        public IActionResult Goto(int id)
+        {
+            return View();
+        }
     }
 }
