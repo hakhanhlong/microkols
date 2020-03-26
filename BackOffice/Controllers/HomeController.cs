@@ -6,16 +6,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BackOffice.Models;
 using Microsoft.AspNetCore.Authorization;
+using BackOffice.Business.Interfaces;
 
 namespace BackOffice.Controllers
 {
+
+
     [Authorize]
     public class HomeController : Controller
     {
+        ICampaignBusiness _ICampaignBusiness;
+
+        public HomeController(ICampaignBusiness __ICampaignBusiness) {
+            _ICampaignBusiness = __ICampaignBusiness;
+        }
+
+
         [Authorize]
         public IActionResult Index()
         {
-            //index home controller dashboard
+            var listing_campaign = _ICampaignBusiness.GetListCampaign(1, 10);
+            if(listing_campaign != null)
+            {
+                ViewBag.Listing_Campaign = listing_campaign;
+            }
+
+
             return View();
         }
 

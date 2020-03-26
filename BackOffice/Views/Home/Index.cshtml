@@ -25,108 +25,133 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="m_widget2_tab1_content">
                             <div class="m-widget2">
-                                <div class="m-widget2__item m-widget2__item--primary">
-                                    <div class="m-widget2__checkbox">
-                                       
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Make Metronic Great  Again.Lorem Ipsum Amet
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By Bob
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="m-widget2__item m-widget2__item--warning">
-                                    <div class="m-widget2__checkbox">
-                                      
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Prepare Docs For Metting On Monday
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By Sean
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="m-widget2__item m-widget2__item--brand">
-                                    <div class="m-widget2__checkbox">
-                                        
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Make Widgets Great Again.Estudiat Communy Elit
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By Aziko
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="m-widget2__item m-widget2__item--success">
-                                    <div class="m-widget2__checkbox">
-                                       
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Make Metronic Great Again.Lorem Ipsum
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By James
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="m-widget2__item m-widget2__item--danger">
-                                    <div class="m-widget2__checkbox">
-                                        
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Completa Financial Report For Emirates Airlines
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By Bob
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
-                                <div class="m-widget2__item m-widget2__item--info">
-                                    <div class="m-widget2__checkbox">
-                                        
-                                    </div>
-                                    <div class="m-widget2__desc">
-                                        <span class="m-widget2__text">
-                                            Completa Financial Report For Emirates Airlines
-                                        </span>
-                                        <br>
-                                        <span class="m-widget2__user-name">
-                                            <a href="#" class="m-widget2__link">
-                                                By Sean
-                                            </a>
-                                        </span>
-                                    </div>
-                                    
-                                </div>
+
+                                @if (ViewBag.Listing_Campaign != null)
+                                {
+                                    foreach (var item in ViewBag.Listing_Campaign.Campaigns)
+                                    {
+                                        if (item.Status == CampaignStatus.Started)
+                                        {
+                                            <div class="m-widget2__item m-widget2__item--success">
+                                                <div class="m-widget2__checkbox"></div>
+                                                <div class="m-widget2__desc">
+                                                    <span class="m-widget2__text">
+                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                            <strong>@item.Title</strong>
+                                                        </a>
+                                                        <span class="m-badge m-badge--success m-badge--wide">
+                                                            @item.Status.ToString()
+                                                        </span>
+                                                    </span>
+                                                    <br>
+                                                    <span class="m-widget2__user-name">
+                                                        <a href="javascript:;" class="m-widget2__link">
+                                                            @(item.TypeToText)
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else if (item.Status == CampaignStatus.Error || item.Status == CampaignStatus.Locked)
+                                        {
+                                            <div class="m-widget2__item m-widget2__item--danger">
+                                                <div class="m-widget2__checkbox"></div>
+                                                <div class="m-widget2__desc">
+                                                    <span class="m-widget2__text">
+                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                            <strong>@item.Title</strong>
+                                                        </a>
+                                                        <span class="m-badge m-badge--danger m-badge--wide">
+                                                            @item.Status.ToString()
+                                                        </span>
+                                                    </span>
+                                                    <br>
+                                                    <span class="m-widget2__user-name">
+                                                        <a href="javascript:;" class="m-widget2__link">
+                                                            @(item.TypeToText)
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else if (item.Status == CampaignStatus.Completed)
+                                        {
+                                            <div class="m-widget2__item m-widget2__item--info">
+                                                <div class="m-widget2__checkbox"></div>
+                                                <div class="m-widget2__desc">
+                                                    <span class="m-widget2__text">
+                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                            <strong>@item.Title</strong>
+                                                        </a>
+                                                        <span class="m-badge m-badge--info m-badge--wide">
+                                                            @item.Status.ToString()
+                                                        </span>
+                                                    </span>
+                                                    <br>
+                                                    <span class="m-widget2__user-name">
+                                                        <a href="javascript:;" class="m-widget2__link">
+                                                            @(item.TypeToText)
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else if (item.Status == CampaignStatus.Canceled)
+                                        {
+                                            <div class="m-widget2__item m-widget2__item--warning">
+                                                <div class="m-widget2__checkbox"></div>
+                                                <div class="m-widget2__desc">
+                                                    <span class="m-widget2__text">
+                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                            <strong>@item.Title</strong>
+                                                        </a>
+                                                        <span class="m-badge m-badge--warning m-badge--wide">
+                                                            @item.Status.ToString()
+                                                        </span>
+                                                    </span>
+                                                    <br>
+                                                    <span class="m-widget2__user-name">
+                                                        <a href="javascript:;" class="m-widget2__link">
+                                                            @(item.TypeToText)
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="m-widget2__item m-widget2__item--primary">
+                                                <div class="m-widget2__checkbox"></div>
+                                                <div class="m-widget2__desc">
+                                                    <span class="m-widget2__text">
+                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                            <strong>@item.Title</strong>
+                                                        </a>
+                                                        <span class="m-badge m-badge--primary m-badge--wide">
+                                                            @item.Status.ToString()
+                                                        </span>
+                                                    </span>
+                                                    <br>
+                                                    <span class="m-widget2__user-name">
+                                                        <a href="javascript:;" class="m-widget2__link">
+                                                            @(item.TypeToText)
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                        }
+                                    }
+                                }
+
+
+
+
+
                             </div>
                         </div>
                         

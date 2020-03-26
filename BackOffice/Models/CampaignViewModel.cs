@@ -84,6 +84,8 @@ namespace BackOffice.Models
             AccountFeedbackBefore = c.AccountFeedbackBefore;
             Quantity = c.Quantity;
 
+            TypeToText = c.Type.ToText();
+
             var genderOpt = c.CampaignOption.FirstOrDefault(m => m.Name == CampaignOptionName.Gender);
             if (genderOpt != null)
             {
@@ -205,6 +207,9 @@ namespace BackOffice.Models
         public int ExtraOptionChargePercent { get; set; }
 
         public CampaignType Type { get; set; }
+
+        public string TypeToText { get; set; }
+
         public int ServiceChargeAmount { get; set; }
         public int AccountChargeAmount { get; set; }
         public int AccountChargeExtraPercent { get; set; }

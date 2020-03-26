@@ -46,7 +46,6 @@ namespace BackOffice.Controllers
 
         public IActionResult Index(int pageindex = 1)
         {
-
             var listing = _ICampaignBusiness.GetListCampaign(pageindex, 25);
             DataSelectionStatusAndType();
             return View(listing);
@@ -73,6 +72,8 @@ namespace BackOffice.Controllers
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "4"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "5"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "6"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Locked", Value = "7"},
+
             };
 
             ViewBag.CampaignTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>

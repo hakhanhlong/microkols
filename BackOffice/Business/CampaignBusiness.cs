@@ -82,6 +82,7 @@ namespace BackOffice.Business
             var filter = new CampaignSearchSpecification(kw, type, status, StartDate, EndDate);
 
             var agencies = _ICampaignRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+
             var total = _ICampaignRepository.Count(filter);
 
 
