@@ -63,10 +63,15 @@ namespace Core.Entities
         AgencyDeclineCampaignContent = 42,
         AgencyUpdatedCampaignContent = 43,
 
-        AccountVerifyDenied = 44,
-        AccountVerifySuccess = 45,
 
-        AgencyWalletDeposite = 46
+        //####### longhk add ####################
+        AccountVerifyDenied = 44,
+        AccountVerifySuccess = 45,    
+        
+
+        AgencyWalletDeposit = 46,
+        AgencyPayCampaignService = 47,
+        //#######################################
 
 
     }
@@ -89,6 +94,26 @@ namespace Core.Entities
 
     public static class NotificationExt
     {
+
+        public static string NotificationTypeToText(this NotificationType type)
+        {
+            string text = "Not Yet Define";
+
+            if(type == NotificationType.AgencyWalletDeposit)
+            {
+                text = "Agency Deposit";
+            }
+            else if(type == NotificationType.AgencyPayCampaignService)
+            {
+                text = "Agency Pay Campaign Service";
+            }
+
+            return text;
+        }
+
+
+
+
         public static NotificationTypeGroup ToTypeGroup(this NotificationType type)
         {
 

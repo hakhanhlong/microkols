@@ -15,8 +15,22 @@ namespace WebServices.Interfaces
             string order, int page, int pagesize);
 
 
+        //######## longhk add #######################################################
         Task<Notification> GetNotification(int notificationid);
-        
+
+        Task<int> CountNotification(EntityType entityType, NotificationStatus? status, NotificationType type);
+
+        //Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationType type, NotificationStatus? status , string data);
+
+        Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationType type, NotificationStatus? status, int pageindex, int pagesize);
+
+
+
+
+
+
+        //############################################################################
+
 
         Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, int entityId); 
         Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int entityId, NotificationStatus? status, string order, int page, int pagesize);

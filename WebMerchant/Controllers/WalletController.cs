@@ -117,7 +117,7 @@ namespace WebMerchant.Controllers
                     //########## create notification added by longhk ##########################################################
                     string _msg = string.Format("Yêu cầu nạp tiền đã được gửi bởi {0}, với số tiền {1}. Cần được duyệt", CurrentUser.Username, model.Amount.ToPriceText());
                     string _data = "Transaction";
-                    await _INotificationService.CreateNotification(r, EntityType.System, 0, NotificationType.AgencyWalletDeposite, _msg, _data);
+                    await _INotificationService.CreateNotification(r, EntityType.System, 0, NotificationType.AgencyWalletDeposit, _msg, _data);
                     //#########################################################################################
 
                     this.AddAlertSuccess("Yêu cầu nạp tiền đã được gửi. Vui lòng chờ quản trị duyệt giao dịch.");

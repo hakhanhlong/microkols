@@ -44,10 +44,35 @@ namespace WebServices.Services
         #region Notification
 
 
+
+        //############################# longhk add ########################################################################
         public async Task<Notification> GetNotification(int notificationid)
         {
             return await _notificationRepository.GetByIdAsync(notificationid);
         }
+
+
+        public async Task<int> CountNotification(EntityType entityType, NotificationStatus? status, NotificationType type)
+        {
+            var notifications = await _notificationRepository.CountAsync(new NotificationSpecification(entityType, status.Value , type));
+            return notifications;
+        }
+
+        public async Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationType type, NotificationStatus? status, int pageindex, int pagesize)
+        {
+            var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType, status.Value, type),
+                "DateCreated_desc", pageindex, pagesize);
+
+
+            return await GetNotifications(notifications);
+
+
+        }
+
+
+        //#################################################################################################################
+
+
 
         public async Task CreateNotification(int dataid, EntityType entityType, int entityid, NotificationType notificationType, string msg, string text)
         {
