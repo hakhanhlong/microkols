@@ -44,9 +44,12 @@ namespace WebServices.ViewModels
             EntityId = notification.EntityId;
             TypeGroup = notification.Type.ToTypeGroup();
             Message = (notification.Type == NotificationType.CampaignCanceled) ? $"{notification.Message} với lý do {notification.Data}" : $"{notification.Message}";
+            NotificationTypeToText = notification.Type.NotificationTypeToText();
 
         }
 
+
+        public string NotificationTypeToText { get; set; }
 
         public bool Checked { get; set; } = false;
 

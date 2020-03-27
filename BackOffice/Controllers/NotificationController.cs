@@ -31,7 +31,10 @@ namespace BackOffice.Controllers
         {
             var number_notification = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created);
             ViewBag.NumberNotification = number_notification;
-            return View();
+
+            var list_notification = await _notificationService.GetNewNotifications(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, 1, 50);
+
+            return View(list_notification);
         }
     }
 }

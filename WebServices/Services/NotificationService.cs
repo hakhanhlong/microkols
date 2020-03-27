@@ -75,6 +75,15 @@ namespace WebServices.Services
 
         }
 
+        public async Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationStatus? status, int pageindex, int pagesize)
+        {
+            var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType, status.Value),
+                "DateCreated_desc", pageindex, pagesize);
+
+
+            return await GetNotifications(notifications);
+        }
+
 
         //#################################################################################################################
 

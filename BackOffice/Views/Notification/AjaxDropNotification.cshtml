@@ -3,6 +3,7 @@
     Layout = null;
 }
 
+@model List<WebServices.ViewModels.NotificationViewModel>
 
 
 <span class="m-dropdown__arrow m-dropdown__arrow--center" style="margin-left:55px;"></span>
@@ -25,94 +26,40 @@
                             <div id="mCSB_2_container" class="mCSB_container" style="position: relative; top: 0px; left: 0px;" dir="ltr">
                                 <div class="m-list-timeline m-list-timeline--skin-light">
                                     <div class="m-list-timeline__items">
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
-                                            <span class="m-list-timeline__text">
-                                                12 new users registered
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                Just now
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                System shutdown
-                                                <span class="m-badge m-badge--success m-badge--wide">
-                                                    pending
-                                                </span>
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                14 mins
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                New invoice received
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                20 mins
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                DB overloaded 80%
-                                                <span class="m-badge m-badge--info m-badge--wide">
-                                                    settled
-                                                </span>
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                1 hr
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                System error -
-                                                <a href="#" class="m-link">
-                                                    Check
-                                                </a>
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                2 hrs
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item m-list-timeline__item--read">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span href="" class="m-list-timeline__text">
-                                                New order received
-                                                <span class="m-badge m-badge--danger m-badge--wide">
-                                                    urgent
-                                                </span>
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                7 hrs
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item m-list-timeline__item--read">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                Production server down
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                3 hrs
-                                            </span>
-                                        </div>
-                                        <div class="m-list-timeline__item">
-                                            <span class="m-list-timeline__badge"></span>
-                                            <span class="m-list-timeline__text">
-                                                Production server up
-                                            </span>
-                                            <span class="m-list-timeline__time">
-                                                5 hrs
-                                            </span>
-                                        </div>
+
+                                        @if (Model != null)
+                                        {
+                                            foreach (var item in Model)
+                                            {
+                                                <div class="m-list-timeline__item">
+                                                    <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
+                                                    <span class="m-list-timeline__text">
+                                                        <ul class="list-unstyled">
+                                                            <li>
+                                                                <a href="#" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
+                                                            </li>
+                                                            <li>
+                                                                <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
+                                                            </li>
+                                                        </ul>
+                                                        
+                                                    </span>
+                                                    <span class="m-list-timeline__time">
+                                                        Just now
+                                                    </span>
+                                                </div>
+                                            }
+                                        }
+
+
+
                                     </div>
                                 </div>
                             </div>
-                        </div><div id="mCSB_2_scrollbar_vertical" class="mCSB_scrollTools mCSB_2_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;"><div class="mCSB_draggerContainer"><div id="mCSB_2_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; top: 0px; display: block; height: 207px; max-height: 230px;"><div class="mCSB_dragger_bar" style="line-height: 50px;"></div></div><div class="mCSB_draggerRail"></div></div></div>
+                        </div><div id="mCSB_2_scrollbar_vertical" class="mCSB_scrollTools mCSB_2_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;">
+                        <div class="mCSB_draggerContainer">
+                        <div id="mCSB_2_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; top: 0px; display: block; height: 207px; max-height: 230px;">
+                        <div class="mCSB_dragger_bar" style="line-height: 50px;"></div></div><div class="mCSB_draggerRail"></div></div></div>
                     </div>
                 </div>
 
