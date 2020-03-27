@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+
+@model List<WebServices.ViewModels.NotificationViewModel>
+
+
+@if(Model != null){
+    foreach(var item in Model)
+    {
+        <div class="m-timeline-3__item m-timeline-3__item--info">
+            <span class="m-timeline-3__item-time">
+                09:00
+            </span>
+            <div class="m-timeline-3__item-desc">
+                <span class="m-timeline-3__item-text">
+                    Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                </span>
+                <br>
+                <span class="m-timeline-3__item-user-name">
+                    <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
+                        By Bob
+                    </a>
+                </span>
+            </div>
+        </div>
+    }
+}
+

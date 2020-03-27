@@ -36,5 +36,12 @@ namespace BackOffice.Controllers
 
             return View(list_notification);
         }
+
+
+        public async Task<IActionResult> AjaxRecentNotification()
+        {            
+            var list_notification = await _notificationService.GetNewNotifications(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, 1, 12);
+            return View(list_notification);
+        }
     }
 }
