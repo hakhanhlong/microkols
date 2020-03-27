@@ -26,5 +26,12 @@ namespace BackOffice.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> AjaxDropNotification()
+        {
+            var number_notification = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created);
+            ViewBag.NumberNotification = number_notification;
+            return View();
+        }
     }
 }

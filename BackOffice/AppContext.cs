@@ -37,6 +37,10 @@ namespace BackOffice
 
             services.AddScoped<ISettingRepository, SettingRepository>();
 
+            services.AddScoped<INotificationService, NotificationService>();
+
+            
+
 
             //business
             services.AddScoped<IAgencyBusiness, AgencyBusiness>();

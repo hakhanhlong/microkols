@@ -20,6 +20,8 @@ namespace WebServices.Interfaces
 
         Task<int> CountNotification(EntityType entityType, NotificationStatus? status, NotificationType type);
 
+        Task<int> CountNotification(EntityType entityType, NotificationStatus? status);
+
         //Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationType type, NotificationStatus? status , string data);
 
         Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationType type, NotificationStatus? status, int pageindex, int pagesize);
