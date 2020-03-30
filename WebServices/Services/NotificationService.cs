@@ -84,13 +84,22 @@ namespace WebServices.Services
             return await GetNotifications(notifications);
         }
 
-        public async Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int pageindex, int pagesize)
+        public async Task<ListNotificationViewModel> GetNotifications(EntityType entityType, int pageindex, int pagesize)
         {
-            var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType),
-                "DateCreated_desc", pageindex, pagesize);
 
+            var filter = new NotificationSpecification(entityType);
 
-            return await GetNotifications(notifications);
+            var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);
+
+            var total = await _notificationRepository.CountAsync(filter);
+
+            var list = await GetNotifications(notifications);
+            return new ListNotificationViewModel()
+            {
+                Notifications = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
         }
 
 
