@@ -21,20 +21,20 @@
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
-            <div class="form-group">
-                <label asp-for="Image"></label>
+                    <div class="form-group">
+                        <label asp-for="Image"></label>
 
-                <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
-                <input type="hidden" asp-for="Image" />
-                <span asp-validation-for="Image"></span>
-                <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
+                        <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
+                        <input type="hidden" asp-for="Image" />
+                        <span asp-validation-for="Image"></span>
+                        <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
 
-                <div>
-                    <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
-                </div>
-                
+                        <div>
+                            <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+                        </div>
 
-            </div>
+
+                    </div>
 
 
                     <div class="form-group">
@@ -105,13 +105,55 @@
 
                 @if (campaignType == CampaignType.ReviewProduct)
                 {
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" asp-for="SendProduct" />
-                            <label class="custom-control-label" asp-for="SendProduct"></label>
+                    var arrType = Common.Helpers.StringHelper.GetEnumArray<CampaignReviewType>();
+
+
+                    foreach (var item in arrType)
+                    {
+                        var radioid = $"reviewtype{item}";
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="ReviewType" value="@item" id="@radioid" data-desc="" />
+                                <label class="custom-control-label" for="@radioid">@item.ToDisplayName()</label>
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div class="reviewaddress-container reviewaddress-container-@item" style="display:none">
+
+
+                            @if (item == CampaignReviewType.GuiSanPham)
+                            {
+
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="ReviewPayback" id="ReviewPayback" value="1" />
+                                        <label class="custom-control-label" asp-for="ReviewPayback"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-reviewAddress" style="display:none">
+                                    <label>@item.ToDescription()</label>
+                                    <textarea class="form-control " asp-for="ReviewAddress"></textarea>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label>@item.ToDescription()</label>
+                                    <textarea class="form-control " asp-for="ReviewAddress2"></textarea>
+                                </div>
+                            }
+
+                        </div>
+                    }
+                }
+                else
+                {
+
+                    <input type="hidden" asp-for="ReviewType" />
+                    <input type="hidden" asp-for="ReviewAddress" />
+                    <input type="hidden" asp-for="ReviewAddress2" />
+                    <input type="hidden" asp-for="ReviewDate" />
                 }
 
                 @if (campaignType != CampaignType.ShareContent && campaignType != CampaignType.ChangeAvatar)
@@ -151,9 +193,8 @@
                 }
 
 
+
                 <div class="text-center form-group">
-                    <input type="hidden" asp-for="ReviewAddress" />
-                    <input type="hidden" asp-for="ReviewDate" />
                     <input type="hidden" asp-for="Type" />
                     <button class="btn btn-outline-primary btn-bold-text" type="submit">
                         Bước 3: Yêu cầu về đối tượng của chiến dịch
@@ -181,7 +222,7 @@
                             <h5>Nội dung mẫu</h5>
                             <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
                         </div>
-                 </div>
+                    </div>
                 }
             </div>
         </div>
@@ -203,22 +244,22 @@
 
                 <h6 class="title-campaign"></h6>
 
-      
-                    <div class="form-row mt-2">
-                        <div class="form-group col-12">
-                            <label>Thời gian</label>
-                            <input type="text" class="form-control form-control-lg" id="timereview-date" placeholder="Chọn thời gian">
-                        </div>
+
+                <div class="form-row mt-2">
+                    <div class="form-group col-12">
+                        <label>Thời gian</label>
+                        <input type="text" class="form-control form-control-lg" id="timereview-date" placeholder="Chọn thời gian">
                     </div>
-                    <div class="form-row mt-2">
-                        <div class="form-group col-12">
-                            <label>Địa điểm trải nghiệm</label>
-                            <textarea class="form-control form-control-lg" id="timereview-address"></textarea>
-                        </div>
+                </div>
+                <div class="form-row mt-2">
+                    <div class="form-group col-12">
+                        <label>Địa điểm trải nghiệm</label>
+                        <textarea class="form-control form-control-lg" id="timereview-address"></textarea>
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary" id="timereview-submit">Đồng ý</button>
-                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary" id="timereview-submit">Đồng ý</button>
+                </div>
 
             </div>
             <div class="modal-footer">

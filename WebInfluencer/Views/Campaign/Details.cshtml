@@ -152,26 +152,45 @@
 
                                     }
 
-                                    <div>
+                                    if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                    {
 
-                                        @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-                                        {
-                                            <strong> Thời gian trải nghiệm</strong>
+                                        <div class="mb-2">
+                                            <strong>
+                                                @Model.Campaign.ReviewType.ToDisplayName()
+                                            </strong>
 
-                                            <ul class="list-unstyled">
-                                                <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                                            </ul>
-                                        }
 
-                                        @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                        {
-                                            <strong> Địa điểm trải nghiệm</strong>
-                                            <p>
-                                                @Model.Campaign.ReviewAddress
-                                            </p>
-                                        }
+                                            @if (Model.Campaign.ReviewPayback.HasValue)
+                                            {
+                                                <span> - Thu hồi sản phẩm</span>
+                                            }
 
-                                    </div>
+                                            <br />
+                                            <strong class="mr-2"> Địa điểm:</strong>
+                                            @Model.Campaign.ReviewAddress
+                                        </div>
+
+                                        @*<div>
+                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+                    {
+                        <strong> Thời gian trải nghiệm</strong>
+
+                        <ul class="list-unstyled">
+                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                        </ul>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <strong> Địa điểm trải nghiệm</strong>
+                        <p>
+                            @Model.Campaign.ReviewAddress
+                        </p>
+                    }
+
+                </div>*@
+                                    }
+
                                 }
 
                                 @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
@@ -245,12 +264,25 @@
                                 }
                                 else
                                 {
-                                    <div>
+                                    <div class="mb-3">
                                         <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
                                         <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
 
 
                                     </div>
+
+                                    if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                    {
+                                        if (true == Model.Campaign.ReviewPayback)
+                                        {
+                                            <div>
+                                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                                <input type="text" name="ReviewAddress" class="form-control" value=""  />
+
+
+                                            </div>
+                                        }
+                                    }
                                 }
                                 @{
                                     var sampleimages = Model.Campaign.SampleContent.ToListString();

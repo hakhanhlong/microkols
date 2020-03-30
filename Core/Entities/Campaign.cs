@@ -68,6 +68,9 @@ namespace Core.Entities
 
         public string ReviewAddress{ get; set; }
 
+        public CampaignReviewType? ReviewType { get; set; }
+        public bool? ReviewPayback { get; set; }
+
         public int  AmountMin { get; set; }
         public int AmountMax { get; set; }
         public int Quantity { get; set; }
@@ -84,6 +87,15 @@ namespace Core.Entities
         private List<CampaignAccountType> _CampaignAccountType = new List<CampaignAccountType>();
         public IEnumerable<CampaignAccountType> CampaignAccountType => _CampaignAccountType.AsReadOnly();
 
+    }
+
+    public enum CampaignReviewType
+    {
+        [Display(Name = "Gửi sản phẩm trải nghiệm đến địa chỉ của Influencers", Description ="Nhập địa chỉ nhận lại sản phẩm sau khi người dùng trải nghiệm")]
+
+        GuiSanPham = 0,
+        [Display(Name = "Mời người dùng đến trải nghiệm", Description = "Nhập địa chỉ trải nghiệm sản phẩm")]
+        MoiNguoiDung = 1
     }
     public enum CampaignMethod
     {

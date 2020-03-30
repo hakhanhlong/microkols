@@ -10,5 +10,6 @@ namespace WebServices.ViewModels
         public int KPICommitted { get; set; }
         public int AccountChargeAmount { get; set; }
         public string Caption { get; set; }
+        public string ReviewAddress { get; set; }
     }
 }

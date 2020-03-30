@@ -133,7 +133,7 @@
         //    }
         //});
 
-       
+
 
         $('#HashTag').select2({
             maximumSelectionLength: 3,
@@ -197,26 +197,35 @@
             }
 
         });
-        $('#timereview-date').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            },
-            parentEl: "#modal-timereview .modal-body"    
-        });
 
-        $('#timereview-submit').click(function () {
-            var time = $('#timereview-date').val();
 
-            $('#ReviewDate').val(time);
-            var address = $('#timereview-address').val();
-            $('#ReviewAddress').val(address);
-            $('#modal-timereview').modal('hide');
+        if ($('.reviewaddress-container').length > 0) {
 
-        });
+
+            handlerReviewType();
+
+            $('input[name=ReviewType]').change(function () {
+                handlerReviewType();
+            });
+
+          
+            $('#ReviewDate').daterangepicker({
+                timePicker: true,
+                minDate: moment(),
+                startDate: moment(),
+                endDate: moment().startOf('hour').add(10, 'hour'),
+                locale: {
+                    format: 'hh:mm A DD/MM/YYYY'
+                },
+                parentEl: ""
+            });
+
+            handlerReviewPayback();
+            $('input[name=ReviewPayback]').change(function () {
+                handlerReviewPayback();
+            });
+        }
+
     }
 
 
@@ -250,6 +259,32 @@
 
         }
     }
+
+
+    function handlerReviewType() {
+        $('.reviewaddress-container').hide();
+        var val = $('input[name=ReviewType]:checked').val();
+        console.log('handlerReviewType', val);
+        if (val) {
+            $('.reviewaddress-container-' + val).show();
+
+        } 
+    }
+
+    function handlerReviewPayback() {
+        $('.form-reviewAddress').hide();
+        var val = $('input[name=ReviewPayback]:checked').val();
+        console.log('handlerReviewPayback', val);
+        if (val) {
+             
+
+            $('.form-reviewAddress').show();
+
+        } else {
+            $('.form-reviewAddress').hide();
+        }
+    }
+
 
     function handlerAccountType() {
         var accouttype = $('input[name=AccountType]:checked').val();

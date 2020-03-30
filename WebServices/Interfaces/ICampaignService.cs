@@ -25,7 +25,7 @@ namespace WebServices.Interfaces
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
         Task<CreateCampaignInfoViewModel> GetCreateCampaign(int agencyid, CampaignType campaignType);
         Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username);
-        Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
+    
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
         Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, CampaignType? type, string keyword, int page, int pagesize);
