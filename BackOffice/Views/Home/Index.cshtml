@@ -5,203 +5,232 @@
 @section Subheaders{
     <h3 class="m-subheader__title">
         Dashboard
-    </h3>   
+    </h3>
 }
 
-    <div class="row">
-        <div class="col-xl-6 col-lg-12">
-            <!--begin:: Widgets/Tasks -->
-            <div class="m-portlet m-portlet--full-height ">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <h3 class="m-portlet__head-text">
-                                Campaign
-                            </h3>
-                        </div>
-                    </div>                    
+<div class="row">
+    <div class="col-xl-6 col-lg-12">
+        <!--begin:: Widgets/Tasks -->
+        <div class="m-portlet m-portlet--full-height ">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Campaign
+                        </h3>
+                    </div>
                 </div>
-                <div class="m-portlet__body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="m_widget2_tab1_content">
-                            <div class="m-widget2">
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_widget2_tab1_content">
+                        <div class="m-widget2">
 
-                                @if (ViewBag.Listing_Campaign != null)
+                            @if (ViewBag.Listing_Campaign != null)
+                            {
+                                foreach (var item in ViewBag.Listing_Campaign.Campaigns)
                                 {
-                                    foreach (var item in ViewBag.Listing_Campaign.Campaigns)
+                                    if (item.Status == CampaignStatus.Started)
                                     {
-                                        if (item.Status == CampaignStatus.Started)
-                                        {
-                                            <div class="m-widget2__item m-widget2__item--success">
-                                                <div class="m-widget2__checkbox"></div>
-                                                <div class="m-widget2__desc">
-                                                    <span class="m-widget2__text">
-                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
-                                                            <strong>@item.Title</strong>
-                                                        </a>
-                                                        <span class="m-badge m-badge--success m-badge--wide">
-                                                            @item.Status.ToString()
-                                                        </span>
+                                        <div class="m-widget2__item m-widget2__item--success">
+                                            <div class="m-widget2__checkbox"></div>
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text">
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                        <strong>@item.Title</strong>
+                                                    </a>
+                                                    <span class="m-badge m-badge--success m-badge--wide">
+                                                        @item.Status.ToString()
                                                     </span>
-                                                    <br>
-                                                    <span class="m-widget2__user-name">
-                                                        <a href="javascript:;" class="m-widget2__link">
-                                                            @(item.TypeToText)
-                                                        </a>
-                                                    </span>
-                                                </div>
-
+                                                </span>
+                                                <br>
+                                                <span class="m-widget2__user-name">
+                                                    <a href="javascript:;" class="m-widget2__link">
+                                                        @(item.TypeToText)
+                                                    </a>
+                                                </span>
                                             </div>
-                                        }
-                                        else if (item.Status == CampaignStatus.Error || item.Status == CampaignStatus.Locked)
-                                        {
-                                            <div class="m-widget2__item m-widget2__item--danger">
-                                                <div class="m-widget2__checkbox"></div>
-                                                <div class="m-widget2__desc">
-                                                    <span class="m-widget2__text">
-                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
-                                                            <strong>@item.Title</strong>
-                                                        </a>
-                                                        <span class="m-badge m-badge--danger m-badge--wide">
-                                                            @item.Status.ToString()
-                                                        </span>
-                                                    </span>
-                                                    <br>
-                                                    <span class="m-widget2__user-name">
-                                                        <a href="javascript:;" class="m-widget2__link">
-                                                            @(item.TypeToText)
-                                                        </a>
-                                                    </span>
-                                                </div>
 
-                                            </div>
-                                        }
-                                        else if (item.Status == CampaignStatus.Completed)
-                                        {
-                                            <div class="m-widget2__item m-widget2__item--info">
-                                                <div class="m-widget2__checkbox"></div>
-                                                <div class="m-widget2__desc">
-                                                    <span class="m-widget2__text">
-                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
-                                                            <strong>@item.Title</strong>
-                                                        </a>
-                                                        <span class="m-badge m-badge--info m-badge--wide">
-                                                            @item.Status.ToString()
-                                                        </span>
-                                                    </span>
-                                                    <br>
-                                                    <span class="m-widget2__user-name">
-                                                        <a href="javascript:;" class="m-widget2__link">
-                                                            @(item.TypeToText)
-                                                        </a>
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        }
-                                        else if (item.Status == CampaignStatus.Canceled)
-                                        {
-                                            <div class="m-widget2__item m-widget2__item--warning">
-                                                <div class="m-widget2__checkbox"></div>
-                                                <div class="m-widget2__desc">
-                                                    <span class="m-widget2__text">
-                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
-                                                            <strong>@item.Title</strong>
-                                                        </a>
-                                                        <span class="m-badge m-badge--warning m-badge--wide">
-                                                            @item.Status.ToString()
-                                                        </span>
-                                                    </span>
-                                                    <br>
-                                                    <span class="m-widget2__user-name">
-                                                        <a href="javascript:;" class="m-widget2__link">
-                                                            @(item.TypeToText)
-                                                        </a>
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="m-widget2__item m-widget2__item--primary">
-                                                <div class="m-widget2__checkbox"></div>
-                                                <div class="m-widget2__desc">
-                                                    <span class="m-widget2__text">
-                                                        <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
-                                                            <strong>@item.Title</strong>
-                                                        </a>
-                                                        <span class="m-badge m-badge--primary m-badge--wide">
-                                                            @item.Status.ToString()
-                                                        </span>
-                                                    </span>
-                                                    <br>
-                                                    <span class="m-widget2__user-name">
-                                                        <a href="javascript:;" class="m-widget2__link">
-                                                            @(item.TypeToText)
-                                                        </a>
-                                                    </span>
-                                                </div>
-
-                                            </div>
-                                        }
-
-
-
+                                        </div>
                                     }
-                                    <div class="text-right">
-                                        <a class="btn btn-warning" href="/campaign">
-                                            List Campaigns
-                                        </a>
-                                    </div>
+                                    else if (item.Status == CampaignStatus.Error || item.Status == CampaignStatus.Locked)
+                                    {
+                                        <div class="m-widget2__item m-widget2__item--danger">
+                                            <div class="m-widget2__checkbox"></div>
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text">
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                        <strong>@item.Title</strong>
+                                                    </a>
+                                                    <span class="m-badge m-badge--danger m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                </span>
+                                                <br>
+                                                <span class="m-widget2__user-name">
+                                                    <a href="javascript:;" class="m-widget2__link">
+                                                        @(item.TypeToText)
+                                                    </a>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    }
+                                    else if (item.Status == CampaignStatus.Completed)
+                                    {
+                                        <div class="m-widget2__item m-widget2__item--info">
+                                            <div class="m-widget2__checkbox"></div>
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text">
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                        <strong>@item.Title</strong>
+                                                    </a>
+                                                    <span class="m-badge m-badge--info m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                </span>
+                                                <br>
+                                                <span class="m-widget2__user-name">
+                                                    <a href="javascript:;" class="m-widget2__link">
+                                                        @(item.TypeToText)
+                                                    </a>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    }
+                                    else if (item.Status == CampaignStatus.Canceled)
+                                    {
+                                        <div class="m-widget2__item m-widget2__item--warning">
+                                            <div class="m-widget2__checkbox"></div>
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text">
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                        <strong>@item.Title</strong>
+                                                    </a>
+                                                    <span class="m-badge m-badge--warning m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                </span>
+                                                <br>
+                                                <span class="m-widget2__user-name">
+                                                    <a href="javascript:;" class="m-widget2__link">
+                                                        @(item.TypeToText)
+                                                    </a>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="m-widget2__item m-widget2__item--primary">
+                                            <div class="m-widget2__checkbox"></div>
+                                            <div class="m-widget2__desc">
+                                                <span class="m-widget2__text">
+                                                    <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" style="text-decoration:none;color:black;">
+                                                        <strong>@item.Title</strong>
+                                                    </a>
+                                                    <span class="m-badge m-badge--primary m-badge--wide">
+                                                        @item.Status.ToString()
+                                                    </span>
+                                                </span>
+                                                <br>
+                                                <span class="m-widget2__user-name">
+                                                    <a href="javascript:;" class="m-widget2__link">
+                                                        @(item.TypeToText)
+                                                    </a>
+                                                </span>
+                                            </div>
+
+                                        </div>
+                                    }
+
+
+
                                 }
-
-
-
-
-
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                </div>
-                
-            </div>
-            <!--end:: Widgets/Tasks -->
-        </div>
-
-        <div class="col-xl-6 col-lg-12">
-            <!--Begin::Portlet-->
-            <div class="m-portlet m-portlet--full-height ">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <h3 class="m-portlet__head-text">
-                                Recent Notifications
-                            </h3>
-                        </div>
-                    </div>                    
-                </div>
-                <div class="m-portlet__body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="m_widget2_tab1_content">
-                            <!--Begin::Timeline 3 -->
-                            <div class="m-timeline-3">
-                                <div class="m-timeline-3__items" id="dashboard-notification">
-
-                                  
-                                 
+                                <div class="text-right">
+                                    <a class="btn btn-warning" href="/campaign">
+                                        List Campaigns
+                                    </a>
                                 </div>
-                            </div>
-                            <!--End::Timeline 3 -->
+                            }
+
+
+
+
+
                         </div>
-                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!--end:: Widgets/Tasks -->
+    </div>
+
+    <div class="col-xl-6 col-lg-12">
+        <!--Begin::Portlet-->
+        <div class="m-portlet m-portlet--full-height ">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Recent Notifications
+                        </h3>
                     </div>
                 </div>
             </div>
-            <!--End::Portlet-->
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_widget2_tab1_content">
+                        <!--Begin::Timeline 3 -->
+                        <div class="m-timeline-3">
+                            <div class="m-timeline-3__items" id="dashboard-notification">
+
+
+
+                            </div>
+                        </div>
+                        <!--End::Timeline 3 -->
+                    </div>
+
+                </div>
+            </div>
         </div>
-
-
+        <!--End::Portlet-->
     </div>
+
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+
+
+            //############ show notification dashboard ##################################
+             $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("AjaxRecentNotification", "Notification")',
+                    //data: data,
+                    success: function (data) {
+
+                        $('#dashboard-notification').html(data);
+
+                    },
+                    dataType: "html",
+                    traditional: true
+            });
+            //#############################################################################
+
+
+        });
+
+    </script>
+}

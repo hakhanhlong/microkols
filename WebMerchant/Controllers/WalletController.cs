@@ -115,7 +115,7 @@ namespace WebMerchant.Controllers
                     ViewBag.RechargeModel = model;
 
                     //########## create notification added by longhk ##########################################################
-                    string _msg = string.Format("Yêu cầu nạp tiền đã được gửi bởi {0}, với số tiền {1}. Cần được duyệt", CurrentUser.Username, model.Amount.ToPriceText());
+                    string _msg = string.Format("Yêu cầu nạp tiền ví đã được gửi bởi {0}, với số tiền {1}. Cần được duyệt", CurrentUser.Username, model.Amount.ToPriceText());
                     string _data = "Transaction";
                     await _INotificationService.CreateNotification(r, EntityType.System, 0, NotificationType.AgencyWalletDeposit, _msg, _data);
                     //#########################################################################################
@@ -170,6 +170,13 @@ namespace WebMerchant.Controllers
 
                 if (r > 0)
                 {
+                    //r = transaction id
+                    //########## create notification added by longhk ##########################################################
+                    string _msg = string.Format("Yêu cầu rút tiền đã được gửi bởi {0}, với số tiền {1}. Cần được duyệt", CurrentUser.Username, model.Amount.ToPriceText());
+                    string _data = "Transaction";
+                    await _INotificationService.CreateNotification(r, EntityType.System, 0, NotificationType.AgencyWalletWithDraw, _msg, _data);
+                    //#########################################################################################
+
                     this.AddAlertSuccess("Yêu cầu rút tiền đã được gửi. Vui lòng chờ quản trị duyệt giao dịch.");
 
                 }

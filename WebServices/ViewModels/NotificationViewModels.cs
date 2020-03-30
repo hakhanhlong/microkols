@@ -49,6 +49,25 @@ namespace WebServices.ViewModels
         }
 
 
+        public string NotificationLink
+        {
+            get
+            {               
+
+                if (Data == "Transaction" && Type == NotificationType.AgencyWalletDeposit)
+                {
+                    return "/notification/goto?id=" + Id;
+                }
+
+                if (Data == "Transaction" && Type == NotificationType.AgencyWalletWithDraw)
+                {
+                    return "/notification/goto?id=" + Id;
+                }
+
+                return "javascript:;";
+            }
+        }
+
         public string NotificationTypeToText { get; set; }
 
         public bool Checked { get; set; } = false;

@@ -31,6 +31,17 @@ namespace BackOffice.Business
             _IAgencyRepository = __IAgencyRepository;
         }
 
+
+        public async Task<TransactionViewModel> Get(int id)
+        {
+            var filter = new TransactionSpecification(id);
+            var transaction = await _ITransactionRepository.GetSingleBySpecAsync(filter);
+
+            return new TransactionViewModel(transaction);
+
+
+        }
+
         public async Task<ListTransactionViewModel> GetTransactionByType(TransactionType type, int pageindex, int pagesize)
         {
             var filter = new TransactionSpecification(type);
@@ -275,8 +286,8 @@ namespace BackOffice.Business
                 try {
                     
 
-                    //naptien
-                    if (_transaction.Type == TransactionType.WalletRecharge)
+                    
+                    if (_transaction.Type == TransactionType.WalletRecharge) //naptien
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Nạp Tiền][WalletRecharge]", username);
                     }

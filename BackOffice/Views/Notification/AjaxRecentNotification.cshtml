@@ -12,17 +12,18 @@
     {
         <div class="m-timeline-3__item m-timeline-3__item--info">
             <span class="m-timeline-3__item-time">
-                09:00
+                @string.Format("{0}:{1}",item.Date.Hour, item.Date.Minute)
             </span>
             <div class="m-timeline-3__item-desc">
                 <span class="m-timeline-3__item-text">
-                    Lorem ipsum dolor sit amit,consectetur eiusmdd tempor
+                    <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
                 </span>
                 <br>
                 <span class="m-timeline-3__item-user-name">
-                    <a href="#" class="m-link m-link--metal m-timeline-3__item-link">
-                        By Bob
+                    <a href="javascript:;" class="m-link m-link--metal m-timeline-3__item-link">
+                        @item.Date.ToTimeAgo()
                     </a>
+                    <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
                 </span>
             </div>
         </div>

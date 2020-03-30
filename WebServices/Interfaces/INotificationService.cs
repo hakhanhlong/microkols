@@ -28,8 +28,10 @@ namespace WebServices.Interfaces
 
         Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType,  NotificationStatus? status, int pageindex, int pagesize);
 
+        Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int pageindex, int pagesize);
 
 
+        Task<int> UpdateChecked(int id);
 
 
 

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using WebServices.Interfaces;
 
 namespace BackOffice.Controllers
 {
@@ -20,7 +21,10 @@ namespace BackOffice.Controllers
     public class TransactionController : Controller
     {
         ITransactionBusiness _ITransactionBussiness;
+        ITransactionService _ITransactionService;
+
         ITransactionRepository _ITransactionRepository;
+
         IWalletBusiness _IWalletBusiness;
         private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -31,7 +35,7 @@ namespace BackOffice.Controllers
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
             IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
-            ITransactionHistoryBusiness __ITransactionHistoryBusiness)
+            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
@@ -39,6 +43,7 @@ namespace BackOffice.Controllers
             _ITransactionRepository = __ITransactionRepository;
             _INotificationBusiness = __INotificationBusiness;
             _ITransactionHistoryBusiness = __ITransactionHistoryBusiness;
+            _ITransactionService = __ITransactionService;
         }
 
         public IActionResult Index()
@@ -285,6 +290,40 @@ namespace BackOffice.Controllers
 
         }
 
+        public async Task<ActionResult> Detail(int id = 0)
+        {
+
+            var transaction = await _ITransactionBussiness.Get(id);
+
+            try
+            {
+                if (transaction.SenderId == 1)
+                {
+                    transaction.SenderName = "System";
+                }
+                else
+                {
+                    var wallet = _IWalletBusiness.Get(transaction.SenderId);
+                    transaction.SenderName = wallet.Name;
+                    transaction.Wallet = wallet;
+                }
+
+            }
+            catch { }
+            try
+            {
+                var wallet = _IWalletBusiness.Get(transaction.ReceiverId);
+                transaction.ReceiverName = wallet.Name;
+                transaction.Wallet = wallet;
+            }
+            catch { }
+
+
+
+            return View(transaction);
+
+        }
+
         public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All)
         {
             AccountType[] _accounttype;
@@ -450,8 +489,19 @@ namespace BackOffice.Controllers
                         if (code == 9)
                         {
                             TempData["MessageSuccess"] = "Update Status Success";
-                            string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                            await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+
+                            if(transaction.Type == TransactionType.WalletRecharge)
+                            {
+                                string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                            }
+                            else if(transaction.Type == TransactionType.WalletWithdraw)
+                            {
+                                string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                            }
+
+                            
 
                         }
                         else if (code == 10)
@@ -475,8 +525,6 @@ namespace BackOffice.Controllers
                         transaction.DateModified = DateTime.Now;
 
                         transaction.AdminNote = model.AdminNote;
-
-
 
                         transaction.UserModified = HttpContext.User.Identity.Name;
                         await _ITransactionRepository.UpdateAsync(transaction);

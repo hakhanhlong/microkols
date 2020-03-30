@@ -36,7 +36,7 @@
                                                     <span class="m-list-timeline__text">
                                                         <ul class="list-unstyled">
                                                             <li>
-                                                                <a href="#" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
+                                                                <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
                                                             </li>
                                                             <li>
                                                                 <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
@@ -45,7 +45,7 @@
                                                         
                                                     </span>
                                                     <span class="m-list-timeline__time">
-                                                        Just now
+                                                        @item.Date.ToTimeAgo()
                                                     </span>
                                                 </div>
                                             }
