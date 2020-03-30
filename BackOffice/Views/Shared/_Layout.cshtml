@@ -288,13 +288,9 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
 
-            //################### intervel load notification ################################
-
-            // #drop-notification
-
-                $.ajax({
+        function load_drop_notification() {
+              $.ajax({
                     type: "GET",
                     url: '@Url.Action("AjaxDropNotification", "Notification")',
                     //data: data,
@@ -306,6 +302,18 @@
                     dataType: "html",
                     traditional: true
                 });
+        }
+
+        $(document).ready(function () {
+
+            //################### intervel load notification ################################
+
+            // #drop-notification
+            load_drop_notification();
+            setInterval(function () {
+                load_drop_notification();
+            }, 5000);
+              
 
 
 

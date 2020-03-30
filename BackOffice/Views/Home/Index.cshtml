@@ -214,24 +214,35 @@
 @section Scripts{
     <script type="text/javascript">
 
+        function load_recent_notification() {
+                        $.ajax({
+                            type: "GET",
+                            url: '@Url.Action("AjaxRecentNotification", "Notification")',
+                            //data: data,
+                            success: function (data) {
+
+                                $('#dashboard-notification').html(data);
+
+                            },
+                            dataType: "html",
+                            traditional: true
+                    });
+        }
+
         $(document).ready(function () {
 
 
 
 
             //############ show notification dashboard ##################################
-             $.ajax({
-                    type: "GET",
-                    url: '@Url.Action("AjaxRecentNotification", "Notification")',
-                    //data: data,
-                    success: function (data) {
 
-                        $('#dashboard-notification').html(data);
+            load_recent_notification();
 
-                    },
-                    dataType: "html",
-                    traditional: true
-            });
+            setInterval(function () {
+                load_recent_notification();
+            }, 5000);
+
+             
             //#############################################################################
 
 
