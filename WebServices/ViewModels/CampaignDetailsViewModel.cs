@@ -33,6 +33,7 @@ namespace WebServices.ViewModels
 
         public string SystemNote { get; set; }
 
+
         public CampaignPaymentModel Payment { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }
 

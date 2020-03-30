@@ -364,33 +364,7 @@ namespace WebServices.Services
             return -1;
         }
 
-        public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
-        {
-            var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
-            if (campaignTypeCharge == null)
-            {
-                return -1;
-            }
-            var settings = await _settingRepository.GetSetting();
-            // var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var code = await _campaignRepository.GetValidCode(agencyid);
-            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, code, username);
-            if (campaign == null)
-            {
-                return -1;
-            }
-
-            await _campaignRepository.AddAsync(campaign);
-            if (campaign.Id > 0)
-            {
-                await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
-                await CreateCampaignOptions(campaign.Id, model, username);
-                return campaign.Id;
-            }
-
-            return -1;
-        }
-        private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
+         private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
         {
             foreach (var accountType in accountTypes)
             {
@@ -404,84 +378,7 @@ namespace WebServices.Services
             }
         }
 
-        private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
-        {
-
-            if (model.AccountType.Contains(AccountType.HotMom))
-            {
-                if (model.ChildType.HasValue)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Child,
-                        Value = $"{model.ChildType}|{model.ChildAgeMin}-{model.ChildAgeMax}"
-                    });
-                }
-            }
-
-            if (model.EnabledCity && model.CityId != null && model.CityId.Count > 0)
-            {
-
-                foreach (var cityId in model.CityId)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.City,
-                        Value = cityId.ToString()
-                    });
-                }
-
-
-            }
-            if (model.EnabledGender && model.Gender.HasValue)
-            {
-                await _campaignOptionRepository.AddAsync(new CampaignOption()
-                {
-                    CampaignId = campaignId,
-                    Name = CampaignOptionName.Gender,
-                    Value = model.Gender.Value.ToString()
-                });
-            }
-
-            if (model.EnabledAgeRange && model.AgeEnd.HasValue && model.AgeStart.HasValue)
-            {
-                await _campaignOptionRepository.AddAsync(new CampaignOption()
-                {
-                    CampaignId = campaignId,
-                    Name = CampaignOptionName.AgeRange,
-                    Value = $"{model.AgeStart.Value}-{model.AgeEnd.Value}"
-                });
-            }
-
-            if (model.EnabledCategory && model.CategoryId != null && model.CategoryId.Count > 0)
-            {
-                foreach (var categoryid in model.CategoryId)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Category,
-                        Value = categoryid.ToString()
-                    });
-                }
-
-            }
-            if (model.EnabledTags && model.AccountTags != null && model.AccountTags.Count > 0)
-            {
-                foreach (var tag in model.AccountTags)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Tags,
-                        Value = tag
-                    });
-                }
-            }
-        }
-
+      
         public async Task<int> GetAgencyChagreAmount(int campaignAccountId)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(campaignAccountId);
@@ -693,7 +590,8 @@ namespace WebServices.Services
                         UserCreated = username,
                         Type = campaign.Type,
                         KPICommitted = model.KPICommitted,
-                        Status = CampaignAccountStatus.AccountRequest
+                        Status = CampaignAccountStatus.AccountRequest,
+                        ReviewAddress = model.ReviewAddress
                     };
                     await _campaignAccountRepository.AddAsync(campaignAccount);
 

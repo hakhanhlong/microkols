@@ -131,6 +131,10 @@ namespace WebServices.ViewModels
                     }
                 }
             }
+
+            ReviewType = campaign.ReviewType;
+            ReviewPayback = campaign.ReviewPayback;
+            ReviewAddress = campaign.ReviewAddress;
         }
 
 
@@ -167,6 +171,9 @@ namespace WebServices.ViewModels
         public int? ChildAgeMin { get; set; }
         public int? ChildAgeMax { get; set; }
 
+        public CampaignReviewType? ReviewType { get; set; }
+        public bool? ReviewPayback { get; set; }
+        public string ReviewAddress { get; set; }
         public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }
         public CampaignType Type { get; set; }
