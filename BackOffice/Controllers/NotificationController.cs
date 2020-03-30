@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
 
@@ -17,14 +18,34 @@ namespace BackOffice.Controllers
             _notificationService = __NotificationService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int pageindex = 1, int pagesize = 25)
         {
-            return View();
+
+            var list_notification = await _notificationService.GetNotifications(Core.Entities.EntityType.System, pageindex, pagesize);
+
+
+            return View(list_notification);
         }
 
-        public IActionResult Goto(int id)
+        public async Task<IActionResult> Goto(int id)
         {
-            return View();
+            var notification = await _notificationService.GetNotification(id);
+            string href = string.Empty;      
+
+            if (notification.Data == "Transaction" && notification.Type == NotificationType.AgencyWalletDeposit)
+            {
+                href = "/transaction/detail?id=" + notification.DataId;
+            }
+
+            if (notification.Data == "Transaction" && notification.Type == NotificationType.AgencyWalletWithDraw)
+            {
+                href = "/transaction/detail?id=" + notification.DataId;
+            }
+
+            //await _notificationService.UpdateChecked(id);
+
+
+            return Redirect(href);
         }
 
         public async Task<IActionResult> AjaxDropNotification()

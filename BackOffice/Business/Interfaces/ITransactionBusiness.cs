@@ -14,6 +14,10 @@ namespace BackOffice.Business.Interfaces
 
         ListTransactionViewModel GetTransactions(int pageindex, int pagesize);
 
+
+        Task<TransactionViewModel> Get(int id);
+
+
         Task<ListTransactionViewModel> GetTransactions(TransactionType type, TransactionStatus status, int pageindex, int pagesize);
 
         Task<ListTransactionViewModel> GetTransactions(int sender_wallet_id, int reciever_wallet_id, int pageindex, int pagesize);

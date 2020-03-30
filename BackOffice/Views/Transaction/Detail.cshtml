@@ -1,0 +1,225 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model TransactionViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Transaction
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction Detail
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Transaction Detail
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__body">
+
+                <div class="tab-content">
+
+                    <div class="tab-pane active show">
+
+                        @if (Model != null)
+                        {
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            SENDER
+                                        </th>
+                                        <th>
+                                            RECEIVER
+                                        </th>
+                                        <th>
+                                            AMOUNT
+                                        </th>
+                                        <th>
+                                            STATUS
+                                        </th>
+                                        <td></td>
+                                        <th>TIME CREATED</th>
+                                        <th>TIME MODIFIED</th>
+                                        <th></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="transaction_@(Model.Id)">
+                                        <td>1</td>
+                                        <td>@Model.SenderName</td>
+
+                                        <td>
+                                            @if (Model.Wallet.EntityType == EntityType.Agency)
+                                            {
+                                                <a href="/agency/detail?id=@Model.Wallet.EntityId">@Model.ReceiverName</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/microkol/detail?id=item.Wallet.EntityId">@Model.ReceiverName</a>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            <h6 class="m--font-danger">
+                                                @Model.Amount.ToPriceText()
+                                            </h6>
+                                        </td>
+                                        <td>@Model.Status</td>
+                                        <td>
+                                            <span class="m-badge m-badge--info m-badge--wide">@Model.Type.ToDisplayName()</span>
+                                        </td>
+                                        <td>@Model.DateCreated.ToString()</td>
+                                        <td>@Model.DateModified.ToString()</td>
+                                        <td>
+
+                                            @if (Model.Status == TransactionStatus.Created)
+                                            {
+                                                <div class="btn-group btn-group-sm pull-right" role="group">
+                                                    <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(Model.Id)');" title="Approve">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                    <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(Model.Id)');" title="Processing">
+                                                        <i class="fa fa-clock-o"></i>
+                                                    </button>
+                                                    <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(Model.Id)');" title="Canceled">
+                                                        <i class="fa fa-remove"></i>
+                                                    </button>
+                                                </div>
+                                            }
+                                            else if (Model.Status == TransactionStatus.Processing)
+                                            {
+                                                <div class="btn-group btn-group-sm pull-right" role="group">
+                                                    <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(Model.Id)');" title="Approve">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                    <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(Model.Id)');" title="Canceled">
+                                                        <i class="fa fa-remove"></i>
+                                                    </button>
+                                                </div>
+                                            }
+                                            else if (Model.Status == TransactionStatus.Completed)
+                                            {
+                                                <div class="btn-group btn-group-sm pull-right" role="group">
+                                                    <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(Model.Id)', '@(Model.ReceiverId)');" title="History">
+                                                        <i class="fa fa-history"></i>
+                                                    </button>
+                                                </div>
+                                            }
+
+
+
+                                        </td>
+                                    </tr>
+                                    @if (!string.IsNullOrEmpty(Model.Note) || !string.IsNullOrEmpty(Model.AdminNote))
+                                    {
+                                        <tr id="transaction_note_@(Model.Id)">
+                                            <td colspan="8">
+                                                @if (!string.IsNullOrEmpty(Model.Note))
+                                                {
+                                                    @("Note:" + Model.Note)
+                                                }
+                                                @if (!string.IsNullOrEmpty(Model.AdminNote))
+                                                {
+                                                    <br />
+                                                    @("Admin Note:" + Model.AdminNote)
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        }
+                        else
+                        {
+                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                <div class="m-demo__preview">
+                                    Sorry, do not have transaction for binding!
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Take note change status transaction
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframenotestatus" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Transaction History
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframehistory" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+

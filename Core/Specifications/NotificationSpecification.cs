@@ -44,6 +44,15 @@ namespace Core.Specifications
 
         }
 
+        public NotificationSpecification(EntityType entityType) :
+
+           base(m =>m.EntityType == entityType)
+        {
+
+        }
+
+
+
 
 
     }

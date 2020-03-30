@@ -84,6 +84,29 @@ namespace WebServices.Services
             return await GetNotifications(notifications);
         }
 
+        public async Task<List<NotificationViewModel>> GetNotifications(EntityType entityType, int pageindex, int pagesize)
+        {
+            var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType),
+                "DateCreated_desc", pageindex, pagesize);
+
+
+            return await GetNotifications(notifications);
+        }
+
+
+        public async Task<int> UpdateChecked(int id)
+        {
+            var notification = await _notificationRepository.GetByIdAsync(id);
+            notification.Status = NotificationStatus.Checked;
+            await _notificationRepository.UpdateAsync(notification);
+
+            if (notification.Id > 0)
+                return notification.Id;
+
+            return 0;
+
+        }
+
 
         //#################################################################################################################
 

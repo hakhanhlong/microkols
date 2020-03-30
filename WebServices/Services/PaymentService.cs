@@ -57,6 +57,7 @@ namespace WebServices.Services
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.TotalChargeValue;
+
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
 
                 return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);

@@ -70,7 +70,8 @@ namespace Core.Entities
         
 
         AgencyWalletDeposit = 46,
-        AgencyPayCampaignService = 47,
+        AgencyWalletWithDraw = 47,
+        AgencyPayCampaignService = 48,
         //#######################################
 
 
@@ -102,6 +103,10 @@ namespace Core.Entities
             if(type == NotificationType.AgencyWalletDeposit)
             {
                 text = "Agency Deposit";
+            }
+            if (type == NotificationType.AgencyWalletWithDraw)
+            {
+                text = "Agency Withdraw";
             }
             else if(type == NotificationType.AgencyPayCampaignService)
             {
