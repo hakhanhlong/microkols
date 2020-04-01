@@ -51,6 +51,10 @@ namespace Core.Entities
         CampaignError = 21,
         ExcecutedPaymentToAccountBanking = 22,
 
+        //####### longhk add ################
+        CampaignCreated = 23,
+        //###################################
+
 
         AccountSubmitCampaignCaption = 30,
         AgencyApproveCampaignCaption = 31,
@@ -65,8 +69,9 @@ namespace Core.Entities
 
 
         //####### longhk add ####################
-        AccountVerifyDenied = 44,
-        AccountVerifySuccess = 45,    
+        AccountSendVerify = 50,
+        AccountVerifyDenied = 51,
+        AccountVerifySuccess = 52,    
         
 
         AgencyWalletDeposit = 46,

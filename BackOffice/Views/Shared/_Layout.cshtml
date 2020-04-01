@@ -308,10 +308,55 @@
 
             //################### intervel load notification ################################
 
+
+            $('#walletdeposit-count-menu').hide();
+            $('#campaign-count-menu').hide();
+
             // #drop-notification
-            load_drop_notification();
+            //load_drop_notification();
             setInterval(function () {
                 load_drop_notification();
+            }, 5000);
+
+
+            //load count notification leftmenu
+            setInterval(function () {
+
+
+                
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("CountNewNotification", "Notification")',
+                    //data: data,
+                    success: function (data) {
+
+
+                        
+                        
+
+
+                        if (data.campaignTotal > 0) {
+                            $('#campaign-count-menu').show();
+                            $('#campaign-count-menu').html(data.campaignTotal);
+                        }
+                        else {
+                            $('#campaign-count-menu').hide();
+                        }
+
+                        if (data.walletDepositeTotal > 0) {
+                            $('#walletdeposit-count-menu').show();
+                            $('#walletdeposit-count-menu').html(data.walletDepositeTotal);
+                        }
+                        else {
+                            $('#walletdeposit-count-menu').hide();
+                        }
+                        
+
+                    },
+                    dataType: "json",
+                    traditional: true
+                });
+
             }, 5000);
               
 

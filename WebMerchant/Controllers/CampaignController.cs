@@ -141,7 +141,16 @@ namespace WebMerchant.Controllers
 
                             }
                         }
-                           
+
+
+                        //########### Longhk add create notification ##########################################################
+
+                        string _msg = string.Format("Chiến dịch \"{0}\" đã được tạo bởi doanh nghiệp \"{1}\".", info.Title, CurrentUser.Username);
+                        string _data = "Campaign";
+                        await _notificationService.CreateNotification(id, EntityType.System, 0, NotificationType.CampaignCreated, _msg, _data);
+
+                        //#####################################################################################################
+
                         return RedirectToAction("Details", new { id = id });
 
                     }

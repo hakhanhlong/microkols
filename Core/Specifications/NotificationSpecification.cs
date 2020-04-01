@@ -37,6 +37,13 @@ namespace Core.Specifications
 
         }
 
+        public NotificationSpecification(EntityType entityType, NotificationStatus status, List<NotificationType> type) :
+            base(m => type.Contains(m.Type) && m.Status == status && m.EntityType == entityType)
+        {
+
+        }
+
+
         public NotificationSpecification(EntityType entityType, NotificationStatus status) :
 
             base(m =>m.Status == status && m.EntityType == entityType)

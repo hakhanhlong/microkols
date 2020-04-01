@@ -42,7 +42,15 @@ namespace BackOffice.Controllers
                 href = "/transaction/detail?id=" + notification.DataId;
             }
 
-            //await _notificationService.UpdateChecked(id);
+            if (notification.Data == "Influencer" && notification.Type == NotificationType.AccountSendVerify)
+            {
+                href = "/microkol/verify/?id=" + notification.DataId;
+            }
+
+
+            
+
+            await _notificationService.UpdateChecked(id);
 
 
             return Redirect(href);
@@ -58,11 +66,26 @@ namespace BackOffice.Controllers
             return View(list_notification);
         }
 
-
         public async Task<IActionResult> AjaxRecentNotification()
         {            
             var list_notification = await _notificationService.GetNewNotifications(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, 1, 12);
             return View(list_notification);
         }
+
+
+
+        public async Task<JsonResult> CountNewNotification()
+        {                       
+            int CampaignCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created,  new List<NotificationType>() { NotificationType.CampaignCreated,
+                NotificationType.AgencyPayCampaignService});
+            int WalletDeposite = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyWalletDeposit});
+
+
+            return Json(new {
+                CampaignTotal = CampaignCount,
+                WalletDepositeTotal = WalletDeposite
+            });
+        }
+
     }
 }

@@ -58,6 +58,12 @@ namespace WebServices.Services
             return notifications;
         }
 
+        public async Task<int> CountNotification(EntityType entityType, NotificationStatus? status, List<NotificationType> type)
+        {
+            var notifications = await _notificationRepository.CountAsync(new NotificationSpecification(entityType, status.Value, type));
+            return notifications;
+        }
+
         public async Task<int> CountNotification(EntityType entityType, NotificationStatus? status)
         {
             var notifications = await _notificationRepository.CountAsync(new NotificationSpecification(entityType, status.Value));

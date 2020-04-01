@@ -19,6 +19,9 @@ namespace WebInfluencer.Controllers
     {
 
         private readonly IAccountService _accountService;
+
+        private readonly INotificationService _INotificationService;
+
         private readonly ISharedService _sharedService;
         private readonly IFileHelper _fileHelper;
         private readonly IFacebookHelper _facebookHelper;
@@ -26,7 +29,7 @@ namespace WebInfluencer.Controllers
         private readonly IFacebookJob _facebookJob;
         public AccountController(IAccountService accountService, ISharedService sharedService,
             ICampaignService campaignService,
-            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob)
+            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob, INotificationService __INotificationService)
         {
             _campaignService = campaignService;
             _accountService = accountService;
@@ -34,7 +37,7 @@ namespace WebInfluencer.Controllers
             _fileHelper = fileHelper;
             _facebookHelper = facebookHelper;
             _facebookJob = facebookJob;
-
+            _INotificationService = __INotificationService;
 
         }
 
@@ -203,6 +206,13 @@ namespace WebInfluencer.Controllers
                 model.ImageFront = _fileHelper.MoveTempFile(model.ImageFront, "account");
 
                 var r = await _accountService.ChangeIDCard(CurrentUser.Id, model, CurrentUser.Username);
+
+                //########### Longhk add create notification ##########################################################
+                string _msg = string.Format("Influencer {0}, gửi duyệt thông tin xác minh danh tính", CurrentUser.Username);
+                string _data = "Influencer";
+                await _INotificationService.CreateNotification(CurrentUser.Id, EntityType.System, 0, NotificationType.AccountSendVerify, _msg, _data);
+
+                //#####################################################################################################
 
                 this.AddAlert(r);
                 return RedirectToAction("ChangeIDCard");

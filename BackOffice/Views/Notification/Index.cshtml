@@ -38,7 +38,7 @@
                                 {
                                     foreach (var item in Model.Notifications)
                                     {
-                                        <div class="m-timeline-3__item m-timeline-3__item--info">
+                                        <div class="m-timeline-3__item @(item.Status == NotificationStatus.Created?"m-timeline-3__item--info":"m-timeline-3__item--warning")">
                                             <span class="m-timeline-3__item-time">
                                                 @string.Format("{0}:{1}", item.Date.Hour, item.Date.Minute)
                                             </span>

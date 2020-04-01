@@ -27,7 +27,7 @@
                                 <div class="m-list-timeline m-list-timeline--skin-light">
                                     <div class="m-list-timeline__items">
 
-                                        @if (Model != null)
+                                        @if (ViewBag.NumberNotification > 0)
                                         {
                                             foreach (var item in Model)
                                             {
@@ -49,6 +49,10 @@
                                                     </span>
                                                 </div>
                                             }
+                                        }
+                                        else
+                                        {
+                                            
                                         }
 
                                     </div>
