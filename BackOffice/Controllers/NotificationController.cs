@@ -47,8 +47,18 @@ namespace BackOffice.Controllers
                 href = "/microkol/verify/?id=" + notification.DataId;
             }
 
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCreated)
+            {
+                href = "/campaign/detail/campaignid=" + notification.DataId;
+            }
 
-            
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.AgencyPayCampaignService)
+            {
+                href = "/campaign/detail/campaignid=" + notification.DataId;
+            }
+
+
+
 
             await _notificationService.UpdateChecked(id);
 
@@ -81,9 +91,13 @@ namespace BackOffice.Controllers
             int WalletDeposite = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyWalletDeposit});
 
 
+            int AccountCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AccountSendVerify });
+
+
             return Json(new {
                 CampaignTotal = CampaignCount,
-                WalletDepositeTotal = WalletDeposite
+                WalletDepositeTotal = WalletDeposite,
+                AccountTotal = AccountCount
             });
         }
 

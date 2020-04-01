@@ -18,61 +18,47 @@
     </div>
     <div class="m-dropdown__body">
         <div class="m-dropdown__content">
-
+            <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
+                <li class="nav-item m-tabs__item">
+                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">
+                        Alerts
+                    </a>
+                </li>              
+            </ul>
             <div class="tab-content">
-                <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
-                    <div class="m-scrollable mCustomScrollbar _mCS_2 mCS-autoHide" data-scrollable="true" data-max-height="250" data-mobile-max-height="200" style="max-height: 250px; height: 250px; position: relative; overflow: visible;">
-                        <div id="mCSB_2" class="mCustomScrollBox mCS-minimal-dark mCSB_vertical mCSB_outside" tabindex="0" style="max-height: none;">
-                            <div id="mCSB_2_container" class="mCSB_container" style="position: relative; top: 0px; left: 0px;" dir="ltr">
-                                <div class="m-list-timeline m-list-timeline--skin-light">
-                                    <div class="m-list-timeline__items">
+                <div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
+                    <div class="m-list-timeline m-list-timeline--skin-light">
+                        <div class="m-list-timeline__items">
+                            @if (ViewBag.NumberNotification > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <div class="m-list-timeline__item">
+                                        <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
+                                        <span class="m-list-timeline__text">
+                                            <ul class="list-unstyled">
+                                                <li>
+                                                    <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
+                                                </li>
+                                                <li>
+                                                    <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
+                                                </li>
+                                            </ul>
 
-                                        @if (ViewBag.NumberNotification > 0)
-                                        {
-                                            foreach (var item in Model)
-                                            {
-                                                <div class="m-list-timeline__item">
-                                                    <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
-                                                    <span class="m-list-timeline__text">
-                                                        <ul class="list-unstyled">
-                                                            <li>
-                                                                <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
-                                                            </li>
-                                                            <li>
-                                                                <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
-                                                            </li>
-                                                        </ul>
-
-                                                    </span>
-                                                    <span class="m-list-timeline__time">
-                                                        @item.Date.ToTimeAgo()
-                                                    </span>
-                                                </div>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            
-                                        }
-
+                                        </span>
+                                        <span class="m-list-timeline__time">
+                                            @item.Date.ToTimeAgo()
+                                        </span>
                                     </div>
-                                </div>
-                            </div>
-                        </div><div id="mCSB_2_scrollbar_vertical" class="mCSB_scrollTools mCSB_2_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical" style="display: block;">
-                            <div class="mCSB_draggerContainer">
-                                <div id="mCSB_2_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 50px; top: 0px; display: block; height: 207px; max-height: 230px;">
-                                    <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
-                                </div><div class="mCSB_draggerRail"></div>
-                            </div>
+                                }
+                            }
+                            else
+                            {
+
+                            }
                         </div>
                     </div>
-                    
-                    <a href="/notification" style="text-decoration:none;" class="float-right">
-                        <strong>Notifications</strong>
-                    </a>
-                    <br />
                 </div>
-
             </div>
         </div>
     </div>

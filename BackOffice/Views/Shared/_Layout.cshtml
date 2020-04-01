@@ -93,8 +93,8 @@
                             <div class="m-stack__item m-topbar__nav-wrapper">
                                 <ul class="m-topbar__nav m-nav m-nav--inline">
 
-                                    <li class="m-nav__item m-topbar__notifications 
-                                        m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center m-dropdown--mobile-full-width" 
+                                    <li class="m-nav__item m-topbar__notifications
+                                        m-topbar__notifications--img m-dropdown m-dropdown--large m-dropdown--header-bg-fill m-dropdown--arrow m-dropdown--align-center m-dropdown--mobile-full-width"
                                         m-dropdown-toggle="click" m-dropdown-persistent="1" aria-expanded="true">
                                         <a href="#" class="m-nav__link m-dropdown__toggle" id="m_topbar_notification_icon">
                                             <span class="m-nav__link-badge m-badge m-badge--dot m-badge--dot-small m-badge--danger"></span>
@@ -103,10 +103,10 @@
                                             </span>
                                         </a>
                                         <div class="m-dropdown__wrapper" style="z-index: 101;margin-left:-270px;" id="drop-notification">
-                                            
+
                                         </div>
                                     </li>
-                                    
+
                                     <li class="m-nav__item m-topbar__user-profile m-topbar__user-profile--img m-dropdown m-dropdown--medium m-dropdown--arrow m-dropdown--header-bg-fill m-dropdown--align-right m-dropdown--mobile-full-width m-dropdown--skin-light" m-dropdown-toggle="click" aria-expanded="true">
                                         <a href="#" class="m-nav__link m-dropdown__toggle">
                                             <span class="m-topbar__userpic">
@@ -284,6 +284,12 @@
     <script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
     <script src="/assets/demo/default/custom/components/base/sweetalert2.js" type="text/javascript"></script>
     <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+
+    
+
+
+
+
     @RenderSection("Scripts", required: false)
 
     <script type="text/javascript">
@@ -297,6 +303,7 @@
                     success: function (data) {
 
                         $('#drop-notification').html(data);
+                        
 
                     },
                     dataType: "html",
@@ -309,21 +316,24 @@
             //################### intervel load notification ################################
 
 
+
+
             $('#walletdeposit-count-menu').hide();
             $('#campaign-count-menu').hide();
+            $('#account-count-menu').hide();
 
             // #drop-notification
-            //load_drop_notification();
+            load_drop_notification();
             setInterval(function () {
                 load_drop_notification();
-            }, 5000);
+            }, 60000);
 
 
             //load count notification leftmenu
             setInterval(function () {
 
 
-                
+
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("CountNewNotification", "Notification")',
@@ -331,8 +341,8 @@
                     success: function (data) {
 
 
-                        
-                        
+
+
 
 
                         if (data.campaignTotal > 0) {
@@ -350,7 +360,17 @@
                         else {
                             $('#walletdeposit-count-menu').hide();
                         }
-                        
+
+                        if (data.accountTotal > 0) {
+                            $('#account-count-menu').show();
+                            $('#account-count-menu').html(data.accountTotal);
+                        }
+                        else {
+                            $('#account-count-menu').hide();
+                        }
+
+
+
 
                     },
                     dataType: "json",
@@ -358,7 +378,7 @@
                 });
 
             }, 5000);
-              
+
 
 
 
@@ -369,7 +389,7 @@
 
 
     </script>
-    
+
 
 </body>
 </html>

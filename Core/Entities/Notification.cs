@@ -117,6 +117,14 @@ namespace Core.Entities
             {
                 text = "Agency Pay Campaign Service";
             }
+            else if (type == NotificationType.AccountSendVerify)
+            {
+                text = "Account Send Verify";
+            }
+            else if (type == NotificationType.CampaignCreated)
+            {
+                text = "Campaign Created";
+            }
 
             return text;
         }

@@ -64,7 +64,7 @@ namespace WebServices.ViewModels
                     return "/notification/goto?id=" + Id;
                 }
 
-                return "javascript:;";
+                return "/notification/goto?id=" + Id;
             }
         }
 
