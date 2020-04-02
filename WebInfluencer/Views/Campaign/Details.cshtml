@@ -44,328 +44,352 @@
 
 
 
-            <div class="tab-content" id="myTabContent">
+        <div class="tab-content" id="myTabContent">
 
 
-                <form action="@(hasApply? Url.Action("RequestJoinCampaign","Campaign"):"javascript:;")">
-                    <div class="tab-pane fade active show" id="campaign-info" role="tabpanel">
-                        <div class="card mb-3 shadow border-0 mt-1">
-                            <img src="@Model.Campaign.Type.ToShortName()" class="card-img-top img-radious-remove" alt="...">
-                            <div class="card-body">
-                                <h4 class="mb-3">@Model.Campaign.Type.ToText()</h4>
-                                <div class="d-flex">
-                                    <div><small>by</small><span class="ml-2"><img src="@AppOptions.CurrentValue.GetImageUrl(Model.Agency.Image)" width="32" height="32" class="rounded-circle"> @(Model.Agency.Name)</span></div>
-                                    <div class="ml-auto text-right"><small class="ml-5">@Model.Campaign.Status.ToDisplayName()</small></div>
+            <form action="@(hasApply? Url.Action("RequestJoinCampaign","Campaign"):"javascript:;")">
+                <div class="tab-pane fade active show" id="campaign-info" role="tabpanel">
+                    <div class="card mb-3 shadow border-0 mt-1">
+                        <img src="@Model.Campaign.Type.ToShortName()" class="card-img-top img-radious-remove" alt="...">
+                        <div class="card-body">
+                            <h4 class="mb-3">@Model.Campaign.Type.ToText()</h4>
+                            <div class="d-flex">
+                                <div><small>by</small><span class="ml-2"><img src="@AppOptions.CurrentValue.GetImageUrl(Model.Agency.Image)" width="32" height="32" class="rounded-circle"> @(Model.Agency.Name)</span></div>
+                                <div class="ml-auto text-right"><small class="ml-5">@Model.Campaign.Status.ToDisplayName()</small></div>
+                            </div>
+                            <hr>
+                            <div class="d-flex">
+
+                                <div class="campaign-facebook"><h1><i class="fab fa-facebook"></i></h1></div>
+                                <div>
+                                    <ul class="list-unstyled">
+                                        <li class="ml-2">@Model.Campaign.Status.ToDisplayName()</li>
+                                        <li class="ml-2"><small>@Model.CountApplied/@Model.Campaign.Quantity tham gia</small></li>
+                                    </ul>
                                 </div>
-                                <hr>
-                                <div class="d-flex">
-
-                                    <div class="campaign-facebook"><h1><i class="fab fa-facebook"></i></h1></div>
-                                    <div>
-                                        <ul class="list-unstyled">
-                                            <li class="ml-2">@Model.Campaign.Status.ToDisplayName()</li>
-                                            <li class="ml-2"><small>@Model.CountApplied/@Model.Campaign.Quantity tham gia</small></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <strong>Giới thiệu:</strong>
+                            </div>
+                            <strong>Giới thiệu:</strong>
+                            <p>
+                                @Model.Campaign.Description
+                            </p>
+                            <strong>Công việc cần làm:</strong>
+                            <p>
+                                @Model.Campaign.Requirement
+                            </p>
+                            @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                            {
+                                <strong>@Model.Campaign.Type.ToActionText():</strong>
                                 <p>
-                                    @Model.Campaign.Description
+                                    <a target="blank" href="@Model.Campaign.Data">
+                                        @Model.Campaign.Data
+                                    </a>
                                 </p>
-                                <strong>Công việc cần làm:</strong>
-                                <p>
-                                    @Model.Campaign.Requirement
-                                </p>
-                                @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                            }
+                            @{
+                                var images = Model.Campaign.Image.ToListString();
+                                if (images.Count > 0)
                                 {
-                                    <strong>@Model.Campaign.Type.ToActionText():</strong>
+                                    <strong>Hình ảnh:</strong>
+                                    <ul class="list-inline">
+                                        @foreach (var imgItem in images)
+                                        {
+                                            <li class="list-inline-item">
+                                                <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" width="128" class="img-thumbnail">
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                            }
+
+                            @{
+                                var hashtags = Model.Campaign.Hashtag.ToListString();
+                                if (hashtags.Count > 0)
+                                {
+                                    <strong>Hashtag</strong>
                                     <p>
-                                        <a target="blank" href="@Model.Campaign.Data">
-                                            @Model.Campaign.Data
-                                        </a>
+                                        @foreach (var item in Model.Campaign.Hashtag.Split('|'))
+                                        {
+                                            <span>#@item.Trim('#')</span>
+                                        }
                                     </p>
                                 }
-                                @{
-                                    var images = Model.Campaign.Image.ToListString();
-                                    if (images.Count > 0)
+                            }
+
+
+
+                            @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
+                            {
+                                <strong> Thời gian đăng ký</strong>
+                                <p>
+                                </p><ul class="list-unstyled">
+                                    <li>  @Model.Campaign.DateStart.Value.ToViDateTime() -  @Model.Campaign.DateEnd.Value.ToViDateTime()</li>
+                                </ul>
+                            }
+
+                            @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption || Model.Campaign.Type == CampaignType.ReviewProduct)
+                            {
+
+                                if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
+                                {
+                                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
                                     {
-                                        <strong>Hình ảnh:</strong>
-                                        <ul class="list-inline">
-                                            @foreach (var imgItem in images)
-                                            {
-                                                <li class="list-inline-item">
-                                                    <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" width="128" class="img-thumbnail">
-                                                </li>
-                                            }
+
+                                        <strong> Thời gian viết nội dung</strong>
+                                        <p>
+                                        </p><ul class="list-unstyled">
+                                            <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
                                         </ul>
                                     }
-                                }
-
-                                @{
-                                    var hashtags = Model.Campaign.Hashtag.ToListString();
-                                    if (hashtags.Count > 0)
-                                    {
-                                        <strong>Hashtag</strong>
-                                        <p>
-                                            @foreach (var item in Model.Campaign.Hashtag.Split('|'))
-                                            {
-                                                <span>#@item.Trim('#')</span>
-                                            }
-                                        </p>
-                                    }
-                                }
-
-
-
-                                @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
+                                    @*else
                                 {
-                                    <strong> Thời gian đăng ký</strong>
+                                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
                                     <p>
                                     </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.DateStart.Value.ToViDateTime() -  @Model.Campaign.DateEnd.Value.ToViDateTime()</li>
+                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+
                                     </ul>
+                                }*@
+
                                 }
 
-                                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption || Model.Campaign.Type == CampaignType.ReviewProduct)
+                                if (Model.Campaign.Type == CampaignType.ReviewProduct)
                                 {
 
-                                    if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
-                                    {
-                                        if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                    <div class="mb-2">
+                                        <strong>
+                                            @Model.Campaign.ReviewType.ToDisplayName()
+                                        </strong>
+
+
+                                        @if (Model.Campaign.ReviewPayback.HasValue)
                                         {
-
-                                            <strong> Thời gian viết nội dung</strong>
-                                            <p>
-                                            </p><ul class="list-unstyled">
-                                                <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
-                                            </ul>
+                                            <span> - Trả lại sản phẩm sau khi trải nghiệm</span>
                                         }
-                                        @*else
-                {
-                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                    <p>
-                    </p><ul class="list-unstyled">
-                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
 
-                    </ul>
-                }*@
-
-                                    }
-
-                                    if (Model.Campaign.Type == CampaignType.ReviewProduct)
-                                    {
-
-                                        <div class="mb-2">
-                                            <strong>
-                                                @Model.Campaign.ReviewType.ToDisplayName()
-                                            </strong>
-
-
-                                            @if (Model.Campaign.ReviewPayback.HasValue)
-                                            {
-                                                <span> - Trả lại sản phẩm sau khi trải nghiệm</span>
-                                            }
-
-                                            <br />
-                                            <strong class="mr-2"> Địa điểm trả lại sản phẩm:</strong>
-                                            @Model.Campaign.ReviewAddress
-                                        </div>
-
-                                        @*<div>
-                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-                    {
-                        <strong> Thời gian trải nghiệm</strong>
-
-                        <ul class="list-unstyled">
-                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                        </ul>
-                    }
-                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                    {
-                        <strong> Địa điểm trải nghiệm</strong>
-                        <p>
-                            @Model.Campaign.ReviewAddress
-                        </p>
-                    }
-
-                </div>*@
-                                    }
-
-                                }
-
-                                @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
-                                {
-                                    <strong> Thời gian thực hiện chiến dịch</strong>
-                                    <p>
-                                    </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
-                                    </ul>
-                                }
-
-
-                                @if (Model.Campaign.Type != CampaignType.ChangeAvatar)
-                                {
-
-                                    <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
-
-                                    <ul class="list-unstyled">
-                                        @if (!hasApply)
-                                        {
-                                            <li>
-                                                @Model.Campaign.KPIMin
-                                            </li>
-                                        }
-                                        else
-                                        {
-                                            <li>
-                                                <input type="number" name="KPICommitted" class="form-control" value="@Model.Campaign.KPIMin" min="@Model.Campaign.KPIMin" />
-                                            </li>
-
-                                        }
-                                    </ul>
-                                }
-                                else
-                                {
-                                    <input type="number" name="KPICommitted" class="form-control" value="0" />
-
-                                }
-
-
-                                @{
-                                    var amountMin = Model.Campaign.GetAccountAmountMin();
-                                    var amountMax = Model.Campaign.GetAccountAmountMax();
-                                }
-
-                                <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item">
-                                        Chi phí tối thiểu: <span style="color: red">@amountMin.ToPriceText()</span>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        Chi phí tối đa: <span style="color: red">@amountMax.ToPriceText()</span>
-                                    </li>
-                                </ul>
-                                @if (!hasApply)
-                                {
-                                    if (campaignAccount != null)
-                                    {
-
-                                        <div>
-                                            <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
-
-                                            <div class="text-danger">
-                                                <strong>
-                                                    @campaignAccount.AccountChargeAmount.ToPriceText()
-                                                </strong>
-
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                                else
-                                {
-                                    <div class="mb-3">
-                                        <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
-                                        <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
-
-
+                                        <br />
+                                        <strong class="mr-2"> Địa điểm trả lại sản phẩm:</strong>
+                                        @Model.Campaign.ReviewAddress
                                     </div>
 
-                                    if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                    @*<div>
+                                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
                                     {
-                                        if (true == Model.Campaign.ReviewPayback)
-                                        {
-                                            <div>
-                                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                                                <input type="text" name="ReviewAddress" class="form-control" value=""  />
+                                        <strong> Thời gian trải nghiệm</strong>
 
-
-                                            </div>
-                                        }
+                                        <ul class="list-unstyled">
+                                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                                        </ul>
                                     }
-                                }
-                                @{
-                                    var sampleimages = Model.Campaign.SampleContent.ToListString();
-                                }
-                                @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText) || sampleimages.Count > 0)
-                                {
-                                    @if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
                                     {
-                                        <strong>Hình ảnh:</strong>
+                                        <strong> Địa điểm trải nghiệm</strong>
+                                        <p>
+                                            @Model.Campaign.ReviewAddress
+                                        </p>
+                                    }
+
+                                </div>*@
+                                }
+
+                            }
+
+                            @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
+                            {
+                                <strong> Thời gian thực hiện chiến dịch</strong>
+                                <p>
+                                </p><ul class="list-unstyled">
+                                    <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
+                                </ul>
+                            }
+
+
+                            @if (Model.Campaign.Type != CampaignType.ChangeAvatar)
+                            {
+
+                                <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
+
+                                <ul class="list-unstyled">
+                                    @if (!hasApply)
+                                    {
+                                        <li>
+                                            @Model.Campaign.KPIMin
+                                        </li>
                                     }
                                     else
                                     {
-                                        <strong>Nội dung mẫu  :</strong>
+                                        <li>
+                                            <input type="number" name="KPICommitted" class="form-control" value="@Model.Campaign.KPIMin" min="@Model.Campaign.KPIMin" />
+                                        </li>
+
                                     }
+                                </ul>
+                            }
+                            else
+                            {
+                                <input type="number" name="KPICommitted" class="form-control" value="0" />
 
-                                    <div>
-                                        @Model.Campaign.SampleContentText
-                                    </div>
-                                    <div>
+                            }
 
-                                        @foreach (var item in sampleimages)
-                                        {
-                                            <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
-                                        }
-                                    </div>
-                                }
 
-                                @if (hasApply)
+                            @{
+                                var amountMin = Model.Campaign.GetAccountAmountMin();
+                                var amountMax = Model.Campaign.GetAccountAmountMax();
+                            }
+
+                            <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
+                            <ul class="list-inline">
+                                <li class="list-inline-item">
+                                    Chi phí tối thiểu: <span style="color: red">@amountMin.ToPriceText()</span>
+                                </li>
+                                <li class="list-inline-item">
+                                    Chi phí tối đa: <span style="color: red">@amountMax.ToPriceText()</span>
+                                </li>
+                            </ul>
+                            @if (!hasApply)
+                            {
+                                if (campaignAccount != null)
                                 {
 
-                                    <div class="ml-auto mt-3">
-                                        @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
-                                        {
-                                            <div class=" text-right">
-                                                <button type="button" data-toggle="modal" data-target="#modal-campaign-apply-caption" class="btn btn-outline-primary">Apply</button>
-                                            </div>
+                                    <div>
+                                        <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
 
-                                            <div class="modal fade" style="z-index: 999999;" id="modal-campaign-apply-caption" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Tham gia chiến dịch</h5>
-                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
+                                        <div class="text-danger">
+                                            <strong>
+                                                @campaignAccount.AccountChargeAmount.ToPriceText()
+                                            </strong>
 
-                                                            <div class="form-group">
-                                                                <label>Nội dung caption bạn muốn chia sẻ</label>
-                                                                <textarea class="form-control" rows="2" name="Caption"></textarea>
-                                                            </div>
-                                                            <div class="text-right">
-                                                                <button class="btn btn-outline-primary" type="submit">Gửi và Tham gia chiến dịch</button>
-                                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
+                                    <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
+
+
+                                </div>
+
+                                if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                {
+                                    if (true == Model.Campaign.ReviewPayback)
+                                    {
+                                        <div>
+                                            <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                            <input type="text" name="ReviewAddress" class="form-control" required value="" />
+
+
+                                        </div>
+                                    }
+                                }
+                            }
+                            @{
+                                var sampleimages = Model.Campaign.SampleContent.ToListString();
+                            }
+                            @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText) || sampleimages.Count > 0)
+                            {
+                                @if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                                {
+                                    <strong>Hình ảnh:</strong>
+                                }
+                                else
+                                {
+                                    <strong>Nội dung mẫu  :</strong>
+                                }
+
+                                <div>
+                                    @Model.Campaign.SampleContentText
+                                </div>
+                                <div>
+
+                                    @foreach (var item in sampleimages)
+                                    {
+                                        <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
+                                    }
+                                </div>
+                            }
+
+                            @if (hasApply)
+                            {
+
+                                <div class="ml-auto mt-3">
+                                    @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                    {
+                                        <div class=" text-right">
+                                            <button type="button" data-toggle="modal" data-target="#modal-campaign-apply-caption" class="btn btn-outline-primary">Apply</button>
+                                        </div>
+
+                                        <div class="modal fade" style="z-index: 999999;" id="modal-campaign-apply-caption" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Tham gia chiến dịch</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div class="form-group">
+                                                            <label>Nội dung caption bạn muốn chia sẻ</label>
+                                                            <textarea class="form-control" rows="2" name="Caption"></textarea>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                                                        <div class="text-right">
+                                                            <button class="btn btn-outline-primary" type="submit">Gửi và Tham gia chiến dịch</button>
                                                         </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        }
-                                        else
-                                        {
-                                            <div class=" text-right">
-                                                <input type="hidden" name="Caption" value="none" />
-                                                <button id="btn-campaign-apply" class="btn btn-outline-primary" type="submit">Apply</button>
-                                            </div>
-                                        }
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class=" text-right">
+                                            <input type="hidden" name="Caption" value="none" />
+                                            <button id="btn-campaign-apply" class="btn btn-outline-primary" type="submit">Apply</button>
+                                        </div>
+                                    }
 
 
-                                        <input type="hidden" name="campaignid" value="@Model.Campaign.Id" />
+                                    <input type="hidden" name="campaignid" value="@Model.Campaign.Id" />
 
-                                    </div>
-                                }
+                                </div>
+                            }
 
 
-                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+
+
+            @if (campaignType == CampaignType.ReviewProduct)
+            {
+                if (true == Model.Campaign.ReviewPayback)
+                {
+                    if (string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                    {
+
+                    <form asp-action="UpdateReviewAddress">
+                        <div class="form-group">
+                            <label>Địa chỉ nhận sản phẩm </label>
+                            <input class="form-control" type="text" value="" placeholder="" required name="reviewaddress" />
+                            
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="id" value="@campaignAccount.Id" />
+                            <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                        </div>
+                        <div></div>
+                    </form>
+                    }
+                }
+            }
+        </div>
 
 
 

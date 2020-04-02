@@ -175,21 +175,6 @@ else
         </div>
 
 
-        @if (campaignType == CampaignType.ReviewProduct)
-        {
-            if (string.IsNullOrEmpty(campaignAccount.ReviewAddress))
-            {
-
-                <form asp-action="UpdateReviewAddress">
-                    <div class="form-group">
-                        <label>Địa chỉ nhận sản phẩm </label>
-                        <input type="text" value=""  placeholder="" required name="reviewaddress"/>
-                        <input type="hidden" name="id" value="@campaignAccount.Id" />
-                         <input type="submit" value="Cập nhật" class="btn btn-primary" />
-                    </div>
-                    <div></div>
-                </form>
-            }
-        }
+     
     }
 }
