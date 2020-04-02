@@ -26,9 +26,11 @@ namespace WebMerchant.Controllers
         private readonly IFileHelper _fileHelper;
         private readonly IWalletService _walletService;
         private readonly IAgencyService _agencyService;
+
         private readonly ICampaignAccountCaptionService _campaignAccountCaptionService;
         private readonly ICampaignAccountContentService _campaignAccountContentService;
         private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
+
         public CampaignController(ISharedService sharedService, IWalletService walletService,
             ICampaignAccountCaptionService campaignAccountCaptionService,
             ICampaignAccountContentService campaignAccountContentService,

@@ -26,12 +26,21 @@ namespace BackOffice.Controllers
         private readonly INotificationBusiness _INotificationBusiness;
 
         ICampaignService _ICampaignService;
+        IWalletService _IWalletService;
+        ISharedService _sharedService;
+
+        private readonly ICampaignAccountCaptionService _campaignAccountCaptionService;
+        private readonly ICampaignAccountContentService _campaignAccountContentService;
+        private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
+
         ITransactionService _TransactionService;
 
 
         public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, 
             ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService, 
-            ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService)
+            ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService, 
+            IWalletService __IWalletService, ISharedService __ISharedService, ICampaignAccountCaptionService __ICampaignAccountCaptionService,
+            ICampaignAccountContentService __ICampaignAccountContentService, ICampaignAccountStatisticService __ICampaignAccountStatisticService)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
@@ -41,6 +50,12 @@ namespace BackOffice.Controllers
             _ICampaignService = __ICampaignService;
             _ITransactionRepository = __ITransactionRepository;
             _TransactionService = __ITransactionService;
+            _IWalletService = __IWalletService;
+            _sharedService = __ISharedService;
+            _campaignAccountCaptionService = __ICampaignAccountCaptionService;
+            _campaignAccountContentService = __ICampaignAccountContentService;
+            _campaignAccountStatisticService = __ICampaignAccountStatisticService;
+
 
         }
 
@@ -98,26 +113,36 @@ namespace BackOffice.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0)
+        public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0, string vt = "1", int tab = 0)
         {
 
-            CampaignDetailsViewModel campaign;
-
-            if(agencyid > 0)
-            {
-                campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
-            }
-            else
-            {
-                campaign = await _ICampaignBusiness.GetCampaign(campaignid);
-            }
-
+            var model = await _ICampaignService.GetCampaignDetailsByAgency(agencyid, campaignid);
+            if (model == null) return NotFound();
             
-            ViewBag.Categories = await _ISharedBusiness.GetCategories();            
 
-            ViewBag.Cities = await _ISharedBusiness.GetCities();
-            return View(campaign);
+            ViewBag.Tab = tab;
+            if (tab == 1)
+            {
+                ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatisticsByCampaignId(model.Id, string.Empty, 1, 1000);
+
+                return View("DetailsStatistic", model);
+            }
+
+            await ViewbagData();
+            ViewBag.activedTab = vt;
+            
+            return View(model);
+
         }
+
+        private async Task ViewbagData()
+        {
+            ViewBag.Categories = await _sharedService.GetCategories();
+            ViewBag.CampaignTypeCharges = await _ICampaignService.GetCampaignTypeCharges();
+            ViewBag.Cities = await _sharedService.GetCities();
+        }
+
+
 
 
         public async Task<IActionResult> Configuration(int campaignid = 0)

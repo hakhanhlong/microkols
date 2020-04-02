@@ -27,7 +27,7 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
-                    <div class="m-list-timeline m-list-timeline--skin-light">
+                    <div class="m-list-timeline m-list-timeline--skin-light" style="overflow:auto; max-height:350px;max-width:450px;">
                         <div class="m-list-timeline__items">
                             @if (ViewBag.NumberNotification > 0)
                             {
@@ -57,6 +57,9 @@
 
                             }
                         </div>
+                    </div>
+                    <div class="mt-3 text-right">
+                        <a href="/notification"><strong>More Notification</strong></a>
                     </div>
                 </div>
             </div>

@@ -49,12 +49,12 @@ namespace BackOffice.Controllers
 
             if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCreated)
             {
-                href = "/campaign/detail/campaignid=" + notification.DataId;
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
 
             if (notification.Data == "Campaign" && notification.Type == NotificationType.AgencyPayCampaignService)
             {
-                href = "/campaign/detail/campaignid=" + notification.DataId;
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
 
 

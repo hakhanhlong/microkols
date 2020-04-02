@@ -34,6 +34,7 @@ namespace BackOffice
 
             services.AddScoped<IAccountCampaignChargeRepository, AccountCampaignChargeRepository>();
             services.AddScoped<ICampaignAccountRepository, CampaignAccountRepository>();
+            services.AddScoped<ICampaignAccountStatisticRepository, CampaignAccountStatisticRepository>();
 
             services.AddScoped<ISettingRepository, SettingRepository>();
 
@@ -58,10 +59,34 @@ namespace BackOffice
             // webservice
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<ISharedService, SharedService>();
+            services.AddScoped<IAccountService, AccountService>();
+
+            
+
+            services.AddScoped<ICampaignAccountCaptionService, CampaignAccountCaptionService>();
+            services.AddScoped<ICampaignAccountContentService, CampaignAccountContentService>();
+            services.AddScoped<ICampaignAccountStatisticService, CampaignAccountStatisticService>();
+
+            services.AddScoped<WebServices.Code.Helpers.IFacebookClient, WebServices.Code.Helpers.FacebookClient>();
+            services.AddScoped<WebServices.Code.Helpers.IFacebookHelper, WebServices.Code.Helpers.FacebookHelper>();
             
 
 
-            //website
+
+
+
+
+
+
+
+
+
+
+
+
+        //website
 
 
 

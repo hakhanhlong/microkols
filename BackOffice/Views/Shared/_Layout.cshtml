@@ -16,6 +16,7 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/assets/vendors//scrollbar/jquery.mCustomScrollbar.min.css" />
 
 
     <!--begin::Web font -->
@@ -38,7 +39,7 @@
     <link href="/assets/demo/default/base/style.bundle.css" rel="stylesheet" type="text/css">
     <!--end::Base Styles -->
     <link rel="shortcut icon" href="/assets/demo/default/media/img/logo/favicon.ico">
-    
+
 </head>
 <body class="m-page--fluid m--skin- m-content--skin-light2 m-header--fixed m-header--fixed-mobile m-aside-left--enabled m-aside-left--skin-dark m-aside-left--offcanvas m-footer--push m-aside--offcanvas-default">
     <div class="m-grid m-grid--hor m-grid--root m-page">
@@ -277,15 +278,15 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
     <script src="/assets/vendors/base/vendors.bundle.js" type="text/javascript"></script>
     <script src="/assets/demo/default/base/scripts.bundle.js" type="text/javascript"></script>
     <script src="/assets/vendors/custom/fullcalendar/fullcalendar.bundle.js" type="text/javascript"></script>
     <script src="/assets/app/js/dashboard.js" type="text/javascript"></script>
     <script src="/assets/demo/default/custom/components/base/sweetalert2.js" type="text/javascript"></script>
     <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
+    <script src="/assets/vendors/scrollbar/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
 
-    
 
 
 
@@ -305,17 +306,20 @@
                         $('#drop-notification').html(data);
                         
 
+
                     },
                     dataType: "html",
                     traditional: true
                 });
         }
 
+
+
         $(document).ready(function () {
 
             //################### intervel load notification ################################
 
-
+            
 
 
             $('#walletdeposit-count-menu').hide();
