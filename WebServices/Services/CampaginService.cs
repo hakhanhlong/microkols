@@ -1041,6 +1041,24 @@ namespace WebServices.Services
 
 
 
+        public async Task<int> UpdateReviewAddress(int id, string addresss,string username)
+        {
+            var accountCampaign = await _campaignAccountRepository.GetByIdAsync(id);
+            if(accountCampaign!= null)
+            {
+                if (string.IsNullOrEmpty(accountCampaign.ReviewAddress))
+                {
+                    accountCampaign.ReviewAddress = addresss;
+                    accountCampaign.DateModified = DateTime.Now;
+                    accountCampaign.UserModified = username;
+                    await _campaignAccountRepository.UpdateAsync(accountCampaign);
+                    return accountCampaign.CampaignId;
+                }
+                return -2;
+            }
+
+            return -1;
+        }
 
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
         {

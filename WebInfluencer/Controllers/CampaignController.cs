@@ -317,7 +317,21 @@ namespace WebInfluencer.Controllers
             return PartialView("UpdateCampaignAccountMessage");
         }
 
+        public async Task<IActionResult> UpdateReviewAddress(int id, string reviewaddress)
+        {
+            var r = await _campaignService.UpdateReviewAddress(id, reviewaddress, CurrentUser.Username);
+            if (r > 0)
+            {
+                ViewBag.Success = "Cập nhật địa chỉ nhận hàng thành công";
+            }
+            else
+            {
+                ViewBag.Error = "Thông tin chiến dịch không đúng";
+            }
 
+
+            return RedirectToAction("Details", new { id = r });
+        }
 
 
         #endregion
