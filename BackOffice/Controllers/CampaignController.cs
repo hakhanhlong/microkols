@@ -116,7 +116,11 @@ namespace BackOffice.Controllers
         public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0, string vt = "1", int tab = 0)
         {
 
-            var model = await _ICampaignService.GetCampaignDetailsByAgency(agencyid, campaignid);
+            var campaign = await _ICampaignBusiness.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();
+
+
+            var model = await _ICampaignService.GetCampaignDetailsByAgency(campaign.AgencyId, campaignid);
             if (model == null) return NotFound();
             
 
