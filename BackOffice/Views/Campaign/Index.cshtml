@@ -200,6 +200,7 @@
 
 
         $(document).ready(function () {
+
             $('.m-section__content select').each(function (index, item) {
                 $(item).change(function () {
 
@@ -210,15 +211,8 @@
                     var data = {};
                     data['id'] = campaignid;
                     data['status'] = status;
-
-
-               
-
-
-
+             
                     //3: Ended, 5: Canceled, 6: Error
-
-
                     var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
                     $('#iframenotestatus').attr('src', url);
                     $('#m_modal_4').modal({ show: true });
@@ -265,12 +259,11 @@
                             traditional: true
                         });
                     }*@
-                    
-                  
-
-
+                                     
                 });
             });
+
+
         });
 
     </script>
