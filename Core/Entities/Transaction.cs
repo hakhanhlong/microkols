@@ -27,11 +27,22 @@ namespace Core.Entities
     }
     public enum TransactionStatus
     {
+        [Display(Name = "Không xác định")]
         All = -1,
+
+        [Display(Name = "Khởi tạo")]
         Created = 0,
+
+        [Display(Name = "Hủy bỏ")]
         Canceled = 1,
+
+        [Display(Name = "Đang xử lý")]
         Processing = 2,
+
+        [Display(Name = "Thành công")]
         Completed = 3,
+
+        [Display(Name = "Lỗi, Không thành công")]
         Error = 4
     }
     public enum TransactionType

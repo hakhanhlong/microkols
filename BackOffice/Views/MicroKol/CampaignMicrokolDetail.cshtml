@@ -6,6 +6,8 @@
 
 @model ListCampaignWithAccountViewModel
 
+@inject WebServices.Interfaces.ICampaignService CampaignService
+
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -65,13 +67,13 @@
                                             #
                                         </th>
                                         <th>
+                                            MICROKOL
+                                        </th>
+                                        <th>
                                             CAMPAIGN
                                         </th>
                                         <th>
                                             CAMPAIGN STATUS
-                                        </th>                                        
-                                        <th>
-                                            MICROKOL
                                         </th>
                                         <th>$</th>
                                         <th>
@@ -81,14 +83,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{ 
+                                    @{
                                         int count = 1;
-                                        
+
                                     }
                                     @foreach (var item in Model.Campaigns)
-                                    {                                        
+                                    {
                                         <tr>
                                             <td>@(count)</td>
+                                            <td>
+                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                            </td>
                                             <td>
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
                                                 <span>@item.Type.ToText()</span><br />
@@ -115,12 +120,15 @@
                                                     </span>
                                                 }
 
-                                            </td>                                            
-                                            <td>
-                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
                                             </td>
                                             <td>
-                                                <span class="m--font-danger">@item.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
+                                                <span class="m--font-danger">
+                                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }
+
+                                                    @*@item.CampaignAccount.AccountChargeAmount.ToPriceText()*@
+
+                                                    @agencyCharge.ToPriceText()
+                                                </span>
                                             </td>
                                             <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
                                             <td>
@@ -151,9 +159,9 @@
                                     }
                                 </tbody>
                             </table>
-                            <pager pager="@Model.Pager" asp-action="CampaignMicrokolDetail" asp-route-status="@(Context.Request.Query["status"])"  asp-route-accountid="@(Context.Request.Query["accountid"])"
-                            asp-route-startdate="@(Context.Request.Query["startdate"])" 
-                            asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
+                            <pager pager="@Model.Pager" asp-action="CampaignMicrokolDetail" asp-route-status="@(Context.Request.Query["status"])" asp-route-accountid="@(Context.Request.Query["accountid"])"
+                                   asp-route-startdate="@(Context.Request.Query["startdate"])"
+                                   asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
                         }
 
 
