@@ -284,9 +284,7 @@ namespace BackOffice.Business
                 _transaction.AdminNote = adminnote;
 
                 try {
-                    
-
-                    
+                                        
                     if (_transaction.Type == TransactionType.WalletRecharge) //naptien
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Nạp Tiền][WalletRecharge]", username);
@@ -307,7 +305,6 @@ namespace BackOffice.Business
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Chiến dịch trả thành viên][CampaignAccountPayback]", username);
                     }
-
                     _ITransactionRepository.Update(_transaction);
 
                 }

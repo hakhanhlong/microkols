@@ -178,6 +178,7 @@ namespace BackOffice.Business
             var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
             var total = _ICampaignAccountRepository.Count(filter);
             var list = new List<CampaignWithAccountViewModel>();
+
             foreach (var campaignAccount in campaignAccounts)
             {
                 list.Add(new CampaignWithAccountViewModel(campaignAccount.Campaign, campaignAccount));

@@ -468,7 +468,7 @@ namespace BackOffice.Controllers
         }
 
 
-        //dùng cho nạp tiền agency
+        //dùng cho nạp tiền, rut tien agency
         [HttpPost]
         public async Task<IActionResult> TransactionUpdateStatus(TransactionViewModel model)
         {

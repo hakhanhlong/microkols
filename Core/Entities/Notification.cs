@@ -38,9 +38,22 @@ namespace Core.Entities
         SystemUpdateUnfinishedAccountCampaign  = 11,
         SystemUpdateCanceledAccountCampaign = 111,
 
+        // transaction deposite, withdraw for agency
+
         TransactionDepositeApprove = 12, 
         TransactionDepositeProcessing = 13,
         TransactionDepositeCancel = 14,
+
+        TransactionWithdrawApprove = 121,
+        TransactionWithdrawProcessing = 132,
+        TransactionWithdrawCancel = 143,
+
+        TransactionAccountRefundToAgency = 144,
+
+
+        //##########################################
+
+
 
         CampaignStarted  = 15,
         CampaignCantStarted = 16,

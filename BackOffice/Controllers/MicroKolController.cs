@@ -9,6 +9,8 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
+using WebServices.Interfaces;
+using Common.Extensions;
 
 namespace BackOffice.Controllers
 {
@@ -29,6 +31,9 @@ namespace BackOffice.Controllers
         IWalletBusiness _IWalletBusiness;
         IWalletRepository _IWalletRepository;
         INotificationBusiness _INotificationBusiness;
+        INotificationService _INotificationService;
+
+        IWalletService _WalletService;
 
 
         public MicroKolController(IAccountBusiness __IAccountBusiness, IAccountRepository __IAccountRepository, 
@@ -36,7 +41,7 @@ namespace BackOffice.Controllers
             IAccountCampaignChargeBusiness __IAccountCampaignChargeBusiness, ICampaignBusiness __ICampaignBusiness,
             ICampaignAccountRepository __ICampaignAccountRepository, ITransactionRepository __ITransactionRepository,
             ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, IWalletRepository __IWalletRepository,
-            INotificationBusiness __INotificationBusiness)
+            INotificationBusiness __INotificationBusiness, IWalletService ___WalletService, INotificationService __INotificationService)
         {
             _IAccountBusiness = __IAccountBusiness;
             _IAccountRepository = __IAccountRepository;
@@ -49,6 +54,8 @@ namespace BackOffice.Controllers
             _IWalletBusiness = __IWalletBusiness;
             _IWalletRepository = __IWalletRepository;
             _INotificationBusiness = __INotificationBusiness;
+            _WalletService = ___WalletService;
+            _INotificationService = __INotificationService;
         }
 
         public IActionResult Index(int pageindex = 1)
@@ -326,7 +333,7 @@ namespace BackOffice.Controllers
             ViewBag.Status = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chờ trả tiền", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Chờ duyệt chiến dịch", Value = "-1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Thành viên xin tham gia chiến dịch", Value = "0"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Doanh nghiệp mời tham gia chiến dịch", Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đã xác nhận tham gia chiến dịch", Value = "2"},
@@ -360,12 +367,18 @@ namespace BackOffice.Controllers
         }
 
 
-        public  IActionResult MicroKolSubstractMoney(int caid = 0)
+        public  async Task<IActionResult> MicroKolSubstractMoney(int caid = 0)
         {
 
             var filter = new CampaignAccountByIdSpecification(caid);
-            var campaignaccount = _ICampaignAccountRepository.GetSingleBySpec(filter);
+            var campaignaccount = await _ICampaignAccountRepository.GetSingleBySpecAsync(filter);
             var campaignaccountmodel = new CampaignAccountViewModel(campaignaccount);
+
+            var wallet_balance = await _WalletService.GetAmount(EntityType.Account, campaignaccount.AccountId);
+
+            ViewBag.WalletBalance = wallet_balance.ToPriceText();
+
+
 
 
             return View(campaignaccountmodel);
@@ -419,6 +432,12 @@ namespace BackOffice.Controllers
                                         campaignaccount.IsRefundToAgency = true;
                                         await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
                                         await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Success", HttpContext.User.Identity.Name);// delete transaction if case error
+                                       
+                                        //############# send notification to agency ############################################
+                                        string message = string.Format("Influencer {0}, trả lại {1} từ chiến dịch {2}, vì chưa hoàn thành! Đã được thực hiện từ hệ thống.", campaignaccount.Account.Name, money_number.ToPriceText(), campaignaccount.Campaign.Title);
+                                        await _INotificationService.CreateNotification(campaignaccount.CampaignId, EntityType.Agency, campaignaccount.Campaign.AgencyId, NotificationType.TransactionAccountRefundToAgency, message, "");
+                                        //######################################################################################
+
                                         break;
                                     case 10:
                                         TempData["MessageError"] = "Wallet do not exist";
