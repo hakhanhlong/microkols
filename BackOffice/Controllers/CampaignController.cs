@@ -6,6 +6,7 @@ using BackOffice.Business.Interfaces;
 using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
@@ -19,11 +20,15 @@ namespace BackOffice.Controllers
 
         ICampaignBusiness _ICampaignBusiness;
         ICampaignRepository _ICampaignRepository;
+        ICampaignAccountRepository _ICampaignAccountRepository;
+
+
         ITransactionRepository _ITransactionRepository;
 
         IAgencyBusiness _IAgencyBusiness;
         private readonly ISharedBusiness _ISharedBusiness;
         private readonly INotificationBusiness _INotificationBusiness;
+        private readonly INotificationService _INotificationService;
 
         ICampaignService _ICampaignService;
         IWalletService _IWalletService;
@@ -40,7 +45,8 @@ namespace BackOffice.Controllers
             ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService, 
             ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService, 
             IWalletService __IWalletService, ISharedService __ISharedService, ICampaignAccountCaptionService __ICampaignAccountCaptionService,
-            ICampaignAccountContentService __ICampaignAccountContentService, ICampaignAccountStatisticService __ICampaignAccountStatisticService)
+            ICampaignAccountContentService __ICampaignAccountContentService, 
+            ICampaignAccountStatisticService __ICampaignAccountStatisticService, ICampaignAccountRepository __ICampaignAccountRepository, INotificationService __INotificationService)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
@@ -55,6 +61,9 @@ namespace BackOffice.Controllers
             _campaignAccountCaptionService = __ICampaignAccountCaptionService;
             _campaignAccountContentService = __ICampaignAccountContentService;
             _campaignAccountStatisticService = __ICampaignAccountStatisticService;
+
+            _ICampaignAccountRepository = __ICampaignAccountRepository;
+            _INotificationService = __INotificationService;
 
 
         }
@@ -197,6 +206,7 @@ namespace BackOffice.Controllers
                     campaign.SystemNote = txt_note;
                     _ICampaignRepository.Update(campaign);
 
+
                     NotificationType notificationType = NotificationType.CampaignCanceled;
                     string msg = string.Empty;
                     if (status == CampaignStatus.Canceled)
@@ -218,6 +228,24 @@ namespace BackOffice.Controllers
                     {
                         notificationType = NotificationType.CampaignConfirmed;
                         msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã được duyệt bởi hệ thống", campaign.Title);
+
+                        // gửi notification đến các user được chỉ định
+                        var campaignAccount = await _ICampaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
+                        foreach(var item in campaignAccount)
+                        {
+                            if(item.Status == CampaignAccountStatus.WaitToPay) // Chờ duyệt chiến dịch
+                            {
+                                item.Status = CampaignAccountStatus.AgencyRequest;
+                                await _ICampaignAccountRepository.UpdateAsync(item);
+
+                                NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
+                                string notify_message = string.Format("Bạn đã được doanh nghiệp {0} mời tham gia chiến dịch {1}", campaign.UserCreated, campaign.Title);
+                                await _INotificationService.CreateNotification(campaign.Id, EntityType.Account, item.AccountId, _notiType, notify_message, "");
+                            }
+                            
+                        }
+                        //###########################################################################################################################################
+
                     }
                     else if (status == CampaignStatus.Completed)
                     {
@@ -226,7 +254,6 @@ namespace BackOffice.Controllers
                     }
 
                     await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
-
                     TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
 
 

@@ -133,7 +133,14 @@
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
                                             </td>
                                             <td>
-                                                @(item.Title)
+                                                @if (item.Title.Length > 50)
+                                                {
+                                                    <b title="@(item.Title)">@(item.Title.Substring(0, 50))</b>
+                                                }
+                                                else
+                                                {
+                                                    <b title="@(item.Title)">@(item.Title)</b>
+                                                }                                                
                                             </td>
                                             <td>@(item.Type.ToText())</td>
                                             <td>
