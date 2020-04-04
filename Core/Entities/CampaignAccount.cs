@@ -82,27 +82,37 @@ namespace Core.Entities
     {
         [Display(Name ="Tất cả")]
         All = -2,
+
         [Display(Name ="Chờ duyệt chiến dịch")]
         WaitToPay = -1,
+
         [Display(Name ="Thành viên xin tham gia chiến dịch")]
         AccountRequest = 0,
+
         [Display(Name ="Doanh nghiệp mời tham gia chiến dịch")]
         AgencyRequest = 1,
+
         [Display(Name ="Đã xác nhận tham gia chiến dịch")]
         Confirmed = 2,
+
         [Display(Name ="Đang gửi xét duyệt")]
         SubmittedContent = 3,
+
         [Display(Name ="Yêu cầu sửa nội dung")]
         DeclinedContent = 31,
-        [Display(Name ="Đã duyệt nội dung")]
+
+        [Display(Name ="Đã được duyệt nội dung")]
         ApprovedContent = 32,
+
         [Display(Name ="Đã duyệt và cập nhật nội dung")]
         UpdatedContent = 33,
 
         [Display(Name ="Đã hoàn thành")]
         Finished = 6,
+
         [Display(Name ="Hủy tham gia")]
         Canceled = 7,
+
         [Display(Name ="Chưa hoàn thành")]
         Unfinished = 8,
 

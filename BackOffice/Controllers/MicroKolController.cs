@@ -355,6 +355,12 @@ namespace BackOffice.Controllers
             return View(list);
         }
 
+        public IActionResult AjaxCampaignMicrokol()
+        {
+            var list = _ICampaignBusiness.GetCampaignAccountByStatus(null, null, null, 1, 12);
+
+            return View(list);
+        }
 
 
         public IActionResult CampaignMicrokolDetail(int accountid, CampaignAccountStatus? status, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
