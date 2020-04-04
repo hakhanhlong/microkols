@@ -175,7 +175,7 @@ var App = (function () {
 
 
         $.extend($.validator.messages, {
-            required: "Hãy nhập.",
+            required: "Hãy nhập dữ liệu",
             remote: "Hãy sửa cho đúng.",
             email: "Hãy nhập email.",
             url: "Hãy nhập URL.",
@@ -1336,6 +1336,22 @@ var CampaignCreateTargetPage = (function () {
             }
         });
 
+        $('#AmountMin').change(function () {
+
+            var val = $('#AmountMin').val();
+
+            console.log('amount min', val);
+
+            var valmax = $('#AmountMax').val();
+            if (valmax < val) {
+                $('#AmountMax').val(val);
+            }
+            $('#AmountMax').attr('min', val);
+
+
+
+        })
+
 
         /*
         $('#AccountIds').select2({
@@ -1475,7 +1491,7 @@ var CampaignDetailsPage = (function () {
 
     function init() {
 
-
+        CampaignIndexPage.Init();
         handler();
     }
     function handler() {

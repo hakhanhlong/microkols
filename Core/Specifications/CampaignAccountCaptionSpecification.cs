@@ -24,6 +24,12 @@ namespace Core.Specifications
         }
 
 
+        public CampaignAccountCaptionByCampaignAccountIdSpecification(int campaignAccountId, CampaignAccountCaptionStatus status)
+        : base(i => i.CampaignAccountId == campaignAccountId && i.Status== status)
+        {
+        }
+
+
         public CampaignAccountCaptionByCampaignAccountIdSpecification(IEnumerable<int> campaignAccountId)
      : base(i => campaignAccountId.Contains(i.CampaignAccountId))
         {

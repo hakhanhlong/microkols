@@ -12,7 +12,8 @@
     var accountStatus = (AccountStatus)ViewBag.AccountStatus;
     var hasProccess = accountStatus == AccountStatus.SystemVerified;
 
-    var hasApply = hasProccess && campaignAccount == null && (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value);
+    var hasApply = hasProccess && campaignAccount == null  && (Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value);
+    var hasConfirmJoin = hasProccess && campaignAccount != null && campaignAccount.Status == CampaignAccountStatus.AgencyRequest;
 }
 @section Scripts{
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -45,9 +46,20 @@
 
 
         <div class="tab-content" id="myTabContent">
+            @{ 
+                var formAction = "javascript:;";
+                if (hasApply)
+                {
+                    formAction = Url.Action("RequestJoinCampaign", "Campaign");
+                }else if (hasConfirmJoin)
+                {
+                    formAction = Url.Action("FeedbackJoinCampaign", "Campaign");
+
+                }
+            }
 
 
-            <form action="@(hasApply? Url.Action("RequestJoinCampaign","Campaign"):"javascript:;")">
+            <form action="@(formAction)">
                 <div class="tab-pane fade active show" id="campaign-info" role="tabpanel">
                     <div class="card mb-3 shadow border-0 mt-1">
                         <img src="@Model.Campaign.Type.ToShortName()" class="card-img-top img-radious-remove" alt="...">
@@ -141,14 +153,14 @@
                                         </ul>
                                     }
                                     @*else
-                                {
-                                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                                    <p>
-                                    </p><ul class="list-unstyled">
-                                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+                {
+                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                    <p>
+                    </p><ul class="list-unstyled">
+                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
 
-                                    </ul>
-                                }*@
+                    </ul>
+                }*@
 
                                 }
 
@@ -172,23 +184,23 @@
                                     </div>
 
                                     @*<div>
-                                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-                                    {
-                                        <strong> Thời gian trải nghiệm</strong>
+                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+                    {
+                        <strong> Thời gian trải nghiệm</strong>
 
-                                        <ul class="list-unstyled">
-                                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                                        </ul>
-                                    }
-                                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                    {
-                                        <strong> Địa điểm trải nghiệm</strong>
-                                        <p>
-                                            @Model.Campaign.ReviewAddress
-                                        </p>
-                                    }
+                        <ul class="list-unstyled">
+                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                        </ul>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <strong> Địa điểm trải nghiệm</strong>
+                        <p>
+                            @Model.Campaign.ReviewAddress
+                        </p>
+                    }
 
-                                </div>*@
+                </div>*@
                                 }
 
                             }
@@ -203,7 +215,7 @@
                             }
 
 
-                            @if (Model.Campaign.Type != CampaignType.ChangeAvatar)
+                            @if (Model.Campaign.Type != CampaignType.ChangeAvatar && Model.Campaign.Type != CampaignType.JoinEvent)
                             {
 
                                 <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
@@ -223,11 +235,11 @@
 
                                     }
                                 </ul>
-                            }
+                            } 
                             else
                             {
-                                <input type="number" name="KPICommitted" class="form-control" value="0" />
 
+                                <input type="hidden" name="KPICommitted" class="form-control" value="0" />
                             }
 
 
@@ -245,7 +257,7 @@
                                     Chi phí tối đa: <span style="color: red">@amountMax.ToPriceText()</span>
                                 </li>
                             </ul>
-                            @if (!hasApply)
+                            @if (!hasApply && !hasConfirmJoin)
                             {
                                 if (campaignAccount != null)
                                 {
@@ -310,47 +322,58 @@
                                 </div>
                             }
 
-                            @if (hasApply)
+                            @if (hasApply || hasConfirmJoin)
                             {
 
                                 <div class="ml-auto mt-3">
-                                    @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                    @if (hasApply)
                                     {
-                                        <div class=" text-right">
-                                            <button type="button" data-toggle="modal" data-target="#modal-campaign-apply-caption" class="btn btn-outline-primary">Apply</button>
-                                        </div>
+                                        if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                        {
+                                            <div class=" text-right">
+                                                <button type="button" data-toggle="modal" data-target="#modal-campaign-apply-caption" class="btn btn-outline-primary">Apply</button>
+                                            </div>
 
-                                        <div class="modal fade" style="z-index: 999999;" id="modal-campaign-apply-caption" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Tham gia chiến dịch</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
+                                            <div class="modal fade" style="z-index: 999999;" id="modal-campaign-apply-caption" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Tham gia chiến dịch</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
 
-                                                        <div class="form-group">
-                                                            <label>Nội dung caption bạn muốn chia sẻ</label>
-                                                            <textarea class="form-control" rows="2" name="Caption"></textarea>
+                                                            <div class="form-group">
+                                                                <label>Nội dung caption bạn muốn chia sẻ</label>
+                                                                <textarea class="form-control" rows="2" name="Caption"></textarea>
+                                                            </div>
+                                                            <div class="text-right">
+                                                                <button class="btn btn-outline-primary" type="submit">Gửi và Tham gia chiến dịch</button>
+                                                            </div>
                                                         </div>
-                                                        <div class="text-right">
-                                                            <button class="btn btn-outline-primary" type="submit">Gửi và Tham gia chiến dịch</button>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                                                         </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
+                                        else
+                                        {
+                                            <div class=" text-right">
+                                                <input type="hidden" name="Caption" value="none" />
+                                                <button id="btn-campaign-apply" class="btn btn-outline-primary" type="submit">Apply</button>
+                                            </div>
+                                        }
                                     }
-                                    else
+
+                                    else if (hasConfirmJoin)
                                     {
-                                        <div class=" text-right">
-                                            <input type="hidden" name="Caption" value="none" />
-                                            <button id="btn-campaign-apply" class="btn btn-outline-primary" type="submit">Apply</button>
+                                        <div class="text-right">
+                                            <button id="btn-campaign-apply" class="btn btn-outline-primary" type="submit" name="type" value="1">Xác nhận tham gia chiến dịch</button>
+                                            <button class="btn btn-outline-secondary" type="submit" name="type" value="0">Không đồng ý</button>
                                         </div>
                                     }
 
@@ -366,8 +389,7 @@
                 </div>
             </form>
 
-
-            @if (campaignType == CampaignType.ReviewProduct)
+            @*@if (campaignType == CampaignType.ReviewProduct)
             {
                 if (true == Model.Campaign.ReviewPayback)
                 {
@@ -388,7 +410,7 @@
                     </form>
                     }
                 }
-            }
+            }*@
         </div>
 
 

@@ -175,7 +175,7 @@
 
 
         $.extend($.validator.messages, {
-            required: "Hãy nhập.",
+            required: "Hãy nhập dữ liệu",
             remote: "Hãy sửa cho đúng.",
             email: "Hãy nhập email.",
             url: "Hãy nhập URL.",

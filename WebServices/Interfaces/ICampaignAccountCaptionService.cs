@@ -8,6 +8,7 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignAccountCaptionService
     {
+        Task<bool> IsValidCaption(int campaignAccountid);
         Task<ListCampaignAccountCaptionViewModel> GetCampaignAccountCaptions(int campaignAccountId, string order, int page, int pagesize);
         Task<ListGroupCampaignAccountCaptionViewModel> GetGroupCampaignAccountCaptionsByCampaignId(int campaignId, string order, int page, int pagesize);
         Task<int> CreateCampaignAccountCaption(CreateCampaignAccountCaptionViewModel model, string username);

@@ -207,7 +207,7 @@ namespace WebServices.ViewModels
             campaign.AccountChargeTime = AccountChargeTime ?? 0;
             campaign.Type = Type;
             campaign.IsSendProduct = SendProduct;
-            campaign.Code = Code;
+            campaign.Code = campaign.Code;
             campaign.Hashtag = HashTag.ToListString();
             campaign.SampleContent = SampleContent.ToListString();
             campaign.SampleContentText = SampleContentText;
@@ -305,10 +305,14 @@ namespace WebServices.ViewModels
         [Display(Name = "Số lượng")]
         public int Quantity { get; set; }
 
+
+        [Range(10000, 10000000000, ErrorMessage ="Chi phí tối thiểu phải lớn hơn 1.000đ")]
         [Display(Name = "Chi phí tối thiểu")]
-        public int AmountMin { get; set; }
+        public int AmountMin { get; set; } = 10000;
+
+        [GreaterThan("AmountMin", ErrorMessage = "Chi phí tối đa phải lớn hơn chi phí tối thiểu")]
         [Display(Name = "Chi phí tối đa")]
-        public int AmountMax { get; set; }
+        public int AmountMax { get; set; } = 100000;
 
         [Display(Name = "Giới tính")]
         public bool EnabledGender { get; set; } = false;
@@ -381,5 +385,59 @@ namespace WebServices.ViewModels
         public int? ChildAgeMin { get; set; }
         public int? ChildAgeMax { get; set; }
 
+    }
+
+    public class GreaterThanAttribute : ValidationAttribute
+    {
+
+        public GreaterThanAttribute(string otherProperty)
+            : base("{0} must be greater than {1}")
+        {
+            OtherProperty = otherProperty;
+        }
+
+        public string OtherProperty { get; set; }
+
+        public string FormatErrorMessage(string name, string otherName)
+        {
+            return string.Format(ErrorMessageString, name, otherName);
+        }
+
+        protected override ValidationResult
+            IsValid(object firstValue, ValidationContext validationContext)
+        {
+            var firstComparable = firstValue as IComparable;
+            var secondComparable = GetSecondComparable(validationContext);
+
+            if (firstComparable != null && secondComparable != null)
+            {
+                if (firstComparable.CompareTo(secondComparable) < 1)
+                {
+                    object obj = validationContext.ObjectInstance;
+                    var thing = obj.GetType().GetProperty(OtherProperty);
+                    var displayName = (DisplayAttribute)Attribute.GetCustomAttribute(thing, typeof(DisplayAttribute));
+
+                    return new ValidationResult(
+                        FormatErrorMessage(validationContext.DisplayName, displayName.GetName()));
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+
+        protected IComparable GetSecondComparable(
+            ValidationContext validationContext)
+        {
+            var propertyInfo = validationContext
+                                  .ObjectType
+                                  .GetProperty(OtherProperty);
+            if (propertyInfo != null)
+            {
+                var secondValue = propertyInfo.GetValue(
+                    validationContext.ObjectInstance, null);
+                return secondValue as IComparable;
+            }
+            return null;
+        }
     }
 }

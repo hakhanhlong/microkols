@@ -8,6 +8,7 @@ namespace Core.Extensions
     
     public static class EntityExtension
     {
+        
         public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
         {
             long result = 0;

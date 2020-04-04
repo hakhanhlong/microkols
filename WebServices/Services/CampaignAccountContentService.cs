@@ -235,6 +235,14 @@ namespace WebServices.Services
             return true;
         }
 
+        public async Task<bool> IsValidContent(int campaignAccountid)
+        {
+            var spec = new CampaignAccountContentByCampaignAccountIdSpecification(campaignAccountid, CampaignAccountContentStatus.DaDuyet);
+            var entity = await _CampaignAccountContentRepository.GetSingleBySpecAsync(spec);
+
+            return entity != null;
+        }
+
 
         #endregion
     }

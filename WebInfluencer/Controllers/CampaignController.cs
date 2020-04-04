@@ -93,7 +93,6 @@ namespace WebInfluencer.Controllers
             ViewBag.AccountStatus = await _accountService.GetAccountStatus(CurrentUser.Id);
             return View(model);
         }
-
         #region Caption
         public async Task<IActionResult> CreateCaption(CreateCampaignAccountCaptionViewModel model)
         {
@@ -134,14 +133,14 @@ namespace WebInfluencer.Controllers
         #endregion
 
         #region Action
-        public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
+        public async Task<IActionResult> FeedbackJoinCampaign(RequestJoinCampaignViewModel model, int type)
         {
-            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, type == 1);
+            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username, type == 1);
 
 
             this.AddAlert(true, type == 1 ? "Bạn đã đồng ý tham gia chiến dịch" : "Bạn đã từ chối tham gia chiến dịch");
 
-            return RedirectToAction("Details", new { id = campaignid });
+            return RedirectToAction("Details", new { id = model.CampaignId });
         }
 
         public async Task<IActionResult> RequestJoinCampaign(RequestJoinCampaignViewModel model)

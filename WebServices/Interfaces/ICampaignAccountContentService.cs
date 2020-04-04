@@ -8,6 +8,7 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignAccountContentService
     {
+        Task<bool> IsValidContent(int campaignAccountid);
         Task<ListCampaignAccountContentViewModel> GetCampaignAccountContents(int campaignAccountId, string order, int page, int pagesize);
         Task<ListGroupCampaignAccountContentViewModel> GetGroupCampaignAccountContentsByCampaignId(int campaignId, string order, int page, int pagesize);
         Task<int> CreateCampaignAccountContent(CreateCampaignAccountContentViewModel model, string username);

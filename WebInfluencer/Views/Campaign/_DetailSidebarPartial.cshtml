@@ -1,6 +1,7 @@
 ﻿@model MarketPlaceViewModel
 @inject WebServices.Interfaces.IAccountService AccountService
-
+@inject WebServices.Interfaces.ICampaignAccountCaptionService CampaignAccountCaptionService
+@inject WebServices.Interfaces.ICampaignAccountContentService CampaignAccountContentService
 @{
 
     var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
@@ -30,16 +31,6 @@ else
                 {
                     <div class="alert alert-info">Bạn đã được mời tham gia chiến dịch </div>
 
-                    <div>
-                        <form action="@Url.Action("FeedbackJoinCampaign")" method="post">
-
-                            <input type="hidden" name="campaignid" value="@Model.Campaign.Id" />
-                            <button type="submit" name="type" value="1" class="btn btn-primary"> Đồng ý</button>
-                            <button type="submit" name="type" value="1" class="btn btn-danger">Từ chối</button>
-
-                        </form>
-
-                    </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
                 {
@@ -133,48 +124,86 @@ else
                         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
+                    var showProccess = true;
 
-                    if (Model.Campaign.Status == CampaignStatus.Started)
+                    var hasCaption = Model.Campaign.Type.IsHasCaption();
+                    if (hasCaption)
                     {
-                        <div class="alert alert-info">
+                        showProccess = false;
+                        var isvalid = await CampaignAccountCaptionService.IsValidCaption(campaignAccount.Id);
+                        if (isvalid)
+                        {
+                            showProccess = true;
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">Caption  của bạn chưa có hoặc chưa được duyệt. Vui lòng kiểm tra lại <a href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })"> tại đây</a> </div>
+                        }
+                    }
+                    else if (Model.Campaign.Type.IsHasContent())
+                    {
 
-                            <p>
-                                Chiến dịch đã được bắt đầu thực hiện. <br />
-                                Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
-                            </p>
-                        </div>
+                        showProccess = false;
+                        var isvalid = await CampaignAccountContentService.IsValidContent(campaignAccount.Id);
+                        if (isvalid)
+                        {
+                            showProccess = true;
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">Nội dung thực hiện của bạn chưa có hoặc chưa được duyệt. Vui lòng kiểm tra lại <a href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })"> tại đây</a> </div>
+                        }
 
-                        <div>
-                            @if (Model.Campaign.Type.IsShareCampaign())
-                            {
-                                <button class="btn btn-primary  btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+                    }
 
-                                    <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
+                    if (showProccess)
+                    {
+                        if (Model.Campaign.Status == CampaignStatus.Started)
+                        {
+
+
+
+                            <div class="alert alert-info">
+
+                                <p>
+                                    Chiến dịch đã được bắt đầu thực hiện. <br />
+                                    Hãy thực hiện ngay để nhận @campaignAccount.AccountChargeAmount.ToPriceText()
+                                </p>
+                            </div>
+
+                            <div>
+                                @if (Model.Campaign.Type.IsShareCampaign())
+                                {
+                                    <button class="btn btn-primary  btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+
+                                        <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
+                                    </button>
+
+                                    <hr>
+                                }
+
+                                <button class="btn btn-warning btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                    Cập nhật thông tin công việc
                                 </button>
 
-                                <hr>
-                            }
+                            </div>
+                        }
 
-                            <button class="btn btn-warning btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                Cập nhật thông tin công việc
-                            </button>
+                        else
+                        {
+                            <div class="alert alert-info">
+                                Vui lòng chờ chiến dịch bắt đầu để thực hiện công việc. Chiến dịch sẽ bắt đầu thực hiện lúc  <strong>@Model.Campaign.ExecutionStart.Value.ToViDateTime()</strong>
+                            </div>
+                        }
 
-                        </div>
+
                     }
-                    else
-                    {
-                        <div class="alert alert-info">
-                            Vui lòng chờ chiến dịch bắt đầu để thực hiện công việc. Chiến dịch sẽ bắt đầu thực hiện lúc  <strong>@Model.Campaign.ExecutionStart.Value.ToViDateTime()</strong>
-                        </div>
-                    }
-
-
 
                 }
             </div>
         </div>
 
 
-     
+
     }
 }
