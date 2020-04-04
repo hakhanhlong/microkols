@@ -8,7 +8,7 @@
     ListCampaignAccountCaptionViewModel captions = null;
 
     var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
-    var isjoin = campaignAccount != null ;
+    var isjoin = campaignAccount != null && Model.Campaign.Status.IsHasAccountProcess();
 
 
     if (isjoin)

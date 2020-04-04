@@ -158,6 +158,8 @@ namespace WebServices.Services
             return campaign != null ? campaign.Code : string.Empty;
 
         }
+
+
         #region Campaign By Account
         public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, int type, string keyword, int page, int pagesize)
         {
@@ -471,6 +473,7 @@ namespace WebServices.Services
 
         #region Campaign Account
 
+  
         public async Task UpdateCampaignStart()
         {
 
@@ -673,13 +676,13 @@ namespace WebServices.Services
 
         }
 
-        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed)
+        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username, bool confirmed)
         {
 
-            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
             if (campaign != null)
             {
-                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, model.CampaignId));
 
                 if (campaignAccount != null)
                 {
@@ -688,6 +691,16 @@ namespace WebServices.Services
                         campaignAccount.Status = confirmed ? CampaignAccountStatus.Confirmed : CampaignAccountStatus.Canceled;
                         campaignAccount.DateModified = DateTime.Now;
                         campaignAccount.UserModified = username;
+                        if (confirmed)
+                        {
+                            campaignAccount.AccountChargeAmount = model.AccountChargeAmount;
+                            campaignAccount.ReviewAddress = model.ReviewAddress;
+                        }
+                        else
+                        {
+                            campaignAccount.AccountChargeAmount = 0;
+
+                        }
                         await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
                         var notifType = confirmed ? NotificationType.AccountConfirmJoinCampaign : NotificationType.AccountDeclineJoinCampaign;
@@ -1242,7 +1255,7 @@ namespace WebServices.Services
                         await _campaignRepository.UpdateAsync(campaign);
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
                            EntityType.Agency, campaign.AgencyId, campaign.Id,
-                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaignid.ToString(), "Bạn chưa thanh toán tiền chiến dịch"));
+                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch"));
 
                         return;
 
@@ -1269,12 +1282,18 @@ namespace WebServices.Services
 
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
-                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString(), "Không có thành viên thực hiện chiến dịch"));
+                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Không có thành viên thực hiện chiến dịch"));
 
                         return;
 
 
                     }
+
+
+
+                    // huy cac thanh vien chua co caption - content voi loai checkin - review
+
+
 
 
                     campaign.Status = CampaignStatus.Started;
@@ -1303,7 +1322,7 @@ namespace WebServices.Services
                         //notification
                         await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
                             EntityType.Account, campaignAccount.AccountId, campaignid,
-                             NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaignid.ToString()),
+                             NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
                              campaignAccount.Id.ToString());
 
                     }
@@ -1364,7 +1383,7 @@ namespace WebServices.Services
                             //notification
                             await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Id.ToString()),
+                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
                                  campaignAccount.Id.ToString());
 
                         }
@@ -1380,7 +1399,7 @@ namespace WebServices.Services
 
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
-                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString()), "Hết thời gian thực hiện");
+                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Hết thời gian thực hiện") );
 
 
                         var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, null));
@@ -1395,7 +1414,7 @@ namespace WebServices.Services
                             //notification
                             await _notificationRepository.CreateNotification(NotificationType.SystemUpdateCanceledAccountCampaign,
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                                 NotificationType.SystemUpdateCanceledAccountCampaign.GetMessageText(campaignid.ToString(), "Hết thời gian thực hiện"));
+                                 NotificationType.SystemUpdateCanceledAccountCampaign.GetMessageText(campaign.Code, "Hết thời gian thực hiện"));
 
                         }
 

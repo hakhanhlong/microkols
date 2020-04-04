@@ -42,6 +42,22 @@ var CampaignCreateTargetPage = (function () {
             }
         });
 
+        $('#AmountMin').change(function () {
+
+            var val = $('#AmountMin').val();
+
+            console.log('amount min', val);
+
+            var valmax = $('#AmountMax').val();
+            if (valmax < val) {
+                $('#AmountMax').val(val);
+            }
+            $('#AmountMax').attr('min', val);
+
+
+
+        })
+
 
         /*
         $('#AccountIds').select2({

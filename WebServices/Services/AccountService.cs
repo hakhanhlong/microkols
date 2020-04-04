@@ -208,7 +208,7 @@ namespace WebServices.Services
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
-                        Type = AccountType.HotMom
+                        Type = AccountType.Regular
                         
 
                     };

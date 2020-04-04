@@ -339,6 +339,10 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade @tab1Active" id="tabProcess">
+                     
+                    <div class="py-2">
+                        <partial name="_CampaignItemCountingPartial" model="@Model" />
+                    </div>
                     <partial name="_DetailsAccountsProcessPartial" model="Model" />
 
                 </div>

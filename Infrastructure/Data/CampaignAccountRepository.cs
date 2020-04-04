@@ -95,7 +95,7 @@ namespace Infrastructure.Data
                     AccountId = accountid,
                     RefUrl = string.Empty,
                     AccountChargeAmount = accountChargeAmount,
-                    Status = CampaignAccountStatus.WaitToPay,
+                    Status = CampaignAccountStatus.AgencyRequest,
                     Type = campaign.Type,
                     UserCreated = username,
                     UserModified = username,

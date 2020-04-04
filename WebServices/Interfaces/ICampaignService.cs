@@ -32,7 +32,7 @@ namespace WebServices.Interfaces
         Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, CampaignType? type, string keyword, int page, int pagesize);
         Task<CampaignAccountByAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid);
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
-        Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed);
+        Task<bool> FeedbackJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username, bool confirmed);
 
         Task<bool> FeedbackJoinCampaignByAgency(int agencyid, int campaignid, int accountid, bool confirmed,  string username);
         Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username);
