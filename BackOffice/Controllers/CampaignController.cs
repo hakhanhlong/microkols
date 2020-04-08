@@ -236,10 +236,10 @@ namespace BackOffice.Controllers
                         var campaignAccount = await _ICampaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
                         foreach(var item in campaignAccount)
                         {
-                            if(item.Status == CampaignAccountStatus.WaitToPay) // Chờ duyệt chiến dịch
+                            if(item.Status == CampaignAccountStatus.AgencyRequest) // Doanh nghiệp mời tham gia chiến dịch
                             {
-                                item.Status = CampaignAccountStatus.AgencyRequest;
-                                await _ICampaignAccountRepository.UpdateAsync(item);
+                                //item.Status = CampaignAccountStatus.AgencyRequest;
+                                //await _ICampaignAccountRepository.UpdateAsync(item);
 
                                 NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
                                 string notify_message = string.Format("Bạn đã được doanh nghiệp {0} mời tham gia chiến dịch {1}", campaign.UserCreated, campaign.Title);

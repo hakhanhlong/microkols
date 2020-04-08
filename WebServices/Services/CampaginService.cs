@@ -1311,6 +1311,8 @@ namespace WebServices.Services
 
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
+                                     
+                    #region check thanh toán đủ chưa
                     //check da thanh toan chua                    
                     // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
@@ -1345,14 +1347,17 @@ namespace WebServices.Services
                         return;
                     }
                     //#####################################################################################################################################
+                    #endregion
 
 
-
-                    var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
-                            CampaignAccountStatus.AccountRequest,
-                            CampaignAccountStatus.AgencyRequest,
-                            CampaignAccountStatus.Canceled,
-                            CampaignAccountStatus.WaitToPay,
+                    #region kiểm tra xem có người nào tham gia không
+                    var countCampaignAccountToProcess = 
+                        await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, 
+                           new List<CampaignAccountStatus> { //condition ignore status by list status
+                            CampaignAccountStatus.AccountRequest, //ignore status
+                            CampaignAccountStatus.AgencyRequest, //ignore status
+                            CampaignAccountStatus.Canceled, //ignore status
+                            CampaignAccountStatus.WaitToPay, //ignore status
 
                     }));
 
@@ -1380,18 +1385,14 @@ namespace WebServices.Services
                         { }
                         return;
                     }
+                    #endregion
+
 
                     // huy cac thanh vien chua co caption - content voi loai checkin - review
-
-
-
-
                     campaign.Status = CampaignStatus.Started;
-
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
-
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
                     //################ anh Long add them notification gửi về admin ####################################################################
                     try
@@ -1421,11 +1422,9 @@ namespace WebServices.Services
                         await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
                             EntityType.Account, campaignAccount.AccountId, campaignid,
                              NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
-                             campaignAccount.Id.ToString());
-
-                      
-                        }
+                             campaignAccount.Id.ToString());                      
                     }
+                }
             }
 
         }

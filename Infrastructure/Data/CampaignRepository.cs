@@ -40,7 +40,10 @@ namespace Infrastructure.Data
         public async Task<List<int>> GetCampaignIdNeedToStart()
         {
             var now = DateTime.Now;
-            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart <= now).Select(m => m.Id).ToListAsync();
+            //var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart <= now).Select(m => m.Id).ToListAsync();
+
+            //ALonghk: chỗ này ExecutionStart >= now
+            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart >= now).Select(m => m.Id).ToListAsync();
             return campaignids;
         }
 
