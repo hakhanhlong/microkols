@@ -194,7 +194,7 @@ namespace BackOffice.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status, string txt_note)
+        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status, string txt_note = "")
         {
             var campaign = await _ICampaignRepository.GetByIdAsync(id);
             DataSelectionStatusAndType();
