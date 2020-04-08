@@ -1238,15 +1238,13 @@ namespace WebServices.Services
 
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
-
                     //check da thanh toan chua                    
                     // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
                     if (payment == null || !payment.IsValidToProcess)
                     {
 
-                        campaign.Status = CampaignStatus.Locked;
-
+                        campaign.Status = CampaignStatus.Locked; // locked chiến dịch
                         campaign.SystemNote = "Chưa thanh toán";
                         campaign.UserModified = username;
                         campaign.DateModified = DateTime.Now;
@@ -1257,9 +1255,17 @@ namespace WebServices.Services
                            NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
 
 
-
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", chưa thanh toán. Hệ thống đã khóa", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignLocked, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        {}
+                        //#################################################################################################################################
                         return;
-
                     }
                     //#####################################################################################################################################
 
@@ -1277,7 +1283,6 @@ namespace WebServices.Services
                     if (countCampaignAccountToProcess == 0)
                     {
                         campaign.Status = CampaignStatus.Canceled;
-
                         campaign.SystemNote = "Không có thành viên thực hiện chiến dịch";
                         campaign.UserModified = username;
                         campaign.DateModified = DateTime.Now;
@@ -1287,12 +1292,17 @@ namespace WebServices.Services
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
                             NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Không có thành viên thực hiện chiến dịch"));
 
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. Không có thành viên thực hiện chiến dịch", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
                         return;
-
-
                     }
-
-
 
                     // huy cac thanh vien chua co caption - content voi loai checkin - review
 
@@ -1305,10 +1315,18 @@ namespace WebServices.Services
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
 
-
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+                    //################ anh Long add them notification gửi về admin ####################################################################
+                    try
+                    {
+                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã bắt đầu", campaign.Title, campaign.UserCreated);
+                        string _data = "Campaign";
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignStarted, _msg, _data);
+                    }
+                    catch// tranh loi lam crash 
+                    { }
 
-
+                    
                     //huy campaing account chua confirms 
                     var needCancelCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus> {
                             CampaignAccountStatus.AccountRequest,
@@ -1328,11 +1346,9 @@ namespace WebServices.Services
                              NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
                              campaignAccount.Id.ToString());
 
-
-
-
+                      
+                        }
                     }
-                }
             }
 
         }
@@ -1365,6 +1381,17 @@ namespace WebServices.Services
 
 
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
+
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignEnded, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
+
 
 
                         //huy campaing account chua hoan thanh 
@@ -1400,6 +1427,16 @@ namespace WebServices.Services
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
                             NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Hết thời gian thực hiện") );
+
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc, Hết thời gian thực hiện", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
+
 
 
                         var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, null));

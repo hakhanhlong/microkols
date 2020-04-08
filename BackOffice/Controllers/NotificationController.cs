@@ -47,7 +47,29 @@ namespace BackOffice.Controllers
                 href = "/microkol/verify/?id=" + notification.DataId;
             }
 
+            #region Redirect Campaign
+
             if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCreated)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignLocked)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCanceled)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignEnded)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignStarted)
             {
                 href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
@@ -57,6 +79,7 @@ namespace BackOffice.Controllers
                 href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
 
+            #endregion
 
 
 

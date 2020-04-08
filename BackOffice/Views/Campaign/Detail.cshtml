@@ -97,6 +97,11 @@
                         <div class="m-section">
                             <div class="m-section__content">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <partial name="_CampaignItemCountingPartial" model="@Model" />
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-2">
                                             <strong class="mr-2"> Mã chiến dịch:</strong><span>@Model.Code</span>
@@ -344,7 +349,6 @@
 
 
                                 </div>
-
                                 <div class="row">
 
 
