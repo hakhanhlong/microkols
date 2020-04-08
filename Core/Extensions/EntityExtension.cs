@@ -62,6 +62,7 @@ namespace Core.Extensions
             var amount = campaignAccount.AccountChargeAmount;
             var val1 = (amount * (100 - t1)) / 100;
             return Convert.ToInt32(val1);
+
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent;
             //var amount = campaignAccount.AccountChargeAmount;
