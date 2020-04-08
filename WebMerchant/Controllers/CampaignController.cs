@@ -143,8 +143,6 @@ namespace WebMerchant.Controllers
 
                             }
                         }
-
-
                         //########### Longhk add create notification ##########################################################
 
                         string _msg = string.Format("Chiến dịch \"{0}\" đã được tạo bởi doanh nghiệp \"{1}\".", info.Title, CurrentUser.Username);

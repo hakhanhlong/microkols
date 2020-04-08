@@ -63,10 +63,17 @@ namespace WebBgJob
 
             app.UseHangfireDashboard();
             app.UseHangfireServer();
-            var campaignProcessTimer = Configuration.GetValue<string>("CampaignProcessTimer"); 
-            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer); // "*/10 * * * *"
+
+
+            // A Long them Local Time Zone de theo gio VN
+            var campaignProcessTimer = Configuration.GetValue<string>("CampaignProcessTimer");
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer, TimeZoneInfo.Local); // "*/10 * * * *"                                
             var updateFbPostTimer = Configuration.GetValue<string>("UpdateFbPostTimer");
-            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), updateFbPostTimer);
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), updateFbPostTimer, TimeZoneInfo.Local);
+
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.CheckLockedCampagin(), "*/5 * * * *", TimeZoneInfo.Local);
+
+            //#################################################################################################################
 
 
             app.UseMvc(routes =>

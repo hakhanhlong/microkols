@@ -54,6 +54,12 @@ namespace WebServices.Interfaces
         Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newrefContent);
 
         Task<List<int>> GetEndedCampaignIds();
+
+        //############# addition by longhk ########################
+        Task<List<int>> GetLockedCampaignIds();
+        Task RunCheckingLockedStatus(int campaignid);
+        //#########################################################
+
         Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid);
 
         Task<bool> UpdateCampaignCompleted(int campaignid, string username);
@@ -68,6 +74,8 @@ namespace WebServices.Interfaces
         Task<CampaignViewModel> GetCampaignByRefId(int accountid, string facebookid);
         Task AutoUpdateStartedStatus(int campaignid);
         Task AutoUpdateEndedStatus(int campaignid);
+
+        
 
 
         Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize);

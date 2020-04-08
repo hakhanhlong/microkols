@@ -12,5 +12,8 @@ namespace Core.Interfaces
     {
 
         Task<int> CreateNotification(NotificationType type, EntityType entityType, int entityId, int dataid, string message, string data = "", string image = "");
+
+        Task<int> CreateNotification(int dataid,  EntityType entityType, int entityId, NotificationType type, string message, string data = "");
+
     }
 }

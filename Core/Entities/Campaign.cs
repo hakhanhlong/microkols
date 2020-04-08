@@ -106,6 +106,7 @@ namespace Core.Entities
     }
 
     
+    [Flags]
     public enum CampaignStatus
     {
         [Display(Name ="Chờ phê duyệt")]
@@ -122,8 +123,13 @@ namespace Core.Entities
         Canceled = 5,
         [Display(Name ="Lỗi")]
         Error = 6,
-        [Display(Name = "Tạm khóa")]
+        [Display(Name = "Tạm khóa & Cần thanh toán")]
         Locked = 7,
+        //[Display(Name = "Đã thanh toán")]
+        //Paid = 8,
+        //[Display(Name = "Đã phê duyệt & Thanh toán đủ")]
+        //ConfirmedAndPaid = Confirmed & Paid,
+
 
         //[Display(Name ="Chờ phê duyệt")]
         //ChoPheDuyet = 0,

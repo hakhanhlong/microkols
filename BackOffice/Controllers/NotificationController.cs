@@ -47,7 +47,29 @@ namespace BackOffice.Controllers
                 href = "/microkol/verify/?id=" + notification.DataId;
             }
 
+            #region Redirect Campaign
+
             if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCreated)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignLocked)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignCanceled)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignEnded)
+            {
+                href = "/campaign/detail/?campaignid=" + notification.DataId;
+            }
+
+            if (notification.Data == "Campaign" && notification.Type == NotificationType.CampaignStarted)
             {
                 href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
@@ -57,6 +79,7 @@ namespace BackOffice.Controllers
                 href = "/campaign/detail/?campaignid=" + notification.DataId;
             }
 
+            #endregion
 
 
 
@@ -87,7 +110,8 @@ namespace BackOffice.Controllers
         public async Task<JsonResult> CountNewNotification()
         {                       
             int CampaignCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created,  new List<NotificationType>() { NotificationType.CampaignCreated,
-                NotificationType.AgencyPayCampaignService});
+                NotificationType.AgencyPayCampaignService, NotificationType.CampaignCanceled, NotificationType.CampaignEnded, NotificationType.CampaignLocked, NotificationType.CampaignStarted});
+
             int WalletDeposite = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyWalletDeposit});
 
 

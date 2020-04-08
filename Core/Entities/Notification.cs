@@ -66,6 +66,7 @@ namespace Core.Entities
 
         //####### longhk add ################
         CampaignCreated = 23,
+        CampaignLocked  = 24,
         //###################################
 
 
@@ -82,14 +83,18 @@ namespace Core.Entities
 
 
         //####### longhk add ####################
-        AccountSendVerify = 50,
-        AccountVerifyDenied = 51,
-        AccountVerifySuccess = 52,    
-        
 
         AgencyWalletDeposit = 46,
         AgencyWalletWithDraw = 47,
         AgencyPayCampaignService = 48,
+
+
+        AccountSendVerify = 50,
+        AccountVerifyDenied = 51,
+        AccountVerifySuccess = 52,
+
+        RequestAgencyWithdrawFromCampaign = 55,
+
         //#######################################
 
 
@@ -138,6 +143,24 @@ namespace Core.Entities
             {
                 text = "Campaign Created";
             }
+            else if (type == NotificationType.CampaignLocked)
+            {
+                text = "Campaign Locked";
+            }
+            else if (type == NotificationType.CampaignCanceled)
+            {
+                text = "Campaign Canceled";
+            }
+            else if (type == NotificationType.CampaignStarted)
+            {
+                text = "Campaign Started";
+            }
+            else if (type == NotificationType.CampaignEnded)
+            {
+                text = "Campaign Ended";
+            }
+
+
 
             return text;
         }

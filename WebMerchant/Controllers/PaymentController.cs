@@ -46,7 +46,7 @@ namespace WebMerchant.Controllers
                 BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
 
                 //########### Longhk add create notification ##########################################################
-                string _msg = string.Format("Chiến dịch \"{0}\" đã được thanh toán bởi doanh nghiệp \"{1}\", với số tiền {2} đ.", model.CampaignId, CurrentUser.Username, paymentResult.Amount.ToPriceText());
+                string _msg = string.Format("Chiến dịch \"{0}\" đã được thanh toán bởi doanh nghiệp \"{1}\", với số tiền {2}.", model.CampaignId, CurrentUser.Username, paymentResult.Amount.ToPriceText());
                 string _data = "Campaign";
                 await _notificationService.CreateNotification(model.CampaignId, EntityType.System, 0, NotificationType.AgencyPayCampaignService, _msg, _data);
                 //#####################################################################################################
