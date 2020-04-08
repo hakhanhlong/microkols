@@ -59,8 +59,11 @@ namespace Core.Extensions
         public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
             var t1 = campaign.ServiceChargePercent;
+
             var amount = campaignAccount.AccountChargeAmount;
+
             var val1 = (amount * (100 - t1)) / 100;
+
             return Convert.ToInt32(val1);
 
             //var t1 = campaign.ServiceChargePercent;

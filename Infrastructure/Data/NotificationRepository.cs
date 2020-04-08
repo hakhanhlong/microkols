@@ -50,26 +50,21 @@ namespace Infrastructure.Data
 
         //####################### anh Long thêm ###########################################################################################################
         public async Task<int> CreateNotification(int dataid, EntityType entityType, int entityId, NotificationType type, string message, string data = "")
-        {
-            var notification = await _dbContext.Notification.FirstOrDefaultAsync(m => m.Type == type && m.EntityType == entityType && m.EntityId == entityId && m.DataId == dataid);
-            if (notification == null)
+        {            
+            var notification = new Notification()
             {
-                notification = new Notification()
-                {
-                    Type = type,
-                    EntityType = entityType,
-                    EntityId = entityId,
-                    DataId = dataid,
-                    Data = data,
-                    Image = "",
-                    Status = NotificationStatus.Created,
-                    DateCreated = DateTime.Now,
-                    Message = message
-                };
-                await _dbContext.Notification.AddAsync(notification);
-                await _dbContext.SaveChangesAsync();
-
-            }
+                Type = type,
+                EntityType = entityType,
+                EntityId = entityId,
+                DataId = dataid,
+                Data = data,
+                Image = "",
+                Status = NotificationStatus.Created,
+                DateCreated = DateTime.Now,
+                Message = message
+            };
+            await _dbContext.Notification.AddAsync(notification);
+            await _dbContext.SaveChangesAsync();
 
 
             return notification.Id;
