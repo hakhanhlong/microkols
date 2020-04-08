@@ -125,6 +125,24 @@
 
                     <div class="col-md-6">
 
+                        <div class="mb-2">
+                            <strong class="mr-2"> Số lượng người cần:</strong>
+                            <span>
+                                @Model.Quantity
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <strong class="mr-2"> Chi phí tối thiểu:</strong>
+                            <span class="text-danger">
+                                @Model.AmountMin.ToPriceText()
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <strong class="mr-2"> Chi phí tối đa:</strong>
+                            <span class="text-danger">
+                                @Model.AmountMax.ToPriceText()
+                            </span>
+                        </div>
                         @if (!string.IsNullOrEmpty(Model.Requirement))
                         {
                             <div class="mb-2">
@@ -250,20 +268,20 @@
                                     @if (Model.AccountTypes.Contains(AccountType.HotMom))
                                     {
 
-                                <li>
-                                    Con cái:
+                                        <li>
+                                            Con cái:
 
-                                    @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+                                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                                    @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
-                                    {
+                                            @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                            {
 
-                                        <span>
-                                            -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
-                                        </span>
-                                    }
+                                                <span>
+                                                    -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                                                </span>
+                                            }
 
-                                </li>
+                                        </li>
                                     }
 
                                 </ul>
@@ -304,9 +322,10 @@
 
                     }
 
-                    @if(Model.Status == CampaignStatus.Created)
+                    @if (Model.Status == CampaignStatus.Created)
                     {
-                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa chiến dịch</a>
+                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa thông tin chiến dịch</a>
+                        <a href="@Url.Action("EditTarget", new { id = Model.Id})" class="btn btn-light">Sửa đối tượng chiến dịch</a>
                     }
 
 

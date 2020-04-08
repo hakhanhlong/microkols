@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using Core.Extensions;
 
 namespace WebServices.Services
 {
@@ -252,13 +253,19 @@ namespace WebServices.Services
         public async Task CreateNotificationCampaignCompleted(int campaignid)
         {
 
-            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
-
-            foreach (var campaignAccount in campaignAccounts)
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if(campaign!= null)
             {
-                await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
-               NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), campaignAccount.AccountChargeAmount.ToPriceText()));
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
+
+                foreach (var campaignAccount in campaignAccounts)
+                {
+                    long amount = campaign.GetAccountChagreAmount(campaignAccount);
+                    await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
+                   NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), amount.ToPriceText()));
+                }
             }
+          
         }
 
         public async Task CreateNotificationCampaignStarted(int campaignid)

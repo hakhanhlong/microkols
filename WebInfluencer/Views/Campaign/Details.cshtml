@@ -143,7 +143,7 @@
 
                                 if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
                                 {
-                                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                                    @*if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
                                     {
 
                                         <strong> Thời gian viết nội dung</strong>
@@ -151,7 +151,7 @@
                                         </p><ul class="list-unstyled">
                                             <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
                                         </ul>
-                                    }
+                                    }*@
                                     @*else
                 {
                     <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
@@ -235,7 +235,7 @@
 
                                     }
                                 </ul>
-                            } 
+                            }
                             else
                             {
 
@@ -247,6 +247,11 @@
                                 var amountMin = Model.Campaign.GetAccountAmountMin();
                                 var amountMax = Model.Campaign.GetAccountAmountMax();
                             }
+
+                            <strong>Số lượng doanh nghiệp cần:</strong>
+                            <p>
+                                @Model.Campaign.Quantity
+                            </p>
 
                             <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
                             <ul class="list-inline">

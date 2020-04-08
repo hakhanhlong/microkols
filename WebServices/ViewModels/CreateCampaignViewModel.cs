@@ -225,7 +225,127 @@ namespace WebServices.ViewModels
 
     public class EditCampaignTargetViewModel : CreateCampaignTargetViewModel
     {
+        public EditCampaignTargetViewModel()
+        {
+
+        }
+        public EditCampaignTargetViewModel(Campaign campaign)
+        {
+            Id = campaign.Id;
+            Type = campaign.Type;
+            AccountType = campaign.CampaignAccountType.Select(m => m.AccountType).ToList();
+            AccountChargeAmount = campaign.AccountChargeAmount;
+            Quantity = campaign.Quantity;
+            AmountMin = campaign.AmountMin;
+            AmountMax = campaign.AmountMax;
+            var options = campaign.CampaignOption.ToList();
+
+            var optionGender = options.Where(m => m.Name == CampaignOptionName.Gender).FirstOrDefault();
+            if (optionGender != null)
+            {
+                if (!string.IsNullOrEmpty(optionGender.Value))
+                {
+                    EnabledGender = true;
+                    if (optionGender.Value == "Male")
+                    {
+                        Gender = Core.Entities.Gender.Male;
+                    }
+                    else
+                    {
+                        Gender = Core.Entities.Gender.Female;
+                    }
+                }
+            }
+
+            var optionAge = options.Where(m => m.Name == CampaignOptionName.AgeRange).FirstOrDefault();
+            if (optionAge != null)
+            {
+                var arr = optionAge.Value.Split('-');
+                if (arr.Length == 2)
+                {
+                    EnabledAgeRange = true;
+                    AgeStart = int.Parse(arr[0]);
+                    AgeEnd = int.Parse(arr[1]);
+                }
+            }
+
+            var optionCate = options.Where(m => m.Name == CampaignOptionName.Category).ToList();
+            if (optionCate.Count > 0)
+            {
+                EnabledCategory = true;
+                CategoryId = optionCate.Select(m => int.Parse(m.Value)).ToList();
+            }
+
+
+            var optionCity = options.Where(m => m.Name == CampaignOptionName.City).ToList();
+            if (optionCity.Count > 0)
+            {
+                EnabledCity = true;
+                CityId = optionCity.Select(m => int.Parse(m.Value)).ToList();
+            }
+
+
+            var campaignAccounts = campaign.CampaignAccount.ToList();
+            if (campaignAccounts.Count > 0)
+            {
+                EnabledAccount = true;
+                AccountIds = campaignAccounts.Select(m => m.AccountId).ToList();
+            }
+            KPIMin = campaign.KPIMin ?? 0;
+
+            InteractiveMin = campaign.InteractiveMin ?? 0;
+            Code = campaign.Code;
+            ExecutionTime = campaign.ExecutionStart.ToDateRange(campaign.ExecutionEnd);
+            RegisterTime = campaign.DateStart.ToDateRange(campaign.DateEnd);
+            FeedbackBefore = campaign.FeedbackStart.ToDateRange(campaign.FeedbackEnd);
+            CustomKolNames = campaign.CustomKolNames.ToListString();
+            AccountChargeAmounts = new List<int>();
+
+            var optionChild = options.Where(m => m.Name == CampaignOptionName.Child).FirstOrDefault();
+
+            if (optionChild != null)
+            {
+                var arr1 = optionChild.Value.Split('|');
+                if (arr1.Length == 2)
+                {
+                    ChildType = int.Parse(arr1[0]);
+                    var arr2 = arr1[1].Split('-');
+                    if (arr2.Length == 2)
+                    {
+
+                        ChildAgeMin = int.Parse(arr2[0]);
+                        ChildAgeMax = int.Parse(arr2[1]);
+                    }
+                }
+            }
+
+
+
+        }
         public int Id { get; set; }
+
+        internal Campaign GetEntity(Campaign campaign)
+        {
+            var executionTime = DateRangeHelper.GetDateRange(ExecutionTime);
+            var regTime = DateRangeHelper.GetDateRange(RegisterTime);
+            var feedbackTime = DateRangeHelper.GetDateRange(FeedbackBefore);
+
+
+            campaign.Quantity = Quantity;
+            campaign.DateStart = regTime != null ? (DateTime?)regTime.Value.Start : null;
+            campaign.DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null;
+            campaign.CustomKolNames = CustomKolNames.ToListString();
+            campaign.KPIMin = KPIMin;
+            campaign.InteractiveMin = InteractiveMin;
+            campaign.ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null;
+            campaign.ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null;
+            campaign.FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null;
+            campaign.FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null;
+            campaign.AmountMax = AmountMax;
+            campaign.AmountMin = AmountMin;
+
+            return campaign;
+        }
     }
 
     public class CreateCampaignInfoViewModel
@@ -306,7 +426,7 @@ namespace WebServices.ViewModels
         public int Quantity { get; set; }
 
 
-        [Range(10000, 10000000000, ErrorMessage ="Chi phí tối thiểu phải lớn hơn 1.000đ")]
+        [Range(10000, 10000000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
         [Display(Name = "Chi phí tối thiểu")]
         public int AmountMin { get; set; } = 10000;
 

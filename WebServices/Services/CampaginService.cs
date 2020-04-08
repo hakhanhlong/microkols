@@ -326,6 +326,7 @@ namespace WebServices.Services
 
 
 
+        #region EditCampaignInfo
 
         public async Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id)
         {
@@ -340,7 +341,7 @@ namespace WebServices.Services
         public async Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username)
         {
             var campiagn = await _campaignRepository.GetByIdAsync(model.Id);
-            if (campiagn == null) return false;
+            if (campiagn == null || campiagn.Status != CampaignStatus.Created) return false;
 
             campiagn = model.GetEntity(campiagn);
             campiagn.UserModified = username;
@@ -349,6 +350,46 @@ namespace WebServices.Services
 
             return true;
         }
+
+        #endregion
+
+        #region EditCampaignTarget
+        public async Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id)
+        {
+            var filter = new CampaignByAgencySpecification(agencyid, id);
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null)
+            {
+                return new EditCampaignTargetViewModel(campaign);
+            }
+            return null;
+        }
+        public async Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(model.Id);
+            if (campaign == null || campaign.Status != CampaignStatus.Created) return false;
+
+            campaign = model.GetEntity(campaign);
+            campaign.UserModified = username;
+            campaign.DateModified = DateTime.Now;
+
+
+
+
+
+            await _campaignRepository.UpdateAsync(campaign);
+
+
+
+
+
+            await CreateCampaignAccountType(campaign.Id, model.AccountType, username,true);
+            await CreateCampaignOptions(campaign.Id, model, username, true);
+
+            return true;
+        }
+
+        #endregion
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username)
         {
@@ -373,8 +414,16 @@ namespace WebServices.Services
             return -1;
         }
 
-         private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
+        private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username, bool hasRemove = false)
         {
+            if (hasRemove)
+            {
+                var ls = await _campaignAccountTypeRepository.ListAsync(new CampaignAccountTypeByCampaignSpecification(campaignId));
+                foreach(var item in ls)
+                {
+                    await _campaignAccountTypeRepository.DeleteAsync(item);
+                }
+            }
             foreach (var accountType in accountTypes)
             {
 
@@ -387,14 +436,14 @@ namespace WebServices.Services
             }
         }
 
-      
+
         public async Task<int> GetAgencyChagreAmount(int campaignAccountId)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(campaignAccountId);
-            if(campaignAccount!= null)
+            if (campaignAccount != null)
             {
                 var campaign = await _campaignRepository.GetByIdAsync(campaignAccount.CampaignId);
-                if(campaign!= null)
+                if (campaign != null)
                 {
                     return campaign.GetAgencyChagreAmount(campaignAccount);
                 }
@@ -402,8 +451,19 @@ namespace WebServices.Services
             return 0;
         }
 
-        private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username)
+        private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username, bool hasRemove = false)
         {
+
+
+            if (hasRemove)
+            {
+                var ls = await _campaignOptionRepository.ListAsync(new CampaignOptionByCampaignSpecification(campaignId));
+                foreach (var item in ls)
+                {
+                    await _campaignOptionRepository.DeleteAsync(item);
+                }
+            }
+
 
             if (model.AccountType.Contains(AccountType.HotMom))
             {
@@ -480,9 +540,15 @@ namespace WebServices.Services
 
         #region Campaign Account
 
-  
-        public async Task UpdateCampaignStart()
+
+        public async Task RemoveCampaignAccount(int campaignid)
         {
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid));
+            foreach (var item in campaignAccounts)
+            {
+                await _campaignAccountRepository.DeleteAsync(item);
+            }
+
 
         }
 
@@ -1061,10 +1127,10 @@ namespace WebServices.Services
 
 
 
-        public async Task<int> UpdateReviewAddress(int id, string addresss,string username)
+        public async Task<int> UpdateReviewAddress(int id, string addresss, string username)
         {
             var accountCampaign = await _campaignAccountRepository.GetByIdAsync(id);
-            if(accountCampaign!= null)
+            if (accountCampaign != null)
             {
                 if (string.IsNullOrEmpty(accountCampaign.ReviewAddress))
                 {
@@ -1505,7 +1571,7 @@ namespace WebServices.Services
 
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
-                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Hết thời gian thực hiện") );
+                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Hết thời gian thực hiện"));
 
                         try
                         {

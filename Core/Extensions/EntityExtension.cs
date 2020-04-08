@@ -15,7 +15,11 @@ namespace Core.Extensions
             var arrIgnoreStatus = new List<CampaignAccountStatus>()
             {
                 CampaignAccountStatus.Canceled,
-                CampaignAccountStatus.Unfinished
+                CampaignAccountStatus.Unfinished,
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
+                CampaignAccountStatus.WaitToPay,
+                CampaignAccountStatus.All
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
 

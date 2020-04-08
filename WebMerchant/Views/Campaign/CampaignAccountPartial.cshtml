@@ -34,8 +34,10 @@
                         <td><input type="checkbox" class="cb-checkitem cb-checkitem@(campaignAccount.Status)" value="@campaignAccount.AccountId" /></td>
                         <td>@stt</td>
                         <td>
-                            <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
-                            @campaignAccount.Account.Name
+                            <a href="@campaignAccount.Account.Link" target="_blank">
+                                <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
+                                @campaignAccount.Account.Name
+                            </a>
                         </td>
 
                         <td>@counting.FriendsCount</td>

@@ -30,8 +30,10 @@
                         <td><input type="checkbox" class="cb-checkitem cb-checkitemAccountRequest" value="@account.Id" /></td>
                         <td>@stt</td>
                         <td>
-                            <img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">
-                            @account.Name
+                            <a href="@account.Link" target="_blank">
+                                <img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">
+                                @account.Name
+                            </a>
                         </td>
 
                         <td>@counting.FriendsCount</td>
@@ -41,15 +43,15 @@
                             <span title="Lượt bình luận trung bình">@counting.AvgCommentCount <i class="fa fa-comment"></i></span>
                         </td>
                         <td>
-                           
-                                <form action="javascript:;" data-action="@Url.Action("RequestAccountJoinCampaign")" class="frmFeedback">
 
-                                    <input type="hidden" name="returnurl" value="@currenturl" />
-                                    <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
-                                    <input type="hidden" name="accountid" value="@account.Id" />
-                                    <button class="btn btn-sm btn-primary" type="submit" name="type" value="1">Mời tham gia</button>
-                                </form>
-                         
+                            <form action="javascript:;" data-action="@Url.Action("RequestAccountJoinCampaign")" class="frmFeedback">
+
+                                <input type="hidden" name="returnurl" value="@currenturl" />
+                                <input type="hidden" name="campaignid" value="@ViewBag.CampaignId" />
+                                <input type="hidden" name="accountid" value="@account.Id" />
+                                <button class="btn btn-sm btn-primary" type="submit" name="type" value="1">Mời tham gia</button>
+                            </form>
+
                         </td>
                     </tr>
                 }

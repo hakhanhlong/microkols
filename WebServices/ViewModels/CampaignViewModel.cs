@@ -135,6 +135,8 @@ namespace WebServices.ViewModels
             ReviewType = campaign.ReviewType;
             ReviewPayback = campaign.ReviewPayback;
             ReviewAddress = campaign.ReviewAddress;
+            AmountMin = campaign.AmountMin;
+            AmountMax = campaign.AmountMax;
         }
 
 
@@ -152,6 +154,9 @@ namespace WebServices.ViewModels
         public List<string> Image { get; set; } = new List<string>();
         public string Data { get; set; }
         public int Quantity { get; set; }
+
+        public int AmountMin { get; set; }
+        public int AmountMax { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? ExecutionStart { get; set; }
 

@@ -182,6 +182,18 @@ namespace WebServices.Services
             CampaignAccountContent.DateModified = DateTime.Now;
             await _CampaignAccountContentRepository.UpdateAsync(CampaignAccountContent);
 
+            if(status== CampaignAccountContentStatus.DaDuyet)
+            {
+                if(campaignaccount.Status== CampaignAccountStatus.AccountRequest || campaignaccount.Status== CampaignAccountStatus.AgencyRequest)
+                {
+                    campaignaccount.Status = CampaignAccountStatus.Confirmed;
+
+                    campaignaccount.UserModified = username;
+                    campaignaccount.DateModified = DateTime.Now;
+                    await _campaignAccountRepository.UpdateAsync(campaignaccount);
+                }
+            }
+
             var notifType = status == CampaignAccountContentStatus.DaDuyet ? NotificationType.AgencyApproveCampaignContent : NotificationType.AgencyDeclineCampaignContent;
             await _notificationRepository.AddAsync(new Notification()
             {

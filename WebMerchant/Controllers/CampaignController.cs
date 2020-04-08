@@ -168,96 +168,6 @@ namespace WebMerchant.Controllers
         }
 
 
-        /*
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateCampaignViewModel model, int submittype = 0)
-        {
-            var error = "";
-            if (ModelState.IsValid)
-            {
-
-                var valid = true;
-
-                if(model.Method == CampaignMethod.ChooseAccount)
-                {
-                    if (model.AccountType.Contains(AccountType.Regular))
-                    {
-
-                        //generate accountids
-
-                        var matchedAccountIds = new List<int>();
-                        var matchedAccountChargeAmounts = new List<int>();
-                        var matchedAccounts = await _accountService.GetListAccount(model.AccountType, model.CategoryId, model.Gender, model.CityId, model.AgeStart, model.AgeEnd, string.Empty, 1, model.Quantity, null, 0, 0);
-
-                        foreach (var matchedAccount in matchedAccounts.Accounts)
-                        {
-                            matchedAccountIds.Add(matchedAccount.Id);
-                            matchedAccountChargeAmounts.Add(0);
-                        }
-                        model.AccountIds = matchedAccountIds;
-                        model.AccountChargeAmounts = matchedAccountChargeAmounts;
-                    }
-
-
-
-                    if (model.AccountType == null || model.AccountType.Count == 0)
-                    {
-                        valid = false;
-                           error = "Hãy chọn đối tượng ";
-                    }
-                    else if (model.AccountIds == null || model.AccountIds.Count == 0 || model.AccountIds.Count != model.AccountChargeAmounts.Count)
-                    {
-                        valid = false;
-                        error = "Không có Kol phù hợp. Vui lòng chộn các tiêu chí khác";
-                    }
-                }
-                else
-                {
-                    model.AccountIds = new List<int>();
-                    model.AccountChargeAmounts = new List<int>();
-                }
-
-                if (valid)
-                {
-                    if (!string.IsNullOrEmpty(model.Image))
-                    {
-                        model.Image = _fileHelper.MoveTempFile(model.Image, "campaign");
-                    }
-                    var id = await _campaignService.CreateCampaign(CurrentUser.Id, model, CurrentUser.Username);
-                    if (id > 0)
-                    {
-                        for (var i = 0; i < model.AccountIds.Count; i++)
-                        {
-                            var amount = model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
-                            BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, model.AccountIds[i], amount, CurrentUser.Username));
-
-                        }
-                        return Json(new
-                        {
-                            status = 1,
-                            message = "Thêm chiến dịch mới thành công",
-                            campaignid = id,
-                            url = Url.Action("Details", new { id = id })
-                        });
-
-
-                    }
-                    else
-                    {
-                        error = "Lỗi khi khởi tạo chiến dịch. Vui lòng thử lại";
-                    }
-                }
-
-            }
-            return Json(new
-            {
-                status = -1,
-                message = error
-            });
-            //await ViewbagData();
-            //return View(model);
-        }
-        */
         private async Task ViewbagData()
         {
             ViewBag.Categories = await _sharedService.GetCategories();
@@ -277,16 +187,58 @@ namespace WebMerchant.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditInfo(EditCampaignInfoViewModel model )
+        public async Task<IActionResult> EditInfo(EditCampaignInfoViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var r = await _campaignService.EditCampaignInfo(model, CurrentUser.Username);
 
                 this.AddAlert(r);
+
+
                 return RedirectToAction("Details", new { id = model.Id });
 
             }
+            return View(model);
+        }
+
+        public async Task<IActionResult> EditTarget(int id)
+        {
+            var model = await _campaignService.GetEditCampaignTarget(CurrentUser.Id, id);
+            if (model == null) return NotFound();
+            await ViewbagData();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditTarget(EditCampaignTargetViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var r = await _campaignService.EditCampaignTarget(model, CurrentUser.Username);
+
+                this.AddAlert(r);
+
+                if (r)
+                {
+                    await _campaignService.RemoveCampaignAccount(model.Id);
+                    if (model.EnabledAccount && model.AccountIds != null)
+                    {
+
+                        var accountids = model.AccountIds.Distinct().ToList();
+
+                        for (var i = 0; i < accountids.Count; i++)
+                        {
+                            var amount = model.AmountMax; //model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
+                            BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, model.Id, accountids[i], amount, CurrentUser.Username));
+
+                        }
+                    } 
+                }
+                return RedirectToAction("Details", new { id = model.Id });
+
+            }
+            await ViewbagData();
             return View(model);
         }
         #endregion
@@ -406,7 +358,7 @@ namespace WebMerchant.Controllers
 
         public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int page = 1, int pagesize = 10)
         {
-            var model = await _accountService.GetAccounts(type?? AccountType.All, kw, string.Empty, page, pagesize);
+            var model = await _accountService.GetAccounts(type ?? AccountType.All, kw, string.Empty, page, pagesize);
 
             return PartialView(model);
         }
@@ -695,7 +647,7 @@ namespace WebMerchant.Controllers
 
         public async Task<IActionResult> UpdateExecutionTime(int campaignid)
         {
-          
+
             ViewBag.Campaign = await _campaignService.GetCampaign(campaignid);
 
             return PartialView();
