@@ -75,6 +75,13 @@ namespace WebServices.Services
             return await _campaignRepository.GetCampaignIds(CampaignStatus.Ended);
         }
 
+        //############ addition by longhk ##########################################
+        public async Task<List<int>> GetLockedCampaignIds()
+        {
+            return await _campaignRepository.GetCampaignIds(CampaignStatus.Locked);
+        }
+        //##########################################################################
+
         public async Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid)
         {
             var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
@@ -1250,15 +1257,19 @@ namespace WebServices.Services
                         campaign.DateModified = DateTime.Now;
                         await _campaignRepository.UpdateAsync(campaign);
 
-                        await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
-                           EntityType.Agency, campaign.AgencyId, campaign.Id,
-                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
+                        //await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
+                        //   EntityType.Agency, campaign.AgencyId, campaign.Id,
+                        //   NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
 
+                        // longhk edit
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignCantStarted, 
+                            $"Để thực hiện được chiến dịch {campaign.Title}, bạn cần thanh toán {payment.TotalChargeValue.ToPriceText()} cho chiến dịch.");
+                        //#################################################################################################################################
 
                         //################ anh Long add them notification gửi về admin ####################################################################
                         try
                         {
-                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", chưa thanh toán. Hệ thống đã khóa", campaign.Title, campaign.UserCreated);
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", chưa thanh toán số tiền {2}. Hệ thống đã khóa", campaign.Title, campaign.UserCreated, payment.TotalChargeValue.ToPriceText());
                             string _data = "Campaign";
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignLocked, _msg, _data);
                         }
@@ -1352,6 +1363,74 @@ namespace WebServices.Services
             }
 
         }
+
+
+        //##################################### addtion by longhk ##############################################################################
+        public async Task RunCheckingLockedStatus(int campaignid)
+        {
+            if (campaignid == 0)
+            {
+                var campaignids = await this.GetLockedCampaignIds();
+
+                foreach (var id in campaignids)
+                {
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.RunCheckingLockedStatus(id));
+
+
+                }
+            }
+            else
+            {
+                var username = "system";
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                if (campaign != null)
+                {
+                    if(campaign.Status == CampaignStatus.Locked)
+                    {
+                        /*Kiểm tra thời gian thực hiện chiến dịch kết thúc có bé hơn ngày giờ hiện tại hay không để hủy bỏ chiến dịch*/
+                        if (campaign.ExecutionEnd.HasValue)
+                        {
+                            if(campaign.ExecutionEnd.Value <= DateTime.Now)
+                            {
+
+                                campaign.Status = CampaignStatus.Canceled;
+                                campaign.UserModified = username;
+                                campaign.DateModified = DateTime.Now;
+                                await _campaignRepository.UpdateAsync(campaign);
+
+                                /*Kiểm tra xem đã thanh toán chiến dịch lần nào chưa, nếu rồi gửi thông báo tạo lệnh rút tiền*/
+                                string _message = string.Format("Chiến dịch {0} đã bị hủy, vì thời gian thực hiện đã hết và chưa thanh toán.", campaign.Title);
+                                var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
+                                if (payment != null)
+                                {
+                                    if(payment.TotalPaidAmount > 0)
+                                    {
+                                        _message += string.Format("Hãy tạo lệnh rút {0} từ chiến dịch", payment.TotalPaidAmount.ToPriceText());                                        
+                                    }
+                                }
+                                await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
+                                EntityType.Agency, campaign.AgencyId, campaign.Id, _message);
+                                try
+                                {
+                                    string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title, campaign.UserCreated);
+                                    string _data = "Campaign";
+                                    await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                                }
+                                catch// tranh loi lam crash 
+                                { }
+                            }
+                        }
+
+                        
+
+
+
+                    }
+                }
+                return;
+            }
+        }
+        //######################################################################################################################################
 
         public async Task AutoUpdateEndedStatus(int campaignid)
         {

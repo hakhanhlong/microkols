@@ -123,7 +123,7 @@ namespace Core.Entities
         Canceled = 5,
         [Display(Name ="Lỗi")]
         Error = 6,
-        [Display(Name = "Tạm khóa")]
+        [Display(Name = "Tạm khóa & Cần thanh toán")]
         Locked = 7,
         //[Display(Name = "Đã thanh toán")]
         //Paid = 8,

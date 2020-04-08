@@ -110,7 +110,8 @@ namespace BackOffice.Controllers
         public async Task<JsonResult> CountNewNotification()
         {                       
             int CampaignCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created,  new List<NotificationType>() { NotificationType.CampaignCreated,
-                NotificationType.AgencyPayCampaignService});
+                NotificationType.AgencyPayCampaignService, NotificationType.CampaignCanceled, NotificationType.CampaignEnded, NotificationType.CampaignLocked, NotificationType.CampaignStarted});
+
             int WalletDeposite = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyWalletDeposit});
 
 

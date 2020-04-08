@@ -25,6 +25,11 @@ namespace WebServices.Jobs
         }
 
 
+
+
+        
+
+
         public async Task UpdateCompletedCampagin(int campaignid = 0)
         {
             if (campaignid == 0)
@@ -74,7 +79,6 @@ namespace WebServices.Jobs
 
         public async Task UpdateCampaignProcess()
         {
-
             BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignStart());
             BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignEnd());
             BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(2));
@@ -90,5 +94,17 @@ namespace WebServices.Jobs
             await _campaignService.AutoUpdateEndedStatus(0);
 
         }
+
+        #region addition by longhk
+
+
+        public async Task CheckLockedCampagin()
+        {
+            await _campaignService.RunCheckingLockedStatus(0);
+        }
+
+        #endregion
+
+
     }
 }

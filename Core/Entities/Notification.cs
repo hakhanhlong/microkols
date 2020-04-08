@@ -83,14 +83,18 @@ namespace Core.Entities
 
 
         //####### longhk add ####################
-        AccountSendVerify = 50,
-        AccountVerifyDenied = 51,
-        AccountVerifySuccess = 52,    
-        
 
         AgencyWalletDeposit = 46,
         AgencyWalletWithDraw = 47,
         AgencyPayCampaignService = 48,
+
+
+        AccountSendVerify = 50,
+        AccountVerifyDenied = 51,
+        AccountVerifySuccess = 52,
+
+        RequestAgencyWithdrawFromCampaign = 55,
+
         //#######################################
 
 

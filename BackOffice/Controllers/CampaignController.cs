@@ -184,6 +184,7 @@ namespace BackOffice.Controllers
             //get info payment from agency fee service on campaign
             //id = campaignid
             var payment = await _TransactionService.GetTransaction(TransactionType.CampaignServiceCharge, id);
+
             if (payment != null) {
                 ViewBag.Payment = payment;
             }
