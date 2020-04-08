@@ -256,8 +256,14 @@ namespace BackOffice.Controllers
                         msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
                     }
 
-                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+                        
+                    }
                     TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+
+
 
 
                     //if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)

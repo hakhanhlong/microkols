@@ -1365,7 +1365,7 @@ namespace WebServices.Services
         }
 
 
-        //##################################### addtion by longhk ##############################################################################
+        //##################################### addition by longhk ##############################################################################
         public async Task RunCheckingLockedStatus(int campaignid)
         {
             if (campaignid == 0)
