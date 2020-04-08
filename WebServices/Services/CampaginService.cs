@@ -1229,20 +1229,18 @@ namespace WebServices.Services
                 foreach (var id in campaignids)
                 {
                     BackgroundJob.Enqueue<ICampaignService>(m => m.AutoUpdateStartedStatus(id));
-
-
                 }
             }
             else
             {
                 var username = "system";
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
 
-                    //check da thanh toan chua
-                    var isvalid = false;
-
+                    //check da thanh toan chua                    
+                    // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
                     if (payment == null || !payment.IsValidToProcess)
                     {
@@ -1253,13 +1251,18 @@ namespace WebServices.Services
                         campaign.UserModified = username;
                         campaign.DateModified = DateTime.Now;
                         await _campaignRepository.UpdateAsync(campaign);
+
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
                            EntityType.Agency, campaign.AgencyId, campaign.Id,
-                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch"));
+                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
+
+
 
                         return;
 
                     }
+                    //#####################################################################################################################################
+
 
 
                     var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
@@ -1325,11 +1328,10 @@ namespace WebServices.Services
                              NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
                              campaignAccount.Id.ToString());
 
+
+
+
                     }
-
-
-
-
                 }
             }
 
@@ -1385,9 +1387,7 @@ namespace WebServices.Services
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
                                  NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
                                  campaignAccount.Id.ToString());
-
                         }
-
                     }
                     else if (campaign.Status == CampaignStatus.Confirmed)
                     {

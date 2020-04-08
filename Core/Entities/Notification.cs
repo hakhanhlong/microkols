@@ -66,6 +66,7 @@ namespace Core.Entities
 
         //####### longhk add ################
         CampaignCreated = 23,
+        
         //###################################
 
 

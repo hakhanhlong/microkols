@@ -40,7 +40,6 @@ namespace WebServices.Jobs
                 try
                 {
                     var accountids = await _campaignService.GetFinishedAccountIdsByCampaignId(campaignid);
-
                     foreach (var accountid in accountids)
                     {
                         await _paymentService.CreatePaybackCampaignAccount(campaignid, accountid, SharedConstants.USERNAME);
