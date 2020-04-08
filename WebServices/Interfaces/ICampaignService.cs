@@ -10,6 +10,8 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+        Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id);
+        Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username);
         Task<int> UpdateReviewAddress(int id, string addresss, string username);
         Task<int> GetAgencyChagreAmount(int campaignAccountId);
         Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id);
@@ -71,6 +73,8 @@ namespace WebServices.Interfaces
         Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize);
 
         Task UpdateCampaignServiceChargePercent(int ServiceChargePercent, int campaignid);
+
+        Task RemoveCampaignAccount(int campaignid);
 
     }
 }

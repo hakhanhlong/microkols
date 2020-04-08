@@ -48,7 +48,8 @@
                 <th>Mã giao dịch</th>
                 <th>Số tiền</th>
                 <th>Còn lại</th>
-                <th>Nội dung</th>
+                <th width="200">Nội dung</th>
+                <th>Thời gian</th>
             </tr>
 
         </thead>
@@ -88,6 +89,9 @@
                             <span>@item.Type.ToDisplayName()</span>
                         }
 
+                    </td>
+                    <td>
+                        @item.DateCreated.ToViDateTime()
                     </td>
                 </tr>
             }

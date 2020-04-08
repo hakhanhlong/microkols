@@ -26,7 +26,7 @@ var App = (function () {
         if (currentPage === 'campaign_create' || currentPage == 'campaign_editinfo') {
             CampaignCreatePage.Init();
         }
-        else if (currentPage === 'campaign_createinfo') {
+        else if (currentPage === 'campaign_createinfo' || currentPage === 'campaign_edittarget') {
             CampaignCreateTargetPage.Init();
         }
         else if (currentPage === 'campaign_details') {
@@ -1297,6 +1297,8 @@ var CampaignCreateTargetPage = (function () {
 
     function init() {
         handler();
+
+        console.log('CampaignCreateTargetPage');
     }
 
     function handler() {
@@ -1306,15 +1308,6 @@ var CampaignCreateTargetPage = (function () {
             theme: "bootstrap"
         });
 
-        $('#RegisterTime').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            }
-        });
 
         $('#FeedbackBefore').daterangepicker({
             timePicker: true,
@@ -1326,6 +1319,15 @@ var CampaignCreateTargetPage = (function () {
             }
         });
 
+        $('#RegisterTime').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(10, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
         $('#ExecutionTime').daterangepicker({
             timePicker: true,
             minDate: moment(),
@@ -1335,6 +1337,26 @@ var CampaignCreateTargetPage = (function () {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
+
+        $('#FeedbackBefore2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#RegisterTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#ExecutionTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
 
         $('#AmountMin').change(function () {
 

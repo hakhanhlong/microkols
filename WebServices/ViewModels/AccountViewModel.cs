@@ -29,6 +29,12 @@ namespace WebServices.ViewModels
             Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
             Type = customer.Type;
             AccountCounting = new AccountCountingViewModel(accountCounting);
+            var provider= customer.AccountProvider.FirstOrDefault(m=>m.Provider == AccountProviderNames.Facebook);
+            if(provider!= null)
+            {
+                Link = provider.Link;
+            }
+            
         }
 
         public static List<AccountViewModel> GetList(IEnumerable<Account> accounts, IEnumerable<AccountCountingModel> accountCountings)
@@ -50,6 +56,7 @@ namespace WebServices.ViewModels
 
         public string Avatar { get; set; }
 
+        public string Link { get; set; }
         public AccountCountingViewModel AccountCounting { get; set; }
     }
 

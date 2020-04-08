@@ -35,7 +35,11 @@
             total += agencyCharge;
             <tr>
                 <td>@stt</td>
-                <td>@campaignAccount.Account.Name</td>
+                <td>
+                    <a href="@campaignAccount.Account.Link" target="_blank">
+                        @campaignAccount.Account.Name
+                    </a>
+                </td>
 
                 <td>
                     @campaignAccount.Status.ToAgencyBadge()

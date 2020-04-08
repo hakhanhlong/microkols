@@ -41,6 +41,13 @@ namespace Infrastructure.Data
                 await _dbContext.SaveChangesAsync();
 
             }
+            else
+            {
+                notification.DateCreated = DateTime.Now;
+                notification.Status = NotificationStatus.Created;
+                notification.Message = message;
+                await _dbContext.SaveChangesAsync();
+            }
 
 
             return notification.Id;
