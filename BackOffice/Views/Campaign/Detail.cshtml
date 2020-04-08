@@ -72,7 +72,24 @@
                 </div>
             </div>
             <div class="m-portlet__body" style="margin-top:-20px;">
-
+                @if (Model.Status == CampaignStatus.Canceled || Model.Status == CampaignStatus.Locked)
+                {
+                    
+                    <div class="m-alert m-alert--icon m-alert--air m-alert--square alert alert-danger alert-dismissible fade show" role="alert">
+                        <div class="m-alert__icon">
+                            <i class="la la-warning"></i>
+                        </div>
+                        <div class="m-alert__text">
+                            <strong>
+                                Thông báo!
+                            </strong>
+                            Chiến dịch đã bị @Model.Status: @Model.SystemNote
+                        </div>
+                        <div class="m-alert__close">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                }
                 <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
                     <li class="nav-item m-tabs__item">
                         <a class="nav-link m-tabs__link active" data-toggle="tab" href="#campaign-detail" role="tab">
@@ -351,16 +368,7 @@
                                 </div>
                                 <div class="row">
 
-
-                                    @if (Model.Status == CampaignStatus.Canceled)
-                                    {
-                                        <div class="col-md-12">
-                                            <div class="alert alert-danger">Chiến dịch đã bị hủy</div>
-                                        </div>
-
-
-                                    }
-                                    else
+                                    @if (Model.Status != CampaignStatus.Canceled)
                                     {
                                         <div class="col-md-12">
                                             <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
