@@ -426,9 +426,11 @@ namespace WebServices.ViewModels
         public int Quantity { get; set; }
 
 
-        [Range(10000, 10000000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
+        [Range(10000, 100000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
         [Display(Name = "Chi phí tối thiểu")]
         public int AmountMin { get; set; } = 10000;
+
+        [Range(10000, 100000000, ErrorMessage = "Chi phí phải lớn hơn 1.000đ")]
 
         [GreaterThan("AmountMin", ErrorMessage = "Chi phí tối đa phải lớn hơn chi phí tối thiểu")]
         [Display(Name = "Chi phí tối đa")]

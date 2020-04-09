@@ -101,7 +101,8 @@ namespace Core.Extensions
         {
             var t1 = campaign.ServiceChargePercent;
             var amount = campaign.AmountMax;
-            var val1 = (amount * (100 - t1)) / 100;
+            long longval =  (long) amount * (100 - t1);
+            double val1 = longval / 100;
             return Convert.ToInt32(val1);
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent;
