@@ -187,9 +187,7 @@ namespace BackOffice.Controllers
 
             if (payment != null) {
                 ViewBag.Payment = payment;
-            }
-            
-
+            }           
             DataSelectionStatusAndType();
             return View(new CampaignViewModel(campaign));
         }
@@ -206,7 +204,8 @@ namespace BackOffice.Controllers
 
                     campaign.Status = status;
                     campaign.UserModified = HttpContext.User.Identity.Name;
-                    campaign.SystemNote = txt_note;
+                    campaign.DateModified = DateTime.Now;
+                    //campaign.SystemNote = txt_note;
                     _ICampaignRepository.Update(campaign);
 
 

@@ -130,18 +130,23 @@ namespace WebServices.Services
 
         public async Task CreateNotification(int dataid, EntityType entityType, int entityid, NotificationType notificationType, string msg, string text)
         {
-            Notification _notification = new Notification();
-            _notification.EntityType = entityType;
-            _notification.EntityId = entityid;
 
-            _notification.DataId = dataid;
+            var notify = await _notificationRepository.GetSingleBySpecAsync(new NotificationSpecification(entityType, entityid, notificationType, dataid, NotificationStatus.Created));
+            if(notify == null)
+            {
+                Notification _notification = new Notification();
+                _notification.EntityType = entityType;
+                _notification.EntityId = entityid;
+                _notification.DataId = dataid;
+                _notification.Message = msg;
+                _notification.DateCreated = DateTime.Now;
+                _notification.Status = NotificationStatus.Created;
+                _notification.Type = notificationType;
+                _notification.Data = text;
+                await _notificationRepository.AddAsync(_notification);
+            }
 
-            _notification.Message = msg;
-            _notification.DateCreated = DateTime.Now;
-            _notification.Status = NotificationStatus.Created;
-            _notification.Type = notificationType;
-            _notification.Data = text;
-            await _notificationRepository.AddAsync(_notification);
+            
 
         }
 

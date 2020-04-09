@@ -1394,6 +1394,7 @@ namespace WebServices.Services
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+                    await CampaignStartedNotifyToAccount(campaign); // chien dịch started thi gưi thống báo đến tất cả người đã đồng ý tham gia chiến dịch
                     //################ anh Long add them notification gửi về admin ####################################################################
                     try
                     {
@@ -1428,6 +1429,26 @@ namespace WebServices.Services
             }
 
         }
+
+        private async Task CampaignStartedNotifyToAccount(Campaign campaign)
+        {
+            //CampaignAccountStatus.Confirmed
+            try
+            {
+                // chỉ lấy account đã confirm tham gia chiến dịch và gửi thông báo đến account
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(CampaignAccountStatus.Confirmed));
+                foreach(var account in campaignAccounts)
+                {
+                    //send notification to account
+                    await _notificationRepository.CreateNotification(NotificationType.CampaignStarted,
+                        EntityType.Account, account.AccountId, campaign.Id, string.Format("Chiến dịch \"{0}\" đã bắt đầu, bạn hãy thực hiện chiến dịch nhé!", campaign.Title),
+                         account.Id.ToString());
+                }
+
+            }
+            catch { }
+        }
+
 
 
         //##################################### addition by longhk ##############################################################################
