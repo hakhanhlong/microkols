@@ -1307,11 +1307,22 @@ namespace WebServices.Services
             else
             {
                 var username = "system";
-                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);             
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
-                                     
+
+                    //check them thời gian nhận đăng ký thì mới quyết định start
+                    //ví dụ trường hợp này sẽ lỗi làm cho chiến dịch bị cancel trong khi chưa hết thời gian chạy chiến dịch
+                    //thời gian nhận đăng ký và chạy chiến dịch quá gần nhau sẽ bị trường hợp này -> cancel đột ngột.
+                    /* Ví dụ
+                     Thời gian nhận đăng ký: 01:54 09/04/2020 - 18:00 09/04/2020
+                     Thời gian thực hiện: 01:54 09/04/2020 - 11:00 10/04/2020
+                     */
+                    DateTime now = DateTime.Now;
+                    if (campaign.DateStart <= now && campaign.DateEnd >= now)
+                        return;
+                    //------------------------------------------------------------------------------------------------------------
+
                     #region check thanh toán đủ chưa
                     //check da thanh toan chua                    
                     // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
