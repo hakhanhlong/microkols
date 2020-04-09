@@ -30,6 +30,14 @@ namespace Core.Specifications
 
         }
 
+        public NotificationSpecification(EntityType entityType, int entityId, NotificationType type, int dataid, NotificationStatus status) :
+
+            base(m => m.Type == type && m.EntityId == entityId && m.EntityType == entityType && m.DataId == dataid && m.Status == status)
+        {
+
+        }
+
+
         public NotificationSpecification(EntityType entityType, NotificationStatus status, NotificationType type) :
 
             base(m => m.Type == type && m.Status == status && m.EntityType == entityType)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebInfluencer.Models;
 using WebServices.Code.Helpers;
 using WebServices.Interfaces;
+using WebServices.Jobs;
 
 namespace WebInfluencer.Controllers
 {
@@ -29,6 +31,8 @@ namespace WebInfluencer.Controllers
 
         public IActionResult Index()
         {
+            //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
+
             return View();
         }
 

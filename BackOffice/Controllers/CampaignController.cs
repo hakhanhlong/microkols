@@ -187,9 +187,7 @@ namespace BackOffice.Controllers
 
             if (payment != null) {
                 ViewBag.Payment = payment;
-            }
-            
-
+            }           
             DataSelectionStatusAndType();
             return View(new CampaignViewModel(campaign));
         }
@@ -206,7 +204,8 @@ namespace BackOffice.Controllers
 
                     campaign.Status = status;
                     campaign.UserModified = HttpContext.User.Identity.Name;
-                    campaign.SystemNote = txt_note;
+                    campaign.DateModified = DateTime.Now;
+                    //campaign.SystemNote = txt_note;
                     _ICampaignRepository.Update(campaign);
 
 
@@ -236,10 +235,10 @@ namespace BackOffice.Controllers
                         var campaignAccount = await _ICampaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
                         foreach(var item in campaignAccount)
                         {
-                            if(item.Status == CampaignAccountStatus.WaitToPay) // Chờ duyệt chiến dịch
+                            if(item.Status == CampaignAccountStatus.AgencyRequest) // Doanh nghiệp mời tham gia chiến dịch
                             {
-                                item.Status = CampaignAccountStatus.AgencyRequest;
-                                await _ICampaignAccountRepository.UpdateAsync(item);
+                                //item.Status = CampaignAccountStatus.AgencyRequest;
+                                //await _ICampaignAccountRepository.UpdateAsync(item);
 
                                 NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
                                 string notify_message = string.Format("Bạn đã được doanh nghiệp {0} mời tham gia chiến dịch {1}", campaign.UserCreated, campaign.Title);
@@ -256,8 +255,14 @@ namespace BackOffice.Controllers
                         msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
                     }
 
-                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+                        
+                    }
                     TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+
+
 
 
                     //if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)

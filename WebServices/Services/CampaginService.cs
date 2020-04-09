@@ -1307,10 +1307,23 @@ namespace WebServices.Services
             else
             {
                 var username = "system";
-                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);             
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
+
+                    //check them thời gian nhận đăng ký thì mới quyết định start
+                    //ví dụ trường hợp này sẽ lỗi làm cho chiến dịch bị cancel trong khi chưa hết thời gian chạy chiến dịch
+                    //thời gian nhận đăng ký và chạy chiến dịch quá gần nhau sẽ bị trường hợp này -> cancel đột ngột.
+                    /* Ví dụ
+                     Thời gian nhận đăng ký: 01:54 09/04/2020 - 18:00 09/04/2020
+                     Thời gian thực hiện: 01:54 09/04/2020 - 11:00 10/04/2020
+                     */
+                    DateTime now = DateTime.Now;
+                    if (campaign.DateStart <= now && campaign.DateEnd >= now)
+                        return;
+                    //------------------------------------------------------------------------------------------------------------
+
+                    #region check thanh toán đủ chưa
                     //check da thanh toan chua                    
                     // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
@@ -1345,14 +1358,17 @@ namespace WebServices.Services
                         return;
                     }
                     //#####################################################################################################################################
+                    #endregion
 
 
-
-                    var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
-                            CampaignAccountStatus.AccountRequest,
-                            CampaignAccountStatus.AgencyRequest,
-                            CampaignAccountStatus.Canceled,
-                            CampaignAccountStatus.WaitToPay,
+                    #region kiểm tra xem có người nào tham gia không
+                    var countCampaignAccountToProcess = 
+                        await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, 
+                           new List<CampaignAccountStatus> { //condition ignore status by list status
+                            CampaignAccountStatus.AccountRequest, //ignore status
+                            CampaignAccountStatus.AgencyRequest, //ignore status
+                            CampaignAccountStatus.Canceled, //ignore status
+                            CampaignAccountStatus.WaitToPay, //ignore status
 
                     }));
 
@@ -1380,19 +1396,16 @@ namespace WebServices.Services
                         { }
                         return;
                     }
+                    #endregion
+
 
                     // huy cac thanh vien chua co caption - content voi loai checkin - review
-
-
-
-
                     campaign.Status = CampaignStatus.Started;
-
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
-
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+                    await CampaignStartedNotifyToAccount(campaign); // chien dịch started thi gưi thống báo đến tất cả người đã đồng ý tham gia chiến dịch
                     //################ anh Long add them notification gửi về admin ####################################################################
                     try
                     {
@@ -1421,17 +1434,35 @@ namespace WebServices.Services
                         await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
                             EntityType.Account, campaignAccount.AccountId, campaignid,
                              NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
-                             campaignAccount.Id.ToString());
-
-                      
-                        }
+                             campaignAccount.Id.ToString());                      
                     }
+                }
             }
 
         }
 
+        private async Task CampaignStartedNotifyToAccount(Campaign campaign)
+        {
+            //CampaignAccountStatus.Confirmed
+            try
+            {
+                // chỉ lấy account đã confirm tham gia chiến dịch và gửi thông báo đến account
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(CampaignAccountStatus.Confirmed));
+                foreach(var account in campaignAccounts)
+                {
+                    //send notification to account
+                    await _notificationRepository.CreateNotification(NotificationType.CampaignStarted,
+                        EntityType.Account, account.AccountId, campaign.Id, string.Format("Chiến dịch \"{0}\" đã bắt đầu, bạn hãy thực hiện chiến dịch nhé!", campaign.Title),
+                         account.Id.ToString());
+                }
 
-        //##################################### addtion by longhk ##############################################################################
+            }
+            catch { }
+        }
+
+
+
+        //##################################### addition by longhk ##############################################################################
         public async Task RunCheckingLockedStatus(int campaignid)
         {
             if (campaignid == 0)
@@ -1440,60 +1471,60 @@ namespace WebServices.Services
 
                 foreach (var id in campaignids)
                 {
+
                     BackgroundJob.Enqueue<ICampaignService>(m => m.RunCheckingLockedStatus(id));
-
-
                 }
             }
             else
             {
-                var username = "system";
-                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
-                if (campaign != null)
-                {
-                    if(campaign.Status == CampaignStatus.Locked)
+
+
+                try {
+                    var username = "system";
+                    var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                    if (campaign != null)
                     {
-                        /*Kiểm tra thời gian thực hiện chiến dịch kết thúc có bé hơn ngày giờ hiện tại hay không để hủy bỏ chiến dịch*/
-                        if (campaign.ExecutionEnd.HasValue)
+                        if (campaign.Status == CampaignStatus.Locked)
                         {
-                            if(campaign.ExecutionEnd.Value <= DateTime.Now)
+                            /*Kiểm tra thời gian thực hiện chiến dịch kết thúc có bé hơn ngày giờ hiện tại hay không để hủy bỏ chiến dịch*/
+                            if (campaign.ExecutionEnd.HasValue)
                             {
-
-                                campaign.Status = CampaignStatus.Canceled;
-                                campaign.UserModified = username;
-                                campaign.DateModified = DateTime.Now;
-                                await _campaignRepository.UpdateAsync(campaign);
-
-                                /*Kiểm tra xem đã thanh toán chiến dịch lần nào chưa, nếu rồi gửi thông báo tạo lệnh rút tiền*/
-                                string _message = string.Format("Chiến dịch {0} đã bị hủy, vì thời gian thực hiện đã hết và chưa thanh toán.", campaign.Title);
-                                var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
-                                if (payment != null)
+                                if (campaign.ExecutionEnd.Value <= DateTime.Now)
                                 {
-                                    if(payment.TotalPaidAmount > 0)
+
+                                    campaign.Status = CampaignStatus.Canceled;
+                                    campaign.UserModified = username;
+                                    campaign.DateModified = DateTime.Now;
+                                    await _campaignRepository.UpdateAsync(campaign);
+
+                                    /*Kiểm tra xem đã thanh toán chiến dịch lần nào chưa, nếu rồi gửi thông báo tạo lệnh rút tiền*/
+                                    string _message = string.Format("Chiến dịch {0} đã bị hủy, vì thời gian thực hiện đã hết và chưa thanh toán.", campaign.Title);
+                                    var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
+                                    if (payment != null)
                                     {
-                                        _message += string.Format("Hãy tạo lệnh rút {0} từ chiến dịch", payment.TotalPaidAmount.ToPriceText());                                        
+                                        if (payment.TotalPaidAmount > 0)
+                                        {
+                                            _message += string.Format("Hãy tạo lệnh rút {0} từ chiến dịch", payment.TotalPaidAmount.ToPriceText());
+                                        }
                                     }
+                                    await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
+                                    EntityType.Agency, campaign.AgencyId, campaign.Id, _message);
+                                    try
+                                    {
+                                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title, campaign.UserCreated);
+                                        string _data = "Campaign";
+                                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                                    }
+                                    catch// tranh loi lam crash 
+                                    { }
                                 }
-                                await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
-                                EntityType.Agency, campaign.AgencyId, campaign.Id, _message);
-                                try
-                                {
-                                    string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title, campaign.UserCreated);
-                                    string _data = "Campaign";
-                                    await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
-                                }
-                                catch// tranh loi lam crash 
-                                { }
                             }
                         }
-
-                        
-
-
-
                     }
                 }
-                return;
+                catch { }
+                
+                //return;
             }
         }
         //######################################################################################################################################
