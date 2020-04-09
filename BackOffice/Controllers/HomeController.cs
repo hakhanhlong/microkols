@@ -25,7 +25,7 @@ namespace BackOffice.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var listing_campaign = _ICampaignBusiness.GetListCampaign(1, 10);
+            var listing_campaign = _ICampaignBusiness.GetListCampaign(1, 15);
             if(listing_campaign != null)
             {
                 ViewBag.Listing_Campaign = listing_campaign;
