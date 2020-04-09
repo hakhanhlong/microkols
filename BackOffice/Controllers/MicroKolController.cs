@@ -103,7 +103,7 @@ namespace BackOffice.Controllers
                 {
                     microkol.Status = AccountStatus.SystemVerified;
                     TempData["MessageSuccess"] = "Verified Success!";
-                    await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifySuccess, "Verified Success!", "");
+                    await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifySuccess, "Bạn đã được hệ thống xác thực thành công!", "");
                 }
 
                 await _IAccountRepository.UpdateAsync(microkol);
@@ -256,23 +256,20 @@ namespace BackOffice.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeType(AccountViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.Id > 0)
             {
-                if (model.Id > 0)
+                var microkol = _IAccountRepository.GetById(model.Id);
+                if (microkol == null)
                 {
-                    var microkol = _IAccountRepository.GetById(model.Id);
-                    if (microkol == null)
-                    {
-                        TempData["MessageError"] = "MicroKol do not exist!";
-                    }
-                    else
-                    {
+                    TempData["MessageError"] = "MicroKol do not exist!";
+                }
+                else
+                {
 
-                        microkol.Type = model.Type;
-                        await _IAccountRepository.UpdateAsync(microkol);
-                        TempData["MessageSuccess"] = "MicroKol update microkol type success!";
+                    microkol.Type = model.Type;
+                    await _IAccountRepository.UpdateAsync(microkol);
+                    TempData["MessageSuccess"] = "MicroKol update microkol type success!";
 
-                    }
                 }
             }
 
