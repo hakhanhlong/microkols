@@ -82,21 +82,21 @@
                         @if(Model.Type== CampaignType.ReviewProduct)
                         {
                             
-                    <div class="mb-2">
-                        <strong>
-                            @Model.ReviewType.ToDisplayName()
-                        </strong>
+                            <div class="mb-2">
+                                <strong>
+                                    @Model.ReviewType.ToDisplayName()
+                                </strong>
                         
 
-                        @if (Model.ReviewPayback.HasValue)
-                        {
-                            <span> - Thu hồi sản phẩm</span>
-                        }
+                                @if (Model.ReviewPayback.HasValue)
+                                {
+                                    <span> - Thu hồi sản phẩm</span>
+                                }
 
-                        <br />
-                        <strong class="mr-2"> Địa chỉ:</strong>
-                        @Model.ReviewAddress
-                    </div>
+                                <br />
+                                <strong class="mr-2"> Địa chỉ:</strong>
+                                @Model.ReviewAddress
+                            </div>
 
                         }
                         @if (!string.IsNullOrEmpty(Model.Data))

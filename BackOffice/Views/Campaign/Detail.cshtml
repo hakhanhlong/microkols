@@ -217,6 +217,25 @@
                                     </div>
 
                                     <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <strong class="mr-2"> Số lượng người cần:</strong>
+                                            <span>
+                                                @Model.Quantity
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="mr-2"> Chi phí tối thiểu:</strong>
+                                            <span class="text-danger">
+                                                @Model.AmountMin.ToPriceText()
+                                            </span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <strong class="mr-2"> Chi phí tối đa:</strong>
+                                            <span class="text-danger">
+                                                @Model.AmountMax.ToPriceText()
+                                            </span>
+                                        </div>
+
 
                                         @if (!string.IsNullOrEmpty(Model.Requirement))
                                         {

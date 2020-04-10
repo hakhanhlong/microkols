@@ -276,13 +276,13 @@ namespace WebServices.Services
         public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id)
         {
             var filter = new CampaignByAgencySpecification(agencyid, id);
+
             var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
             if (campaign != null)
             {
                 var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
 
-                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
-                    campaign.CampaignAccount, transactions);
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption, campaign.CampaignAccount, transactions);
             }
             return null;
         }
@@ -1452,7 +1452,7 @@ namespace WebServices.Services
                 {
                     //send notification to account
                     await _notificationRepository.CreateNotification(NotificationType.CampaignStarted,
-                        EntityType.Account, account.AccountId, campaign.Id, string.Format("Chiến dịch \"{0}\" đã bắt đầu, bạn hãy thực hiện chiến dịch nhé!", campaign.Title),
+                        EntityType.Account, account.AccountId, campaign.Id, string.Format("Đã đến thời gian thực hiện chiến dịch \"{0}\", bạn hãy thực hiện chiến dịch nhé!", campaign.Title),
                          account.Id.ToString());
                 }
 
