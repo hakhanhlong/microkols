@@ -237,17 +237,7 @@ namespace WebServices.Services
 
         }
 
-        public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id)
-        {
-            var filter = new CampaignByAccountSpecification(accountid, id);
-            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
-            if (campaign != null)
-            {
-                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
-                    campaign.CampaignAccount, new List<Transaction>());
-            }
-            return null;
-        }
+       
 
         #endregion
 
@@ -281,8 +271,8 @@ namespace WebServices.Services
             if (campaign != null)
             {
                 var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
-
-                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption, campaign.CampaignAccount, transactions);
+                var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyid, id);
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption, campaign.CampaignAccount, payment, transactions);
             }
             return null;
         }

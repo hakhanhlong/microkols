@@ -40,16 +40,16 @@ namespace Infrastructure.Data
         public async Task<List<int>> GetCampaignIdNeedToStart()
         {
             var now = DateTime.Now;
-            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart <= now).Select(m => m.Id).ToListAsync();            
+            var campaignids = await _dbContext.Campaign.Where(m => m.Status == CampaignStatus.Confirmed && m.ExecutionStart <= now).Select(m => m.Id).ToListAsync();
             return campaignids;
         }
 
-       
+
 
         public async Task<List<int>> GetCampaignIdNeedToEnd()
         {
             var now = DateTime.Now;
-            var campaignids = await _dbContext.Campaign.Where(m => (m.Status == CampaignStatus.Started || m.Status== CampaignStatus.Confirmed  ) && m.ExecutionEnd <= now).Select(m => m.Id).ToListAsync();
+            var campaignids = await _dbContext.Campaign.Where(m => (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Confirmed) && m.ExecutionEnd <= now).Select(m => m.Id).ToListAsync();
             return campaignids;
         }
 
@@ -60,7 +60,10 @@ namespace Infrastructure.Data
                 .FirstOrDefaultAsync(m => m.AgencyId == agencyid && m.Published && m.Id == id);
             if (campaign != null)
             {
-                var transactions = await _dbContext.Transaction.Where(m => m.RefId == campaign.Id).ToListAsync();
+                var wallet = await _dbContext.Wallet.FirstOrDefaultAsync(m => m.EntityType == EntityType.Agency && m.EntityId == agencyid);
+
+                var types = new List<TransactionType>() { TransactionType.CampaignAccountCharge, TransactionType.CampaignServiceCharge };
+                var transactions = await _dbContext.Transaction.Where(m => m.RefId == campaign.Id && (m.SenderId == wallet.Id || m.ReceiverId == wallet.Id)).ToListAsync();
                 return new CampaignPaymentModel(campaign, campaign.CampaignOption,
                     campaign.CampaignAccount, transactions);
             }
@@ -211,7 +214,7 @@ namespace Infrastructure.Data
         }
              */
 
-            var query = _dbContext.CampaignAccount.Where(m => m.AccountId == accountid && m.Status!= CampaignAccountStatus.WaitToPay);
+            var query = _dbContext.CampaignAccount.Where(m => m.AccountId == accountid && m.Status != CampaignAccountStatus.WaitToPay);
 
 
 
@@ -239,7 +242,7 @@ namespace Infrastructure.Data
             var campaignids = query.Select(m => m.CampaignId).Distinct();
 
 
-            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id) && m.Status!= CampaignStatus.Canceled);
+            var queryCampaign = _dbContext.Campaign.Where(m => campaignids.Contains(m.Id) && m.Status != CampaignStatus.Canceled);
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -254,8 +257,8 @@ namespace Infrastructure.Data
 
 
             var joinCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
-            
-            var queryCampaign = _dbContext.Campaign.Where(m =>  m.Method == CampaignMethod.OpenJoined);
+
+            var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined);
             queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) || (m.Status == CampaignStatus.Confirmed)));
 
             if (!string.IsNullOrEmpty(keyword))

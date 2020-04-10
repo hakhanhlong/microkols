@@ -42,8 +42,7 @@ namespace WebServices.Interfaces
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
 
         Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid,int type, string keyword, int page, int pagesize);
-        Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id);
-
+       
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, string username);
 
         Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username);

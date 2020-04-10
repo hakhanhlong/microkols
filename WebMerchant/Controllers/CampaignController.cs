@@ -233,7 +233,7 @@ namespace WebMerchant.Controllers
                             BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, model.Id, accountids[i], amount, CurrentUser.Username));
 
                         }
-                    } 
+                    }
                 }
                 return RedirectToAction("Details", new { id = model.Id });
 
@@ -559,7 +559,7 @@ namespace WebMerchant.Controllers
             if (campaign == null) return NotFound();
             ViewBag.Campaign = campaign;
             var model = await _campaignAccountCaptionService.GetGroupCampaignAccountCaptionsByCampaignId(campaign.Id, order, pageindex, pagesize);
-
+            ViewBag.CampaignId = campaign.Id;
             return View(model);
         }
 
@@ -573,11 +573,16 @@ namespace WebMerchant.Controllers
             }
 
             this.AddAlert(true);
+            if (type == 1)
+            {
+                return RedirectToAction("Details", new { id = campaignid });
+            }
             if (!string.IsNullOrEmpty(returnurl))
             {
+
                 return Redirect(returnurl);
             }
-            return RedirectToAction("Caption", new { id = campaignid });
+            return RedirectToAction("Caption", new { campaignid = campaignid });
         }
         [HttpPost]
         public async Task<IActionResult> UpdateCaptionNote(int campaignid, int id, string note, string returnurl = "")
@@ -590,7 +595,7 @@ namespace WebMerchant.Controllers
             {
                 return Redirect(returnurl);
             }
-            return RedirectToAction("Caption", new { id = campaignid });
+            return RedirectToAction("Caption", new { campaignid = campaignid });
         }
 
 
@@ -605,7 +610,7 @@ namespace WebMerchant.Controllers
             if (campaign == null) return NotFound();
             ViewBag.Campaign = campaign;
             var model = await _campaignAccountContentService.GetGroupCampaignAccountContentsByCampaignId(campaign.Id, order, pageindex, pagesize);
-
+            ViewBag.CampaignId = campaign.Id;
             return View(model);
         }
 
@@ -619,11 +624,16 @@ namespace WebMerchant.Controllers
             }
 
             this.AddAlert(true);
+
+            if (type == 1)
+            {
+                return RedirectToAction("Details", new { id = campaignid });
+            }
             if (!string.IsNullOrEmpty(returnurl))
             {
                 return Redirect(returnurl);
             }
-            return RedirectToAction("Content", new { id = campaignid });
+            return RedirectToAction("Content", new { campaignid });
         }
         [HttpPost]
         public async Task<IActionResult> UpdateContentNote(int campaignid, int id, string note, string returnurl = "")
@@ -636,7 +646,7 @@ namespace WebMerchant.Controllers
             {
                 return Redirect(returnurl);
             }
-            return RedirectToAction("Content", new { id = campaignid });
+            return RedirectToAction("Content", new { campaignid = campaignid });
         }
 
 

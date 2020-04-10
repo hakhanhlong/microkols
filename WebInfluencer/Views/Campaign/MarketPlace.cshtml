@@ -92,10 +92,14 @@
                                 var campaignAccount = item.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
                                 if (campaignAccount != null)
                                 {
+                                    var text = campaignAccount.Status.ToAccountText();
+                                    if (!string.IsNullOrEmpty(text))
+                                    {
+                                        <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id"></a>
+                                    }
 
 
-                                
-                                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@campaignAccount.Status.ToAccountText()</a>
+
                                 }
                                 else if (item.Campaign.Status == CampaignStatus.Confirmed)
                                 {
