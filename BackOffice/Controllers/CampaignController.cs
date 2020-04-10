@@ -68,9 +68,9 @@ namespace BackOffice.Controllers
 
         }
 
-        public IActionResult Index(int pageindex = 1)
+        public async Task<IActionResult> Index(CampaignStatus? status, int pageindex = 1)
         {
-            var listing = _ICampaignBusiness.GetListCampaign(pageindex, 25);
+            var listing = await _ICampaignBusiness.GetCampaignByStatus(status, pageindex, 25);
             DataSelectionStatusAndType();
             return View(listing);
         }
@@ -131,8 +131,7 @@ namespace BackOffice.Controllers
 
             var model = await _ICampaignService.GetCampaignDetailsByAgency(campaign.AgencyId, campaignid);
             if (model == null) return NotFound();
-            
-
+           
             ViewBag.Tab = tab;
             if (tab == 1)
             {

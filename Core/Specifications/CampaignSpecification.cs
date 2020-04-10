@@ -66,6 +66,21 @@ namespace Core.Specifications
         }
     }
 
+
+    public class CampaignByStatusSpecification : BaseSpecification<Campaign>
+    {
+        public CampaignByStatusSpecification(CampaignStatus? status) : base(m => (!status.HasValue || m.Status == status))
+        {
+            AddInclude(m => m.CampaignOption);
+            AddInclude(m => m.CampaignAccount);
+            AddInclude($"{nameof(Campaign.CampaignAccount)}.{nameof(CampaignAccount.Account)}");// m => m.CampaignAccount);
+            AddInclude(m => m.CampaignAccountType);
+            AddInclude(m => m.Agency);
+        }
+    }
+
+
+
     public class CampaignByAccountSpecification : BaseSpecification<Campaign>
     {
         public CampaignByAccountSpecification(int accountid, string kw)

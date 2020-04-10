@@ -36,5 +36,14 @@ namespace WebServices.Services
 
         }
 
+        public async Task<Wallet> GetByWalletID(int walletid)
+        {
+            var filter = new  WalletFilterSpecification(walletid);
+            var wallet = await _walletRepository.GetSingleBySpecAsync(filter);
+            return wallet;
+
+
+        }
+
     }
 }

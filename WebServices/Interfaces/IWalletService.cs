@@ -11,5 +11,7 @@ namespace WebServices.Interfaces
     {
         Task<long> GetAmount(AuthViewModel auth);
         Task<long> GetAmount(EntityType entityType, int entityId);
+
+        Task<Wallet> GetByWalletID(int walletid);
     }
 }

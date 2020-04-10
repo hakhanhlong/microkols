@@ -23,6 +23,7 @@ namespace WebServices.ViewModels
 
             //campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
             Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
+
             Transactions = TransactionViewModel.GetList(transactions);
 
             CampaignAccounts = CampaignAccountViewModel.GetList(campaignAccounts);
@@ -38,6 +39,8 @@ namespace WebServices.ViewModels
         public List<TransactionViewModel> Transactions { get; set; }
 
         public List<CampaignAccountViewModel> CampaignAccounts { get; set; }
+
+      
 
     }
     

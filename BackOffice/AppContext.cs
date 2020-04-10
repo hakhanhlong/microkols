@@ -60,6 +60,9 @@ namespace BackOffice
             services.AddScoped<ICampaignService, CampaignService>();
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<IAgencyService, AgencyService>();
+            
+
             services.AddScoped<ISharedService, SharedService>();
             services.AddScoped<IAccountService, AccountService>();
 

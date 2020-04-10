@@ -13,8 +13,6 @@
 
 }
 
-
-
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
         Campaign Detail
@@ -90,351 +88,362 @@
                         </div>
                     </div>
                 }
-                <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#campaign-detail" role="tab">
-                            CAMPAIGN DETAIL
-                        </a>
-                    </li>
-
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#campaign-statistic" role="tab">
-                            STATISTIC
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="campaign-detail" role="tabpanel">
-                        <div class="text-left mb-3">
-                            <a class="btn btn-primary" href="/campaign/configuration/?campaignid=@Model.Id">
-                                CONFIGURATION
+                    <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link active" data-toggle="tab" href="#campaign-detail" role="tab">
+                                CAMPAIGN DETAIL
                             </a>
-                        </div>
-                        <!--begin::Section-->
-                        <div class="m-section">
-                            <div class="m-section__content">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <partial name="_CampaignItemCountingPartial" model="@Model" />
+                        </li>
+
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#campaign-statistic" role="tab">
+                                STATISTIC
+                            </a>
+                        </li>
+
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#campaign-transaction" role="tab">
+                                TRANSACTIONS
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="campaign-detail" role="tabpanel">
+                            <div class="text-left mb-3">
+                                <a class="btn btn-primary" href="/campaign/configuration/?campaignid=@Model.Id">
+                                    CONFIGURATION
+                                </a>
+                            </div>
+                            <!--begin::Section-->
+                            <div class="m-section">
+                                <div class="m-section__content">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <partial name="_CampaignItemCountingPartial" model="@Model" />
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Mã chiến dịch:</strong><span>@Model.Code</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Tên chiên dịch:</strong><span>
-                                                @Model.Title
-                                            </span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Trạng thái:</strong>
-                                            <select campaign-id="@(Model.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@Model.Status" asp-items="@ViewBag.CampaignStatus"></select>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Còn lại:</strong>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2">Ngày tạo:</strong> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
-                                        </div>
-                                        @if (Model.DateStart.HasValue)
-                                        {
-
+                                    <div class="row">
+                                        <div class="col-md-6">
                                             <div class="mb-2">
-                                                <strong class="mr-2"> Thời gian nhận đăng ký:</strong>
-                                                <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
-                                                <span class="text-info">
-                                                    @Model.DateEnd.Value.ToViDateTime()
+                                                <strong class="mr-2"> Mã chiến dịch:</strong><span>@Model.Code</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Tên chiên dịch:</strong><span>
+                                                    @Model.Title
                                                 </span>
                                             </div>
-                                        }
-                                        @if (Model.ExecutionStart.HasValue)
-                                        {
-
                                             <div class="mb-2">
-                                                <strong class="mr-2"> Thời gian thực hiện:</strong>
-                                                <span class="text-info">@Model.ExecutionStart.Value.ToViDateTime()</span> -
-                                                <span class="text-info">
-                                                    @Model.ExecutionEnd.Value.ToViDateTime()
-                                                </span>
+                                                <strong class="mr-2"> Trạng thái:</strong>
+                                                <select campaign-id="@(Model.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@Model.Status" asp-items="@ViewBag.CampaignStatus"></select>
                                             </div>
-                                        }
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Loại chiến dịch:</strong>
-
-                                            <span class="text-primary"> @Model.Type.ToDisplayName()</span>
-
-                                            @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Còn lại:</strong>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Ngày tạo:</strong> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
+                                            </div>
+                                            @if (Model.DateStart.HasValue)
                                             {
-                                                if (Model.EnabledAccountChargeExtra)
-                                                {
-                                                    <small class="text-info"> Đính kèm hình ảnh cá nhân</small>
-                                                }
+
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Thời gian nhận đăng ký:</strong>
+                                                    <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
+                                                    <span class="text-info">
+                                                        @Model.DateEnd.Value.ToViDateTime()
+                                                    </span>
+                                                </div>
                                             }
-                                        </div>
-                                        @if (Model.Type == CampaignType.ReviewProduct)
-                                        {
+                                            @if (Model.ExecutionStart.HasValue)
+                                            {
 
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Thời gian thực hiện:</strong>
+                                                    <span class="text-info">@Model.ExecutionStart.Value.ToViDateTime()</span> -
+                                                    <span class="text-info">
+                                                        @Model.ExecutionEnd.Value.ToViDateTime()
+                                                    </span>
+                                                </div>
+                                            }
                                             <div class="mb-2">
-                                                <strong>
-                                                    @Model.ReviewType.ToDisplayName()
-                                                </strong>
+                                                <strong class="mr-2"> Loại chiến dịch:</strong>
 
+                                                <span class="text-primary"> @Model.Type.ToDisplayName()</span>
 
-                                                @if (Model.ReviewPayback.HasValue)
+                                                @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
                                                 {
-                                                    <span> - Thu hồi sản phẩm</span>
+                                                    if (Model.EnabledAccountChargeExtra)
+                                                    {
+                                                        <small class="text-info"> Đính kèm hình ảnh cá nhân</small>
+                                                    }
                                                 }
-
-                                                <br />
-                                                <strong class="mr-2"> Địa chỉ:</strong>
-                                                @Model.ReviewAddress
                                             </div>
+                                            @if (Model.Type == CampaignType.ReviewProduct)
+                                            {
 
-                                        }
-                                        @if (!string.IsNullOrEmpty(Model.Data))
-                                        {
+                                                <div class="mb-2">
+                                                    <strong>
+                                                        @Model.ReviewType.ToDisplayName()
+                                                    </strong>
+
+
+                                                    @if (Model.ReviewPayback.HasValue)
+                                                    {
+                                                        <span> - Thu hồi sản phẩm</span>
+                                                    }
+
+                                                    <br />
+                                                    <strong class="mr-2"> Địa chỉ:</strong>
+                                                    @Model.ReviewAddress
+                                                </div>
+
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Data))
+                                            {
+                                                <div class="mb-2">
+                                                    <strong> @Model.Type.ToDataText()</strong>:  <a href="@Model.Data" target="_blank">@Model.Data</a>
+                                                </div>
+                                            }
+
+
                                             <div class="mb-2">
-                                                <strong> @Model.Type.ToDataText()</strong>:  <a href="@Model.Data" target="_blank">@Model.Data</a>
-                                            </div>
-                                        }
-
-
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch:</strong><br>
-                                            <span>
-                                                @Model.Description
-                                            </span>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Số lượng người cần:</strong>
-                                            <span>
-                                                @Model.Quantity
-                                            </span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Chi phí tối thiểu:</strong>
-                                            <span class="text-danger">
-                                                @Model.AmountMin.ToPriceText()
-                                            </span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Chi phí tối đa:</strong>
-                                            <span class="text-danger">
-                                                @Model.AmountMax.ToPriceText()
-                                            </span>
-                                        </div>
-
-
-                                        @if (!string.IsNullOrEmpty(Model.Requirement))
-                                        {
-                                            <div class="mb-2">
-                                                <strong class="mr-2"> Yêu cầu về chiến dịch:</strong><br>
+                                                <strong class="mr-2"> Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch:</strong><br>
                                                 <span>
-                                                    @Model.Requirement
+                                                    @Model.Description
                                                 </span>
                                             </div>
 
-                                        }
-                                        @if (!string.IsNullOrEmpty(Model.SampleContentText))
-                                        {
-
-                                            <div class="mb-2">
-                                                <strong class="mr-2"> Nội dung mẫu:</strong><br>
-                                                <span>
-
-                                                    @Model.SampleContentText
-                                                </span>
-                                            </div>
-                                        }
-                                        @if (Model.SampleContent.Count > 0)
-                                        {
-
-                                            <div class="mb-2">
-                                                <strong class="mr-2">  Ảnh mẫu:</strong><br>
-                                                <ul class="list-inline">
-                                                    @foreach (var imgItem in Model.SampleContent)
-                                                    {
-                                                        <li class="list-inline-item">
-                                                            <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-                                                        </li>
-                                                    }
-
-                                                </ul>
-                                            </div>
-
-                                        }
-                                        @if (Model.Image.Count > 0)
-                                        {
-
-                                            <div>
-                                                <strong class="mr-2">  Ảnh chiến dịch cung cấp:</strong><br>
-
-                                                <ul class="list-inline">
-                                                    @foreach (var imgItem in Model.Image)
-                                                    {
-                                                        <li class="list-inline-item">
-                                                            <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-
-                                                        </li>
-                                                    }
-                                                </ul>
-                                            </div>
-                                        }
-
-                                        @if (Model.Hashtag.Count > 0)
-                                        {
-
-                                            <div class="mb-2">
-                                                <strong class="mr-2"> HashTag:</strong><br>
-                                                <span>
-                                                    @foreach (var item in Model.Hashtag)
-                                                    {
-                                                        <span>#@item.Trim('#')</span>
-                                                    }
-                                                </span>
-                                            </div>
-                                        }
-                                        <div class="mb-2">
-                                            <strong class="mr-2">Đối tượng tham gia:</strong>
-                                            <span>
-                                                @foreach (var item in Model.AccountTypes)
-                                                {
-                                                    <strong>@item.ToDisplayName()</strong>
-                                                }
-                                            </span>
                                         </div>
-                                        @if (Model.CountOption > 0)
-                                        {
+
+                                        <div class="col-md-6">
                                             <div class="mb-2">
-                                                <strong class="mr-2">  Tiêu chí:</strong><br>
-                                                <ul>
-                                                    @if (Model.Gender.HasValue)
-                                                    {
-                                                        <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
-                                                    }
-                                                    @if (Model.CityId.Count > 0)
-                                                    {
-                                                        var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
-                                                        if (listcity.Any())
+                                                <strong class="mr-2"> Số lượng người cần:</strong>
+                                                <span>
+                                                    @Model.Quantity
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Chi phí tối thiểu:</strong>
+                                                <span class="text-danger">
+                                                    @Model.AmountMin.ToPriceText()
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2"> Chi phí tối đa:</strong>
+                                                <span class="text-danger">
+                                                    @Model.AmountMax.ToPriceText()
+                                                </span>
+                                            </div>
+
+
+                                            @if (!string.IsNullOrEmpty(Model.Requirement))
+                                            {
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Yêu cầu về chiến dịch:</strong><br>
+                                                    <span>
+                                                        @Model.Requirement
+                                                    </span>
+                                                </div>
+
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.SampleContentText))
+                                            {
+
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Nội dung mẫu:</strong><br>
+                                                    <span>
+
+                                                        @Model.SampleContentText
+                                                    </span>
+                                                </div>
+                                            }
+                                            @if (Model.SampleContent.Count > 0)
+                                            {
+
+                                                <div class="mb-2">
+                                                    <strong class="mr-2">  Ảnh mẫu:</strong><br>
+                                                    <ul class="list-inline">
+                                                        @foreach (var imgItem in Model.SampleContent)
                                                         {
-                                                            <li>
-                                                                Khu vực:
+                                                            <li class="list-inline-item">
+                                                                <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                                                            </li>
+                                                        }
 
-                                                                @foreach (var city in listcity)
+                                                    </ul>
+                                                </div>
+
+                                            }
+                                            @if (Model.Image.Count > 0)
+                                            {
+
+                                                <div>
+                                                    <strong class="mr-2">  Ảnh chiến dịch cung cấp:</strong><br>
+
+                                                    <ul class="list-inline">
+                                                        @foreach (var imgItem in Model.Image)
+                                                        {
+                                                            <li class="list-inline-item">
+                                                                <img src="@AppHelpers.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            }
+
+                                            @if (Model.Hashtag.Count > 0)
+                                            {
+
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> HashTag:</strong><br>
+                                                    <span>
+                                                        @foreach (var item in Model.Hashtag)
+                                                        {
+                                                            <span>#@item.Trim('#')</span>
+                                                        }
+                                                    </span>
+                                                </div>
+                                            }
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Đối tượng tham gia:</strong>
+                                                <span>
+                                                    @foreach (var item in Model.AccountTypes)
+                                                    {
+                                                        <strong>@item.ToDisplayName()</strong>
+                                                    }
+                                                </span>
+                                            </div>
+                                            @if (Model.CountOption > 0)
+                                            {
+                                                <div class="mb-2">
+                                                    <strong class="mr-2">  Tiêu chí:</strong><br>
+                                                    <ul>
+                                                        @if (Model.Gender.HasValue)
+                                                        {
+                                                            <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
+                                                        }
+                                                        @if (Model.CityId.Count > 0)
+                                                        {
+                                                            var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
+                                                            if (listcity.Any())
+                                                            {
+                                                                <li>
+                                                                    Khu vực:
+
+                                                                    @foreach (var city in listcity)
+                                                                    {
+                                                                        <strong>@city.Name</strong>
+                                                                    }
+
+                                                                </li>
+                                                            }
+                                                        }
+                                                        @if (Model.AgeStart.HasValue)
+                                                        {
+                                                            <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
+                                                        }
+
+                                                        @if (Model.CategoryIds.Count > 0)
+                                                        {
+                                                            var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+
+                                                            <li>
+                                                                Lĩnh vực quan tâm/thế mạnh:
+                                                                @foreach (var cat in cats)
                                                                 {
-                                                                    <strong>@city.Name</strong>
+                                                                    <strong>@cat.Name</strong>
+                                                                }
+                                                            </li>
+                                                        }
+
+
+                                                        @if (Model.AccountTypes.Contains(AccountType.HotMom))
+                                                        {
+
+                                                            <li>
+                                                                Con cái:
+
+                                                                @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+
+                                                                @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                                                {
+
+                                                                    <span>
+                                                                        -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                                                                    </span>
                                                                 }
 
                                                             </li>
                                                         }
-                                                    }
-                                                    @if (Model.AgeStart.HasValue)
-                                                    {
-                                                        <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
-                                                    }
 
-                                                    @if (Model.CategoryIds.Count > 0)
-                                                    {
-                                                        var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
-
-                                                        <li>
-                                                            Lĩnh vực quan tâm/thế mạnh:
-                                                            @foreach (var cat in cats)
-                                                            {
-                                                                <strong>@cat.Name</strong>
-                                                            }
-                                                        </li>
-                                                    }
+                                                    </ul>
+                                                </div>
+                                            }
+                                        </div>
 
 
-                                                    @if (Model.AccountTypes.Contains(AccountType.HotMom))
-                                                    {
+                                    </div>
+                                    <div class="row">
 
-                                                        <li>
-                                                            Con cái:
+                                        @if (Model.Status != CampaignStatus.Canceled)
+                                        {
+                                            <div class="col-md-12">
+                                                <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
+                                                    <li class="nav-item m-tabs__item">
+                                                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_6_1" role="tab">
+                                                            Thực hiện chiến dịch
+                                                        </a>
+                                                    </li>
 
-                                                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
-
-                                                            @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
-                                                            {
-
-                                                                <span>
-                                                                    -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
-                                                                </span>
-                                                            }
-
-                                                        </li>
-                                                    }
-
+                                                    <li class="nav-item m-tabs__item">
+                                                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_3" role="tab">
+                                                            Theo dõi chiến dịch
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item m-tabs__item">
+                                                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_4" role="tab">
+                                                            Thanh toán
+                                                        </a>
+                                                    </li>
                                                 </ul>
+                                                <div class="tab-content">
+                                                    <div class="tab-pane active" id="m_tabs_6_1" role="tabpanel">
+                                                        <partial name="_DetailsAccountsProcessPartial" model="Model" />
+                                                    </div>
+                                                    <div class="tab-pane" id="m_tabs_6_3" role="tabpanel">
+                                                        <partial name="_DetailsAccountsReviewPartial" model="Model" />
+                                                    </div>
+                                                    <div class="tab-pane" id="m_tabs_6_4" role="tabpanel">
+                                                        <partial name="_DetailsAccountsPaymentPartial" model="Model" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         }
+
+
                                     </div>
 
 
-                                </div>
-                                <div class="row">
-
-                                    @if (Model.Status != CampaignStatus.Canceled)
-                                    {
-                                        <div class="col-md-12">
-                                            <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
-                                                <li class="nav-item m-tabs__item">
-                                                    <a class="nav-link m-tabs__link active" data-toggle="tab" href="#m_tabs_6_1" role="tab">
-                                                        Thực hiện chiến dịch
-                                                    </a>
-                                                </li>
-
-                                                <li class="nav-item m-tabs__item">
-                                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_3" role="tab">
-                                                        Theo dõi chiến dịch
-                                                    </a>
-                                                </li>
-                                                <li class="nav-item m-tabs__item">
-                                                    <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_tabs_6_4" role="tab">
-                                                        Thanh toán
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="m_tabs_6_1" role="tabpanel">
-                                                    <partial name="_DetailsAccountsProcessPartial" model="Model" />
-                                                </div>
-                                                <div class="tab-pane" id="m_tabs_6_3" role="tabpanel">
-                                                    <partial name="_DetailsAccountsReviewPartial" model="Model" />
-                                                </div>
-                                                <div class="tab-pane" id="m_tabs_6_4" role="tabpanel">
-                                                    <partial name="_DetailsAccountsPaymentPartial" model="Model" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
-
 
                                 </div>
-
-
-
                             </div>
                         </div>
-                    </div>
 
-                    <div class="tab-pane" id="campaign-statistic" role="tabpanel">
-                        3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble.
+                        <div class="tab-pane" id="campaign-statistic" role="tabpanel">
+                            3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scramble.
+                        </div>
+
+                        <div class="tab-pane" id="campaign-transaction" role="tabpanel">
+                            <partial name="_DetailsCampaignTransaction" model="Model" />
+                        </div>
+
                     </div>
-                </div>
 
 
 
