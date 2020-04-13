@@ -111,7 +111,7 @@ namespace WebServices.ViewModels
 
         }
         [Required( ErrorMessage ="Hãy nhập {0}")]
-        [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây")]
+        [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây để hoàn thành công việc")]
         //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
 

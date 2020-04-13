@@ -145,7 +145,10 @@ namespace Core.Entities
             {
                 return "Đã tham gia";
             }
-
+            else if (status == CampaignAccountStatus.Unfinished)
+            {
+                return "Chưa hoàn thành";
+            }
 
             return "";
         }

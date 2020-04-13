@@ -79,9 +79,9 @@
                         var accountFbId = await AccountService.GetProviderIdByAccount(campaignAccount.AccountId, AccountProviderNames.Facebook);
                         var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
                         <div class="row">
-                            <div class="col-1 text-center">
-                                <img src="@avatarurl" class="img-fluid" />
-                                <small class="text-muted">Hiện tại</small>
+                            <div class="col-12 text-center">
+                                <img src="@avatarurl" class="img-fluid" /> <br />
+                                <small class="text-muted">Avatar Hiện tại</small>
                             </div>
 
                             @if (logAvatarTimes != null)
@@ -89,7 +89,7 @@
                                 foreach (var logAvatar in logAvatarTimes)
                                 {
 
-                                    <div class="col-1 text-center">
+                                    <div class="col-12 text-center">
                                         <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
                                         <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
                                     </div>

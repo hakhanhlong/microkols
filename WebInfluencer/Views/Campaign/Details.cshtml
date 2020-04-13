@@ -223,9 +223,19 @@
                                 <ul class="list-unstyled">
                                     @if (!hasApply)
                                     {
-                                        <li>
-                                            @Model.Campaign.KPIMin
-                                        </li>
+                                        if (Model.Campaign.InteractiveMin.HasValue)
+                                        {
+
+                                            <li>
+                                                @Model.Campaign.InteractiveMin.Value
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                @Model.Campaign.KPIMin
+                                            </li>
+                                        }
                                     }
                                     else
                                     {

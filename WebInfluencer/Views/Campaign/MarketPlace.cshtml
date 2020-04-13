@@ -95,7 +95,7 @@
                                     var text = campaignAccount.Status.ToAccountText();
                                     if (!string.IsNullOrEmpty(text))
                                     {
-                                        <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id"></a>
+                                        <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@text</a>
                                     }
 
 

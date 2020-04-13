@@ -62,6 +62,13 @@ namespace Core.Extensions
         }
         public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
+
+            //hxq 1988 --> Phí này với Account sẽ = phí thu nhập mong muốn
+
+            return campaign.AccountChargeAmount;
+           
+            /*
+
             var t1 = campaign.ServiceChargePercent;
 
             var amount = campaignAccount.AccountChargeAmount;
@@ -69,7 +76,7 @@ namespace Core.Extensions
             var val1 = (amount * (100 - t1)) / 100;
 
             return Convert.ToInt32(val1);
-
+            */
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent;
             //var amount = campaignAccount.AccountChargeAmount;
