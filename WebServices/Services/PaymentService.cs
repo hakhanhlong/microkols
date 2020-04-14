@@ -59,7 +59,7 @@ namespace WebServices.Services
                 amount = payment.TotalChargeValue;
 
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
-
+               
                 return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
             }
 
@@ -71,6 +71,8 @@ namespace WebServices.Services
         {
             var transactionid = await _transactionRepository.CreateTransaction(senderId, receiverId, amount, transactionType, note,
                 string.Empty, username, refId, refData);
+
+
 
             string logText = $"CreatePayment -> {transactionid}|{senderId}|{receiverId}|{amount}";
             _logger.LogInformation($"{logText} -> Start");
