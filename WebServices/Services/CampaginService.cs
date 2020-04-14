@@ -1564,6 +1564,10 @@ namespace WebServices.Services
                         }
                         catch// tranh loi lam crash 
                         { }
+                        // longhk thêm notification gửi đến agency
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignEnded,
+                            $"Chiến dịch {campaign.Title}, của bạn đã kết thúc.");
+                        //#################################################################################################################################
 
 
 

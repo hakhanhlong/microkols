@@ -83,7 +83,8 @@ namespace WebServices.Jobs
 
             BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignEnd());
 
-            BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(2));
+            //BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(2));
+            BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(1));
         }
         public async Task UpdateCampaignStart()
         {
@@ -100,10 +101,12 @@ namespace WebServices.Jobs
         #region addition by longhk
 
 
+        // longhk add
         public async Task CheckLockedCampagin()
         {
             await _campaignService.RunCheckingLockedStatus(0);
         }
+        //####################################################################################################
 
         #endregion
 
