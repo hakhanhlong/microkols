@@ -137,12 +137,12 @@
             }
             else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
             {
-                <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                @*<form asp-action="FeedbackAccountJoinCampaign" method="post">
                     <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
                     <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
 
                     <button class="btn btn-outline-danger btn-sm" value="0">Hủy yêu cầu</button>
-                </form>
+                </form>*@
             }
             else if (campaignAccount.Status == CampaignAccountStatus.SubmittedContent)
                 {

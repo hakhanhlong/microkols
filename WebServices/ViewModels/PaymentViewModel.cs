@@ -5,6 +5,7 @@ using Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServices.Code;
@@ -22,7 +23,7 @@ namespace WebServices.ViewModels
             ErrorCode = errorCode;
             TransactionId = transactionid;
             Amount = amount;
-            Status = TransactionStatus.Error;
+            Status = errorCode == PaymentResultErrorCode.ChoHeThongDuyetRutTien ? TransactionStatus.Processing : TransactionStatus.Error;
         }
         public TransactionStatus Status { get; set; } = TransactionStatus.Error;
         public TransactionType Type { get; set; }
@@ -41,22 +42,24 @@ namespace WebServices.ViewModels
     }
     public enum PaymentResultErrorCode
     {
-        [Description("")]
+        [Display(Description = "")]
         KhongLoi = 0,
-        [Description("Lỗi không xác định")]
+        [Display(Description = "Lỗi không xác định")]
         KhongXacDinh,
-        [Description("Lỗi khi trừ tiền tài khoản")]
+        [Display(Description = "Lỗi khi trừ tiền tài khoản")]
         TruTienLoi,
-        [Description("Lỗi khi cộng tiền tài khoản")]
+        [Display(Description = "Lỗi khi cộng tiền tài khoản")]
         CongTienLoi,
-        [Description("Không đủ tiền để thực hiện giao dịch")]
+        [Display(Description = "Không đủ tiền để thực hiện giao dịch")]
         KhongDuTien,
-        [Description("Thông tin tài khoản không chính xác")]
+        [Display(Description = "Thông tin tài khoản không chính xác")]
         ThongTinTaiKhoanKhongChinhXac ,
-        [Description("Thông tin ví không chính xác")]
+        [Display(Description = "Thông tin ví không chính xác")]
         ThongTinViKhongChinhXac,
-        [Description("Thông tin thanh toán không chính xác")]
+        [Display(Description = "Thông tin thanh toán không chính xác")]
         ThongTinThanhToanKhongChinhXac,
+        [Display(Description="Bạn đã khởi tạo yêu cầu rút tiền thành công. Vui lòng chờ quản trị duyệt yêu cầu")]
+        ChoHeThongDuyetRutTien,
 
 
 

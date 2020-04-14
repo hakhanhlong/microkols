@@ -59,8 +59,13 @@ namespace WebServices.Services
                 amount = payment.TotalChargeValue;
 
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
+                if(transactionType == TransactionType.CampaignServiceCharge)
+                {
+                    return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
+                }
 
-                return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
+                var transactionid = await _transactionRepository.CreateTransaction(senderId, receiverId, amount, transactionType, model.Note,  string.Empty, username, refId, refData);
+                return new PaymentResultViewModel(PaymentResultErrorCode.ChoHeThongDuyetRutTien);
             }
 
             return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
