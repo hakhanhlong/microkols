@@ -266,6 +266,7 @@ namespace WebServices.Services
                 foreach (var campaignAccount in campaignAccounts)
                 {
                     long amount = campaign.GetAccountChagreAmount(campaignAccount);
+
                     await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
                    NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), amount.ToPriceText()));
                 }

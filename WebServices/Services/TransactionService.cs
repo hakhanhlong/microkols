@@ -115,6 +115,7 @@ namespace WebServices.Services
             var filter = new TransactionHistorySpecification(walletid, date);
 
             var total = await _transactionHistoryRepository.CountAsync(filter);
+
             var transactionHistory = await _transactionHistoryRepository.ListPagedAsync(filter, "Id_desc", page, pagesize);
 
             return new ListTransactionHistoryViewModel()

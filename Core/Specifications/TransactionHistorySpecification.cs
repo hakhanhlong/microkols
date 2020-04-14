@@ -8,14 +8,14 @@ namespace Core.Specifications
     public class TransactionHistorySpecification : BaseSpecification<TransactionHistory>
     {
         public TransactionHistorySpecification(int walletid, Common.Helpers.DateRange? dateRange) : base(m => m.WalletId == walletid &&
-        (!dateRange.HasValue || (m.DateCreated> dateRange.Value.Start && m.DateCreated < dateRange.Value.End))        
+        (!dateRange.HasValue || (m.DateCreated.Date >= dateRange.Value.Start.Date && m.DateCreated.Date <= dateRange.Value.End.Date))        
         )
         {
             AddInclude(m => m.Transaction);
         }
 
         public TransactionHistorySpecification(int walletid, Common.Helpers.DateRange? dateRange,TransactionType? type) : base(m => m.WalletId == walletid &&
-      (!dateRange.HasValue || (m.DateCreated > dateRange.Value.Start && m.DateCreated < dateRange.Value.End)) &&
+      (!dateRange.HasValue || (m.DateCreated.Date >= dateRange.Value.Start.Date && m.DateCreated.Date <= dateRange.Value.End.Date)) &&
           (!type.HasValue || (m.Transaction.Type== type))
       )
         {

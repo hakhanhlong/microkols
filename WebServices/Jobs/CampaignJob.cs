@@ -80,7 +80,9 @@ namespace WebServices.Jobs
         public async Task UpdateCampaignProcess()
         {
             BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignStart());
+
             BackgroundJob.Enqueue<ICampaignJob>(m => m.UpdateCampaignEnd());
+
             BackgroundJob.Schedule<ICampaignJob>(m => m.UpdateCompletedCampagin(0), TimeSpan.FromMinutes(2));
         }
         public async Task UpdateCampaignStart()

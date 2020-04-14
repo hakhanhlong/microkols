@@ -64,9 +64,11 @@ namespace Core.Extensions
         {
 
             //hxq 1988 --> Phí này với Account sẽ = phí thu nhập mong muốn
+            //return campaign.AccountChargeAmount;
 
-            return campaign.AccountChargeAmount;
-           
+            //Longhk add, chỗ này phải là campaignAccount.AccountChargeAmount -> không phải campaign.AccountChargeAmount em bị nhầm chỗ này
+            return campaignAccount.AccountChargeAmount; 
+
             /*
 
             var t1 = campaign.ServiceChargePercent;

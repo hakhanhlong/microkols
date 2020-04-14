@@ -1395,6 +1395,7 @@ namespace WebServices.Services
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+
                     await CampaignStartedNotifyToAccount(campaign); // chien dịch started thi gưi thống báo đến tất cả người đã đồng ý tham gia chiến dịch
                     //################ anh Long add them notification gửi về admin ####################################################################
                     try
@@ -1406,7 +1407,13 @@ namespace WebServices.Services
                     catch// tranh loi lam crash 
                     { }
 
-                    
+                    // longhk thêm gửi notification đến doanh nghiệp khi chiến dịch bắt đầu
+                    await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignStarted,
+                        $"Chiến dịch {campaign.Title}, của bạn đã bắt đầu.");
+                    //#################################################################################################################################
+
+
+
                     //huy campaing account chua confirms 
                     var needCancelCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus> {
                             CampaignAccountStatus.AccountRequest,
