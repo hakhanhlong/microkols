@@ -22,6 +22,10 @@ namespace Core.Specifications
         {
         }
 
+        //public CampaignAccountSpecification(CampaignAccountStatus status, int campaignid) : base(m => m.Status == status && m.CampaignId == campaignid)
+        //{
+        //}
+
         public CampaignAccountSpecification(CampaignAccountStatus? status, int accountid) : base(m => (!status.HasValue || m.Status == status.Value) && m.AccountId == accountid)
         {
             AddInclude(c => c.Account);

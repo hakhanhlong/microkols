@@ -1444,7 +1444,7 @@ namespace WebServices.Services
             try
             {
                 // chỉ lấy account đã confirm tham gia chiến dịch và gửi thông báo đến account
-                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(CampaignAccountStatus.Confirmed));
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaign.Id, CampaignAccountStatus.Confirmed));
                 foreach(var account in campaignAccounts)
                 {
                     //send notification to account
