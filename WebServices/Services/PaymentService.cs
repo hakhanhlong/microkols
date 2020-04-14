@@ -59,12 +59,14 @@ namespace WebServices.Services
                 amount = payment.TotalChargeValue;
 
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
-                if(transactionType == TransactionType.CampaignServiceCharge)
+                if (transactionType == TransactionType.CampaignServiceCharge)
                 {
                     return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
                 }
 
-                var transactionid = await _transactionRepository.CreateTransaction(senderId, receiverId, amount, transactionType, model.Note,  string.Empty, username, refId, refData);
+                // nếu là yêu cầu rút tiền -- Đổi sender - recivert -> số tiền dương
+
+                var transactionid = await _transactionRepository.CreateTransaction(receiverId, senderId, 0 - amount, transactionType, model.Note, string.Empty, username, refId, refData);
                 return new PaymentResultViewModel(PaymentResultErrorCode.ChoHeThongDuyetRutTien);
             }
 
@@ -164,7 +166,7 @@ namespace WebServices.Services
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
 
-            long amount =  campaign.GetAccountChagreAmount(campaignAccount);
+            long amount = campaign.GetAccountChagreAmount(campaignAccount);
             var senderId = await _walletRepository.GetSystemId();
             var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId);
             var transactionType = TransactionType.CampaignAccountPayback;
