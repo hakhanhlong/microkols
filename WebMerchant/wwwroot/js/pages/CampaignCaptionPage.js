@@ -44,6 +44,18 @@
             $('.frmFeedbackAll-ids').html('');
             $('.frmFeedbackAll').hide();
         }
+
+        $('.open-img-popup').click(function (e) {
+            e.preventDefault();
+
+            var src = $(this).find('img').attr('src');
+
+            console.log('src', src);
+
+            $("#imagemodal .modal-img").prop("src", src);
+
+            $('#imagemodal').modal('toggle');
+        });
      
     }
 

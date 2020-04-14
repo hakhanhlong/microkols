@@ -554,7 +554,7 @@ namespace WebMerchant.Controllers
         #endregion
 
         #region Caption
-        public async Task<IActionResult> Caption(int campaignid, string order, int pageindex = 1, int pagesize = 1)
+        public async Task<IActionResult> Caption(int campaignid, string order, int pageindex = 1, int pagesize = 20)
         {
             var campaign = await _campaignService.GetCampaign(campaignid);
             if (campaign == null) return NotFound();
@@ -605,7 +605,7 @@ namespace WebMerchant.Controllers
 
 
         #region Content
-        public async Task<IActionResult> Content(int campaignid, string order, int pageindex = 1, int pagesize = 1)
+        public async Task<IActionResult> Content(int campaignid, string order, int pageindex = 1, int pagesize = 20)
         {
             var campaign = await _campaignService.GetCampaign(campaignid);
             if (campaign == null) return NotFound();
