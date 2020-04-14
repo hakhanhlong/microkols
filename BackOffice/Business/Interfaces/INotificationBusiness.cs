@@ -16,6 +16,8 @@ namespace BackOffice.Business.Interfaces
 
         Task CreateNotificationAccountVerify(int accountid, int entityid, NotificationType notificationType, string msg, string text);
 
+        Task CreateNotificationTransactionByStatus(int transactionid, int agency_entityid, NotificationType notificationType, string msg, string text);
+
 
 
     }

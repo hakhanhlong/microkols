@@ -50,6 +50,10 @@ namespace Core.Entities
 
         TransactionAccountRefundToAgency = 144,
 
+        TransactionCampaignServiceCashBackApprove = 145,
+        TransactionCampaignServiceCashBackProcessing = 146,
+        TransactionCampaignServiceCashBackCancel = 147,
+
 
         //##########################################
 
@@ -66,7 +70,7 @@ namespace Core.Entities
 
         //####### longhk add ################
         CampaignCreated = 23,
-        CampaignLocked  = 24,
+        CampaignLocked  = 24,        
         //###################################
 
 

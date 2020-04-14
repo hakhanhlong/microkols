@@ -533,7 +533,7 @@ namespace BackOffice.Controllers
             try
             {
                 var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
-                int agencyid = wallet.EntityType == EntityType.Agency? wallet.EntityId:0;
+                int agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
 
                 if(agencyid > 0)
                 {
@@ -548,15 +548,19 @@ namespace BackOffice.Controllers
 
                             if(transaction.Type == TransactionType.WalletRecharge)
                             {
-                                string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
                             }
                             else if(transaction.Type == TransactionType.WalletWithdraw)
                             {
                                 string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
+                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
                             }
-
+                            else if(transaction.Type == TransactionType.CampaignServiceCashBack)
+                            {
+                                string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionCampaignServiceCashBackApprove, _msg, model.AdminNote);
+                            }
                             
 
                         }
@@ -571,12 +575,7 @@ namespace BackOffice.Controllers
                     }
                     else
                     {
-
-                        NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
-                        if(model.Status == TransactionStatus.Processing)
-                            _notifyType = NotificationType.TransactionDepositeProcessing;
-
-
+                                                  
                         transaction.Status = model.Status;
                         transaction.DateModified = DateTime.Now;
 
@@ -586,8 +585,34 @@ namespace BackOffice.Controllers
                         await _ITransactionRepository.UpdateAsync(transaction);
                         TempData["MessageSuccess"] = "Update Status Success";
 
-                        string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                        await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                        //####################### Gửi notification ##################################################################################
+                        try
+                        {
+                            NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
+                            string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                            if (model.Status == TransactionStatus.Processing)
+                            {
+                                if (transaction.Type == TransactionType.CampaignServiceCashBack)
+                                {
+                                    _notifyType = NotificationType.TransactionCampaignServiceCashBackProcessing;
+                                    _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+
+                                }
+                                else if (model.Type == TransactionType.WalletRecharge)
+                                {
+                                    _notifyType = NotificationType.TransactionDepositeProcessing;
+                                }
+                                else if (model.Type == TransactionType.WalletWithdraw)
+                                {
+                                    _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    _notifyType = NotificationType.TransactionWithdrawProcessing;
+                                }
+                            }
+                            await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                        }
+                        catch { }
+                        //################################################################################################################################
+
                     }
                 }
                 else
