@@ -152,10 +152,16 @@ namespace Core.Entities
 
             return "";
         }
+
         public static int GetCountApplied(this IEnumerable<CampaignAccount> campaignAccounts)
         {
-           return campaignAccounts.Where(m => 2 <= (int) m.Status && 6 > (int)m.Status).Count();
+            return campaignAccounts.Where(m => 2 <= (int) m.Status && 6 >= (int)m.Status).Count();
+
+
+            
+
         }
+
 
 
     }

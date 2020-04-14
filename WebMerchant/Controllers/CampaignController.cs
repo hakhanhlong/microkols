@@ -139,6 +139,7 @@ namespace WebMerchant.Controllers
                             for (var i = 0; i < accountids.Count; i++)
                             {
                                 var amount = model.AmountMax; //model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
+
                                 BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, accountids[i], amount, CurrentUser.Username));
 
                             }
