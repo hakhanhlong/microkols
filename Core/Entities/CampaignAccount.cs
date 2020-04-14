@@ -155,10 +155,18 @@ namespace Core.Entities
 
         public static int GetCountApplied(this IEnumerable<CampaignAccount> campaignAccounts)
         {
-            return campaignAccounts.Where(m => 2 <= (int) m.Status && 6 >= (int)m.Status).Count();
+
+            var arrStatus = new List<CampaignAccountStatus>() {   CampaignAccountStatus.Confirmed ,
+        CampaignAccountStatus.SubmittedContent ,
+        CampaignAccountStatus.DeclinedContent,
+        CampaignAccountStatus.ApprovedContent ,
+        CampaignAccountStatus.UpdatedContent ,
+        CampaignAccountStatus.Finished,
+            CampaignAccountStatus.Unfinished};
+            return campaignAccounts.Where(m => arrStatus.Contains(m.Status)).Count();
 
 
-            
+
 
         }
 

@@ -110,20 +110,20 @@ namespace WebInfluencer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var imgs = new List<string>();
-                if (file != null)
-                    foreach (var item in file)
-                    {
+                //var imgs = new List<string>();
+                //if (file != null)
+                //    foreach (var item in file)
+                //    {
 
-                        var newpath = await _fileHelper.UploadTempFile(item);
-                        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
-                        if (!string.IsNullOrEmpty(tmp))
-                        {
-                            imgs.Add(tmp);
-                        }
-                    }
+                //        var newpath = await _fileHelper.UploadTempFile(item);
+                //        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
+                //        if (!string.IsNullOrEmpty(tmp))
+                //        {
+                //            imgs.Add(tmp);
+                //        }
+                //    }
 
-                model.Image = imgs;
+                //model.Image = imgs;
 
                 var r = await _campaignAccountContentService.CreateCampaignAccountContent(model, CurrentUser.Username);
                 SetMessageModal("Đã gửi nội dung thành công, Nội dung của bạn đang chờ được xét duyệt.");

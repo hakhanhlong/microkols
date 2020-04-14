@@ -34,6 +34,40 @@
 }
 @section Scripts{
 
+
+    <script type="text/javascript">
+        $().ready(function () {
+
+            var t = 0;
+            $('#modal-campaign-form-Content').on('shown.bs.modal', function (e) {
+                console.log('modal open');
+                if (t == 0) {
+                    $('#dataImageFile').change(function () {
+                        var id = $(this).attr('id');
+                        var target = $(this).data('target');
+                        var preview = $(this).data('preview');
+                        var sizetype = $(this).data('sizetype');
+                        var files = document.getElementById(id).files;
+
+                        AppCommon.uploadTempImage(files, function (datas) {
+                            if (datas.length > 0) {
+                                $(target).val(datas[0].path);
+                                $(target).trigger("change");
+                                $(preview).attr('src', datas[0].url);
+                            }
+                        }, sizetype);
+
+                    });
+                    t = 1;
+                }
+
+            })
+
+
+
+        })
+    </script>
+
 }
 @section Top{
 
@@ -167,20 +201,31 @@
                             {
 
                                 <label>Ảnh Avatar</label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" multiple name="file">
-                                    <label class="custom-file-label" for="customFile">Ảnh Avatar</label>
-                                </div>
+                                @*<div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" multiple name="file">
+                                        <label class="custom-file-label" for="customFile">Ảnh Avatar</label>
+                                    </div>*@
                             }
                             else
                             {
                                 <label>Ảnh nội dung</label>
 
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" multiple name="file">
-                                    <label class="custom-file-label" for="customFile">Ảnh nội dung</label>
-                                </div>
+                                @*<div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="customFile" multiple name="file">
+                                        <label class="custom-file-label" for="customFile">Ảnh nội dung</label>
+                                    </div>*@
                             }
+
+
+                            <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" />
+                            <input type="hidden" id="Image" name="Image" />
+
+                            <div>
+                                <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+                            </div>
+
+
+
                         </div>
                         <div class="text-right">
                             <input type="hidden" name="CampaignId" value="@Model.Campaign.Id" />

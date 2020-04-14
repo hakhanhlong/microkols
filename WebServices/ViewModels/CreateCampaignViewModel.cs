@@ -102,7 +102,7 @@ namespace WebServices.ViewModels
                 Code = code,
                 Quantity = target.Quantity,
                 DateStart = regTime != null ? (DateTime?)regTime.Value.Start : null,
-                DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null,
+                DateEnd = regTime != null ? (DateTime?)regTime.Value.End.AddSeconds(59) : null,
                 //AccountFeedbackBefore = target.FeedbackBefore.ToViDateTime(),
                 CustomKolNames = target.CustomKolNames.ToListString(),
                 Method = CampaignMethod.OpenJoined,
@@ -112,16 +112,16 @@ namespace WebServices.ViewModels
                 KPIMin = target.KPIMin,
                 InteractiveMin = target.InteractiveMin,
                 ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
-                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null,
+                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End.AddSeconds(59) : null,
                 FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
-                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null,
+                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End.AddSeconds(59) : null,
                 AmountMax = target.AmountMax,
                 AmountMin = target.AmountMin,
                 IsSendProduct = info.SendProduct,
 
 
                 ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null,
-                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null,
+                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End.AddSeconds(59) : null,
                 ReviewAddress = reviewaddress,
                 ReviewType = info.ReviewType,
                 ReviewPayback = reviewpayback
