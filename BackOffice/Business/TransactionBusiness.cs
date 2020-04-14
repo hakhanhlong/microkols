@@ -374,6 +374,10 @@ namespace BackOffice.Business
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Rút tiền][WalletWithdraw]", username);
                     }
+                    else if (_transaction.Type == TransactionType.CampaignServiceCashBack) //tra tien ví agency từ chiến dịch
+                    {
+                        retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Trả tiền về ví][CampaignServiceCashBack]", username);
+                    }
                     else if(_transaction.Type == TransactionType.CampaignAccountCharge)
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Phí thành viên][CampaignAccountCharge]", username);
