@@ -33,6 +33,8 @@ namespace BackOffice.Business.Interfaces
         bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId);
 
         Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
+        Task<ListTransactionViewModel> TransactionAgencyCampaignServiceCashBackSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
+
         Task<ListTransactionViewModel> GetTransactions(string searchtype, int? sender_wallet_id, int? reciever_wallet_id, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
 
 

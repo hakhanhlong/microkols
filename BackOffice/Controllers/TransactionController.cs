@@ -66,6 +66,59 @@ namespace BackOffice.Controllers
         
         }
 
+
+        #region CampaignServiceCashBack
+
+        public async Task<IActionResult> CampaignServiceCashBack(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+            var _listTransaction = await FillTransactions(TransactionType.CampaignServiceCashBack, status, pageindex);
+            return View(_listTransaction);
+        }
+
+        public async Task<IActionResult> CampaignServiceCashBackSearch(string keyword, DateTime? StartDate, DateTime? EndDate, TransactionStatus TransactionStatus = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+
+
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyCampaignServiceCashBackSearch(keyword, TransactionStatus, StartDate, EndDate, pageindex, 25);
+
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                try
+                {
+                    var wallet = _IWalletBusiness.Get(item.ReceiverId);
+                    item.ReceiverName = wallet.Name;
+                    item.Wallet = wallet;
+                }
+                catch { }
+            }
+
+            return View(_listTransaction);
+        }
+
+
+        #endregion
+
+
+        #region WalletRecharge
+
+
         public async Task<IActionResult> WalletRecharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
 
@@ -109,6 +162,9 @@ namespace BackOffice.Controllers
 
             return View(_listTransaction);
         }
+
+        #endregion
+
 
         public async Task<IActionResult> WalletWithdraw(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
@@ -498,7 +554,7 @@ namespace BackOffice.Controllers
                             else if(transaction.Type == TransactionType.WalletWithdraw)
                             {
                                 string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                                await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
                             }
 
                             
