@@ -754,6 +754,7 @@ namespace WebServices.Services
                         campaignAccount.Status = confirmed ? CampaignAccountStatus.Confirmed : CampaignAccountStatus.Canceled;
                         campaignAccount.DateModified = DateTime.Now;
                         campaignAccount.UserModified = username;
+                        campaignAccount.KPICommitted = model.KPICommitted;
                         if (confirmed)
                         {
                             campaignAccount.AccountChargeAmount = model.AccountChargeAmount;

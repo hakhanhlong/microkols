@@ -3,6 +3,9 @@
 @inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
 
 
+@{ 
+    var haskpi = Model.CampaignAccounts.Count(m => m.KPICommitted > 0);
+}
 <table class="table table-sm table-bordered">
     <thead>
         <tr>
@@ -15,6 +18,10 @@
             <th width="250">
                 Link facebook
             </th>
+            @if (haskpi > 0)
+            {
+                <th>KIP cam kết</th>
+            }
             <th>
                 nội dung chia sẻ
             </th>
@@ -38,8 +45,10 @@
 
                 <a href="@campaignAccount.Account.Link" target="_blank">
                     @campaignAccount.Account.Name
-                </a>
 
+                   
+                </a>
+             
             </td>
             <td>
                 @if (campaignAccount.Status == CampaignAccountStatus.Finished)
@@ -101,6 +110,12 @@
                   
                 }
             </td>
+            @if (haskpi > 0)
+            {
+        <td>
+            @campaignAccount.KPICommitted
+        </td>
+            }
             <td>
                 <span class="text-info"> @campaignAccount.RefContent</span>
             </td>

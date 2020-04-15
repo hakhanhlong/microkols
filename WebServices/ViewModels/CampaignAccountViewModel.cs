@@ -37,12 +37,13 @@ namespace WebServices.ViewModels
             ReportStatus = campaignAccount.ReportStatus;
             ReportNote = campaignAccount.ReportNote;
             ReportImages = campaignAccount.ReportImages.ToListString();
+            KPICommitted = campaignAccount.KPICommitted;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
             return campaignAccounts.Select(m => new CampaignAccountViewModel(m)).ToList();
         }
-
+        public int KPICommitted { get; set; }
         public int Id { get; set; }
         public CampaignAccountRating? Rating { get; set; }
         public CampaignAccountReportStatus? ReportStatus { get; set; }
