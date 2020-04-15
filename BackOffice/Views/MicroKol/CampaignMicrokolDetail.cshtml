@@ -7,6 +7,8 @@
 @model ListCampaignWithAccountViewModel
 
 @inject WebServices.Interfaces.ICampaignService CampaignService
+@using BackOffice.Extensions;
+
 
 
 @section Subheaders{
@@ -92,7 +94,10 @@
                                         <tr>
                                             <td>@(count)</td>
                                             <td>
-                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
+                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a><br />
+                                                <span class="m--font-danger">
+                                                    @item.CampaignAccount.AccountChargeAmount.ToPriceText()
+                                                </span>
                                             </td>
                                             <td>
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
@@ -101,38 +106,21 @@
                                             </td>
                                             <td>
 
-                                                @if (item.Status == CampaignStatus.Canceled)
-                                                {
-                                                    <span class="m-badge m-badge--danger m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-                                                else if (item.Status == CampaignStatus.Completed)
-                                                {
-                                                    <span class="m-badge m-badge--info m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="m-badge m-badge--primary m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
+                                                @item.Status.ToBadge()
 
                                             </td>
                                             <td>
                                                 <span class="m--font-danger">
                                                     @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }
 
-                                                    @*@item.CampaignAccount.AccountChargeAmount.ToPriceText()*@
+                                                    
 
                                                     @agencyCharge.ToPriceText()
                                                 </span>
                                             </td>
                                             <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
                                             <td>
-                                                @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
+                                                @*@if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
                                                 {
                                                     if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
                                                     {
@@ -149,9 +137,7 @@
                                                             <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
                                                         }
                                                     }
-
-
-                                                }
+                                                }*@
                                             </td>
 
                                         </tr>

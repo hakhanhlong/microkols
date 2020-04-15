@@ -172,11 +172,68 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
+
+        #region CampaignServiceCharge
         public async Task<IActionResult> ServiceCharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
+            BindingTransactionOptions();
             var _listTransaction = await FillTransactions(TransactionType.CampaignServiceCharge, status, pageindex);
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                
+            }
+
             return View(_listTransaction);
         }
+
+        public async Task<IActionResult> CampaignServiceSearch(string keyword, DateTime? StartDate, DateTime? EndDate, TransactionStatus TransactionStatus = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyCampaignServiceSearch(keyword, TransactionStatus, StartDate, EndDate, pageindex, 25);
+
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                
+            }
+
+            return View(_listTransaction);
+        }
+
+
+        #endregion
+
+
 
         public async Task<IActionResult> AccountCharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {

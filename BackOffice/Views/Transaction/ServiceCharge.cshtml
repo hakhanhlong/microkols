@@ -33,7 +33,7 @@
         <li class="m-nav__item">
             <a href="/transaction/servicecharge" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Service Charge
+                    Campaign Service Charge
                 </span>
             </a>
         </li>
@@ -47,12 +47,12 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Service Charge
+                            Campaign Service Charge
                         </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
-                    <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line--info" role="tablist">
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/servicecharge?status=Created" role="tab">
                                 Created
@@ -83,12 +83,15 @@
             </div>
             <div class="m-portlet__body">
                 <div class="tab-content">
+                    <div class="tab-pane active" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/Transaction/_FilterCampaignService.cshtml")
+                    </div>
                     <div class="tab-pane active show">
 
                         @if (Model != null)
                         {
 
-                            @await Html.PartialAsync("~/Views/Transaction/_TransactionItem.cshtml", Model)                            
+                            @await Html.PartialAsync("~/Views/Transaction/_ServiceChargeItem.cshtml", Model)
                         }
                         else
                         {
@@ -109,6 +112,46 @@
     </div>
 </div>
 
+<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Take note change status transaction
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframenotestatus" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Transaction History
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframehistory" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 

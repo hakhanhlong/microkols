@@ -235,6 +235,7 @@ namespace BackOffice.Business
             var filter = new CampaignAccountSpecification(status, StartDate, EndDate, accountid);
 
             var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+
             var total = _ICampaignAccountRepository.Count(filter);
             var list = new List<CampaignWithAccountViewModel>();
             foreach (var campaignAccount in campaignAccounts)

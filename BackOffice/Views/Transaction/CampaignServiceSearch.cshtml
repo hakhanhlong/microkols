@@ -1,16 +1,14 @@
 ﻿
 @{
-    ViewData["Title"] = "CampaignServiceCashBackSearch";
+    ViewData["Title"] = "CampaignServiceSearch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-
 
 @model ListTransactionViewModel
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Campaign Service CashBack Search
+        Campaign Service Charge Search
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -33,9 +31,9 @@
             -
         </li>
         <li class="m-nav__item">
-            <a href="/transaction/campaignservicecashback" class="m-nav__link">
+            <a href="/transaction/servicecharge" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Campaign Service CashBack
+                    Campaign Service Charge Search
                 </span>
             </a>
         </li>
@@ -49,34 +47,34 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Deposite Search
+                            Campaign Service Charge Search
                         </h3>
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line--info" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/campaignservicecashback?status=Created" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/servicecharge?status=Created" role="tab">
                                 Created
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/campaignservicecashback?status=Canceled" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/servicecharge?status=Canceled" role="tab">
                                 Canceled
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/campaignservicecashback?status=Processing" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/servicecharge?status=Processing" role="tab">
                                 Processing
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/campaignservicecashback?status=Completed" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/servicecharge?status=Completed" role="tab">
                                 Completed
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/campaignservicecashback?status=Error" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/servicecharge?status=Error" role="tab">
                                 Error
                             </a>
                         </li>
@@ -87,14 +85,14 @@
 
                 <div class="tab-content">
                     <div class="tab-pane active" id="m_portlet_tab_1_1">
-                        @await Html.PartialAsync("~/Views/Transaction/_FilterCampaignServiceCashBack.cshtml")
+                        @await Html.PartialAsync("~/Views/Transaction/_FilterCampaignService.cshtml")
                     </div>
                     <div class="tab-pane active show">
 
                         @if (Model != null)
                         {
 
-                            @await Html.PartialAsync("~/Views/Transaction/_CampaignServiceCashBackItem.cshtml", Model)
+                            @await Html.PartialAsync("~/Views/Transaction/_ServiceChargeItem.cshtml", Model)
                         }
                         else
                         {
@@ -110,7 +108,7 @@
             </div>
             <div class="m-portlet__foot">
                 <pager pager="@Model.Pager" asp-route-transactionstatus="@(Model.TransactionStatus)"
-                       asp-route-keyword="@(Model.keyword)" asp-action="CampaignServiceCashBackSearch" asp-route-startdate="@(Model.StartDate)"
+                       asp-route-keyword="@(Model.keyword)" asp-action="CampaignServiceSearch" asp-route-startdate="@(Model.StartDate)"
                        asp-route-enddate="@(Model.EndDate)"></pager>
             </div>
         </div>
@@ -156,10 +154,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 
 

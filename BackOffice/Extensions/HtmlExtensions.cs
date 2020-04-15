@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using Core.Entities;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,74 @@ namespace BackOffice.Extensions
         }
         public static HtmlString ToBadge(this Core.Entities.CampaignStatus status)
         {
-            var type = "success";
-            return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+            var type = "primary";
+            if (status == CampaignStatus.Canceled)
+            {
+                type = "warning";
+            }
+            else if (status == CampaignStatus.Error || status == CampaignStatus.Locked)
+            {
+                type = "danger";
+            }
+            else if (status == CampaignStatus.Started)
+            {
+                type = "info";
+            }
+
+            else if (status == CampaignStatus.Ended)
+            {
+                type = "accent";
+            }
+            else if (status == CampaignStatus.Completed)
+            {
+                type = "success";
+            }
+            else if (status == CampaignStatus.Confirmed)
+            {
+                type = "primary";
+            }
+            else
+            {
+                type = "meta";
+            }
+
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
         }
+
+        public static HtmlString ToBadge(this Core.Entities.TransactionStatus status)
+        {
+            var type = "primary";
+            if (status == TransactionStatus.Canceled)
+            {
+                type = "warning";
+            }
+            else if (status == TransactionStatus.Error)
+            {
+                type = "danger";
+            }
+            else if (status == TransactionStatus.Processing)
+            {
+                type = "info";
+            }
+
+            else if (status == TransactionStatus.Created)
+            {
+                type = "accent";
+            }
+            else if (status == TransactionStatus.Completed)
+            {
+                type = "success";
+            }            
+            else
+            {
+                type = "meta";
+            }
+
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
+        }
+
+
+
 
         public static HtmlString ToIcon(this bool published)
         {

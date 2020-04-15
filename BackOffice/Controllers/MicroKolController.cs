@@ -354,7 +354,7 @@ namespace BackOffice.Controllers
 
         public IActionResult AjaxCampaignMicrokol()
         {
-            var list = _ICampaignBusiness.GetCampaignAccountByStatus(null, null, null, 1, 12);
+            var list = _ICampaignBusiness.GetCampaignAccountByStatus(null, null, null, 1, 13);
 
             return View(list);
         }

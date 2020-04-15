@@ -159,6 +159,76 @@ namespace BackOffice.Business
             };
         }
 
+        public async Task<ListTransactionViewModel> TransactionAgencyCampaignServiceSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            var filter = new TransactionSpecification(StartDate, EndDate);
+            var transactions = await _ITransactionRepository.ListAsync(filter);
+            int total = 0;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var agencies = _IAgencyRepository.ListAll().Where(a => a.Name.Contains(keyword) || a.Username.Contains(keyword)).Select(a => a.Id).ToList();
+                var list_wallet = _IWalletRepository.ListAll().Where(w => w.EntityType == EntityType.Agency && agencies.Contains(w.EntityId)).Select(w => w.Id).ToList();
+
+                if (status == TransactionStatus.All)
+                {
+                    var query_transaction = (from t in transactions
+                                             where list_wallet.Contains(t.SenderId)
+                                             && t.Type == TransactionType.CampaignServiceCharge
+                                             select t);
+
+                    total = query_transaction.Count();
+
+                    transactions = query_transaction.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where list_wallet.Contains(t.SenderId)
+                                              && t.Status == status && t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+            }
+            else
+            {
+                if (status != TransactionStatus.All)
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Status == status
+                                              && t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+
+            }
+
+            return new ListTransactionViewModel()
+            {
+                keyword = keyword,
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : "",
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                TransactionStatus = status,
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+
+            };
+        }
 
         public async Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
         {

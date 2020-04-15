@@ -5,6 +5,7 @@
 }
 
 @model ListCampaignViewModel
+@using BackOffice.Extensions;
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -50,7 +51,6 @@
                 <!--begin::Section-->
                 <div class="m-section">
                     <div class="m-section__content">
-
                         <table class="table">
                             <thead>
                                 <tr>
@@ -63,18 +63,19 @@
                                         TITLE
                                     </th>
                                     <th>
-                                        TYPE
+                                        AGENCY
                                     </th>
-                                    <th>
-                                        STATUS
-                                    </th>
+
                                     <th>
                                         START DATE
                                     </th>
                                     <th>
                                         END DATE
                                     </th>
-                                    <th></th>
+                                    @*<th></th>*@
+                                    <th>
+                                        STATUS
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,7 +131,9 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a><br />
+                                                @*<span>@(item.DateCreated)</span>*@
+
                                             </td>
                                             <td>
                                                 @if (item.Title.Length > 50)
@@ -141,14 +144,21 @@
                                                 {
                                                     <b title="@(item.Title)">@(item.Title)</b>
                                                 }
+
+                                                <div>@(item.Type.ToText())</div>
                                             </td>
-                                            <td>@(item.Type.ToText())</td>
                                             <td>
-                                                <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
+                                                <a href="/campaign/campaignfollowagency?agencyid=@(item.AgencyId)">@(item.UserCreated)</a>
+
                                             </td>
+
                                             <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
                                             <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
-                                            <td><a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" class="btn btn-sm btn-info">Detail</a></td>
+                                            @*<td><a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" class="btn btn-sm btn-info">Detail</a></td>*@
+                                            <td>
+                                                @*<select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>*@
+                                                @item.Status.ToBadge()
+                                            </td>
                                         </tr>
                                         count++;
                                     }

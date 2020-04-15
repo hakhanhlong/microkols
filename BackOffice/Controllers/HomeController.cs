@@ -26,17 +26,14 @@ namespace BackOffice.Controllers
         public IActionResult Index()
         {
             var listing_campaign = _ICampaignBusiness.GetListCampaign(1, 15);
-            if(listing_campaign != null)
-            {
-                ViewBag.Listing_Campaign = listing_campaign;
-            }
+            //if(listing_campaign != null)
+            //{
+            //    ViewBag.Listing_Campaign = listing_campaign;
+            //}
 
 
-            return View();
+            return View(listing_campaign);
         }
-
-
-
 
         public IActionResult Privacy()
         {

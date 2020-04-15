@@ -1,4 +1,5 @@
 ﻿@model ListTransactionViewModel
+@using BackOffice.Extensions;
 
 <table class="table">
     <thead>
@@ -50,7 +51,7 @@
                         @item.Amount.ToPriceText()
                     </h6>
                 </td>
-                <td>@item.Status</td>
+                <td>@item.Status.ToBadge()</td>
                 <td>@item.DateCreated.ToString()</td>
                 <td>@item.DateModified.ToString()</td>
                 <td>

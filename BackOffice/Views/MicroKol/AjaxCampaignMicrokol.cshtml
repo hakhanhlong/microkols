@@ -35,8 +35,12 @@
                     <ul class="list-inline">
                         <li class="list-inline-item w-100">
                             <div class="float-left">
-                                <strong>
-                                    @item.CampaignAccount.Account.Name
+                                
+                                    <a href="/microkol/campaignmicrokoldetail/?accountid=@item.CampaignAccount.AccountId">                                    
+                                        @item.CampaignAccount.Account.Name
+                                    </a>
+
+                                    
                                     @if (item.CampaignAccount.Status == CampaignAccountStatus.Finished)
                                     {
                                         <span class="m-badge m-badge--success m-badge--wide">
@@ -93,14 +97,8 @@
                                         </span>
                                     }
                                     @item.Title
-                                </strong>
-                            </div>
-                            <div class="float-right">
-                              
-                                <a href="/microkol/campaignmicrokoldetail/?accountid=@item.CampaignAccount.AccountId">Activity</a>
-
-
-                            </div>
+                                
+                            </div>                            
                         </li>
 
                     </ul>
