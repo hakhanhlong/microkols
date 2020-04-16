@@ -27,6 +27,62 @@ namespace BackOffice.Extensions
 
             return writer.ToString();
         }
+
+        public static HtmlString ToBadge(this Core.Entities.CampaignAccountStatus status)
+        {
+            var type = "primary";
+            if(status == CampaignAccountStatus.Finished)
+            {
+                type = "success";
+            }
+
+            if (status == CampaignAccountStatus.AccountRequest)
+            {
+                type = "brand";
+            }
+
+            if (status == CampaignAccountStatus.AgencyRequest)
+            {
+                type = "primary";
+            }
+
+            if (status == CampaignAccountStatus.Confirmed)
+            {
+                type = "info";
+            }
+
+            if (status == CampaignAccountStatus.SubmittedContent)
+            {
+                type = "accent";
+            }
+
+            if (status == CampaignAccountStatus.DeclinedContent)
+            {
+                type = "focus";
+            }
+
+            if (status == CampaignAccountStatus.ApprovedContent || status == CampaignAccountStatus.DeclinedContent)
+            {
+                type = "focus";
+            }
+
+            if (status == CampaignAccountStatus.Canceled)
+            {
+                type = "warning";
+            }
+
+            if (status == CampaignAccountStatus.Unfinished)
+            {
+                type = "danger";
+            }
+
+
+
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
+
+
+        }
+
         public static HtmlString ToBadge(this Core.Entities.CampaignStatus status)
         {
             var type = "primary";

@@ -33,6 +33,13 @@ namespace WebServices.Interfaces
         Task<ListNotificationViewModel> GetNotifications(EntityType entityType, int pageindex, int pagesize);
 
 
+        Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, string groupName, int pageindex, int pagesize);
+        Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, NotificationStatus status, string groupName, int pageindex, int pagesize);
+
+
+
+
+
         Task<int> UpdateChecked(int id);
 
 

@@ -52,6 +52,18 @@ namespace WebMerchant.Controllers
                 //#####################################################################################################
                
             }
+            
+            if(paymentResult.ErrorCode == PaymentResultErrorCode.ChoHeThongDuyetRutTien)
+            {
+                try {
+                    //########### Longhk add create notification ##########################################################
+                    string _msg = string.Format("Doanh nghiệp \"{0}\" yêu cầu rút tiền chiến dịch \"{1}\", với số tiền {2}.", CurrentUser.Username, model.CampaignId, paymentResult.Amount.ToPriceText());
+                    string _data = "Transaction";
+                    await _notificationService.CreateNotification(paymentResult.TransactionId, EntityType.System, 0, NotificationType.AgencyRequestWithdrawFromCampaign, _msg, _data);
+                    //#####################################################################################################
+                }
+                catch { }                
+            }
 
             ViewBag.PaymentResult = paymentResult;
             return PartialView("ModalPaymentMessage");

@@ -105,7 +105,9 @@
 
                                                 </span>
                                             </td>
-                                            <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
+                                            <td>
+                                                @item.CampaignAccount.Status.ToBadge()
+                                            </td>
                                             <td>
                                                 @*@if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
                                                 {

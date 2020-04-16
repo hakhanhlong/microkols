@@ -65,9 +65,8 @@ namespace WebServices.Services
                 }
 
                 // nếu là yêu cầu rút tiền -- Đổi sender - recivert -> số tiền dương
-
                 var transactionid = await _transactionRepository.CreateTransaction(receiverId, senderId, 0 - amount, transactionType, model.Note, string.Empty, username, refId, refData);
-                return new PaymentResultViewModel(PaymentResultErrorCode.ChoHeThongDuyetRutTien);
+                return new PaymentResultViewModel(PaymentResultErrorCode.ChoHeThongDuyetRutTien, transactionid, 0 - amount); // anh Longhk bổ xung
             }
 
             return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);

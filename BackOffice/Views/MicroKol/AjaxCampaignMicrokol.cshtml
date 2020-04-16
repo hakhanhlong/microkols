@@ -5,7 +5,7 @@
 
 @model ListCampaignWithAccountViewModel
 @inject WebServices.Interfaces.ICampaignService CampaignService
-
+@using BackOffice.Extensions;
 
 
 @if (Model != null)
@@ -40,62 +40,8 @@
                                         @item.CampaignAccount.Account.Name
                                     </a>
 
-                                    
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.Finished)
-                                    {
-                                        <span class="m-badge m-badge--success m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.AccountRequest)
-                                    {
-                                        <span class="m-badge m-badge--brand m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.AgencyRequest)
-                                    {
-                                        <span class="m-badge m-badge--primary m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.Confirmed)
-                                    {
-                                        <span class="m-badge m-badge--info m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.SubmittedContent)
-                                    {
-                                        <span class="m-badge m-badge--accent m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.DeclinedContent)
-                                    {
-                                        <span class="m-badge m-badge--focus m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.ApprovedContent ||
-                                  item.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent)
-                                    {
-                                        <span class="m-badge m-badge--focus m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.Canceled)
-                                    {
-                                        <span class="m-badge m-badge--warning m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
-                                    @if (item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
-                                    {
-                                        <span class="m-badge m-badge--danger m-badge--wide">
-                                            @item.CampaignAccount.Status.ToDisplayName()
-                                        </span>
-                                    }
+                                   @item.Status.ToBadge()
+                                   
                                     @item.Title
                                 
                             </div>                            
