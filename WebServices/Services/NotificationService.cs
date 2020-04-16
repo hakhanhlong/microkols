@@ -30,6 +30,7 @@ namespace WebServices.Services
 
         private readonly List<NotificationType> GroupCampaign;
         private readonly List<NotificationType> GroupPayment;
+        private readonly List<NotificationType> GroupInfluencer;
 
 
         public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache, ICampaignRepository campaignRepository,
@@ -63,6 +64,11 @@ namespace WebServices.Services
                 NotificationType.AgencyWalletWithDraw,
                 NotificationType.AgencyPayCampaignService,
                 NotificationType.AgencyRequestWithdrawFromCampaign
+            };
+
+            GroupInfluencer = new List<NotificationType>()
+            {
+                NotificationType.AccountSendVerify                
             };
 
 
@@ -159,6 +165,9 @@ namespace WebServices.Services
                 _list_notification_type = GroupCampaign;
             else if(groupName == "Payment")
                 _list_notification_type = GroupPayment;
+            else if (groupName == "Influencer")
+                _list_notification_type = GroupInfluencer;
+
             var filter = new NotificationSpecification(entityType, _list_notification_type);
 
             var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);
@@ -179,6 +188,9 @@ namespace WebServices.Services
                 _list_notification_type = GroupCampaign;
             else if (groupName == "Payment")
                 _list_notification_type = GroupPayment;
+            else if (groupName == "Influencer")
+                _list_notification_type = GroupInfluencer;
+
             var filter = new NotificationSpecification(entityType, status, _list_notification_type);
 
             var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);

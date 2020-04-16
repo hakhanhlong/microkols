@@ -13,8 +13,6 @@
 }
 
 <div class="row">
-
-
     <div class="col-xl-12 col-lg-12">
         <!--Begin::Portlet-->
         <div class="m-portlet m-portlet--full-height ">
@@ -27,9 +25,34 @@
                     </div>
                 </div>
             </div>
-            <div class="m-portlet__body">
+            <div class="m-portlet__body" style="margin-top:-20px;">
+                <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link @(string.IsNullOrEmpty(Context.Request.Query["type"])?"active":"")" href="/notification">
+                            TẤT CẢ
+                        </a>
+                    </li>
+
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link @(Context.Request.Query["type"]=="Campaign"?"active":"")" href="/notification/?type=Campaign">
+                            CHIẾN DỊCH
+                        </a>
+                    </li>
+
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link @(Context.Request.Query["type"]=="Payment"?"active":"")" href="/notification/?type=Payment">
+                            THANH TOÁN
+                        </a>
+                    </li>
+
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link @(Context.Request.Query["type"]=="Influencer"?"active":"")" href="/notification/?type=Influencer">
+                            NGƯỜI ẢNH HƯỞNG
+                        </a>
+                    </li>
+                </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="m_widget2_tab1_content">
+                    <div class="tab-pane active">
                         <!--Begin::Timeline 3 -->
                         <div class="m-timeline-3">
                             <div class="m-timeline-3__items" id="dashboard-notification">
@@ -58,19 +81,17 @@
                                         </div>
                                     }
                                 }
-
-
                             </div>
                         </div>
                         <!--End::Timeline 3 -->
                         <div class="float-right">
-                            <pagerservice pager="@Model.Pager" asp-action="Index"></pagerservice>
+                            <pagerservice pager="@Model.Pager" asp-action="Index" asp-route-type="@(Context.Request.Query["type"])"></pagerservice>
                             <br />
-                            <br />                            
+                            <br />
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
             </div>
         </div>
