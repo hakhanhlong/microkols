@@ -686,13 +686,7 @@ namespace BackOffice.Controllers
                 {
                     TempData["MessageError"] = "Transaction không thuộc trường hợp để duyệt!";
                 }
-
-
-
-               
-
-               
-
+                             
             
             }
             catch(Exception ex) {

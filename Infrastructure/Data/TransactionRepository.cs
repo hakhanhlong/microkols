@@ -9,15 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Models;
+using System.Data.SqlClient;
+using Infrastructure.Extensions;
+
+
 
 namespace Infrastructure.Data
 {
     public class TransactionRepository : EfRepository<Transaction>, ITransactionRepository
     {
 
+        
         public TransactionRepository(AppDbContext dbContext) : base(dbContext)
         {
-
+            
         }
 
         public async Task<Transaction> GetTransaction(TransactionType type, int RefId)
@@ -126,6 +131,22 @@ namespace Infrastructure.Data
         public int CountAll()
         {
             return _dbContext.Transaction.Count();
+        }
+
+
+        public async Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status)
+        {
+            List<TransactionStatistic> result = new List<TransactionStatistic>();
+        
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_campaign_by_type")
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .WithSqlParam("Type", type)
+                .WithSqlParam("Status", status)
+                .ExecuteStoredProc<TransactionStatistic>();
+
+            return result;
+
         }
     }
 }

@@ -23,5 +23,10 @@ namespace Core.Interfaces
         int CountAll();
 
         Task<long> GetTotalAmount(TransactionType transactionType, int refid);
+
+
+        Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status);
+
+
     }
 }
