@@ -6,9 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
 using Common.Extensions;
 using BackOffice.CommonHelpers;
+using BackOffice.Models.Statistic;
 
 namespace BackOffice.Controllers
 {
+
+
+
+
     public class AjaxChartController : Controller
     {
 
@@ -25,7 +30,7 @@ namespace BackOffice.Controllers
 
 
         [HttpPost]
-        public async Task<JsonResult> Statistic_JsonCampaignPaid(string startDate = "", string endDate = "")
+        public async Task<JsonResult> Statistic_JsonCampaignPaid([FromBody] DateRangeModel model)
         {
 
             //format datetime yyyy/MM/dd
@@ -33,15 +38,14 @@ namespace BackOffice.Controllers
             List<string> range_date = new List<string>();
             var endDateTime = DateTime.Now;
             DateTime _startDate = new DateTime(endDateTime.Year, endDateTime.Month, 1);
-
-            if(!string.IsNullOrEmpty(startDate) && !string.IsNullOrEmpty(endDate))
+            if(!string.IsNullOrEmpty(model.startDate) && !string.IsNullOrEmpty(model.endDate))
             {
-                _startDate = Convert.ToDateTime(startDate);
-                endDateTime = Convert.ToDateTime(endDate);
+                _startDate = Convert.ToDateTime(model.startDate);
+                endDateTime = Convert.ToDateTime(model.endDate);
             }
 
-            startDate = _startDate.ToString("yyyy/MM/dd");
-            endDate = endDateTime.ToString("yyyy/MM/dd");
+            string startDate = _startDate.ToString("MM/dd/yyyy");
+            string endDate = endDateTime.ToString("MM/dd/yyyy");
 
 
             var result_campaignservice_paid = await _ITransactionService.Statistic_CampaignServicePaid(startDate, endDate, Core.Entities.TransactionStatus.Completed); //line CampaignServicePaid
@@ -49,7 +53,7 @@ namespace BackOffice.Controllers
             // create range of date #######################################################################################
             foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
             {
-                range_date.Add(day.ToString("yyyy/MM/dd"));
+                range_date.Add(day.ToString("MM/dd/yyyy"));
             }
             //#############################################################################################################
 
