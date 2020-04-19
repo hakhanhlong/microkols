@@ -1,7 +1,8 @@
 ﻿@model ListTransactionHistoryViewModel
 
 @{
-    ViewData["Title"] = "Lịch sử giao dịch";
+    var type = (TransactionType)ViewBag.Type;
+    ViewData["Title"] = "Lịch sử";
 }
 @section Scripts{
     <script type="text/javascript">
@@ -20,11 +21,20 @@
                 <nav>
 
                     <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                       
+                        @if (type == TransactionType.WalletRecharge)
+                        {
+                            <a class="nav-item nav-link " href="@Url.Action("Recharge")">NẠP TIỀN</a>
 
-                        <a class="nav-item nav-link active" href="@AbsoluteUrl">LỊCH SỬ GIAO DỊCH</a>
+                        }
+                        else if (type == TransactionType.WalletWithdraw)
+                        {
 
- 
+                            <a class="nav-item nav-link " href="@Url.Action("Withdraw")">NẠP TIỀN</a>
+                        }
+
+                        <a class="nav-item nav-link active" href="@AbsoluteUrl">LỊCH SỬ</a>
+
+
                     </div>
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">
@@ -32,8 +42,9 @@
 
                         <div class="form-group">
                             <form asp-action="History" method="get" class="form-inline">
-                                <input type="text" class="form-control form-daterangepicker" autocomplete="off" name="daterange"  style="width:200px;"  value="@ViewBag.DateRange" placeholder="Từ ngày ... đến ngày">
+                                <input type="text" class="form-control form-daterangepicker" style="width:200px;"  autocomplete="off" name="daterange" value="@ViewBag.DateRange" placeholder="Từ ngày ... đến ngày">
                                
+                                <input type="hidden" name="type" value="@type" />
                                 <input type="submit" class="btn btn-outline-primary" value="Tìm kiếm" />
                             </form>
                         </div>
@@ -80,11 +91,21 @@
                         </table>
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
-                               
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <strong>Tổng:</strong>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        @{
+                                            var total = (long)ViewBag.Total;
+                                        }
+                                        <strong style="color: red">@total.ToPriceText()</strong>
+                                    </li>
+                                </ul>
                             </div>
                             <div class="col-lg-6 col-sm-6">
 
-                                <pager pager="@Model.Pager" asp-action="History" asp-route-pagesize="@Model.Pager.PageSize"></pager>
+                                <pager pager="@Model.Pager" asp-action="History" asp-route-type="@type" asp-route-pagesize="@Model.Pager.PageSize"></pager>
 
                             </div>
                         </div>

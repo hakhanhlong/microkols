@@ -223,7 +223,7 @@
                                 <ul class="list-unstyled">
                                     @if (!hasApply)
                                     {
-                                        if (campaignAccount.KPICommitted > 0)
+                                        if (campaignAccount!= null && campaignAccount.KPICommitted > 0)
                                         {
                                             <li>
                                                 @campaignAccount.KPICommitted

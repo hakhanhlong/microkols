@@ -39,7 +39,7 @@ namespace WebServices.Services
 
         public async Task<bool> IsExistPaymentServiceCashBack(int agencyId,int campaignid)
         {
-            return true;
+            return await _transactionRepository.IsExistPaymentServiceCashBack(agencyId, campaignid);
         }
         public async Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
         {

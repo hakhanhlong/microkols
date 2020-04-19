@@ -326,10 +326,15 @@
                             else
                             {
 
-                                <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                                if (false == ViewBag.IsRutTienExist)
+                                {
+                                    <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng ban quản trị duyệt yêu cầu rút tiền</div>
+                                }
 
-
-                                @*<button class="btn btn-info"> Tìm thêm thành viên mới</button>*@
                             }
                         }
 

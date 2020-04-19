@@ -27,6 +27,6 @@ namespace Core.Interfaces
 
         Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status);
 
-
+        Task<bool> IsExistPaymentServiceCashBack(int agencyId, int campaignid);
     }
 }

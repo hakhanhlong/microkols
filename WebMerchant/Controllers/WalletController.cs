@@ -47,18 +47,29 @@ namespace WebMerchant.Controllers
             return View();
         }
 
-        public async Task<IActionResult> History(TransactionType type,string daterange="", int pageindex = 1, int pagesize = 20)
+        public async Task<IActionResult> History(TransactionType? type,string daterange="", int pageindex = 1, int pagesize = 20)
         {
             ViewBag.Type = type;
             if (string.IsNullOrEmpty(daterange))
             {
                 daterange = string.Format("{0} - {1}", new DateTime(2019, 1, 1).ToViDate(), DateTime.Now.ToViDate());
             }
-            var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id, type, daterange,pageindex, pagesize);
+            if (type.HasValue)
+            {
 
-            ViewBag.DateRange = daterange;
-            ViewBag.Total = await _transactionService.GetTotalAmount(CurrentUser.Id, type);
-            return View(model);
+                var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id, type.Value, daterange, pageindex, pagesize);
+
+                ViewBag.DateRange = daterange;
+                ViewBag.Total = await _transactionService.GetTotalAmount(CurrentUser.Id, type.Value);
+                return View("HistoryWithType",model);
+            }
+            else
+            {
+                var model = await _transactionService.GetTransactionHistory(EntityType.Agency, CurrentUser.Id,   daterange, pageindex, pagesize);
+
+                ViewBag.DateRange = daterange;
+                return View(model);
+            }
 
         }
         #region Recharge

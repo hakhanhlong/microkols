@@ -263,6 +263,14 @@ namespace WebMerchant.Controllers
             await ViewbagData();
             ViewBag.activedTab = vt;
             ViewBag.Balance = await _walletService.GetAmount(CurrentUser.Type, CurrentUser.Id);
+
+            if (model.Payment.IsValid)
+            {
+                if (model.Payment.TotalChargeValue < 0)
+                {
+                    ViewBag.IsRutTienExist = await _paymentService.IsExistPaymentServiceCashBack(CurrentUser.Id, model.Id);
+                }
+            }
             return View(model);
         }
 
