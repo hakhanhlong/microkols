@@ -142,7 +142,16 @@ namespace Core.Extensions
             long totalPaid = 0;
             foreach (var transaction in completedTransactions)
             {
-                totalPaid += transaction.Amount;
+               
+                if(transaction.Type== TransactionType.CampaignServiceCashBack && transaction.Amount>0)
+                {
+                    totalPaid -= transaction.Amount;
+                }
+                else
+                {
+                    totalPaid += transaction.Amount;
+                }
+                
             }
             return totalPaid;
         }

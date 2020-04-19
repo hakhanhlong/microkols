@@ -37,6 +37,10 @@ namespace WebServices.Services
             _campaignAccountRepository = campaignAccountRepository;
         }
 
+        public async Task<bool> IsExistPaymentServiceCashBack(int agencyId,int campaignid)
+        {
+            return true;
+        }
         public async Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
         {
             var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyId, model.CampaignId);

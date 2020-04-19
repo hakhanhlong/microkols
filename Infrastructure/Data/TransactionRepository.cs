@@ -53,6 +53,10 @@ namespace Infrastructure.Data
 
         }
 
+        public async Task<bool> IsExistPaymentServiceCashBack(int agencyId, int campaignid)
+        {
+            return false;
+        }
         public async Task<int> CreateTransaction(int senderid, int receiverid, long amount,
             TransactionType type, string note, string data, string username, int refId = 0, string refData = "")
         {
