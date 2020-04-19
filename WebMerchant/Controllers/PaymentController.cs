@@ -35,6 +35,14 @@ namespace WebMerchant.Controllers
             var payment = await _campaignService.GetCampaignPaymentByAgency(CurrentUser.Id, campaignid);
             ViewBag.Amount = await _walletService.GetAmount(CurrentUser);
             ViewBag.Payment = payment;
+
+            if (payment.IsValid)
+            {
+                if (payment.TotalChargeValue < 0)
+                {
+                    ViewBag.IsRutTienExist = await _paymentService.IsExistPaymentServiceCashBack(CurrentUser.Id, campaignid);
+                }
+            }
             return PartialView();
         }
         [HttpPost]

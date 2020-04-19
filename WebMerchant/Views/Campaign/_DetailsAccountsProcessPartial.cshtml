@@ -34,9 +34,12 @@
         </tr>
     </thead>
     <tbody>
-        @{ var stt = 0;}
+        @{ var stt = 0;
 
-        @foreach (var campaignAccount in Model.CampaignAccounts.Where(m=>m.Status!= CampaignAccountStatus.Finished))
+            // hien thi tat ca //.Where(m=>m.Status!= CampaignAccountStatus.Finished)
+            }
+
+        @foreach (var campaignAccount in Model.CampaignAccounts)
         {
             stt++;
         <tr>
