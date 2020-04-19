@@ -221,7 +221,7 @@
                                 <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
 
                                 <ul class="list-unstyled">
-                                    @if (!hasApply)
+                                    @if (!hasApply && !hasConfirmJoin)
                                     {
                                         if (campaignAccount!= null && campaignAccount.KPICommitted > 0)
                                         {
