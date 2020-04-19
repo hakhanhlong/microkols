@@ -3,10 +3,10 @@
     Layout = null;
 }
 
-@model List<WebServices.ViewModels.NotificationViewModel>
+@model BackOffice.Models.Wrap.WrapNotification
 
 
-<span class="m-dropdown__arrow m-dropdown__arrow--center" style="margin-left:55px;"></span>
+<span class="m-dropdown__arrow m-dropdown__arrow--center" style="margin-left:250px;"></span>
 <div class="m-dropdown__inner">
     <div class="m-dropdown__header m--align-center" style="background: url(/assets/app/media/img/misc/notification_bg.jpg); background-size: cover;">
         <span class="m-dropdown__header-title">
@@ -19,48 +19,54 @@
     <div class="m-dropdown__body">
         <div class="m-dropdown__content">
             <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--brand" role="tablist">
-                <li class="nav-item m-tabs__item">
-                    <a class="nav-link m-tabs__link active show" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">
-                        Alerts
-                    </a>
-                </li>              
+                @{ int count = 0;}
+                @foreach (var groupItem in Model.GroupNotifications)
+                {
+                    <li class="nav-item m-tabs__item">
+                        <a class="nav-link m-tabs__link @(count == 0?"active show":"")" data-toggle="tab" href="#topbar_notifications_@groupItem.GroupName" role="tab" aria-selected="true">
+                            @groupItem.GroupName2
+                        </a>
+                    </li>
+                    count++;
+                }
+
+
             </ul>
             <div class="tab-content">
-                <div class="tab-pane active" id="topbar_notifications_notifications" role="tabpanel">
-                    <div class="m-list-timeline m-list-timeline--skin-light" style="overflow:auto; max-height:350px;max-width:450px;">
-                        <div class="m-list-timeline__items">
-                            @if (ViewBag.NumberNotification > 0)
-                            {
-                                foreach (var item in Model)
-                                {
-                                    <div class="m-list-timeline__item">
-                                        <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
-                                        <span class="m-list-timeline__text">
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
-                                                </li>
-                                                <li>
-                                                    <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
-                                                </li>
-                                            </ul>
+                @{ count = 0;}
 
-                                        </span>
-                                        <span class="m-list-timeline__time">
-                                            @item.Date.ToTimeAgo()
-                                        </span>
-                                    </div>
-                                }
-                            }
-                            else
-                            {
+                @foreach (var groupItem in Model.GroupNotifications)
+                {
+                    <div class="tab-pane @(count == 0?"active":"")" id="topbar_notifications_@groupItem.GroupName" role="tabpanel">
+                        <div class="m-list-timeline m-list-timeline--skin-light" style="overflow:auto; max-height:550px;max-width:700px;">
+                            <div class="m-list-timeline__items">
+                                    @foreach (var item in groupItem.List_Notification.Notifications)
+                                    {
+                                        <div class="m-list-timeline__item">
+                                            <span class="m-list-timeline__badge -m-list-timeline__badge--state-success"></span>
+                                            <span class="m-list-timeline__text">
+                                                <ul class="list-unstyled">
+                                                    <li>
+                                                        <a href="@item.NotificationLink" style="color:#000000;text-decoration:none;" target="_blank">@item.Message</a>
+                                                    </li>
+                                                    <li>
+                                                        <span class="m-badge m-badge--info m-badge--wide">@item.NotificationTypeToText</span>
+                                                    </li>
+                                                </ul>
 
-                            }
+                                            </span>
+                                            <span class="m-list-timeline__time">
+                                                @item.Date.ToTimeAgo()
+                                            </span>
+                                        </div>
+                                    }
+                            </div>
                         </div>
                     </div>
-                    <div class="mt-3 text-right">
-                        <a href="/notification"><strong>More Notification</strong></a>
-                    </div>
+                    count++;
+                }
+                <div class="mt-3 text-right">
+                    <a href="/notification"><strong>More Notification</strong></a>
                 </div>
             </div>
         </div>

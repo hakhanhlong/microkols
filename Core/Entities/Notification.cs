@@ -54,20 +54,19 @@ namespace Core.Entities
         TransactionCampaignServiceCashBackProcessing = 146,
         TransactionCampaignServiceCashBackCancel = 147,
 
+        ExcecutedPaymentToAccountBanking = 22,
 
         //##########################################
 
 
 
-        CampaignStarted  = 15,
+        CampaignStarted = 15,
         CampaignCantStarted = 16,
         CampaignEnded = 17,
         CampaignCompleted = 18,
         CampaignCanceled = 19,
         CampaignConfirmed = 20,
-        CampaignError = 21,
-        ExcecutedPaymentToAccountBanking = 22,
-
+        CampaignError = 21,        
         //####### longhk add ################
         CampaignCreated = 23,
         CampaignLocked  = 24,        
@@ -92,12 +91,11 @@ namespace Core.Entities
         AgencyWalletWithDraw = 47,
         AgencyPayCampaignService = 48,
 
-
         AccountSendVerify = 50,
         AccountVerifyDenied = 51,
         AccountVerifySuccess = 52,
 
-        RequestAgencyWithdrawFromCampaign = 55,
+        AgencyRequestWithdrawFromCampaign = 55,
 
         //#######################################
 
@@ -129,42 +127,44 @@ namespace Core.Entities
 
             if(type == NotificationType.AgencyWalletDeposit)
             {
-                text = "Agency Deposit";
+                text = "Doanh nghiệp nạp tiền ví";
             }
             if (type == NotificationType.AgencyWalletWithDraw)
             {
-                text = "Agency Withdraw";
+                text = "Doanh nghiệp rút tiền ví";
             }
             else if(type == NotificationType.AgencyPayCampaignService)
             {
-                text = "Agency Pay Campaign Service";
+                text = "Doanh nghiệp thanh toán phí dịch vụ chiến dịch";
+            }
+            else if (type == NotificationType.AgencyRequestWithdrawFromCampaign)
+            {
+                text = "Doanh nghiệp yêu cầu rút tiền từ chiến dịch";
             }
             else if (type == NotificationType.AccountSendVerify)
             {
-                text = "Account Send Verify";
+                text = "Influencer gửi xác thực";
             }
             else if (type == NotificationType.CampaignCreated)
             {
-                text = "Campaign Created";
+                text = "Chiến dịch được tạo";
             }
             else if (type == NotificationType.CampaignLocked)
             {
-                text = "Campaign Locked";
+                text = "Chiến dịch tạm khóa";
             }
             else if (type == NotificationType.CampaignCanceled)
             {
-                text = "Campaign Canceled";
+                text = "Chiến dịch bị hủy";
             }
             else if (type == NotificationType.CampaignStarted)
             {
-                text = "Campaign Started";
+                text = "Chiến dịch bắt đầu";
             }
             else if (type == NotificationType.CampaignEnded)
             {
-                text = "Campaign Ended";
+                text = "Chiến dịch kết thúc";
             }
-
-
 
             return text;
         }

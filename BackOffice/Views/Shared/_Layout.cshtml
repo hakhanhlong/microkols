@@ -110,7 +110,7 @@
                                                 <i class="flaticon-music-2"></i>
                                             </span>
                                         </a>
-                                        <div class="m-dropdown__wrapper" style="z-index: 101;margin-left:-270px;" id="drop-notification">
+                                        <div class="m-dropdown__wrapper" style="z-index: 101;margin-left:-630px;width:720px;" id="drop-notification">
 
                                         </div>
                                     </li>
@@ -166,8 +166,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-
+                                    </li>                                    
                                 </ul>
                             </div>
                         </div>
@@ -320,42 +319,12 @@
                 });
         }
 
-
-
-        $(document).ready(function () {
-
-            //################### intervel load notification ################################
-
-            
-
-
-            $('#walletdeposit-count-menu').hide();
-            $('#campaign-count-menu').hide();
-            $('#account-count-menu').hide();
-
-            // #drop-notification
-            load_drop_notification();
-            setInterval(function () {
-                load_drop_notification();
-            }, 60000);
-
-
-            //load count notification leftmenu
-            setInterval(function () {
-
-
-
-                $.ajax({
+        function load_count_new_notification() {
+            $.ajax({
                     type: "GET",
                     url: '@Url.Action("CountNewNotification", "Notification")',
                     //data: data,
                     success: function (data) {
-
-
-
-
-
-
                         if (data.campaignTotal > 0) {
                             $('#campaign-count-menu').show();
                             $('#campaign-count-menu').html(data.campaignTotal);
@@ -380,15 +349,47 @@
                             $('#account-count-menu').hide();
                         }
 
-
-
-
+                        if (data.campaignServiceCashBackTotal > 0) {
+                            $('#campaign-service-cashback').show();
+                            $('#campaign-service-cashback').html(data.campaignServiceCashBackTotal);
+                        }
+                        else {
+                            $('#campaign-service-cashback').hide();
+                        }
+                      
                     },
                     dataType: "json",
                     traditional: true
                 });
+        }
 
-            }, 5000);
+
+
+        $(document).ready(function () {
+
+            //################### intervel load notification ################################
+
+            
+
+
+            $('#walletdeposit-count-menu').hide();
+            $('#campaign-count-menu').hide();
+            $('#account-count-menu').hide();
+            $('#campaign-service-cashback').hide();
+
+            // #drop-notification
+            load_drop_notification();
+            setInterval(function () {
+                load_drop_notification();
+            }, 120000);
+
+
+            //load count notification leftmenu
+            load_count_new_notification();
+            setInterval(function () {
+                load_count_new_notification();
+
+            }, 60000);
 
 
 

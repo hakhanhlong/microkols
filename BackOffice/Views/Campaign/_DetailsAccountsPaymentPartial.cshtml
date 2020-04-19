@@ -1,6 +1,8 @@
 ﻿@model WebServices.ViewModels.CampaignDetailsViewModel
 @inject WebServices.Interfaces.ICampaignService CampaignService
 
+@using BackOffice.Extensions;
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -42,7 +44,7 @@
                 </td>
 
                 <td>
-                    @campaignAccount.Status
+                    @campaignAccount.Status.ToBadge()
                 </td>
                 <td class="text-danger">
                     @agencyCharge.ToPriceText()

@@ -25,6 +25,16 @@ namespace Core.Entities
         private List<TransactionHistory> _TransactionHistory = new List<TransactionHistory>();
         public IEnumerable<TransactionHistory> TransactionHistory => _TransactionHistory.AsReadOnly();
     }
+
+
+    public class TransactionStatistic
+    {
+        public string Timeline { get; set; }
+        public TransactionType Type { get; set; }
+        public long Amount { get; set; }
+
+    }
+
     public enum TransactionStatus
     {
         [Display(Name = "Không xác định")]
@@ -52,7 +62,6 @@ namespace Core.Entities
 
         [Display(Name ="Nạp tiền")]
         WalletRecharge = 1,
-
         [Display(Name ="Rút tiền")]
         WalletWithdraw = 2,
         [Display(Name ="Phí dịch vụ")]

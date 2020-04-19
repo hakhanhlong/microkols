@@ -28,6 +28,10 @@ namespace WebServices.Services
         private readonly IMemoryCache _cache;
         private readonly IAsyncRepository<CampaignAccount> _campaignAccountRepository;
 
+        private readonly List<NotificationType> GroupCampaign;
+        private readonly List<NotificationType> GroupPayment;
+        private readonly List<NotificationType> GroupInfluencer;
+
 
         public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache, ICampaignRepository campaignRepository,
             IAccountRepository accountRepository,
@@ -39,12 +43,45 @@ namespace WebServices.Services
             _campaignRepository = campaignRepository;
             _accountRepository = accountRepository;
             _campaignAccountRepository = campaignAccountRepository;
+
+
+            GroupCampaign = new List<NotificationType>()
+            {
+                NotificationType.CampaignStarted,
+                NotificationType.CampaignCantStarted,
+                NotificationType.CampaignEnded,
+                NotificationType.CampaignCompleted,
+                NotificationType.CampaignCanceled,
+                NotificationType.CampaignConfirmed,
+                NotificationType.CampaignError,
+                NotificationType.CampaignCreated,
+                NotificationType.CampaignLocked,
+            };
+
+            GroupPayment = new List<NotificationType>()
+            {
+                NotificationType.AgencyWalletDeposit,
+                NotificationType.AgencyWalletWithDraw,
+                NotificationType.AgencyPayCampaignService,
+                NotificationType.AgencyRequestWithdrawFromCampaign
+            };
+
+            GroupInfluencer = new List<NotificationType>()
+            {
+                NotificationType.AccountSendVerify                
+            };
+
+
+
+
         }
 
 
         #region Notification
 
 
+
+        #region longhk definition
 
         //############################# longhk add ########################################################################
         public async Task<Notification> GetNotification(int notificationid)
@@ -76,10 +113,7 @@ namespace WebServices.Services
             var notifications = await _notificationRepository.ListPagedAsync(new NotificationSpecification(entityType, status.Value, type),
                 "DateCreated_desc", pageindex, pagesize);
 
-
             return await GetNotifications(notifications);
-
-
         }
 
         public async Task<List<NotificationViewModel>> GetNewNotifications(EntityType entityType, NotificationStatus? status, int pageindex, int pagesize)
@@ -124,9 +158,56 @@ namespace WebServices.Services
         }
 
 
+        public async Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, string groupName, int pageindex, int pagesize)
+        {
+            List<NotificationType> _list_notification_type = new List<NotificationType>();
+            if (groupName == "Campaign")
+                _list_notification_type = GroupCampaign;
+            else if(groupName == "Payment")
+                _list_notification_type = GroupPayment;
+            else if (groupName == "Influencer")
+                _list_notification_type = GroupInfluencer;
+
+            var filter = new NotificationSpecification(entityType, _list_notification_type);
+
+            var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);
+            var total = await _notificationRepository.CountAsync(filter);
+            var list = await GetNotifications(notifications);
+            return new ListNotificationViewModel()
+            {
+                Notifications = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+
+        }
+        public async Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, NotificationStatus status, string groupName, int pageindex, int pagesize)
+        {
+            List<NotificationType> _list_notification_type = new List<NotificationType>();
+            if (groupName == "Campaign")
+                _list_notification_type = GroupCampaign;
+            else if (groupName == "Payment")
+                _list_notification_type = GroupPayment;
+            else if (groupName == "Influencer")
+                _list_notification_type = GroupInfluencer;
+
+            var filter = new NotificationSpecification(entityType, status, _list_notification_type);
+
+            var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);
+            var total = await _notificationRepository.CountAsync(filter);
+            var list = await GetNotifications(notifications);
+            return new ListNotificationViewModel()
+            {
+                Notifications = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+        }
+
+
+
         //#################################################################################################################
 
-
+        #endregion
 
         public async Task CreateNotification(int dataid, EntityType entityType, int entityid, NotificationType notificationType, string msg, string text)
         {

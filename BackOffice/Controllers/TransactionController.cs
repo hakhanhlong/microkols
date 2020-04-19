@@ -589,96 +589,104 @@ namespace BackOffice.Controllers
 
             try
             {
-                var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
-                int agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
 
-                if(agencyid > 0)
+                //################## transaction type = các dạng sau mới đi tiếp và xử lý ####################################################
+                //############################################################################################################################
+                if(transaction.Type == TransactionType.WalletRecharge || transaction.Type == TransactionType.WalletWithdraw || transaction.Type == TransactionType.CampaignServiceCashBack)
                 {
-                    if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
-                    {
-                        
+                    var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
+                    int agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
 
-                        int code = await _ITransactionBussiness.UpdateStatus(model.Status, model.Id, HttpContext.User.Identity.Name, model.AdminNote);
-                        if (code == 9)
+                    if (agencyid > 0)
+                    {
+                        if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
                         {
+
+
+                            int code = await _ITransactionBussiness.UpdateStatus(model.Status, model.Id, HttpContext.User.Identity.Name, model.AdminNote);
+                            if (code == 9)
+                            {
+                                TempData["MessageSuccess"] = "Update Status Success";
+
+                                if (transaction.Type == TransactionType.WalletRecharge)
+                                {
+                                    string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                                }
+                                else if (transaction.Type == TransactionType.WalletWithdraw)
+                                {
+                                    string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
+                                }
+                                else if (transaction.Type == TransactionType.CampaignServiceCashBack)
+                                {
+                                    string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionCampaignServiceCashBackApprove, _msg, model.AdminNote);
+                                }
+
+
+                            }
+                            else if (code == 10)
+                            {
+                                TempData["MessageError"] = "Wallet do not exist";
+                            }
+                            else if (code == 11)
+                            {
+                                TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                            }
+                        }
+                        else
+                        {
+
+                            transaction.Status = model.Status;
+                            transaction.DateModified = DateTime.Now;
+
+                            transaction.AdminNote = model.AdminNote;
+
+                            transaction.UserModified = HttpContext.User.Identity.Name;
+                            await _ITransactionRepository.UpdateAsync(transaction);
                             TempData["MessageSuccess"] = "Update Status Success";
 
-                            if(transaction.Type == TransactionType.WalletRecharge)
+                            //####################### Gửi notification ##################################################################################
+                            try
                             {
-                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
-                            }
-                            else if(transaction.Type == TransactionType.WalletWithdraw)
-                            {
-                                string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
-                            }
-                            else if(transaction.Type == TransactionType.CampaignServiceCashBack)
-                            {
-                                string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionCampaignServiceCashBackApprove, _msg, model.AdminNote);
-                            }
-                            
+                                NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
+                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                if (model.Status == TransactionStatus.Processing)
+                                {
+                                    if (transaction.Type == TransactionType.CampaignServiceCashBack)
+                                    {
+                                        _notifyType = NotificationType.TransactionCampaignServiceCashBackProcessing;
+                                        _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
 
-                        }
-                        else if (code == 10)
-                        {
-                            TempData["MessageError"] = "Wallet do not exist";
-                        }
-                        else if (code == 11)
-                        {
-                            TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                                    }
+                                    else if (model.Type == TransactionType.WalletRecharge)
+                                    {
+                                        _notifyType = NotificationType.TransactionDepositeProcessing;
+                                    }
+                                    else if (model.Type == TransactionType.WalletWithdraw)
+                                    {
+                                        _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                        _notifyType = NotificationType.TransactionWithdrawProcessing;
+                                    }
+                                }
+                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                            }
+                            catch { }
+                            //################################################################################################################################
+
                         }
                     }
                     else
                     {
-                                                  
-                        transaction.Status = model.Status;
-                        transaction.DateModified = DateTime.Now;
-
-                        transaction.AdminNote = model.AdminNote;
-
-                        transaction.UserModified = HttpContext.User.Identity.Name;
-                        await _ITransactionRepository.UpdateAsync(transaction);
-                        TempData["MessageSuccess"] = "Update Status Success";
-
-                        //####################### Gửi notification ##################################################################################
-                        try
-                        {
-                            NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
-                            string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                            if (model.Status == TransactionStatus.Processing)
-                            {
-                                if (transaction.Type == TransactionType.CampaignServiceCashBack)
-                                {
-                                    _notifyType = NotificationType.TransactionCampaignServiceCashBackProcessing;
-                                    _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-
-                                }
-                                else if (model.Type == TransactionType.WalletRecharge)
-                                {
-                                    _notifyType = NotificationType.TransactionDepositeProcessing;
-                                }
-                                else if (model.Type == TransactionType.WalletWithdraw)
-                                {
-                                    _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                                    _notifyType = NotificationType.TransactionWithdrawProcessing;
-                                }
-                            }
-                            await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
-                        }
-                        catch { }
-                        //################################################################################################################################
-
+                        TempData["MessageError"] = "Do not fit with any agency!";
                     }
                 }
                 else
                 {
-                    TempData["MessageError"] = "Do not fit with any agency!";
+                    TempData["MessageError"] = "Transaction không thuộc trường hợp để duyệt!";
                 }
-
-               
-
+                             
             
             }
             catch(Exception ex) {
