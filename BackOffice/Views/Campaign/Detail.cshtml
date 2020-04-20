@@ -103,7 +103,7 @@
 
                     <li class="nav-item m-tabs__item">
                         <a class="nav-link m-tabs__link" data-toggle="tab" href="#campaign-transaction" role="tab">
-                            BIỂU ĐỒ CHI PHÍ
+                            GIAO DỊCH
                         </a>
                     </li>
                 </ul>
@@ -440,7 +440,7 @@
                     </div>*@
 
                     <div class="tab-pane" id="campaign-transaction" role="tabpanel">
-                        @if (Model.Status == CampaignStatus.Started || Model.Status == CampaignStatus.Completed || Model.Status == CampaignStatus.Ended)
+                        @if ((Model.Status == CampaignStatus.Started || Model.Status == CampaignStatus.Completed || Model.Status == CampaignStatus.Ended) && Model.Payment.TotalChargeAmount > 0)
                         {
 
                             <div class="row">

@@ -166,6 +166,19 @@ namespace Infrastructure.Data
             return result;
         }
 
+        public async Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(string startDate, string endDate)
+        {
+            List<TransactionCampaignRevenue> result = new List<TransactionCampaignRevenue>();
+
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_revenue_campaign")
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .ExecuteStoredProc<TransactionCampaignRevenue>();
+
+            return result;
+        }
+
+
         #endregion
     }
 }

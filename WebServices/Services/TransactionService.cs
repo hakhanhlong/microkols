@@ -212,6 +212,18 @@ namespace WebServices.Services
             return null;
         }
 
+
+        public async Task<CampaignDetailRevenuePieChartViewModel> Statistic_CampaignRevenuePieChart(string startDate, string endDate)
+        {
+            var results = await _transactionRepository.TransactionStatisticCampaignRevenue(startDate, endDate);
+            if (results != null && results.Count > 0)
+            {
+                return new CampaignDetailRevenuePieChartViewModel(results[0]);
+            }
+
+            return null;
+        }
+
         #endregion
 
 

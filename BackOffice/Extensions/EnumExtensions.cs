@@ -43,6 +43,20 @@ namespace BackOffice.Extensions
             }
         }
 
+        public static string ToName(this Enum value)
+        {
+            try
+            {
+
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.Name;
+            }
+            catch
+            {
+                return value.ToString();
+            }
+        }
+
         //public static string ToPriceText(this int price, string currency = "đ")
         //{
         //    return $"{price.ToString("n0")} {currency}";

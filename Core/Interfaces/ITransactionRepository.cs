@@ -31,6 +31,7 @@ namespace Core.Interfaces
         #region Statistic
         Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status);
         Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(int campaignid);
+        Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(string startDate, string endDate);
 
         #endregion
     }

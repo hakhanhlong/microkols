@@ -1,0 +1,163 @@
+﻿
+@{
+    ViewData["Title"] = "Statistic_CampaignCashback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section HorizontalMenu{
+
+    <partial name="_HorizontalMenuPartial" />
+
+}
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Rút tiền thừa
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/campaign" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Danh sách chiến dịch
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="javascript:;" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Biểu đồ
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin:: Widgets/Support Tickets -->
+        <div class="m-portlet m-portlet--full-height ">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Biểu đồ rút tiền thừa
+                        </h3>
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__body">
+                <form class="m-form m-form--fit m-form--label-align-right">
+                    <div class="m-portlet__body">
+                        <div class="form-group m-form__group row">
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Chọn ngày bắt đầu và ngày kết thúc
+                            </label>
+                            <div class="col-lg-9 col-md-9 col-sm-12">
+                                <div class="input-daterange input-group" id="m_datepicker_5">
+                                    <input type="text" class="form-control m-input" name="start" id="startDate" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-ellipsis-h"></i>
+                                        </span>
+                                    </div>
+                                    <input type="text" class="form-control" name="end" id="endDate" />&nbsp;
+                                    <button type="button" class="btn btn-sm btn-info" id="btn-statistic">ĐỒNG Ý</button>
+                                </div>
+                                <span class="m-form__help">
+                                    Chọn khoảng thời gian để kết xuất biểu đồ
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group row">
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Tổng tiền rút : <strong style="color:red;"><span class="TotalOverAll_CampaignService"></span></strong>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <div id="chart_div" style="width: 100%; height: 600px; margin:0 auto;"></div>
+            </div>
+        </div>
+        <!--end:: Widgets/Support Tickets -->
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        var chartData; // globar variable for hold chart data
+        google.load("visualization", "1", { packages: ["corechart"] });
+        // Here We will fill chartData
+        $(document).ready(function () {
+
+            load_campaign_chart();
+            $('#btn-statistic').click(function () {
+
+
+                var startDate = $('#startDate').val();
+                var endDate = $('#endDate').val();
+
+                console.log(startDate, endDate);
+
+                load_campaign_chart(startDate, endDate);
+
+            });
+
+
+        });
+
+        function load_campaign_chart(startDate, endDate) {
+            $.ajax({
+                url: "/ajaxchart/Statistic_JsonCampaignServiceCashback",
+                data: JSON.stringify({ "startDate": startDate, "endDate": endDate }),
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json; chartset=utf-8",
+                success: function (data) {
+                    chartData = data.data;
+                    $('.TotalOverAll_CampaignService').html(data.totalOvertallCampaignServicePaypack);
+                },
+                error: function () {
+                    alert("Error loading data! Please try again.");
+                }
+            }).done(function () {
+                // after complete loading data
+                google.setOnLoadCallback(drawChart);
+                drawChart();
+            });
+
+        }
+
+
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable(chartData);
+            var options = {
+                title: "Phí dịch vụ",
+                pointSize: 10,
+                legend: { position: 'bottom' },
+                lineWidth: 5,
+                colors: ['#e49307']
+            };
+
+            var lineChart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            lineChart.draw(data, options);
+        }
+    </script>
+}
+
+
+

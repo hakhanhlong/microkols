@@ -45,8 +45,10 @@ function drawChart() {
     var data = google.visualization.arrayToDataTable(chartData);
     var options = {
         title: "Chi phí chiến dịch",
-        pointSize: 5,
-        legend: { position: 'bottom' }     
+        pointSize: 10,
+        legend: { position: 'bottom' },
+        lineWidth: 5,
+        colors: ['#b9c246', '#e49307',]
     };
 
     var lineChart = new google.visualization.LineChart(document.getElementById('chart_div'));

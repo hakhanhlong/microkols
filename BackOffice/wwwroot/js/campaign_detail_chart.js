@@ -4,7 +4,7 @@ google.load("visualization", "1", { packages: ["corechart"] });
 
 function load_campaign_detail_chart(campaignid) {
     $.ajax({
-        url: "/ajaxchart/Statistic_JsonCampaignRevenue",
+        url: "/ajaxchart/Statistic_JsonCampaignDetailRevenue",
         data: JSON.stringify({ "Id": campaignid }),
         type: "POST",
         dataType: "json",

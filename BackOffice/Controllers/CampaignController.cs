@@ -357,8 +357,6 @@ namespace BackOffice.Controllers
             });
         }
 
-
-
         public IActionResult Microkol(string kw, CampaignType? type, CampaignStatus? status, int pageindex = 1)
         {
 
@@ -367,6 +365,27 @@ namespace BackOffice.Controllers
 
             return View(list);
         }
+
+
+        #region Statistic
+
+        public IActionResult Statistic_CampaignRevenue()
+        {
+            return View();
+        }
+
+        public IActionResult Statistic_CampaignService()
+        {
+            return View();
+        }
+
+        public IActionResult Statistic_CampaignCashback()
+        {
+            return View();
+        }
+
+
+        #endregion
 
 
     }
