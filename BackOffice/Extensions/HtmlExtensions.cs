@@ -151,6 +151,38 @@ namespace BackOffice.Extensions
             return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
         }
 
+        public static HtmlString ToBadge(this Core.Entities.TransactionType ttype)
+        {
+            var type = "primary";
+            if (ttype == TransactionType.CampaignAccountCharge)
+            {
+                type = "warning";
+            }
+            else if (ttype == TransactionType.CampaignAccountPayback)
+            {
+                type = "focus";
+            }
+            else if (ttype == TransactionType.WalletRecharge)
+            {
+                type = "info";
+            }
+
+            else if (ttype == TransactionType.CampaignServiceCashBack)
+            {
+                type = "accent";
+            }
+            else if (ttype == TransactionType.CampaignServiceCharge)
+            {
+                type = "success";
+            }
+            else
+            {
+                type = "meta";
+            }
+
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{ttype.ToDisplayName()}</span>");
+        }
+
 
 
 

@@ -141,19 +141,31 @@ namespace Infrastructure.Data
         }
 
 
+        #region Statistic
+
         public async Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status)
         {
-            List<TransactionStatistic> result = new List<TransactionStatistic>();
-        
+            List<TransactionStatistic> result = new List<TransactionStatistic>();        
             result = await _dbContext.LoadStoredProc("sp_transaction_statistic_campaign_by_type")
                 .WithSqlParam("StartDate", startDate)
                 .WithSqlParam("EndDate", endDate)
                 .WithSqlParam("Type", type)
                 .WithSqlParam("Status", status)
                 .ExecuteStoredProc<TransactionStatistic>();
+            return result;
+        }
+
+        public async Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(int campaignid)
+        {
+            List<TransactionCampaignRevenue> result = new List<TransactionCampaignRevenue>();
+
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_revenue_campaign_detail")
+                .WithSqlParam("CampaignId", campaignid)                
+                .ExecuteStoredProc<TransactionCampaignRevenue>();
 
             return result;
-
         }
+
+        #endregion
     }
 }

@@ -4,6 +4,9 @@
 @inject WebServices.Interfaces.IAgencyService agencyService
 
 
+@using BackOffice.Extensions;
+
+
 <table class="table">
     <thead>
         <tr>
@@ -14,17 +17,17 @@
                 CODE
             </th>
             <th>
-                CAMPAIGN
+                CHIẾN DỊCH
             </th>
-            <th>SENDER</th>
-            <th>RECEIVER</th>
+            <th>NGƯỜI GỬI</th>
+            <th>NGƯỜI NHẬN</th>
             <th>
-                AMOUNT
+                SỐ TIỀN
             </th>
             <th>
                 TYPE
             </th>
-            <th>STATUS</th>
+            <th>TRẠNG THÁI</th>
             <th>TIME</th>
             <th></th>
         </tr>
@@ -113,23 +116,12 @@
                     </h6>
 
                 </td>
-                <td>@item.Type.ToDisplayName()</td>
+                <td>@item.Type.ToBadge()</td>
                 <td>
 
-                    @if (item.Status == TransactionStatus.Completed)
-                    {
-                        <span class="m-badge m-badge--success m-badge--wide">
-                            @item.Status.ToDisplayName()
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="m-badge m-badge--warning m-badge--wide">
-                            @item.Status.ToDisplayName()
-                        </span>
-                    }
+                    @item.Status.ToBadge()
 
-                    
+
                 </td>
                 <td>
 

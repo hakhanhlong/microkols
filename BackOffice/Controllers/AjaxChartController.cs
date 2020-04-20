@@ -71,14 +71,25 @@ namespace BackOffice.Controllers
                 long campaignservice_amount = result_campaignservice_paid.Where(r=>r.Timeline == str_date).Select(t=>t.Amount).FirstOrDefault();
                 long campaignaccountpayback_amount = result_campaignaccountpayback_paid.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
                 chartData[j] = new object[] { str_date, campaignservice_amount, campaignaccountpayback_amount};
-            }
-
-            
+            }            
             return Json(chartData);
-
         }
 
+        [HttpPost]
+        public async Task<JsonResult> Statistic_JsonCampaignRevenue([FromBody] EntityIdModel model)
+        {
+            var result = await _ITransactionService.Statistic_CampaignDetailRevenuePieChart(model.Id);
+            var chartData = new object[4];
+            chartData[0] = new object[]{
+                "Thống kê",
+                "Tổng tiền",                
+            };
 
+            chartData[1] = new object[] {"Tiền thừa doanh nghiệp rút về", result.TotalCampaignServiceCashback};
+            chartData[2] = new object[] { "Tiền trả thực hiện chiến dịch", result.TotalCampaignAccountPayback };
+            chartData[3] = new object[] { "Lợi nhuận", result.TotalCampaignRevenue };
 
+            return Json(chartData);
+        }
     }
 }

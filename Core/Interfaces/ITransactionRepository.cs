@@ -22,11 +22,16 @@ namespace Core.Interfaces
 
         int CountAll();
 
-        Task<long> GetTotalAmount(TransactionType transactionType, int refid);
-
-
-        Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status);
+        Task<long> GetTotalAmount(TransactionType transactionType, int refid);        
 
         Task<bool> IsExistPaymentServiceCashBack(int agencyId, int campaignid);
+
+
+
+        #region Statistic
+        Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status);
+        Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(int campaignid);
+
+        #endregion
     }
 }

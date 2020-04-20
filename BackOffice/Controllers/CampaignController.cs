@@ -142,11 +142,8 @@ namespace BackOffice.Controllers
 
             await ViewbagData();
             ViewBag.activedTab = vt;
-
             DataSelectionStatusAndType();
-
             return View(model);
-
         }
 
         private async Task ViewbagData()

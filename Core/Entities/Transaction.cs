@@ -35,6 +35,16 @@ namespace Core.Entities
 
     }
 
+    public class TransactionCampaignRevenue
+    {
+        public long TotalCampaignServiceCharge { get; set; }
+        public long TotalCampaignServiceCashback { get; set; }
+        public long TotalCampaignAccountPayback { get; set; }
+        public long TotalCampaignRevenue { get; set; }
+
+    }
+
+
     public enum TransactionStatus
     {
         [Display(Name = "Không xác định")]
@@ -59,20 +69,19 @@ namespace Core.Entities
     {
         [Display(Name ="Không xác định")]
         Undefined = -1,
-
         [Display(Name ="Nạp tiền")]
         WalletRecharge = 1,
         [Display(Name ="Rút tiền")]
         WalletWithdraw = 2,
-        [Display(Name ="Phí dịch vụ")]
+        [Display(Name ="Phí dịch vụ chiến dịch")]
         CampaignServiceCharge = 3,
         [Display(Name ="Phí thành viên")]
         CampaignAccountCharge = 4,
-        [Display(Name ="Bạn nhận được thanh toán")]
+        [Display(Name ="Influencer nhận thanh toán")]
         CampaignAccountPayback = 5,
         [Display(Name ="Trừ tiền")]
         SubstractMoney = 6,
-        [Display(Name ="Rút tiền thừa")]
+        [Display(Name ="Rút tiền thừa chiến dịch")]
         CampaignServiceCashBack = 7,
         [Display(Name ="Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
         CampaignAccountRefundAgency = 8,

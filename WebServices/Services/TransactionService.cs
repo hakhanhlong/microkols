@@ -200,6 +200,18 @@ namespace WebServices.Services
             return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
         }
 
+
+        public async Task<CampaignDetailRevenuePieChartViewModel> Statistic_CampaignDetailRevenuePieChart(int campaignid)
+        {
+            var results = await _transactionRepository.TransactionStatisticCampaignRevenue(campaignid);
+            if (results != null && results.Count > 0)
+            {
+                return new CampaignDetailRevenuePieChartViewModel(results[0]);
+            }
+
+            return null;
+        }
+
         #endregion
 
 

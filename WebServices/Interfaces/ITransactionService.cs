@@ -19,9 +19,17 @@ namespace WebServices.Interfaces
         Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, TransactionType type, string daterange, int page, int pagesize);
         Task<ListTransactionHistoryViewModel> GetTransactionHistory(EntityType entityType, int entityid, string daterange, int page, int pagesize);
 
+
+        #region statistic
+
         Task<List<TransactionStatisticViewModel>> Statistic_CampaignServicePaid(string startDate, string endDate, TransactionStatus status);
         Task<List<TransactionStatisticViewModel>> Statistic_CampaignAccountPaybackPaid(string startDate, string endDate, TransactionStatus status);
 
-        
+
+        Task<CampaignDetailRevenuePieChartViewModel> Statistic_CampaignDetailRevenuePieChart(int campaignid);
+
+        #endregion
+
+
     }
 }

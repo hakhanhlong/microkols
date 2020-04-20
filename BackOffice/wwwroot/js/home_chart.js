@@ -19,7 +19,6 @@ $(document).ready(function () {
     
 });
 
-
 function load_campaign_chart(startDate, endDate) {
     $.ajax({
         url: "/ajaxchart/Statistic_JsonCampaignPaid",
