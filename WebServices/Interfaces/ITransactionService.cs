@@ -24,8 +24,8 @@ namespace WebServices.Interfaces
 
         Task<List<TransactionStatisticViewModel>> Statistic_CampaignServicePaid(string startDate, string endDate, TransactionStatus status);
         Task<List<TransactionStatisticViewModel>> Statistic_CampaignAccountPaybackPaid(string startDate, string endDate, TransactionStatus status);
+        Task<List<TransactionStatisticViewModel>> Statistic_CampaignServiceCashback(string startDate, string endDate, TransactionStatus status);
         Task<CampaignDetailRevenuePieChartViewModel> Statistic_CampaignDetailRevenuePieChart(int campaignid);
-
         Task<CampaignDetailRevenuePieChartViewModel> Statistic_CampaignRevenuePieChart(string startDate, string endDate);
 
         #endregion

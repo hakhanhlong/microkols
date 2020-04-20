@@ -384,6 +384,11 @@ namespace BackOffice.Controllers
             return View();
         }
 
+        public IActionResult Statistic_CampaignAccountCashback()
+        {
+            return View();
+        }
+
 
         #endregion
 

@@ -200,7 +200,7 @@ namespace BackOffice.Controllers
             string endDate = endDateTime.ToString("MM/dd/yyyy");
 
 
-            var result_campaignaccountpayback_paid = await _ITransactionService.Statistic_CampaignAccountPaybackPaid(startDate, endDate, Core.Entities.TransactionStatus.Completed); //line CampaignServicePaid            
+            var result_campaignaccountpayback_paid = await _ITransactionService.Statistic_CampaignServiceCashback(startDate, endDate, Core.Entities.TransactionStatus.Completed); //line CampaignServicePaid            
             // create range of date #######################################################################################
             foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
             {
@@ -225,6 +225,53 @@ namespace BackOffice.Controllers
             }
             return Json(new { TotalOvertallCampaignServicePaypack = TotalOvertallCampaignServicePaypack.ToPriceText(), data = chartData });
         }
+
+        [HttpPost]
+        public async Task<JsonResult> Statistic_JsonCampaignAccountPayback([FromBody] DateRangeModel model)
+        {
+
+            //format datetime yyyy/MM/dd
+
+            List<string> range_date = new List<string>();
+            var endDateTime = DateTime.Now;
+            DateTime _startDate = new DateTime(endDateTime.Year, endDateTime.Month, 1);
+            if (!string.IsNullOrEmpty(model.startDate) && !string.IsNullOrEmpty(model.endDate))
+            {
+                _startDate = Convert.ToDateTime(model.startDate);
+                endDateTime = Convert.ToDateTime(model.endDate);
+            }
+
+            string startDate = _startDate.ToString("MM/dd/yyyy");
+            string endDate = endDateTime.ToString("MM/dd/yyyy");
+
+
+            var result_campaignaccountpayback_paid = await _ITransactionService.Statistic_CampaignAccountPaybackPaid(startDate, endDate, Core.Entities.TransactionStatus.Completed); //line CampaignServicePaid            
+            // create range of date #######################################################################################
+            foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
+            {
+                range_date.Add(day.ToString("MM/dd/yyyy"));
+            }
+            //#############################################################################################################
+
+            var chartData = new object[range_date.Count + 1];
+            chartData[0] = new object[]{
+                "Ngày tháng",
+                "Trả tiền Influencer"
+            };
+
+            int j = 0;
+            long TotalOvertallCampaignAccountPaypack = 0;
+            foreach (var str_date in range_date)
+            {
+                j++;
+                long campaignservice_amount = result_campaignaccountpayback_paid.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                chartData[j] = new object[] { str_date, campaignservice_amount };
+                TotalOvertallCampaignAccountPaypack += campaignservice_amount;
+            }
+            return Json(new { TotalOvertallCampaignAccountPaypack = TotalOvertallCampaignAccountPaypack.ToPriceText(), data = chartData });
+        }
+
+        
 
 
 

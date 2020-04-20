@@ -194,6 +194,14 @@ namespace WebServices.Services
             var results = await _transactionRepository.TransactionStatisticByType(startDate, endDate, TransactionType.CampaignServiceCharge, status);
             return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
         }
+
+        public async Task<List<TransactionStatisticViewModel>> Statistic_CampaignServiceCashback(string startDate, string endDate, TransactionStatus status)
+        {
+            var results = await _transactionRepository.TransactionStatisticByType(startDate, endDate, TransactionType.CampaignServiceCashBack, status);
+            return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
+        }
+
+
         public async Task<List<TransactionStatisticViewModel>> Statistic_CampaignAccountPaybackPaid(string startDate, string endDate, TransactionStatus status)
         {
             var results = await _transactionRepository.TransactionStatisticByType(startDate, endDate, TransactionType.CampaignAccountPayback, status);
