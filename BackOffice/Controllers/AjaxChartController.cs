@@ -332,6 +332,50 @@ namespace BackOffice.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<JsonResult> Statistic_Json_WalletInfluencer_Transaction([FromBody] DateRangeModel model)
+        {
+
+            //format datetime yyyy/MM/dd
+
+            List<string> range_date = new List<string>();
+            var endDateTime = DateTime.Now;
+            DateTime _startDate = new DateTime(endDateTime.Year, endDateTime.Month, 1);
+            if (!string.IsNullOrEmpty(model.startDate) && !string.IsNullOrEmpty(model.endDate))
+            {
+                _startDate = Convert.ToDateTime(model.startDate);
+                endDateTime = Convert.ToDateTime(model.endDate);
+            }
+
+            string startDate = _startDate.ToString("MM/dd/yyyy");
+            string endDate = endDateTime.ToString("MM/dd/yyyy");
+
+
+            var result_influencer_campaign_account_payback = await _ITransactionService.Statistic_Influencer_CampaignAccountPayback(model.Walletid, startDate, endDate, Core.Entities.TransactionStatus.Completed); //line
+            
+
+            // create range of date #######################################################################################
+            foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
+            {
+                range_date.Add(day.ToString("MM/dd/yyyy"));
+            }
+            //#############################################################################################################
+
+            var chartData = new object[range_date.Count + 1];
+            chartData[0] = new object[]{
+                "Ngày tháng",
+                "Influencer nhận thanh toán về ví"
+            };
+
+            int j = 0;
+            foreach (var str_date in range_date)
+            {
+                j++;
+                long influencer_campaign_account_payback_amount = result_influencer_campaign_account_payback.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();                
+                chartData[j] = new object[] { str_date, influencer_campaign_account_payback_amount };
+            }
+            return Json(chartData);
+        }
 
         #endregion
 

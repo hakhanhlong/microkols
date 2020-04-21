@@ -77,7 +77,7 @@ namespace Core.Entities
         CampaignServiceCharge = 3,
         [Display(Name ="Phí thành viên")]
         CampaignAccountCharge = 4,
-        [Display(Name ="Influencer nhận thanh toán")]
+        [Display(Name ="Influencer nhận thanh toán về ví")]
         CampaignAccountPayback = 5,
         [Display(Name ="Trừ tiền")]
         SubstractMoney = 6,
@@ -85,8 +85,8 @@ namespace Core.Entities
         CampaignServiceCashBack = 7,
         [Display(Name ="Hoàn lại tiền Agency từ người dùng tham gia chiến dịch")]
         CampaignAccountRefundAgency = 8,
-        [Display(Name ="Đã thực hiện chuyển tiền tới tài khoản ngân hàng của thành viên")] // tương ứng với việc trừ tiền trên ví của các thành viên này
-        ExcecutedPaymentToAccountBanking = 9,
+        [Display(Name ="Chuyển lợi nhuận tới tài khoản ngân hàng Influencer")] // tương ứng với việc trừ tiền trên ví của các thành viên này
+        ExcecutedPaymentToAccountBanking = 9
     }
 
 }

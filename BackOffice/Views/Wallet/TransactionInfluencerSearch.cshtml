@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "TransactionAgency";
+    ViewData["Title"] = "TransactionInfluencerSearch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -30,7 +30,7 @@
             -
         </li>
         <li class="m-nav__item">
-            <a href="/wallet/transactionagency?walletid=@(Context.Request.Query["walletid"])" class="m-nav__link">
+            <a href="/wallet/transaction?walletid=@(Context.Request.Query["walletid"])" class="m-nav__link">
                 <span class="m-nav__link-text">
                     Transaction
                 </span>
@@ -63,7 +63,7 @@
         }
 
         <li class="list-inline-item">
-            <a href="/wallet/statistic_transactionagency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
+            <a href="/wallet/statistic_transactioninfluencer?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
                 BIỂU ĐỒ GIAO DỊCH
             </a>
         </li>
@@ -75,12 +75,12 @@
                 </span>
             </a>
         </li>
-    </ul>    
+    </ul>
 }
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="m-portlet m-portlet--tab">
+    <div class="col-xl-12">
+        <div class="m-portlet m-portlet--tabs">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
@@ -88,31 +88,39 @@
                             Wallet Transaction Agency
                         </h3>
                     </div>
+                </div>           
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionInfluencer.cshtml", Model)
+                    </div>
                 </div>
-                <div class="m-portlet__head-tools">
-                   
+             
+
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+
+                        @if (Model != null)
+                        {
+
+                            @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model);
+                        }
+                        else
+                        {
+                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                <div class="m-demo__preview">
+                                    Sorry, do not have transaction for binding!
+                                </div>
+                            </div>
+                        }
+
+                    </div>
                 </div>
             </div>
-            <div class="m-portlet__body" style="margin-top:-20px;">
-
-                @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionAgency.cshtml", Model)
-
-                @if (Model != null)
-                {
-
-                    @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model)
-                    <div>
-                        <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionagency"></pager>
-                    </div>
-                }
-                else
-                {
-                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
-                        <div class="m-demo__preview">
-                            Sorry, do not have transaction for binding!
-                        </div>
-                    </div>
-                }
+            <div class="m-portlet__foot">
+                <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactioninfluencersearch" asp-route-searchtype="@Model.SearchType" asp-route-startdate="@Model.StartDate"
+                       asp-route-enddate="@Model.EndDate"></pager>
             </div>
         </div>
     </div>
@@ -138,4 +146,9 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 

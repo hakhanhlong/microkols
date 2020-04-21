@@ -36,6 +36,8 @@ namespace WebServices.Interfaces
         Task<List<TransactionStatisticViewModel>> Statistic_Agency_CampaignServicePaid(int walletid, string startDate, string endDate, TransactionStatus status);
         Task<List<TransactionStatisticViewModel>> Statistic_Agency_ServiceCashback(int walletid, string startDate, string endDate, TransactionStatus status);
 
+        Task<List<TransactionStatisticViewModel>> Statistic_Influencer_CampaignAccountPayback(int walletid, string startDate, string endDate, TransactionStatus status);
+
         #endregion
 
 

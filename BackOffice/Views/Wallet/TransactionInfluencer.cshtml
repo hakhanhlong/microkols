@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "TransactionAgency";
+    ViewData["Title"] = "TransactionInfluencer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -63,7 +63,7 @@
         }
 
         <li class="list-inline-item">
-            <a href="/wallet/statistic_transactionagency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
+            <a href="/wallet/statistic_transactioninfluencer?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
                 BIỂU ĐỒ GIAO DỊCH
             </a>
         </li>
@@ -75,7 +75,7 @@
                 </span>
             </a>
         </li>
-    </ul>    
+    </ul>
 }
 
 <div class="row">
@@ -90,12 +90,12 @@
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
-                   
+
                 </div>
             </div>
             <div class="m-portlet__body" style="margin-top:-20px;">
 
-                @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionAgency.cshtml", Model)
+                @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionInfluencer.cshtml", Model)
 
                 @if (Model != null)
                 {
@@ -138,4 +138,6 @@
         </div>
     </div>
 </div>
+
+
 

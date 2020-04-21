@@ -350,7 +350,122 @@ namespace BackOffice.Controllers
 
 
 
+        #region Transaction Influencer
 
+        public async Task<IActionResult> TransactionInfluencer(int walletid, int pageindex = 1)
+        {
+            ViewBag.SearchTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = TransactionType.CampaignAccountPayback.ToName() , Value = ((int)TransactionType.CampaignAccountPayback).ToString()}
+            };
+
+            var list = await _ITransactionBusiness.GetTransactions(walletid, walletid, pageindex, 25);
+
+            var wallet = _IWalletRepository.GetById(walletid);
+            if (wallet != null)
+            {
+                ViewBag.Wallet = wallet;
+                if (wallet.EntityType == Core.Entities.EntityType.Account)
+                {
+                    var account = _IAccountBusiness.GetAccount(wallet.EntityId);
+                    if (account.Result != null)
+                    {
+                        ViewBag.Account = account.Result;
+                    }
+                }
+                if (wallet.EntityType == Core.Entities.EntityType.Agency)
+                {
+                    var agency = _IAgencyBusiness.GetAgency(wallet.EntityId);
+                    if (agency.Result != null)
+                    {
+                        ViewBag.Account = agency.Result;
+                    }
+                }
+            }
+
+
+            if (list == null)
+            {
+                TempData["MessageError"] = "Don't have transaction!";
+            }
+
+            return View(list);
+        }
+
+        public IActionResult Statistic_TransactionInfluencer(int walletid = 0)
+        {
+            var wallet = _IWalletRepository.GetById(walletid);
+            if (wallet != null)
+            {
+                ViewBag.Wallet = wallet;
+                if (wallet.EntityType == Core.Entities.EntityType.Account)
+                {
+                    var account = _IAccountBusiness.GetAccount(wallet.EntityId);
+                    if (account.Result != null)
+                    {
+                        ViewBag.Account = account.Result;
+                    }
+                }
+                if (wallet.EntityType == Core.Entities.EntityType.Agency)
+                {
+                    var agency = _IAgencyBusiness.GetAgency(wallet.EntityId);
+                    if (agency.Result != null)
+                    {
+                        ViewBag.Account = agency.Result;
+                    }
+                }
+            }
+            return View();
+        }
+
+        public async Task<IActionResult> TransactionInfluencerSearch(int walletid, TransactionType? SearchType, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
+        {
+            ViewBag.SearchTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
+            {
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = TransactionType.CampaignAccountPayback.ToName() , Value = ((int)TransactionType.CampaignAccountPayback).ToString()}                
+            };
+
+            ListTransactionViewModel list = null;
+
+            list = await _ITransactionBusiness.GetTransactionsByType(SearchType, walletid, walletid, StartDate, EndDate, pageindex, 25);
+
+            list.TransactionType = SearchType;
+
+            var wallet = _IWalletRepository.GetById(walletid);
+            if (wallet != null)
+            {
+                ViewBag.Wallet = wallet;
+                if (wallet.EntityType == Core.Entities.EntityType.Account)
+                {
+                    var account = _IAccountBusiness.GetAccount(wallet.EntityId);
+                    if (account.Result != null)
+                    {
+                        ViewBag.Account = account.Result;
+                    }
+                }
+                if (wallet.EntityType == Core.Entities.EntityType.Agency)
+                {
+                    var agency = _IAgencyBusiness.GetAgency(wallet.EntityId);
+                    if (agency.Result != null)
+                    {
+                        ViewBag.Account = agency.Result;
+                    }
+                }
+            }
+
+
+            if (list == null)
+            {
+                TempData["MessageError"] = "Don't have transaction!";
+            }
+
+            return View(list);
+        }
+
+
+        #endregion
 
 
         public async Task<IActionResult> TransactionSearch(int walletid, string SearchType, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)

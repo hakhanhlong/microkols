@@ -1,0 +1,54 @@
+﻿@model ListTransactionViewModel
+
+<form class="m-form m-form--fit m--margin-bottom-20" action="/wallet/transactioninfluencersearch" method="get">
+    <input type="hidden" name="walletid" value="@Context.Request.Query["walletid"]"/>
+    <div class="row m--margin-bottom-20" id="div-select-type">
+        <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Type:
+            </label>
+            <select id="sl-type" class="form-control m-input" asp-for="SearchType" asp-items="@ViewBag.SearchTypes"></select>
+        </div>
+        <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
+            <label>
+                Select DateTime:
+            </label>
+            <div class="input-daterange input-group" id="m_datepicker_5">
+                <input type="text" class="form-control m-input" asp-for="StartDate">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-ellipsis-h"></i>
+                    </span>
+                </div>
+                <input type="text" class="form-control" asp-for="EndDate">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="float-right">
+                <button class="btn btn-brand m-btn m-btn--icon" id="m_search" type="submit">
+                    <span>
+                        <i class="la la-search"></i>
+                        <span>
+                            Search
+                        </span>
+                    </span>
+                </button>
+                &nbsp;&nbsp;
+                <a href="/wallet" class="btn btn-secondary m-btn m-btn--icon">
+
+                    <span>
+                        <i class="la la-close"></i>
+                        <span>
+                            Reset
+                        </span>
+                    </span>
+
+                </a>
+            </div>
+
+        </div>
+    </div>
+</form>
+

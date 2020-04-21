@@ -251,6 +251,13 @@ namespace WebServices.Services
             return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
         }
 
+
+        public async Task<List<TransactionStatisticViewModel>> Statistic_Influencer_CampaignAccountPayback(int walletid, string startDate, string endDate, TransactionStatus status)
+        {
+            var results = await _transactionRepository.TransactionStatisticByType(walletid, startDate, endDate, TransactionType.CampaignAccountPayback, status);
+            return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
+        }
+
         #endregion
 
 
