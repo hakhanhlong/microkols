@@ -39,6 +39,9 @@ namespace BackOffice.Business.Interfaces
 
         Task<ListTransactionViewModel> GetTransactions(string searchtype, int? sender_wallet_id, int? reciever_wallet_id, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
 
+        Task<ListTransactionViewModel> GetTransactionsByType(TransactionType? searchtype, int? sender_wallet_id, int? reciever_wallet_id, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize);
+
+
 
     }
 }

@@ -23,6 +23,8 @@ namespace BackOffice.Models
 
         public string SearchType { get; set; }
 
+        public TransactionType? TransactionType { get; set; }
+
 
     }
 

@@ -36,6 +36,11 @@ namespace Core.Specifications
         public TransactionSpecification(int? senderid, int? receiverid, DateTime? startDate, DateTime? endDate) : base(t => ((!senderid.HasValue || t.SenderId == senderid.Value) 
         || (!receiverid.HasValue || t.ReceiverId == receiverid.Value)) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date))) { }
 
+        public TransactionSpecification(TransactionType? Type, int? senderid, int? receiverid, DateTime? startDate, DateTime? endDate) : base(t => ((!senderid.HasValue || t.SenderId == senderid.Value)
+        || (!receiverid.HasValue || t.ReceiverId == receiverid.Value)) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date)) &&
+        (!Type.HasValue || t.Type == Type))
+        { }
+
 
         public TransactionSpecification(int? senderid, DateTime? startDate, DateTime? endDate) : 
         base(t => (!senderid.HasValue || t.SenderId == senderid.Value) && ((!startDate.HasValue || t.DateCreated.Date >= startDate.Value.Date) && (!endDate.HasValue || t.DateCreated.Date <= endDate.Value.Date)))

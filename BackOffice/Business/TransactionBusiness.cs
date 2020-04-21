@@ -411,7 +411,32 @@ namespace BackOffice.Business
                 EndDate = EndDate.HasValue ? EndDate.Value.ToString() : ""
             };
         }
-        
+
+
+
+        public async Task<ListTransactionViewModel> GetTransactionsByType(TransactionType? searchtype, int? sender_wallet_id, int? reciever_wallet_id, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            TransactionSpecification filter = null;
+
+            filter = new TransactionSpecification(searchtype, sender_wallet_id, reciever_wallet_id, StartDate, EndDate); //tất cả
+
+            //new TransactionSpecification(sender_wallet_id, reciever_wallet_id, StartDate, EndDate);
+
+            var transactions = await _ITransactionRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, 25);
+
+            var total = _ITransactionRepository.Count(filter);
+
+            return new ListTransactionViewModel()
+            {
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total),
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : ""
+            };
+        }
+
+
+
         public bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId)
         {
             var filter = new TransactionSpecification(senderid, receiverid, type, RefId);
