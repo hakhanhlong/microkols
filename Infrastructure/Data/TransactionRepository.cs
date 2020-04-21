@@ -155,6 +155,19 @@ namespace Infrastructure.Data
             return result;
         }
 
+        public async Task<List<TransactionStatistic>> TransactionStatisticByType(int walletid, string startDate, string endDate, TransactionType type, TransactionStatus status)
+        {
+            List<TransactionStatistic> result = new List<TransactionStatistic>();
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_wallet_by_id_filter_by_type")
+                .WithSqlParam("WalletId", walletid)
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .WithSqlParam("Type", type)
+                .WithSqlParam("Status", status)
+                .ExecuteStoredProc<TransactionStatistic>();
+            return result;
+        }
+
         public async Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(int campaignid)
         {
             List<TransactionCampaignRevenue> result = new List<TransactionCampaignRevenue>();

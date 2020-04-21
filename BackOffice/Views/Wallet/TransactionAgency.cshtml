@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Wallet Transaction 
+        Wallet Transaction
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -39,9 +39,15 @@
     </ul>
 }
 
+@section Subheaders2{
+    <a href="/wallet/Statistic_TransactionAgency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
+        BIỂU ĐỒ GIAO DỊCH
+    </a>
+}
+
 <div class="row">
-    <div class="col-xl-12">
-        <div class="m-portlet m-portlet--tabs">
+    <div class="col-md-12">
+        <div class="m-portlet m-portlet--tab">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
@@ -59,64 +65,42 @@
                     </a>
                 </div>
             </div>
-            <div class="m-portlet__body">
+            <div class="m-portlet__body" style="margin-top:-20px;">
 
-                <ul class="nav nav-tabs  m-tabs-line m-tabs-line--2x m-tabs-line--info" role="tablist">
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link active" data-toggle="tab" href="#list-transaction" role="tab">
-                            DANH SÁCH GIAO DỊCH
-                        </a>
-                    </li>           
-                    <li class="nav-item m-tabs__item">
-                        <a class="nav-link m-tabs__link" data-toggle="tab" href="#diagram" role="tab">
-                            BIỂU ĐỒ
-                        </a>
-                    </li>
-                </ul>
+                @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionAgency.cshtml", Model)
+                @if (ViewBag.Wallet != null)
+                {
+                    <h6>
 
-                <div class="tab-content">
-                    <div class="tab-pane active" id="list-transaction">
-                        @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionAgency.cshtml", Model)
-                        @if (ViewBag.Wallet != null)
+                        @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
                         {
-                            <h6>
-
-                                @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
-                                {
-                                    <span>Name: </span> <span class="m--font-danger mr-2">System</span>
-                                }
-                                else
-                                {
-                                    <span>Name: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
-                                }
-
-                                Balance: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
-                            </h6>
-                        }
-                        @if (Model != null)
-                        {
-
-                            @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model)
-                            <div>
-                                <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionagency"></pager>
-                            </div>
+                            <span>Name: </span> <span class="m--font-danger mr-2">System</span>
                         }
                         else
                         {
-                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
-                                <div class="m-demo__preview">
-                                    Sorry, do not have transaction for binding!
-                                </div>
-                            </div>
+                            <span>Tên doanh nghiệp: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
                         }
-                    </div>
-                    <div class="tab-pane" id="diagram">
 
-                        Biểu đồ
+                        Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
+                    </h6>
+                }
+                @if (Model != null)
+                {
 
+                    @await Html.PartialAsync("~/Views/Wallet/_TransactionItem.cshtml", Model)
+                    <div>
+                        <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionagency"></pager>
                     </div>
-                </div>                                
-            </div>          
+                }
+                else
+                {
+                    <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                        <div class="m-demo__preview">
+                            Sorry, do not have transaction for binding!
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -141,5 +125,4 @@
         </div>
     </div>
 </div>
-
 

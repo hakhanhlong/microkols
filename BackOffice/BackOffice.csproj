@@ -160,8 +160,4 @@
     <ProjectReference Include="..\WebServices\WebServices.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Wallet\_Chart\" />
-  </ItemGroup>
-
 </Project>

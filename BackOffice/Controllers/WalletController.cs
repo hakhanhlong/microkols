@@ -270,6 +270,32 @@ namespace BackOffice.Controllers
             return View(list);
         }
 
+        public IActionResult Statistic_TransactionAgency(int walletid = 0)
+        {
+            var wallet = _IWalletRepository.GetById(walletid);
+            if (wallet != null)
+            {
+                ViewBag.Wallet = wallet;
+                if (wallet.EntityType == Core.Entities.EntityType.Account)
+                {
+                    var account = _IAccountBusiness.GetAccount(wallet.EntityId);
+                    if (account.Result != null)
+                    {
+                        ViewBag.Account = account.Result;
+                    }
+                }
+                if (wallet.EntityType == Core.Entities.EntityType.Agency)
+                {
+                    var agency = _IAgencyBusiness.GetAgency(wallet.EntityId);
+                    if (agency.Result != null)
+                    {
+                        ViewBag.Account = agency.Result;
+                    }
+                }
+            }
+            return View();
+        }
+
         public async Task<IActionResult> TransactionAgencySearch(int walletid, TransactionType? SearchType, DateTime? StartDate, DateTime? EndDate, int pageindex = 1)
         {
             ViewBag.SearchTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>

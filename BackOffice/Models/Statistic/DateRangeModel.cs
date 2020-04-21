@@ -10,5 +10,7 @@ namespace BackOffice.Models.Statistic
         public string startDate { get; set; } = "";
         public string endDate { get; set; } = "";
 
+        public int Walletid { get; set; }
+
     }
 }

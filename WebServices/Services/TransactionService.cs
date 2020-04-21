@@ -39,13 +39,13 @@ namespace WebServices.Services
         public async Task<TransactionViewModel> GetTransaction(TransactionType type, int RefId)
         {
             var transaction = await _transactionRepository.GetTransaction(type, RefId);
-            if(transaction != null)
+            if (transaction != null)
             {
                 return new TransactionViewModel(transaction);
             }
 
             return null;
-            
+
 
         }
 
@@ -73,7 +73,7 @@ namespace WebServices.Services
             if (wallet == null) return -1;
             var systemid = await _walletRepository.GetSystemId();
             var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletRecharge,
-                model.Note, model.GetTransactionData(),  username);
+                model.Note, model.GetTransactionData(), username);
             return transactionId;
 
 
@@ -95,7 +95,7 @@ namespace WebServices.Services
                 BankBranch = model.Branch
             });
             var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletWithdraw,
-             model.Note, data,  username);
+             model.Note, data, username);
             return transactionId;
 
         }
@@ -233,6 +233,27 @@ namespace WebServices.Services
         }
 
         #endregion
+
+        #region statistic wallet transaction
+        public async Task<List<TransactionStatisticViewModel>> Statistic_Agency_WalletRecharge(int walletid, string startDate, string endDate, TransactionStatus status)
+        {
+            var results = await _transactionRepository.TransactionStatisticByType(walletid, startDate, endDate, TransactionType.WalletRecharge, status);
+            return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
+        }
+        public async Task<List<TransactionStatisticViewModel>> Statistic_Agency_CampaignServicePaid(int walletid, string startDate, string endDate, TransactionStatus status)
+        {
+            var results = await _transactionRepository.TransactionStatisticByType(walletid, startDate, endDate, TransactionType.CampaignServiceCharge, status);
+            return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
+        }
+        public async Task<List<TransactionStatisticViewModel>> Statistic_Agency_ServiceCashback(int walletid, string startDate, string endDate, TransactionStatus status)
+        {
+            var results = await _transactionRepository.TransactionStatisticByType(walletid, startDate, endDate, TransactionType.CampaignServiceCashBack, status);
+            return results.Select(t => new TransactionStatisticViewModel(t)).ToList();
+        }
+
+        #endregion
+
+
 
 
 

@@ -271,8 +271,69 @@ namespace BackOffice.Controllers
             return Json(new { TotalOvertallCampaignAccountPaypack = TotalOvertallCampaignAccountPaypack.ToPriceText(), data = chartData });
         }
 
-        
 
+
+
+
+        #region Wallet Transaction
+
+        [HttpPost]
+        public async Task<JsonResult> Statistic_Json_WalletAgency_Transaction([FromBody] DateRangeModel model)
+        {
+
+            //format datetime yyyy/MM/dd
+
+            List<string> range_date = new List<string>();
+            var endDateTime = DateTime.Now;
+            DateTime _startDate = new DateTime(endDateTime.Year, endDateTime.Month, 1);
+            if (!string.IsNullOrEmpty(model.startDate) && !string.IsNullOrEmpty(model.endDate))
+            {
+                _startDate = Convert.ToDateTime(model.startDate);
+                endDateTime = Convert.ToDateTime(model.endDate);
+            }
+
+            string startDate = _startDate.ToString("MM/dd/yyyy");
+            string endDate = endDateTime.ToString("MM/dd/yyyy");
+
+
+            var result_agency_service_paid = await _ITransactionService.Statistic_Agency_CampaignServicePaid(model.Walletid, startDate, endDate, Core.Entities.TransactionStatus.Completed); //line
+            var result_agency_service_cashback = await _ITransactionService.Statistic_Agency_ServiceCashback(model.Walletid, startDate, endDate, Core.Entities.TransactionStatus.Completed); //line
+            var result_agency_wallet_recharge = await _ITransactionService.Statistic_Agency_WalletRecharge(model.Walletid, startDate, endDate, Core.Entities.TransactionStatus.Completed); //line
+
+
+
+
+            // create range of date #######################################################################################
+            foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
+            {
+                range_date.Add(day.ToString("MM/dd/yyyy"));
+            }
+            //#############################################################################################################
+
+            var chartData = new object[range_date.Count + 1];
+            chartData[0] = new object[]{
+                "Ngày tháng",
+                "Nạp ví ",
+                "Thanh toán phí chiến dịch",
+                "Rút tiền thừa chiến dịch"
+            };
+
+            int j = 0;
+            foreach (var str_date in range_date)
+            {
+                j++;
+                long agency_service_paid_amount = result_agency_service_paid.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                long agency_service_cashback_amount = result_agency_service_cashback.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                long agency_wallet_recharge_amount = result_agency_wallet_recharge.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+
+                chartData[j] = new object[] { str_date, agency_wallet_recharge_amount, agency_service_paid_amount, agency_service_cashback_amount };
+            }
+            return Json(chartData);
+        }
+
+
+
+        #endregion
 
 
 
