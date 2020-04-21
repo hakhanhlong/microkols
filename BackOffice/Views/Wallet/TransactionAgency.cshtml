@@ -40,9 +40,45 @@
 }
 
 @section Subheaders2{
-    <a href="/wallet/Statistic_TransactionAgency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
-        BIỂU ĐỒ GIAO DỊCH
-    </a>
+
+    <ul class="list-inline">
+        @if (ViewBag.Wallet != null)
+        {
+            <li class="list-inline-item">
+                <strong class="btn btn-metal" style="font-family:Roboto;text-transform:uppercase;">
+
+                    @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
+                    {
+                        <span>Name: </span> <span class="m--font-danger mr-2">System</span>
+                    }
+                    else
+                    {
+                        <span>DOANH NGHIỆP: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
+                    }
+
+                    Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
+                </strong>
+            </li>
+
+        }
+
+        <li class="list-inline-item">
+            <a href="/wallet/statistic_transactionagency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
+                BIỂU ĐỒ GIAO DỊCH
+            </a>
+        </li>
+        <li class="list-inline-item">
+            <a href="/wallet/transactionhistory?walletid=@(Context.Request.Query["walletid"])" class="btn btn-info m-btn m-btn--icon">
+                <span>
+                    <i class="fa fa-history"></i>
+                    <span>TRANSACTION HISTORY</span>
+                </span>
+            </a>
+        </li>
+    </ul>
+
+    
+
 }
 
 <div class="row">
@@ -57,33 +93,13 @@
                     </div>
                 </div>
                 <div class="m-portlet__head-tools">
-                    <a href="/wallet/transactionhistory?walletid=@(Context.Request.Query["walletid"])" class="btn btn-info m-btn m-btn--icon">
-                        <span>
-                            <i class="fa fa-history"></i>
-                            <span>TRANSACTION HISTORY</span>
-                        </span>
-                    </a>
+                   
                 </div>
             </div>
             <div class="m-portlet__body" style="margin-top:-20px;">
 
                 @await Html.PartialAsync("~/Views/Wallet/_FilterTransactionAgency.cshtml", Model)
-                @if (ViewBag.Wallet != null)
-                {
-                    <h6>
 
-                        @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
-                        {
-                            <span>Name: </span> <span class="m--font-danger mr-2">System</span>
-                        }
-                        else
-                        {
-                            <span>Tên doanh nghiệp: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
-                        }
-
-                        Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
-                    </h6>
-                }
                 @if (Model != null)
                 {
 

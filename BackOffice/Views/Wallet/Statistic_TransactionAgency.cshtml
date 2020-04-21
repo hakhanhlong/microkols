@@ -49,7 +49,24 @@
     </ul>
 }
 
+@section Subheaders2{
+    @if (ViewBag.Wallet != null)
+    {
+        <strong class="btn btn-metal" style="font-family:Roboto;text-transform:uppercase;">
 
+            @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
+            {
+                <span>Name: </span> <span class="m--font-danger mr-2">System</span>
+            }
+            else
+            {
+                <span>DOANH NGHIỆP: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
+            }
+
+            Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
+        </strong>
+    }
+}
 
 <div class="row">
     <div class="col-xl-12">
@@ -59,29 +76,14 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Biểu đồ chung giao dịch của doanh nghiệp
+                            Biểu đồ chung giao dịch doanh nghiệp
                         </h3>
                     </div>
                 </div>
 
             </div>
             <div class="m-portlet__body">
-                @if (ViewBag.Wallet != null)
-                {
-                    <h6>
 
-                        @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
-                        {
-                            <span>Name: </span> <span class="m--font-danger mr-2">System</span>
-                        }
-                        else
-                        {
-                            <span>Tên doanh nghiệp: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
-                        }
-
-                        Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
-                    </h6>
-                }
                 <form class="m-form m-form--fit m-form--label-align-right">
                     <div class="m-portlet__body">
                         <div class="form-group m-form__group row">
@@ -172,7 +174,7 @@
 
             var data = google.visualization.arrayToDataTable(chartData);
             var options = {
-                title: "Tiền thừa dịch vụ doanh nghiệp rút",
+                title: "Biểu đồ chung giao dịch doanh nghiệp",
                 legend: { position: 'bottom' },
                 width: '1280',
                 height: '560',
