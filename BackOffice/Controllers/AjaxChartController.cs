@@ -319,16 +319,28 @@ namespace BackOffice.Controllers
             };
 
             int j = 0;
+            long total_service_paid_amount = 0;
+            long total_service_cashback_amount = 0;
+            long total_wallet_recharge_amount = 0;
+
             foreach (var str_date in range_date)
             {
                 j++;
                 long agency_service_paid_amount = result_agency_service_paid.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                total_service_paid_amount += agency_service_paid_amount;
+
                 long agency_service_cashback_amount = result_agency_service_cashback.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                total_service_cashback_amount += agency_service_cashback_amount;
+
                 long agency_wallet_recharge_amount = result_agency_wallet_recharge.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                total_wallet_recharge_amount += agency_wallet_recharge_amount;
 
                 chartData[j] = new object[] { str_date, agency_wallet_recharge_amount, agency_service_paid_amount, agency_service_cashback_amount };
             }
-            return Json(chartData);
+
+            return Json(new { total_service_paid_amount = total_service_paid_amount.ToPriceText(),
+            total_service_cashback_amount = total_service_cashback_amount.ToPriceText(),
+            total_wallet_recharge_amount = total_wallet_recharge_amount.ToPriceText(), data = chartData});
         }
 
 
@@ -352,7 +364,7 @@ namespace BackOffice.Controllers
 
 
             var result_influencer_campaign_account_payback = await _ITransactionService.Statistic_Influencer_CampaignAccountPayback(model.Walletid, startDate, endDate, Core.Entities.TransactionStatus.Completed); //line
-            
+            long total_influencer_campaign_account_payback = 0;
 
             // create range of date #######################################################################################
             foreach (DateTime day in DateTimeHelpers.EachCalendarDay(_startDate, endDateTime))
@@ -371,10 +383,11 @@ namespace BackOffice.Controllers
             foreach (var str_date in range_date)
             {
                 j++;
-                long influencer_campaign_account_payback_amount = result_influencer_campaign_account_payback.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();                
+                long influencer_campaign_account_payback_amount = result_influencer_campaign_account_payback.Where(r => r.Timeline == str_date).Select(t => t.Amount).FirstOrDefault();
+                total_influencer_campaign_account_payback += influencer_campaign_account_payback_amount;
                 chartData[j] = new object[] { str_date, influencer_campaign_account_payback_amount };
             }
-            return Json(chartData);
+            return Json(new { total_influencer_campaign_account_payback  = total_influencer_campaign_account_payback .ToPriceText(), data= chartData });
         }
 
         #endregion

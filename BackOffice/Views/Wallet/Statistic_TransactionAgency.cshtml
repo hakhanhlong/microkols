@@ -110,7 +110,13 @@
                             <label class="col-form-label col-lg-3 col-sm-12">
                                 Tổng phí dịch vụ: <strong style="color:red;"><span class="TotalOverAll_CampaignService"></span></strong>
                             </label>
-                        </div>
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Tổng tiền rút từ chiến dịch: <strong style="color:red;"><span class="total_service_cashback_amount"></span></strong>
+                            </label>
+                            <label class="col-form-label col-lg-3 col-sm-12">
+                                Tổng doanh nghiệp nạp tiền ví: <strong style="color:red;"><span class="total_wallet_recharge_amount"></span></strong>
+                            </label>
+                        </div>                        
                     </div>
                 </form>
 
@@ -154,8 +160,14 @@
                 dataType: "json",
                 contentType: "application/json; chartset=utf-8",
                 success: function (data) {
-                    chartData = data;
-                    //$('.TotalOverAll_CampaignService').html(data.totalOvertallCampaignServicePaypack);
+                    chartData = data.data;
+
+
+
+                    $('.TotalOverAll_CampaignService').html(data.total_service_paid_amount);
+                    $('.total_service_cashback_amount').html(data.total_service_cashback_amount);
+                    $('.total_wallet_recharge_amount').html(data.total_wallet_recharge_amount);
+
                 },
                 error: function () {
                     alert("Error loading data! Please try again.");
