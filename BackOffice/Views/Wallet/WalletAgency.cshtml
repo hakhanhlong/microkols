@@ -48,16 +48,13 @@
                                         #
                                     </th>
                                     <th>
-                                        NAME
+                                        HỌ & TÊN
                                     </th>
                                     <th>
-                                        BALANCE
+                                        SỐ DƯ VÍ
                                     </th>
                                     <th>
                                         DATE CREATED
-                                    </th>
-                                    <th>
-                                        TYPE
                                     </th>
                                     <th></th>
                                 </tr>
@@ -70,16 +67,22 @@
                                     {
                                         count++;
                                         <tr>
-                                            <td>@count</td>                                            
-                                            <td>@item.Name</td>
+                                            <td>@count</td>
+                                            <td>
+                                                <a href="/agency/detail?id=@(item.Id)" style="font-family:Roboto;text-decoration:none;">
+                                                    <strong>@item.Name</strong>
+                                                </a>
+                                            </td>
                                             <td>
                                                 <h6 class="m--font-danger">
                                                     @item.Balance.ToPriceText()
                                                 </h6>
                                             </td>
-                                            <td>@item.DateCreated</td>
-                                            <td>@item.Type</td>
-                                            <td><a class="btn btn-sm btn-info" href="/wallet/transactionagency?walletid=@(item.Id)">TRANSACTIONS</a></td>
+                                            <td>@item.DateCreated</td>                                            
+                                            <td>                                                
+                                                <a style="font-family:Roboto;text-decoration:none;" href="/wallet/transactionagency?walletid=@(item.Id)" 
+                                                   class="m-badge m-badge--warning m-badge--wide">Giao dịch</a>
+                                            </td>
                                         </tr>
                                     }
 
