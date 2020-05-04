@@ -284,6 +284,10 @@ namespace WebMerchant.Code.Extensions
                 NotificationType.AccountSubmitCampaignContent,
                 NotificationType.AccountSubmitCampaignContent,
 
+                //NotificationType.TransactionCampaignServiceCashBackApprove,
+                //NotificationType.TransactionCampaignServiceCashBackProcessing,
+                //NotificationType.TransactionCampaignServiceCashBackCancel,
+
             };
             if (campaignNotifTypes.Contains(model.Type))
             {
@@ -317,7 +321,10 @@ namespace WebMerchant.Code.Extensions
             }
             else if (model.Type.ToString().Contains("Transaction"))
             {
-                return urlHelper.Action("Index", "Wallet");
+               
+                //return urlHelper.Action("Index", "Wallet");
+
+                return urlHelper.Action("History", "Wallet");
             }
 
             return "#";

@@ -28,6 +28,8 @@ namespace WebServices.ViewModels
             AmountToText = Amount.ToPriceText();
 
             StatusToText = Status.ToString();
+
+            CreatedDate = transaction.DateCreated;
         }
         public static List<TransactionViewModel> GetList(IEnumerable<Transaction> transactions)
         {
@@ -48,5 +50,7 @@ namespace WebServices.ViewModels
         public string Data { get; set; }
         public int? RefId { get; set; }
         public string Note { get; set; }
+
+        public DateTime CreatedDate { get; set; }
     }
 }

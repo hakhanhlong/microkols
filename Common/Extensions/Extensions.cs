@@ -125,7 +125,11 @@ namespace Common.Extensions
                 list = list.Distinct().ToList();
                 foreach (string s in list)
                 {
-                    result += c + s.Trim();
+                    if (!string.IsNullOrEmpty(s))
+                    {
+                        result += c + s.Trim();
+                    }
+                    
                 }
 
             }

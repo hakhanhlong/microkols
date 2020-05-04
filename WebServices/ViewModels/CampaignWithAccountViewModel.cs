@@ -78,7 +78,7 @@ namespace WebServices.ViewModels
         {
             get
             {
-                return CampaignAccounts.Count;
+                return CampaignAccounts.GetCountApplied();
             }
         }
         public int CountAccepted

@@ -9,15 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Core.Models;
+using System.Data.SqlClient;
+using Infrastructure.Extensions;
+
+
 
 namespace Infrastructure.Data
 {
     public class TransactionRepository : EfRepository<Transaction>, ITransactionRepository
     {
 
+        
         public TransactionRepository(AppDbContext dbContext) : base(dbContext)
         {
-
+            
         }
 
         public async Task<Transaction> GetTransaction(TransactionType type, int RefId)
@@ -53,6 +58,13 @@ namespace Infrastructure.Data
 
         }
 
+        public async Task<bool> IsExistPaymentServiceCashBack(int agencyId, int campaignid)
+        {
+            var translate = await _dbContext.Transaction.FirstOrDefaultAsync(m=>m.Type== TransactionType.CampaignServiceCashBack &&
+            m.RefId== campaignid && m.SenderId== agencyId && m.Status== TransactionStatus.Created);
+
+            return translate != null;
+        }
         public async Task<int> CreateTransaction(int senderid, int receiverid, long amount,
             TransactionType type, string note, string data, string username, int refId = 0, string refData = "")
         {
@@ -127,5 +139,59 @@ namespace Infrastructure.Data
         {
             return _dbContext.Transaction.Count();
         }
+
+
+        #region Statistic
+
+        public async Task<List<TransactionStatistic>> TransactionStatisticByType(string startDate, string endDate, TransactionType type, TransactionStatus status)
+        {
+            List<TransactionStatistic> result = new List<TransactionStatistic>();        
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_campaign_by_type")
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .WithSqlParam("Type", type)
+                .WithSqlParam("Status", status)
+                .ExecuteStoredProc<TransactionStatistic>();
+            return result;
+        }
+
+        public async Task<List<TransactionStatistic>> TransactionStatisticByType(int walletid, string startDate, string endDate, TransactionType type, TransactionStatus status)
+        {
+            List<TransactionStatistic> result = new List<TransactionStatistic>();
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_wallet_by_id_filter_by_type")
+                .WithSqlParam("WalletId", walletid)
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .WithSqlParam("Type", type)
+                .WithSqlParam("Status", status)
+                .ExecuteStoredProc<TransactionStatistic>();
+            return result;
+        }
+
+        public async Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(int campaignid)
+        {
+            List<TransactionCampaignRevenue> result = new List<TransactionCampaignRevenue>();
+
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_revenue_campaign_detail")
+                .WithSqlParam("CampaignId", campaignid)                
+                .ExecuteStoredProc<TransactionCampaignRevenue>();
+
+            return result;
+        }
+
+        public async Task<List<TransactionCampaignRevenue>> TransactionStatisticCampaignRevenue(string startDate, string endDate)
+        {
+            List<TransactionCampaignRevenue> result = new List<TransactionCampaignRevenue>();
+
+            result = await _dbContext.LoadStoredProc("sp_transaction_statistic_revenue_campaign")
+                .WithSqlParam("StartDate", startDate)
+                .WithSqlParam("EndDate", endDate)
+                .ExecuteStoredProc<TransactionCampaignRevenue>();
+
+            return result;
+        }
+
+
+        #endregion
     }
 }

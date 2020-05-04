@@ -30,12 +30,17 @@
     <tbody>
         @{ var stt = 0;}
 
-        @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished))
+        @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished || m.Status== CampaignAccountStatus.Unfinished))
         {
             stt++;
             <tr>
                 <td>@stt</td>
-                <td>@campaignAccount.Account.Name</td>
+                <td>
+
+                    <a href="@campaignAccount.Account.Link" target="_blank">
+                        @campaignAccount.Account.Name
+                        </a>
+                </td>
                 <td>
                     @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                     {
@@ -64,7 +69,7 @@
                                                 @post.CommentCount <i class="fal fa-comment"></i>
                                             </span>
 
-                                            @if(Model.Type== CampaignType.ShareContentWithCaption)
+                                            @if (Model.Type == CampaignType.ShareContentWithCaption)
                                             {
                                                 var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
                                                 <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
@@ -81,9 +86,9 @@
                             var accountFbId = await AccountService.GetProviderIdByAccount(campaignAccount.AccountId, AccountProviderNames.Facebook);
                             var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
                             <div class="row">
-                                <div class="col-1 text-center">
-                                    <img src="@avatarurl" class="img-fluid" />
-                                    <small class="text-muted">Hiện tại</small>
+                                <div class="col-12 text-center">
+                                    <img src="@avatarurl" class="img-fluid" /> <br />
+                                    <small class="text-muted">Avatar Hiện tại</small>
                                 </div>
 
                                 @if (logAvatarTimes != null)
@@ -91,7 +96,7 @@
                                     foreach (var logAvatar in logAvatarTimes)
                                     {
 
-                                        <div class="col-1 text-center">
+                                        <div class="col-12 text-center">
                                             <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
                                             <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
                                         </div>
@@ -100,7 +105,7 @@
 
                             </div>
                         }
-                       
+
                     }
                 </td>
                 <td>

@@ -101,50 +101,54 @@ namespace WebServices.Jobs
                         AccountFbPostViewModel fbPost = null;
                         var refurl = campaign.CampaignAccount.RefUrl;
                         var refid = campaign.CampaignAccount.RefId;
-                        if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
+
+                        // chỉ check facebook post của người đã đồng ý tham gia chiến dịch
+                        if (campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed)
                         {
-
-                            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
-                            if (fbPost == null)
+                            if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                             {
-                                fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Link)).FirstOrDefault();
+
+                                fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
+                                if (fbPost == null)
+                                {
+                                    fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Link)).FirstOrDefault();
+                                }
+                                if (fbPost == null)
+                                {
+                                    fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
+                                }
                             }
-                            if (fbPost == null)
+                            else
                             {
-                                fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
+                                if (!string.IsNullOrEmpty(campaign.Data))
+                                {
+                                    fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
+                                }
+
                             }
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(campaign.Data))
+
+                            if (fbPost != null)
                             {
-                                fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
+                                var campaignAccountId = await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
+                                {
+                                    CampaignId = campaign.Id,
+                                    CampaignType = campaign.Type,
+                                    Note = string.Empty,
+                                    RefId = fbPost.PostId,
+                                    RefUrl = fbPost.Permalink,
+                                    RefImage = new List<string>()
+                                }, username);
+
+
+                                if (campaignAccountId > 0)
+                                {
+                                    await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
+                                }
                             }
-                            
-                        }
+                        } 
 
 
-                        if (fbPost != null)
-                        {
-                            var campaignAccountId =  await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
-                            {
-                                CampaignId = campaign.Id,
-                                CampaignType = campaign.Type,
-                                Note = string.Empty,
-                                RefId = fbPost.PostId,
-                                RefUrl = fbPost.Permalink,
-                                RefImage = new List<string>()
-                            }, username);
-
-
-                            if (campaignAccountId > 0)
-                            {
-                                await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
-                            }
-                            
-
-
-                        }
+                        
 
 
                     }

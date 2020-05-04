@@ -2,6 +2,7 @@
 using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -28,10 +29,29 @@ namespace BackOffice.Business
         }
 
 
-        public ListWalletViewModel GetListWallet(int pageindex, int pagesize)
-        {
-            var wallets = _IWalletRepository.ListPaging("DateModified_desc", pageindex, pagesize);
 
+        public async Task<ListWalletViewModel> GetListWallet(EntityType? type, int pageindex, int pagesize)
+        {
+
+
+            var filter = new WalletSpecification(type);
+
+            var wallets = await _IWalletRepository.ListPagedAsync(filter, "DateModified_desc", pageindex, pagesize);
+            var total = await _IWalletRepository.CountAsync(filter);
+
+            return new ListWalletViewModel()
+            {
+                Wallets = wallets.Select(a => new WalletViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+        }
+
+
+
+        public ListWalletViewModel GetListWallet(int pageindex, int pagesize)
+        {       
+            var wallets = _IWalletRepository.ListPaging("DateModified_desc", pageindex, pagesize);
             var total = _IWalletRepository.CountAll();
 
 

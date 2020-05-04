@@ -1,4 +1,150 @@
-﻿@model CampaignDetailsViewModel
-@*@inject Website.Interfaces.IAccountService AccountService
-@inject Website.Code.Helpers.IFacebookHelper FacebookHelper*@
+﻿@model WebServices.ViewModels.CampaignDetailsViewModel
+
+@inject WebServices.Interfaces.IAccountService AccountService
+@inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class="w-">
+                STT
+            </th>
+            <th>
+                Người chia sẻ
+            </th>
+            <th width="250">
+                Link facebook
+            </th>
+            <th>
+                nội dung chia sẻ
+            </th>
+            <th>
+                Đánh giá người dùng
+            </th>
+            <th>
+                Báo cáo người dùng
+            </th>
+        </tr>
+
+
+    </thead>
+    <tbody>
+        @{ var stt = 0;}
+
+        @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished))
+        {
+            stt++;
+            <tr>
+                <td>@stt</td>
+                <td>@campaignAccount.Account.Name</td>
+                <td>
+                    @if (campaignAccount.Status == CampaignAccountStatus.Finished)
+                    {
+                        if (campaignAccount.Type.IsShareCampaign())
+                        {
+                            if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                            {
+                                <div>
+                                    <a href="@campaignAccount.RefUrl" target="_blank">FB.com</a>
+                                </div>
+                                if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                                {
+                                    var post = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId);
+                                    if (post != null)
+                                    {
+                                        <div class="d-flex align-items-center">
+
+                                            <span data-toggle="tooltip" title="Lượt thích">
+                                                @post.LikeCount likes
+                                            </span>
+                                            <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
+
+                                                @post.ShareCount shares
+                                            </span>
+                                            <span data-toggle="tooltip" title="Lượt bình luận">
+                                                @post.CommentCount comments
+                                            </span>                                                                                       
+                                        </div>
+                                        <div>
+                                            @if (Model.Type == CampaignType.ShareContentWithCaption)
+                                            {
+                                                var matchpercent = Common.Helpers.StringHelper.Compute(campaignAccount.RefContent, post.Message);
+
+                                                <span data-toggle="tooltip" title="Tỷ lệ chính xác">Tỷ lệ chính xác @matchpercent% </span>
+
+                                            }
+                                        </div>
+                                    }
+                                }
+                            }
+                        }
+                        else if (campaignAccount.Type == CampaignType.ChangeAvatar)
+                        {
+                            var logAvatarTimes = (List<CampaignAccountRefDataChangeAvatar>)campaignAccount.RefData;
+                            var accountFbId = await AccountService.GetProviderIdByAccount(campaignAccount.AccountId, AccountProviderNames.Facebook);
+                            var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
+                            <div class="row">
+                                <div class="col-1 text-center">
+                                    <img src="@avatarurl" class="img-fluid" />
+                                    <small class="text-muted">Hiện tại</small>
+                                </div>
+
+                                @if (logAvatarTimes != null)
+                                {
+                                    foreach (var logAvatar in logAvatarTimes)
+                                    {
+
+                                        <div class="col-1 text-center">
+                                            <img src="@AppHelpers.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
+                                            <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        }
+
+                    }
+                </td>
+                <td>
+                    <span class="text-info"> @campaignAccount.RefContent</span>
+                </td>
+                <td>
+                    @if (campaignAccount.Rating.HasValue)
+                    {
+                        <span class="btn btn-outline-info btn-sm">@campaignAccount.Rating.Value.ToDisplayName()</span>
+
+                    }
+                  
+
+
+
+                </td>
+                <td>
+
+                    @if (CampaignAccountReportStatus.Reported == campaignAccount.ReportStatus)
+                    {
+                        var title = $"Nội dung: {campaignAccount.ReportNote}";
+                        <button class="btn btn-sm btn-outline-danger" data-toggle="tooltip" title="@title"><i class=" fal fa-check"> </i> Đã báo cáo</button>
+                    }
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+    <div class="toast-header">
+        <strong class="mr-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world! This is a toast message.
+    </div>
+</div>
+
 

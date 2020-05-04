@@ -37,6 +37,10 @@ namespace WebServices.Services
             _campaignAccountRepository = campaignAccountRepository;
         }
 
+        public async Task<bool> IsExistPaymentServiceCashBack(int agencyId,int campaignid)
+        {
+            return await _transactionRepository.IsExistPaymentServiceCashBack(agencyId, campaignid);
+        }
         public async Task<PaymentResultViewModel> CreateAgencyPayment(int agencyId, CreateCampaignPaymentViewModel model, string username)
         {
             var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyId, model.CampaignId);
@@ -57,9 +61,16 @@ namespace WebServices.Services
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.TotalChargeValue;
-                transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
 
-                return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
+                transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
+                if (transactionType == TransactionType.CampaignServiceCharge)
+                {
+                    return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
+                }
+
+                // nếu là yêu cầu rút tiền -- Đổi sender - recivert -> số tiền dương
+                var transactionid = await _transactionRepository.CreateTransaction(receiverId, senderId, 0 - amount, transactionType, model.Note, string.Empty, username, refId, refData);
+                return new PaymentResultViewModel(PaymentResultErrorCode.ChoHeThongDuyetRutTien, transactionid, 0 - amount); // anh Longhk bổ xung
             }
 
             return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
@@ -158,7 +169,7 @@ namespace WebServices.Services
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
 
-            long amount =  campaign.GetAccountChagreAmount(campaignAccount);
+            long amount = campaign.GetAccountChagreAmount(campaignAccount);
             var senderId = await _walletRepository.GetSystemId();
             var receiverId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Account, campaignAccount.AccountId);
             var transactionType = TransactionType.CampaignAccountPayback;

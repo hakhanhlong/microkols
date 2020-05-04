@@ -26,7 +26,7 @@ var App = (function () {
         if (currentPage === 'campaign_create' || currentPage == 'campaign_editinfo') {
             CampaignCreatePage.Init();
         }
-        else if (currentPage === 'campaign_createinfo') {
+        else if (currentPage === 'campaign_createinfo' || currentPage === 'campaign_edittarget') {
             CampaignCreateTargetPage.Init();
         }
         else if (currentPage === 'campaign_details') {
@@ -175,7 +175,7 @@ var App = (function () {
 
 
         $.extend($.validator.messages, {
-            required: "Hãy nhập.",
+            required: "Hãy nhập dữ liệu",
             remote: "Hãy sửa cho đúng.",
             email: "Hãy nhập email.",
             url: "Hãy nhập URL.",
@@ -774,6 +774,18 @@ var CampaignCaptionPage = (function () {
             $('.frmFeedbackAll-ids').html('');
             $('.frmFeedbackAll').hide();
         }
+
+        $('.open-img-popup').click(function (e) {
+            e.preventDefault();
+
+            var src = $(this).find('img').attr('src');
+
+            console.log('src', src);
+
+            $("#imagemodal .modal-img").prop("src", src);
+
+            $('#imagemodal').modal('toggle');
+        });
      
     }
 
@@ -919,7 +931,7 @@ var CampaignCreatePage = (function () {
         //    }
         //});
 
-       
+
 
         $('#HashTag').select2({
             maximumSelectionLength: 3,
@@ -983,26 +995,35 @@ var CampaignCreatePage = (function () {
             }
 
         });
-        $('#timereview-date').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            },
-            parentEl: "#modal-timereview .modal-body"    
-        });
 
-        $('#timereview-submit').click(function () {
-            var time = $('#timereview-date').val();
 
-            $('#ReviewDate').val(time);
-            var address = $('#timereview-address').val();
-            $('#ReviewAddress').val(address);
-            $('#modal-timereview').modal('hide');
+        if ($('.reviewaddress-container').length > 0) {
 
-        });
+
+            handlerReviewType();
+
+            $('input[name=ReviewType]').change(function () {
+                handlerReviewType();
+            });
+
+          
+            $('#ReviewDate').daterangepicker({
+                timePicker: true,
+                minDate: moment(),
+                startDate: moment(),
+                endDate: moment().startOf('hour').add(10, 'hour'),
+                locale: {
+                    format: 'hh:mm A DD/MM/YYYY'
+                },
+                parentEl: ""
+            });
+
+            handlerReviewPayback();
+            $('input[name=ReviewPayback]').change(function () {
+                handlerReviewPayback();
+            });
+        }
+
     }
 
 
@@ -1036,6 +1057,32 @@ var CampaignCreatePage = (function () {
 
         }
     }
+
+
+    function handlerReviewType() {
+        $('.reviewaddress-container').hide();
+        var val = $('input[name=ReviewType]:checked').val();
+        console.log('handlerReviewType', val);
+        if (val) {
+            $('.reviewaddress-container-' + val).show();
+
+        } 
+    }
+
+    function handlerReviewPayback() {
+        $('.form-reviewAddress').hide();
+        var val = $('input[name=ReviewPayback]:checked').val();
+        console.log('handlerReviewPayback', val);
+        if (val) {
+             
+
+            $('.form-reviewAddress').show();
+
+        } else {
+            $('.form-reviewAddress').hide();
+        }
+    }
+
 
     function handlerAccountType() {
         var accouttype = $('input[name=AccountType]:checked').val();
@@ -1262,6 +1309,8 @@ var CampaignCreateTargetPage = (function () {
 
     function init() {
         handler();
+
+        console.log('CampaignCreateTargetPage');
     }
 
     function handler() {
@@ -1271,35 +1320,128 @@ var CampaignCreateTargetPage = (function () {
             theme: "bootstrap"
         });
 
-        $('#RegisterTime').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            }
-        });
+        var defaultHour = 10;
 
         $('#FeedbackBefore').daterangepicker({
             timePicker: true,
             minDate: moment(),
             startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
+            endDate: moment().startOf('hour').add(defaultHour, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
 
-        $('#ExecutionTime').daterangepicker({
+        $('#RegisterTime').daterangepicker({
             timePicker: true,
             minDate: moment(),
             startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
+            endDate: moment().startOf('hour').add(defaultHour, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
+        $('#RegisterTime').on('apply.daterangepicker', function (ev, picker) {
+            
+            var startDate = moment(picker.endDate).add(1, 'minute');
+            var endDate = moment(picker.endDate).add(defaultHour, 'hour');
+            console.log('start11',startDate);
+            console.log('end11',endDate);
+            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate);
+            $('#ExecutionTime').data('daterangepicker').setEndDate(endDate);
+
+        });
+        $('#ExecutionTime').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment().startOf('hour').add(defaultHour, 'hour').add(1, 'minute'),
+            endDate: moment().startOf('hour').add(2 * defaultHour, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#ExecutionTime').on('apply.daterangepicker', function (ev, picker) {
+
+            var regDrp = $('#RegisterTime').data('daterangepicker');
+            var d1 = moment(regDrp.endDate);
+
+            var d2 = moment(picker.startDate);
+
+            if (d1.isBefore(d2)) // false
+            {
+
+            } else {
+
+                $.notify({
+                    // options
+                    message: 'Thời gian thực hiện phải lớn hơn thời gian nhận đăng ký'
+                }, {
+                    // settings
+                    type: 'danger'
+                });
+            }
+
+
+            var startDate = d1.add(1, 'minute'); 
+            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate); 
+
+        });
+
+        $('#FeedbackBefore2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#RegisterTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#ExecutionTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
+        $('.form-create-campaign').submit(function (e) {
+
+
+            var regDrp = $('#RegisterTime').data('daterangepicker');
+            var excDrp = $('#ExecutionTime').data('daterangepicker');
+            console.log('regDrp', regDrp.startDate, regDrp.endDate);
+            console.log('excDrp', excDrp.startDate, excDrp.endDate);
+
+            var d1 = moment(regDrp.endDate);
+            var d2 = moment(excDrp.startDate);
+            if (d1.isBefore(d2)) // false
+            {
+                
+            } else {
+                e.preventDefault();
+            }
+
+          
+        });
+
+
+        $('#AmountMin').change(function () {
+
+            var val = $('#AmountMin').val();
+
+            console.log('amount min', val);
+
+            var valmax = $('#AmountMax').val();
+            if (valmax < val) {
+                $('#AmountMax').val(val);
+            }
+            $('#AmountMax').attr('min', val);
+
+
+
+        })
 
 
         /*
@@ -1440,7 +1582,7 @@ var CampaignDetailsPage = (function () {
 
     function init() {
 
-
+        CampaignIndexPage.Init();
         handler();
     }
     function handler() {

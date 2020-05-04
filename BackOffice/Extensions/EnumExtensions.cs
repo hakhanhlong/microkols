@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,27 +21,49 @@ namespace BackOffice.Extensions
             return (T)attributes[0];
         }
 
-        // This method creates a specific call to the above method, requesting the
-        // Description MetaData attribute.
-        public static string ToDescription(this Enum value)
-        {
-            var attribute = value.GetAttribute<DescriptionAttribute>();
-            return attribute == null ? value.ToString() : attribute.Description;
-        }
+        //// This method creates a specific call to the above method, requesting the
+        //// Description MetaData attribute.
+        //public static string ToDescription(this Enum value)
+        //{
+        //    var attribute = value.GetAttribute<DescriptionAttribute>();
+        //    return attribute == null ? value.ToString() : attribute.Description;
+        //}
 
         public static string ToDisplayName(this Enum value)
         {
-            var attribute = value.GetAttribute<DisplayNameAttribute>();
-            return attribute == null ? value.ToString() : attribute.DisplayName;
+            try
+            {
+
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.Name;
+            }
+            catch
+            {
+                return value.ToString();
+            }
         }
 
-        public static string ToPriceText(this int price, string currency = "đ")
+        public static string ToName(this Enum value)
         {
-            return $"{price.ToString("n0")} {currency}";
+            try
+            {
+
+                var attribute = value.GetAttribute<DisplayAttribute>();
+                return attribute == null ? value.ToString() : attribute.Name;
+            }
+            catch
+            {
+                return value.ToString();
+            }
         }
-        public static string ToPriceText(this long price, string currency = "đ")
-        {
-            return $"{price.ToString("n0")} {currency}";
-        }
+
+        //public static string ToPriceText(this int price, string currency = "đ")
+        //{
+        //    return $"{price.ToString("n0")} {currency}";
+        //}
+        //public static string ToPriceText(this long price, string currency = "đ")
+        //{
+        //    return $"{price.ToString("n0")} {currency}";
+        //}
     }
 }

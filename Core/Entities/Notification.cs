@@ -38,18 +38,39 @@ namespace Core.Entities
         SystemUpdateUnfinishedAccountCampaign  = 11,
         SystemUpdateCanceledAccountCampaign = 111,
 
+        // transaction deposite, withdraw for agency
+
         TransactionDepositeApprove = 12, 
         TransactionDepositeProcessing = 13,
         TransactionDepositeCancel = 14,
 
-        CampaignStarted  = 15,
+        TransactionWithdrawApprove = 121,
+        TransactionWithdrawProcessing = 132,
+        TransactionWithdrawCancel = 143,
+
+        TransactionAccountRefundToAgency = 144,
+
+        TransactionCampaignServiceCashBackApprove = 145,
+        TransactionCampaignServiceCashBackProcessing = 146,
+        TransactionCampaignServiceCashBackCancel = 147,
+
+        ExcecutedPaymentToAccountBanking = 22,
+
+        //##########################################
+
+
+
+        CampaignStarted = 15,
         CampaignCantStarted = 16,
         CampaignEnded = 17,
         CampaignCompleted = 18,
         CampaignCanceled = 19,
         CampaignConfirmed = 20,
-        CampaignError = 21,
-        ExcecutedPaymentToAccountBanking = 22,
+        CampaignError = 21,        
+        //####### longhk add ################
+        CampaignCreated = 23,
+        CampaignLocked  = 24,        
+        //###################################
 
 
         AccountSubmitCampaignCaption = 30,
@@ -65,12 +86,17 @@ namespace Core.Entities
 
 
         //####### longhk add ####################
-        AccountVerifyDenied = 44,
-        AccountVerifySuccess = 45,    
-        
 
         AgencyWalletDeposit = 46,
-        AgencyPayCampaignService = 47,
+        AgencyWalletWithDraw = 47,
+        AgencyPayCampaignService = 48,
+
+        AccountSendVerify = 50,
+        AccountVerifyDenied = 51,
+        AccountVerifySuccess = 52,
+
+        AgencyRequestWithdrawFromCampaign = 55,
+
         //#######################################
 
 
@@ -101,11 +127,43 @@ namespace Core.Entities
 
             if(type == NotificationType.AgencyWalletDeposit)
             {
-                text = "Agency Deposit";
+                text = "Doanh nghiệp nạp tiền ví";
+            }
+            if (type == NotificationType.AgencyWalletWithDraw)
+            {
+                text = "Doanh nghiệp rút tiền ví";
             }
             else if(type == NotificationType.AgencyPayCampaignService)
             {
-                text = "Agency Pay Campaign Service";
+                text = "Doanh nghiệp thanh toán phí dịch vụ chiến dịch";
+            }
+            else if (type == NotificationType.AgencyRequestWithdrawFromCampaign)
+            {
+                text = "Doanh nghiệp yêu cầu rút tiền từ chiến dịch";
+            }
+            else if (type == NotificationType.AccountSendVerify)
+            {
+                text = "Influencer gửi xác thực";
+            }
+            else if (type == NotificationType.CampaignCreated)
+            {
+                text = "Chiến dịch được tạo";
+            }
+            else if (type == NotificationType.CampaignLocked)
+            {
+                text = "Chiến dịch tạm khóa";
+            }
+            else if (type == NotificationType.CampaignCanceled)
+            {
+                text = "Chiến dịch bị hủy";
+            }
+            else if (type == NotificationType.CampaignStarted)
+            {
+                text = "Chiến dịch bắt đầu";
+            }
+            else if (type == NotificationType.CampaignEnded)
+            {
+                text = "Chiến dịch kết thúc";
             }
 
             return text;

@@ -8,13 +8,18 @@ namespace Core.Extensions
     
     public static class EntityExtension
     {
+        
         public static long ToServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
         {
             long result = 0;
             var arrIgnoreStatus = new List<CampaignAccountStatus>()
             {
                 CampaignAccountStatus.Canceled,
-                CampaignAccountStatus.Unfinished
+                CampaignAccountStatus.Unfinished,
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
+                CampaignAccountStatus.WaitToPay,
+                CampaignAccountStatus.All
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
 
@@ -57,10 +62,23 @@ namespace Core.Extensions
         }
         public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
+
+            //hxq 1988 --> Phí này với Account sẽ = phí thu nhập mong muốn
+            //return campaign.AccountChargeAmount;
+
+            //Longhk add, chỗ này phải là campaignAccount.AccountChargeAmount -> không phải campaign.AccountChargeAmount em bị nhầm chỗ này
+            return campaignAccount.AccountChargeAmount; 
+
+            /*
+
             var t1 = campaign.ServiceChargePercent;
+
             var amount = campaignAccount.AccountChargeAmount;
+
             var val1 = (amount * (100 - t1)) / 100;
+
             return Convert.ToInt32(val1);
+            */
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent;
             //var amount = campaignAccount.AccountChargeAmount;
@@ -92,7 +110,8 @@ namespace Core.Extensions
         {
             var t1 = campaign.ServiceChargePercent;
             var amount = campaign.AmountMax;
-            var val1 = (amount * (100 - t1)) / 100;
+            long longval =  (long) amount * (100 - t1);
+            double val1 = longval / 100;
             return Convert.ToInt32(val1);
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent;
@@ -123,7 +142,16 @@ namespace Core.Extensions
             long totalPaid = 0;
             foreach (var transaction in completedTransactions)
             {
-                totalPaid += transaction.Amount;
+               
+                if(transaction.Type== TransactionType.CampaignServiceCashBack && transaction.Amount>0)
+                {
+                    totalPaid -= transaction.Amount;
+                }
+                else
+                {
+                    totalPaid += transaction.Amount;
+                }
+                
             }
             return totalPaid;
         }

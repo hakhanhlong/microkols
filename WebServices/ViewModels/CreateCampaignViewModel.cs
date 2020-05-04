@@ -13,90 +13,6 @@ namespace WebServices.ViewModels
 {
     public class CreateCampaignViewModel
     {
-        public Campaign GetEntity(int agencyid, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
-        {
-            //var accountChargeAmount = 0;
-            //if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
-            //{
-            //    accountChargeAmount = AccountChargeAmount ?? 0;
-            //}
-            //else
-            //{
-            //    accountChargeAmount = campaignTypeCharge.AccountChargeAmount;
-            //}
-
-
-            //var accountChargeExtraPercent = 0;
-
-            //if (Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
-            //{
-            //    if (EnabledExtraType)
-            //    {
-            //        accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
-            //    }
-            //}
-
-            var start = "";
-            var end = "";
-            if (!string.IsNullOrEmpty(ExecutionTime))
-            {
-                var arrDate = ExecutionTime.Split('-');
-                if (arrDate.Length == 2)
-                {
-                    start = arrDate[0].Trim();
-                    end = arrDate[1].Trim();
-                }
-            }
-            var image = string.Empty;
-
-            if (Type == CampaignType.ChangeAvatar)
-            {
-                image = Image;
-            }
-            else if (Type == CampaignType.ShareContentWithCaption)
-            {
-                image = AddonImages.ToListString();
-            }
-            return new Campaign()
-            {
-                DateCreated = DateTime.Now,
-                AgencyId = agencyid,
-                Data = Data,
-                DateModified = DateTime.Now,
-                Deleted = false,
-                Description = Description,
-                Image = image,
-                Published = true,
-                //Status = CampaignStatus.Created, // cap nhat status da duyet luon de facebook check,
-                Status = CampaignStatus.Confirmed,
-                Title = Title,
-                UserCreated = username,
-                UserModified = username,
-                ExtraOptionChargePercent = setting.CampaignExtraOptionChargePercent,
-                ServiceChargePercent = setting.CampaignServiceChargePercent,
-                ServiceVATPercent = setting.CampaignVATChargePercent,
-                ServiceChargeAmount = 0,
-                AccountChargeExtraPercent = 0,
-                AccountChargeAmount = 0,
-                EnabledAccountChargeExtra = false,
-                AccountChargeTime = 0,
-                Requirement = Type == CampaignType.CustomService ? Requirement : string.Empty,
-                Type = Type,
-
-                Code = code,
-                Quantity = Quantity,
-                DateStart = start.ToViDateTime(),
-                DateEnd = end.ToViDateTime(),
-                AccountFeedbackBefore = FeedbackBefore.ToViDateTime(),
-                CustomKolNames = CustomKolNames.ToListString(),
-                Method = Method,
-                SampleContent = SampleContent.ToListString(),
-                Hashtag = HashTag.ToListString(),
-                SampleContentText = SampleContentText
-
-            };
-
-        }
 
         public static Campaign GetEntity(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
         {
@@ -138,6 +54,26 @@ namespace WebServices.ViewModels
             {
                 image = info.AddonImages.ToListString();
             }
+
+            var reviewaddress = "";
+            var reviewpayback = false;
+
+            if (info.Type == CampaignType.ReviewProduct && info.ReviewType.HasValue)
+            {
+                if (info.ReviewType == CampaignReviewType.GuiSanPham)
+                {
+                    if (1 == info.ReviewPayback)
+                    {
+                        reviewaddress = info.ReviewAddress;
+                        reviewpayback = true;
+                    }
+                }
+                else
+                {
+                    reviewaddress = info.ReviewAddress2;
+                }
+            }
+
             return new Campaign()
             {
                 DateCreated = DateTime.Now,
@@ -166,7 +102,7 @@ namespace WebServices.ViewModels
                 Code = code,
                 Quantity = target.Quantity,
                 DateStart = regTime != null ? (DateTime?)regTime.Value.Start : null,
-                DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null,
+                DateEnd = regTime != null ? (DateTime?)regTime.Value.End.AddSeconds(59) : null,
                 //AccountFeedbackBefore = target.FeedbackBefore.ToViDateTime(),
                 CustomKolNames = target.CustomKolNames.ToListString(),
                 Method = CampaignMethod.OpenJoined,
@@ -176,17 +112,20 @@ namespace WebServices.ViewModels
                 KPIMin = target.KPIMin,
                 InteractiveMin = target.InteractiveMin,
                 ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
-                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null,
+                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End.AddSeconds(59) : null,
                 FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
-                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null,
+                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End.AddSeconds(59) : null,
                 AmountMax = target.AmountMax,
                 AmountMin = target.AmountMin,
                 IsSendProduct = info.SendProduct,
 
 
                 ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null,
-                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null,
-                ReviewAddress = info.ReviewAddress
+                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End.AddSeconds(59) : null,
+                ReviewAddress = reviewaddress,
+                ReviewType = info.ReviewType,
+                ReviewPayback = reviewpayback
+
 
 
 
@@ -195,128 +134,6 @@ namespace WebServices.ViewModels
         }
 
 
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tên chiến dịch")]
-        public string Title { get; set; }
-
-        [Display(Name = "Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch")]
-        public string Description { get; set; }
-
-
-        [Display(Name = "Liên kết URL nội dung")]
-        public string Data { get; set; }
-
-
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Bạn cần Micro Kols")]
-        public List<AccountType> AccountType { get; set; } = new List<AccountType>();
-
-
-
-        [Display(Name = "Số lượng")]
-        public int Quantity { get; set; }
-
-
-        [Display(Name = "Chi phí")]
-        public int? AccountChargeAmount { get; set; }
-
-        [Display(Name = "Thời gian")]
-        public int? AccountChargeTime { get; set; } = 1;
-
-
-        [Display(Name = "Hình ảnh Avatar")]
-        public string Image { get; set; } = string.Empty;
-
-
-
-        [Display(Name = "Hình ảnh đính kèm")]
-        public List<string> AddonImages { get; set; } = new List<string>();
-
-        [Display(Name = "Yêu cầu của chiến dịch")]
-        public string Requirement { get; set; }
-
-
-        [Display(Name = "Loại chiến dịch")]
-        public CampaignType Type { get; set; }
-
-        [Display(Name = "Đính kèm hình ảnh cá nhân")]
-        public bool EnabledExtraType { get; set; }
-
-
-
-        [Display(Name = "Giới tính")]
-        public bool EnabledGender { get; set; } = false;
-
-        [Display(Name = "Chọn giới tính")]
-        public Gender? Gender { get; set; }
-
-        [Display(Name = "Độ tuổi")]
-        public bool EnabledAgeRange { get; set; } = false;
-
-        [Display(Name = "Từ", Prompt = "Từ")]
-        public int? AgeStart { get; set; }
-        [Display(Name = "Đến", Prompt = "Đến")]
-        public int? AgeEnd { get; set; }
-
-        [Display(Name = "Lĩnh vực quan tâm/thế mạnh")]
-        public bool EnabledCategory { get; set; } = false;
-        [Display(Name = "Chọn lĩnh vực")]
-        public List<int> CategoryId { get; set; }
-
-
-        [Display(Name = "Tags")]
-        public bool EnabledTags { get; set; } = false;
-        [Display(Name = "Thêm Tags")]
-        public List<string> AccountTags { get; set; }
-
-
-
-        [Display(Name = "Khu vực")]
-        public bool EnabledCity { get; set; } = false;
-
-
-
-
-        [Display(Name = "Chọn khu vực")]
-        public List<int> CityId { get; set; }
-
-        [Display(Name = "Mã chiến dịch")]
-        public string Code { get; set; }
-
-        [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Thời gian thực hiện")]
-        public string ExecutionTime { get; set; }
-
-
-        [Display(Name = "Phản hồi trước")]
-        public string FeedbackBefore { get; set; }
-
-
-        [Display(Name = "Kols mà bạn muốn hợp tác")]
-        public List<string> CustomKolNames { get; set; }
-
-        public List<int> AccountIds { get; set; }
-        public List<int> AccountChargeAmounts { get; set; }
-
-
-        [Display(Name = "Giới tính")]
-        public int? ChildType { get; set; }
-
-        [Display(Name = "Độ tuổi")]
-        public int? ChildAgeMin { get; set; }
-        public int? ChildAgeMax { get; set; }
-
-
-        public List<string> HashTag { get; set; }
-
-
-        [Display(Name = "Hình ảnh chiến dịch cung cấp")]
-        public List<string> SampleContent { get; set; }
-
-        [Display(Name = "Nội dung mẫu")]
-        public string SampleContentText { get; set; }
-        [Display(Name = "Phương thức")]
-        public CampaignMethod Method { get; set; } = CampaignMethod.OpenJoined;
     }
 
 
@@ -390,7 +207,7 @@ namespace WebServices.ViewModels
             campaign.AccountChargeTime = AccountChargeTime ?? 0;
             campaign.Type = Type;
             campaign.IsSendProduct = SendProduct;
-            campaign.Code = Code;
+            campaign.Code = campaign.Code;
             campaign.Hashtag = HashTag.ToListString();
             campaign.SampleContent = SampleContent.ToListString();
             campaign.SampleContentText = SampleContentText;
@@ -408,7 +225,127 @@ namespace WebServices.ViewModels
 
     public class EditCampaignTargetViewModel : CreateCampaignTargetViewModel
     {
+        public EditCampaignTargetViewModel()
+        {
+
+        }
+        public EditCampaignTargetViewModel(Campaign campaign)
+        {
+            Id = campaign.Id;
+            Type = campaign.Type;
+            AccountType = campaign.CampaignAccountType.Select(m => m.AccountType).ToList();
+            AccountChargeAmount = campaign.AccountChargeAmount;
+            Quantity = campaign.Quantity;
+            AmountMin = campaign.AmountMin;
+            AmountMax = campaign.AmountMax;
+            var options = campaign.CampaignOption.ToList();
+
+            var optionGender = options.Where(m => m.Name == CampaignOptionName.Gender).FirstOrDefault();
+            if (optionGender != null)
+            {
+                if (!string.IsNullOrEmpty(optionGender.Value))
+                {
+                    EnabledGender = true;
+                    if (optionGender.Value == "Male")
+                    {
+                        Gender = Core.Entities.Gender.Male;
+                    }
+                    else
+                    {
+                        Gender = Core.Entities.Gender.Female;
+                    }
+                }
+            }
+
+            var optionAge = options.Where(m => m.Name == CampaignOptionName.AgeRange).FirstOrDefault();
+            if (optionAge != null)
+            {
+                var arr = optionAge.Value.Split('-');
+                if (arr.Length == 2)
+                {
+                    EnabledAgeRange = true;
+                    AgeStart = int.Parse(arr[0]);
+                    AgeEnd = int.Parse(arr[1]);
+                }
+            }
+
+            var optionCate = options.Where(m => m.Name == CampaignOptionName.Category).ToList();
+            if (optionCate.Count > 0)
+            {
+                EnabledCategory = true;
+                CategoryId = optionCate.Select(m => int.Parse(m.Value)).ToList();
+            }
+
+
+            var optionCity = options.Where(m => m.Name == CampaignOptionName.City).ToList();
+            if (optionCity.Count > 0)
+            {
+                EnabledCity = true;
+                CityId = optionCity.Select(m => int.Parse(m.Value)).ToList();
+            }
+
+
+            var campaignAccounts = campaign.CampaignAccount.ToList();
+            if (campaignAccounts.Count > 0)
+            {
+                EnabledAccount = true;
+                AccountIds = campaignAccounts.Select(m => m.AccountId).ToList();
+            }
+            KPIMin = campaign.KPIMin ?? 0;
+
+            InteractiveMin = campaign.InteractiveMin ?? 0;
+            Code = campaign.Code;
+            ExecutionTime = campaign.ExecutionStart.ToDateRange(campaign.ExecutionEnd);
+            RegisterTime = campaign.DateStart.ToDateRange(campaign.DateEnd);
+            FeedbackBefore = campaign.FeedbackStart.ToDateRange(campaign.FeedbackEnd);
+            CustomKolNames = campaign.CustomKolNames.ToListString();
+            AccountChargeAmounts = new List<int>();
+
+            var optionChild = options.Where(m => m.Name == CampaignOptionName.Child).FirstOrDefault();
+
+            if (optionChild != null)
+            {
+                var arr1 = optionChild.Value.Split('|');
+                if (arr1.Length == 2)
+                {
+                    ChildType = int.Parse(arr1[0]);
+                    var arr2 = arr1[1].Split('-');
+                    if (arr2.Length == 2)
+                    {
+
+                        ChildAgeMin = int.Parse(arr2[0]);
+                        ChildAgeMax = int.Parse(arr2[1]);
+                    }
+                }
+            }
+
+
+
+        }
         public int Id { get; set; }
+
+        internal Campaign GetEntity(Campaign campaign)
+        {
+            var executionTime = DateRangeHelper.GetDateRange(ExecutionTime);
+            var regTime = DateRangeHelper.GetDateRange(RegisterTime);
+            var feedbackTime = DateRangeHelper.GetDateRange(FeedbackBefore);
+
+
+            campaign.Quantity = Quantity;
+            campaign.DateStart = regTime != null ? (DateTime?)regTime.Value.Start : null;
+            campaign.DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null;
+            campaign.CustomKolNames = CustomKolNames.ToListString();
+            campaign.KPIMin = KPIMin;
+            campaign.InteractiveMin = InteractiveMin;
+            campaign.ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null;
+            campaign.ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null;
+            campaign.FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null;
+            campaign.FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null;
+            campaign.AmountMax = AmountMax;
+            campaign.AmountMin = AmountMin;
+
+            return campaign;
+        }
     }
 
     public class CreateCampaignInfoViewModel
@@ -465,6 +402,10 @@ namespace WebServices.ViewModels
 
         public string ReviewDate { get; set; }
         public string ReviewAddress { get; set; }
+        public string ReviewAddress2 { get; set; }
+        public CampaignReviewType? ReviewType { get; set; }
+        [Display(Name = "Thu hồi sản phẩm sau khi người dùng trải nghiệm")]
+        public int? ReviewPayback { get; set; }
     }
 
     public class CreateCampaignTargetViewModel
@@ -484,10 +425,16 @@ namespace WebServices.ViewModels
         [Display(Name = "Số lượng")]
         public int Quantity { get; set; }
 
+
+        [Range(10000, 100000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
         [Display(Name = "Chi phí tối thiểu")]
-        public int AmountMin { get; set; }
+        public int AmountMin { get; set; } = 10000;
+
+        [Range(10000, 100000000, ErrorMessage = "Chi phí phải lớn hơn 1.000đ")]
+
+        [GreaterThan("AmountMin", ErrorMessage = "Chi phí tối đa phải lớn hơn chi phí tối thiểu")]
         [Display(Name = "Chi phí tối đa")]
-        public int AmountMax { get; set; }
+        public int AmountMax { get; set; } = 100000;
 
         [Display(Name = "Giới tính")]
         public bool EnabledGender { get; set; } = false;
@@ -560,5 +507,59 @@ namespace WebServices.ViewModels
         public int? ChildAgeMin { get; set; }
         public int? ChildAgeMax { get; set; }
 
+    }
+
+    public class GreaterThanAttribute : ValidationAttribute
+    {
+
+        public GreaterThanAttribute(string otherProperty)
+            : base("{0} must be greater than {1}")
+        {
+            OtherProperty = otherProperty;
+        }
+
+        public string OtherProperty { get; set; }
+
+        public string FormatErrorMessage(string name, string otherName)
+        {
+            return string.Format(ErrorMessageString, name, otherName);
+        }
+
+        protected override ValidationResult
+            IsValid(object firstValue, ValidationContext validationContext)
+        {
+            var firstComparable = firstValue as IComparable;
+            var secondComparable = GetSecondComparable(validationContext);
+
+            if (firstComparable != null && secondComparable != null)
+            {
+                if (firstComparable.CompareTo(secondComparable) < 1)
+                {
+                    object obj = validationContext.ObjectInstance;
+                    var thing = obj.GetType().GetProperty(OtherProperty);
+                    var displayName = (DisplayAttribute)Attribute.GetCustomAttribute(thing, typeof(DisplayAttribute));
+
+                    return new ValidationResult(
+                        FormatErrorMessage(validationContext.DisplayName, displayName.GetName()));
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+
+        protected IComparable GetSecondComparable(
+            ValidationContext validationContext)
+        {
+            var propertyInfo = validationContext
+                                  .ObjectType
+                                  .GetProperty(OtherProperty);
+            if (propertyInfo != null)
+            {
+                var secondValue = propertyInfo.GetValue(
+                    validationContext.ObjectInstance, null);
+                return secondValue as IComparable;
+            }
+            return null;
+        }
     }
 }

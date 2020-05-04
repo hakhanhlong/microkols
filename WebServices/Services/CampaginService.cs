@@ -75,6 +75,13 @@ namespace WebServices.Services
             return await _campaignRepository.GetCampaignIds(CampaignStatus.Ended);
         }
 
+        //############ addition by longhk ##########################################
+        public async Task<List<int>> GetLockedCampaignIds()
+        {
+            return await _campaignRepository.GetCampaignIds(CampaignStatus.Locked);
+        }
+        //##########################################################################
+
         public async Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid)
         {
             var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, CampaignAccountStatus.Finished));
@@ -158,6 +165,8 @@ namespace WebServices.Services
             return campaign != null ? campaign.Code : string.Empty;
 
         }
+
+
         #region Campaign By Account
         public async Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid, int type, string keyword, int page, int pagesize)
         {
@@ -228,17 +237,7 @@ namespace WebServices.Services
 
         }
 
-        public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id)
-        {
-            var filter = new CampaignByAccountSpecification(accountid, id);
-            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
-            if (campaign != null)
-            {
-                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
-                    campaign.CampaignAccount, new List<Transaction>());
-            }
-            return null;
-        }
+       
 
         #endregion
 
@@ -267,13 +266,13 @@ namespace WebServices.Services
         public async Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id)
         {
             var filter = new CampaignByAgencySpecification(agencyid, id);
+
             var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
             if (campaign != null)
             {
                 var transactions = await _transactionRepository.ListAsync(new TransactionByCampaignSpecification(campaign.Id));
-
-                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption,
-                    campaign.CampaignAccount, transactions);
+                var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyid, id);
+                return new CampaignDetailsViewModel(campaign, campaign.CampaignOption, campaign.CampaignAccount, payment, transactions);
             }
             return null;
         }
@@ -317,6 +316,7 @@ namespace WebServices.Services
 
 
 
+        #region EditCampaignInfo
 
         public async Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id)
         {
@@ -331,7 +331,7 @@ namespace WebServices.Services
         public async Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username)
         {
             var campiagn = await _campaignRepository.GetByIdAsync(model.Id);
-            if (campiagn == null) return false;
+            if (campiagn == null || campiagn.Status != CampaignStatus.Created) return false;
 
             campiagn = model.GetEntity(campiagn);
             campiagn.UserModified = username;
@@ -340,6 +340,46 @@ namespace WebServices.Services
 
             return true;
         }
+
+        #endregion
+
+        #region EditCampaignTarget
+        public async Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id)
+        {
+            var filter = new CampaignByAgencySpecification(agencyid, id);
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null)
+            {
+                return new EditCampaignTargetViewModel(campaign);
+            }
+            return null;
+        }
+        public async Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(model.Id);
+            if (campaign == null || campaign.Status != CampaignStatus.Created) return false;
+
+            campaign = model.GetEntity(campaign);
+            campaign.UserModified = username;
+            campaign.DateModified = DateTime.Now;
+
+
+
+
+
+            await _campaignRepository.UpdateAsync(campaign);
+
+
+
+
+
+            await CreateCampaignAccountType(campaign.Id, model.AccountType, username,true);
+            await CreateCampaignOptions(campaign.Id, model, username, true);
+
+            return true;
+        }
+
+        #endregion
 
         public async Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username)
         {
@@ -364,34 +404,16 @@ namespace WebServices.Services
             return -1;
         }
 
-        public async Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username)
+        private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username, bool hasRemove = false)
         {
-            var campaignTypeCharge = await _campaignTypeChargeRepository.GetSingleBySpecAsync(new CampaignTypeChargeSpecification(model.Type));
-            if (campaignTypeCharge == null)
+            if (hasRemove)
             {
-                return -1;
+                var ls = await _campaignAccountTypeRepository.ListAsync(new CampaignAccountTypeByCampaignSpecification(campaignId));
+                foreach(var item in ls)
+                {
+                    await _campaignAccountTypeRepository.DeleteAsync(item);
+                }
             }
-            var settings = await _settingRepository.GetSetting();
-            // var wallet = await _walletRepository.GetBalance(EntityType.Agency, agencyid);
-            var code = await _campaignRepository.GetValidCode(agencyid);
-            var campaign = model.GetEntity(agencyid, campaignTypeCharge, settings, code, username);
-            if (campaign == null)
-            {
-                return -1;
-            }
-
-            await _campaignRepository.AddAsync(campaign);
-            if (campaign.Id > 0)
-            {
-                await CreateCampaignAccountType(campaign.Id, model.AccountType, username);
-                await CreateCampaignOptions(campaign.Id, model, username);
-                return campaign.Id;
-            }
-
-            return -1;
-        }
-        private async Task CreateCampaignAccountType(int campaignId, IEnumerable<AccountType> accountTypes, string username)
-        {
             foreach (var accountType in accountTypes)
             {
 
@@ -404,91 +426,14 @@ namespace WebServices.Services
             }
         }
 
-        private async Task CreateCampaignOptions(int campaignId, CreateCampaignViewModel model, string username)
-        {
-
-            if (model.AccountType.Contains(AccountType.HotMom))
-            {
-                if (model.ChildType.HasValue)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Child,
-                        Value = $"{model.ChildType}|{model.ChildAgeMin}-{model.ChildAgeMax}"
-                    });
-                }
-            }
-
-            if (model.EnabledCity && model.CityId != null && model.CityId.Count > 0)
-            {
-
-                foreach (var cityId in model.CityId)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.City,
-                        Value = cityId.ToString()
-                    });
-                }
-
-
-            }
-            if (model.EnabledGender && model.Gender.HasValue)
-            {
-                await _campaignOptionRepository.AddAsync(new CampaignOption()
-                {
-                    CampaignId = campaignId,
-                    Name = CampaignOptionName.Gender,
-                    Value = model.Gender.Value.ToString()
-                });
-            }
-
-            if (model.EnabledAgeRange && model.AgeEnd.HasValue && model.AgeStart.HasValue)
-            {
-                await _campaignOptionRepository.AddAsync(new CampaignOption()
-                {
-                    CampaignId = campaignId,
-                    Name = CampaignOptionName.AgeRange,
-                    Value = $"{model.AgeStart.Value}-{model.AgeEnd.Value}"
-                });
-            }
-
-            if (model.EnabledCategory && model.CategoryId != null && model.CategoryId.Count > 0)
-            {
-                foreach (var categoryid in model.CategoryId)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Category,
-                        Value = categoryid.ToString()
-                    });
-                }
-
-            }
-            if (model.EnabledTags && model.AccountTags != null && model.AccountTags.Count > 0)
-            {
-                foreach (var tag in model.AccountTags)
-                {
-                    await _campaignOptionRepository.AddAsync(new CampaignOption()
-                    {
-                        CampaignId = campaignId,
-                        Name = CampaignOptionName.Tags,
-                        Value = tag
-                    });
-                }
-            }
-        }
 
         public async Task<int> GetAgencyChagreAmount(int campaignAccountId)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(campaignAccountId);
-            if(campaignAccount!= null)
+            if (campaignAccount != null)
             {
                 var campaign = await _campaignRepository.GetByIdAsync(campaignAccount.CampaignId);
-                if(campaign!= null)
+                if (campaign != null)
                 {
                     return campaign.GetAgencyChagreAmount(campaignAccount);
                 }
@@ -496,8 +441,19 @@ namespace WebServices.Services
             return 0;
         }
 
-        private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username)
+        private async Task CreateCampaignOptions(int campaignId, CreateCampaignTargetViewModel model, string username, bool hasRemove = false)
         {
+
+
+            if (hasRemove)
+            {
+                var ls = await _campaignOptionRepository.ListAsync(new CampaignOptionByCampaignSpecification(campaignId));
+                foreach (var item in ls)
+                {
+                    await _campaignOptionRepository.DeleteAsync(item);
+                }
+            }
+
 
             if (model.AccountType.Contains(AccountType.HotMom))
             {
@@ -574,8 +530,15 @@ namespace WebServices.Services
 
         #region Campaign Account
 
-        public async Task UpdateCampaignStart()
+
+        public async Task RemoveCampaignAccount(int campaignid)
         {
+            var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid));
+            foreach (var item in campaignAccounts)
+            {
+                await _campaignAccountRepository.DeleteAsync(item);
+            }
+
 
         }
 
@@ -693,7 +656,8 @@ namespace WebServices.Services
                         UserCreated = username,
                         Type = campaign.Type,
                         KPICommitted = model.KPICommitted,
-                        Status = CampaignAccountStatus.AccountRequest
+                        Status = CampaignAccountStatus.AccountRequest,
+                        ReviewAddress = model.ReviewAddress
                     };
                     await _campaignAccountRepository.AddAsync(campaignAccount);
 
@@ -775,13 +739,13 @@ namespace WebServices.Services
 
         }
 
-        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed)
+        public async Task<bool> FeedbackJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username, bool confirmed)
         {
 
-            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);
             if (campaign != null)
             {
-                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+                var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, model.CampaignId));
 
                 if (campaignAccount != null)
                 {
@@ -790,6 +754,17 @@ namespace WebServices.Services
                         campaignAccount.Status = confirmed ? CampaignAccountStatus.Confirmed : CampaignAccountStatus.Canceled;
                         campaignAccount.DateModified = DateTime.Now;
                         campaignAccount.UserModified = username;
+                        campaignAccount.KPICommitted = model.KPICommitted;
+                        if (confirmed)
+                        {
+                            campaignAccount.AccountChargeAmount = model.AccountChargeAmount;
+                            campaignAccount.ReviewAddress = model.ReviewAddress;
+                        }
+                        else
+                        {
+                            campaignAccount.AccountChargeAmount = 0;
+
+                        }
                         await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
                         var notifType = confirmed ? NotificationType.AccountConfirmJoinCampaign : NotificationType.AccountDeclineJoinCampaign;
@@ -1143,6 +1118,24 @@ namespace WebServices.Services
 
 
 
+        public async Task<int> UpdateReviewAddress(int id, string addresss, string username)
+        {
+            var accountCampaign = await _campaignAccountRepository.GetByIdAsync(id);
+            if (accountCampaign != null)
+            {
+                if (string.IsNullOrEmpty(accountCampaign.ReviewAddress))
+                {
+                    accountCampaign.ReviewAddress = addresss;
+                    accountCampaign.DateModified = DateTime.Now;
+                    accountCampaign.UserModified = username;
+                    await _campaignAccountRepository.UpdateAsync(accountCampaign);
+                    return accountCampaign.CampaignId;
+                }
+                return -2;
+            }
+
+            return -1;
+        }
 
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
         {
@@ -1300,44 +1293,73 @@ namespace WebServices.Services
                 foreach (var id in campaignids)
                 {
                     BackgroundJob.Enqueue<ICampaignService>(m => m.AutoUpdateStartedStatus(id));
-
-
                 }
             }
             else
             {
                 var username = "system";
-                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);             
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
 
-                    //check da thanh toan chua
-                    var isvalid = false;
+                    //check them thời gian nhận đăng ký thì mới quyết định start
+                    //ví dụ trường hợp này sẽ lỗi làm cho chiến dịch bị cancel trong khi chưa hết thời gian chạy chiến dịch
+                    //thời gian nhận đăng ký và chạy chiến dịch quá gần nhau sẽ bị trường hợp này -> cancel đột ngột.
+                    /* Ví dụ
+                     Thời gian nhận đăng ký: 01:54 09/04/2020 - 18:00 09/04/2020
+                     Thời gian thực hiện: 01:54 09/04/2020 - 11:00 10/04/2020
+                     */
+                    DateTime now = DateTime.Now;
+                    if (campaign.DateStart <= now && campaign.DateEnd >= now)
+                        return;
+                    //------------------------------------------------------------------------------------------------------------
 
+                    #region check thanh toán đủ chưa
+                    //check da thanh toan chua                    
+                    // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
                     if (payment == null || !payment.IsValidToProcess)
                     {
 
-                        campaign.Status = CampaignStatus.Locked;
-
+                        campaign.Status = CampaignStatus.Locked; // locked chiến dịch
                         campaign.SystemNote = "Chưa thanh toán";
                         campaign.UserModified = username;
                         campaign.DateModified = DateTime.Now;
                         await _campaignRepository.UpdateAsync(campaign);
-                        await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
-                           EntityType.Agency, campaign.AgencyId, campaign.Id,
-                           NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaignid.ToString(), "Bạn chưa thanh toán tiền chiến dịch"));
 
+                        //await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
+                        //   EntityType.Agency, campaign.AgencyId, campaign.Id,
+                        //   NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
+
+                        // longhk edit
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignCantStarted, 
+                            $"Để thực hiện được chiến dịch {campaign.Title}, bạn cần thanh toán {payment.TotalChargeValue.ToPriceText()} cho chiến dịch.");
+                        //#################################################################################################################################
+
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", chưa thanh toán số tiền {2}. Hệ thống đã khóa", campaign.Title, campaign.UserCreated, payment.TotalChargeValue.ToPriceText());
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignLocked, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        {}
+                        //#################################################################################################################################
                         return;
-
                     }
+                    //#####################################################################################################################################
+                    #endregion
 
 
-                    var countCampaignAccountToProcess = await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, new List<CampaignAccountStatus> {
-                            CampaignAccountStatus.AccountRequest,
-                            CampaignAccountStatus.AgencyRequest,
-                            CampaignAccountStatus.Canceled,
-                            CampaignAccountStatus.WaitToPay,
+                    #region kiểm tra xem có người nào tham gia không
+                    var countCampaignAccountToProcess = 
+                        await _campaignAccountRepository.CountAsync(new CampaignAccountSpecification(campaignid, null, 
+                           new List<CampaignAccountStatus> { //condition ignore status by list status
+                            CampaignAccountStatus.AccountRequest, //ignore status
+                            CampaignAccountStatus.AgencyRequest, //ignore status
+                            CampaignAccountStatus.Canceled, //ignore status
+                            CampaignAccountStatus.WaitToPay, //ignore status
 
                     }));
 
@@ -1345,7 +1367,6 @@ namespace WebServices.Services
                     if (countCampaignAccountToProcess == 0)
                     {
                         campaign.Status = CampaignStatus.Canceled;
-
                         campaign.SystemNote = "Không có thành viên thực hiện chiến dịch";
                         campaign.UserModified = username;
                         campaign.DateModified = DateTime.Now;
@@ -1353,22 +1374,45 @@ namespace WebServices.Services
 
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
-                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString(), "Không có thành viên thực hiện chiến dịch"));
+                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Không có thành viên thực hiện chiến dịch"));
 
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. Không có thành viên thực hiện chiến dịch", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
                         return;
-
-
                     }
+                    #endregion
 
 
+                    // huy cac thanh vien chua co caption - content voi loai checkin - review
                     campaign.Status = CampaignStatus.Started;
-
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
-
-
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
+
+                    await CampaignStartedNotifyToAccount(campaign); // chien dịch started thi gưi thống báo đến tất cả người đã đồng ý tham gia chiến dịch
+                    //################ anh Long add them notification gửi về admin ####################################################################
+                    try
+                    {
+                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã bắt đầu", campaign.Title, campaign.UserCreated);
+                        string _data = "Campaign";
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignStarted, _msg, _data);
+                    }
+                    catch// tranh loi lam crash 
+                    { }
+
+                    // longhk thêm gửi notification đến doanh nghiệp khi chiến dịch bắt đầu
+                    await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignStarted,
+                        $"Chiến dịch {campaign.Title}, của bạn đã bắt đầu.");
+                    //#################################################################################################################################
+
 
 
                     //huy campaing account chua confirms 
@@ -1387,18 +1431,101 @@ namespace WebServices.Services
                         //notification
                         await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
                             EntityType.Account, campaignAccount.AccountId, campaignid,
-                             NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaignid.ToString()),
-                             campaignAccount.Id.ToString());
-
+                             NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText("Hệ thống", campaign.Code),
+                             campaignAccount.Id.ToString());                      
                     }
-
-
-
-
                 }
             }
 
         }
+
+        private async Task CampaignStartedNotifyToAccount(Campaign campaign)
+        {
+            //CampaignAccountStatus.Confirmed
+            try
+            {
+                // chỉ lấy account đã confirm tham gia chiến dịch và gửi thông báo đến account
+                var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaign.Id, CampaignAccountStatus.Confirmed));
+                foreach(var account in campaignAccounts)
+                {
+                    //send notification to account
+                    await _notificationRepository.CreateNotification(NotificationType.CampaignStarted,
+                        EntityType.Account, account.AccountId, campaign.Id, string.Format("Đã đến thời gian thực hiện chiến dịch \"{0}\", bạn hãy thực hiện chiến dịch nhé!", campaign.Title),
+                         account.Id.ToString());
+                }
+
+            }
+            catch { }
+        }
+
+
+
+        //##################################### addition by longhk ##############################################################################
+        public async Task RunCheckingLockedStatus(int campaignid)
+        {
+            if (campaignid == 0)
+            {
+                var campaignids = await this.GetLockedCampaignIds();
+
+                foreach (var id in campaignids)
+                {
+
+                    BackgroundJob.Enqueue<ICampaignService>(m => m.RunCheckingLockedStatus(id));
+                }
+            }
+            else
+            {
+
+
+                try {
+                    var username = "system";
+                    var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                    if (campaign != null)
+                    {
+                        if (campaign.Status == CampaignStatus.Locked)
+                        {
+                            /*Kiểm tra thời gian thực hiện chiến dịch kết thúc có bé hơn ngày giờ hiện tại hay không để hủy bỏ chiến dịch*/
+                            if (campaign.ExecutionEnd.HasValue)
+                            {
+                                if (campaign.ExecutionEnd.Value <= DateTime.Now)
+                                {
+
+                                    campaign.Status = CampaignStatus.Canceled;
+                                    campaign.UserModified = username;
+                                    campaign.DateModified = DateTime.Now;
+                                    await _campaignRepository.UpdateAsync(campaign);
+
+                                    /*Kiểm tra xem đã thanh toán chiến dịch lần nào chưa, nếu rồi gửi thông báo tạo lệnh rút tiền*/
+                                    string _message = string.Format("Chiến dịch {0} đã bị hủy, vì thời gian thực hiện đã hết và chưa thanh toán.", campaign.Title);
+                                    var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
+                                    if (payment != null)
+                                    {
+                                        if (payment.TotalPaidAmount > 0)
+                                        {
+                                            _message += string.Format("Hãy tạo lệnh rút {0} từ chiến dịch", payment.TotalPaidAmount.ToPriceText());
+                                        }
+                                    }
+                                    await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
+                                    EntityType.Agency, campaign.AgencyId, campaign.Id, _message);
+                                    try
+                                    {
+                                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title, campaign.UserCreated);
+                                        string _data = "Campaign";
+                                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                                    }
+                                    catch// tranh loi lam crash 
+                                    { }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch { }
+                
+                //return;
+            }
+        }
+        //######################################################################################################################################
 
         public async Task AutoUpdateEndedStatus(int campaignid)
         {
@@ -1429,6 +1556,21 @@ namespace WebServices.Services
 
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
 
+                        //################ anh Long add them notification gửi về admin ####################################################################
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignEnded, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
+                        // longhk thêm notification gửi đến agency
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignEnded,
+                            $"Chiến dịch {campaign.Title}, của bạn đã kết thúc.");
+                        //#################################################################################################################################
+
+
 
                         //huy campaing account chua hoan thanh 
                         var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
@@ -1448,11 +1590,9 @@ namespace WebServices.Services
                             //notification
                             await _notificationRepository.CreateNotification(NotificationType.SystemUpdateUnfinishedAccountCampaign,
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Id.ToString()),
+                                 NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
                                  campaignAccount.Id.ToString());
-
                         }
-
                     }
                     else if (campaign.Status == CampaignStatus.Confirmed)
                     {
@@ -1464,7 +1604,17 @@ namespace WebServices.Services
 
                         await _notificationRepository.CreateNotification(NotificationType.CampaignCanceled,
                             EntityType.Agency, campaign.AgencyId, campaign.Id,
-                            NotificationType.CampaignCanceled.GetMessageText(campaignid.ToString()), "Hết thời gian thực hiện");
+                            NotificationType.CampaignCanceled.GetMessageText(campaign.Code, "Hết thời gian thực hiện"));
+
+                        try
+                        {
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc, Hết thời gian thực hiện", campaign.Title, campaign.UserCreated);
+                            string _data = "Campaign";
+                            await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
+                        }
+                        catch// tranh loi lam crash 
+                        { }
+
 
 
                         var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null, null));
@@ -1479,7 +1629,7 @@ namespace WebServices.Services
                             //notification
                             await _notificationRepository.CreateNotification(NotificationType.SystemUpdateCanceledAccountCampaign,
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                                 NotificationType.SystemUpdateCanceledAccountCampaign.GetMessageText(campaignid.ToString(), "Hết thời gian thực hiện"));
+                                 NotificationType.SystemUpdateCanceledAccountCampaign.GetMessageText(campaign.Code, "Hết thời gian thực hiện"));
 
                         }
 

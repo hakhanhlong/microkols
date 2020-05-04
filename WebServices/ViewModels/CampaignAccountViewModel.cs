@@ -37,12 +37,13 @@ namespace WebServices.ViewModels
             ReportStatus = campaignAccount.ReportStatus;
             ReportNote = campaignAccount.ReportNote;
             ReportImages = campaignAccount.ReportImages.ToListString();
+            KPICommitted = campaignAccount.KPICommitted;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
             return campaignAccounts.Select(m => new CampaignAccountViewModel(m)).ToList();
         }
-
+        public int KPICommitted { get; set; }
         public int Id { get; set; }
         public CampaignAccountRating? Rating { get; set; }
         public CampaignAccountReportStatus? ReportStatus { get; set; }
@@ -111,7 +112,7 @@ namespace WebServices.ViewModels
 
         }
         [Required( ErrorMessage ="Hãy nhập {0}")]
-        [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây")]
+        [Display(Name = "Copy Link bài post trên Facebook của bạn vào đây để hoàn thành công việc")]
         //[RegularExpression("^https?://(w{3}.)?facebook.com/?$", ErrorMessage ="Không đúng định dạng Url Faceboook")]
         public string RefUrl { get; set; }
 

@@ -50,23 +50,14 @@
     </ul>
 }
 
-<div class="row">
-<div class="col-xl-12">
-    <div class="m-portlet m-portlet--tabs">
-        <div class="m-portlet__head">
-            <div class="m-portlet__head-caption">
-                <div class="m-portlet__head-title">
-                    <h3 class="m-portlet__head-text">
-                        Wallet Transaction History
-                    </h3>
-                </div>
-            </div>            
-        </div>
-        <div class="m-portlet__body">
 
-            @if (ViewBag.Wallet != null)
-            {
-                <h6>
+@section Subheaders2{
+
+    <ul class="list-inline">
+        @if (ViewBag.Wallet != null)
+        {
+            <li class="list-inline-item">
+                <strong class="btn btn-metal" style="font-family:Roboto;text-transform:uppercase;">
 
                     @if (ViewBag.Wallet.EntityType == 0 && ViewBag.Wallet.EntityId == 0)
                     {
@@ -74,38 +65,61 @@
                     }
                     else
                     {
-                        <span>Name: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
+                        <span>DOANH NGHIỆP: </span> <span class="m--font-danger mr-2">@ViewBag.Account.Name</span>
                     }
 
-                    Balance: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
-                </h6>
-            }
+                    Số dư ví: <span class="m--font-danger">@(ViewBag.Wallet.Balance.ToString("n0")) đ</span>
+                </strong>
+            </li>
 
+        }
 
-            <div class="tab-content">
-                <div class="tab-pane active show">
+        <li class="list-inline-item">
+            <a href="/wallet/statistic_transactionagency?walletid=@(Context.Request.Query["walletid"])" class="btn m-btn m-btn--gradient-from-focus m-btn--gradient-to-danger" style="font-family:Roboto;">
+                BIỂU ĐỒ GIAO DỊCH
+            </a>
+        </li>     
+    </ul>
 
-                    @if (Model != null)
-                    {
+}
 
-                        @await Html.PartialAsync("~/Views/Wallet/_TransactionHistoryItem.cshtml", Model)
-                    }
-                    else
-                    {
-                        <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
-                            <div class="m-demo__preview">
-                                Sorry, do not have transaction for binding!
-                            </div>
-                        </div>
-                    }
-
+<div class="row">
+    <div class="col-xl-12">
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Wallet Transaction History
+                        </h3>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="m-portlet__foot">
-            <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionhistory"></pager>
+            <div class="m-portlet__body">         
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+
+                        @if (Model != null)
+                        {
+
+                            @await Html.PartialAsync("~/Views/Wallet/_TransactionHistoryItem.cshtml", Model)
+                        }
+                        else
+                        {
+                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                <div class="m-demo__preview">
+                                    Sorry, do not have transaction for binding!
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__foot">
+                <pager pager="@Model.Pager" asp-route-walletid="@(Context.Request.Query["walletid"])" asp-action="transactionhistory"></pager>
+            </div>
         </div>
     </div>
-</div>
 </div>
 

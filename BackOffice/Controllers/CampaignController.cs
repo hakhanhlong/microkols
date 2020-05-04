@@ -6,6 +6,7 @@ using BackOffice.Business.Interfaces;
 using BackOffice.Models;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
@@ -19,19 +20,33 @@ namespace BackOffice.Controllers
 
         ICampaignBusiness _ICampaignBusiness;
         ICampaignRepository _ICampaignRepository;
+        ICampaignAccountRepository _ICampaignAccountRepository;
+
+
         ITransactionRepository _ITransactionRepository;
 
         IAgencyBusiness _IAgencyBusiness;
         private readonly ISharedBusiness _ISharedBusiness;
         private readonly INotificationBusiness _INotificationBusiness;
+        private readonly INotificationService _INotificationService;
 
         ICampaignService _ICampaignService;
+        IWalletService _IWalletService;
+        ISharedService _sharedService;
+
+        private readonly ICampaignAccountCaptionService _campaignAccountCaptionService;
+        private readonly ICampaignAccountContentService _campaignAccountContentService;
+        private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
+
         ITransactionService _TransactionService;
 
 
         public CampaignController(ICampaignBusiness __ICampaignBusiness, ICampaignRepository __ICampaignRepository, IAgencyBusiness __IAgencyBusiness, 
             ISharedBusiness __ISharedBusiness, INotificationBusiness __INotificationBusiness, ICampaignService __ICampaignService, 
-            ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService)
+            ITransactionRepository __ITransactionRepository, ITransactionService __ITransactionService, 
+            IWalletService __IWalletService, ISharedService __ISharedService, ICampaignAccountCaptionService __ICampaignAccountCaptionService,
+            ICampaignAccountContentService __ICampaignAccountContentService, 
+            ICampaignAccountStatisticService __ICampaignAccountStatisticService, ICampaignAccountRepository __ICampaignAccountRepository, INotificationService __INotificationService)
         {
             _ICampaignBusiness = __ICampaignBusiness;
             _ICampaignRepository = __ICampaignRepository;
@@ -41,12 +56,21 @@ namespace BackOffice.Controllers
             _ICampaignService = __ICampaignService;
             _ITransactionRepository = __ITransactionRepository;
             _TransactionService = __ITransactionService;
+            _IWalletService = __IWalletService;
+            _sharedService = __ISharedService;
+            _campaignAccountCaptionService = __ICampaignAccountCaptionService;
+            _campaignAccountContentService = __ICampaignAccountContentService;
+            _campaignAccountStatisticService = __ICampaignAccountStatisticService;
+
+            _ICampaignAccountRepository = __ICampaignAccountRepository;
+            _INotificationService = __INotificationService;
+
 
         }
 
-        public IActionResult Index(int pageindex = 1)
+        public async Task<IActionResult> Index(CampaignStatus? status, int pageindex = 1)
         {
-            var listing = _ICampaignBusiness.GetListCampaign(pageindex, 25);
+            var listing = await _ICampaignBusiness.GetCampaignByStatus(status, pageindex, 25);
             DataSelectionStatusAndType();
             return View(listing);
         }
@@ -98,26 +122,38 @@ namespace BackOffice.Controllers
             return View(list);
         }
 
-        public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0)
+        public async Task<IActionResult> Detail(int agencyid = 0, int campaignid = 0, string vt = "1", int tab = 0)
         {
 
-            CampaignDetailsViewModel campaign;
+            var campaign = await _ICampaignBusiness.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();
 
-            if(agencyid > 0)
+
+            var model = await _ICampaignService.GetCampaignDetailsByAgency(campaign.AgencyId, campaignid);
+            if (model == null) return NotFound();
+           
+            ViewBag.Tab = tab;
+            if (tab == 1)
             {
-                campaign = await _ICampaignBusiness.GetCampaign(agencyid, campaignid);
-            }
-            else
-            {
-                campaign = await _ICampaignBusiness.GetCampaign(campaignid);
+                ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatisticsByCampaignId(model.Id, string.Empty, 1, 1000);
+
+                return View("DetailsStatistic", model);
             }
 
-            
-            ViewBag.Categories = await _ISharedBusiness.GetCategories();            
-
-            ViewBag.Cities = await _ISharedBusiness.GetCities();
-            return View(campaign);
+            await ViewbagData();
+            ViewBag.activedTab = vt;
+            DataSelectionStatusAndType();
+            return View(model);
         }
+
+        private async Task ViewbagData()
+        {
+            ViewBag.Categories = await _sharedService.GetCategories();
+            ViewBag.CampaignTypeCharges = await _ICampaignService.GetCampaignTypeCharges();
+            ViewBag.Cities = await _sharedService.GetCities();
+        }
+
+
 
 
         public async Task<IActionResult> Configuration(int campaignid = 0)
@@ -144,17 +180,16 @@ namespace BackOffice.Controllers
             //get info payment from agency fee service on campaign
             //id = campaignid
             var payment = await _TransactionService.GetTransaction(TransactionType.CampaignServiceCharge, id);
+
             if (payment != null) {
                 ViewBag.Payment = payment;
-            }
-            
-
+            }           
             DataSelectionStatusAndType();
             return View(new CampaignViewModel(campaign));
         }
 
         [HttpPost]
-        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status, string txt_note)
+        public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status, string txt_note = "")
         {
             var campaign = await _ICampaignRepository.GetByIdAsync(id);
             DataSelectionStatusAndType();
@@ -165,8 +200,10 @@ namespace BackOffice.Controllers
 
                     campaign.Status = status;
                     campaign.UserModified = HttpContext.User.Identity.Name;
-                    campaign.SystemNote = txt_note;
+                    campaign.DateModified = DateTime.Now;
+                    //campaign.SystemNote = txt_note;
                     _ICampaignRepository.Update(campaign);
+
 
                     NotificationType notificationType = NotificationType.CampaignCanceled;
                     string msg = string.Empty;
@@ -189,6 +226,24 @@ namespace BackOffice.Controllers
                     {
                         notificationType = NotificationType.CampaignConfirmed;
                         msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã được duyệt bởi hệ thống", campaign.Title);
+
+                        // gửi notification đến các user được chỉ định
+                        var campaignAccount = await _ICampaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
+                        foreach(var item in campaignAccount)
+                        {
+                            if(item.Status == CampaignAccountStatus.AgencyRequest) // Doanh nghiệp mời tham gia chiến dịch
+                            {
+                                //item.Status = CampaignAccountStatus.AgencyRequest;
+                                //await _ICampaignAccountRepository.UpdateAsync(item);
+
+                                NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
+                                string notify_message = string.Format("Bạn đã được doanh nghiệp {0} mời tham gia chiến dịch {1}", campaign.UserCreated, campaign.Title);
+                                await _INotificationService.CreateNotification(campaign.Id, EntityType.Account, item.AccountId, _notiType, notify_message, "");
+                            }
+                            
+                        }
+                        //###########################################################################################################################################
+
                     }
                     else if (status == CampaignStatus.Completed)
                     {
@@ -196,9 +251,14 @@ namespace BackOffice.Controllers
                         msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã hoàn thành", campaign.Title);
                     }
 
-                    await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
-
+                    if (!string.IsNullOrEmpty(msg))
+                    {
+                        await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
+                        
+                    }
                     TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+
+
 
 
                     //if(status == CampaignStatus.Canceled || status == CampaignStatus.Error || status == CampaignStatus.Ended)
@@ -297,8 +357,6 @@ namespace BackOffice.Controllers
             });
         }
 
-
-
         public IActionResult Microkol(string kw, CampaignType? type, CampaignStatus? status, int pageindex = 1)
         {
 
@@ -307,6 +365,32 @@ namespace BackOffice.Controllers
 
             return View(list);
         }
+
+
+        #region Statistic
+
+        public IActionResult Statistic_CampaignRevenue()
+        {
+            return View();
+        }
+
+        public IActionResult Statistic_CampaignService()
+        {
+            return View();
+        }
+
+        public IActionResult Statistic_CampaignCashback()
+        {
+            return View();
+        }
+
+        public IActionResult Statistic_CampaignAccountCashback()
+        {
+            return View();
+        }
+
+
+        #endregion
 
 
     }

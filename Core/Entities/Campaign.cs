@@ -68,6 +68,9 @@ namespace Core.Entities
 
         public string ReviewAddress{ get; set; }
 
+        public CampaignReviewType? ReviewType { get; set; }
+        public bool? ReviewPayback { get; set; }
+
         public int  AmountMin { get; set; }
         public int AmountMax { get; set; }
         public int Quantity { get; set; }
@@ -85,6 +88,15 @@ namespace Core.Entities
         public IEnumerable<CampaignAccountType> CampaignAccountType => _CampaignAccountType.AsReadOnly();
 
     }
+
+    public enum CampaignReviewType
+    {
+        [Display(Name = "Gửi sản phẩm trải nghiệm đến địa chỉ của Influencers", Description ="Nhập địa chỉ nhận lại sản phẩm sau khi người dùng trải nghiệm")]
+
+        GuiSanPham = 0,
+        [Display(Name = "Mời người dùng đến trải nghiệm", Description = "Nhập địa chỉ trải nghiệm sản phẩm")]
+        MoiNguoiDung = 1
+    }
     public enum CampaignMethod
     {
         [Display(Name ="Tự chọn thành viên")]
@@ -94,6 +106,7 @@ namespace Core.Entities
     }
 
     
+    [Flags]
     public enum CampaignStatus
     {
         [Display(Name ="Chờ phê duyệt")]
@@ -110,8 +123,13 @@ namespace Core.Entities
         Canceled = 5,
         [Display(Name ="Lỗi")]
         Error = 6,
-        [Display(Name = "Tạm khóa")]
+        [Display(Name = "Tạm khóa & Cần thanh toán")]
         Locked = 7,
+        //[Display(Name = "Đã thanh toán")]
+        //Paid = 8,
+        //[Display(Name = "Đã phê duyệt & Thanh toán đủ")]
+        //ConfirmedAndPaid = Confirmed & Paid,
+
 
         //[Display(Name ="Chờ phê duyệt")]
         //ChoPheDuyet = 0,

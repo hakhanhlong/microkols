@@ -1,4 +1,5 @@
 ﻿@model ListTransactionHistoryViewModel
+@using BackOffice.Extensions;
 
 <table class="table">
     <thead>
@@ -49,7 +50,7 @@
                         </h6>
                     }
                 </td>
-                <td>@item.Transaction.Type.ToString()</td>
+                <td>@item.Transaction.Type.ToBadge()</td>
                 <td>
 
                     @if (item.Transaction.SenderId == current_walletid)
@@ -67,7 +68,7 @@
 
                 </td>
                 <td>
-                    <h6 class="m--font-info">
+                    <h6 class="m--font-danger">
                         @item.Balance.ToPriceText()
                     </h6>
                 </td>                

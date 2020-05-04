@@ -33,7 +33,10 @@ namespace Core.Entities
             return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
 
         }
-
+        public static bool IsHasAccountProcess(this CampaignStatus status)
+        {
+            return status != CampaignStatus.Canceled && status != CampaignStatus.Ended && status != CampaignStatus.Completed;
+        }
         public static bool IsHasCaption(this CampaignType type)
         {
             return type == CampaignType.ShareContentWithCaption;
@@ -41,7 +44,7 @@ namespace Core.Entities
 
         public static bool IsHasContent(this CampaignType type)
         {
-            return type == CampaignType.ChangeAvatar || type == CampaignType.JoinEvent
+            return type == CampaignType.JoinEvent //type == CampaignType.ChangeAvatar ||
         || type == CampaignType.ShareStreamUrl || type == CampaignType.ReviewProduct;
         }
 

@@ -55,6 +55,20 @@
                                 </span>
                             </div>
                         }
+                        @if ( Model.Type == CampaignType.ReviewProduct)
+                        {
+                            if (Model.FeedbackStart.HasValue)
+                            {
+
+                                <div class="mb-2">
+                                    <strong class="mr-2"> Thời gian gửi nội dung</strong>
+                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
+                                    <span class="text-info">
+                                        @Model.FeedbackEnd.Value.ToViDateTime()
+                                    </span>
+                                </div>
+                            }
+                        }
                         @if (Model.ExecutionStart.HasValue)
                         {
 
@@ -79,6 +93,26 @@
                                 }
                             }
                         </div>
+                        @if (Model.Type == CampaignType.ReviewProduct)
+                        {
+
+                            <div class="mb-2">
+                                <strong>
+                                    @Model.ReviewType.ToDisplayName()
+                                </strong>
+
+
+                                @if (Model.ReviewPayback.HasValue)
+                                {
+                                    <span> - Thu hồi sản phẩm</span>
+                                }
+
+                                <br />
+                                <strong class="mr-2"> Địa chỉ:</strong>
+                                @Model.ReviewAddress
+                            </div>
+
+                        }
                         @if (!string.IsNullOrEmpty(Model.Data))
                         {
                             <div class="mb-2">
@@ -105,6 +139,24 @@
 
                     <div class="col-md-6">
 
+                        <div class="mb-2">
+                            <strong class="mr-2"> Số lượng người cần:</strong>
+                            <span>
+                                @Model.Quantity
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <strong class="mr-2"> Chi phí tối thiểu:</strong>
+                            <span class="text-danger">
+                                @Model.AmountMin.ToPriceText()
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            <strong class="mr-2"> Chi phí tối đa:</strong>
+                            <span class="text-danger">
+                                @Model.AmountMax.ToPriceText()
+                            </span>
+                        </div>
                         @if (!string.IsNullOrEmpty(Model.Requirement))
                         {
                             <div class="mb-2">
@@ -230,20 +282,20 @@
                                     @if (Model.AccountTypes.Contains(AccountType.HotMom))
                                     {
 
-                                <li>
-                                    Con cái:
+                                        <li>
+                                            Con cái:
 
-                                    @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+                                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                                    @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
-                                    {
+                                            @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                            {
 
-                                        <span>
-                                            -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
-                                        </span>
-                                    }
+                                                <span>
+                                                    -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                                                </span>
+                                            }
 
-                                </li>
+                                        </li>
                                     }
 
                                 </ul>
@@ -274,19 +326,25 @@
                             else
                             {
 
-                                <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                                if (false == ViewBag.IsRutTienExist)
+                                {
+                                    <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng ban quản trị duyệt yêu cầu rút tiền</div>
+                                }
 
-
-                                @*<button class="btn btn-info"> Tìm thêm thành viên mới</button>*@
                             }
                         }
 
 
                     }
 
-                    @if(Model.Status == CampaignStatus.Created)
+                    @if (Model.Status == CampaignStatus.Created)
                     {
-                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa chiến dịch</a>
+                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa thông tin chiến dịch</a>
+                        <a href="@Url.Action("EditTarget", new { id = Model.Id})" class="btn btn-light">Sửa đối tượng chiến dịch</a>
                     }
 
 
@@ -305,35 +363,39 @@
                         var tab1Active = "1" == ViewBag.activedTab ? "active show" : "";
                         var tab3Active = "3" == ViewBag.activedTab ? "active show" : "";
 
-            <ul class="nav nav-tabs nav-campaign" id="myTab" role="tablist">
+                        <ul class="nav nav-tabs nav-campaign" id="myTab" role="tablist">
 
-                <li class="nav-item">
-                    <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @tab2Active" data-toggle="tab" href="#tabReview">Theo dõi chiến dịch</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link @tab3Active" data-toggle="tab" href="#tabPayment">Thanh toán</a>
-                </li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane fade @tab1Active" id="tabProcess">
-                    <partial name="_DetailsAccountsProcessPartial" model="Model" />
+                            <li class="nav-item">
+                                <a class="nav-link @tab1Active" data-toggle="tab" href="#tabProcess">Thực hiện chiến dịch</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @tab2Active" data-toggle="tab" href="#tabReview">Theo dõi chiến dịch</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link @tab3Active" data-toggle="tab" href="#tabPayment">Thanh toán</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade @tab1Active" id="tabProcess">
 
-                </div>
-                <div class="tab-pane fade @tab2Active" id="tabReview">
-                    <partial name="_DetailsAccountsReviewPartial" model="Model" />
-                </div>
-                <div class="tab-pane fade @tab3Active" id="tabPayment">
-                    <partial name="_DetailsAccountsPaymentPartial" model="Model" />
-                </div>
-            </div>
+                                <div class="py-2">
+                                    <partial name="_CampaignItemCountingPartial" model="@Model" />
+                                </div>
+                                <partial name="_DetailsAccountsProcessPartial" model="Model" />
+
+                            </div>
+                            <div class="tab-pane fade @tab2Active" id="tabReview">
+                                <partial name="_DetailsAccountsReviewPartial" model="Model" />
+                            </div>
+                            <div class="tab-pane fade @tab3Active" id="tabPayment">
+                                <partial name="_DetailsAccountsPaymentPartial" model="Model" />
+                            </div>
+                        </div>
                     }
                 }
 
 
             </div>
-        </div> 
+        </div>
     </div>
 </div>

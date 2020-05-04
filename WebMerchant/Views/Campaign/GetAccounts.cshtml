@@ -25,7 +25,8 @@
                 <td><input type="checkbox" class="cb-checkitem"  value="@account.Id" data-name="@account.Name" /></td>
                 <th scope="row">@no</th>
                 <td>
-                    <a href="#" class="kol-join">
+
+                    <a href="@account.Link" target="_blank" class="kol-join">
                         <img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">
                         @account.Name
                     </a>

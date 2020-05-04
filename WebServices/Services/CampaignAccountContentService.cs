@@ -182,6 +182,18 @@ namespace WebServices.Services
             CampaignAccountContent.DateModified = DateTime.Now;
             await _CampaignAccountContentRepository.UpdateAsync(CampaignAccountContent);
 
+            if(status== CampaignAccountContentStatus.DaDuyet)
+            {
+                if(campaignaccount.Status== CampaignAccountStatus.AccountRequest || campaignaccount.Status== CampaignAccountStatus.AgencyRequest)
+                {
+                    campaignaccount.Status = CampaignAccountStatus.Confirmed;
+
+                    campaignaccount.UserModified = username;
+                    campaignaccount.DateModified = DateTime.Now;
+                    await _campaignAccountRepository.UpdateAsync(campaignaccount);
+                }
+            }
+
             var notifType = status == CampaignAccountContentStatus.DaDuyet ? NotificationType.AgencyApproveCampaignContent : NotificationType.AgencyDeclineCampaignContent;
             await _notificationRepository.AddAsync(new Notification()
             {
@@ -233,6 +245,14 @@ namespace WebServices.Services
                 Status = NotificationStatus.Created
             });
             return true;
+        }
+
+        public async Task<bool> IsValidContent(int campaignAccountid)
+        {
+            var spec = new CampaignAccountContentByCampaignAccountIdSpecification(campaignAccountid, CampaignAccountContentStatus.DaDuyet);
+            var entity = await _CampaignAccountContentRepository.GetSingleBySpecAsync(spec);
+
+            return entity != null;
         }
 
 

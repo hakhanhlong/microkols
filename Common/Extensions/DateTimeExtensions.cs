@@ -21,7 +21,17 @@ namespace Common.Extensions
         //}
 
 
-        public static DateTime ChangeTime(this DateTime dateTime, int hours, int minutes,int seconds)
+       
+
+        public static string ToDateRange(this DateTime? start, DateTime? end)
+        {
+            if (start.HasValue && end.HasValue)
+            {
+                return $"{start.Value.ToViDateTimeRange()} - {end.Value.ToViDateTimeRange()}";
+            }
+            return "";
+        }
+        public static DateTime ChangeTime(this DateTime dateTime, int hours, int minutes, int seconds)
         {
             return new DateTime(
                 dateTime.Year,
@@ -72,6 +82,12 @@ namespace Common.Extensions
             //return string.Format("{0} giờ {1} phút ngày {2} tháng {3} năm {4}", date.Hour, date.Minute, date.Day, date.Month, date.Year);
         }
 
+        public static string ToViDateTimeRange(this DateTime date)
+        {
+
+            return string.Format("{0:hh:mm tt dd/MM/yyyy}", date);
+            //return string.Format("{0} giờ {1} phút ngày {2} tháng {3} năm {4}", date.Hour, date.Minute, date.Day, date.Month, date.Year);
+        }
         public static DateTime? ToViDateTime(this string input)
         {
 

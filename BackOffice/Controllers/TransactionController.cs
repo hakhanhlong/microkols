@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using WebServices.Interfaces;
 
 namespace BackOffice.Controllers
 {
@@ -20,7 +21,10 @@ namespace BackOffice.Controllers
     public class TransactionController : Controller
     {
         ITransactionBusiness _ITransactionBussiness;
+        ITransactionService _ITransactionService;
+
         ITransactionRepository _ITransactionRepository;
+
         IWalletBusiness _IWalletBusiness;
         private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -31,7 +35,7 @@ namespace BackOffice.Controllers
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
             IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
-            ITransactionHistoryBusiness __ITransactionHistoryBusiness)
+            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
@@ -39,6 +43,7 @@ namespace BackOffice.Controllers
             _ITransactionRepository = __ITransactionRepository;
             _INotificationBusiness = __INotificationBusiness;
             _ITransactionHistoryBusiness = __ITransactionHistoryBusiness;
+            _ITransactionService = __ITransactionService;
         }
 
         public IActionResult Index()
@@ -60,6 +65,59 @@ namespace BackOffice.Controllers
             };
         
         }
+
+
+        #region CampaignServiceCashBack
+
+        public async Task<IActionResult> CampaignServiceCashBack(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+            var _listTransaction = await FillTransactions(TransactionType.CampaignServiceCashBack, status, pageindex);
+            return View(_listTransaction);
+        }
+
+        public async Task<IActionResult> CampaignServiceCashBackSearch(string keyword, DateTime? StartDate, DateTime? EndDate, TransactionStatus TransactionStatus = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+
+
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyCampaignServiceCashBackSearch(keyword, TransactionStatus, StartDate, EndDate, pageindex, 25);
+
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                try
+                {
+                    var wallet = _IWalletBusiness.Get(item.ReceiverId);
+                    item.ReceiverName = wallet.Name;
+                    item.Wallet = wallet;
+                }
+                catch { }
+            }
+
+            return View(_listTransaction);
+        }
+
+
+        #endregion
+
+
+        #region WalletRecharge
+
 
         public async Task<IActionResult> WalletRecharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
@@ -105,17 +163,77 @@ namespace BackOffice.Controllers
             return View(_listTransaction);
         }
 
+        #endregion
+
+
         public async Task<IActionResult> WalletWithdraw(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
             var _listTransaction = await FillTransactions(TransactionType.WalletWithdraw, status, pageindex);
             return View(_listTransaction);
         }
 
+
+        #region CampaignServiceCharge
         public async Task<IActionResult> ServiceCharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
+            BindingTransactionOptions();
             var _listTransaction = await FillTransactions(TransactionType.CampaignServiceCharge, status, pageindex);
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                
+            }
+
             return View(_listTransaction);
         }
+
+        public async Task<IActionResult> CampaignServiceSearch(string keyword, DateTime? StartDate, DateTime? EndDate, TransactionStatus TransactionStatus = TransactionStatus.All, int pageindex = 1)
+        {
+            BindingTransactionOptions();
+
+            var _listTransaction = await _ITransactionBussiness.TransactionAgencyCampaignServiceSearch(keyword, TransactionStatus, StartDate, EndDate, pageindex, 25);
+
+            foreach (var item in _listTransaction.Transactions)
+            {
+                try
+                {
+                    if (item.SenderId == 1)
+                    {
+                        item.SenderName = "System";
+                    }
+                    else
+                    {
+                        var wallet = _IWalletBusiness.Get(item.SenderId);
+                        item.SenderName = wallet.Name;
+                        item.Wallet = wallet;
+                    }
+
+                }
+                catch { }
+                
+            }
+
+            return View(_listTransaction);
+        }
+
+
+        #endregion
+
+
 
         public async Task<IActionResult> AccountCharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
@@ -285,6 +403,40 @@ namespace BackOffice.Controllers
 
         }
 
+        public async Task<ActionResult> Detail(int id = 0)
+        {
+
+            var transaction = await _ITransactionBussiness.Get(id);
+
+            try
+            {
+                if (transaction.SenderId == 1)
+                {
+                    transaction.SenderName = "System";
+                }
+                else
+                {
+                    var wallet = _IWalletBusiness.Get(transaction.SenderId);
+                    transaction.SenderName = wallet.Name;
+                    transaction.Wallet = wallet;
+                }
+
+            }
+            catch { }
+            try
+            {
+                var wallet = _IWalletBusiness.Get(transaction.ReceiverId);
+                transaction.ReceiverName = wallet.Name;
+                transaction.Wallet = wallet;
+            }
+            catch { }
+
+
+
+            return View(transaction);
+
+        }
+
         public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All)
         {
             AccountType[] _accounttype;
@@ -429,7 +581,7 @@ namespace BackOffice.Controllers
         }
 
 
-        //dùng cho nạp tiền agency
+        //dùng cho nạp tiền, rut tien agency
         [HttpPost]
         public async Task<IActionResult> TransactionUpdateStatus(TransactionViewModel model)
         {
@@ -437,62 +589,104 @@ namespace BackOffice.Controllers
 
             try
             {
-                var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
-                int agencyid = wallet.EntityType == EntityType.Agency? wallet.EntityId:0;
 
-                if(agencyid > 0)
+                //################## transaction type = các dạng sau mới đi tiếp và xử lý ####################################################
+                //############################################################################################################################
+                if(transaction.Type == TransactionType.WalletRecharge || transaction.Type == TransactionType.WalletWithdraw || transaction.Type == TransactionType.CampaignServiceCashBack)
                 {
-                    if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
+                    var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
+                    int agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
+
+                    if (agencyid > 0)
                     {
-                        
-
-                        int code = await _ITransactionBussiness.UpdateStatus(model.Status, model.Id, HttpContext.User.Identity.Name, model.AdminNote);
-                        if (code == 9)
+                        if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
                         {
+
+
+                            int code = await _ITransactionBussiness.UpdateStatus(model.Status, model.Id, HttpContext.User.Identity.Name, model.AdminNote);
+                            if (code == 9)
+                            {
+                                TempData["MessageSuccess"] = "Update Status Success";
+
+                                if (transaction.Type == TransactionType.WalletRecharge)
+                                {
+                                    string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
+                                }
+                                else if (transaction.Type == TransactionType.WalletWithdraw)
+                                {
+                                    string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
+                                }
+                                else if (transaction.Type == TransactionType.CampaignServiceCashBack)
+                                {
+                                    string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionCampaignServiceCashBackApprove, _msg, model.AdminNote);
+                                }
+
+
+                            }
+                            else if (code == 10)
+                            {
+                                TempData["MessageError"] = "Wallet do not exist";
+                            }
+                            else if (code == 11)
+                            {
+                                TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                            }
+                        }
+                        else
+                        {
+
+                            transaction.Status = model.Status;
+                            transaction.DateModified = DateTime.Now;
+
+                            transaction.AdminNote = model.AdminNote;
+
+                            transaction.UserModified = HttpContext.User.Identity.Name;
+                            await _ITransactionRepository.UpdateAsync(transaction);
                             TempData["MessageSuccess"] = "Update Status Success";
-                            string _msg = string.Format("Lệnh nap tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                            await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
 
-                        }
-                        else if (code == 10)
-                        {
-                            TempData["MessageError"] = "Wallet do not exist";
-                        }
-                        else if (code == 11)
-                        {
-                            TempData["MessageError"] = "Wallet balance sender or receiver less then zero or amount could be abstract";
+                            //####################### Gửi notification ##################################################################################
+                            try
+                            {
+                                NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
+                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                if (model.Status == TransactionStatus.Processing)
+                                {
+                                    if (transaction.Type == TransactionType.CampaignServiceCashBack)
+                                    {
+                                        _notifyType = NotificationType.TransactionCampaignServiceCashBackProcessing;
+                                        _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+
+                                    }
+                                    else if (model.Type == TransactionType.WalletRecharge)
+                                    {
+                                        _notifyType = NotificationType.TransactionDepositeProcessing;
+                                    }
+                                    else if (model.Type == TransactionType.WalletWithdraw)
+                                    {
+                                        _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                        _notifyType = NotificationType.TransactionWithdrawProcessing;
+                                    }
+                                }
+                                await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                            }
+                            catch { }
+                            //################################################################################################################################
+
                         }
                     }
                     else
                     {
-
-                        NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
-                        if(model.Status == TransactionStatus.Processing)
-                            _notifyType = NotificationType.TransactionDepositeProcessing;
-
-
-                        transaction.Status = model.Status;
-                        transaction.DateModified = DateTime.Now;
-
-                        transaction.AdminNote = model.AdminNote;
-
-
-
-                        transaction.UserModified = HttpContext.User.Identity.Name;
-                        await _ITransactionRepository.UpdateAsync(transaction);
-                        TempData["MessageSuccess"] = "Update Status Success";
-
-                        string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
-                        await _INotificationBusiness.CreateNotificationTransactionDepositeByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
+                        TempData["MessageError"] = "Do not fit with any agency!";
                     }
                 }
                 else
                 {
-                    TempData["MessageError"] = "Do not fit with any agency!";
+                    TempData["MessageError"] = "Transaction không thuộc trường hợp để duyệt!";
                 }
-
-               
-
+                             
             
             }
             catch(Exception ex) {

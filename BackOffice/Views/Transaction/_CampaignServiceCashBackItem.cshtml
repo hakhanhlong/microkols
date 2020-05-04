@@ -1,0 +1,123 @@
+﻿@model ListTransactionViewModel
+@using BackOffice.Extensions;
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                SENDER
+            </th>
+            <th>
+                RECEIVER
+            </th>
+            <th>
+                AMOUNT
+            </th>
+            <th>
+                STATUS
+            </th>
+            <th>TIME CREATED</th>
+            <th>TIME MODIFIED</th>
+            <th>CAMPAIGN</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{int count = 0; }
+        @foreach (var item in Model.Transactions)
+        {
+            count++;
+            item.Number = count;
+            <tr id="transaction_@(item.Id)">
+                <td>@item.Number</td>
+                <td>@item.SenderName</td>
+
+                <td>
+                    @if (item.Wallet.EntityType == EntityType.Agency)
+                    {
+                        <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
+                    else
+                    {
+                        <a href="/microkol/detail?id=item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
+
+                </td>                
+                <td>
+                    <h6 class="m--font-danger">
+                        @item.Amount.ToPriceText()
+                    </h6>
+                </td>
+                <td>@item.Status.ToBadge()</td>
+                <td>@item.DateCreated.ToString()</td>
+                <td>@item.DateModified.ToString()</td>
+                <td>
+                    <a href="/campaign/detail/?campaignid=@item.RefId">@item.RefId</a>
+                </td>
+                <td>
+
+                    @if (item.Status == TransactionStatus.Created)
+                    {
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');" title="Processing">
+                                <i class="fa fa-clock-o"></i>
+                            </button>
+                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </div>
+                    }
+                    else if (item.Status == TransactionStatus.Processing)
+                    {
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
+                                <i class="fa fa-check"></i>
+                            </button>                         
+                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </div>
+                    }
+                    else if(item.Status == TransactionStatus.Completed)
+                    {
+                        <div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                                <i class="fa fa-history"></i>
+                            </button>                            
+                        </div>
+                    }
+
+
+
+                </td>
+            </tr>
+            @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
+            {
+                <tr id="transaction_note_@(item.Id)">
+                    <td colspan="8">
+                        @if (!string.IsNullOrEmpty(item.Note))
+                        {
+                            @("Note:" + item.Note)
+                        }
+                        @if (!string.IsNullOrEmpty(item.AdminNote))
+                        {
+                            <br />
+                            @("Admin Note:" + item.AdminNote)
+                        }
+                    </td>
+                </tr>
+            }
+
+        }
+
+    </tbody>
+</table>
+
+

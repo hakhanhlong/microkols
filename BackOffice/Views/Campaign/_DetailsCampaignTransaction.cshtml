@@ -1,0 +1,143 @@
+﻿@model WebServices.ViewModels.CampaignDetailsViewModel
+@inject WebServices.Interfaces.IWalletService walletService
+@inject WebServices.Interfaces.IAccountService accountService
+@inject WebServices.Interfaces.IAgencyService agencyService
+
+
+@using BackOffice.Extensions;
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                CODE
+            </th>
+            <th>
+                CHIẾN DỊCH
+            </th>
+            <th>NGƯỜI GỬI</th>
+            <th>NGƯỜI NHẬN</th>
+            <th>
+                SỐ TIỀN
+            </th>
+            <th>
+                TYPE
+            </th>
+            <th>TRẠNG THÁI</th>
+            <th>TIME</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+
+            int count = 0;
+
+        }
+        @foreach (var item in Model.Transactions)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@item.Code</td>
+                <td>
+
+                    <a href="/campaign/detail/?campaignid=@item.RefId">@item.RefId</a>
+                </td>
+                <td>
+                    @{
+                        var walletSender = await walletService.GetByWalletID(item.SenderId);
+                        if (walletSender != null)
+                        {
+                            if (walletSender.EntityType == EntityType.Account)
+                            {
+                                var account = await accountService.GetAccount(walletSender.EntityId);
+                                if (account != null)
+                                {
+                                    <span>@account.Name</span>
+                                }
+
+                            }
+                            else if(walletSender.EntityType == EntityType.Agency)
+                            {
+                                var agency = await agencyService.GetAgency(walletSender.EntityId);
+                                if (agency != null)
+                                {
+                                    <span>@agency.Name</span>
+                                }
+                            }
+                            else
+                            {
+                                <span>System</span>
+                            }
+
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        var walletReceiver = await walletService.GetByWalletID(item.ReceiverId);
+                        if (walletReceiver != null)
+                        {
+                            if (walletReceiver.EntityType == EntityType.Account)
+                            {
+                                var account = await accountService.GetAccount(walletReceiver.EntityId);
+                                if (account != null)
+                                {
+                                    <span>@account.Name</span>
+                                }
+
+                            }
+                            else if (walletReceiver.EntityType == EntityType.Agency)
+                            {
+                                var agency = await agencyService.GetAgency(walletReceiver.EntityId);
+                                if (agency != null)
+                                {
+                                    <span>@agency.Name</span>
+                                }
+
+                            }
+                            else
+                            {
+                                <span>System</span>
+                            }
+
+                        }
+                    }
+                </td>
+                <td>
+
+                    <h6 class="m--font-danger">
+                        <span>@item.Amount.ToPriceText()</span>
+                    </h6>
+
+                </td>
+                <td>@item.Type.ToBadge()</td>
+                <td>
+
+                    @item.Status.ToBadge()
+
+
+                </td>
+                <td>
+
+
+                    @(item.CreatedDate.ToString("dd/MM/yyyy hh:mm tt"))
+
+                </td>
+                <td>
+                    @*<div class="btn-group btn-group-sm pull-right" role="group">
+                            <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                                <i class="fa fa-history"></i>
+                            </button>
+                        </div>*@
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

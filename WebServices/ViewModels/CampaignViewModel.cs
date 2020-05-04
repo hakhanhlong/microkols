@@ -36,6 +36,9 @@ namespace WebServices.ViewModels
             DateEnd = campaign.DateEnd;
             ExecutionEnd = campaign.ExecutionEnd;
             ExecutionStart = campaign.ExecutionStart;
+
+            FeedbackEnd = campaign.FeedbackEnd;
+            FeedbackStart = campaign.FeedbackStart;
             DateCreated = campaign.DateCreated;
             UserCreated = campaign.UserCreated;
             CountOption = campaign.CampaignOption.Count();
@@ -131,6 +134,12 @@ namespace WebServices.ViewModels
                     }
                 }
             }
+
+            ReviewType = campaign.ReviewType;
+            ReviewPayback = campaign.ReviewPayback;
+            ReviewAddress = campaign.ReviewAddress;
+            AmountMin = campaign.AmountMin;
+            AmountMax = campaign.AmountMax;
         }
 
 
@@ -148,10 +157,17 @@ namespace WebServices.ViewModels
         public List<string> Image { get; set; } = new List<string>();
         public string Data { get; set; }
         public int Quantity { get; set; }
+
+        public int AmountMin { get; set; }
+        public int AmountMax { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime? ExecutionStart { get; set; }
-
         public DateTime? ExecutionEnd { get; set; }
+
+
+        public DateTime? FeedbackStart { get; set; }
+        public DateTime? FeedbackEnd { get; set; }
+
         public DateTime? DateStart { get; set; }
 
         public DateTime? DateEnd { get; set; }
@@ -167,6 +183,9 @@ namespace WebServices.ViewModels
         public int? ChildAgeMin { get; set; }
         public int? ChildAgeMax { get; set; }
 
+        public CampaignReviewType? ReviewType { get; set; }
+        public bool? ReviewPayback { get; set; }
+        public string ReviewAddress { get; set; }
         public string UserCreated { get; set; }
         public List<AccountType> AccountTypes { get;set; }
         public CampaignType Type { get; set; }

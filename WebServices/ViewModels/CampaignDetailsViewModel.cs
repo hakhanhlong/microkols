@@ -12,7 +12,8 @@ namespace WebServices.ViewModels
     {
         public CampaignDetailsViewModel(Campaign campaign,
             IEnumerable<CampaignOption> campaignOptions, 
-            IEnumerable<CampaignAccount> campaignAccounts, 
+            IEnumerable<CampaignAccount> campaignAccounts,
+            CampaignPaymentModel payment,
             IEnumerable<Transaction> transactions) : base(campaign)
         {
             EnabledAccountChargeExtra = campaign.EnabledAccountChargeExtra;
@@ -22,7 +23,8 @@ namespace WebServices.ViewModels
 
 
             //campaignAccounts = campaignAccounts.Where(m => m.Status != CampaignAccountStatus.Canceled);
-            Payment = new CampaignPaymentModel(campaign,  campaignOptions, campaignAccounts, transactions);
+            Payment = payment;
+
             Transactions = TransactionViewModel.GetList(transactions);
 
             CampaignAccounts = CampaignAccountViewModel.GetList(campaignAccounts);
@@ -33,10 +35,13 @@ namespace WebServices.ViewModels
 
         public string SystemNote { get; set; }
 
+
         public CampaignPaymentModel Payment { get; set; }
         public List<TransactionViewModel> Transactions { get; set; }
 
         public List<CampaignAccountViewModel> CampaignAccounts { get; set; }
+
+      
 
     }
     

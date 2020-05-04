@@ -5,6 +5,7 @@
 }
 
 @model CampaignAccountViewModel
+@inject WebServices.Interfaces.ICampaignService CampaignService
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -20,7 +21,7 @@
             -
         </li>
         <li class="m-nav__item">
-            <a href="/campaign" class="m-nav__link">
+            <a href="/microkol/campaignmicrokol" class="m-nav__link">
                 <span class="m-nav__link-text">
                     Campaign MicroKOL
                 </span>
@@ -101,7 +102,9 @@
                                 <h6>
                                     <span class="m-badge m-badge--info">
                                         +
-                                    </span> MicroKOL :<a href="/microkol/detail/?id=@(Model.Account.Id)"> @Model.Account.Name </a>
+                                    </span>
+                                    MicroKOL :<a href="/microkol/detail/?id=@(Model.Account.Id)"> @Model.Account.Name </a>
+                                    Wallet Balance: <span style="color:red;">@ViewBag.WalletBalance</span>
                                 </h6>
                                 <div class="m--space-10"></div>
                                 <h6>
@@ -113,15 +116,16 @@
                             </div>
                             <div class="col-md-6">
                                 <form class="m-form" method="post">
+                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(Model.Id); }
                                     <input type="hidden" name="caid" value="@Model.Id" />
-                                    <input type="hidden" name="money_number" value="@Model.AccountChargeAmount" />
+                                    <input type="hidden" name="money_number" value="@agencyCharge" />
                                     <div class="m-portlet__body" style="padding-top:0;">
                                         <div class="m-form__section m-form__section--first">
                                             <div class="form-group m-form__group">
                                                 <label for="example_input_full_name">
                                                     Account Charge Amount:
                                                 </label>
-                                                <input type="text" disabled class="form-control m-input" value="@(Model.AccountChargeAmount)">
+                                                <input type="text" disabled class="form-control m-input" value="@(agencyCharge)">
                                                 <span class="m-form__help">
                                                     Money need to substract
                                                 </span>
@@ -130,7 +134,7 @@
                                                 <label>
                                                     Note:
                                                 </label>
-                                                <textarea class="form-control m-input" name="txt_note" rows="3">@(string.Format("Hoàn tiền {0} đ tới Agency {1}, vì \"{2}\" chưa hoàn thành chiến dịch {3}", Model.AccountChargeAmount, Model.Campaign.AgencyId, Model.Account.Name, Model.Campaign.Code))</textarea>
+                                                <textarea class="form-control m-input" name="txt_note" rows="3">@(string.Format("Hoàn tiền {0} tới Agency {1}, vì \"{2}\" chưa hoàn thành chiến dịch {3}", agencyCharge.ToPriceText(), Model.Campaign.AgencyId, Model.Account.Name, Model.Campaign.Code))</textarea>
                                                 <span class="m-form__help">
                                                     Note why need substract money
                                                 </span>

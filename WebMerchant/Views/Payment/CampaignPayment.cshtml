@@ -31,6 +31,15 @@
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
             </div>
         }
+        else if (ViewBag.IsRutTienExist!= null && ViewBag.IsRutTienExist == true)
+        {
+            <div class="modal-body">
+                <div class="alert alert-success">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng ban quản trị duyệt yêu cầu rút tiền</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        }
         else
         {
             <form method="post" action="javascript:;" data-action="@Url.Action("CampaignPayment","Payment")" id="frmPayment">
@@ -52,7 +61,7 @@
                         </div>
                     </div>
 
-                
+
 
                     @if (payment.TotalChargeValue >= 0)
                     {

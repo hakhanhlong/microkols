@@ -43,11 +43,30 @@ namespace WebServices.ViewModels
             EntityType = notification.EntityType;
             EntityId = notification.EntityId;
             TypeGroup = notification.Type.ToTypeGroup();
-            Message = (notification.Type == NotificationType.CampaignCanceled) ? $"{notification.Message} với lý do {notification.Data}" : $"{notification.Message}";
+            Message =  $"{notification.Message}";
             NotificationTypeToText = notification.Type.NotificationTypeToText();
 
         }
 
+
+        public string NotificationLink
+        {
+            get
+            {               
+
+                if (Data == "Transaction" && Type == NotificationType.AgencyWalletDeposit)
+                {
+                    return "/notification/goto?id=" + Id;
+                }
+
+                if (Data == "Transaction" && Type == NotificationType.AgencyWalletWithDraw)
+                {
+                    return "/notification/goto?id=" + Id;
+                }
+
+                return "/notification/goto?id=" + Id;
+            }
+        }
 
         public string NotificationTypeToText { get; set; }
 

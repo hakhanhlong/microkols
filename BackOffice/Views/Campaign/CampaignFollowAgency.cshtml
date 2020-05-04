@@ -5,6 +5,7 @@
 }
 
 @model ListCampaignViewModel
+@using BackOffice.Extensions;
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -32,25 +33,24 @@
                     </div>
                 </div>
                 @*<div class="m-portlet__head-tools">
-                    <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist">
-                        <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_tab_1_1" role="tab" aria-selected="true">
-                                Search
-                            </a>
-                        </li>
-                    </ul>
-                </div>*@
+                        <ul class="nav nav-tabs m-tabs m-tabs-line   m-tabs-line--right m-tabs-line-danger" role="tablist">
+                            <li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link" data-toggle="tab" href="#m_portlet_tab_1_1" role="tab" aria-selected="true">
+                                    Search
+                                </a>
+                            </li>
+                        </ul>
+                    </div>*@
             </div>
             <div class="m-portlet__body">
                 @*<div class="tab-content">
-                    <div class="tab-pane" id="m_portlet_tab_1_1">
-                        @await Html.PartialAsync("~/Views/Campaign/_SearchPartial.cshtml")
-                    </div>
-                </div>*@
+                        <div class="tab-pane" id="m_portlet_tab_1_1">
+                            @await Html.PartialAsync("~/Views/Campaign/_SearchPartial.cshtml")
+                        </div>
+                    </div>*@
                 <!--begin::Section-->
                 <div class="m-section">
                     <div class="m-section__content">
-
                         <table class="table">
                             <thead>
                                 <tr>
@@ -63,18 +63,19 @@
                                         TITLE
                                     </th>
                                     <th>
-                                        TYPE
+                                        AGENCY
                                     </th>
-                                    <th>
-                                        STATUS
-                                    </th>
+
                                     <th>
                                         START DATE
                                     </th>
                                     <th>
                                         END DATE
                                     </th>
-                                    <th></th>
+                                    @*<th></th>*@
+                                    <th>
+                                        STATUS
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,18 +131,34 @@
                                                 }
                                             </td>
                                             <td>
-                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a>
+                                                <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)">@(item.Code)</a><br />
+                                                @*<span>@(item.DateCreated)</span>*@
+
                                             </td>
                                             <td>
-                                                @(item.Title)
+                                                @if (item.Title.Length > 50)
+                                                {
+                                                    <b title="@(item.Title)">@(item.Title.Substring(0, 50))</b>
+                                                }
+                                                else
+                                                {
+                                                    <b title="@(item.Title)">@(item.Title)</b>
+                                                }
+
+                                                <div>@(item.Type.ToText())</div>
                                             </td>
-                                            <td>@(item.Type.ToText())</td>
                                             <td>
-                                                <select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>
+                                                <a href="/campaign/campaignfollowagency?agencyid=@(item.AgencyId)">@(item.UserCreated)</a>
+
                                             </td>
+
                                             <td>@(item.DateStart.HasValue ? item.DateStart.Value.ToString() : "")</td>
                                             <td>@(item.DateEnd.HasValue ? item.DateEnd.Value.ToString() : "")</td>
-                                            <td><a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" class="btn btn-sm btn-info">Detail</a></td>
+                                            @*<td><a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)" class="btn btn-sm btn-info">Detail</a></td>*@
+                                            <td>
+                                                @*<select campaign-id="@(item.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@item.Status" asp-items="@ViewBag.CampaignStatus"></select>*@
+                                                @item.Status.ToBadge()
+                                            </td>
                                         </tr>
                                         count++;
                                     }
@@ -159,12 +176,36 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="m_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Take note change status campaign
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="iframenotestatus" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 @section Scripts{
     <script type="text/javascript">
 
 
         $(document).ready(function () {
-            $('.m-section__content select').each(function (index, item) {
+
+                $('.m-section__content select').each(function (index, item) {
                 $(item).change(function () {
 
 
@@ -175,39 +216,59 @@
                     data['id'] = campaignid;
                     data['status'] = status;
 
+                    //3: Ended, 5: Canceled, 6: Error
+                    var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
+                    $('#iframenotestatus').attr('src', url);
+                    $('#m_modal_4').modal({ show: true });
+                    $('#m_modal_4').on('hidden.bs.modal', function (e) {
+                        document.location = document.location.href;
+                    })
 
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("ChangeStatus", "Campaign")',
-                        data: data,
-                        success: function (data) {
 
-                            if (data.code == 1) {
+                    @*if (status == 3 || status == 5 || status == 6) {
+                        var url = '/campaign/takenotechangestatus?id=' + campaignid + "&status=" + status;
+                        $('#iframenotestatus').attr('src', url);
+                        $('#m_modal_4').modal({ show: true });
+                        $('#m_modal_4').on('hidden.bs.modal', function (e) {
+                            document.location = document.location.href;
+                        })
+                    }
+                    else {
+                         $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("ChangeStatus", "Campaign")',
+                            data: data,
+                            success: function (data) {
 
-                                $('#item_' + campaignid).html(data.str_icon);
-                                Swal.fire(
-                                    'Good job!',
-                                    data.message,
-                                    'success'
-                                );
+                                if (data.code == 1) {
 
-                            }
-                            else {
-                                Swal.fire({
-                                    type: 'error',
-                                    title: 'Oops...',
-                                    text: data.message
-                                });
-                            }
+                                    $('#item_' + campaignid).html(data.str_icon);
+                                    Swal.fire(
+                                        'Good job!',
+                                        data.message,
+                                        'success'
+                                    );
 
-                        },
-                        dataType: "json",
-                        traditional: true
-                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Oops...',
+                                        text: data.message
+                                    });
+                                }
 
+                            },
+                            dataType: "json",
+                            traditional: true
+                        });
+                    }*@
 
                 });
             });
+
+
+
         });
 
     </script>

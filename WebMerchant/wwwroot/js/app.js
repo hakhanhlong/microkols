@@ -26,7 +26,7 @@
         if (currentPage === 'campaign_create' || currentPage == 'campaign_editinfo') {
             CampaignCreatePage.Init();
         }
-        else if (currentPage === 'campaign_createinfo') {
+        else if (currentPage === 'campaign_createinfo' || currentPage === 'campaign_edittarget') {
             CampaignCreateTargetPage.Init();
         }
         else if (currentPage === 'campaign_details') {
@@ -175,7 +175,7 @@
 
 
         $.extend($.validator.messages, {
-            required: "Hãy nhập.",
+            required: "Hãy nhập dữ liệu",
             remote: "Hãy sửa cho đúng.",
             email: "Hãy nhập email.",
             url: "Hãy nhập URL.",

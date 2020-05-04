@@ -36,6 +36,15 @@ namespace WebServices.Services
         }
 
         #region CampaignAccountCaption
+
+        public async Task<bool> IsValidCaption(int campaignAccountid)
+        {
+            var spec = new CampaignAccountCaptionByCampaignAccountIdSpecification(campaignAccountid, CampaignAccountCaptionStatus.DaDuyet);
+            var entity = await _CampaignAccountCaptionRepository.GetSingleBySpecAsync(spec);
+
+            return entity != null;
+
+        }
         public async Task<ListCampaignAccountCaptionViewModel> GetCampaignAccountCaptions(int campaignAccountId, string order, int page, int pagesize)
         {
 

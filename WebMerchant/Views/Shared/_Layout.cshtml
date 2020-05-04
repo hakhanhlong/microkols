@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebMerchant</title>
     <partial name="_StylePartial" />
-    <link href="~/css/theme.css" rel="stylesheet" />
+    <link href="~/css/theme.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
@@ -13,7 +13,7 @@
     <partial name="_HeaderPartial" />
 
     @RenderSection("Top", required: false)
-  
+
     <div class="container-fluid page-container">
         <div class="row">
             <div class="col-lg-1 d-none d-md-block">
@@ -35,5 +35,14 @@
     <partial name="_ScriptPartial" />
 
     @RenderSection("Scripts", required: false)
+
+
+    <div class="modal fade " id="imagemodal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:99999999">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <img class="modal-img img-fluid" />
+            </div>
+        </div>
+    </div>
 </body>
 </html>

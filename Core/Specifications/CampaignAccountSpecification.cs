@@ -11,6 +11,7 @@ namespace Core.Specifications
         public CampaignAccountSpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
             AddInclude(c => c.Account);
+            AddInclude($"{nameof(CampaignAccount.Account)}.{nameof(Account.AccountProvider)}");
         }
 
         public CampaignAccountSpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)
@@ -20,6 +21,10 @@ namespace Core.Specifications
         public CampaignAccountSpecification(CampaignAccountStatus status) : base(m => m.Status == status)
         {
         }
+
+        //public CampaignAccountSpecification(CampaignAccountStatus status, int campaignid) : base(m => m.Status == status && m.CampaignId == campaignid)
+        //{
+        //}
 
         public CampaignAccountSpecification(CampaignAccountStatus? status, int accountid) : base(m => (!status.HasValue || m.Status == status.Value) && m.AccountId == accountid)
         {

@@ -9,7 +9,13 @@ namespace Core.Specifications
     {
         public WalletFilterSpecification(EntityType? entitytype)
            : base(w => (!entitytype.HasValue || w.EntityType == entitytype.Value))
-        {            
+        {
+            
         }
+
+
+        public WalletFilterSpecification(int walletid)
+           : base(w => w.Id == walletid)
+        {}
     }
 }

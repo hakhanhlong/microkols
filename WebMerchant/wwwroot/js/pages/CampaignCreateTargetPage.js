@@ -3,6 +3,8 @@ var CampaignCreateTargetPage = (function () {
 
     function init() {
         handler();
+
+        console.log('CampaignCreateTargetPage');
     }
 
     function handler() {
@@ -12,35 +14,128 @@ var CampaignCreateTargetPage = (function () {
             theme: "bootstrap"
         });
 
-        $('#RegisterTime').daterangepicker({
-            timePicker: true,
-            minDate: moment(),
-            startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
-            locale: {
-                format: 'hh:mm A DD/MM/YYYY'
-            }
-        });
+        var defaultHour = 10;
 
         $('#FeedbackBefore').daterangepicker({
             timePicker: true,
             minDate: moment(),
             startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
+            endDate: moment().startOf('hour').add(defaultHour, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
 
-        $('#ExecutionTime').daterangepicker({
+        $('#RegisterTime').daterangepicker({
             timePicker: true,
             minDate: moment(),
             startDate: moment(),
-            endDate: moment().startOf('hour').add(10, 'hour'),
+            endDate: moment().startOf('hour').add(defaultHour, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
+        $('#RegisterTime').on('apply.daterangepicker', function (ev, picker) {
+            
+            var startDate = moment(picker.endDate).add(1, 'minute');
+            var endDate = moment(picker.endDate).add(defaultHour, 'hour');
+            console.log('start11',startDate);
+            console.log('end11',endDate);
+            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate);
+            $('#ExecutionTime').data('daterangepicker').setEndDate(endDate);
+
+        });
+        $('#ExecutionTime').daterangepicker({
+            timePicker: true,
+            minDate: moment(),
+            startDate: moment().startOf('hour').add(defaultHour, 'hour').add(1, 'minute'),
+            endDate: moment().startOf('hour').add(2 * defaultHour, 'hour'),
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#ExecutionTime').on('apply.daterangepicker', function (ev, picker) {
+
+            var regDrp = $('#RegisterTime').data('daterangepicker');
+            var d1 = moment(regDrp.endDate);
+
+            var d2 = moment(picker.startDate);
+
+            if (d1.isBefore(d2)) // false
+            {
+
+            } else {
+
+                $.notify({
+                    // options
+                    message: 'Thời gian thực hiện phải lớn hơn thời gian nhận đăng ký'
+                }, {
+                    // settings
+                    type: 'danger'
+                });
+            }
+
+
+            var startDate = d1.add(1, 'minute'); 
+            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate); 
+
+        });
+
+        $('#FeedbackBefore2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#RegisterTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+        $('#ExecutionTime2').daterangepicker({
+            timePicker: true,
+            locale: {
+                format: 'hh:mm A DD/MM/YYYY'
+            }
+        });
+
+        $('.form-create-campaign').submit(function (e) {
+
+
+            var regDrp = $('#RegisterTime').data('daterangepicker');
+            var excDrp = $('#ExecutionTime').data('daterangepicker');
+            console.log('regDrp', regDrp.startDate, regDrp.endDate);
+            console.log('excDrp', excDrp.startDate, excDrp.endDate);
+
+            var d1 = moment(regDrp.endDate);
+            var d2 = moment(excDrp.startDate);
+            if (d1.isBefore(d2)) // false
+            {
+                
+            } else {
+                e.preventDefault();
+            }
+
+          
+        });
+
+
+        $('#AmountMin').change(function () {
+
+            var val = $('#AmountMin').val();
+
+            console.log('amount min', val);
+
+            var valmax = $('#AmountMax').val();
+            if (valmax < val) {
+                $('#AmountMax').val(val);
+            }
+            $('#AmountMax').attr('min', val);
+
+
+
+        })
 
 
         /*

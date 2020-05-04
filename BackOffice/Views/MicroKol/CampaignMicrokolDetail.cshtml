@@ -6,6 +6,10 @@
 
 @model ListCampaignWithAccountViewModel
 
+@inject WebServices.Interfaces.ICampaignService CampaignService
+@using BackOffice.Extensions;
+
+
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -65,13 +69,13 @@
                                             #
                                         </th>
                                         <th>
+                                            MICROKOL
+                                        </th>
+                                        <th>
                                             CAMPAIGN
                                         </th>
                                         <th>
                                             CAMPAIGN STATUS
-                                        </th>                                        
-                                        <th>
-                                            MICROKOL
                                         </th>
                                         <th>$</th>
                                         <th>
@@ -81,14 +85,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{ 
+                                    @{
                                         int count = 1;
-                                        
+
                                     }
                                     @foreach (var item in Model.Campaigns)
-                                    {                                        
+                                    {
                                         <tr>
                                             <td>@(count)</td>
+                                            <td>
+                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a><br />
+                                                <span class="m--font-danger">
+                                                    @item.CampaignAccount.AccountChargeAmount.ToPriceText()
+                                                </span>
+                                            </td>
                                             <td>
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
                                                 <span>@item.Type.ToText()</span><br />
@@ -96,35 +106,23 @@
                                             </td>
                                             <td>
 
-                                                @if (item.Status == CampaignStatus.Canceled)
-                                                {
-                                                    <span class="m-badge m-badge--danger m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-                                                else if (item.Status == CampaignStatus.Completed)
-                                                {
-                                                    <span class="m-badge m-badge--info m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="m-badge m-badge--primary m-badge--wide">
-                                                        @item.Status.ToString()
-                                                    </span>
-                                                }
+                                                @item.Status.ToBadge()
 
-                                            </td>                                            
-                                            <td>
-                                                <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
                                             </td>
                                             <td>
-                                                <span class="m--font-danger">@item.CampaignAccount.AccountChargeAmount.ToPriceText()</span>
+                                                <span class="m--font-danger">
+                                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }
+
+                                                    
+
+                                                    @agencyCharge.ToPriceText()
+                                                </span>
                                             </td>
-                                            <td><span class="m-badge m-badge--primary m-badge--wide">@item.CampaignAccount.Status</span></td>
                                             <td>
-                                                @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
+                                                @item.CampaignAccount.Status.ToBadge()
+                                            </td>
+                                            <td>
+                                                @*@if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
                                                 {
                                                     if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
                                                     {
@@ -141,9 +139,7 @@
                                                             <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
                                                         }
                                                     }
-
-
-                                                }
+                                                }*@
                                             </td>
 
                                         </tr>
@@ -151,9 +147,9 @@
                                     }
                                 </tbody>
                             </table>
-                            <pager pager="@Model.Pager" asp-action="CampaignMicrokolDetail" asp-route-status="@(Context.Request.Query["status"])"  asp-route-accountid="@(Context.Request.Query["accountid"])"
-                            asp-route-startdate="@(Context.Request.Query["startdate"])" 
-                            asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
+                            <pager pager="@Model.Pager" asp-action="CampaignMicrokolDetail" asp-route-status="@(Context.Request.Query["status"])" asp-route-accountid="@(Context.Request.Query["accountid"])"
+                                   asp-route-startdate="@(Context.Request.Query["startdate"])"
+                                   asp-route-enddate="@(Context.Request.Query["enddate"])"></pager>
                         }
 
 

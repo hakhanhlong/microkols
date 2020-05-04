@@ -48,6 +48,20 @@ namespace BackOffice.Business
             };
         }
 
+        public async Task<ListCampaignViewModel> GetCampaignByStatus(CampaignStatus? status, int pageindex, int pagesize)
+        {
+            var filter = new CampaignByStatusSpecification(status);
+            var campaigns = await _ICampaignRepository.ListPagedAsync(filter, "DateModified_desc", pageindex, pagesize);
+            var total = await _ICampaignRepository.CountAsync(filter);
+
+            return new ListCampaignViewModel()
+            {
+                Campaigns = campaigns.Select(a => new CampaignViewModel(a)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+        }
+
         public ListCampaignViewModel GetListCampaign(int pageindex, int pagesize)
         {
             var campaigns = _ICampaignRepository.ListPaging("DateModified_desc", pageindex, pagesize);
@@ -178,6 +192,7 @@ namespace BackOffice.Business
             var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
             var total = _ICampaignAccountRepository.Count(filter);
             var list = new List<CampaignWithAccountViewModel>();
+
             foreach (var campaignAccount in campaignAccounts)
             {
                 list.Add(new CampaignWithAccountViewModel(campaignAccount.Campaign, campaignAccount));
@@ -220,6 +235,7 @@ namespace BackOffice.Business
             var filter = new CampaignAccountSpecification(status, StartDate, EndDate, accountid);
 
             var campaignAccounts = _ICampaignAccountRepository.ListPaged(filter, "DateModified_desc", pageindex, pagesize);
+
             var total = _ICampaignAccountRepository.Count(filter);
             var list = new List<CampaignWithAccountViewModel>();
             foreach (var campaignAccount in campaignAccounts)

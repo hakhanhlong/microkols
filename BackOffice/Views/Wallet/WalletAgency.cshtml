@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "WalletAgency";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ListWalletViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Ví doanh nghiệp
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Ví doanh nghiệp
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/Wallet/_FilterPartial.cshtml", Model)
+                    </div>
+                </div>
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        HỌ & TÊN
+                                    </th>
+                                    <th>
+                                        SỐ DƯ VÍ
+                                    </th>
+                                    <th>
+                                        DATE CREATED
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in Model.Wallets)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>
+                                                <a href="/agency/detail?id=@(item.Id)" style="font-family:Roboto;text-decoration:none;">
+                                                    <strong>@item.Name</strong>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h6 class="m--font-danger">
+                                                    @item.Balance.ToPriceText()
+                                                </h6>
+                                            </td>
+                                            <td>@item.DateCreated</td>                                            
+                                            <td>                                                
+                                                <a style="font-family:Roboto;text-decoration:none;" href="/wallet/transactionagency?walletid=@(item.Id)" 
+                                                   class="m-badge m-badge--warning m-badge--wide">Giao dịch</a>
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+                        <pager pager="@Model.Pager" asp-action="WalletAgency"></pager>
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>

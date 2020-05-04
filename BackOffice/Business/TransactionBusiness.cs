@@ -31,6 +31,17 @@ namespace BackOffice.Business
             _IAgencyRepository = __IAgencyRepository;
         }
 
+
+        public async Task<TransactionViewModel> Get(int id)
+        {
+            var filter = new TransactionSpecification(id);
+            var transaction = await _ITransactionRepository.GetSingleBySpecAsync(filter);
+
+            return new TransactionViewModel(transaction);
+
+
+        }
+
         public async Task<ListTransactionViewModel> GetTransactionByType(TransactionType type, int pageindex, int pagesize)
         {
             var filter = new TransactionSpecification(type);
@@ -76,7 +87,149 @@ namespace BackOffice.Business
         }
 
 
-        // đang làm dở
+
+        public async Task<ListTransactionViewModel> TransactionAgencyCampaignServiceCashBackSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            var filter = new TransactionSpecification(StartDate, EndDate);
+            var transactions = await _ITransactionRepository.ListAsync(filter);
+            int total = 0;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var agencies = _IAgencyRepository.ListAll().Where(a => a.Name.Contains(keyword) || a.Username.Contains(keyword)).Select(a => a.Id).ToList();
+                var list_wallet = _IWalletRepository.ListAll().Where(w => w.EntityType == EntityType.Agency && agencies.Contains(w.EntityId)).Select(w => w.Id).ToList();
+
+                if (status == TransactionStatus.All)
+                {
+                    var query_transaction = (from t in transactions
+                                             where list_wallet.Contains(t.ReceiverId)
+                                             && t.Type == TransactionType.CampaignServiceCashBack
+                                             select t);
+
+                    total = query_transaction.Count();
+
+                    transactions = query_transaction.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where list_wallet.Contains(t.ReceiverId)
+                                              && t.Status == status && t.Type == TransactionType.CampaignServiceCashBack
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+            }
+            else
+            {
+                if (status != TransactionStatus.All)
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Status == status
+                                              && t.Type == TransactionType.CampaignServiceCashBack
+                                              select t);
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Type == TransactionType.CampaignServiceCashBack
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+
+            }
+
+            return new ListTransactionViewModel()
+            {
+                keyword = keyword,
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : "",
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                TransactionStatus = status,
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+
+            };
+        }
+
+        public async Task<ListTransactionViewModel> TransactionAgencyCampaignServiceSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            var filter = new TransactionSpecification(StartDate, EndDate);
+            var transactions = await _ITransactionRepository.ListAsync(filter);
+            int total = 0;
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                var agencies = _IAgencyRepository.ListAll().Where(a => a.Name.Contains(keyword) || a.Username.Contains(keyword)).Select(a => a.Id).ToList();
+                var list_wallet = _IWalletRepository.ListAll().Where(w => w.EntityType == EntityType.Agency && agencies.Contains(w.EntityId)).Select(w => w.Id).ToList();
+
+                if (status == TransactionStatus.All)
+                {
+                    var query_transaction = (from t in transactions
+                                             where list_wallet.Contains(t.SenderId)
+                                             && t.Type == TransactionType.CampaignServiceCharge
+                                             select t);
+
+                    total = query_transaction.Count();
+
+                    transactions = query_transaction.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where list_wallet.Contains(t.SenderId)
+                                              && t.Status == status && t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+            }
+            else
+            {
+                if (status != TransactionStatus.All)
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Status == status
+                                              && t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Type == TransactionType.CampaignServiceCharge
+                                              select t);
+
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+
+            }
+
+            return new ListTransactionViewModel()
+            {
+                keyword = keyword,
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : "",
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                TransactionStatus = status,
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+
+            };
+        }
+
         public async Task<ListTransactionViewModel> TransactionAgencyWalletRechargeSearch(string keyword, TransactionStatus status, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
         {
             var filter = new TransactionSpecification(StartDate, EndDate);
@@ -117,6 +270,15 @@ namespace BackOffice.Business
                     var query_transactions = (from t in transactions
                                               where t.Status == status
                                               && t.Type == TransactionType.WalletRecharge
+                                              select t);
+                    total = query_transactions.Count();
+
+                    transactions = query_transactions.Skip((pageindex - 1) * pagesize).Take(pagesize).ToList();
+                }
+                else
+                {
+                    var query_transactions = (from t in transactions
+                                              where t.Type == TransactionType.WalletRecharge
                                               select t);
                     total = query_transactions.Count();
 
@@ -249,7 +411,32 @@ namespace BackOffice.Business
                 EndDate = EndDate.HasValue ? EndDate.Value.ToString() : ""
             };
         }
-        
+
+
+
+        public async Task<ListTransactionViewModel> GetTransactionsByType(TransactionType? searchtype, int? sender_wallet_id, int? reciever_wallet_id, DateTime? StartDate, DateTime? EndDate, int pageindex, int pagesize)
+        {
+            TransactionSpecification filter = null;
+
+            filter = new TransactionSpecification(searchtype, sender_wallet_id, reciever_wallet_id, StartDate, EndDate); //tất cả
+
+            //new TransactionSpecification(sender_wallet_id, reciever_wallet_id, StartDate, EndDate);
+
+            var transactions = await _ITransactionRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, 25);
+
+            var total = _ITransactionRepository.Count(filter);
+
+            return new ListTransactionViewModel()
+            {
+                Transactions = transactions.Select(t => new TransactionViewModel(t)).ToList(),
+                Pager = new PagerViewModel(pageindex, pagesize, total),
+                StartDate = StartDate.HasValue ? StartDate.Value.ToString() : "",
+                EndDate = EndDate.HasValue ? EndDate.Value.ToString() : ""
+            };
+        }
+
+
+
         public bool CheckExist(int senderid, int receiverid, TransactionType type, int RefId)
         {
             var filter = new TransactionSpecification(senderid, receiverid, type, RefId);
@@ -273,16 +460,18 @@ namespace BackOffice.Business
                 _transaction.AdminNote = adminnote;
 
                 try {
-                    
-
-                    //naptien
-                    if (_transaction.Type == TransactionType.WalletRecharge)
+                                        
+                    if (_transaction.Type == TransactionType.WalletRecharge) //naptien
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Nạp Tiền][WalletRecharge]", username);
                     }
                     else if (_transaction.Type == TransactionType.WalletWithdraw) //ruttien
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Rút tiền][WalletWithdraw]", username);
+                    }
+                    else if (_transaction.Type == TransactionType.CampaignServiceCashBack) //tra tien ví agency từ chiến dịch
+                    {
+                        retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Trả tiền về ví][CampaignServiceCashBack]", username);
                     }
                     else if(_transaction.Type == TransactionType.CampaignAccountCharge)
                     {
@@ -296,7 +485,6 @@ namespace BackOffice.Business
                     {
                         retValue = await CalculateBalance(_transaction.Id, _transaction.Amount, _transaction.SenderId, _transaction.ReceiverId, "[Chiến dịch trả thành viên][CampaignAccountPayback]", username);
                     }
-
                     _ITransactionRepository.Update(_transaction);
 
                 }

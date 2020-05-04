@@ -1,0 +1,72 @@
+﻿
+@model WebServices.ViewModels.CampaignViewModel
+
+@inject WebServices.Interfaces.ICampaignService CampaignService
+
+@{
+    var counting = await CampaignService.GetCampaignAccountCounting(Model.Id, Model.Type, Model.Quantity);
+}
+
+
+<ul class="list-inline">
+    <li class="list-inline-item">Người đăng ký tham gia</li>
+    <li class="list-inline-item">
+        
+            <span class="m-badge m-badge--success m-badge--wide">
+                @(counting.TongNguoiThamGia)/@counting.TongNguoi
+            </span>
+            
+        
+    </li>
+
+    @if (Model.Type.IsHasCaption())
+    {
+        if (counting.TongCaption > 0)
+        {
+
+            <li class="list-inline-item">Caption đã duyệt:</li>
+            <li class="list-inline-item">
+                
+                    <span class="m-badge m-badge--success m-badge--wide">
+                        @counting.TongCaptionDaDuyet/@counting.TongCaption
+                    </span>
+                
+            </li>
+            <li class="list-inline-item">Caption cần duyệt:</li>
+            <li class="list-inline-item">                
+                <span class="m-badge m-badge--success m-badge--wide">
+                    @counting.TongCaptionCanDuyet
+                </span>
+            </li>
+        }
+    }
+    else if (Model.Type.IsHasContent())
+    {
+        if (counting.TongContent > 0)
+        {
+            <li class="list-inline-item">Nội dung đã duyệt:</li>
+            <li class="list-inline-item">
+                
+                <span class="m-badge m-badge--success m-badge--wide">
+                    @counting.TongContentDaDuyet/@counting.TongContent
+                </span>
+            </li>
+            <li class="list-inline-item">Nội dung cần duyệt:</li>
+            <li class="list-inline-item">
+                <span class="m-badge m-badge--success m-badge--wide">
+                    @counting.TongContentCanDuyet
+                </span>
+                
+            </li>            
+        }
+    }
+
+</ul>
+
+
+
+    
+
+   
+
+

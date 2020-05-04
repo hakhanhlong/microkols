@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Duyệt nội dung chiến dịch";
     var campaign = (CampaignViewModel)ViewBag.Campaign;
-    
+
     var currenturl = Url.Action("Content", new { campaignid = campaign.Id, pageindex = Model.Pager.Page, pagesize = Model.Pager.PageSize });
 }
 
@@ -52,7 +52,10 @@
                                         {
 
                                             <li class="list-inline-item">
-                                                <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
+                                                <a href="@AppOptions.CurrentValue.GetImageUrl(img)" class="open-img-popup" target="_blank">
+
+                                                    <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
+                                                </a>
                                             </li>
                                         }
                                     </ul>
@@ -115,7 +118,7 @@
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">Ghi chú sửa nội dung</label>
                                                                     <textarea class="form-control" rows="3" name="note" required></textarea>
-                                                                    
+
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <input type="hidden" name="id" value="@lastContent.Id" />
@@ -275,7 +278,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-                        <form  action="@Url.Action("FeedbackContent")" class="frmFeedbackAll frmFeedback" method="post" style="display:none">
+                        <form action="@Url.Action("FeedbackContent")" class="frmFeedbackAll frmFeedback" method="post" style="display:none">
 
                             <input type="hidden" name="returnurl" value="@currenturl" />
                             <input type="hidden" name="campaignid" value="@campaign.Id" />

@@ -3,7 +3,7 @@ var CampaignDetailsPage = (function () {
 
     function init() {
 
-
+        CampaignIndexPage.Init();
         handler();
     }
     function handler() {

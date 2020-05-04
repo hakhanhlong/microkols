@@ -1,0 +1,70 @@
+﻿
+@{
+    Layout = null;
+}
+
+@model ListCampaignWithAccountViewModel
+@inject WebServices.Interfaces.ICampaignService CampaignService
+@using BackOffice.Extensions;
+
+
+@if (Model != null)
+{
+
+    foreach (var item in Model.Campaigns)
+    {
+<div class="m-widget3__item">
+    <div class="m-widget3__header">
+        <div class="m-widget3__user-img">
+
+            @if (item.CampaignAccount.Account.Avatar.Contains("http"))
+            {
+                <img class="m-widget3__img" src="@item.CampaignAccount.Account.Avatar" alt="">
+            }
+            else
+            {
+                <img class="m-widget3__img" src="@AppHelpers.CurrentValue.GetImageUrl(item.CampaignAccount.Account.Avatar)" alt="">
+            }
+
+
+        </div>
+        <div class="m-widget3__info">
+
+            <ul class="list-unstyled">
+                <li>
+                    <ul class="list-inline">
+                        <li class="list-inline-item w-100">
+                            <div class="float-left">
+                                
+                                    <a href="/microkol/campaignmicrokoldetail/?accountid=@item.CampaignAccount.AccountId">                                    
+                                        @item.CampaignAccount.Account.Name
+                                    </a>
+
+                                   @item.Status.ToBadge()
+                                   
+                                    @item.Title
+                                
+                            </div>                            
+                        </li>
+
+                    </ul>
+                </li>
+                <li>
+                    <span class="m-widget3__time">
+                        @item.CampaignAccount.DateModified.ToTimeAgo()
+                    </span>
+                </li>
+            </ul>
+
+
+
+
+        </div>
+
+    </div>
+    
+
+</div>
+    }
+
+}

@@ -93,7 +93,6 @@ namespace WebInfluencer.Controllers
             ViewBag.AccountStatus = await _accountService.GetAccountStatus(CurrentUser.Id);
             return View(model);
         }
-
         #region Caption
         public async Task<IActionResult> CreateCaption(CreateCampaignAccountCaptionViewModel model)
         {
@@ -111,20 +110,20 @@ namespace WebInfluencer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var imgs = new List<string>();
-                if (file != null)
-                    foreach (var item in file)
-                    {
+                //var imgs = new List<string>();
+                //if (file != null)
+                //    foreach (var item in file)
+                //    {
 
-                        var newpath = await _fileHelper.UploadTempFile(item);
-                        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
-                        if (!string.IsNullOrEmpty(tmp))
-                        {
-                            imgs.Add(tmp);
-                        }
-                    }
+                //        var newpath = await _fileHelper.UploadTempFile(item);
+                //        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
+                //        if (!string.IsNullOrEmpty(tmp))
+                //        {
+                //            imgs.Add(tmp);
+                //        }
+                //    }
 
-                model.Image = imgs;
+                //model.Image = imgs;
 
                 var r = await _campaignAccountContentService.CreateCampaignAccountContent(model, CurrentUser.Username);
                 SetMessageModal("Đã gửi nội dung thành công, Nội dung của bạn đang chờ được xét duyệt.");
@@ -134,14 +133,14 @@ namespace WebInfluencer.Controllers
         #endregion
 
         #region Action
-        public async Task<IActionResult> FeedbackJoinCampaign(int campaignid, int type)
+        public async Task<IActionResult> FeedbackJoinCampaign(RequestJoinCampaignViewModel model, int type)
         {
-            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, campaignid, CurrentUser.Username, type == 1);
+            var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username, type == 1);
 
 
             this.AddAlert(true, type == 1 ? "Bạn đã đồng ý tham gia chiến dịch" : "Bạn đã từ chối tham gia chiến dịch");
 
-            return RedirectToAction("Details", new { id = campaignid });
+            return RedirectToAction("Details", new { id = model.CampaignId });
         }
 
         public async Task<IActionResult> RequestJoinCampaign(RequestJoinCampaignViewModel model)
@@ -317,7 +316,21 @@ namespace WebInfluencer.Controllers
             return PartialView("UpdateCampaignAccountMessage");
         }
 
+        public async Task<IActionResult> UpdateReviewAddress(int id, string reviewaddress)
+        {
+            var r = await _campaignService.UpdateReviewAddress(id, reviewaddress, CurrentUser.Username);
+            if (r > 0)
+            {
+                ViewBag.Success = "Cập nhật địa chỉ nhận hàng thành công";
+            }
+            else
+            {
+                ViewBag.Error = "Thông tin chiến dịch không đúng";
+            }
 
+
+            return RedirectToAction("Details", new { id = r });
+        }
 
 
         #endregion

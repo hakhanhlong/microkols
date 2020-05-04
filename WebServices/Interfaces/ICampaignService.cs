@@ -10,6 +10,9 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+        Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id);
+        Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username);
+        Task<int> UpdateReviewAddress(int id, string addresss, string username);
         Task<int> GetAgencyChagreAmount(int campaignAccountId);
         Task<EditCampaignInfoViewModel> GetEditCampaignInfo(int agencyid, int id);
         Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username);
@@ -25,13 +28,13 @@ namespace WebServices.Interfaces
         Task<List<CampaignTypeChargeViewModel>> GetCampaignTypeCharges();
         Task<CreateCampaignInfoViewModel> GetCreateCampaign(int agencyid, CampaignType campaignType);
         Task<int> CreateCampaign(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, string username);
-        Task<int> CreateCampaign(int agencyid, CreateCampaignViewModel model, string username);
+    
         Task<CampaignDetailsViewModel> GetCampaignDetailsByAgency(int agencyid, int id);
         Task<ListCampaignViewModel> GetListCampaignByAgency(int agencyid, CampaignType? type, CampaignStatus? status, string keyword, int page, int pagesize);
         Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, CampaignType? type, string keyword, int page, int pagesize);
         Task<CampaignAccountByAccountViewModel> GetCampaignAccountByAccount(int accountid, int campaignid);
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, int accountid, string username);
-        Task<bool> FeedbackJoinCampaignByAccount(int accountid, int campaignid, string username, bool confirmed);
+        Task<bool> FeedbackJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username, bool confirmed);
 
         Task<bool> FeedbackJoinCampaignByAgency(int agencyid, int campaignid, int accountid, bool confirmed,  string username);
         Task<int> UpdateCampaignStatusByAgency(int agencyid, int campaignid, CampaignStatus status, string username);
@@ -39,8 +42,7 @@ namespace WebServices.Interfaces
         Task<CampaignPaymentModel> GetCampaignPaymentByAgency(int agencyid, int id);
 
         Task<ListCampaignWithAccountViewModel> GetListCampaignByAccount(int accountid,int type, string keyword, int page, int pagesize);
-        Task<CampaignDetailsViewModel> GetCampaignDetailsByAccount(int accountid, int id);
-
+       
         Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, string username);
 
         Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username);
@@ -51,6 +53,12 @@ namespace WebServices.Interfaces
         Task<int> FeedbackCampaignAccountRefContent(int agencyid, int campaignid, int accountid, string username, int type, string newrefContent);
 
         Task<List<int>> GetEndedCampaignIds();
+
+        //############# addition by longhk ########################
+        Task<List<int>> GetLockedCampaignIds();
+        Task RunCheckingLockedStatus(int campaignid);
+        //#########################################################
+
         Task<List<int>> GetFinishedAccountIdsByCampaignId(int campaignid);
 
         Task<bool> UpdateCampaignCompleted(int campaignid, string username);
@@ -66,10 +74,14 @@ namespace WebServices.Interfaces
         Task AutoUpdateStartedStatus(int campaignid);
         Task AutoUpdateEndedStatus(int campaignid);
 
+        
+
 
         Task<ListCampaignAccountViewModel> GetCampaignAccount(int campaignid, int page, int pagesize);
 
         Task UpdateCampaignServiceChargePercent(int ServiceChargePercent, int campaignid);
+
+        Task RemoveCampaignAccount(int campaignid);
 
     }
 }
