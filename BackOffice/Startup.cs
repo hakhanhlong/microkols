@@ -46,6 +46,7 @@ namespace BackOffice
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Database:MicroKOLsSecurity:ConnectionString"]));
 
+
             var connection = Configuration.GetConnectionString("AppContext");
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
