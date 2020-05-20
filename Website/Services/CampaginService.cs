@@ -110,7 +110,7 @@ namespace Website.Services
         public async Task<ListMarketPlaceViewModel> GetCampaignMarketPlaceByAccount(int accountid, string keyword, int page, int pagesize)
         {
 
-            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, keyword);
+            var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, null, keyword);
 
             var total = await query.CountAsync();
             var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);

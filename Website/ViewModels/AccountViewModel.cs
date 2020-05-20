@@ -289,7 +289,8 @@ namespace Website.ViewModels
         {
             Id = entity.Id;
             Type = entity.Type;
-            AccountChargeAmount = entity.AccountChargeAmount;
+            //AccountChargeAmount = entity.AccountChargeAmount;
+            AccountChargeAmount = 20000;
         }
 
         public static List<AccountCampaignChargeViewModel> GetList(IEnumerable<AccountCampaignCharge> entities)
@@ -309,7 +310,8 @@ namespace Website.ViewModels
                     result.Add(new AccountCampaignChargeViewModel()
                     {
                         Type = entity.Type,
-                        AccountChargeAmount = entity.AccountChargeAmount,
+                        //AccountChargeAmount = entity.AccountChargeAmount,
+                        AccountChargeAmount = 20000,//entity.AccountChargeAmount,
                         Id = entity.Id
                     });
                 }

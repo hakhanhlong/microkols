@@ -208,7 +208,8 @@ namespace WebServices.Services
                         CityId = null,
                         Deleted = false,
                         DistrictId = null,
-                        Type = AccountType.Regular
+                        Type = AccountType.Regular,
+                        Status = AccountStatus.SystemVerified //mặc định user là đã verified, để tạm thôi cho fb duyệt đã
                         
 
                     };

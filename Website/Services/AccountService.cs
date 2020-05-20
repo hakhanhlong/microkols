@@ -775,7 +775,8 @@ namespace Website.Services
 
                 var settings = await _settingRepository.GetSetting();
 
-                return settings.GetAccountChagreAmount(accountCharge.AccountChargeAmount); 
+                //return settings.GetAccountChagreAmount(accountCharge.AccountChargeAmount); 
+                return settings.GetAccountChagreAmount(20000);
             }
             
 
@@ -790,7 +791,9 @@ namespace Website.Services
                 {
                     AccountId = accountid,
                     Type = model.Type,
-                    AccountChargeAmount = model.AccountChargeAmount
+                    //AccountChargeAmount = 20000
+                    //AccountChargeAmount = model.AccountChargeAmount
+
                 };
                 await _accountCampaignChargeRepository.AddAsync(accountCharge);
             }
@@ -802,7 +805,8 @@ namespace Website.Services
                     return false;
                 }
 
-                accountCharge.AccountChargeAmount = model.AccountChargeAmount;
+                //accountCharge.AccountChargeAmount = model.AccountChargeAmount;
+                //accountCharge.AccountChargeAmount = 20000;
                 await _accountCampaignChargeRepository.UpdateAsync(accountCharge);
             }
 
