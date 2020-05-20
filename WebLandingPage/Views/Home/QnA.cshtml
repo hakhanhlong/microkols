@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "QnA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section id="qna-intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="wrap-headline pull-left">
+                    <h1 class="text-left">Hỏi &amp; Đáp</h1>
+                    <h6 class="text-left h2 txt-lineheight-2">Doanh nghiệp &amp; Influencer</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="content-page">
+    <div class="row">
+        <div class="col-md-10 left-column">
+            <!--row 1-->
+            @Html.Partial("_Partial/QnA.cshtml");
+
+            @Html.Partial("_Partial/Footer.cshtml")
+        </div>
+        <div class="col-md-2 right-column hidden-xs">
+            @Html.Partial("../Shared/_Partial/_FloatRight.cshtml")
+        </div>
+    </div>
+
+</section>
+

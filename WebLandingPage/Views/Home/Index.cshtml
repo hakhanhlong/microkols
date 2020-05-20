@@ -17,10 +17,10 @@
 
                     <ul class="list-inline list-unstyled text-left">
                         <li>
-                            <a class="btn btn-primary btn-bold-text btn-lg btn-lg-radius" href="#" role="button">Tôi là Doanh nghiệp</a>
+                            <a class="btn btn-primary btn-bold-text btn-lg btn-lg-radius" href="/agency.html" role="button">Tôi là Doanh nghiệp</a>
                         </li>
                         <li>
-                            <a class="btn btn-danger btn-bold-text btn-lg btn-lg-radius" href="#" role="button">Tôi là Influencer</a>
+                            <a class="btn btn-danger btn-bold-text btn-lg btn-lg-radius" href="/influencer.html" role="button">Tôi là Influencer</a>
                         </li>
                     </ul>
 
@@ -300,10 +300,10 @@
                         <div class="col-md-12">
                             <ul class="list-inline list-unstyled text-left">
                                 <li>
-                                    <a class="btn btn-primary btn-bold-text btn-lg btn-lg-radius" href="#" role="button">Tôi là Doanh nghiệp</a>
+                                    <a class="btn btn-primary btn-bold-text btn-lg btn-lg-radius" href="/agency.html" role="button">Tôi là Doanh nghiệp</a>
                                 </li>
                                 <li>
-                                    <a class="btn btn-danger btn-bold-text btn-lg btn-lg-radius" href="#" role="button">Tôi là Influencer</a>
+                                    <a class="btn btn-danger btn-bold-text btn-lg btn-lg-radius" href="/influencer.html" role="button">Tôi là Influencer</a>
                                 </li>
                             </ul>
                         </div>
@@ -311,66 +311,11 @@
                 </div>
             </div>
             <!--row 7-->
-            <footer>
-                <div class="row row-7 pl-70 pt-40 pb-50">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <img src="/img/logo_white.png">
-                            </div>
-                        </div>
-                        <div class="row pt-20">
-                            <div class="col-md-3">
-                                <h3 class="txt-bold txt-white h4">CONTACT</h3>
-                                <ul class="list-unstyled">
-                                    <li class="txt-white pb-10">+84 123456789</li>
-                                    <li class="txt-white pb-10">support@microkols.com</li>
-                                    <li class="txt-white pb-10">
-                                        3rd Floor, Intan Building, 97 Nguyen Van Troi st.,
-                                        Ward 12, District Phu Nhuan, HCMC
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <h3 class="txt-bold txt-white h4">SITEMAP</h3>
-                                <ul class="list-inline list-unstyled">
-                                    <li class="txt-white pb-10 w-45">Giới thiệu</li>
-                                    <li class="txt-white pb-10 w-45">Liên hệ</li>
-                                    <li class="txt-white pb-10 w-45">
-                                        Chính sách &amp; Quy định
-                                    </li>
-                                    <li class="txt-white pb-10 w-45">
-                                        Đăng ký
-                                    </li>
-                                    <li class="txt-white pb-10 w-45">
-                                        Hỏi &amp; Đáp
-                                    </li>
-                                    <li class="txt-white pb-10 w-45">
-                                        Đăng nhập
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-2">
-                                <h3 class="txt-bold txt-white h4">FOLLOW US</h3>
-                                <img src="/img/icon_social.png">
-                            </div>
-                            <div class="col-md-3">
-                                <h3 class="txt-bold txt-white h4">KẾT NỐI QUA FACEBOOK</h3>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <hr>
-                                <div class="txt-white text-left">© Microkols All rights reserved.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+            @Html.Partial("_Partial/Footer.cshtml")
 
         </div>
-        <div class="col-md-2 right-column full-height hidden-xs">
-
+        <div class="col-md-2 right-column hidden-xs">            
+            @Html.Partial("../Shared/_Partial/_FloatRight.cshtml")
         </div>
     </div>
 

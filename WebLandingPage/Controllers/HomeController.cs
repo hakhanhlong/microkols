@@ -20,10 +20,46 @@ namespace WebLandingPage.Controllers
             return View();
         }
 
+
+        [Route("agency.html")]
+        public IActionResult Agency()
+        {
+            return View();
+        }
+
+        [Route("influencer.html")]
+        public IActionResult Influencer()
+        {
+            return View();
+        }
+
+
+        [Route("introduce.html")]
+        public IActionResult Introduce()
+        {
+            return View();
+        }
+
+
+
+        [Route("policy.html")]
         public IActionResult Policy()
         {
             return View();
         }
+
+        [Route("contact.html")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        [Route("qna.html")]
+        public IActionResult QnA()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

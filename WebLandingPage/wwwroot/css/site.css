@@ -1,0 +1,33 @@
+﻿.icon-facebook-float img {
+    position: absolute;
+    top: -70px;
+    opacity: 1;
+    margin: 0 auto;
+    left: 20%;
+    z-index: 2;
+}
+
+.right-column-img-1 {
+    position: absolute;
+    top: -60px;
+    opacity: 1;
+    margin: 0 auto;
+    left: 26%;
+    z-index:1;    
+}
+
+.right-column-img-2 {
+    position: absolute;
+    top: 850px;
+    opacity: 1;
+    margin: 0 auto;    
+    left:-50px;
+    z-index: 1;
+}
+
+section#content-page .right-column {
+    
+    
+    background-repeat: repeat-y !important;
+    
+}
