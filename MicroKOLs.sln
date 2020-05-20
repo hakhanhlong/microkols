@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29609.76
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website", "Website\Website.csproj", "{EFF422FC-2DCB-4CC4-BD55-70323C917E12}"
 EndProject
@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServices", "WebServices\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebResources", "WebResources\WebResources.csproj", "{EF76B1CE-5D2F-4942-852C-9671AD37A368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebBgJob", "WebBgJob\WebBgJob.csproj", "{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebBgJob", "WebBgJob\WebBgJob.csproj", "{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLandingPage", "WebLandingPage\WebLandingPage.csproj", "{FDC20951-EF96-4AE7-AE8A-79AEA061C722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDC20951-EF96-4AE7-AE8A-79AEA061C722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDC20951-EF96-4AE7-AE8A-79AEA061C722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDC20951-EF96-4AE7-AE8A-79AEA061C722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDC20951-EF96-4AE7-AE8A-79AEA061C722}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{986061F6-7939-43C3-BA55-FCACEA734E50} = {D9765AE2-2493-4123-867E-A6A82E96185C}
 		{EF76B1CE-5D2F-4942-852C-9671AD37A368} = {D9765AE2-2493-4123-867E-A6A82E96185C}
 		{2DDC87FC-34F2-46A0-B8C8-E6F2271313A8} = {D9765AE2-2493-4123-867E-A6A82E96185C}
+		{FDC20951-EF96-4AE7-AE8A-79AEA061C722} = {D9765AE2-2493-4123-867E-A6A82E96185C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DE61D371-7FE4-4045-AC9F-AF7AD9CB8710}
