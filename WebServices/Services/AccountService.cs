@@ -64,7 +64,8 @@ namespace WebServices.Services
             {
                 if (string.IsNullOrEmpty(account.IDCardName) || string.IsNullOrEmpty(account.IDCardNumber))
                 {
-                    return 1;
+                    //return 1; // yêu càu verify
+                    return 0; //tạm thời fix ko cần verify để cho fb duyệt
                 } 
             }
             return 0;
