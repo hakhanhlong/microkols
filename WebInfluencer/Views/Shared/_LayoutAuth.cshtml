@@ -4,24 +4,44 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WebInfluencer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <partial name="_StylePartial" />
     <link href="~/css/signin.css" rel="stylesheet" />
     <link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <div class="form-signin">
-        <div class="card rounded-0 border-2 shadow">
-            <div class="card-body">
-                <h3 class="card-title">Microkols <small>Influencer</small></h3>
+    <div class="page-signin">
+        <div class="logo">
 
+            <img src="~/img/logo.png" />
+        </div>
+        <div class="main">
+         
+            <div class="container">
 
-                @RenderBody()
+             
+                        <div class="content">
+                            <nav class="nav nav-pills nav-content flex-column flex-sm-row">
+                                <a class="flex-sm-fill text-sm-center nav-link " href="#!">Doanh nghiệp</a>
+                                <a class="flex-sm-fill text-sm-center nav-link active" href="#!">Influencer</a>
+                            </nav>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active">
+                                    @RenderBody()
+
+                                </div>
+                            </div>
+
+                        </div>
+                    
             </div>
+             
+           
+          
         </div>
     </div>
     <partial name="_ScriptPartial" />
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

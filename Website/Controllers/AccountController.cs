@@ -101,6 +101,8 @@ namespace Website.Controllers
 
 
         }
+
+
         public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 20)
         {
             var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, type, page, pagesize);

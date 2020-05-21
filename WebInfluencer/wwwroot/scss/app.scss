@@ -24,3 +24,25 @@
 .form-daterangepicker{
     min-width:220px;
 }
+
+.card-fbpost {
+    .img {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        background: #eee;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .card-text {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

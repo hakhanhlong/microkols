@@ -10,3 +10,22 @@
     padding: .5rem 1.5rem; }
     .nav-notif .dropdown-menu .dropdown-item-text:hover {
       background: #eee; }
+
+.form-daterangepicker {
+  min-width: 220px; }
+
+.card-fbpost .img {
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #eee; }
+  .card-fbpost .img img {
+    width: 100%; }
+
+.card-fbpost .card-text {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden; }

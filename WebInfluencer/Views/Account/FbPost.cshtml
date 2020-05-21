@@ -1,0 +1,64 @@
+﻿@model ListAccountFbPostViewModel
+@{
+    ViewData["Title"] = "Facebook Feed của bạn";
+    var type = (int)ViewBag.Type;
+} 
+
+
+
+
+@section Top{
+
+    <nav class="shadow-sm">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item">
+                <a href="" class="breadcrumb-link">Tài khoản</a>
+            </li>
+
+            <li class="breadcrumb-item">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+}
+
+
+
+
+
+@*<div class="mt-2">
+        <form asp-action="UpdateFbPost" asp-controller="Account" method="post" id="frmUpdatefbpost">
+            <input type="button" value="Cập Nhật Từ Facebook" class="btn btn-success btn-updateFbPost" />
+            <span class="d-none">@CurrentUser.Id</span>
+            <input type="hidden" name="accessToken" id="frmUpdatefbpostToken" />
+        </form>
+    </div>*@
+
+
+
+
+
+<div class="container-fluid"> 
+
+        @if (Model.Posts.Count > 0)
+        {<div class="row">
+
+
+                @foreach (var item in Model.Posts)
+                {
+                    <div class="col-md-3">
+
+                        <partial name="_FbPostItemPartial" model="@item" />
+
+                    </div>
+                }
+
+            </div>
+
+
+            <pager pager="@Model.Pager" asp-action="Index"></pager>
+        }
+        else
+        {
+            <div class="alert alert-info">Bạn chưa có bài viết nào</div>
+        } 
+</div>

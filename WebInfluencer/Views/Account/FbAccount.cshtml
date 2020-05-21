@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Bạn bè";
+
+    var accounts = (List<AccountViewModel>)ViewBag.Accounts;
+}
+ 
+
+@section Top{
+
+    <nav class="shadow-sm">
+        <ol class="breadcrumb">
+
+            <li class="breadcrumb-item">
+                <a href="" class="breadcrumb-link">Tài khoản</a>
+            </li>
+
+            <li class="breadcrumb-item">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+}
+
+
+
+
+<section class="accountSection mt-3">
+    <h5> <i class="fal fa-user-friends"></i>  <span class="kolfriend-count"></span> Bạn trên MicroKols <span class="friends-count"></span></h5>
+    <div class="accountfriendSection row">
+        <div class="col-12">
+            <div class="alert alert-info">Bạn chưa có bạn trên Facebook</div>
+        </div>
+
+    </div>
+</section>
+
+<hr>
+<section class="accountSection">
+    <h5> <i class="fal fa-star"></i> Thành viên nổi bật</h5>
+    <div class="owl-carousel fbpost-carousel owl-theme">
+        @foreach (var account in accounts)
+        {
+            if (string.IsNullOrEmpty(account.AccountCounting.FacebookLink))
+            {
+                continue;
+            }
+
+            <div class="item" id="item@(account.AccountCounting.FacebookId)">
+
+                <div class="card mb-3 card-fbpost">
+                    <div class="img card-img-top" style="height:250px;">
+                        <img src="@account.Avatar" alt="">
+                    </div>
+
+                    <div class="card-body py-3">
+
+                        <h6 class="mt-0">
+                            <a href="@account.AccountCounting.FacebookLink" target="_blank" class="text-primary">
+
+                                <i class="fab fa-facebook"></i>
+                                @account.Name
+                            </a>
+
+                        </h6>
+                        <div class="row">
+                            <div class="col-6">
+                                <i class="fal fa-users"></i>
+                                <span class="text-info">
+                                    @account.AccountCounting.FriendsCount    bạn
+                                </span>
+
+                            </div>
+                            <div class="col-6">
+                                <i class="fal fa-wallet"></i>
+                                <span class="text-danger wallet-balance"> </span>
+                            </div>
+
+                        </div>
+                        <div class="row small mt-2">
+                            <div class="col-4">
+                                <span>
+                                    @account.AccountCounting.AvgLikeCount
+                                </span>
+                                <i class="fal fa-thumbs-up"></i>
+                            </div>
+                            <div class="col-4">
+                                <span>
+                                    @account.AccountCounting.AvgShareCount
+                                </span> <i class="fal fa-share"></i>
+                            </div>
+
+                            <div class="col-4">
+                                <span>
+
+                                    @account.AccountCounting.AvgCommentCount
+                                </span> <i class="fal fa-comment"></i>
+                            </div>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

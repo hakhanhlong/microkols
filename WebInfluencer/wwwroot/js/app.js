@@ -219,9 +219,7 @@
             min: $.validator.format("Hãy nhập từ {0} trở lên.")
         });
 
-
-        /*
-
+         
         $('.nav-fbfeed').click(function (e) {
             e.preventDefault();
 
@@ -256,8 +254,7 @@
 
             }, { scope: 'user_friends' });
 
-        });
-        */
+        }); 
     }
 
 

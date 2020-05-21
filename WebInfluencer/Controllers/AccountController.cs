@@ -116,13 +116,13 @@ namespace WebInfluencer.Controllers
 
 
         }
-        public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 20)
+        public async Task<IActionResult> FbPost(int type = 0, int page = 1, int pagesize = 100)
         {
             var model = await _accountService.GetAccountFbPosts(CurrentUser.Id, type, page, pagesize);
             ViewBag.Type = type;
             return View(model);
         }
-
+         
 
         #endregion
 

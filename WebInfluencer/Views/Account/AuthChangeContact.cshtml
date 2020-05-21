@@ -2,10 +2,8 @@
 @{
     ViewData["Title"] = "Thông tin liên lạc";
     Layout = "_LayoutAuth";
-}
+} 
 
-<div class="row">
-    <div class="col-md-7 mt-5">
         <h3>@ViewData["Title"]</h3>
         <form method="post">
             <div class="form-group">
@@ -34,7 +32,7 @@
                     @foreach (var c in citites)
                     {
                         <!option value="@c.Id" @(Model != null && c.Id == Model.CityId ? "selected=selected" : "")>
-                            @c.Name
+                        @c.Name
                         </!option>
                     }
                 </select>
@@ -45,20 +43,15 @@
                 <select name="DistrictId" id="DistrictId" class="form-control"></select>
 
             </div>
-            <p class="small text-danger">
-                * Bạn cẩn đảm bảo thông tin mình khai báo là chính xác. Hệ thống sẽ dựa vào thông tin bạn khai báo để gửi thông báo cũng như thanh toán cho các chiến dịch mà bạn thực hiện.
-                Nếu khai báo sai bạn có thể không nhận được thanh toán hoặc thông báo chiến dịch mới. Chúng tôi không chịu trách nhiệm nếu sự cố do bạn khai báo
+  
+
+            <p style="font-style:italic" class="small">
+                * Bạn cẩn đảm bảo thông tin mình khai báo là chính xác. Hệ thống sẽ dựa vào thông tin bạn khai báo để gửi thông báo cũng như thanh toán cho các chiến dịch mà bạn thực hiện. Nếu khai báo sai bạn có thể không nhận được thanh toán hoặc thông báo chiến dịch mới. Chúng tôi không chịu trách nhiệm nếu sự cố do bạn khai báo.
             </p>
-            <div class="text-right">
+            <div>
                 <input type="hidden" name="vtype" value="1" />
-                <button class="btn btn-primary" type="submit">Kết thúc</button>
+                <button class="btn btn-primary btn-lg" type="submit">Kết thúc</button>
             </div>
 
 
         </form>
-    </div>
-    <div class="col-md-5">
-        <img src="/img/signin-2-bg.jpg" class="mb-5 mt-3 img-thumbnail border-0">
-    </div>
-</div>
-

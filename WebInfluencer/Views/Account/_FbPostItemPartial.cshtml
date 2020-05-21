@@ -1,0 +1,53 @@
+﻿@model AccountFbPostViewModel
+
+@inject WebServices.Interfaces.ICampaignService CampaignService
+
+
+
+<div class="card mb-3 card-fbpost">
+    <div class="img card-img-top" style="height:">
+        <img src="@Model.Picture" alt="" class="img-fluid">
+    </div>
+
+    <div class="card-body">
+        <div class="d-flex align-Models-center">
+            <span class="pr-3 text-primary">
+                <i class="fab fa-facebook"  style="font-size:1.5em;"></i>
+            </span>
+            
+
+            <span>
+
+                @Model.LikeCount <i class="fal fa-thumbs-up"></i>
+            </span>
+
+
+            <span class="px-2">
+
+                @Model.ShareCount <i class="fal fa-share"></i>
+            </span>
+
+
+            <span>
+
+                @Model.CommentCount <i class="fal fa-comment"></i>
+            </span>
+        </div>
+        <div class="card-text small">
+            @Model.Message
+        </div>
+        <div class="small d-flex">
+
+            <a href="@Model.Permalink" target="_blank" class="text-primary"> Xem liên kết <i class="fal fa-external-link"></i></a>
+
+            @{
+                var campaign = await CampaignService.GetCampaignByRefId(Model.AccountId, Model.PostId);
+                if (campaign != null)
+                {
+                    <a href="@Url.Action("Details", "Campaign", new { id = campaign.Id})" class="btn btn-sm btn-success ml-auto" target="_blank"> Chiến dịch @campaign.Id</a>
+                }
+            }
+        </div>
+
+    </div>
+</div>

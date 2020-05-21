@@ -1,1 +1,100 @@
-.btn{border-radius:2px;-webkit-transition:background 0.1s linear;-webkit-transition:background background 0.1s linear;transition:background background 0.1s linear}html,body{height:100%}body{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-align:center;-webkit-box-align:center;align-items:center;padding-top:30px;padding-bottom:30px;background-color:#01579b;font-family:"Roboto",helvetica,arial,verdana,sans-serif;font-size:14px}.form-signin{width:100%;max-width:1024px;padding:15px;margin:auto}.form-label-group{position:relative;margin-bottom:1rem}.form-label-group > input,.form-label-group > label{height:3.125rem;padding:0.75rem}.form-label-group > label{position:absolute;top:0;left:0;display:block;width:100%;margin-bottom:0;line-height:1.5;color:#495057;pointer-events:none;cursor:text;border:1px solid transparent;border-radius:0.25rem;-webkit-transition:all 0.1s ease-in-out;transition:all 0.1s ease-in-out}.form-label-group input::-webkit-input-placeholder{color:transparent}.form-label-group input:-ms-input-placeholder{color:transparent}.form-label-group input::-ms-input-placeholder{color:transparent}.form-label-group input::-moz-placeholder{color:transparent}.form-label-group input::placeholder{color:transparent}.form-label-group input:not(:placeholder-shown){padding-top:1.25rem;padding-bottom:0.25rem}.form-label-group input:not(:placeholder-shown) ~ label{padding-top:0.25rem;padding-bottom:0.25rem;font-size:12px;color:#777}@supports (-ms-ime-align:auto){.form-label-group > label{display:none}.form-label-group input::-ms-input-placeholder{color:#777}}@media all and (-ms-high-contrast:none),(-ms-high-contrast:active){.form-label-group > label{display:none}.form-label-group input:-ms-input-placeholder{color:#777}}.signin-social ul > li > a{font-weight:900;font-size:2em}.signin-social ul > li > a.google{color:#e74c3c}
+body {
+    font-family: Montserrat;
+}
+
+.page-signin {
+}
+
+
+    .page-signin .logo {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .page-signin .logo img {
+        }
+
+
+
+    .page-signin .main {
+        padding-top: 150px;
+        padding-bottom: 150px;
+        min-height: 100vh;
+        background: url('../img/bg_auth.jpg') repeat-y top left #fdc854;
+        background-attachment: fixed;
+    }
+
+    .page-signin .tab {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    .page-signin .logo img {
+    }
+
+.form-control {
+    border-radius: 0;
+}
+
+.content {
+    background: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 600px;
+    margin: 0 auto;
+}
+
+    .content .tab-pane {
+        padding: 45px;
+    }
+
+.nav-pills .nav-link {
+    border-radius: 0;
+    font-weight: bold;
+    background: #E0E0E0;
+    font-size: 18px;
+    line-height: 50px;
+    letter-spacing: -0.015em;
+    /* Gray 2 */
+    color: #4F4F4F;
+}
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        background: #FFFFFF;
+        /* Blue 2 */
+        color: #2D9CDB;
+    }
+
+
+.btn-fb, .btn-fb:hover {
+    background: #2D3E6D;
+    border-radius: 67.5px;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+.btn-primary, .btn-primary:hover {
+    background: #18A0FB;
+    border-radius: 67.5px;
+    color: #fff;
+    font-weight: bold;
+    padding: .375rem 2rem;
+    border: none;
+}
+
+.page-title {
+    color: #2D9CDB;
+    font-size: 30px;
+    letter-spacing: -0.015em;
+    padding-bottom: 15px;
+    font-weight: bold;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    border: none;
+    border-radius: 10px;
+    padding: 0 10px;
+}
