@@ -1,12 +1,13 @@
 ﻿<!DOCTYPE html>
-<html>
+
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebMerchant</title>
+    <title>@ViewData["Title"] - Merchant</title>
     <partial name="_StylePartial" />
     <link href="~/css/theme.css" rel="stylesheet" asp-append-version="true" />
-    <link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />
+    @*<link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />*@
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -14,27 +15,22 @@
 
     @RenderSection("Top", required: false)
 
-    <div class="container-fluid page-container">
-        <div class="row">
-            <div class="col-lg-1 d-none d-md-block">
-                <partial name="_SidebarPartial" />
-            </div>
-            <div class="col-lg-11 mt-3 ml-n4">
+    <nav class="navbar sticky-top flex-md-nowrap p-0">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 py-4" href="/">
+            <img src="~/img//merchant_logo.png"/>
+        </a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
 
-                <alert></alert>
-                @RenderBody()
-            </div>
+    <div class="container-fluid">
+        <div class="row">
+            <partial name="_SidebarPartial" />
+            <alert></alert>
+            @RenderBody()
         </div>
     </div>
-
-
-    <partial name="_FooterPartial" />
-
-
-    @*<partial name="_CookieConsentPartial" />*@
-    <partial name="_ScriptPartial" />
-
-    @RenderSection("Scripts", required: false)
 
 
     <div class="modal fade " id="imagemodal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:99999999">
@@ -44,5 +40,13 @@
             </div>
         </div>
     </div>
+
+    <partial name="_FooterPartial" />
+    <partial name="_ScriptPartial" />
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
+
+
+
