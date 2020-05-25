@@ -5,40 +5,67 @@
                 <div class="nav-link btn-group">
                     <div class="dropdown-toggle" data-toggle="dropdown">
                         <img src="@AppOptions.CurrentValue.GetImageUrl(CurrentUser.Avatar)" width="32" height="32" class="rounded-circle" />
-                        <span class="text-blue500">@CurrentUser.Name</span>
+                        <span class="text-white">@CurrentUser.Name</span>
                     </div>
-                    <div class="dropdown-menu dropdown-menu-right mr-2">
+                    <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="@Url.Action("ChangePassword","Agency")"><i class="fas fa-key"></i> Thay đổi mật khẩu</a>
                         <a class="dropdown-item" href="@Url.Action("Logout","Auth")"><i class="fas fa-sign-out-alt"></i> Thoát</a>
                     </div>
                 </div>
             </li>
-            <li class="nav-item">
-                <a asp-controller="Campaign" asp-action="Index" class="nav-link">
+            <li class="nav-item active">
+                <a asp-controller="Campaign" asp-action="Index" class="nav-link text-white">
                     Danh sách chiến dịch
                 </a>
             </li>
-            <li class="nav-item">
-                <a asp-controller="Notification" asp-action="Index" class="nav-link">
-                    Thông báo
-                </a>
+            <li class="nav-item dropdown nav-notif">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <a asp-controller="Notification" asp-action="Index" class="nav-link text-white">Thông báo</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="nav-link" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
+                            <i class="fal fa-bell"></i>
+                            <span class="badge badge-danger" style="display:none">0</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right"></div>
+                    </li>
+                </ul>
+                
             </li>
             <li class="nav-item">
-                <a href="@Url.Action("Index","Agency")" class="nav-link">
+                <a href="@Url.Action("Index","Agency")" class="nav-link text-white">
                     Thông tin tài khoản
                 </a>
             </li>
             <li class="nav-item">
-                <a href="@Url.Action("Index","Wallet")" class="nav-link">
+                <a href="@Url.Action("Index","Wallet")" class="nav-link text-white">
                     Thông tin ví
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link text-white">
                     Thoát
                 </a>
             </li>
-        </ul>    
-        <hr />
+        </ul>
+        <hr class="hr-separate" />
+        <ul class="nav flex-column nav-navigator-two">                     
+            <li class="nav-item">
+                <a href="https://microkols.com/introduce.html" target="_blank" class="nav-link text-white">
+                    Giới thiệu
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://microkols.com/policy.html" target="_blank" class="nav-link text-white">
+                    Chính sách & Quy định
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="https://microkols.com/qna.html" target="_blank" class="nav-link text-white">
+                    Hỏi & Đáp
+                </a>
+            </li>
+        </ul>
     </div>    
 </nav>
