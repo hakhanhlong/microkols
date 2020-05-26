@@ -1,14 +1,11 @@
 html, body {
     font-family: "Montserrat", helvetica, arial, verdana, sans-serif;    
+    font-size:14px;
 }
 
 
 
-.feather {
-    width: 16px;
-    height: 16px;
-    vertical-align: text-bottom;
-}
+
 
 /*
  * Sidebar
@@ -22,7 +19,7 @@ html, body {
     z-index: 100; /* Behind the navbar */
     padding: 48px 0 0; /* Height of navbar */
     background-color: #56CCF2;
-    min-width:300px;
+    
 }
 
 @media (max-width: 767.98px) {
@@ -146,5 +143,87 @@ html, body {
 
 
 
+/*
+   button
+*/
+.btn-danger {
+    color: #ffffff !important;
+    border-radius: 20px;
+    background-color: #EB5757;
+    border-color: transparent;
+    font-weight:bold;
+    z-index:9999 !important;
+}
+
+.btn-primary {
+    color: #ffffff !important;
+    border-radius: 20px;
+    background-color: #56CCF2;
+    border-color: transparent;
+    font-weight: bold;
+    z-index: 9999 !important;
+}
+
+.btn-primary:hover {
+    background-color: #2D9CDB;
+    border-color: transparent;
+    font-weight: bold;
+    z-index: 9999 !important;
+}
+
+
+.btn-lg-radius {
+    border-radius: 25px;
+}
+
+/*
+    Typography
+*/
+
+.h1 {
+    color: #56CCF2;
+    font-weight: 900;
+}
+
+
+
+/*
+    nav-campaign
+*/
+.nav-campaign li {    
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.nav-campaign .nav-link {
+    color: #4F4F4F;
+    border-radius: 0px;
+}
+
+
+.nav-campaign .nav-link:hover {
+    background-color: #ffffff;
+    color: #2D9CDB;
+    border-bottom: #2D9CDB solid 3px;
+    border-radius: 0px;
+}
+
+
+.nav-campaign .nav-link.active {
+    background-color: #ffffff;
+    color: #2D9CDB;
+    border-bottom: #2D9CDB solid 3px;
+    border-radius: 0px;
+}
+
+/*
+    table-campaign
+*/
+
+.table-campaign
+{
+    font-size: 12px;
+
+}
 
 

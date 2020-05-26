@@ -11,144 +11,167 @@
     var status = (CampaignStatus?)ViewBag.Status;
 }
 
-<h2>@ViewData["Title"]</h2>
-<div class="card mb-3 mt-4 shadow card-search border-0">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <form method="get">
-                    <div class="form-group mb-2">
-                        <div class="form-row">
-                            <div class="col-md-3">
 
-                                <select class="custom-select custom-select-lg" name="type">
-                                    <option value="">Tất cả loại</option>
-                                    @foreach (var campaignType in campaignTypes)
+<div class="d-flex">
+    <div class="p-2 flex-grow-1"><h1 class="h1">@ViewData["Title"]</h1></div>
+    <div class="p-2">
+        <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <form method="get">
+            <div class="d-flex">
+                <div class="p-2">
+                    <select class="custom-select custom-select-lg rounded-0" name="type">
+                        <option value="">Tất cả loại</option>
+                        @foreach (var campaignType in campaignTypes)
+                        {
+                            <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                        }
+                    </select>
+                </div>
+                <div class="p-2">
+                    <input type="text" name="kw" value="@kw" class="form-control form-control-lg rounded-0" 
+                           placeholder="Tìm kiếm chiến dịch" style="width:550px;">
+                </div>
+                <div class="p-2">
+                    <button type="submit" class="btn btn-primary btn-lg-radius" style="width:130px;">Tìm kiếm</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+</div>
+<hr />
+<div class="row mb-3">
+    <div class="col-lg-12 col-ms-12">
+        @{ var countall = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, null, kw); }
+
+        <ul class="nav nav-tabs mb-3 nav-campaign">
+            <li class="nav-item">
+                <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">
+                    Tất cả
+                    @if (countall > 0)
+                    {
+                        <span class="badge badge-pill badge-danger">@countall</span>
+                    }
+
+                </a>
+            </li>
+            @foreach (var statusItem in stautusArr)
+            {
+                var isactived = statusItem == status;
+                var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
+                <li class="nav-item">
+                    <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">
+                        @statusItem.ToDisplayName()
+                        @if (count > 0)
+                        {
+                            <span class="badge badge-pill badge-danger">@count</span>
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-ms-12">
+        <div class="mb-5 bg-white rounded">
+            <div class="table-responsive">
+                <table class="table table-bordered table-campaign">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Mã chiến dịch</th>
+                            <th scope="col">Tên chiến dịch</th>
+                            <th scope="col">Loại chiến dịch</th>
+                            <th scope="col">Thời gian thực hiện</th>
+                            <th scope="col">Trạng thái</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var stt = 0;
+                        }
+
+                        @foreach (var item in Model.Campaigns)
+                        {
+                            stt++;
+                            var url = Url.Action("Details", new { id = item.Id });
+                            <tr>
+                                <td>@stt</td>
+                                <td>
+                                    <a href="@url">
+                                        @item.Code
+                                    </a>
+                                </td>
+
+                                <td>@item.Title</td>
+                                <td>@item.Type.ToDisplayName()</td>
+                                <td>
+                                    @if (item.ExecutionStart.HasValue)
                                     {
-                                        <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                                        <span>@item.ExecutionStart.Value.ToViDate()</span>
                                     }
-                                </select>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" name="kw" value="@kw" class="form-control form-control-lg" placeholder="Tìm kiếm chiến dịch">
+                                </td>
+                                <td>@item.Status.ToBadge()</td>
+                                <td>
+                                    <ul class="list-inline campaign-row-item">
 
-                            </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="btn btn-primary btn-lg">Tìm kiếm</button>
-                            </div>
-                        </div>
 
-                    </div>
-                </form>
+                                        @if (item.Status == CampaignStatus.Locked)
+                                        {
+
+
+                                            <li class="list-inline-item"><a href="javascript:;" class="campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
+                                            <li class="list-inline-item">
+                                                <a href="javascript:;" class="btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
+                                                    <i class="fa fa-history"></i>
+                                                </a>
+                                            </li>
+
+                                        }
+                                        @if (item.Status != CampaignStatus.Canceled && item.Status != CampaignStatus.Created && item.Status != CampaignStatus.Started)
+                                        {
+                                            var payment = await CampaignService.GetCampaignPaymentByAgency(CurrentUser.Id, item.Id);
+                                            if (payment.IsValid)
+                                            {
+
+                                                <li class="list-inline-item">
+                                                    <a href="javascript:;" class="campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
+                                                </li>
+
+                                            }
+                                        }
+                                    </ul>
+
+                                </td>
+                            </tr>
+                            @*<tr>
+                                <td colspan="7">
+
+                                    <partial name="_CampaignItemCountingPartial" model="@item" />
+
+
+                                </td>
+
+                            </tr>*@
+                        }
+                    </tbody>
+                </table>
+                <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
             </div>
         </div>
-    </div>
-</div>
-
-
-@{ var countall = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, null, kw); }
-
-<ul class="nav nav-pills mb-3 nav-campaign">
-    <li class="nav-item">
-        <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">Tất cả <span>(@countall)</span></a>
-    </li>
-    @foreach (var statusItem in stautusArr)
-    {
-        var isactived = statusItem == status;
-        var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
-        <li class="nav-item">
-            <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">@statusItem.ToDisplayName() <span>(@count)</span></a>
-        </li>
-    }
-</ul>
-
-<div class="mb-5 bg-white rounded">
-    <div class="table-responsive">
-        <table class="table table-bordered shadow">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Mã chiến dịch</th>
-                    <th scope="col">Tên chiến dịch</th>
-                    <th scope="col">Loại chiến dịch</th>
-                    <th scope="col">Thời gian thực hiện</th>
-                    <th scope="col">Trạng thái</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var stt = 0;
-                }
-
-                @foreach (var item in Model.Campaigns)
-                {
-                    stt++;
-                    var url = Url.Action("Details", new { id = item.Id });
-                    <tr>
-                        <td>@stt</td>
-                        <td>
-                            <a href="@url">
-                                @item.Code
-                            </a>
-                        </td>
-
-                        <td>@item.Title</td>
-                        <td>@item.Type.ToDisplayName()</td>
-                        <td>
-                            @if (item.ExecutionStart.HasValue)
-                            {
-                                <span>@item.ExecutionStart.Value.ToViDate()</span>
-                            }
-                        </td>
-                        <td>@item.Status.ToBadge()</td>
-                        <td>
-                            <ul class="list-inline campaign-row-item">
-
-
-                                @if (item.Status == CampaignStatus.Locked)
-                                {
-
-
-                                    <li class="list-inline-item"><a href="javascript:;" class="campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:;" class="btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch" >
-                                            <i class="fa fa-history"></i>
-                                        </a>
-                                    </li>
-
-                                }
-                                @if (item.Status != CampaignStatus.Canceled && item.Status != CampaignStatus.Created && item.Status!= CampaignStatus.Started)
-                                {
-                                    var payment = await CampaignService.GetCampaignPaymentByAgency(CurrentUser.Id, item.Id);
-                                    if (payment.IsValid)
-                                    {
-
-                                        <li class="list-inline-item">
-                                            <a href="javascript:;" class="campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
-                                        </li>
-
-                                    }
-                                }
-                            </ul>
-
-                        </td>
-                    </tr>
-                    @*<tr>
-                        <td colspan="7">
-
-                            <partial name="_CampaignItemCountingPartial" model="@item" />
-
-
-                        </td>
-
-                    </tr>*@
-                }
-            </tbody>
-        </table>
-        <pager pager="@Model.Pager" asp-action="Index" asp-route-kw="@kw" asp-route-type="@type"></pager>
-
-
 
     </div>
 </div>
+
+
+
+     
