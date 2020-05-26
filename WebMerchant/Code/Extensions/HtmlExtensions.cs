@@ -85,25 +85,36 @@ namespace WebMerchant.Code.Extensions
             if (status == CampaignStatus.Canceled)
             {
                 type = "dark";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_chiendichbihuy.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
             }
             else if (status == CampaignStatus.Error || status == CampaignStatus.Locked)
             {
                 type = "danger";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_tamkhoa.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
             }
             else if (status == CampaignStatus.Started)
             {
                 type = "warning";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_chopheduyet.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
             }
 
             else if (status == CampaignStatus.Ended)
             {
                 type = "info";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_tamkhoa.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
             }
             else if (status == CampaignStatus.Completed)
             {
                 type = "success";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_hoanthanh.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
             }
-            return new HtmlString($"<span class='badge badge-{type}'>{status.ToDisplayName()}</span>");
+            else if (status == CampaignStatus.Confirmed)
+            {
+                type = "success";
+                return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_dapheduyet.png\" width=\"16px\" height=\"16px\" />&nbsp;{status.ToDisplayName()}</div>");
+            }
+            
+            return new HtmlString($"<div class=\"d-inline-flex p-2\"><img src=\"/img/icon_dot_dapheduyet.png\" width=\"16px\" height=\"16px\"/>&nbsp;{status.ToDisplayName()}</div>");
         }
 
         public static HtmlString ToBadge(this Core.Entities.AccountType accountType)
