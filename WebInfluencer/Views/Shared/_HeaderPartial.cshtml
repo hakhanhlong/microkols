@@ -1,53 +1,141 @@
-﻿<header class="shadow-sm">
-    <nav class="navbar navbar-expand-lg">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMenu" aria-controls="navMenu" aria-expanded="fase" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿
+<a class="logo">
+    <img src="~/img/logo_influencer.png" />
+</a>
 
-        <a class="navbar-brand pt-2" href="/"><h4>MicroKols <small>Influencer</small></h4></a>
 
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link menu-link" href="https://microkols.com/policy.html" target="_blank">Giới thiệu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="https://microkols.com/privacy.html">Chính sách & Quy định</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="/">Hỏi & Đáp</a>
-                </li>
-            </ul>
-            <ul class="list-inline my-2 my-md-0 mr-md-3">
-                <li class="list-inline-item">
-                    <a class="nav-link menu-link" href="@Url.Action("Index","Wallet")"><i class="fa fa-credit-card"></i> <span class="wallet-balance text-danger ml-2">0</span></a>
-                </li>
-                <li class="list-inline-item dropdown nav-notif">
-                    <a class="nav-link menu-link notification" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
-                        <i class="fas fa-bell mr-1"></i>
-                        <span class="badge badge-danger" style="display:none">0</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
+<div class="sidebar-sticky">
+    <ul class="nav flex-column">
+        <li class="nav-item nav-user">
+            <a class="nav-link active" asp-action="ChangeContact" asp-controller="Account">
+                <img src="@AppOptions.CurrentValue.GetImageUrl(CurrentUser.Avatar)" width="32" height="32" class="rounded-circle" />
+                <span>@CurrentUser.Name</span>
 
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-controller="Campaign" asp-action="MarketPlace">
+                <i class="fal fa-star"></i>  MarketPlace
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Notification">
+                <i class="fal fa-bell"></i>  Thông báo
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" asp-action="Index" asp-controller="Account">
+                <i class="fal fa-user"></i>  Tài khoản
+            </a>
+        </li>
+        <li class="nav-item ">
+
+
+            <a class="nav-link nav-fbfeed" href="javascript:;">
+                <i class="fab fa-facebook"></i>
+                Facebook Feed
+            </a>
+
+            <form asp-action="UpdateFbPost" asp-controller="Account" method="post" id="frmUpdatefbpost">
+                <span class="d-none">@CurrentUser.Id</span>
+                <input type="hidden" name="accessToken" id="frmUpdatefbpostToken" />
+            </form>
+        </li>
+
+        <li class="nav-item ">
+
+            <a class="nav-link nav-friends" href="javascript:;">
+                <i class="fal fa-user-friends"></i> Bạn bè trên Facebook
+            </a>
+
+            <form asp-action="UpdateFbFriends" asp-controller="Account" method="post" id="frmUpdatefbfriends">
+                <span class="d-none">@CurrentUser.Id</span>
+                <input type="hidden" name="accessToken" id="frmUpdatefbfriendsToken" />
+            </form>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-controller="Wallet" asp-action="Index">
+                <i class="fal fa-wallet"></i>   Thông tin ví
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-controller="Account" asp-action="ChangePassword">
+                <i class="fal fa-cogs"></i>   Cấu hình
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-action="Logout" asp-controller="Auth"><i class="fas fa-sign-out-alt"></i>  Thoát</a>
+        </li>
+
+        <li class="nav-item nav-sep">
+            <hr />
+        </li>
+
+        <li class="nav-item ">
+            <a class="nav-link" href="https://microkols.com/policy.html" target="_blank">Giới thiệu</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://microkols.com/privacy.html">Chính sách & Quy định</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/">Hỏi & Đáp</a>
+        </li>
+    </ul>
+</div>
+
+
+
+
+@*<nav class="navbar navbar-expand-lg">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navMenu" aria-controls="navMenu" aria-expanded="fase" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand pt-2" href="/"><h4>MicroKols <small>Influencer</small></h4></a>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link menu-link" href="https://microkols.com/policy.html" target="_blank">Giới thiệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="https://microkols.com/privacy.html">Chính sách & Quy định</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="/">Hỏi & Đáp</a>
+            </li>
+        </ul>
+        <ul class="list-inline my-2 my-md-0 mr-md-3">
+            <li class="list-inline-item">
+                <a class="nav-link menu-link" href="@Url.Action("Index","Wallet")"><i class="fa fa-credit-card"></i> <span class="wallet-balance text-danger ml-2">0</span></a>
+            </li>
+            <li class="list-inline-item dropdown nav-notif">
+                <a class="nav-link menu-link notification" asp-action="Index" asp-controller="Notification" data-toggle="dropdown">
+                    <i class="fas fa-bell mr-1"></i>
+                    <span class="badge badge-danger" style="display:none">0</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+
+                </div>
+            </li>
+            <li class="list-inline-item">
+                <div class="nav-link btn-group">
+                    <div class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(CurrentUser.Avatar)" width="32" height="32" class="rounded-circle" />
+                        <span class="text-blue500">@CurrentUser.Name</span>
                     </div>
-                </li>
-                <li class="list-inline-item">
-                    <div class="nav-link btn-group">
-                        <div class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="@AppOptions.CurrentValue.GetImageUrl(CurrentUser.Avatar)" width="32" height="32" class="rounded-circle" />
-                            <span class="text-blue500">@CurrentUser.Name</span>
-                        </div>
-                        <div class="dropdown-menu dropdown-menu-right mr-2">
-                            <a class="dropdown-item mt-2" asp-action="ChangeContact" asp-controller="Account"><i class="fas fa-cog"></i>  Cấu hình</a>
-                            <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account"><i class="fas fa-key"></i>  Thay đổi mật khẩu</a>
-                            <a class="dropdown-item" asp-action="Logout" asp-controller="Auth"><i class="fas fa-sign-out-alt"></i>  Thoát</a>
-                        </div>
+                    <div class="dropdown-menu dropdown-menu-right mr-2">
+                        <a class="dropdown-item mt-2" asp-action="ChangeContact" asp-controller="Account"><i class="fas fa-cog"></i>  Cấu hình</a>
+                        <a class="dropdown-item" asp-action="ChangePassword" asp-controller="Account"><i class="fas fa-key"></i>  Thay đổi mật khẩu</a>
+                        <a class="dropdown-item" asp-action="Logout" asp-controller="Auth"><i class="fas fa-sign-out-alt"></i>  Thoát</a>
                     </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
 
 <div class="nav-scroller bg-white shadow-sm header-menu-container">
     <div class="container-fluid">
@@ -106,5 +194,5 @@
         </ul>
     </div>
 
-</div>
+</div>*@
 

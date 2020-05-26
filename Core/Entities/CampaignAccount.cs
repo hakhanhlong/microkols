@@ -152,6 +152,33 @@ namespace Core.Entities
 
             return "";
         }
+        public static string ToColorClass(this CampaignStatus status)
+        {
+            if (status == CampaignStatus.Started) return "warning";
+            if (status == CampaignStatus.Ended || 
+                 status == CampaignStatus.Locked) return "danger";
+            if (status == CampaignStatus.Created || status== CampaignStatus.Confirmed) return "primary";
+
+            return "success";
+        }
+        public static string ToColorClass(this CampaignAccountStatus status)
+        {
+
+             if (status == CampaignAccountStatus.Canceled)
+            {
+                return "danger";
+            }
+            else if (2 <= (int)status && 6 > (int)status)
+            {
+                return "success";
+            }
+            else if (status == CampaignAccountStatus.Unfinished)
+            {
+                return "secondary";
+            }
+
+            return "primary";
+        }
 
         public static int GetCountApplied(this IEnumerable<CampaignAccount> campaignAccounts)
         {

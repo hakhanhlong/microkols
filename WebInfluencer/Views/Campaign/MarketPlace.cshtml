@@ -9,63 +9,45 @@
     var type = (CampaignType?)ViewBag.type;
 }
 
-@section Top{
-
-    <nav class="shadow-sm">
-        <ol class="breadcrumb">
-
-            <li class="breadcrumb-item">
-                @ViewData["Title"]
-            </li>
-        </ol>
-    </nav>
-
-}
-
-<div class="card mb-3 shadow border-0">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-lg-12 col-sm-12">
-                <form method="get">
-                    <div class="form-group mb-2">
-                        <div class="form-row">
-                            <div class="col-md-3">
-                                <select class="custom-select custom-select-lg" name="type">
-                                    <option value="">Tất cả loại</option>
-                                    @foreach (var campaignType in campaignTypes)
-                                    {
-                                        <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" name="kw" value="@kw" class="form-control form-control-lg" placeholder="Tìm kiếm chiến dịch">
 
 
-                            </div>
-                            <div class="col-md-1">
-                                <button type="submit" class="shadow btn btn-warning btn-lg">Tìm kiếm</button>
-                            </div>
-                        </div>
+<form method="get">
+    <div class="form-group mb-4">
+        <div class="form-row">
+            <div class="col-md-4">
+                <select class="custom-select custom-select-lg" name="type">
+                    <option value="">Tất cả loại</option>
+                    @foreach (var campaignType in campaignTypes)
+                    {
+                        <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-5">
+                <input type="text" name="kw" value="@kw" class="form-control form-control-lg" placeholder="Tìm kiếm chiến dịch">
 
-                    </div>
-                </form>
+
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-rounded btn-lg">Tìm kiếm</button>
             </div>
         </div>
-    </div>
-</div>
 
-<div class="row row-cols-1 row-cols-md-4">
+    </div>
+</form>
+
+<div class="row row-cols-1 row-cols-md-3">
     @foreach (var item in Model.MarketPlaces)
     {
         <div class="col mb-4">
-            <div class="card shadow bg-white rounded">
-                <img src="@item.Campaign.Type.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
+            <div class="card campaign">
+                <img src="@item.Campaign.Type.ToShortName()" height="220" class="card-img-top" alt="">
                 <div class="card-body">
+
+                    <div class="h4 font-weight-bold">@item.Campaign.Type.ToText()</div>
                     <a asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id" class="campaign-link">
-                        <h5 class="card-title">@item.Campaign.Title</h5>
+                        <h2 class="card-title">@item.Campaign.Title</h2>
                     </a>
-                    <p>@item.Campaign.Type.ToText()</p>
                     <div class="d-flex">
                         <div>
                             <small> bởi </small>
@@ -73,18 +55,21 @@
                         </div>
                         @if (item.Campaign.DateEnd.HasValue)
                         {
-                            <div class="ml-auto text-right"><small class="ml-5">@item.Campaign.Status.ToDisplayName()</small></div>
+                            var classbtn = item.Campaign.Status.ToColorClass();
+
+                            <div class="ml-auto text-right">
+                               
+                                <small class="ml-5">  <i class="fas fa-circle text-@classbtn"></i> @item.Campaign.Status.ToDisplayName()</small></div>
                         }
 
                     </div>
                     <hr>
                     <div class="d-flex">
-                        <div class="campaign-facebook"><h1><i class="fab fa-facebook"></i></h1></div>
-                        <div>
-                            <ul class="list-unstyled">
-                                <li class="ml-2">@item.Campaign.Status.ToDisplayName()</li>
-                                <li class="ml-2"><small>@item.CountApplied/@item.Campaign.Quantity tham gia</small></li>
-                            </ul>
+                        <div class="icon"><i class="fab fa-facebook"></i></div>
+                        <div class="ml-2 small">
+                            @item.Campaign.Status.ToDisplayName()
+                            <br />
+                            @item.CountApplied/@item.Campaign.Quantity tham gia
                         </div>
                         <div class="ml-auto text-right">
 
@@ -95,7 +80,8 @@
                                     var text = campaignAccount.Status.ToAccountText();
                                     if (!string.IsNullOrEmpty(text))
                                     {
-                                        <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@text</a>
+                                        var classbtn = campaignAccount.Status.ToColorClass();
+                                        <a class="btn btn-@classbtn btn-rounded" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@text</a>
                                     }
 
 
@@ -103,7 +89,7 @@
                                 }
                                 else if (item.Campaign.Status == CampaignStatus.Confirmed)
                                 {
-                                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
+                                    <a class="btn btn-primary btn-rounded" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
                                 }
                             }
 

@@ -49,12 +49,9 @@
         <select name="DistrictId" id="DistrictId" class="form-control"></select>
 
     </div>
-    <p class="small text-danger">
-        * Bạn cẩn đảm bảo thông tin mình khai báo là chính xác. Hệ thống sẽ dựa vào thông tin bạn khai báo để gửi thông báo cũng như thanh toán cho các chiến dịch mà bạn thực hiện.
-        Nếu khai báo sai bạn có thể không nhận được thanh toán hoặc thông báo chiến dịch mới. Chúng tôi không chịu trách nhiệm nếu sự cố do bạn khai báo
-    </p>
-    <div class="text-right">
-        <button class="btn btn btn-outline-primary" type="submit">Cập nhật</button>
+    <partial name="_WarningTextPartial" />
+    <div class="form-group">
+        <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>
     </div>
 
 

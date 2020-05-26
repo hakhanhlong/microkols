@@ -33,10 +33,9 @@
         <input type="text" class="form-control" asp-for="Branch" />
         <span asp-validation-for="Branch"></span>
     </div>
-    <div class="form-group">
-        <div class="text-right">
-            <button class="btn btn btn-outline-primary" type="submit">Cập nhật</button>
-        </div>
-        
+    <partial name="_WarningTextPartial" />
+    <div class="form-group"> 
+            <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>
+   
     </div>
 </form>

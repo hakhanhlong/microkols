@@ -5,20 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Influencer</title>
     <partial name="_StylePartial" />
-    <link href="~/css/theme.css" rel="stylesheet" />
-    <link href="~/build/css/app.css" rel="stylesheet" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    <partial name="_HeaderPartial" />
-
-    @RenderSection("Top", required: false)
 
     <div class="container-fluid">
-        <alert></alert>
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+
+
+        <div class="row">
+            <div class="col-md-2 d-none d-md-block sidebar">
+
+                <partial name="_HeaderPartial" />
+
+            </div> 
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+                <div class="main">
+                    <h1 class="page-title">@ViewData["Title"]</h1>
+
+                    @RenderSection("Top", required: false)
+                    <alert></alert>
+
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+
     </div>
 
     

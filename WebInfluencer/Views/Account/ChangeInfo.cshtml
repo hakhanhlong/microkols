@@ -63,7 +63,9 @@
             @foreach (var category in categories)
             {
                 var isselected = Model.CategoryId != null && Model.CategoryId.Contains(category.Id);
-                <!option value="@category.Id" @(isselected ? "selected" : "")>@category.Name</!option>
+                <!option value="@category.Id" @(isselected ? "selected" : "")>
+                    @category.Name
+                </!option>
             }
         </select>
         <span asp-validation-for="CategoryId"></span>
@@ -92,11 +94,11 @@
 
 
         </ul>
+    </div> 
+    <partial name="_WarningTextPartial" />
+    <div class="form-group">
+        <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>
     </div>
-    <div class="text-right">
-        <button class="btn btn btn-outline-primary" type="submit">Cập nhật</button>
-    </div>
-
 
 </form>
 

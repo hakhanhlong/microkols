@@ -185,13 +185,13 @@
                         <label>Tối đa</label>
                         <input type="number" max="@int.MaxValue" min="0" name="Max" value="@accountCampaignCharge.Max" class="form-control" />
 
-                    </div> 
-                    
+                    </div>
+
                     <div class="col-md-3">
                         @if (ishideKpi)
                         {
 
-                            <input type="hidden"   name="Kpi" value="@accountCampaignCharge.Kpi" />
+                            <input type="hidden" name="Kpi" value="@accountCampaignCharge.Kpi" />
                         }
                         else
                         {
@@ -222,14 +222,9 @@
                 </div>
             }
 
-            <div class="row mt-4">
 
-                <div class="col-md-12">
-
-                    <div class="text-right form-group">
-                        <input type="submit" value="Cập nhật" class="btn btn-outline-primary" />
-                    </div>
-                </div>
+            <div class="form-group mt-4">
+                <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>
             </div>
         </div>
     </form>
