@@ -77,14 +77,14 @@ namespace WebInfluencer.Code.Extensions
             var type = "danger";
             if (accountType == CampaignAccountContentStatus.ChoDuyet)
             {
-                type = "warning";
+                type = "primary";
             }
             else if (accountType == CampaignAccountContentStatus.DaDuyet)
             {
                 type = "success";
             }
 
-            return new HtmlString($"<span class='badge badge-{type}'>{accountType.ToDisplayName()}</span>");
+            return new HtmlString($"<i class='fas fa-circle text-{type}'></i> <span>{accountType.ToDisplayName()}</span>");
         }
         
         public static HtmlString ToBadge(this Core.Entities.CampaignAccountCaptionStatus accountType)

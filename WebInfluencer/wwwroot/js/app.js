@@ -72,6 +72,8 @@
         });
 
 
+      
+
         //$('.btn-facebook').click(function () {
         //    var $frm = $($(this).data('target'));
         //    FB.login(function (response) {

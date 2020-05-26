@@ -24,10 +24,16 @@
 .page-title {
     color: $primary;
     letter-spacing: -0.015em;
-    font-weight: $font-weight-bold;
-    margin-bottom:2.5rem;
+    font-weight: $font-weight-bold !important;
+    margin-bottom: 2.5rem;
+    align-items: center;
+    display:flex;
+    
 }
 
+.btn{
+    @extend .btn-rounded;
+}
 .main {
     padding: 2rem;
     min-height: 100vh;
@@ -64,6 +70,12 @@
 
 
     &:hover {
+        color: $primary;
+    }
+}
+.modal-dialog {
+   
+    .modal-title {
         color: $primary;
     }
 }

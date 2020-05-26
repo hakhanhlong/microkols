@@ -23,9 +23,17 @@
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
                 <div class="main">
-                    <h1 class="page-title">@ViewData["Title"]</h1>
 
-                    @RenderSection("Top", required: false)
+                    @if (IsSectionDefined("Top"))
+                    {
+                        @RenderSection("Top", required: false)
+                    }
+                    else
+                    {
+
+                        <h1 class="page-title">@ViewData["Title"]</h1>
+                    }
+
                     <alert></alert>
 
                     @RenderBody()

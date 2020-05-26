@@ -15,7 +15,7 @@ else
 {
     if (campaignAccount != null)
     {
-        <div class="card shadow sticky-top">
+        <div class="card ">
             <div class="card-body">
 
 
@@ -174,7 +174,7 @@ else
                             <div>
                                 @if (Model.Campaign.Type.IsShareCampaign())
                                 {
-                                    <button class="btn btn-primary  btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+                                    <button class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
 
                                         <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
                                     </button>
@@ -182,7 +182,7 @@ else
                                     <hr>
                                 }
 
-                                <button class="btn btn-warning btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
                                     Cập nhật thông tin công việc
                                 </button>
 

@@ -44,63 +44,63 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-8">
 
 
-            <partial name="_DetailsNavPartial" model="Model" />
-            <div class="tab-content" id="myTabContent">
+    <partial name="_DetailsNavPartial" model="Model" />
+    <div class="tab-content" id="myTabContent">
 
-                <div class="tab-pane fade active show">
-                    <div class="card mb-3 shadow border-0 card-body">
+        <div class="tab-pane fade active show">
+            <div class="card border-0 card-body">
+                <div class="h4">@Model.Campaign.Type.ToText()</div>
+                <div class="font-weight-bold text-primary">@Model.Campaign.Title</div>
 
-                        <h5 class=" my-3">@Model.Campaign.Title</h5>
-                        <p>
-                            <i class="fab fa-facebook"></i> @Model.Campaign.Type.ToDisplayName()
-                        </p>
+                <hr />
 
-                        @if (campaignAccount != null)
+                @if (campaignAccount != null)
+                {
+                    var statistics = (List<CampaignAccountStatisticViewModel>)ViewBag.Statistics;
+
+                    var total = statistics.Sum(m => m.CountLike) + statistics.Sum(m => m.CountComment) + statistics.Sum(m => m.CountShare);
+
+
+                    <div class="h4">Tổng tương tác:</div>
+                    <p> <strong>@(total)</strong></p>
+
+                    if (total > 0)
+                    { 
+                        <div class="h4">Thống kê:</div>
+                        var chartData = new List<object>();
+                        chartData.Add(new object[] { "Ngày", "Thích", "Share", "Comment" });
+                        foreach (var item in statistics)
                         {
-                            var statistics = (List<CampaignAccountStatisticViewModel>)ViewBag.Statistics;
-
-                            var total = statistics.Sum(m => m.CountLike) + statistics.Sum(m => m.CountComment) + statistics.Sum(m => m.CountShare);
-
-
-
-                            <p>Tổng tương tác: <strong>@(total)</strong></p>
-
-                            if (total > 0)
-                            {
-                                var chartData = new List<object>();
-                                chartData.Add(new object[] { "Ngày", "Thích", "Share", "Comment" });
-                                foreach (var item in statistics)
-                                {
-                                    chartData.Add(new object[] { item.Date, item.CountLike, item.CountShare, item.CountComment });
-                                }
-
-                                <script type="text/template" id="chartModel">
-                                    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chartData))
-                                </script>
-                                <div id="chartStatistic" style="width: 100%; height: 500px"></div>
-                            }
-
-
-
+                            chartData.Add(new object[] { item.Date, item.CountLike, item.CountShare, item.CountComment });
                         }
 
-                    </div>
+                        <script type="text/template" id="chartModel">
+                            @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chartData))
+                        </script>
+                        <div id="chartStatistic" style="width: 100%; height: 500px"></div>
+                    }
 
-                </div>
+
+
+                }
+
             </div>
-
-
-
-        </div>
-        <div class="col-md-4">
-
-            <partial name="_DetailSidebarPartial" model="Model" />
-
 
         </div>
     </div>
+
+    @*<div class="row">
+            <div class="col-md-8">
+
+
+            </div>
+            <div class="col-md-4">
+
+                <partial name="_DetailSidebarPartial" model="Model" />
+
+
+            </div>
+        </div>*@
 </div>

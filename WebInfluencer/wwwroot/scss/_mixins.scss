@@ -8,7 +8,8 @@
         z-index: 99999;
 
         a {
-            font-size: .9rem;
+            font-size: .85rem;
+            color: $dark;
         }
 
         .dropdown-item-text {
@@ -53,7 +54,7 @@ $avatar-size: 240px;
 
 .user-avatar {
     position: relative;
-    border-radius:50%;
+    border-radius: 50%;
     overflow: hidden;
     margin: 0 auto;
     width: $avatar-size;
@@ -76,16 +77,17 @@ $avatar-size: 240px;
         position: absolute;
         height: $avatar-size/2;
         width: $avatar-size;
-        left:0;
-        bottom:0;
-        background:url('/img/icon_upload_avatar.png') no-repeat center center rgba(0,0,0,.7);
-        display:none;
-        margin:0;
-        cursor:pointer;
+        left: 0;
+        bottom: 0;
+        background: url('/img/icon_upload_avatar.png') no-repeat center center rgba(0,0,0,.7);
+        display: none;
+        margin: 0;
+        cursor: pointer;
     }
-    &:hover{
-        label{
-            display:block;
+
+    &:hover {
+        label {
+            display: block;
         }
     }
 }
@@ -102,11 +104,52 @@ $avatar-size: 240px;
     }
 
     .card-title {
-        color: $primary;
-        font-weight: $font-weight-bold;
-        font-size: 1rem;
+        a {
+            color: $primary;
+            font-weight: $font-weight-bold;
+            font-size: 1rem;
+        }
+    }
+
+    /*.campaign-type {
+        min-height: 50px;
+        overflow: hidden;
+    }*/
+}
+
+.campaigndetails {
+    .campaign {
+        box-shadow: none;
+        border: none;
+        .card-img-top{
+            height:400px;
+        }
+    }
+
+    .form-control {
+        max-width: 80%;
     }
 }
-.campaign-link{
 
+.campaign-link {
+}
+
+.campaign-type {
+}
+
+
+.campaign-text {
+
+    a {
+        color:$primary;
+    }
+
+    strong {
+        display: block;
+        font-size: 1.25rem;
+    }
+
+    strong + p {
+        margin-bottom: 1.5rem;
+    }
 }

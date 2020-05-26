@@ -40,63 +40,7 @@
     @foreach (var item in Model.MarketPlaces)
     {
         <div class="col mb-4">
-            <div class="card campaign">
-                <img src="@item.Campaign.Type.ToShortName()" height="220" class="card-img-top" alt="">
-                <div class="card-body">
-
-                    <div class="h4 font-weight-bold">@item.Campaign.Type.ToText()</div>
-                    <a asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id" class="campaign-link">
-                        <h2 class="card-title">@item.Campaign.Title</h2>
-                    </a>
-                    <div class="d-flex">
-                        <div>
-                            <small> bởi </small>
-                            <span class="ml-2"><img src="@AppOptions.CurrentValue.GetImageUrl(item.Agency.Image)" width="24" height="24" class="rounded-circle"> @item.Agency.Name</span>
-                        </div>
-                        @if (item.Campaign.DateEnd.HasValue)
-                        {
-                            var classbtn = item.Campaign.Status.ToColorClass();
-
-                            <div class="ml-auto text-right">
-                               
-                                <small class="ml-5">  <i class="fas fa-circle text-@classbtn"></i> @item.Campaign.Status.ToDisplayName()</small></div>
-                        }
-
-                    </div>
-                    <hr>
-                    <div class="d-flex">
-                        <div class="icon"><i class="fab fa-facebook"></i></div>
-                        <div class="ml-2 small">
-                            @item.Campaign.Status.ToDisplayName()
-                            <br />
-                            @item.CountApplied/@item.Campaign.Quantity tham gia
-                        </div>
-                        <div class="ml-auto text-right">
-
-                            @{
-                                var campaignAccount = item.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
-                                if (campaignAccount != null)
-                                {
-                                    var text = campaignAccount.Status.ToAccountText();
-                                    if (!string.IsNullOrEmpty(text))
-                                    {
-                                        var classbtn = campaignAccount.Status.ToColorClass();
-                                        <a class="btn btn-@classbtn btn-rounded" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">@text</a>
-                                    }
-
-
-
-                                }
-                                else if (item.Campaign.Status == CampaignStatus.Confirmed)
-                                {
-                                    <a class="btn btn-primary btn-rounded" asp-action="Details" asp-route-id="@item.Campaign.Id" data-id="@item.Campaign.Id">Tham gia</a>
-                                }
-                            }
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+           <partial name="_CampaignPartial" model="item" />
         </div>
     }
 

@@ -42,91 +42,100 @@
 }
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
 
+<partial name="_DetailsNavPartial" model="Model" />
+<div class="tab-content" id="myTabContent">
 
-            <partial name="_DetailsNavPartial" model="Model" />
-            <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade active show">
+        <div class="card  border-0 card-body">
 
-                <div class="tab-pane fade active show">
-                    <div class="card mb-3 shadow border-0 card-body">
-
-                        <div class="d-flex bd-highlight my-3">
-                            <div class="mr-auto bd-highlight">
-                                <h5>Phản hồi duyệt caption</h5>
-                            </div>
-
-                            @if (hasNewCaption)
-                            {
-                                <div class="bd-highlight">
-                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-campaign-form-caption">Gửi caption</button>
-                                </div>
-                            }
-
-
-                        </div>
-                        <h5>@Model.Campaign.Title</h5>
-                        <p>
-                            <i class="fab fa-facebook"></i> @Model.Campaign.Type.ToDisplayName()
-                        </p>
-
-                        @if (campaignAccount == null)
-                        {
-                            <div class="alert alert-info">Bạn chưa tham gia chiến dịch</div>
-                        }
-                        else if (captions != null)
-                        {
-
-
-                            foreach (var item in captions.CampaignAccountCaptions)
-                            {
-
-                                <div class="card shadow border-0 mb-2">
-                                    <div class="card-body">
-                                        <div class="text-right">
-                                            <small>@item.DateCreated.ToViDateTime()</small>
-                                        </div>
-                                        <p>
-                                            @item.Content
-                                        </p>
-                                        @if (!string.IsNullOrEmpty(item.Note))
-                                        {
-                                            <p>
-                                                <strong>Ghi chú từ doanh nghiệp</strong> <br />
-                                                <em class="text-secondary">@item.Note</em>
-                                            </p>
-                                        }
-                                        <div class="text-right">
-                                            @item.Status.ToBadge()
-                                        </div>
-                                    </div>
-                                </div>
-
-                            }
-
-
-
-                            <pager pager="@captions.Pager" asp-action="Details" asp-route-id="@Model.Campaign.Id" asp-route-tab="2"></pager>
-
-                        }
-                    </div>
-
+            <div class="d-flex bd-highlight my-3">
+                <div class="mr-auto bd-highlight">
+                    <h5>Phản hồi duyệt caption</h5>
                 </div>
+
+                @if (hasNewCaption)
+                {
+                    <div class="bd-highlight">
+                        <button class="btn btn-primary btn-rounded" data-toggle="modal" data-target="#modal-campaign-form-caption">Gửi caption</button>
+                    </div>
+                }
+
+
             </div>
 
+            <div class="h4">@Model.Campaign.Type.ToText()</div>
+            <div class="font-weight-bold text-primary">@Model.Campaign.Title</div>
+
+            <hr />
+
+            @if (campaignAccount == null)
+            {
+                <div class="alert alert-info">Bạn chưa tham gia chiến dịch</div>
+            }
+            else if (captions != null)
+            {
 
 
+                foreach (var item in captions.CampaignAccountCaptions)
+                {
+
+                    <div class="card border-0">
+                        <div class="card-body">
+
+                            <p>
+                                @item.Content
+                            </p>
+
+                            <div class="d-flex mb-2">
+                                <div class="mr-auto">
+                                    <small>@item.DateCreated.ToTimeAgo()</small>
+                                </div>
+                                <div>
+                                    @item.Status.ToBadge()
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(item.Note))
+                            {
+                                <p class="bg-info text-white p-3">
+                                    <strong>Ghi chú từ doanh nghiệp</strong> <br />
+                                    <em class="text-secondary">@item.Note</em>
+                                </p>
+                            }
+                        </div>
+                    </div>
+                    <hr />
+
+                }
+
+
+
+                <pager pager="@captions.Pager" asp-action="Details" asp-route-id="@Model.Campaign.Id" asp-route-tab="2"></pager>
+
+            }
         </div>
-        <div class="col-md-4">
 
-            <partial name="_DetailSidebarPartial" model="Model" />
-
-
-        </div>
     </div>
 </div>
+
+
+
+
+@*<div class="container">
+        <div class="row">
+            <div class="col-md-8">
+
+
+
+            </div>
+            <div class="col-md-4">
+
+                <partial name="_DetailSidebarPartial" model="Model" />
+
+
+            </div>
+        </div>
+    </div>*@
 
 
 
@@ -154,16 +163,16 @@
                             <input type="hidden" name="CampaignId" value="@Model.Campaign.Id" />
                             <input type="hidden" name="CampaignAccountId" value="@campaignAccount.Id" />
 
-                            <button class="btn btn-outline-primary" type="submit">Gửi</button>
+                            <button class="btn btn-primary btn-rounded" type="submit">Gửi</button>
                         </div>
 
                     </form>
 
                     <!--#################################-->
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                </div>
+                @*<div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    </div>*@
             </div>
         </div>
     </div>

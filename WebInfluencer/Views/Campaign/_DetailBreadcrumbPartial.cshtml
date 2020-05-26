@@ -1,11 +1,8 @@
 ﻿@model MarketPlaceViewModel
 
-<nav class="shadow-sm">
-    <ol class="breadcrumb">
+<div class="page-title">
+    <div class="h1"> MarketPlace</div>
+    <span class=" h3 text-secondary px-2">/</span>
+    <h1 class=" h3 text-secondary">Chiến dịch @Model.Campaign.Code</h1>
 
-        <li class="breadcrumb-item "><a asp-action="MarketPlace" asp-controller="Campaign" class="breadcrumb-link">Chiến dịch</a></li>
-        <li class="breadcrumb-item">
-            @ViewData["Title"]
-        </li>
-    </ol>
-</nav>
+</div>
