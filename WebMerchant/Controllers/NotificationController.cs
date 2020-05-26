@@ -13,7 +13,7 @@ namespace WebMerchant.Controllers
     public class NotificationController : BaseController
     {
         private readonly INotificationService _notificationService;
-        private const int pagesize = 5;
+        private const int pagesize = 20;
         public NotificationController(INotificationService notificationService)
         {
             _notificationService = notificationService;

@@ -1,0 +1,80 @@
+﻿.sidebar {
+    background: $primary;
+    width:320px;
+    .logo {
+        text-align: center;
+        display: block;
+        padding: 2rem 1rem;
+    }
+
+
+    .nav-item {
+    }
+
+    a {
+        color: $white;
+    }
+
+    hr {
+        margin: 0.5rem 1rem;
+        border-color: $white;
+    }
+}
+ 
+
+.page-title {
+    color: $primary;
+    letter-spacing: -0.015em;
+    font-weight: $font-weight-bold !important;
+    margin-bottom: 2.5rem;
+    align-items: center;
+    display: flex;
+}
+
+.btn{
+    @extend .btn-rounded;
+}
+.main {
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.btn-rounded {
+    border-radius: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    font-weight: $font-weight-bold;
+}
+
+.badge-rounded {
+    font-weight: $font-weight-bold;
+    border-radius: 1rem;
+    padding: .5rem 1rem;
+}
+
+.nav-tabs {
+    .nav-link {
+        padding: .5rem 2rem;
+        font-size: 1rem;
+
+        &.active {
+            font-weight: $font-weight-bold;
+            color: $primary;
+            border-bottom: 2px solid $primary;
+        }
+    }
+}
+
+.notif-link {
+
+    &:hover {
+        color: $primary !important;
+        font-weight: $font-weight-bold;
+    }
+}
+.modal-dialog {
+   
+    .modal-title {
+        color: $primary;
+    }
+}

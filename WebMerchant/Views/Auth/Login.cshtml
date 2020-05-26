@@ -7,64 +7,44 @@
 }
 
 @section Styles{
-
-    <link href="~/css/signin.css" rel="stylesheet" asp-append-version="true" />
+     
 }
 
 
 
-<form class="form-signin" method="post">
-
-    <div class="text-center mb-4">
-        <h1 class="h3 mb-3">MicroKols</h1>
-        <p>Đăng nhập với tài khoản doanh nghiệp</p>
-    </div>
-
+<form asp-action="Login"  method="post">
+     
     <alert></alert>
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-label-group">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
         <input asp-for="Username" class="form-control" />
-        <label asp-for="Username"></label>
     </div>
 
-    <div class="form-label-group">
+    <div class="form-group">
 
         <input asp-for="Password" class="form-control" />
-        <label asp-for="Password"></label>
     </div>
-    <div class="row">
+    <div class="row form-group">
         <div class="col-md-6">
-            <label>
 
-                <input asp-for="Remember" type="checkbox" />
-                Ghi nhớ mật khẩu
-            </label>
+
+
+            <input asp-for="Remember" type="hidden" value="true" />
+            <button class="btn btn-lg btn-primary " type="submit">Đăng nhập</button>
+            @*<label>
+
+            <input asp-for="Remember" type="checkbox" />
+            Ghi nhớ mật khẩu
+        </label>*@
         </div>
         <div class="col-md-6 d-flex justify-content-end">
             <a href="#">Quên mật khẩu?</a>
         </div>
-    </div>
-    <p>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Đăng nhập</button>
-    </p>
-
-    @*<div class="row mt-3">
-            <div class="col-md-12 text-center">
-                <div class="signin-social">
-                    <ul class="list-inline">
-                        <li class="list-inline-item">
-                            <a href="#" class="google" title="Đăng nhập với Google"><i class="fa fa-google"></i></a>
-                        </li>
-                        <li class="list-inline-item"></li>
-                        <li class="list-inline-item">
-                            <a href="#" class="facebook" title="Đăng nhập với Facebook"><i class="fa fa-facebook"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>*@
-    <p class="mb-3 text-muted text-center">Bạn chưa có tài khoản? <a href="@Url.Action("Register")">Đăng ký</a></p>
-    <p class="mt-2 text-center">
-        Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="#">Chính sách</a> & <a href="#">Quy định</a>
+    </div> 
+     
+    <p class="mt-5 text-muted">Bạn chưa có tài khoản? <a href="@Url.Action("Register")" class="font-weight-bold text-primary">Đăng ký</a></p>
+    <hr />
+    <p class="font-italic">
+        Bằng việc đăng ký hay đăng nhập, bạn đã đồng ý với <a href="#" class="font-weight-bold text-primary">Chính sách</a> & <a href="#" class="font-weight-bold text-primary">Quy định</a>
     </p>
 </form>

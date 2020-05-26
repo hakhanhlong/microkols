@@ -2,27 +2,174 @@
     color: red;
 }
 
-h6,.h6{
-    font-weight:600;
-}
-
-
 .nav-notif {
+
+    .badge {
+        border-radius: .5rem;
+    }
+
+
     .dropdown-menu {
         width: 350px;
         z-index: 99999;
+        transform: translate3d(15px, 35px, 0px) !important;
+
+        &:before {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #fff;
+            position: absolute;
+            content: " ";
+            display: block;
+            top: -8px;
+            left: 10px;
+        }
 
         a {
-            font-size: .9rem;
+            font-size: .85rem;
+            color: $dark;
         }
 
         .dropdown-item-text {
             padding: .5rem 1.5rem;
-            line-height: 1.2rem;
 
             &:hover {
                 background: #eee;
             }
         }
+    }
+}
+
+
+.form-daterangepicker {
+    min-width: 220px;
+}
+
+.card-fbpost {
+    .img {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        background: #eee;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .card-text {
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+
+$avatar-size: 240px;
+
+.user-avatar {
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    width: $avatar-size;
+    height: $avatar-size;
+    @extend .border;
+
+    img {
+        width: $avatar-size;
+    }
+
+    input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 0;
+    }
+
+    label {
+        position: absolute;
+        height: $avatar-size/2;
+        width: $avatar-size;
+        left: 0;
+        bottom: 0;
+        background: url('/img/icon_upload_avatar.png') no-repeat center center rgba(0,0,0,.7);
+        display: none;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    &:hover {
+        label {
+            display: block;
+        }
+    }
+}
+
+
+
+.campaign {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+
+    .icon {
+        border-radius: 50%;
+        font-size: 1.5rem;
+        color: $brand-facebook;
+    }
+
+    .card-title {
+        a {
+            color: $primary;
+            font-weight: $font-weight-bold;
+            font-size: 1rem;
+        }
+    }
+
+    /*.campaign-type {
+        min-height: 50px;
+        overflow: hidden;
+    }*/
+}
+
+.campaigndetails {
+    .campaign {
+        box-shadow: none;
+        border: none;
+        .card-img-top{
+            height:400px;
+        }
+    }
+
+    .form-control {
+        max-width: 80%;
+    }
+}
+
+.campaign-link {
+}
+
+.campaign-type {
+}
+
+
+.campaign-text {
+
+    a {
+        color:$primary;
+    }
+
+    strong {
+        display: block;
+        font-size: 1.25rem;
+    }
+
+    strong + p {
+        margin-bottom: 1.5rem;
     }
 }
