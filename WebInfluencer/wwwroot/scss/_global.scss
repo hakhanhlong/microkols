@@ -1,6 +1,6 @@
 ﻿.sidebar {
     background: $primary;
-
+    width:320px;
     .logo {
         text-align: center;
         display: block;
@@ -66,11 +66,10 @@
 }
 
 .notif-link {
-    font-weight: $font-weight-bold;
-
 
     &:hover {
-        color: $primary;
+        color: $primary !important;
+        font-weight: $font-weight-bold;
     }
 }
 .modal-dialog {

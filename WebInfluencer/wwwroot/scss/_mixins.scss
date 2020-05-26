@@ -3,9 +3,29 @@
 }
 
 .nav-notif {
+
+    .badge {
+        border-radius: .5rem;
+    }
+
+
     .dropdown-menu {
         width: 350px;
         z-index: 99999;
+        transform: translate3d(15px, 35px, 0px) !important;
+
+        &:before {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #fff;
+            position: absolute;
+            content: " ";
+            display: block;
+            top: -8px;
+            left: 10px;
+        }
 
         a {
             font-size: .85rem;

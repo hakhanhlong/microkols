@@ -9,20 +9,20 @@
 </head>
 <body>
 
-    <div class="container-fluid">
+    <div >
 
 
 
-        <div class="row">
-            <div class="col-md-2 d-none d-md-block sidebar">
+        <div class="d-flex">
+            <div class="sidebar">
 
                 <partial name="_HeaderPartial" />
 
             </div> 
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <main role="main" class="flex-grow-1 px-3">
 
-                <div class="main">
+                <div class="main container-fluid">
 
                     @if (IsSectionDefined("Top"))
                     {

@@ -7,13 +7,13 @@
     {
 
         <div class="dropdown-item-text item-@(item.Status)" data-id="@item.Id">
-            <a href="@Url.GetNotificationUrl(item)" data-type="@item.Type">
+            <a href="@Url.GetNotificationUrl(item)" data-type="@item.Type" class="notif-link">
                 @item.Message
             </a>
             <br />
             <span class="text-muted small"> <i class="fal fa-clock"></i> @item.Date.ToTimeAgo()</span>
-        </div>
 
+        </div>
     }
     <div class="dropdown-divider"></div>
 

@@ -36,7 +36,7 @@ namespace WebInfluencer.Controllers
 
         public async Task<IActionResult> IndexPartial()
         {
-            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, string.Empty, 1, 10);
+            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, string.Empty, 1, 6);
             return PartialView(model);
         }
         public async Task<IActionResult> UpdateChecked()
