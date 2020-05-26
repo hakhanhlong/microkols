@@ -15,15 +15,61 @@
 
 }
 
-<h2>@ViewData["Title"]</h2>
-<h3 class="mt-4 mb-4">Bước 2: Yêu cầu về đối tượng của chiến dịch</h3>
-<div class="shadow p-3 mb-5 bg-white rounded">
+
+<div class="d-flex">
+    <div class="p-2 flex-grow-1"><h2 class="h2-title">@ViewData["Title"]</h2></div>
+    <div class="p-2">
+        <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+</div>
+<h3 class="ml-2 h3">Bước 3: Yêu cầu về đối tượng của chiến dịch</h3>
+
+<div class="d-flex">
+    <div class="p-2 flex-grow-1">
+        <div class="card text-white rounded-0 border-0">
+            @if (campaignType == CampaignType.ShareContent)
+            {
+                <img src="~/img/banner_share_no_caption.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ChangeAvatar)
+            {
+                <img src="~/img/banner_share_change_avatar.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.JoinEvent)
+            {
+                <img src="~/img/banner_share_joinevent_checkin.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.CustomService)
+            {
+                <img src="~/img/banner_share_other.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ReviewProduct)
+            {
+                <img src="~/img/banner_share_review_product.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ShareContentWithCaption)
+            {
+                <img src="~/img/banner_share_with_caption.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ShareStreamUrl)
+            {
+                <img src="~/img/banner_share_link_livestream.png" class="card-img rounded-0" />
+            }
+            <div class="card-img-overlay">
+                <h2 class="card-title h2-banner-text">@campaignType.ToText()</h2>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="p-3 mb-5 bg-white rounded-0">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <form class="form-create-campaign" asp-action="CreateTarget">
                 <div asp-validation-summary="All"></div>
 
-                <h6>Loại influencer bạn cần</h6>
+                <h6 style="font-weight:bold;">1. Loại influencer bạn cần</h6>
                 <div class="form-group">
 
                     <div>
@@ -54,10 +100,10 @@
                         @if (accountType == AccountType.Regular)
                         {
                             @*<div class="form-group">
-                                    <label asp-for="AccountChargeAmount" ></label>
-                                    <input type="number" class="form-control " asp-for="AccountChargeAmount" />
-                                    <span asp-validation-for="AccountChargeAmount"></span>
-                                </div>*@
+                        <label asp-for="AccountChargeAmount" ></label>
+                        <input type="number" class="form-control " asp-for="AccountChargeAmount" />
+                        <span asp-validation-for="AccountChargeAmount"></span>
+                    </div>*@
                         }
                         else if (accountType == AccountType.HotMom)
                         {
@@ -93,7 +139,7 @@
                 </div>
 
 
-                <h6>Tiêu chí</h6>
+                <h6 style="font-weight:bold;">2. Tiêu chí</h6>
 
                 <div id="campaignOptions" class="form-group">
                     <div class="h-accounttype h-accounttype-HotMom">
@@ -197,13 +243,13 @@
 
                             <div id="collapseEnabledAccount" class="collapse  text-right">
 
-                                <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modal-influencer-selection">
+                                <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modal-influencer-selection">
                                     Chọn Influencer <span class="badge badge-danger badge-influencer-count">0</span>
                                 </button>
 
                                 @*<select asp-for="AccountIds" multiple class="form-control">
-                                    </select>
-                                          <span asp-validation-for="AccountIds"></span>
+                        </select>
+                              <span asp-validation-for="AccountIds"></span>
                                 *@
 
                                 <div id="AccountIdsArea"></div>
@@ -214,18 +260,19 @@
 
                     </div>
                     @*<div class=" py-1 d-none" id="enabledExtraTypeWrap">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
-                            </div>
-                        </div>*@
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                    <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                </div>
+            </div>*@
 
                 </div>
 
 
-                @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
+                @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption ||
+                  campaignType == CampaignType.ReviewProduct)
                 {
-                    <h6>Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
+                    <h6 style="font-weight:bold;">3. Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
 
                     <div class="form-group">
                         <label asp-for="KPIMin"></label>
@@ -258,7 +305,7 @@
                     <input type="hidden" asp-for="InteractiveMin" />
                 }
 
-                <h6>Chi phí bạn muốn trả cho mỗi Influencer</h6>
+                <h6 style="font-weight:bold;">4. Chi phí bạn muốn trả cho mỗi Influencer</h6>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -276,7 +323,7 @@
                         </div>
                     </div>
                 </div>
-                <h6>Thời gian</h6>
+                <h6 style="font-weight:bold;">Thời gian</h6>
                 <div class="form-group ">
                     <label asp-for="RegisterTime"></label>
 
@@ -284,7 +331,7 @@
                     <span asp-validation-for="RegisterTime"></span>
 
                 </div>
-                @if ( campaignType == CampaignType.ReviewProduct)
+                @if (campaignType == CampaignType.ReviewProduct)
                 {
                     <div class="form-group ">
                         <label asp-for="FeedbackBefore"></label>
@@ -298,6 +345,7 @@
                     <input type="hidden" asp-for="FeedbackBefore" />
                 }
 
+
                 <div class="form-group ">
                     <label asp-for="ExecutionTime"></label>
 
@@ -305,42 +353,31 @@
                     <span asp-validation-for="ExecutionTime"></span>
 
                 </div>
+                @if (campaignType == CampaignType.ChangeAvatar && ViewBag.Image != null)
+                {
+                    var img = (string)ViewBag.Image;
+                    <div class="card border-0">
+                        <div class="card-body">
+
+                            <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
+                        </div>
+                    </div>
+                        
+                }
 
 
                 <div class="text-center form-group">
 
                     <input type="hidden" asp-for="Type" />
                     <input type="hidden" asp-for="InfoModel" />
-                    <button class="btn btn-outline-primary btn-bold-text" type="submit">
+                    <button class="btn btn-primary btn-bold-text" type="submit">
                         Bước cuối: Gửi yêu cầu duyệt chiến dịch
                     </button>
                 </div>
 
-            </form>
+                </form>
         </div>
-        <div class="col-lg-4">
-            <div class="card border-0">
-                <img src="@campaignType.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        @campaignType.ToDisplayName()
-                    </h5>
-                    <p class="card-text">
-
-                        @campaignType.ToDescription()
-                    </p>
-                </div>
-                @if (campaignType== CampaignType.ChangeAvatar && ViewBag.Image != null)
-                        {
-                            var img = (string)ViewBag.Image;
-                    <div class="card-body">
-
-                        <img class="img-fluid" src="@AppOptions.CurrentValue.GetImageUrl(img)" />
-                    </div>
-                }
-            </div>
-
-        </div>
+      
     </div>
 </div>
 

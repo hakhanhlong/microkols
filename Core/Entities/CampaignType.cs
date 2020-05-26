@@ -9,19 +9,19 @@ namespace Core.Entities
 {
     public enum CampaignType
     {
-        [Display(Name = "Chia sẻ thông điệp, không cần viết caption", Description = "", ShortName = "/img/1.jpg")]
+        [Display(Name = "Chia sẻ thông điệp, không cần viết caption", Description = "", ShortName = "/img/share_no_caption.png")]
         ShareContent = 1,
-        [Display(Name = "Chia sẻ thông điệp, viết thêm caption", Description = "", ShortName = "/img/2.jpg")]
+        [Display(Name = "Chia sẻ thông điệp, viết thêm caption", Description = "", ShortName = "/img/share_with_caption.png")]
         ShareContentWithCaption = 2,
-        [Display(Name = "Thay hình Avatar", Description = "", ShortName = "/img/3.jpg")]
+        [Display(Name = "Thay hình Avatar", Description = "", ShortName = "/img/share_change_avatar.png")]
         ChangeAvatar = 3,
-        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệm", Description = "", ShortName = "/img/4.jpg")]
+        [Display(Name = "Viết Review một sản phẩm hoặc tham gia trải nghiệm", Description = "", ShortName = "/img/share_review_product.png")]
         ReviewProduct = 4,
-        [Display(Name = "Tham gia sự kiện và check in", Description = "", ShortName = "/img/5.jpg")]
+        [Display(Name = "Tham gia sự kiện và check in", Description = "", ShortName = "/img/share_joinevent_checkin.png")]
         JoinEvent = 5,
-        [Display(Name = "Share link livestream chương trình", Description = "", ShortName = "/img/6.jpg")]
+        [Display(Name = "Share link livestream chương trình", Description = "", ShortName = "/img/share_link_livestream.png")]
         ShareStreamUrl = 6,
-        [Display(Name = "Yêu cầu khác", Description = "", ShortName = "/img/7.png")]
+        [Display(Name = "Yêu cầu khác", Description = "", ShortName = "/img/share_other.png")]
         CustomService = 7
     }
 

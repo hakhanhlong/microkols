@@ -64,16 +64,20 @@
             @foreach (var statusItem in stautusArr)
             {
                 var isactived = statusItem == status;
-                var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
-                <li class="nav-item">
-                    <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">
-                        @statusItem.ToDisplayName()
-                        @if (count > 0)
-                        {
-                            <span class="badge badge-pill badge-danger">@count</span>
-                        }
-                    </a>
-                </li>
+                if (statusItem != CampaignStatus.Ended)
+                {
+                    var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
+                    <li class="nav-item">
+                        <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">
+                            @statusItem.ToDisplayName()
+                            @if (count > 0)
+                            {
+                                <span class="badge badge-pill badge-danger">@count</span>
+                            }
+                        </a>
+                    </li>
+                }
+
             }
         </ul>
     </div>
@@ -85,11 +89,11 @@
             <div class="table-responsive">
                 <table class="table table-bordered table-campaign">
                     <thead>
-                        <tr>
+                        <tr style="color:#4F4F4F;">
                             <th scope="col">#</th>
                             <th scope="col">Mã chiến dịch</th>
                             <th scope="col">Tên chiến dịch</th>
-                            <th scope="col">Loại chiến dịch</th>
+                            <th scope="col" style="width:200px;">Loại chiến dịch</th>
                             <th scope="col">Thời gian thực hiện</th>
                             <th scope="col">Trạng thái</th>
                             <th></th>
@@ -107,12 +111,27 @@
                             <tr>
                                 <td>@stt</td>
                                 <td>
-                                    <a href="@url">
+                                    <a href="@url" title="@item.Title" style="text-decoration:none;">
                                         @item.Code
                                     </a>
                                 </td>
 
-                                <td>@item.Title</td>
+                                <td>
+
+                                    @if (item.Title.Length > 45)
+                                    {
+                                        <span title="@item.Title">
+                                            @item.Title.Substring(0, 41) ...
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span title="@item.Title">
+                                            @item.Title
+                                        </span>
+                                    }
+
+                                </td>
                                 <td>@item.Type.ToDisplayName()</td>
                                 <td>
                                     @if (item.ExecutionStart.HasValue)
@@ -129,9 +148,9 @@
                                         {
 
 
-                                            <li class="list-inline-item"><a href="javascript:;" class="campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
+                                            <li class="list-inline-item"><a href="javascript:;" class="link-color-blue campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
                                             <li class="list-inline-item">
-                                                <a href="javascript:;" class="btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
+                                                <a href="javascript:;" class="link-color-blue btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
                                                     <i class="fa fa-history"></i>
                                                 </a>
                                             </li>
@@ -144,7 +163,7 @@
                                             {
 
                                                 <li class="list-inline-item">
-                                                    <a href="javascript:;" class="campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
+                                                    <a href="javascript:;" class="link-color-blue campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
                                                 </li>
 
                                             }

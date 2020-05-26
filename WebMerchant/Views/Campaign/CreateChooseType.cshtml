@@ -4,32 +4,41 @@
     var typeArr = StringHelper.GetEnumArray<CampaignType>();
 }
 
-<h2>@ViewData["Title"]</h2>
-<h3 class="mt-4 mb-4">Bước 1: Chọn loại chiến dịch</h3>
+<div class="d-flex">
+    <div class="p-2 flex-grow-1"><h1 class="h1">@ViewData["Title"]</h1></div>
+    <div class="p-2">
+        <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+</div>
+<h3 class="ml-2 h3">Bước 1: Chọn loại chiến dịch</h3>
 
-<div class="select-campaign-type">
-    <div class="row">
+<div class="row row-cols-1 row-cols-md-4">
+    
         @foreach (var item in typeArr)
         {
-            var img = item.ToShortName();
-            <div class="col-sm-3">
-                <div class="card shadow bg-white rounded">
-                    <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
-                        <img src="@img" width="334" height="209" class="card-img-top" alt="@item.ToDisplayName()">
-                    </a>
-                        <div class="card-body">
-                            <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
-                                <h5 class="card-title">
+            <div class="col mb-4">
+                @{var img = item.ToShortName();}
+                
+                    <div class="card shadow bg-white rounded-0">
+                        <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
+                            <img src="@img" width="334" height="209" class="card-img-top rounded-0" alt="@item.ToDisplayName()">
+                        </a>
+                        <div class="card-body" style="height:210px;">
+                            <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link h2-black">
+                                <h2 class="card-title h2-black">
                                     @item.ToDisplayName()
-                                </h5>
+                                </h2>
                             </a>
                             <p class="card-text">
 
                                 @item.ToDescription()
                             </p>
                         </div>
-                </div>
+                    </div>
+                
             </div>
         }
-    </div>
+    
 </div>
+
+

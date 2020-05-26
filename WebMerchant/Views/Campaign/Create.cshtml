@@ -5,24 +5,72 @@
 
 }
 
-<h2>@ViewData["Title"]</h2>
-<h3 class="mt-4 mb-4">Bước 2: Thông tin về chiến dịch</h3>
+<div class="d-flex">
+    <div class="p-2 flex-grow-1"><h2 class="h2-title">@ViewData["Title"]</h2></div>
+    <div class="p-2">
+        <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+</div>
+<h3 class="ml-2 h3">Bước 2: Thông tin về chiến dịch</h3>
+
+
+<div class="d-flex">
+    <div class="p-2 flex-grow-1">
+        <div class="card text-white rounded-0 border-0">
+            @if (campaignType == CampaignType.ShareContent)
+            {
+                <img src="~/img/banner_share_no_caption.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ChangeAvatar)
+            {
+                <img src="~/img/banner_share_change_avatar.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.JoinEvent)
+            {
+                <img src="~/img/banner_share_joinevent_checkin.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.CustomService)
+            {
+                <img src="~/img/banner_share_other.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ReviewProduct)
+            {
+                <img src="~/img/banner_share_review_product.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ShareContentWithCaption)
+            {
+                <img src="~/img/banner_share_with_caption.png" class="card-img rounded-0" />
+            }
+            @if (campaignType == CampaignType.ShareStreamUrl)
+            {
+                <img src="~/img/banner_share_link_livestream.png" class="card-img rounded-0" />
+            }
+            <div class="card-img-overlay">
+                <h2 class="card-title h2-banner-text">@campaignType.ToText()</h2>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+
+
 <form class="form-create-campaign" asp-action="CreateInfo">
-    <div class="shadow p-3 mb-5 bg-white rounded">
+    <div class="p-3 mb-5 bg-white">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
 
                 <div class="form-group">
 
-                    <label asp-for="Title"></label>
-                    <input type="text" class="form-control" asp-for="Title" />
+                    <label asp-for="Title" style="font-weight:bold;"></label>
+                    <input type="text" class="form-control" asp-for="Title" placeholder="Điền tên chiến dịch"/>
                     <span asp-validation-for="Title"></span>
 
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
                     <div class="form-group">
-                        <label asp-for="Image"></label>
+                        <label asp-for="Image" style="font-weight:bold;"></label>
 
                         <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
                         <input type="hidden" asp-for="Image" />
@@ -38,16 +86,16 @@
 
 
                     <div class="form-group">
-                        <label asp-for="Data">Url Frame</label>
-                        <input type="text" class="form-control" asp-for="Data" />
+                        <label asp-for="Data" style="font-weight:bold;">Url Frame</label>
+                        <input type="text" class="form-control" asp-for="Data"/>
                         <span asp-validation-for="Data"></span>
                     </div>
                 }
                 else
                 {
                     <div class="form-group">
-                        <label asp-for="Data"></label>
-                        <input type="text" required class="form-control" asp-for="Data" />
+                        <label asp-for="Data" style="font-weight:bold;"></label>
+                        <input type="text" required class="form-control" asp-for="Data" placeholder="Điền liên kế URL nội dung"/>
                         <span asp-validation-for="Data"></span>
                     </div>
 
@@ -55,21 +103,20 @@
                 }
                 <div class="form-group">
 
-                    <label asp-for="Description"></label>
+                    <label asp-for="Description" style="font-weight:bold;"></label>
                     <textarea class="form-control" required rows="2" asp-for="Description"></textarea>
                     <span asp-validation-for="Description"></span>
                 </div>
 
                 <div class="form-group">
-
-                    <label asp-for="Requirement"></label>
+                    <label asp-for="Requirement" style="font-weight:bold;"></label>
                     <textarea class="form-control" required rows="2" asp-for="Requirement"></textarea>
                     <span asp-validation-for="Requirement"></span>
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
                     <div class="form-group">
-                        <label asp-for="AccountChargeTime"></label>
+                        <label asp-for="AccountChargeTime" style="font-weight:bold;"></label>
                         <div class="input-group">
                             <input type="number" class="form-control" asp-for="AccountChargeTime" />
                             <div class="input-group-append">
@@ -85,7 +132,7 @@
                 }
 
                 <div class="form-group ">
-                    <label asp-for="HashTag"></label>
+                    <label asp-for="HashTag" style="font-weight:bold;"></label>
 
                     <select asp-for="HashTag" multiple class="form-control"></select>
                     <span asp-validation-for="HashTag"></span>
@@ -98,10 +145,17 @@
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                            <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                            <label class="custom-control-label" asp-for="EnabledExtraType" style="font-weight:bold;"></label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="SampleContentText" style="font-weight:bold;"></label>
+                        <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
+                        
+                    </div>
+
                 }
+            
 
                 @if (campaignType == CampaignType.ReviewProduct)
                 {
@@ -128,18 +182,18 @@
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" name="ReviewPayback" id="ReviewPayback" value="1" />
-                                        <label class="custom-control-label" asp-for="ReviewPayback"></label>
+                                        <label class="custom-control-label" asp-for="ReviewPayback" style="font-weight:bold;"></label>
                                     </div>
                                 </div>
                                 <div class="form-group form-reviewAddress" style="display:none">
-                                    <label>@item.ToDescription()</label>
+                                    <label style="font-weight:bold;">@item.ToDescription()</label>
                                     <textarea class="form-control " asp-for="ReviewAddress"></textarea>
                                 </div>
                             }
                             else
                             {
                                 <div class="form-group">
-                                    <label>@item.ToDescription()</label>
+                                    <label style="font-weight:bold;">@item.ToDescription()</label>
                                     <textarea class="form-control " asp-for="ReviewAddress2"></textarea>
                                 </div>
                             }
@@ -163,10 +217,10 @@
                 {
 
                     <div>
-                        <label>Ảnh chiến dịch cung cấp</label>
+                        <label style="font-weight:bold;">Ảnh chiến dịch cung cấp</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
-                            <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
+                            <label class="custom-file-label" for="sampleContent" style="font-weight:bold;">Tải ảnh chiến dịch</label>
                         </div>
                         <div>
                             <ul class="list-unstyled">
@@ -178,11 +232,11 @@
                                     </li>
                                 }
                                 @*else
-                                    {
-                                        <li>
-                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                        </li>
-                                    }*@
+                        {
+                            <li>
+                                <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                            </li>
+                        }*@
                             </ul>
                         </div>
 
@@ -199,35 +253,13 @@
 
                 <div class="text-center form-group">
                     <input type="hidden" asp-for="Type" />
-                    <button class="btn btn-outline-primary btn-bold-text" type="submit">
+                    <button class="btn btn-primary btn-bold-text" type="submit">
                         Bước 3: Yêu cầu về đối tượng của chiến dịch
                     </button>
                 </div>
 
             </div>
-            <div class="col-lg-4">
-                <div class="card border-0">
-                    <img src="@campaignType.ToShortName()" width="334" height="209" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            @campaignType.ToDisplayName()
-                        </h5>
-                        <p class="card-text">
-
-                            @campaignType.ToDescription()
-                        </p>
-                    </div>
-                </div>
-                @if (campaignType != CampaignType.ShareContent)
-                {
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <h5>Nội dung mẫu</h5>
-                            <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
-                        </div>
-                    </div>
-                }
-            </div>
+        
         </div>
     </div>
 </form>

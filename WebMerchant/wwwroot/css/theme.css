@@ -185,6 +185,35 @@ html, body {
     font-weight: 900;
 }
 
+.h2-black {
+    color: #4F4F4F;    
+    font-weight:700;
+}
+
+.h2-banner-text {
+    color: #4F4F4F;
+    font-weight: 700;
+    margin-top: 5%;
+    width:325px;
+    margin-left:5%;
+}
+
+.h2-black:hover {
+    text-decoration: none;
+    color: #56CCF2;
+}
+
+.h3 {
+    color: #56CCF2;
+    font-weight: 700;
+}
+
+.h2-title {
+    color: #56CCF2;
+    font-weight: 900;
+}
+
+
 
 
 /*
@@ -222,8 +251,45 @@ html, body {
 
 .table-campaign
 {
-    font-size: 12px;
+    font-size: 13px;
 
 }
 
+.link-color-blue {
+    color: #56CCF2 !important;
+}
 
+.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #56CCF2;
+    background-color: #fff;
+    border: 1px solid #56CCF2;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #56CCF2;
+    border-color: #56CCF2;
+}
+
+.form-create-campaign label {
+  
+    color: #4F4F4F;
+}
+
+.form-control{
+    border-radius:0;
+}
+
+
+
+.field-validation-error span{
+    font-style:italic;
+    color:red;
+    font-size:12px;
+}
