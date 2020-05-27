@@ -6,26 +6,36 @@
     var balance = (long)ViewBag.Balance;
 }
 
-<h2>Chi tiết chiến dịch</h2>
+
+@section Top{
+    <div class="page-title">
+        <div class="h1" > Chiến dịch  </div>
+
+        <span class=" h3 text-secondary px-2">/</span>
+        <h1 class=" h3 text-secondary">@ViewData["Title"]</h1>
+        
+    </div>
+}
 
 <h3 class="mt-4 mb-4">Chiến dịch: @Model.Title</h3>
 
-<div class="mb-5 bg-white rounded">
+<div class="mb-5 bg-white rounded campaigndetails">
 
     <partial name="_DetailsNavPartial" model="Model" />
 
     <div class="tab-content" id="nav-tab-content-campaign">
         <div class="tab-pane fade active show" id="nav-campaign-detail" role="tabpanel">
 
-            <div class="card  card-body shadow border-0">
+            <div class="card card-body  border-0">
 
-                <div class="row">
+                <div class="row info">
                     <div class="col-md-6">
                         <div class="mb-2">
                             <strong class="mr-2"> Mã chiến dịch:</strong><span>@Model.Code</span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Tên chiên dịch:</strong><span>
+                            <strong class="mr-2"> Tên chiên dịch:</strong>
+                            <span>
                                 @Model.Title
                             </span>
                         </div>
@@ -55,7 +65,7 @@
                                 </span>
                             </div>
                         }
-                        @if ( Model.Type == CampaignType.ReviewProduct)
+                        @if (Model.Type == CampaignType.ReviewProduct)
                         {
                             if (Model.FeedbackStart.HasValue)
                             {
@@ -343,8 +353,8 @@
 
                     @if (Model.Status == CampaignStatus.Created)
                     {
-                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-light">Sửa thông tin chiến dịch</a>
-                        <a href="@Url.Action("EditTarget", new { id = Model.Id})" class="btn btn-light">Sửa đối tượng chiến dịch</a>
+                        <a href="@Url.Action("EditInfo", new { id = Model.Id})" class="btn btn-primary">Sửa thông tin chiến dịch</a>
+                        <a href="@Url.Action("EditTarget", new { id = Model.Id})" class="btn btn-primary">Sửa đối tượng chiến dịch</a>
                     }
 
 
@@ -375,7 +385,7 @@
                                 <a class="nav-link @tab3Active" data-toggle="tab" href="#tabPayment">Thanh toán</a>
                             </li>
                         </ul>
-                        <div class="tab-content">
+                        <div class="tab-content mt-2">
                             <div class="tab-pane fade @tab1Active" id="tabProcess">
 
                                 <div class="py-2">

@@ -12,45 +12,45 @@
 }
 
 
-<div class="d-flex">
-    <div class="p-2 flex-grow-1"><h1 class="h1">@ViewData["Title"]</h1></div>
-    <div class="p-2">
-        <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+@section Top{
+    <div class="page-title">
+        <div class="h1">  @ViewData["Title"]</div>
+
+        <a class="btn btn-danger ml-auto" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12 col-sm-12">
-        <form method="get">
-            <div class="d-flex">
-                <div class="p-2">
-                    <select class="custom-select custom-select-lg rounded-0" name="type">
-                        <option value="">Tất cả loại</option>
-                        @foreach (var campaignType in campaignTypes)
-                        {
-                            <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
-                        }
-                    </select>
-                </div>
-                <div class="p-2">
-                    <input type="text" name="kw" value="@kw" class="form-control form-control-lg rounded-0" 
-                           placeholder="Tìm kiếm chiến dịch" style="width:550px;">
-                </div>
-                <div class="p-2">
-                    <button type="submit" class="btn btn-primary btn-lg-radius" style="width:130px;">Tìm kiếm</button>
-                </div>
-            </div>
+}
 
 
-        </form>
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-4">
+            <select class="custom-select  " name="type">
+                <option value="">Tất cả loại</option>
+                @foreach (var campaignType in campaignTypes)
+                {
+                    <!option value="@campaignType" @(type == campaignType ? "selected" : "")>@campaignType.ToDisplayName()</!option>
+                }
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="kw" value="@kw" class="form-control"
+                   placeholder="Tìm kiếm chiến dịch">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary "  >Tìm kiếm</button>
+        </div>
     </div>
-</div>
+
+
+</form>
+
 <hr />
 <div class="row mb-3">
     <div class="col-lg-12 col-ms-12">
         @{ var countall = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, null, kw); }
 
-        <ul class="nav nav-tabs mb-3 nav-campaign">
+        <ul class="nav nav-tabs nav-px-sm mb-3 nav-campaign">
             <li class="nav-item">
                 <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">
                     Tất cả
@@ -111,7 +111,7 @@
                             <tr>
                                 <td>@stt</td>
                                 <td>
-                                    <a href="@url" title="@item.Title" style="text-decoration:none;">
+                                    <a href="@url" title="@item.Title" class="text-primary">
                                         @item.Code
                                     </a>
                                 </td>
@@ -148,9 +148,9 @@
                                         {
 
 
-                                            <li class="list-inline-item"><a href="javascript:;" class="link-color-blue campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
+                                            <li class="list-inline-item"><a href="javascript:;" class="text-primary campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
                                             <li class="list-inline-item">
-                                                <a href="javascript:;" class="link-color-blue btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
+                                                <a href="javascript:;" class="text-primary btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
                                                     <i class="fa fa-history"></i>
                                                 </a>
                                             </li>
@@ -163,7 +163,7 @@
                                             {
 
                                                 <li class="list-inline-item">
-                                                    <a href="javascript:;" class="link-color-blue campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
+                                                    <a href="javascript:;" class="text-primary campaign-payment  btn-payment" data-id="@item.Id" title="Thanh toán cho chiến dịch"><i class="fa fa-credit-card"></i></a>
                                                 </li>
 
                                             }
@@ -173,14 +173,14 @@
                                 </td>
                             </tr>
                             @*<tr>
-                                <td colspan="7">
+                                    <td colspan="7">
 
-                                    <partial name="_CampaignItemCountingPartial" model="@item" />
+                                        <partial name="_CampaignItemCountingPartial" model="@item" />
 
 
-                                </td>
+                                    </td>
 
-                            </tr>*@
+                                </tr>*@
                         }
                     </tbody>
                 </table>
@@ -193,4 +193,3 @@
 
 
 
-     

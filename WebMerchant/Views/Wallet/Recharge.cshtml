@@ -13,128 +13,126 @@
     </script>
 }
 
-<h2 class="mb-3">Payment</h2>
-<h3 class="mt-3 mb-4">@ViewData["Title"]</h3>
-<div class="mb-5 bg-white rounded">
-    <div class="payment">
+
+@section Top{
+    <div class="page-title">
+        <div class="h1"> Thông tin ví</div>
+        <span class=" h3 text-secondary px-2">/</span>
+        <h1 class=" h3 text-secondary">@ViewData["Title"]</h1>
+
+    </div>
+}
+<nav>
+    <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" href="@AbsoluteUrl">Nạp tiền</a>
+
+
+
+        <a class="nav-item nav-link" href="@Url.Action("History", new { type = TransactionType.WalletRecharge })">Lịch sử</a>
+    </div>
+</nav>
+<div class="tab-content mt-3" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
         <div class="row">
-            <div class="col-lg-12">
-                <nav>
-                    <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" href="@AbsoluteUrl">NẠP TIỀN</a>
+            <div class="col-lg-8">
+                <form method="post" action="@Url.Action("Recharge","Wallet")" id="frmRecharge">
 
-
-
-                        <a class="nav-item nav-link" href="@Url.Action("History", new { type = TransactionType.WalletRecharge })">LỊCH SỬ</a>
+                    <alert></alert>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Amount"></label>
+                        <input type="number" asp-for="Amount" class="form-control" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
-                </nav>
-                <div class="tab-content mt-3" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <form method="post" action="@Url.Action("Recharge","Wallet")" id="frmRecharge">
 
-                                    <alert></alert>
-                                    <div asp-validation-summary="All" class="text-danger"></div>
-                                    <div class="form-group">
-                                        <label asp-for="Amount"></label>
-                                        <input type="number" asp-for="Amount" class="form-control" />
-                                        <span asp-validation-for="Amount" class="text-danger"></span>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label asp-for="Method"></label> <br />
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" value="Trực tiếp" id="Method1" name="Method" class="custom-control-input">
-                                            <label class="custom-control-label" for="Method1">Trực tiếp</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" checked value="Chuyển khoản" id="Method2" name="Method" class="custom-control-input">
-                                            <label class="custom-control-label" for="Method2">Chuyển khoản</label>
-                                        </div>
-                                        <span asp-validation-for="Method" class="text-danger"></span>
-                                    </div>
-                                    <div id="bankWrap" class="d-none">
-                                        <div class="form-group">
-                                            <label asp-for="Bank"></label>
-                                            <select name="Bank" class="form-control" id="Bank">
-                                                <option>Chọn ngân hàng nhận</option>
-                                                @foreach (var bankAccount in bankAccounts)
-                                                {
-                                                    <option value="@bankAccount.BankCode">@bankAccount.BankName</option>
-                                                }
-                                            </select>
-                                            <span asp-validation-for="Bank" class="text-danger"></span>
-                                        </div>
-
-
-                                    </div>
-                                    @if (ViewBag.Campaign != null)
-                                    {
-                                        var campaign = (CampaignDetailsViewModel)ViewBag.Campaign;
-                                        <hr />
-                                        <div class="form-group">
-                                            <label>Nội dung nạp tiền</label>
-                                            <div>Mã chiến dịch: <strong>@campaign.Code</strong></div>
-                                            <input type="hidden" asp-for="Note" />
-                                        </div>
-
-                                    }
-                                    else
-                                    {
-                                        <div class="form-group">
-                                            <label asp-for="Note"></label>
-                                            <div>
-                                                <textarea asp-for="Note" class="form-control"></textarea>
-                                            </div>
-                                            <span asp-validation-for="Note" class="text-danger"></span>
-                                        </div>
-
-                                    }
-
-                                    <div class="form-group">
-                                        <input type="hidden" asp-for="CampaignId" />
-                                        <input type="submit" value="NẠP TIỀN" class="btn btn-submit btn-primary " />
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-lg-4">
-                                @for (var i = 0; i < bankAccounts.Count; i++)
-                                {
-                                    var bank = bankAccounts[i];
-                                    <div id="bankinfo@(bank.BankCode)" class="bankinfo d-none">
-                                        <p><b>@bank.BankName</b></p>
-                                        <p>Tài khoản: <span class="text-success">@bank.AccountName</span> </p>
-                                        <p>Số tài khoản: <span class="text-danger">@bank.AccountNumber</span> </p>
-                                        <p>Chi nhánh: <i>@bank.BankBranch</i></p>
-                                    </div>
-
-                                }
-
-                                @*<ul class="list-unstyled">
-                                        <li class="mb-3"></li>
-                                        <li class="mb-3"><strong>Tài Khoản:</strong> Nguyễn Văn A</li>
-                                        <li class="mb-3"><strong>Số Tài Khoản:</strong> 0123456789</li>
-                                        <li class="mb-3"><strong>Ngân Hàng:</strong> Techcom Bank</li>
-                                        <li class="mb-3"><strong>Chi Nhánh:</strong> Hồ gươm</li>
-                                        <li>
-                                            <small style="color: red">
-                                                <i>
-                                                    Sau khi chọn ngân hàng mới hiển thị thông tin trên
-                                                </i>
-                                            </small>
-                                        </li>
-                                    </ul>*@
-                            </div>
+                    <div class="form-group">
+                        <label asp-for="Method"></label> <br />
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" value="Trực tiếp" id="Method1" name="Method" class="custom-control-input">
+                            <label class="custom-control-label" for="Method1">Trực tiếp</label>
                         </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" checked value="Chuyển khoản" id="Method2" name="Method" class="custom-control-input">
+                            <label class="custom-control-label" for="Method2">Chuyển khoản</label>
+                        </div>
+                        <span asp-validation-for="Method" class="text-danger"></span>
                     </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div id="bankWrap" class="d-none">
+                        <div class="form-group">
+                            <label asp-for="Bank"></label>
+                            <select name="Bank" class="form-control" id="Bank">
+                                <option>Chọn ngân hàng nhận</option>
+                                @foreach (var bankAccount in bankAccounts)
+                                {
+                                    <option value="@bankAccount.BankCode">@bankAccount.BankName</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Bank" class="text-danger"></span>
+                        </div>
 
 
                     </div>
-                </div>
+                    @if (ViewBag.Campaign != null)
+                    {
+                        var campaign = (CampaignDetailsViewModel)ViewBag.Campaign;
+                        <hr />
+                        <div class="form-group">
+                            <label>Nội dung nạp tiền</label>
+                            <div>Mã chiến dịch: <strong>@campaign.Code</strong></div>
+                            <input type="hidden" asp-for="Note" />
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label asp-for="Note"></label>
+                            <div>
+                                <textarea asp-for="Note" class="form-control"></textarea>
+                            </div>
+                            <span asp-validation-for="Note" class="text-danger"></span>
+                        </div>
+
+                    }
+
+                    <div class="form-group">
+                        <input type="hidden" asp-for="CampaignId" />
+                        <input type="submit" value="NẠP TIỀN" class="btn btn-submit btn-primary " />
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                @for (var i = 0; i < bankAccounts.Count; i++)
+                {
+                    var bank = bankAccounts[i];
+                    <div id="bankinfo@(bank.BankCode)" class="bankinfo d-none card card-body">
+                        <p><b>@bank.BankName</b></p>
+                        <p>Tài khoản: <span class="text-success">@bank.AccountName</span> </p>
+                        <p>Số tài khoản: <span class="text-danger">@bank.AccountNumber</span> </p>
+                        <p>Chi nhánh: <i>@bank.BankBranch</i></p>
+                    </div>
+
+                }
+
+                @*<ul class="list-unstyled">
+                        <li class="mb-3"></li>
+                        <li class="mb-3"><strong>Tài Khoản:</strong> Nguyễn Văn A</li>
+                        <li class="mb-3"><strong>Số Tài Khoản:</strong> 0123456789</li>
+                        <li class="mb-3"><strong>Ngân Hàng:</strong> Techcom Bank</li>
+                        <li class="mb-3"><strong>Chi Nhánh:</strong> Hồ gươm</li>
+                        <li>
+                            <small style="color: red">
+                                <i>
+                                    Sau khi chọn ngân hàng mới hiển thị thông tin trên
+                                </i>
+                            </small>
+                        </li>
+                    </ul>*@
             </div>
         </div>
     </div>
-</div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
 
+
+    </div>
+</div>

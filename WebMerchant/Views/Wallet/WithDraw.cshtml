@@ -14,17 +14,23 @@
     </script>
 }
 
-<h2 class="mb-3">Payment</h2>
-<h3 class="mt-3 mb-4">@ViewData["Title"]</h3>
-<div class="mb-5 bg-white rounded">
-    <div class="payment">
+
+@section Top{
+    <div class="page-title">
+        <div class="h1"> Thông tin ví</div>
+        <span class=" h3 text-secondary px-2">/</span>
+        <h1 class=" h3 text-secondary">@ViewData["Title"]</h1>
+
+    </div>
+}
+
         <div class="row">
             <div class="col-lg-12">
                 <nav>
                     <div class="nav nav-tabs nav-campaign" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" href="">RÚT TIỀN</a>
+                        <a class="nav-item nav-link active" href="">Rút tiền</a>
 
-                        <a class="nav-item nav-link" href="@Url.Action("History", new { type = TransactionType.WalletWithdraw })">LỊCH SỬ</a>
+                        <a class="nav-item nav-link" href="@Url.Action("History", new { type = TransactionType.WalletWithdraw })">Lịch sử</a>
                     </div>
                 </nav>
                 <div class="tab-content mt-3" id="nav-tabContent">
@@ -99,6 +105,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 

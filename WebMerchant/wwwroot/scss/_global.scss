@@ -1,6 +1,7 @@
 ﻿.sidebar {
     background: $primary;
-    width:320px;
+    width: 320px;
+
     .logo {
         text-align: center;
         display: block;
@@ -20,7 +21,7 @@
         border-color: $white;
     }
 }
- 
+
 
 .page-title {
     color: $primary;
@@ -31,9 +32,10 @@
     display: flex;
 }
 
-.btn{
+.btn {
     @extend .btn-rounded;
 }
+
 .main {
     padding: 2rem;
     min-height: 100vh;
@@ -63,7 +65,14 @@
             border-bottom: 2px solid $primary;
         }
     }
+
+    &.nav-px-sm {
+        .nav-link {
+            padding: .5rem ;
+        }
+    }
 }
+
 
 .notif-link {
 
@@ -72,9 +81,15 @@
         font-weight: $font-weight-bold;
     }
 }
+
 .modal-dialog {
-   
+
     .modal-title {
         color: $primary;
     }
+}
+
+.custom-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }

@@ -1,0 +1,42 @@
+﻿@model CampaignType
+
+
+        <div class="card">
+            @if (Model == CampaignType.ShareContent)
+            {
+                <img src="~/img/banner_share_no_caption.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.ChangeAvatar)
+            {
+                <img src="~/img/banner_share_change_avatar.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.JoinEvent)
+            {
+                <img src="~/img/banner_share_joinevent_checkin.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.CustomService)
+            {
+                <img src="~/img/banner_share_other.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.ReviewProduct)
+            {
+                <img src="~/img/banner_share_review_product.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.ShareContentWithCaption)
+            {
+                <img src="~/img/banner_share_with_caption.png" class="card-img rounded-0" />
+            }
+            @if (Model == CampaignType.ShareStreamUrl)
+            {
+                <img src="~/img/banner_share_link_livestream.png" class="card-img rounded-0" />
+            }
+            <div class="card-img-overlay">
+                <div class="row  text-dark">
+                    <div class="col-5 p-5 ">
+                        <div class="h2"> @Model.ToText()</div>
+                        <p>@Model.ToDescription()</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
