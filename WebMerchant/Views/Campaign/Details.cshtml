@@ -10,58 +10,71 @@
 @section Top{
     <div class="page-title">
         <div class="h1" > Chiến dịch  </div>
-
         <span class=" h3 text-secondary px-2">/</span>
         <h1 class=" h3 text-secondary">@ViewData["Title"]</h1>
-        
+        <a class="btn btn-danger ml-auto" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
     </div>
 }
 
-<h3 class="mt-4 mb-4">Chiến dịch: @Model.Title</h3>
+<h3 class="mt-4 mb-4 text-grey">Chiến dịch: @Model.Title</h3>
 
 <div class="mb-5 bg-white rounded campaigndetails">
 
     <partial name="_DetailsNavPartial" model="Model" />
 
+    @{ int stt = 0;}
     <div class="tab-content" id="nav-tab-content-campaign">
         <div class="tab-pane fade active show" id="nav-campaign-detail" role="tabpanel">
 
             <div class="card card-body  border-0">
 
                 <div class="row info">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="mb-2">
-                            <strong class="mr-2"> Mã chiến dịch:</strong><span>@Model.Code</span>
+                            <h4 class="mr-2">1. Mã chiến dịch:</h4><span>@Model.Code</span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Tên chiên dịch:</strong>
+                            <h4 class="mr-2">2. Tên chiên dịch:</h4>
                             <span>
                                 @Model.Title
                             </span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Trạng thái:</strong>@Model.Status.ToBadge()
+                            <h4 class="mr-2">3. Trạng thái:</h4>@Model.Status.ToBadge()
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
+                            <h4 class="mr-2">4. Tổng phí:</h4> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                            <h4 class="mr-2">5. Đã thanh toán:</h4> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2"> Còn lại:</strong>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
+                            <h4 class="mr-2">6. Còn lại:</h4>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
                         </div>
                         <div class="mb-2">
-                            <strong class="mr-2">Ngày tạo:</strong> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
+                            <h4 class="mr-2">7. Ngày tạo:</h4> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
                         </div>
                         @if (Model.DateStart.HasValue)
                         {
 
                             <div class="mb-2">
-                                <strong class="mr-2"> Thời gian nhận đăng ký:</strong>
+                                <h4 class="mr-2">8. Thời gian nhận đăng ký:</h4>
                                 <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
                                 <span class="text-info">
                                     @Model.DateEnd.Value.ToViDateTime()
+                                </span>
+                            </div>
+                            stt = 8;
+                        }
+                        @if (Model.ExecutionStart.HasValue)
+                        {
+                            stt++;
+
+                            <div class="mb-2">
+                                <h4 class="mr-2">@stt. Thời gian thực hiện:</h4>
+                                <span class="text-info">@Model.ExecutionStart.Value.ToViDateTime()</span> -
+                                <span class="text-info">
+                                    @Model.ExecutionEnd.Value.ToViDateTime()
                                 </span>
                             </div>
                         }
@@ -69,9 +82,9 @@
                         {
                             if (Model.FeedbackStart.HasValue)
                             {
-
+                                stt++;
                                 <div class="mb-2">
-                                    <strong class="mr-2"> Thời gian gửi nội dung</strong>
+                                    <h4 class="mr-2">@stt. Thời gian gửi nội dung</h4>
                                     <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
                                     <span class="text-info">
                                         @Model.FeedbackEnd.Value.ToViDateTime()
@@ -79,19 +92,9 @@
                                 </div>
                             }
                         }
-                        @if (Model.ExecutionStart.HasValue)
-                        {
-
-                            <div class="mb-2">
-                                <strong class="mr-2"> Thời gian thực hiện:</strong>
-                                <span class="text-info">@Model.ExecutionStart.Value.ToViDateTime()</span> -
-                                <span class="text-info">
-                                    @Model.ExecutionEnd.Value.ToViDateTime()
-                                </span>
-                            </div>
-                        }
                         <div class="mb-2">
-                            <strong class="mr-2"> Loại chiến dịch:</strong>
+                            @{stt++;}
+                            <h4 class="mr-2">@stt. Loại chiến dịch:</h4>
 
                             <span class="text-primary"> @Model.Type.ToDisplayName()</span>
 
@@ -130,47 +133,50 @@
                             </div>
                         }
 
-
+                        @{ stt++;}
                         <div class="mb-2">
-                            <strong class="mr-2"> Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch:</strong><br>
+                            <h4 class="mr-2">@stt. Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch:</h4><br>
                             <span>
                                 @Model.Description
                             </span>
                         </div>
                         @*<div class="mb-2">
-                                <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
-                                <span>
-                                    Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
-                                    <span>
-                                    </span>
-                                </span>
-                            </div>*@
+            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
+            <span>
+                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
+                <span>
+                </span>
+            </span>
+        </div>*@
                     </div>
 
                     <div class="col-md-6">
-
+                        @{ stt++;}
                         <div class="mb-2">
-                            <strong class="mr-2"> Số lượng người cần:</strong>
+                            <h4 class="mr-2">@stt. Số lượng người cần:</h4>
                             <span>
                                 @Model.Quantity
                             </span>
                         </div>
+                        @{ stt++;}
                         <div class="mb-2">
-                            <strong class="mr-2"> Chi phí tối thiểu:</strong>
+                            <h4 class="mr-2">@stt. Chi phí tối thiểu:</h4>
                             <span class="text-danger">
                                 @Model.AmountMin.ToPriceText()
                             </span>
                         </div>
+                        @{ stt++;}
                         <div class="mb-2">
-                            <strong class="mr-2"> Chi phí tối đa:</strong>
+                            <h4 class="mr-2">@stt. Chi phí tối đa:</h4>
                             <span class="text-danger">
                                 @Model.AmountMax.ToPriceText()
                             </span>
                         </div>
                         @if (!string.IsNullOrEmpty(Model.Requirement))
                         {
+                            stt++;
                             <div class="mb-2">
-                                <strong class="mr-2"> Yêu cầu về chiến dịch:</strong><br>
+                                <h4 class="mr-2">@stt. Yêu cầu về chiến dịch:</h4><br>
                                 <span>
                                     @Model.Requirement
                                 </span>
@@ -181,7 +187,8 @@
                         {
 
                             <div class="mb-2">
-                                <strong class="mr-2"> Nội dung mẫu:</strong><br>
+                                @{ stt++;}
+                                <h4 class="mr-2">@stt. Nội dung mẫu:</h4><br>
                                 <span>
 
                                     @Model.SampleContentText
@@ -192,7 +199,8 @@
                         {
 
                             <div class="mb-2">
-                                <strong class="mr-2">  Ảnh mẫu:</strong><br>
+                                @{ stt++;}
+                                <h4 class="mr-2">@stt. Ảnh mẫu:</h4><br>
                                 <ul class="list-inline">
                                     @foreach (var imgItem in Model.SampleContent)
                                     {
@@ -209,7 +217,8 @@
                         {
 
                             <div>
-                                <strong class="mr-2">  Ảnh chiến dịch cung cấp:</strong><br>
+                                @{ stt++;}
+                                <h4 class="mr-2">@stt.  Ảnh chiến dịch cung cấp:</h4><br>
 
                                 <ul class="list-inline">
                                     @foreach (var imgItem in Model.Image)
@@ -225,9 +234,9 @@
 
                         @if (Model.Hashtag.Count > 0)
                         {
-
+                            stt++;
                             <div class="mb-2">
-                                <strong class="mr-2"> HashTag:</strong><br>
+                                <h4 class="mr-2">@stt. HashTag:</h4><br>
                                 <span>
                                     @foreach (var item in Model.Hashtag)
                                     {
@@ -236,19 +245,20 @@
                                 </span>
                             </div>
                         }
-                        <div class="mb-2">
-                            <strong class="mr-2">Đối tượng tham gia:</strong>
-                            <span>
-                                @foreach (var item in Model.AccountTypes)
-                                {
-                                    <strong>@item.ToDisplayName()</strong>
-                                }
-                            </span>
-                        </div>
+                            <div class="mb-2">
+                                @{ stt++;}
+                                <h4 class="mr-2">@stt. Đối tượng tham gia:</h4>
+                                <span>
+                                    @foreach (var item in Model.AccountTypes)
+                                    {
+                                        <strong>@item.ToDisplayName()</strong>
+                                    }
+                                </span>
+                            </div>
                         @if (Model.CountOption > 0)
                         {
                             <div class="mb-2">
-                                <strong class="mr-2">  Tiêu chí:</strong><br>
+                                <h4 class="mr-2">@stt.  Tiêu chí:</h4><br>
                                 <ul>
                                     @if (Model.Gender.HasValue)
                                     {
@@ -342,7 +352,7 @@
                                 }
                                 else
                                 {
-                                    <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng ban quản trị duyệt yêu cầu rút tiền</div>
+                                    <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng chờ ban quản trị duyệt yêu cầu rút tiền</div>
                                 }
 
                             }

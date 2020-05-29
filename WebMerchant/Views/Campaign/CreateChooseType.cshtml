@@ -3,35 +3,41 @@
     ViewData["Title"] = "Tạo chiến dịch";
     var typeArr = StringHelper.GetEnumArray<CampaignType>();
 }
- 
+
+@section Top{
+<div class="page-title">
+    <div class="h1">  @ViewData["Title"]</div>
+    <a class="btn btn-danger ml-auto" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>    
+</div>
+}
 <h3 class=" text-primary mb-3 h3">Bước 1: Chọn loại chiến dịch</h3>
 
 <div class="row row-cols-1 row-cols-md-3">
-    
-        @foreach (var item in typeArr)
-        {
-            <div class="col mb-4">
-                @{var img = item.ToShortName();}
-                
-                    <div class="card ">
-                        <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
-                            <img src="@img"   class="card-img-top rounded-0" alt="@item.ToDisplayName()">
-                        </a>
-                        <div class="card-body" style="height:190px;">
-                            <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link h2-black">
-                                <h2 class="card-title h3">
-                                    @item.ToDisplayName()
-                                </h2>
-                            </a>
-                            <p class="card-text">
-                                @item.ToDescription()
-                            </p>
-                        </div>
-                    </div>
-                
+
+    @foreach (var item in typeArr)
+    {
+        <div class="col mb-4">
+            @{var img = item.ToShortName();}
+
+            <div class="card shadow-sm">
+                <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link">
+                    <img src="@img" class="card-img-top rounded-0" alt="@item.ToDisplayName()">
+                </a>
+                <div class="card-body" style="height:190px;">
+                    <a href="@Url.Action("Create", new { campaignType = item })" class="campaign-link h2-black">
+                        <h2 class="card-title h3">
+                            @item.ToDisplayName()
+                        </h2>
+                    </a>
+                    <p class="card-text">
+                        @item.ToDescription()
+                    </p>
+                </div>
             </div>
-        }
-    
+
+        </div>
+    }
+
 </div>
 
 

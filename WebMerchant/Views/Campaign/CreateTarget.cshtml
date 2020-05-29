@@ -16,6 +16,12 @@
 }
 
 
+@section Top{
+    <div class="page-title">
+        <div class="h1">  @ViewData["Title"]</div>
+        <a class="btn btn-danger ml-auto" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+}
 <h3 class="text-primary mb-3 h3">Bước 3: Yêu cầu về đối tượng của chiến dịch</h3>
 
 
@@ -226,7 +232,7 @@
 
 
     @if (campaignType == CampaignType.ShareContent || campaignType == CampaignType.ShareContentWithCaption ||
-    campaignType == CampaignType.ReviewProduct)
+   campaignType == CampaignType.ReviewProduct)
     {
         <h6 style="font-weight:bold;">3. Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
 

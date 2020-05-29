@@ -11,10 +11,16 @@
             <a class="btn btn-danger btn-lg-radius" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
         </div>
     </div>*@
+@section Top{
+    <div class="page-title">
+        <div class="h1">  @ViewData["Title"]</div>
+        <a class="btn btn-danger ml-auto" asp-controller="Campaign" asp-action="Create">Tạo chiến dịch</a>
+    </div>
+}
 <h3 class="mb-3 text-primary h3">Bước 2: Thông tin về chiến dịch</h3>
 
 
-<partial name="_CreateCampaignBanner"  model="@campaignType" />
+<partial name="_CreateCampaignBanner" model="@campaignType" />
 
 
 <form class="form-create-campaign" asp-action="CreateInfo">

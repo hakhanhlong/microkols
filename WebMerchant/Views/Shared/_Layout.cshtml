@@ -1,12 +1,22 @@
-﻿<!DOCTYPE html>
-
+﻿@{ string title = Convert.ToString(ViewData["Title"]);}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Merchant</title>
-    <partial name="_StylePartial" />  
+    @if (!string.IsNullOrEmpty(title))
+    {
+        <title>@title - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
+    else
+    {
+        <title>Doanh nghiệp - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
+
+    <partial name="_StylePartial" />
     @RenderSection("Styles", required: false)
+    <link href="/img/favicon.png" type="image/png" rel="shortcut icon" />
+
 </head>
 <body>
 
@@ -28,8 +38,12 @@
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        <h1 class="page-title">@title</h1>
+                    }
 
-                    <h1 class="page-title">@ViewData["Title"]</h1>
+
                 }
 
                 <alert></alert>
@@ -42,28 +56,28 @@
 
     @*<partial name="_HeaderPartial" />
 
-    @RenderSection("Top", required: false)
+        @RenderSection("Top", required: false)
 
-    <nav class="navbar sticky-top flex-md-nowrap p-0">
-        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 py-4" href="/">
-            <img src="~/img//merchant_logo.png" />
-        </a>
-        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
-                data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
+        <nav class="navbar sticky-top flex-md-nowrap p-0">
+            <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 py-4" href="/">
+                <img src="~/img//merchant_logo.png" />
+            </a>
+            <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+                    data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <partial name="_SidebarPartial" />
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ml-5 pl-5 pr-5" style="margin-top:-10px;">
-                <alert></alert>
-                @RenderBody()
-            </main>
+        <div class="container-fluid">
+            <div class="row">
+                <partial name="_SidebarPartial" />
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ml-5 pl-5 pr-5" style="margin-top:-10px;">
+                    <alert></alert>
+                    @RenderBody()
+                </main>
 
-        </div>
-    </div>*@
+            </div>
+        </div>*@
 
 
     <div class="modal fade " id="imagemodal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:99999999">
