@@ -33,7 +33,7 @@ namespace WebInfluencer.Controllers
         {
             //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
 
-            return View();
+            return RedirectToAction("MarketPlace","Campaign");
         }
 
         

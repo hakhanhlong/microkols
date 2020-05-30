@@ -27,7 +27,7 @@ namespace WebMerchant.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Campaign");
         }
 
 

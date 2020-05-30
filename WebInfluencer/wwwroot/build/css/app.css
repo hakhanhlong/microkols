@@ -7196,6 +7196,16 @@ a.text-dark:hover, a.text-dark:focus {
 .modal-dialog .modal-title {
   color: #2D9CDB; }
 
+a:hover {
+  text-decoration: none; }
+
+.sidebar-sticky {
+  width: 80%;
+  margin: 0 auto; }
+
+.sidebar-sticky ul li a:hover {
+  font-weight: bold; }
+
 .field-validation-error {
   color: red; }
 

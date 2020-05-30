@@ -78,3 +78,16 @@
         color: $primary;
     }
 }
+
+a:hover {
+    text-decoration: none;
+}
+
+.sidebar-sticky {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.sidebar-sticky ul li a:hover {
+    font-weight: bold;
+}

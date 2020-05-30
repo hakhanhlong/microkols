@@ -1,15 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@{ string title = Convert.ToString(ViewData["Title"]);}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Influencer</title>
+    @if (!string.IsNullOrEmpty(title))
+    {
+        <title>@title - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
+    else
+    {
+        <title>Người ảnh hưởng - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
     <partial name="_StylePartial" />
     @RenderSection("Styles", required: false)
+    <link href="/img/favicon.png" type="image/png" rel="shortcut icon" />
 </head>
 <body>
 
-    <div >
+    <div>
 
 
 
@@ -18,7 +27,7 @@
 
                 <partial name="_HeaderPartial" />
 
-            </div> 
+            </div>
 
             <main role="main" class="flex-grow-1 px-3">
 
@@ -43,7 +52,7 @@
 
     </div>
 
-    
+
     <partial name="_FooterPartial" />
 
 
