@@ -38,6 +38,9 @@ namespace BackOffice
 
             services.AddScoped<ISettingRepository, SettingRepository>();
 
+            services.AddScoped<IVideoGalleryRepository, VideoGalleryRepository>();
+            services.AddScoped<IQnARepository, QnARepository>();
+
             services.AddScoped<INotificationService, NotificationService>();
 
             

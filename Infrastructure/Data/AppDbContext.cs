@@ -52,6 +52,9 @@ namespace Infrastructure.Data
 
         public virtual DbSet<Setting> Setting { get; set; }
 
+        public virtual DbSet<QnA> QnA { get; set; }
+        public virtual DbSet<VideoGallery> VideoGallery { get; set; }
+
 
         public virtual DbSet<Transaction> Transaction { get; set; }
         public virtual DbSet<TransactionHistory> TransactionHistory { get; set; }
