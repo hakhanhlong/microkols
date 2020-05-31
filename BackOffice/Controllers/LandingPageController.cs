@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using WebServices.Interfaces;
 using WebServices.ViewModels;
 
 namespace BackOffice.Controllers
@@ -13,10 +14,12 @@ namespace BackOffice.Controllers
     {
 
         private readonly IQnARepository _IQnARepository;
+        private readonly IQnAService _IQnAService;
 
-        public LandingPageController(IQnARepository __IQnARepository)
+        public LandingPageController(IQnARepository __IQnARepository, IQnAService __IQnAService)
         {
             _IQnARepository = __IQnARepository;
+            _IQnAService = __IQnAService;
         }
 
         public IActionResult Index()
@@ -64,7 +67,43 @@ namespace BackOffice.Controllers
 
         }
 
-
+        [HttpPost]
+        public async Task<IActionResult> UpdateQnA(QnAViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                if (model.Id > 0) //edit
+                {
+                    model.UserModified = HttpContext.User.Identity.Name;
+                    var retValue = await _IQnAService.Update(model);
+                    if(retValue > 0) {
+                        TempData["MessageSuccess"] = string.Format("{0}", "Thay đổi QnA thành công");
+                    }
+                    else {
+                        TempData["MessageError"] = string.Format("{0}", "Thay đổi QnA không thành công");
+                    }
+                }
+                else //insert
+                {
+                    model.UserCreated = model.UserModified = HttpContext.User.Identity.Name;
+                    var retValue = await _IQnAService.Create(model);
+                    if (retValue > 0)
+                    {
+                        TempData["MessageSuccess"] = string.Format("{0}", "Thêm mới QnA thành công");
+                    }
+                    else
+                    {
+                        TempData["MessageError"] = string.Format("{0}", "Thêm mới QnA không thành công");
+                    }
+                }
+            }
+            else
+            {
+                TempData["MessageError"] = string.Format("{0}", "ModelState Invalid");
+            }
+            return View(model);
+        }
 
         #endregion
 

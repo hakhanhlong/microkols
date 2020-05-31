@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "QnA";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model WebServices.ViewModels.ListQnAViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        QnA Listing
+    </h3>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            QnA Listing
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Câu hỏi
+                                    </th>
+                                    <th>
+                                        Nội dung
+                                    </th>
+                                    <th>
+                                        Trạng thái
+                                    </th>
+                                    <th>
+                                        Ngày thay đổi
+                                    </th>
+                                    <th>
+                                        Người thay đổi
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    int count = 0;
+                                  
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>

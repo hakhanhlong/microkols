@@ -9,6 +9,22 @@ namespace WebServices.ViewModels
 {
     public class QnAViewModel
     {
+        public QnAViewModel() { }
+
+        public QnAViewModel(QnA q) {
+            Id = q.Id;
+            Question = q.Question;
+            Answer = q.Answer;
+            Type = q.Type;
+            IsActive = q.IsActive;
+            Order = q.Order;
+            DateCreated = q.DateCreated;
+            DateModified = q.DateModified;
+            UserCreated = q.UserCreated;
+            UserModified = q.UserModified;
+        }
+
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
