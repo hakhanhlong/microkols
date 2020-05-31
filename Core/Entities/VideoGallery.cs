@@ -8,6 +8,9 @@ namespace Core.Entities
     {
         public string ImageURL { get; set; }
         public string VideoEmbed { get; set; }
+
+        public string EmbedKey { get; set; }
+
         public bool IsActive { get; set; }
         public int Order { get; set; }
     }

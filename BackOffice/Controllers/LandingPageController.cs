@@ -28,9 +28,10 @@ namespace BackOffice.Controllers
         }
 
         #region QnA
-        public IActionResult QnA(QnAType? type, int pageindex = 1)
+        public async Task<IActionResult> QnA(QnAType? type, int pageindex = 1)
         {
-            return View();
+            var list = await _IQnAService.GetByType(type, true, pageindex);
+            return View(list);
         }
 
         public IActionResult CreateQnA()
@@ -105,6 +106,14 @@ namespace BackOffice.Controllers
             return View(model);
         }
 
+        #endregion
+
+        #region Video Gallery
+        public async Task<IActionResult> VideoGallery(int pageindex = 1)
+        {
+            
+            return View();
+        }
         #endregion
 
 

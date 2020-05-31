@@ -35,10 +35,10 @@
                                     <th>
                                         #
                                     </th>
-                                    <th>
+                                    <th style="width:120px;">
                                         Câu hỏi
                                     </th>
-                                    <th>
+                                    <th style="width:720px;">
                                         Nội dung
                                     </th>
                                     <th>
@@ -56,10 +56,30 @@
                                 @if (Model != null)
                                 {
                                     int count = 0;
-                                  
+                                    foreach (var item in Model.List_QnA)
+                                    {
+                                        count++;
+                                        <tr>
+                                            <td>@count</td>
+                                            <td>@item.Order</td>
+                                            <td>
+                                                <strong>
+                                                    <a href="/LandingPage/UpdateQnA/?id=@item.Id">@item.Question</a>
+                                                </strong>
+                                                <br />
+                                                <p>
+                                                    @item.Answer
+                                                </p>
+                                            </td>
+                                            <td>@item.IsActive</td>
+                                            <td>@item.DateModified</td>
+                                            <td>@item.UserModified</td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
+                        <pagerservice pager="@Model.Pager" asp-action="QnA" asp-route-type="@Context.Request.Query["type"]"></pagerservice>
                     </div>
                 </div>
                 <!--end::Section-->
