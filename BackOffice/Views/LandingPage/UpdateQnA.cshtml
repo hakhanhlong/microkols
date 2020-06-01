@@ -92,9 +92,9 @@
                             Thuộc loại
                         </label>
                         <select asp-for="Type" class="form-control">
-                            <option value="1">Câu hỏi chung</option>
-                            <option value="2">Doanh nghiệp</option>
-                            <option value="3">Người ảnh hưởng</option>
+                            <!option value="1" @(Model.Type == QnAType.General?"selected":"")>Câu hỏi chung</!option>
+                            <!option value="2" @(Model.Type == QnAType.Merchant?"selected":"")>Doanh nghiệp</!option>
+                            <!option value="3" @(Model.Type == QnAType.Influencer?"selected":"")>Người ảnh hưởng</!option>
                         </select>
                     </div>
                     <div class="m-form__group form-group">

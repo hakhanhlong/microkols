@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,6 +25,9 @@ namespace WebLandingPage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            AppConstants.RESOURCE_SERVER = Configuration.GetValue<string>("AppHelpers::RESOURCE_SERVER");
+            AppConstants.RESOURCE_PATH = Configuration.GetValue<string>("AppHelpers::RESOURCE_PATH");
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -31,6 +35,10 @@ namespace WebLandingPage
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            
+            var connection = Configuration.GetConnectionString("AppContext");
+            services.AddDbContext<Infrastructure.Data.AppDbContext>(options => options.UseSqlServer(connection));
+            services.AddAppServices();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

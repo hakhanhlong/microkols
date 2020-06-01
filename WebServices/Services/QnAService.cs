@@ -21,7 +21,7 @@ namespace WebServices.Services
         public async Task<ListQnAViewModel> GetByType(QnAType? type, bool isActive, int pageindex)
         {
             var filter = new QnASpecification(type, isActive);
-            var list = await _IQnARepository.ListPagedAsync(filter, "", pageindex, 25);
+            var list = await _IQnARepository.ListPagedAsync(filter, "", pageindex, 50);
             var total = await _IQnARepository.CountAsync(filter);
 
             return new ListQnAViewModel()

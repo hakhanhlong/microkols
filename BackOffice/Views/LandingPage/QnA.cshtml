@@ -30,7 +30,7 @@
 <div class="row">
     <div class="col-xl-12">
         <!--begin::Portlet-->
-        <div class="m-portlet">
+        <div class="m-portlet m-portlet--tabs">
             <div class="m-portlet__head">
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
@@ -38,6 +38,25 @@
                             QnA Listing
                         </h3>
                     </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line  m-tabs-line--right m-tabs-line--info" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "general"?"active":"")" href="/landingpage/qna/?type=general" role="tab" aria-selected="true">
+                                Câu hỏi chung
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "merchant"?"active":"")" href="/landingpage/qna/?type=merchant" role="tab" aria-selected="true">
+                                Doanh nghiệp
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "influencer"?"active":"")" href="/landingpage/qna/?type=influencer" role="tab" aria-selected="true">
+                                Người ảnh hưởng
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div class="m-portlet__body">

@@ -60,7 +60,8 @@ namespace BackOffice.Controllers
                         Question = qna.Question,
                         Answer = qna.Answer,
                         IsActive = qna.IsActive,
-                        Order = qna.Order
+                        Order = qna.Order,
+                        Type = qna.Type
                     });
 
                 }

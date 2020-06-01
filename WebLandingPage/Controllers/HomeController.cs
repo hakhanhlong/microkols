@@ -5,11 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebLandingPage.Models;
+using WebServices.Interfaces;
 
 namespace WebLandingPage.Controllers
 {
     public class HomeController : Controller
     {
+
+        private readonly IQnAService _IQnAService;
+        private readonly IVideoGalleryService _IVideoGalleryService;
+        public HomeController(IQnAService __IQnAService, IVideoGalleryService __IVideoGalleryService) {
+            _IQnAService = __IQnAService;
+            _IVideoGalleryService = __IVideoGalleryService;
+
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -22,14 +32,23 @@ namespace WebLandingPage.Controllers
 
 
         [Route("agency.html")]
-        public IActionResult Agency()
+        public async Task<IActionResult> Agency()
         {
+            ViewBag.QnAGeneral = (await _IQnAService.GetByType(Core.Entities.QnAType.General, true, 1)).List_QnA;
+            ViewBag.QnAInfluencer = (await _IQnAService.GetByType(Core.Entities.QnAType.Influencer, true, 1)).List_QnA;
+            ViewBag.QnAMerchant = (await _IQnAService.GetByType(Core.Entities.QnAType.Merchant, true, 1)).List_QnA;
+
             return View();
         }
 
         [Route("influencer.html")]
-        public IActionResult Influencer()
+        public async Task<IActionResult> Influencer()
         {
+
+            ViewBag.QnAGeneral = (await _IQnAService.GetByType(Core.Entities.QnAType.General, true, 1)).List_QnA;
+            ViewBag.QnAInfluencer = (await _IQnAService.GetByType(Core.Entities.QnAType.Influencer, true, 1)).List_QnA;
+            ViewBag.QnAMerchant = (await _IQnAService.GetByType(Core.Entities.QnAType.Merchant, true, 1)).List_QnA;
+
             return View();
         }
 
@@ -55,8 +74,12 @@ namespace WebLandingPage.Controllers
         }
 
         [Route("qna.html")]
-        public IActionResult QnA()
+        public async Task<IActionResult> QnA()
         {
+            ViewBag.QnAGeneral = (await _IQnAService.GetByType(Core.Entities.QnAType.General, true, 1)).List_QnA;
+            ViewBag.QnAInfluencer = (await _IQnAService.GetByType(Core.Entities.QnAType.Influencer, true, 1)).List_QnA;
+            ViewBag.QnAMerchant = (await _IQnAService.GetByType(Core.Entities.QnAType.Merchant, true, 1)).List_QnA;
+
             return View();
         }
 
