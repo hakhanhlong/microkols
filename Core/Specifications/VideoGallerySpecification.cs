@@ -9,5 +9,10 @@ namespace Core.Specifications
     {
         public VideoGallerySpecification(bool isActive) : base(m => m.IsActive == isActive)
         { }
+
+        public VideoGallerySpecification() : base(m => m.Id > 0)
+        { }
+
+
     }
 }

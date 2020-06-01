@@ -65,6 +65,7 @@ namespace BackOffice
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IAgencyService, AgencyService>();
             services.AddScoped<IQnAService, QnAService>();
+            services.AddScoped<IVideoGalleryService, VideoGalleryService>();
 
 
             services.AddScoped<ISharedService, SharedService>();

@@ -9,16 +9,16 @@ namespace BackOffice.CommonHelpers
     {
    
 
-        public string ResourceServer { get; set; }
-        public string ResourcePath { get; set; }
-        public string ResourceTempDir { get; set; }
+        public static string RESOURCE_SERVER { get; set; }
+        public static string RESOURCE_PATH { get; set; }
+        public static string ResourceTempDir { get; set; }
 
         public string GetImageUrl(string path)
         {
             if (!string.IsNullOrEmpty(path))
             {
                 if (path.StartsWith("http")) return path;
-                return $"{ResourceServer}/{path}";
+                return $"{RESOURCE_SERVER}/{path}";
             }
             return string.Empty;
 

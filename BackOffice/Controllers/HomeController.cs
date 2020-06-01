@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using BackOffice.Models;
 using Microsoft.AspNetCore.Authorization;
 using BackOffice.Business.Interfaces;
+using Microsoft.AspNetCore.Http;
+using BackOffice.CommonHelpers;
 
 namespace BackOffice.Controllers
 {
@@ -45,5 +47,34 @@ namespace BackOffice.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ImageUpload(IFormFile file, string path = "VideoGallery")
+        {
+
+            if (file != null)
+            {
+                var image = await FileHelpers.UploadFile(file, path);
+
+                if (!string.IsNullOrEmpty(image))
+                {
+                    return Ok(new
+                    {
+                        status = 1,
+                        image = image
+                    });
+                }
+            }
+
+            return Ok(new
+            {
+                status = 0,
+                message = "Không đúng định dạng ảnh",
+            });
+        }
+
+
     }
 }
