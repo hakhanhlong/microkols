@@ -25,8 +25,8 @@ namespace WebLandingPage
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AppConstants.RESOURCE_SERVER = Configuration.GetValue<string>("AppHelpers::RESOURCE_SERVER");
-            AppConstants.RESOURCE_PATH = Configuration.GetValue<string>("AppHelpers::RESOURCE_PATH");
+            AppConstants.RESOURCE_SERVER = Configuration.GetValue<string>("AppHelpers:RESOURCE_SERVER");
+            AppConstants.RESOURCE_PATH = Configuration.GetValue<string>("AppHelpers:RESOURCE_PATH");
 
             services.Configure<CookiePolicyOptions>(options =>
             {

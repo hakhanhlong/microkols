@@ -38,6 +38,11 @@ namespace WebLandingPage.Controllers
             ViewBag.QnAInfluencer = (await _IQnAService.GetByType(Core.Entities.QnAType.Influencer, true, 1)).List_QnA;
             ViewBag.QnAMerchant = (await _IQnAService.GetByType(Core.Entities.QnAType.Merchant, true, 1)).List_QnA;
 
+
+
+
+            ViewBag.VideoGalleries = (await _IVideoGalleryService.GetByType(true, 1)).VideoGalleries;
+
             return View();
         }
 
@@ -82,12 +87,14 @@ namespace WebLandingPage.Controllers
 
             return View();
         }
-
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

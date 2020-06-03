@@ -14,7 +14,7 @@ namespace BackOffice.CommonHelpers
 
         public static void DeleteFile(string file)
         {
-            var filepath = $"{AppHelpers.RESOURCE_PATH}/{file}";
+            var filepath = $"{AppConstants.RESOURCE_PATH}/{file}";
             if (File.Exists(filepath))
             {
                 File.Delete(filepath);
@@ -36,7 +36,7 @@ namespace BackOffice.CommonHelpers
 
 
             var currentdir = !string.IsNullOrEmpty(path) ? path : Directory.GetCurrentDirectory();
-            var uploads = $"{AppHelpers.RESOURCE_PATH}/{folderCreate}"; // Path.Combine(AppConstants.RESOURCE_PATH ,folderCreate) ;
+            var uploads = $"{AppConstants.RESOURCE_PATH}/{folderCreate}"; // Path.Combine(AppConstants.RESOURCE_PATH ,folderCreate) ;
 
             if (!Directory.Exists(uploads))
                 Directory.CreateDirectory(uploads);

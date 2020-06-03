@@ -30,8 +30,10 @@ namespace BackOffice
         public void ConfigureServices(IServiceCollection services)
         {
 
-            AppConstants.RESOURCE_SERVER = Configuration.GetValue<string>("AppHelpers::RESOURCE_SERVER");
-            AppConstants.RESOURCE_PATH = Configuration.GetValue<string>("AppHelpers::RESOURCE_PATH");
+            AppConstants.RESOURCE_SERVER = Configuration["AppHelpers:RESOURCE_SERVER"];
+            AppConstants.RESOURCE_PATH = Configuration["AppHelpers:RESOURCE_PATH"];
+
+            
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -47,14 +49,7 @@ namespace BackOffice
             });
 
 
-            
-
-            
-
-          
-            
-
-
+                                             
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Database:MicroKOLsSecurity:ConnectionString"]));
 
