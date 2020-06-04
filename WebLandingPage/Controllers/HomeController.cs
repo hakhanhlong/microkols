@@ -54,6 +54,8 @@ namespace WebLandingPage.Controllers
             ViewBag.QnAInfluencer = (await _IQnAService.GetByType(Core.Entities.QnAType.Influencer, true, 1)).List_QnA;
             ViewBag.QnAMerchant = (await _IQnAService.GetByType(Core.Entities.QnAType.Merchant, true, 1)).List_QnA;
 
+            ViewBag.VideoGalleries = (await _IVideoGalleryService.GetByType(true, 1)).VideoGalleries;
+
             return View();
         }
 
