@@ -249,6 +249,7 @@ namespace WebMerchant.Controllers
         public async Task<IActionResult> Details(int id, string vt = "1", int tab = 0)
         {
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
+            
             if (model == null) return NotFound();
 
 

@@ -66,17 +66,17 @@
 
             <div class="card-body campaign-text ">
 
-                <strong>Giới thiệu:</strong>
+                <h5>Giới thiệu:</h5>
                 <p>
                     @Model.Campaign.Description
                 </p>
-                <strong>Công việc cần làm:</strong>
+                <h5>Công việc cần làm:</h5>
                 <p>
                     @Model.Campaign.Requirement
                 </p>
                 @if (!string.IsNullOrEmpty(Model.Campaign.Data))
                 {
-                    <strong>@Model.Campaign.Type.ToActionText():</strong>
+                    <h5>@Model.Campaign.Type.ToActionText():</h5>
                     <p>
                         <a target="blank" href="@Model.Campaign.Data">
                             @Model.Campaign.Data
@@ -87,7 +87,7 @@
                     var images = Model.Campaign.Image.ToListString();
                     if (images.Count > 0)
                     {
-                        <strong>Hình ảnh:</strong>
+                        <h5>Hình ảnh:</h5>
                         <ul class="list-inline">
                             @foreach (var imgItem in images)
                             {
@@ -103,7 +103,7 @@
                     var hashtags = Model.Campaign.Hashtag.ToListString();
                     if (hashtags.Count > 0)
                     {
-                        <strong>Hashtag</strong>
+                        <h5>Hashtag</h5>
                         <p>
                             @foreach (var item in Model.Campaign.Hashtag.Split('|'))
                             {
@@ -117,7 +117,7 @@
 
                 @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
                 {
-                    <strong> Thời gian đăng ký</strong>
+                    <h5> Thời gian đăng ký</h5>
                     <p>
                     </p><ul class="list-unstyled">
                         <li>  @Model.Campaign.DateStart.Value.ToViDateTime() -  @Model.Campaign.DateEnd.Value.ToViDateTime()</li>
@@ -132,7 +132,7 @@
                         if (Model.Campaign.Type == CampaignType.ReviewProduct)
                         {
 
-                            <strong> Thời gian viết nội dung</strong>
+                            <h5> Thời gian viết nội dung</h5>
                             <p>
                             </p><ul class="list-unstyled">
                                 <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
@@ -154,9 +154,9 @@
                     {
 
                         <div class="mb-2">
-                            <strong>
+                            <h5>
                                 @Model.Campaign.ReviewType.ToDisplayName()
-                            </strong>
+                            </h5>
 
 
                             @if (Model.Campaign.ReviewPayback.HasValue)
@@ -165,7 +165,7 @@
                             }
 
                             <br />
-                            <strong class="mr-2"> Địa điểm trả lại sản phẩm:</strong>
+                            <h5 class="mr-2"> Địa điểm trả lại sản phẩm:</h5>
                             @Model.Campaign.ReviewAddress
                         </div>
 
@@ -193,7 +193,7 @@
 
                 @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
                 {
-                    <strong> Thời gian thực hiện chiến dịch</strong>
+                    <h5> Thời gian thực hiện chiến dịch</h5>
                     <p>
                     </p><ul class="list-unstyled">
                         <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
@@ -204,7 +204,7 @@
                 @if (Model.Campaign.Type != CampaignType.ChangeAvatar && Model.Campaign.Type != CampaignType.JoinEvent)
                 {
 
-                    <strong>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</strong>
+                    <h5>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</h5>
 
                     <ul class="list-unstyled">
                         @if (!hasApply && !hasConfirmJoin)
@@ -251,12 +251,12 @@
                     var amountMax = Model.Campaign.GetAccountAmountMax();
                 }
 
-                <strong>Số lượng doanh nghiệp cần:</strong>
+                <h5>Số lượng doanh nghiệp cần:</h5>
                 <p>
                     @Model.Campaign.Quantity
                 </p>
 
-                <strong>Chi phí doanh nghiệp sẽ trả cho bạn:</strong>
+                <h5>Chi phí doanh nghiệp sẽ trả cho bạn:</h5>
                 <ul class="list-inline">
                     <li class="list-inline-item">
                         Chi phí tối thiểu: <span style="color: red">@amountMin.ToPriceText()</span>
@@ -271,7 +271,7 @@
                     {
 
                         <div>
-                            <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
+                            <h5 class="mb-2">Thu nhập mong muốn của bạn</h5>
 
                             <div class="text-danger">
                                 <strong>
@@ -285,7 +285,7 @@
                 else
                 {
                     <div class="mb-3">
-                        <strong class="mb-2">Thu nhập mong muốn của bạn</strong>
+                        <h5 class="mb-2">Thu nhập mong muốn của bạn</h5>
                         <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
 
 
@@ -308,7 +308,7 @@
                     var sampleimages = Model.Campaign.SampleContent.ToListString();
                     if (sampleimages.Count > 0)
                     {
-                        <strong>Hình ảnh bạn cần đăng cùng nội dung :</strong>
+                        <h5>Hình ảnh bạn cần đăng cùng nội dung :</h5>
                         <div>
 
                             @foreach (var item in sampleimages)
@@ -322,7 +322,7 @@
                 @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText))
                 {
 
-                    <strong>Nội dung mẫu  :</strong>
+                    <h5>Nội dung mẫu  :</h5>
 
                     <div>
                         @Model.Campaign.SampleContentText
