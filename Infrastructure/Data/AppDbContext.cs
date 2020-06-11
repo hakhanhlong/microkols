@@ -53,7 +53,14 @@ namespace Infrastructure.Data
         public virtual DbSet<Setting> Setting { get; set; }
 
         public virtual DbSet<QnA> QnA { get; set; }
+
+        public virtual DbSet<QnAVideo> QnAVideo { get; set; }
+        public virtual DbSet<QnAImage> QnAImage { get; set; }
+
+
         public virtual DbSet<VideoGallery> VideoGallery { get; set; }
+
+
 
 
         public virtual DbSet<Transaction> Transaction { get; set; }
@@ -82,6 +89,9 @@ namespace Infrastructure.Data
             builder.Entity<Transaction>(ConfigureTransaction);
             builder.Entity<TransactionHistory>(ConfigureTransactionHistory);
             builder.Entity<Wallet>(ConfigureWallet);
+
+            builder.Entity<QnAImage>(ConfigureQnAImage);
+            builder.Entity<QnAVideo>(ConfigureQnAVideo);
         }
 
 
@@ -138,8 +148,18 @@ namespace Infrastructure.Data
         private void ConfigureCampaignAccount(EntityTypeBuilder<CampaignAccount> builder)
         {
             builder.HasOne(m => m.Campaign).WithMany(m => m.CampaignAccount).HasForeignKey(m => m.CampaignId).OnDelete(DeleteBehavior.ClientSetNull);
-
         }
+
+        private void ConfigureQnAImage(EntityTypeBuilder<QnAImage> builder)
+        {
+            builder.HasOne(m => m.QnA).WithMany(m => m.QnAImage).HasForeignKey(m => m.QAId).OnDelete(DeleteBehavior.ClientSetNull);
+        }
+
+        private void ConfigureQnAVideo(EntityTypeBuilder<QnAVideo> builder)
+        {
+            builder.HasOne(m => m.QnA).WithMany(m => m.QnAVideo).HasForeignKey(m => m.QAId).OnDelete(DeleteBehavior.ClientSetNull);
+        }
+
         private void ConfigureCampaignAccountType(EntityTypeBuilder<CampaignAccountType> builder)
         {
 

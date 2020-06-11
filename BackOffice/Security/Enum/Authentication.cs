@@ -7,7 +7,9 @@ namespace BackOffice.Security.Enum
 {
     public enum Role
     {
-        Administratror
+        Administratror,
+        FinanceManager,
+        CampaignManager
     }
 
 

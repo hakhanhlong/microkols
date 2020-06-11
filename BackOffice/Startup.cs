@@ -55,9 +55,10 @@ namespace BackOffice
 
 
             var connection = Configuration.GetConnectionString("AppContext");
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultUI().AddDefaultTokenProviders();
 
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
 
