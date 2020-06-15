@@ -19,7 +19,7 @@ namespace WebInfluencer.Controllers
         private readonly ITransactionService _transactionService;
         private readonly IAccountService _accountService;
         private readonly ICampaignService _campaignService;
-        public WalletController(IWalletService walletService, ICampaignService campaignService, ITransactionService transactionService, IAccountService accountService)
+        public WalletController(IWalletService walletService, ICampaignService campaignService, ITransactionService transactionService, IAccountService accountService):base(accountService)
         {
             _transactionService = transactionService;
             _walletService = walletService;

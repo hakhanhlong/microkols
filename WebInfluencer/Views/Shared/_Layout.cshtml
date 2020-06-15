@@ -43,7 +43,35 @@
                         <h1 class="page-title">@ViewData["Title"]</h1>
                     }
 
-                    <alert></alert>
+                    @if (TempData["MessageSuccess"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>
+                                Success!
+                            </strong>
+                            @TempData["MessageSuccess"]
+                        </div>
+                    }
+
+                    @if (TempData["MessageInfo"] != null)
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <strong>
+                                Info!
+                            </strong>
+                            @TempData["MessageInfo"]
+                        </div>
+                    }
+
+                    @if (TempData["MessageError"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <strong>
+                                Error!
+                            </strong>
+                            @TempData["MessageError"]
+                        </div>
+                    }
 
                     @RenderBody()
                 </div>

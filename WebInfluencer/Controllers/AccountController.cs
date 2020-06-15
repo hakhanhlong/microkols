@@ -29,7 +29,7 @@ namespace WebInfluencer.Controllers
         private readonly IFacebookJob _facebookJob;
         public AccountController(IAccountService accountService, ISharedService sharedService,
             ICampaignService campaignService,
-            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob, INotificationService __INotificationService)
+            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob, INotificationService __INotificationService): base(accountService)
         {
             _campaignService = campaignService;
             _accountService = accountService;

@@ -788,6 +788,20 @@ namespace WebServices.Services
             return null;
         }
 
+        public bool CheckFilledBankAccount(int id)
+        {
+            var entity = _accountRepository.GetById(id);
+
+            if (entity != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+
         public async Task<bool> ChangeBankAccount(int id, ChangeBankAccountViewModel model, string username)
         {
             var entity = await _accountRepository.GetByIdAsync(id, false);

@@ -22,6 +22,7 @@ namespace WebInfluencer.Controllers
         private readonly ICampaignAccountContentService _campaignAccountContentService;
         private readonly ICampaignAccountStatisticService _campaignAccountStatisticService;
 
+        
 
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
@@ -33,7 +34,7 @@ namespace WebInfluencer.Controllers
             ICampaignAccountContentService campaignAccountContentService,
             ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService,
-            ICampaignService campaignService)
+            ICampaignService campaignService): base(accountService)
         {
             _campaignAccountCaptionService = campaignAccountCaptionService;
             _campaignAccountContentService = campaignAccountContentService;

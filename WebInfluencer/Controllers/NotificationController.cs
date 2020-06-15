@@ -13,10 +13,12 @@ namespace WebInfluencer.Controllers
     public class NotificationController : BaseController
     {
         private readonly INotificationService _notificationService;
+        private readonly IAccountService _accountService;
         private const int pagesize = 20;
-        public NotificationController(INotificationService notificationService)
+        public NotificationController(INotificationService notificationService, IAccountService __IAccountService):base(__IAccountService)
         {
             _notificationService = notificationService;
+            _accountService = __IAccountService;
         }
         #region Notification
         public async Task<IActionResult> Count()

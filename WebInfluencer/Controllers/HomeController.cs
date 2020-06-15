@@ -22,11 +22,15 @@ namespace WebInfluencer.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IFileHelper _fileHelper;
         private readonly ISharedService _sharedService;
-        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService)
+
+        private readonly IAccountService _accountService;
+
+        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService, IAccountService __IAccountService):base(__IAccountService)
         {
             _hostingEnvironment = hostingEnvironment;
             _fileHelper = fileHelper;
             _sharedService = sharedService;
+            _accountService = __IAccountService;
         }
 
         public IActionResult Index()

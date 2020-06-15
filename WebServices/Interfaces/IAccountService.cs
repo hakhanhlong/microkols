@@ -55,7 +55,7 @@ namespace WebServices.Interfaces
         Task<List<AccountCampaignChargeViewModel>> GetAccountCampaignCharges(int accountid);
         Task<bool> UpdateAccountCampaignCharge(int accountid, AccountCampaignChargeViewModel model);
 
-
+        bool CheckFilledBankAccount(int id);
 
         #region Account Provider
         Task<AccountProviderViewModel> GetAccountProviderByProvider(AccountProviderNames provider, string providerid, string newtoken);

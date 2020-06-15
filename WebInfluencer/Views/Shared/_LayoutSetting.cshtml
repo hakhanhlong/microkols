@@ -1,25 +1,35 @@
-﻿<!DOCTYPE html>
+﻿@{ string title = Convert.ToString(ViewData["Title"]);}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WebInfluencer</title>
+    @if (!string.IsNullOrEmpty(title))
+    {
+        <title>@title - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
+    else
+    {
+        <title>Người ảnh hưởng - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
+    }
     <partial name="_StylePartial" />
     @RenderSection("Styles", required: false)
+    <link href="/img/favicon.png" type="image/png" rel="shortcut icon" />
 </head>
-<body>
-    <div class="container-fluid">
+<body>    
+    <div>
 
-        <div class="row">
-            <div class="col-md-2 d-none d-md-block sidebar">
 
+
+        <div class="d-flex">
+            <div class="sidebar">
                 <partial name="_HeaderPartial" />
-
             </div>
 
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            
-                <div class="main">
+            <main role="main" class="flex-grow-1 px-3">
+
+                <div class="main container-fluid">
+
                     <h1 class="page-title">Thông tin tài khoản</h1>
 
                     <alert></alert>
@@ -59,9 +69,15 @@
 
 
 
+
+    <partial name="_FooterPartial" />
+
+
     @*<partial name="_CookieConsentPartial" />*@
     <partial name="_ScriptPartial" />
 
     @RenderSection("Scripts", required: false)
+
+    <partial name="_MessageModalPartial" />
 </body>
 </html>
