@@ -34,7 +34,7 @@ namespace WebInfluencer.Controllers
             ICampaignAccountContentService campaignAccountContentService,
             ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService,
-            ICampaignService campaignService): base(accountService)
+            ICampaignService campaignService)
         {
             _campaignAccountCaptionService = campaignAccountCaptionService;
             _campaignAccountContentService = campaignAccountContentService;
@@ -53,6 +53,17 @@ namespace WebInfluencer.Controllers
             ViewBag.Kw = kw;
             ViewBag.type = type;
             var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
+
+
+            try {
+                bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);
+                if(filledInfoBank == false)
+                {
+                    TempData["MessageInfo"] = "Bạn cần bổ xung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
+                }
+            }
+            catch { }
+
 
             return View(model);
         }

@@ -792,7 +792,7 @@ namespace WebServices.Services
         {
             var entity = _accountRepository.GetById(id);
 
-            if (entity != null)
+            if (!string.IsNullOrEmpty(entity.BankAccountBank) && !string.IsNullOrEmpty(entity.BankAccountName) && !string.IsNullOrEmpty(entity.BankAccountNumber))
             {
                 return true;
             }

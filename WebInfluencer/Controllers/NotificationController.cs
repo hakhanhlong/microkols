@@ -15,7 +15,7 @@ namespace WebInfluencer.Controllers
         private readonly INotificationService _notificationService;
         private readonly IAccountService _accountService;
         private const int pagesize = 20;
-        public NotificationController(INotificationService notificationService, IAccountService __IAccountService):base(__IAccountService)
+        public NotificationController(INotificationService notificationService, IAccountService __IAccountService)
         {
             _notificationService = notificationService;
             _accountService = __IAccountService;

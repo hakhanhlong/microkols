@@ -43,25 +43,7 @@ namespace WebInfluencer.Controllers
     }
     public class BaseController : BaseAuthController
     {
-
-        private readonly IAccountService _AccountService;
-        public BaseController(IAccountService __IAccountService)
-        {
-            _AccountService = __IAccountService;
-
-
-            //try {
-            //    var bankexist = _AccountService.CheckFilledBankAccount(CurrentUser.Id);
-            //    if(bankexist == false)
-            //    {
-            //        TempData["MessageInfo"] = "Bạn cần thực hiện điền thông tin tài khoản ngân hàng. <a href=\"/account/changeBankAccount\">Tại đây</a>";
-            //    }
-            //}
-            //catch { }
-                       
-
-        }
-
+     
         protected void SetMessageModal(string message, int type = 0)
         {
             TempData["MessageModal"] = message;

@@ -155,8 +155,7 @@ namespace Core.Entities
         public static string ToColorClass(this CampaignStatus status)
         {
             if (status == CampaignStatus.Started) return "warning";
-            if (status == CampaignStatus.Ended || 
-                 status == CampaignStatus.Locked) return "danger";
+            if (status == CampaignStatus.Ended || status == CampaignStatus.Locked || status == CampaignStatus.Canceled) return "danger";
             if (status == CampaignStatus.Created || status== CampaignStatus.Confirmed) return "primary";
 
             return "success";

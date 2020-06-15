@@ -25,7 +25,7 @@ namespace WebInfluencer.Controllers
 
         private readonly IAccountService _accountService;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService, IAccountService __IAccountService):base(__IAccountService)
+        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService, IAccountService __IAccountService)
         {
             _hostingEnvironment = hostingEnvironment;
             _fileHelper = fileHelper;
