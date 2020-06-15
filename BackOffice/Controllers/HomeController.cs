@@ -75,6 +75,36 @@ namespace BackOffice.Controllers
             });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadImage([FromForm] List<IFormFile> files, string path = "")
+        {
+
+            var images = new List<object>();
+
+
+            int count = 1;
+            foreach (var item in files)
+            {
+                if (count <= 6)//giới hạn chỉ up <= 6 ảnh
+                {
+                    var image = await FileHelpers.UploadFile(item, path);
+                    if (!string.IsNullOrEmpty(image))
+                    {
+                        images.Add(new
+                        {
+                            path = image,
+                            url = image
+                        });
+                    }
+                    count++;
+                }
+
+            }
+            return Json(images);
+        }
+
+
+
 
     }
 }

@@ -16,17 +16,21 @@ namespace BackOffice.Controllers
 
         private readonly IQnARepository _IQnARepository;
         private readonly IQnAService _IQnAService;
+        private readonly IQnAImageService _IQnAImageService;
+        private readonly IQnAVideoService _IQnAVideoService;
 
         private readonly IVideoGalleryRepository _IVideoGalleryRepository;
         private readonly IVideoGalleryService _IVideoGalleryService;
 
         public LandingPageController(IQnARepository __IQnARepository, IQnAService __IQnAService, IVideoGalleryRepository __IVideoGalleryRepository,
-            IVideoGalleryService __IVideoGalleryService)
+            IVideoGalleryService __IVideoGalleryService, IQnAImageService __IQnAImageService, IQnAVideoService __IQnAVideoService)
         {
             _IQnARepository = __IQnARepository;
             _IQnAService = __IQnAService;
             _IVideoGalleryRepository = __IVideoGalleryRepository;
             _IVideoGalleryService = __IVideoGalleryService;
+            _IQnAImageService = __IQnAImageService;
+            _IQnAVideoService = __IQnAVideoService;
         }
 
         public IActionResult Index()
@@ -113,6 +117,90 @@ namespace BackOffice.Controllers
             }
             return View(model);
         }
+
+
+
+
+        #region QnA Video
+        [HttpGet]
+        public async Task<IActionResult> QnAVideo(int Id = 0)
+        {
+            var list = await _IQnAVideoService.GetByQnAId(Id);
+            return View(list);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> QnAVideo([FromForm] QnAVideoCreateViewModel model)
+        {
+
+            QnAVideoViewModel _QnAVideoViewModel = new QnAVideoViewModel();
+
+            _QnAVideoViewModel.QAId = model.QAId;
+            _QnAVideoViewModel.Title = model.Title;
+
+            _QnAVideoViewModel.EmbedKey = model.EmbedKey;
+            _QnAVideoViewModel.EmbedURL = model.EmbedURL;
+
+            int id = await _IQnAVideoService.Create(_QnAVideoViewModel);
+
+            return Ok(new
+            {
+                id = id
+            });
+        }
+
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveQnAVideo([FromBody] QnAVideoEntityViewModel model)
+        {
+            await _IQnAVideoService.Delete(model.Id);
+            return Json("Removed");
+        }
+
+
+        #endregion QnA Video
+
+
+        #region QnA Image
+
+        [HttpGet]
+        public async Task<IActionResult> QnAImage(int Id = 0)
+        {
+
+            var list = await _IQnAImageService.GetByQnAId(Id);
+
+            return View(list);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> RemoveQnAImage([FromBody] QnAImageEntityViewModel model)
+        {
+            await _IQnAImageService.Delete(model.Id);
+            return Json("Removed");
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> QnAImage([FromForm] QnAImageCreateViewModel model)
+        {
+
+            QnAImageViewModel _QnAImageViewModel = new QnAImageViewModel();
+            _QnAImageViewModel.ImageURL = model.ImageURL;
+            _QnAImageViewModel.QAId = model.QAId;
+            _QnAImageViewModel.Title = model.Title;
+
+            int id = await _IQnAImageService.Create(_QnAImageViewModel);
+
+            return Ok(new
+            {
+                id = id
+            });
+        }
+
+        #endregion QnA Image
+
+
 
         #endregion
 

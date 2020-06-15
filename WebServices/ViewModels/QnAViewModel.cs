@@ -7,8 +7,13 @@ using System.Threading.Tasks;
 
 namespace WebServices.ViewModels
 {
+
+
+    
     public class QnAViewModel
     {
+
+
         public QnAViewModel() { }
 
         public QnAViewModel(QnA q) {

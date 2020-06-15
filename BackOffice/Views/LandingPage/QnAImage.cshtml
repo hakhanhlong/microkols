@@ -1,0 +1,251 @@
+﻿
+@{
+    ViewData["Title"] = "QnAImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<WebServices.ViewModels.QnAImageViewModel>
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        QnA Image
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/landingpage/qna" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    QnA Listing
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="javascript:;" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    QnA Image
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            QnA Image
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <div class="form-group">
+                            <table class="table" id="tblImageQnA">
+                                <thead>
+                                    <tr>
+                                        <th>Ảnh</th>
+                                        <th>Tiêu đề ảnh</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-qna-image">
+
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="@(AppConstants.RESOURCE_SERVER + "/" + item.ImageURL)" style="border:0px;width:48px;height:48px;" />
+                                            </td>
+                                            <td>
+                                                @item.Title
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-warning" onclick="Remove(this)" data-id="@item.Id">Xóa</button>
+                                            </td>
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" id="fileUpload" name="fileUpload">
+                                                <label class="custom-file-label" for="customFile">
+                                                    Choose file
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" id="txtTitle" />
+                                        </td>
+                                        <td>
+                                            <input type="button" class="btn btn-primary" value="Thêm mới" id="btnAddQnAImage" />
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+
+        function Remove(button) {
+            //Determine the reference of the Row using the Button.
+            var row = $(button).closest("TR");
+            if (confirm("Do you want to delete?")) {
+                //Get the reference of the Table.
+                var table = $("#tblImageQnA")[0];
+
+                //Delete the Table row using it's Index.
+                table.deleteRow(row[0].rowIndex);
+
+
+                var id = $(button).data("id");
+               
+                var QnAImageEntityViewModel = { 'id': id };
+
+                $.ajax({
+                    type: "POST",
+                    url: "/LandingPage/RemoveQnAImage",
+                    data: JSON.stringify(QnAImageEntityViewModel),
+                    success: function (r) { },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                });
+
+
+
+            }
+        };
+
+
+
+        $(document).ready(function () {
+
+            var imageURL = '';
+
+            $('#fileUpload').change(function () {
+
+                var files = $('#fileUpload').get(0).files;
+                var formData = new FormData();
+                formData.append('files', files[0]);
+                formData.append('path', 'qnaimages');
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/UploadImage",
+                    //data: JSON.stringify(ProductViewModel),
+                    data: formData,
+                    //dataType: "json",
+                    //contentType: "application/json",
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    success: function (r) {
+                        imageURL = r[0].path;
+                    },
+                });
+            });
+
+
+            $('#btnAddQnAImage').click(function () {
+
+                var title = $('#txtTitle').val();
+                var qnaid = @Context.Request.Query["Id"];
+                var _imageURL = imageURL;
+
+                if (title !== '') {
+
+                    var formData = new FormData();
+
+                    formData.append("QAId", qnaid);
+                    formData.append("Title", title);
+                    formData.append("ImageURL", _imageURL);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/LandingPage/QnAImage",
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        success: function (r) {
+
+
+
+                            if (r.id > 0) {
+
+                                Swal.fire({
+                                    type: 'success',
+                                    title: 'Information',
+                                    text: "Thêm image thành công."
+                                });
+
+                                window.location = '/landingpage/qnaimage/?id=' + qnaid;
+
+                            }
+                            else {
+                                Swal.fire({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: "Không thêm được ảnh!"
+                                });
+
+                            }
+
+                        },
+                    });
+
+
+
+
+
+                }
+                else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: "Title không được bỏ trống!"
+                    });
+                }
+
+
+            });
+
+
+        });
+
+
+
+    </script>
+}
