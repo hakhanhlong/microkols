@@ -212,7 +212,7 @@ namespace WebServices.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Tài khoản")]
+        [Display(Name = "Tên tài khoản")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -295,6 +295,8 @@ namespace WebServices.ViewModels
 
         [Display(Name = "Bạn có thể/phải là một Reviewer")]
         public bool Reviewer { get; set; } 
+
+
     }
 
     public class AccountCampaignChargeViewModel

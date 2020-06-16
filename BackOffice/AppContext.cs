@@ -42,6 +42,9 @@ namespace BackOffice
             services.AddScoped<IQnARepository, QnARepository>();
             services.AddScoped<IQnAImageRepository, QnAImageRepository>();
             services.AddScoped<IQnAVideoRepository, QnAVideoRepository>();
+            services.AddScoped<IBankRepository, BankRepository>();
+
+
 
             services.AddScoped<INotificationService, NotificationService>();
 
@@ -69,6 +72,8 @@ namespace BackOffice
             services.AddScoped<IQnAService, QnAService>();
             services.AddScoped<IQnAImageService, QnAImageService>();
             services.AddScoped<IQnAVideoService, QnAVideoService>();
+
+            services.AddScoped<IBankService, BankService>();
 
             services.AddScoped<IVideoGalleryService, VideoGalleryService>();
 

@@ -27,9 +27,10 @@ namespace WebInfluencer.Controllers
         private readonly IFacebookHelper _facebookHelper;
         private readonly ICampaignService _campaignService;
         private readonly IFacebookJob _facebookJob;
+        private readonly IBankService _IBankService;
         public AccountController(IAccountService accountService, ISharedService sharedService,
             ICampaignService campaignService,
-            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob, INotificationService __INotificationService)
+            IFileHelper fileHelper, IFacebookHelper facebookHelper, IFacebookJob facebookJob, INotificationService __INotificationService, IBankService __IBankService)
         {
             _campaignService = campaignService;
             _accountService = accountService;
@@ -38,6 +39,7 @@ namespace WebInfluencer.Controllers
             _facebookHelper = facebookHelper;
             _facebookJob = facebookJob;
             _INotificationService = __INotificationService;
+            _IBankService = __IBankService;
 
         }
 
@@ -307,6 +309,20 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> ChangeBankAccount()
         {
             var model = await _accountService.GetBankAccount(CurrentUser.Id);
+
+            //############# anh Long bổ xung ##############################################################################
+            var banks = await _IBankService.ListAll();
+            var list_bank = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
+            list_bank.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = "Chọn ngân hàng", Value = "" });
+            foreach (var bank in banks)
+            {
+                string bankName = string.Format("{0}({1})", bank.VietName, bank.TradingName);
+                list_bank.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = bankName, Value = bankName });
+            }
+            ViewBag.ListingBank = list_bank;
+            //#############################################################################################################
+
+
             return View(model);
         }
         [HttpPost]
@@ -316,8 +332,11 @@ namespace WebInfluencer.Controllers
             {
                 var r = await _accountService.ChangeBankAccount(CurrentUser.Id, model, CurrentUser.Username);
 
-                this.AddAlert(r);
-                return RedirectToAction("ChangeBankAccount");
+                this.AddAlert(r, "Bạn cập nhật thông tin ngần hàng thành công!");
+
+                
+
+                //return RedirectToAction("ChangeBankAccount");
 
             }
             return View(model);
@@ -336,6 +355,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> ChangeAccountType()
         {
             var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
+
             if (model.Type != AccountType.Regular)
             {
                 ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
@@ -345,6 +365,8 @@ namespace WebInfluencer.Controllers
                 ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
             }
             ViewBag.IgnoreCampaignTypes = await _accountService.GetIgnoreCampaignTypes(CurrentUser.Id);
+
+
             return View(model);
         }
         [HttpPost]

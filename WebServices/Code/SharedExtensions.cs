@@ -35,6 +35,8 @@ namespace WebServices.Code
             services.AddScoped<IAccountFbPostRepository, AccountFbPostRepository>();
             services.AddScoped<ICampaignAccountStatisticRepository, CampaignAccountStatisticRepository>();
 
+            services.AddScoped<IBankRepository, BankRepository>();
+
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ISharedService, SharedService>();
@@ -47,7 +49,8 @@ namespace WebServices.Code
             services.AddScoped<ICampaignAccountCaptionService, CampaignAccountCaptionService>();
             services.AddScoped<ICampaignAccountContentService, CampaignAccountContentService>();
             services.AddScoped<ICampaignAccountStatisticService, CampaignAccountStatisticService>();
-            
+            services.AddScoped<IBankService, BankService>();
+
 
 
 

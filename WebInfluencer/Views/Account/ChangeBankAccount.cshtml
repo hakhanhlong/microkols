@@ -24,7 +24,10 @@
 
     <div class="form-group">
         <label asp-for="Bank"></label>
-        <input type="text" class="form-control" asp-for="Bank" />
+        @*<input type="text" class="form-control" asp-for="Bank" />*@
+
+        <select class="form-control m-input" asp-for="Bank" asp-items="ViewBag.ListingBank"></select>
+
         <span asp-validation-for="Bank"></span>
     </div>
 

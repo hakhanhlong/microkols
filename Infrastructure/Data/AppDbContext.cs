@@ -57,6 +57,8 @@ namespace Infrastructure.Data
         public virtual DbSet<QnAVideo> QnAVideo { get; set; }
         public virtual DbSet<QnAImage> QnAImage { get; set; }
 
+        public virtual DbSet<Bank> Bank { get; set; }
+
 
         public virtual DbSet<VideoGallery> VideoGallery { get; set; }
 
