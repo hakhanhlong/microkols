@@ -38,7 +38,10 @@ namespace WebLandingPage
             services.AddScoped<ISettingRepository, SettingRepository>();
 
             services.AddScoped<IVideoGalleryRepository, VideoGalleryRepository>();
+
             services.AddScoped<IQnARepository, QnARepository>();
+            services.AddScoped<IQnAImageRepository, QnAImageRepository>();
+            services.AddScoped<IQnAVideoRepository, QnAVideoRepository>();
 
             services.AddScoped<INotificationService, NotificationService>();
 
@@ -54,9 +57,14 @@ namespace WebLandingPage
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IWalletService, WalletService>();
             services.AddScoped<IAgencyService, AgencyService>();
-            services.AddScoped<IQnAService, QnAService>();
-            services.AddScoped<IVideoGalleryService, VideoGalleryService>();
 
+            services.AddScoped<IQnAService, QnAService>();
+
+            services.AddScoped<IQnAImageService, QnAImageService>();
+            services.AddScoped<IQnAVideoService, QnAVideoService>();
+
+
+            services.AddScoped<IVideoGalleryService, VideoGalleryService>();
 
             services.AddScoped<ISharedService, SharedService>();
             services.AddScoped<IAccountService, AccountService>();

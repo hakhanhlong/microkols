@@ -39,7 +39,31 @@
                                                     </a>
                                                     <div id="collapse_@(item.Order)_general" class="panel-collapse collapse @(count_general == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
-                                                            @item.Answer                                                            
+                                                            <ul>
+                                                                <li>
+                                                                    @item.Answer
+                                                                </li>
+                                                                @if (item.QnAImages.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Hình ảnh</h3>
+                                                                        <ul class="list-unstyled">
+                                                                            @foreach(var image in item.QnAImages)
+                                                                            {
+                                                                                <li>1</li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                                @if (item.QnAVideos.Count > 0)
+                                                                {
+                                                                    <li>
+                                                                        <h3>Video</h3>
+                                                                    </li>
+                                                                }
+                                                            </ul>                                                            
+                                                            
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>

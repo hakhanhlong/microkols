@@ -13,6 +13,9 @@ namespace WebServices.ViewModels
     public class QnAViewModel
     {
 
+        public List<QnAImageViewModel> QnAImages = new List<QnAImageViewModel>();
+        public List<QnAVideoViewModel> QnAVideos = new List<QnAVideoViewModel>();
+
 
         public QnAViewModel() { }
 
@@ -27,6 +30,8 @@ namespace WebServices.ViewModels
             DateModified = q.DateModified;
             UserCreated = q.UserCreated;
             UserModified = q.UserModified;
+            QnAImages = q.QnAImage.Select(qi=> new QnAImageViewModel(qi)).ToList();
+            QnAVideos = q.QnAVideo.Select(qi => new QnAVideoViewModel(qi)).ToList();
         }
 
 
