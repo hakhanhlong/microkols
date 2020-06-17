@@ -23,6 +23,13 @@ namespace Infrastructure.Data
         {
             return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Id == id && m.Actived);
         }
+
+        public async Task<Agency> GetBySaltAgency(string salt)
+        {
+            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Salt == salt);
+        }
+
+
         public async Task<Agency> GetActivedAgency(string username)
         {
             return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username && m.Actived);

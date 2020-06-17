@@ -10,6 +10,9 @@ namespace WebServices.Interfaces
     {
 
         Task<AgencyViewModel> GetAgency(int id);
+
+        Task<AgencyViewModel> GetAgency(string salt);
+        Task<int> VerifyEmail(int id);
         Task<int> Register(RegisterAgencyViewModel model);
 
         Task<AuthViewModel> GetAuth(AgencyLoginViewModel model);
@@ -21,6 +24,8 @@ namespace WebServices.Interfaces
         Task<bool> ChangePassword(int id, ChangePasswordViewModel model, string username);
 
         Task<bool> VerifyUsername(string username);
+
+        Task<AgencyViewModel> GetAgencyById(int id);
 
     }
 }

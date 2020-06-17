@@ -20,8 +20,10 @@ namespace WebServices.ViewModels
         public AgencyViewModel(Agency agency) : base(agency)
         {
             Id = agency.Id;
+            Salt = agency.Salt;
         }
         public int Id { get; set; }
+        public string Salt { get; set; }
     }
 
 

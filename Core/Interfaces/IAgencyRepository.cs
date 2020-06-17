@@ -13,5 +13,7 @@ namespace Core.Interfaces
         Task<Agency> GetAgency(string username);
 
         int CountAll();
+
+        Task<Agency> GetBySaltAgency(string salt);
     }
 }

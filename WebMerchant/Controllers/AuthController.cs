@@ -13,6 +13,7 @@ using WebServices.Code.Helpers;
 using WebServices.Interfaces;
 using WebServices.Jobs;
 using WebServices.ViewModels;
+using Common;
 
 namespace WebMerchant.Controllers
 {
@@ -76,15 +77,65 @@ namespace WebMerchant.Controllers
 
                 if (id > 0)
                 {
-                    this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Vui lòng chờ ban quản trị duyệt");
-                    return RedirectToAction("AgencyRegister");
+
+                    try {
+                        
+                        //return RedirectToAction("AgencyRegister");
+                        var _agency = await _agencyService.GetAgencyById(id);
+                        string from = "support@microkols.com";
+                        string to = model.Username;
+                        string subject = "[MICROKOLS] Xác minh tài khoản doanh nghiệp";
+                        string plainText = $"Chào {model.Name},";
+
+                        string htmlText = "<p>Bạn đã đăng ký thành công một tài khoản tại MicroKOLs <b>như một doanh nghiệp!</b></p>";
+                        htmlText += "<p>Vui lòng kích hoạt tài khoản và bắt đầu tạo chiến dịch của bạn bằng cách nhấn vào đường dẫn dưới đây:</p>";
+                        htmlText += "<p><a clicktracking=off href=\"https://merchant.microkols.com/auth/identityverify/?ming="+ _agency.Id.ToString() + "\">kích hoạt tài khoản tại đây</a></p>";
+                        htmlText += "<p>Nếu bạn có bất kỳ thắc mắc nào, hãy liên hệ với chúng tôi để nhận được sự hỗ trợ nhanh nhất.</p>";
+                        htmlText += "<p>Email: info@microkols.com </p>";
+                        htmlText += "<p><b>Hotline hỗ trợ: 0975119599</b> </p>";
+                        htmlText += "<p>Cảm ơn bạn đã tham gia sử dụng trang Web của chúng tôi!</p>";
+                        htmlText += "<p>Trân trọng,</p>";
+                        htmlText += "<p><b>Phòng Dịch Vụ Khách Hàng</b></p>";
+                        htmlText += "<p>Microkols Platform</p>";
+                        await SendEmailHelpers.SendEmail(from, to, subject, plainText, htmlText, model.Name);
+                        this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Bạn vui lòng kiểm tra email, để xác thực tài khoản doanh nghiệp của bạn.");
+                    }
+                    catch(Exception ex) {
+                        this.AddAlertDanger(ex.Message);
+                    }
+                    
+
                 }
-                this.AddAlertDanger("Tên đăng nhập đã tồn tại");
+                else {
+                    this.AddAlertDanger("Doanh nghiệp đã tồn tại, bạn hãy đăng ký một doanh nghiệp khác.");
+                }
+                
             }
             return View(model);
         }
 
 
+
+        public async Task<IActionResult> IdentityVerify(int ming)
+        {
+            var agency = await _agencyService.GetAgencyById(ming); // agency not yet active
+            if(agency != null)
+            {
+                var retValue = await _agencyService.VerifyEmail(agency.Id); //verify email and active agency
+                if(retValue > 0) {
+                    this.AddAlertSuccess("Doanh nghiệp của bạn đã được xác thực, hãy đăng nhập.");                    
+                }
+                else {
+                    //không vào trường hợp này
+                }
+            }
+            else
+            {
+                this.AddAlertDanger("Không tồn tại doanh nghiệp!");
+            }
+
+            return View();
+        }
 
         #endregion
 

@@ -33,6 +33,19 @@ namespace WebServices.Services
             return GetAgencyViewModel(agency);
         }
 
+        public async Task<AgencyViewModel> GetAgencyById(int id)
+        {
+            var agency = await _agencyRepository.GetByIdAsync(id);
+            return GetAgencyViewModel(agency);
+        }
+
+
+        public async Task<AgencyViewModel> GetAgency(string salt)
+        {
+            var agency = await _agencyRepository.GetBySaltAgency(salt);
+            return GetAgencyViewModel(agency);
+        }
+
         private AgencyViewModel GetAgencyViewModel(Agency agency)
         {
             return (agency == null) ? null : new AgencyViewModel(agency);
@@ -91,6 +104,21 @@ namespace WebServices.Services
             }
             return null;
         }
+
+        public async Task<int> VerifyEmail(int id)
+        {
+            var agency = await _agencyRepository.GetByIdAsync(id);
+            if (agency != null)
+            {
+                agency.Email = "Verified";
+                agency.Actived = true;
+                await _agencyRepository.UpdateAsync(agency);
+                return agency.Id;
+            }
+            return 0;
+        }
+
+
 
         public async Task<bool> UpdateAgency(int id, UpdateAgencyViewModel model, string username)
         {

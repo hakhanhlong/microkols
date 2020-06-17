@@ -25,7 +25,8 @@ namespace WebServices.Code
                 if (path.StartsWith("http")) return path;
                 return $"{ResourceServer}/{path}";
             }
-            return string.Empty;
+
+            return "/img/default-user-image.png";
 
             
         }
