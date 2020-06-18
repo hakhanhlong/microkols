@@ -40,6 +40,11 @@ namespace Infrastructure.Data
             return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username);
         }
 
+        public async Task<Agency> GetAgency(string username, string name)
+        {
+            return await _dbContext.Agency.FirstOrDefaultAsync(m => m.Username == username || m.Name == name);
+        }
+
 
         public int CountAll()
         {

@@ -83,7 +83,7 @@ namespace WebServices.Services
 
         public async Task<int> Register(RegisterAgencyViewModel model)
         {
-            var isvalid = await VerifyUsername(model.Username);
+            var isvalid = await VerifyUsername(model.Username, model.Name);
             if (isvalid)
             {
                 var agency = model.GetEntity();
@@ -147,6 +147,17 @@ namespace WebServices.Services
         {
 
             var entity = await _agencyRepository.GetAgency(username);
+
+            if (entity == null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> VerifyUsername(string username, string name)
+        {
+            var entity = await _agencyRepository.GetAgency(username, name);
 
             if (entity == null)
             {

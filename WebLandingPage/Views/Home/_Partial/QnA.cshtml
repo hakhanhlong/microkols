@@ -47,18 +47,42 @@
                                                                 {
                                                                     <li style="list-style-type:none;">
                                                                         <h3>Hình ảnh</h3>
-                                                                        <ul class="list-unstyled">
-                                                                            @foreach(var image in item.QnAImages)
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var image in item.QnAImages)
                                                                             {
-                                                                                <li>1</li>
+                                                                                <li>
+                                                                                    <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="120px" height="80px" />
+                                                                                    </a>
+
+                                                                                </li>
                                                                             }
                                                                         </ul>
                                                                     </li>
                                                                 }
                                                                 @if (item.QnAVideos.Count > 0)
                                                                 {
-                                                                    <li>
-                                                                        <h3>Video</h3>
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Videos</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var video in item.QnAVideos)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul class="list-unstyled">
+                                                                                        <li>
+                                                                                            <div class="youtube" style="width: 480px; height: 320px;"
+                                                                                                 id="@video.EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <strong>
+                                                                                                @video.Title
+                                                                                            </strong>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
                                                                     </li>
                                                                 }
                                                             </ul>                                                            

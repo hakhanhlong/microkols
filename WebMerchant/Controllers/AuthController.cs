@@ -107,7 +107,7 @@ namespace WebMerchant.Controllers
 
                 }
                 else {
-                    this.AddAlertDanger("Doanh nghiệp đã tồn tại, bạn hãy đăng ký một doanh nghiệp khác.");
+                    this.AddAlertDanger("Tên hoặc email doanh nghiệp đã tồn tại, xin vui lòng kiểm tra lại.");
                 }
                 
             }

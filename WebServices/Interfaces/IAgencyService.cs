@@ -25,6 +25,9 @@ namespace WebServices.Interfaces
 
         Task<bool> VerifyUsername(string username);
 
+        Task<bool> VerifyUsername(string username, string name);
+
+
         Task<AgencyViewModel> GetAgencyById(int id);
 
     }
