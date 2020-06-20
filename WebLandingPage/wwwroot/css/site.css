@@ -63,3 +63,50 @@ section#content-page .right-column {
     filter: alpha(opacity=100);
 }
 
+.btn-header {
+    background-color: #18A0FB;    
+    border: 0px;
+    border-radius:48px;
+}
+
+.btn-header:hover {
+    border: 0px;
+    background-color: #337ab7 !important;
+}
+
+.navbar-toggle {
+    position: relative;
+    float: right;
+    padding: 9px 10px;
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    background-color: transparent;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.navbar-toggle .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #18A0FB;
+}
+
+.shape-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 110px;
+}
+
+.shape-circle h1 {
+    line-height: 220px;
+    font-weight: 900;
+    color: #fff;
+    text-align: center;
+}
+
+
+
