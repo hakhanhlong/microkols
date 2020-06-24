@@ -20,11 +20,11 @@
                     <ul class="list-inline video-gallery">
                         @for (int i = 1; i < videoGalleries.Count; i++)
                         {
-        <li class="list-inline-item">
-            <div class="youtube" style="width: 274px; height: 195px;"
-                 id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
-        </li>
-    }
+                            <li class="list-inline-item">
+                                <div class="youtube"
+                                     id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         @for (int i = 0; i < videoGalleries.Count; i++)
                         {
                         <li class="list-inline-item mb-20">
-                            <div class="youtube" style="width: 370px; height: 195px;"
+                            <div class="youtube"
                             id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>                            
                         </li>
     }

@@ -168,24 +168,26 @@
             <div class="col-md-12">
                 <div id="tab-pannel">
                     <div class="row row-bottom-border">
-                        <div class="col-md-12">
+                        <div class="col-xs-12">
                             <span class="qa-title">MICROKOLS Q&amp;A</span>
                         </div>                        
                     </div>
                     <div class="row">
                         <div class="col-xs-12">
-                            <ul class="nav nav-tabs">
+                            <ul class="nav nav-tabs" style="text-align:left;">
                                 <li class="active">
                                     <a data-toggle="tab" href="#home-m">
-                                        Câu hỏi chung
+                                        1. Câu hỏi chung
                                     </a>
                                 </li>
                                 <li>
                                     <a data-toggle="tab" href="#merchant-m">
-                                        Doanh nghiệp
+                                        2. Doanh nghiệp
                                     </a>
                                 </li>
-                                <li><a data-toggle="tab" href="#influencer">Influencer-m</a></li>
+                                <li><a data-toggle="tab" href="#influencer-m">
+                                    3. Influencer</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -199,12 +201,12 @@
                                             @foreach (var item in ViewBag.QnAGeneral)
                                             {
                                                 <div class="panel">
-                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_general-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                    <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_general-m" aria-expanded="true" aria-controls="collapse1a">
+                                                        @item.Order. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_general-m" class="panel-collapse collapse @(count_general == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body" style="padding:0px;">
-                                                            <ul>
+                                                            <ul class="list-unstyled">
                                                                 <li>
                                                                     @item.Answer
                                                                 </li>
@@ -217,7 +219,7 @@
                                                                             {
                                                                                 <li>
                                                                                     <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
-                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="120px" height="80px" />
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="210px" height="110px" />
                                                                                     </a>
 
                                                                                 </li>
@@ -235,7 +237,7 @@
                                                                                 <li>
                                                                                     <ul class="list-unstyled">
                                                                                         <li>
-                                                                                            <div class="youtube" style="width: 480px; height: 320px;"
+                                                                                            <div class="youtube youtube-resize"
                                                                                                  id="@video.EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
                                                                                         </li>
                                                                                         <li>
@@ -269,12 +271,60 @@
                                             @foreach (var item in ViewBag.QnAMerchant)
                                             {
                                                 <div class="panel">
-                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_merchant-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                    <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_merchant-m" aria-expanded="true" aria-controls="collapse1a">
+                                                        @item.Order. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_merchant-m" class="panel-collapse collapse @(count_merchant == 0?"in":"collapse")" role="tabpanel">
-                                                        <div class="panel-body">
-                                                            @item.Answer
+                                                        <div class="panel-body" style="padding:0px;">
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    @item.Answer
+                                                                </li>
+                                                                @if (item.QnAImages.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Hình ảnh</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var image in item.QnAImages)
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="210px" height="110px" />
+                                                                                    </a>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                                @if (item.QnAVideos.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Videos</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var video in item.QnAVideos)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul class="list-unstyled">
+                                                                                        <li>
+                                                                                            <div class="youtube youtube-resize"
+                                                                                                 id="@video.EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <strong>
+                                                                                                @video.Title
+                                                                                            </strong>
+                                                                                        </li>
+                                                                                    </ul>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -295,12 +345,60 @@
                                             @foreach (var item in ViewBag.QnAInfluencer)
                                             {
                                                 <div class="panel">
-                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_influencer-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                    <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_influencer-m" aria-expanded="true" aria-controls="collapse1a">
+                                                        @item.Order. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_influencer-m" class="panel-collapse collapse @(count_influencer == 0?"in":"collapse")" role="tabpanel">
-                                                        <div class="panel-body">
-                                                            @item.Answer
+                                                        <div class="panel-body" style="padding:0px;">
+                                                            <ul class="list-unstyled">
+                                                                <li>
+                                                                    @item.Answer
+                                                                </li>
+                                                                @if (item.QnAImages.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Hình ảnh</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var image in item.QnAImages)
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="210px" height="110px" />
+                                                                                    </a>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                                @if (item.QnAVideos.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Videos</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var video in item.QnAVideos)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul class="list-unstyled">
+                                                                                        <li>
+                                                                                            <div class="youtube youtube-resize"
+                                                                                                 id="@video.EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <strong>
+                                                                                                @video.Title
+                                                                                            </strong>
+                                                                                        </li>
+                                                                                    </ul>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+
+
                                                         </div>
                                                     </div>
                                                 </div>

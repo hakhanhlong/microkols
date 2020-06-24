@@ -112,17 +112,49 @@ section#content-page .right-column {
 
 
 @media screen and (max-width: 768px) {
-    .txt-h1-bold-2 {
+    .txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
         font-weight: 700;
-        font-size: 36px;
+        font-size: 26px;
     }
+
+    .youtube {
+        width: 276px;
+        height: 155px;
+    }
+
+    .youtube-resize {
+        width: 210px !important;
+        height: 110px !important;
+    }
+
+    .h2, .h3 {
+        font-size: 20px;
+    }
+
 }
 
 @media screen and (max-width: 320px) {
-    .txt-h1-bold-2 {
+    .txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
         font-weight: 700;
-        font-size: 36px;
+        font-size: 26px;
     }
+
+    .youtube{
+        width: 276px;
+        height:155px;
+    }
+
+    .youtube-resize {
+        width: 210px !important;
+        height: 110px !important;
+    }
+
+    .h2, .h3{
+        font-size:20px;
+    }
+
+
+
 }
 
 
