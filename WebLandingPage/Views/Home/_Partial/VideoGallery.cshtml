@@ -3,7 +3,7 @@
 {
     var videoGalleries = (List<WebServices.ViewModels.VideoGalleryViewModel>)ViewBag.VideoGalleries;
 
-    <div class="row row-6 pl-70 pt-40 pb-50">
+    <div class="row row-6 pl-70 pt-40 pb-50 hidden-xs">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-12">
@@ -12,18 +12,41 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="img-thumbnail youtube" 
+                    <div class="img-thumbnail youtube"
                          style="width: 548px; height: 396px;" id="@videoGalleries[0].EmbedKey"
                          data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
                 </div>
                 <div class="col-md-6">
                     <ul class="list-inline video-gallery">
-                        @for (int i = 1; i < videoGalleries.Count; i++){
-                            <li class="list-inline-item">
-                                <div class="youtube" style="width: 274px; height: 195px;" 
-                                     id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
-                            </li>
-                        }                        
+                        @for (int i = 1; i < videoGalleries.Count; i++)
+                        {
+        <li class="list-inline-item">
+            <div class="youtube" style="width: 274px; height: 195px;"
+                 id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+        </li>
+    }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-6 pl-70 pt-40 hidden-md visible-xs">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="qa-title">VIDEO GALLERY</h1>
+                </div>
+            </div>
+            <div class="row">             
+                <div class="col-md-12">
+                    <ul class="list-inline video-gallery">
+                        @for (int i = 0; i < videoGalleries.Count; i++)
+                        {
+                        <li class="list-inline-item mb-20">
+                            <div class="youtube" style="width: 370px; height: 195px;"
+                            id="@videoGalleries[1].EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>                            
+                        </li>
+    }
                     </ul>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-﻿<div class="row row-6 pl-70 pt-40 pb-50">
+﻿<div class="row row-6 pl-70 pt-40 pb-50 hidden-xs">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
@@ -30,15 +30,180 @@
                                 <div id="home" class="tab-pane fade in active">
                                     <div class="faqs-page block col-md-12">
                                         <div class="panel-group" id="agency" role="tablist" aria-multiselectable="true">
-                                            @{int count_general = 0;}
+                                            @{int count_general1 = 0;}
                                             @foreach (var item in ViewBag.QnAGeneral)
                                             {
                                                 <div class="panel">
                                                     <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_general" aria-expanded="true" aria-controls="collapse1a">
                                                         <span>@item.Order</span> @item.Question
                                                     </a>
-                                                    <div id="collapse_@(item.Order)_general" class="panel-collapse collapse @(count_general == 0?"in":"collapse")" role="tabpanel">
+                                                    <div id="collapse_@(item.Order)_general" class="panel-collapse collapse @(count_general1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
+                                                            <ul>
+                                                                <li>
+                                                                    @item.Answer
+                                                                </li>
+                                                                @if (item.QnAImages.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Hình ảnh</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var image in item.QnAImages)
+                                                                            {
+                                                                                <li>
+                                                                                    <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="120px" height="80px" />
+                                                                                    </a>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                                @if (item.QnAVideos.Count > 0)
+                                                                {
+                                                                    <li style="list-style-type:none;">
+                                                                        <h3>Videos</h3>
+                                                                        <ul class="list-inline">
+                                                                            @foreach (var video in item.QnAVideos)
+                                                                            {
+                                                                                <li>
+                                                                                    <ul class="list-unstyled">
+                                                                                        <li>
+                                                                                            <div class="youtube" style="width: 480px; height: 320px;"
+                                                                                                 id="@video.EmbedKey" data-params="modestbranding=1&showinfo=0&controls=0&autoplay=1"></div>
+                                                                                        </li>
+                                                                                        <li>
+                                                                                            <strong>
+                                                                                                @video.Title
+                                                                                            </strong>
+                                                                                        </li>
+                                                                                    </ul>
+
+                                                                                </li>
+                                                                            }
+                                                                        </ul>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                count_general1++;
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="merchant" class="tab-pane fade">
+                                    <div class="faqs-page block col-md-12">
+                                        <div class="panel-group" id="agency" role="tablist" aria-multiselectable="true">
+                                            @{int count_merchant1 = 0;}
+                                            @foreach (var item in ViewBag.QnAMerchant)
+                                            {
+                                                <div class="panel">
+                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_merchant" aria-expanded="true" aria-controls="collapse1a">
+                                                        <span>@item.Order</span> @item.Question
+                                                    </a>
+                                                    <div id="collapse_@(item.Order)_merchant" class="panel-collapse collapse @(count_merchant1 == 0?"in":"collapse")" role="tabpanel">
+                                                        <div class="panel-body">
+                                                            @item.Answer
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                count_merchant1++;
+                                            }
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div id="influencer" class="tab-pane fade">
+                                    <div class="faqs-page block col-md-12">
+                                        <div class="panel-group" id="agency" role="tablist" aria-multiselectable="true">
+
+                                            @{int count_influencer1 = 0;}
+                                            @foreach (var item in ViewBag.QnAInfluencer)
+                                            {
+                                                <div class="panel">
+                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_influencer" aria-expanded="true" aria-controls="collapse1a">
+                                                        <span>@item.Order</span> @item.Question
+                                                    </a>
+                                                    <div id="collapse_@(item.Order)_influencer" class="panel-collapse collapse @(count_influencer1 == 0?"in":"collapse")" role="tabpanel">
+                                                        <div class="panel-body">
+                                                            @item.Answer
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                count_influencer1++;
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row row-6 pl-70 pb-50 hidden-md visible-xs">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="tab-pannel">
+                    <div class="row row-bottom-border">
+                        <div class="col-md-12">
+                            <span class="qa-title">MICROKOLS Q&amp;A</span>
+                        </div>                        
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#home-m">
+                                        Câu hỏi chung
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" href="#merchant-m">
+                                        Doanh nghiệp
+                                    </a>
+                                </li>
+                                <li><a data-toggle="tab" href="#influencer">Influencer-m</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row pt-40">
+                        <div class="col-md-12">
+                            <div class="tab-content">
+                                <div id="home-m" class="tab-pane fade in active">
+                                    <div class="faqs-page block col-md-12">
+                                        <div class="panel-group" id="agency-m" role="tablist" aria-multiselectable="true">
+                                            @{int count_general = 0;}
+                                            @foreach (var item in ViewBag.QnAGeneral)
+                                            {
+                                                <div class="panel">
+                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_general-m" aria-expanded="true" aria-controls="collapse1a">
+                                                        <span>@item.Order</span> @item.Question
+                                                    </a>
+                                                    <div id="collapse_@(item.Order)_general-m" class="panel-collapse collapse @(count_general == 0?"in":"collapse")" role="tabpanel">
+                                                        <div class="panel-body" style="padding:0px;">
                                                             <ul>
                                                                 <li>
                                                                     @item.Answer
@@ -97,17 +262,17 @@
                                     </div>
 
                                 </div>
-                                <div id="merchant" class="tab-pane fade">
+                                <div id="merchant-m" class="tab-pane fade">
                                     <div class="faqs-page block col-md-12">
-                                        <div class="panel-group" id="agency" role="tablist" aria-multiselectable="true">
+                                        <div class="panel-group" id="agency-m" role="tablist" aria-multiselectable="true">
                                             @{int count_merchant = 0;}
                                             @foreach (var item in ViewBag.QnAMerchant)
                                             {
                                                 <div class="panel">
-                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_merchant" aria-expanded="true" aria-controls="collapse1a">
+                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_merchant-m" aria-expanded="true" aria-controls="collapse1a">
                                                         <span>@item.Order</span> @item.Question
                                                     </a>
-                                                    <div id="collapse_@(item.Order)_merchant" class="panel-collapse collapse @(count_merchant == 0?"in":"collapse")" role="tabpanel">
+                                                    <div id="collapse_@(item.Order)_merchant-m" class="panel-collapse collapse @(count_merchant == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
                                                             @item.Answer
                                                         </div>
@@ -122,18 +287,18 @@
 
 
                                 </div>
-                                <div id="influencer" class="tab-pane fade">
+                                <div id="influencer-m" class="tab-pane fade">
                                     <div class="faqs-page block col-md-12">
-                                        <div class="panel-group" id="agency" role="tablist" aria-multiselectable="true">
+                                        <div class="panel-group" id="agency-m" role="tablist" aria-multiselectable="true">
 
                                             @{int count_influencer = 0;}
                                             @foreach (var item in ViewBag.QnAInfluencer)
                                             {
                                                 <div class="panel">
-                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_influencer" aria-expanded="true" aria-controls="collapse1a">
+                                                    <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_influencer-m" aria-expanded="true" aria-controls="collapse1a">
                                                         <span>@item.Order</span> @item.Question
                                                     </a>
-                                                    <div id="collapse_@(item.Order)_influencer" class="panel-collapse collapse @(count_influencer == 0?"in":"collapse")" role="tabpanel">
+                                                    <div id="collapse_@(item.Order)_influencer-m" class="panel-collapse collapse @(count_influencer == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
                                                             @item.Answer
                                                         </div>
