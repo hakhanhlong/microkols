@@ -213,13 +213,13 @@
                                                                 @if (item.QnAImages.Count > 0)
                                                                 {
                                                                     <li style="list-style-type:none;">
-                                                                        <h3>Hình ảnh</h3>
+                                                                        <h3 style="font-size: 20px;">Hình ảnh</h3>
                                                                         <ul class="list-inline">
                                                                             @foreach (var image in item.QnAImages)
                                                                             {
-                                                                                <li>
+                                                                                <li style="padding-bottom:20px;">
                                                                                     <a href="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" data-lightbox="@image.Title" data-title="@image.Title">
-                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="210px" height="110px" />
+                                                                                        <img src="@(AppConstants.RESOURCE_SERVER + image.ImageURL)" width="300px" height="160px" />
                                                                                     </a>
 
                                                                                 </li>
@@ -230,7 +230,7 @@
                                                                 @if (item.QnAVideos.Count > 0)
                                                                 {
                                                                     <li style="list-style-type:none;">
-                                                                        <h3>Videos</h3>
+                                                                        <h3 style="font-size: 20px;">Videos</h3>
                                                                         <ul class="list-inline">
                                                                             @foreach (var video in item.QnAVideos)
                                                                             {
