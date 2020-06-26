@@ -1,4 +1,11 @@
-﻿.icon-facebook-float img {
+﻿
+body {
+    font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300))) !important;
+    line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300))) !important;
+}
+
+
+.icon-facebook-float img {
     position: absolute;
     top: -70px;
     opacity: 1;
@@ -113,10 +120,12 @@ section#content-page .right-column {
 
 @media screen and (max-width: 768px) {
 
-    .txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
+    /*.txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
         font-weight: 700;
         font-size: 22px;
-    }
+    }*/
+
+ 
 
     .youtube {
         width: 320px;
@@ -206,10 +215,13 @@ section#content-page .right-column {
 }
 
 @media screen and (max-width: 320px) {
-    .txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
+    /*.txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
         font-weight: 700;
         font-size: 22px;
-    }
+    }*/
+
+   
+
 
     .youtube {
         width: 320px;
