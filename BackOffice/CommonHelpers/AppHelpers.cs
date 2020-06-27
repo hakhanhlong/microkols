@@ -18,6 +18,7 @@ namespace BackOffice.CommonHelpers
             if (!string.IsNullOrEmpty(path))
             {
                 if (path.StartsWith("http")) return path;
+
                 return $"{RESOURCE_SERVER}/{path}";
             }
             return string.Empty;

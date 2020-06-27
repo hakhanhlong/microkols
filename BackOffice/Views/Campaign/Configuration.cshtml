@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Campaign Configuration
+        Cấu hình chiến dịch
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -22,7 +22,7 @@
         <li class="m-nav__item">
             <a href="/campaigntypecharge" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Configuration
+                    Cấu hình
                 </span>
             </a>
         </li>
@@ -50,7 +50,7 @@
                             <i class="la la-gear"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
-                            Configuration Campaign "@(Model.Title)"
+                            Cấu hình chiến dịch: "@(Model.Title)"
                         </h3>
                     </div>
                 </div>
@@ -62,19 +62,16 @@
                     <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group m-form__group">
                         <label for="ServiceChargePercent">
-                            Service Charge Percent
+                            Phần trăm phí dịch vụ
                         </label>
                         <input class="form-control m-input m-input--square" asp-for="ServiceChargePercent">
                     </div>                    
                 </div>
                 <div class="m-portlet__foot m-portlet__foot--fit">
                     <div class="m-form__actions">
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                        <button type="reset" class="btn btn-secondary">
-                            Cancel
-                        </button>
+                        <button type="submit" class="btn btn-primary" style="font-family:Roboto;">
+                            Đồng ý
+                        </button>                       
                     </div>
                 </div>
             </form>

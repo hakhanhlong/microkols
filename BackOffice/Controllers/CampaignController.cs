@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
 using WebServices.Services;
+using BackOffice.Extensions;
 
 namespace BackOffice.Controllers
 {
@@ -88,28 +89,28 @@ namespace BackOffice.Controllers
         {
             ViewBag.CampaignStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = ""},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Confirmed", Value = "1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Started", Value = "2"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Ended", Value = "3"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "4"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "5"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "6"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Locked", Value = "7"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Created.ToShowName(), Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Confirmed.ToShowName(), Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Started.ToShowName(), Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Ended.ToShowName(), Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Completed.ToShowName(), Value = "4"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Canceled.ToShowName(), Value = "5"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Error.ToShowName(), Value = "6"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignStatus.Locked.ToShowName(), Value = "7"},
 
             };
 
             ViewBag.CampaignTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = ""},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContent", Value = "1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareContentWithCaption", Value = "2"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ChangeAvatar", Value = "3"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "PostComment", Value = "4"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "JoinEvent", Value = "5"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "ShareStreamUrl", Value = "6"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "CustomService", Value = "7"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareContent.ToShowName(), Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareContentWithCaption.ToShowName(), Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ChangeAvatar.ToShowName(), Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ReviewProduct.ToShowName(), Value = "4"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.JoinEvent.ToShowName(), Value = "5"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareStreamUrl.ToShowName(), Value = "6"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.CustomService.ToShowName(), Value = "7"},
             };
         }
 
@@ -169,7 +170,7 @@ namespace BackOffice.Controllers
         {
 
             await _ICampaignService.UpdateCampaignServiceChargePercent(model.ServiceChargePercent, model.Id);
-            TempData["MessageSuccess"] = string.Format("Configudation Campaign {0} Success!", model.Title);
+            TempData["MessageSuccess"] = string.Format("Cấu hình chiến dịch {0} thành công!", model.Title);
             return RedirectToAction("Configuration", "Campaign", new { campaignid = model.Id });
         }
 
@@ -256,7 +257,7 @@ namespace BackOffice.Controllers
                         await _INotificationBusiness.CreateNotificationCampaignByStatus(campaign.Id, campaign.AgencyId, notificationType, msg, txt_note);
                         
                     }
-                    TempData["MessageSuccess"] = string.Format("Change status \"{0}\" success", status.ToString());
+                    TempData["MessageSuccess"] = string.Format("Thay đổi trạng thái \"{0}\" thành công", status.ToString());
 
 
 
@@ -274,7 +275,7 @@ namespace BackOffice.Controllers
                 }
                 else
                 {
-                    TempData["MessageError"] = "Campaign do not exist!";
+                    TempData["MessageError"] = "Chiến dịch không tồn tại!";
                 }
             }
             catch(Exception ex) {
@@ -345,14 +346,14 @@ namespace BackOffice.Controllers
                 return Json(new
                 {
                     code = 1,
-                    message = "Change campaign status success",
+                    message = "Thay đổi trạng thái chiến dịch thành công",
                     str_icon = str_icon
                 });
             }
 
             return Json(new {
                 code = -1,
-                message = "Error can't change status campaign!",
+                message = "Lỗi! Không thể thay đổi trạng thái chiến dịch",
                 str_icon = ""
             });
         }

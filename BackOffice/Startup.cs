@@ -33,7 +33,10 @@ namespace BackOffice
             AppConstants.RESOURCE_SERVER = Configuration["AppHelpers:RESOURCE_SERVER"];
             AppConstants.RESOURCE_PATH = Configuration["AppHelpers:RESOURCE_PATH"];
 
-            
+            AppHelpers.RESOURCE_SERVER = Configuration["AppHelpers:RESOURCE_SERVER"];
+
+
+
 
 
             services.Configure<CookiePolicyOptions>(options =>

@@ -2,15 +2,15 @@
     <div class="row m--margin-bottom-20">
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Title:
+                Từ khóa tìm kiếm:
             </label>
-            <input type="text" name="kw" class="form-control m-input" placeholder="Title Campaign" data-col-index="0" value="@(Context.Request.Query["kw"])">
+            <input type="text" name="kw" class="form-control m-input" placeholder="Từ khóa tìm kiếm" data-col-index="0" value="@(Context.Request.Query["kw"])">
         </div>              
     </div>
     <div class="row m--margin-bottom-20">
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Status:
+                Trạng thái:
             </label>
             <select name="status" class="form-control m-input">
                 @foreach (var item in ViewBag.CampaignStatus)
@@ -29,7 +29,7 @@
         </div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Type:
+                Loại chiến dịch:
             </label>
             <select name="type" class="form-control m-input">
                 @foreach (var item in ViewBag.CampaignTypes)
@@ -47,7 +47,7 @@
         </div>
         <div class="col-lg-6 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Select DateTime:
+                Chọn DateTime:
             </label>
             <div class="input-daterange input-group" id="m_datepicker_5">
                 <input type="text" class="form-control m-input" name="StartDate" value="@Context.Request.Query["StartDate"]">
@@ -68,7 +68,7 @@
                     <span>
                         <i class="la la-search"></i>
                         <span>
-                            Search
+                            Tìm kiếm
                         </span>
                     </span>
                 </button>

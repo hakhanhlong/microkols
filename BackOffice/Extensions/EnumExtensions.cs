@@ -29,7 +29,7 @@ namespace BackOffice.Extensions
         //    return attribute == null ? value.ToString() : attribute.Description;
         //}
 
-        public static string ToDisplayName(this Enum value)
+        public static string ToShowName(this Enum value)
         {
             try
             {

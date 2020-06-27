@@ -119,7 +119,7 @@
                                     </th>
                                     <th></th>
                                     <th>CODE</th>
-                                    <th>
+                                    <th style="width:450px;">
                                         TITLE
                                     </th>
                                     <th>
@@ -206,6 +206,10 @@
                                                 }
 
                                                 <div>@(item.Type.ToText())</div>
+                                                @if (!string.IsNullOrEmpty(item.SystemNote) && item.Status != CampaignStatus.Created && item.Status != CampaignStatus.Completed)
+                                                {
+                                                    <div style="color:Highlight;"><strong>Hệ thống ghi chú: </strong><span><i>@item.SystemNote</i></span></div>
+                                                }
                                             </td>
                                             <td>
                                                 <a href="/campaign/campaignfollowagency?agencyid=@(item.AgencyId)">@(item.UserCreated)</a>

@@ -73,5 +73,7 @@ namespace Common.Extensions
         {
             return $"{price.ToString("n0")} {currency}";
         }
+
+
     }
 }

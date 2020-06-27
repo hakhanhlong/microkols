@@ -3,6 +3,8 @@
 @inject WebServices.Interfaces.IAccountService AccountService
 @inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
 
+@using BackOffice.Extensions;
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -12,11 +14,14 @@
             <th>
                 Người chia sẻ
             </th>
+            <th>
+                Trạng thái
+            </th>
             <th width="250">
                 Link facebook
             </th>
             <th>
-                nội dung chia sẻ
+                Nội dung chia sẻ
             </th>
             <th>
                 Đánh giá người dùng
@@ -37,6 +42,7 @@
             <tr>
                 <td>@stt</td>
                 <td>@campaignAccount.Account.Name</td>
+                <td>@campaignAccount.Status.ToBadge()</td>
                 <td>
                     @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                     {
@@ -63,7 +69,7 @@
                                             </span>
                                             <span data-toggle="tooltip" title="Lượt bình luận">
                                                 @post.CommentCount comments
-                                            </span>                                                                                       
+                                            </span>
                                         </div>
                                         <div>
                                             @if (Model.Type == CampaignType.ShareContentWithCaption)
@@ -115,7 +121,7 @@
                         <span class="btn btn-outline-info btn-sm">@campaignAccount.Rating.Value.ToDisplayName()</span>
 
                     }
-                  
+
 
 
 
@@ -127,7 +133,7 @@
                         var title = $"Nội dung: {campaignAccount.ReportNote}";
                         <button class="btn btn-sm btn-outline-danger" data-toggle="tooltip" title="@title"><i class=" fal fa-check"> </i> Đã báo cáo</button>
                     }
-                    
+
                 </td>
             </tr>
         }

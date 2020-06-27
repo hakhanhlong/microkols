@@ -78,7 +78,7 @@ namespace BackOffice.Extensions
 
 
 
-            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToShowName()}</span>");
 
 
         }
@@ -116,7 +116,7 @@ namespace BackOffice.Extensions
                 type = "meta";
             }
 
-            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToShowName()}</span>");
         }
 
         public static HtmlString ToBadge(this Core.Entities.TransactionStatus status)
@@ -148,7 +148,7 @@ namespace BackOffice.Extensions
                 type = "meta";
             }
 
-            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToDisplayName()}</span>");
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{status.ToShowName()}</span>");
         }
 
         public static HtmlString ToBadge(this Core.Entities.TransactionType ttype)
@@ -180,7 +180,7 @@ namespace BackOffice.Extensions
                 type = "meta";
             }
 
-            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{ttype.ToDisplayName()}</span>");
+            return new HtmlString($"<span class='m-badge m-badge--{type} m-badge--wide'>{ttype.ToShowName()}</span>");
         }
 
 
