@@ -72,7 +72,7 @@
                                         <tr>
                                             <td>@count</td>
                                             <td>
-                                                <a href="/microkol/detail?id=@(item.Id)" style="font-family:Roboto;text-decoration:none;">
+                                                <a href="/microkol/detail?id=@(item.EntityId)" style="font-family:Roboto;text-decoration:none;">
                                                     <strong>@item.Name</strong>
                                                 </a>
                                                 
@@ -86,7 +86,7 @@
                                             <td>@item.Type</td>
                                             <td>
                                                 <a style="font-family:Roboto;text-decoration:none;" href="/wallet/transactioninfluencer?walletid=@(item.Id)" class="m-badge m-badge--warning m-badge--wide">Giao dịch</a>
-                                                <a style="font-family:Roboto;text-decoration:none;" href="/microkol/campaignmicrokoldetail?accountid=@(item.Id)" class="m-badge m-badge--accent m-badge--wide">Chiến dịch tham gia</a>
+                                                <a style="font-family:Roboto;text-decoration:none;" href="/microkol/campaignmicrokoldetail?accountid=@(item.EntityId)" class="m-badge m-badge--accent m-badge--wide">Chiến dịch tham gia</a>
                                             </td>
                                         </tr>
                                     }

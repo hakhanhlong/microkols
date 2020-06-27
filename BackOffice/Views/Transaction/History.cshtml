@@ -8,25 +8,25 @@
 
 <div class="row">
     <div class="col-md-12">
-        <table class="table">
+        <table class="table" style="font-family:Roboto;">
             <thead>
                 <tr>
                     <th>
                         #
                     </th>
                     <th>
-                        CODE
+                        Mã giao dịch
                     </th>
                     <th>
-                        TYPE
+                        Loại giao dịch
                     </th>
                     <th>
-                        AMOUNT
+                        Số tiền
                     </th>
                     <th>
-                        BALANCE
+                        Số dư
                     </th>
-                    <th>TIME</th>                    
+                    <th>Thời gian</th>                    
                 </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                     <tr>
                         <td>@count</td>
                         <td>@item.Transaction.Code</td>
-                        <td>@item.Transaction.Type.ToString()</td>
+                        <td>@item.Transaction.Type.ToDisplayName()</td>
                         <td>
 
                             @if (item.Wallet.Id != current_walletid)

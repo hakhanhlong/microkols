@@ -496,7 +496,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Kols mà bạn muốn hợp tác")]
         public List<string> CustomKolNames { get; set; }
 
-        public List<int> AccountIds { get; set; }
+        public List<int> AccountIds { get; set; } = new List<int>();
         public List<int> AccountChargeAmounts { get; set; }
 
 

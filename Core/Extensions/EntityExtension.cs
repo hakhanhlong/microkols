@@ -33,22 +33,64 @@ namespace Core.Extensions
             return result;
         }
 
+        public static long ToOriginalServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
+        {
+            long result = 0;
+            var arrIgnoreStatus = new List<CampaignAccountStatus>()
+            {
+                CampaignAccountStatus.Canceled,
+                CampaignAccountStatus.Unfinished,
+                CampaignAccountStatus.AccountRequest,
+                CampaignAccountStatus.AgencyRequest,
+                CampaignAccountStatus.WaitToPay,
+                CampaignAccountStatus.All
+            };
+            accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
+
+            foreach (var item in accounts)
+            {
+                result += item.AccountChargeAmount;
+            }
+            
+            return result;
+        }
+
+
+
         //public static int GetInfuencerAmount(this Campaign campaign, int amount)
         //{
         //    var t1 = campaign.ServiceChargePercent;
         //    return 
         //}
 
+        public static long ToServiceCharge(this long amount, int percentage_service_charge)
+        {
+            var _ServiceChargePercent = percentage_service_charge; //phí dịch vụ chiến dịch
+            var _AccountChargeAmount = amount;
+            var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
+            return Convert.ToInt32(_amountServiceCharge);
+
+        }
+
+        public static long ToServiceChargeWithVAT(this long amount, int percentage_vat)
+        {
+            var _VATPercent = percentage_vat; //phần trăm VAT
+            var _amountVAT = (amount * _VATPercent) / 100;
+            return _amountVAT;
+        }
+
+
         public static int GetAgencyChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
 
-            var t1 = campaign.ServiceChargePercent;
-            var amount = campaignAccount.AccountChargeAmount;
-            var val1 = (amount * (100 + t1)) / 100;
+            var _ServiceChargePercent = campaign.ServiceChargePercent; //phí dịch vụ chiến dịch
+            var _AccountChargeAmount = campaignAccount.AccountChargeAmount;
+            var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
 
-            var t2 = campaign.ServiceVATPercent ?? 0;
-            var val2 = (val1 * t2) / 100;
-            return Convert.ToInt32(val1 + val2);
+            var _VATPercent = campaign.ServiceVATPercent ?? 0; //phần trăm VAT
+            var _amountVAT = (_amountServiceCharge * _VATPercent) / 100;
+
+            return Convert.ToInt32(_amountServiceCharge + _amountVAT); //total amount include (percentage servicecharge and vatcharge)
 
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent ?? 0;
@@ -60,6 +102,8 @@ namespace Core.Extensions
             //var val2 = (val1 * (100 - t1)) / 100;
             //return Convert.ToInt32(val2);
         }
+
+       
         public static int GetAccountChagreAmount(this Campaign campaign, CampaignAccount campaignAccount)
         {
 
@@ -143,7 +187,7 @@ namespace Core.Extensions
             foreach (var transaction in completedTransactions)
             {
                
-                if(transaction.Type== TransactionType.CampaignServiceCashBack && transaction.Amount>0)
+                if(transaction.Type== TransactionType.CampaignServiceCashBack && transaction.Amount > 0)
                 {
                     totalPaid -= transaction.Amount;
                 }

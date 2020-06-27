@@ -2,7 +2,7 @@
     <div class="row m--margin-bottom-20">
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Status:
+                Trạng thái:
             </label>
             <select class="form-control m-input" data-col-index="7" name="status">
                 @foreach (var item in ViewBag.Status)
@@ -21,7 +21,7 @@
         </div>
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Select DateTime:
+                Chọn DateTime:
             </label>
             <div class="input-daterange input-group" id="m_datepicker_5">
                 <input type="text" class="form-control m-input" name="StartDate" value="@Context.Request.Query["StartDate"]">

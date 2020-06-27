@@ -67,12 +67,29 @@
                     {
 
                         <div class="form-group row">
+                            <label class="col-4">Tiền chiến dịch</label>
+                            <div class="col-8 text-danger">
+                                @payment.TotalOriginalChargeAmount.ToPriceText()
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-4">Phí dịch vụ: <span style="color:red;">@payment.ServiceChargePercent %</span></label>
+                            <div class="col-8 text-danger">
+                                @payment.AmountSeparateServiceCharge.ToPriceText()
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-4">VAT: <span style="color:red;">@payment.ServiceVATPercent %</span></label>
+                            <div class="col-8 text-danger">
+                                @payment.AmountSeparateVAT.ToPriceText()
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-4">Tổng tiền chiến dịch</label>
                             <div class="col-8 text-danger">
                                 @payment.TotalChargeValue.ToPriceText()
                             </div>
                         </div>
-
                     }
                     else
                     {

@@ -64,6 +64,7 @@ namespace Infrastructure.Data
 
                 var types = new List<TransactionType>() { TransactionType.CampaignAccountCharge, TransactionType.CampaignServiceCharge };
                 var transactions = await _dbContext.Transaction.Where(m => m.RefId == campaign.Id && (m.SenderId == wallet.Id || m.ReceiverId == wallet.Id)).ToListAsync();
+
                 return new CampaignPaymentModel(campaign, campaign.CampaignOption,
                     campaign.CampaignAccount, transactions);
             }

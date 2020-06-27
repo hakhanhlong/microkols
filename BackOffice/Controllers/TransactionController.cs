@@ -56,12 +56,12 @@ namespace BackOffice.Controllers
         {
             ViewBag.TransactionStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "All", Value = "-1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Created", Value = "0"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Canceled", Value = "1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Processing", Value = "2"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "3"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Error", Value = "4"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = "-1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Khởi tạo", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Hủy bỏ", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Đang xử lý", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Hoàn thành", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Lỗi", Value = "4"},
             };
         
         }

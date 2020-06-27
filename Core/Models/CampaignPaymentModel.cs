@@ -20,10 +20,27 @@ namespace Core.Models
             IEnumerable<Transaction> transactions)
         {
             CampaignId = campaign.Id;
+
             TotalChargeAmount = campaign.ToServiceChargeAmount(campaignAccounts, campaignOptions);
             CampaignCode = campaign.Code;
             TotalPaidAmount = campaign.ToTotalPaidAmount(transactions);
+
+            TotalOriginalChargeAmount = campaign.ToOriginalServiceChargeAmount(campaignAccounts, campaignOptions);
+            AmountSeparateServiceCharge = TotalOriginalChargeAmount.ToServiceCharge(campaign.ServiceChargePercent);
+            AmountSeparateVAT = AmountSeparateServiceCharge.ToServiceChargeWithVAT(campaign.ServiceVATPercent??0);
+
+            ServiceChargePercent = campaign.ServiceChargePercent;
+            ServiceVATPercent = campaign.ServiceVATPercent??0;
+
         }
+
+        public int ServiceChargePercent { get; set; }
+        public int ServiceVATPercent { get; set; }
+
+        public long TotalOriginalChargeAmount { get; set; }
+        public long AmountSeparateServiceCharge { get; set; }
+
+        public long AmountSeparateVAT { get; set; }
 
         public int CampaignId { get; set; }
         public string CampaignCode { get; set; }
