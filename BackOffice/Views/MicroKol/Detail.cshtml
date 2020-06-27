@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        MicroKOls Listing
+        Danh sách người ảnh hưởng
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -22,7 +22,7 @@
         <li class="m-nav__item">
             <a href="/microkol" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    MicroKOls Listing
+                    Danh sách người ảnh hưởng
                 </span>
             </a>
         </li>
@@ -48,7 +48,7 @@
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon flaticon-add"></i>
                 <span class="m-menu__link-text">
-                    Actions
+                    Menu
                 </span>
                 <i class="m-menu__hor-arrow la la-angle-down"></i>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
@@ -60,7 +60,7 @@
                         <a href="/microkol/changepassword?id=@(Model.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Change Password
+                                Thay đổi mật khẩu
                             </span>
                         </a>
                     </li>
@@ -68,18 +68,18 @@
                         <a href="/microkol/changetype?id=@(Model.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Config MicroKOL Type
+                                Cấu hình loại người ảnh hưởng
                             </span>
                         </a>
                     </li>
-                    <li class="m-menu__item " aria-haspopup="true">
+                    @*<li class="m-menu__item " aria-haspopup="true">
                         <a href="/microkol/campaigncharge?id=@Model.Id" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Config MicroKOL Campaign Charge
+                                Cấu hình giá chiến dịch người ảnh hưởng
                             </span>
                         </a>
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </li>
@@ -100,7 +100,7 @@
                             <i class="la la-gear"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
-                            Detail @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
+                            Thông tin @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
                         </h3>
                     </div>
                 </div>
@@ -112,39 +112,33 @@
                     <div class="m-form__section m-form__section--first">
                         <div class="m-form__heading">
                             <h3 class="m-form__heading-title">
-                                1. Customer Info:
+                                1. Thông tin chung:
                             </h3>
                         </div>
                         <div class="form-group m-form__group">
                             <label for="example_input_full_name">
-                                Full Name:
+                                Tên đầy đủ:
                             </label>
-                            <input class="form-control m-input" placeholder="Enter full name" asp-for="Name">
-                            <span class="m-form__help">
-                                Please enter your full name
-                            </span>
+                            <input class="form-control m-input" placeholder="Hãy nhập tên đầy đủ" asp-for="Name">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Email address:
+                                Địa chỉ Email:
                             </label>
-                            <input class="form-control m-input" placeholder="Enter email" asp-for="Email">
-                            <span class="m-form__help">
-                                We'll never share your email with anyone else
-                            </span>
+                            <input class="form-control m-input" placeholder="Nhập địa chỉ Email" asp-for="Email">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Address:
+                                Địa chỉ:
                             </label>
-                            <input class="form-control m-input" placeholder="Address" asp-for="Address">
+                            <input class="form-control m-input" placeholder="Địa chỉ" asp-for="Address">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Phone:
+                                Số điện thoại:
                             </label>
                             <div class="m-input-icon m-input-icon--left">
-                                <input class="form-control m-input" placeholder="Phone number" asp-for="Phone">
+                                <input class="form-control m-input" placeholder="Số điện thoại" asp-for="Phone">
                                 <span class="m-input-icon__icon m-input-icon__icon--left">
                                     <span>
                                         <i class="la la-bell"></i>
@@ -152,19 +146,35 @@
                                 </span>
                             </div>
                         </div>
+                        <div class="form-group m-form__group">
+                            <label>
+                                Giới tính:
+                            </label>
+                            <div class="m-input-icon m-input-icon--left">
+                                <span>@Model.Gender.ToDisplayName()</span>
+                            </div>
+                        </div>
+                        <div class="form-group m-form__group">
+                            <label>
+                                Ngày sinh:
+                            </label>
+                            <div class="m-input-icon m-input-icon--left">
+                                <span>@(Model.Birthday.HasValue == true?Model.Birthday.Value.ToShortDateString():"Chưa rõ")</span>
+                            </div>
+                        </div>
                         <div class="m-form__group form-group">
                             <label for="">
-                                Status:
+                                Trạng thái:
                             </label>
                             <div class="m-checkbox-list">
                                 <label class="m-checkbox">
                                     <input type="checkbox" asp-for="Actived">
-                                    Actived
+                                    Kích hoạt
                                     <span></span>
                                 </label>
                                 <label class="m-checkbox">
                                     <input type="checkbox" asp-for="Deleted">
-                                    Deleted
+                                    Hủy bỏ
                                     <span></span>
                                 </label>
                             </div>
@@ -174,75 +184,72 @@
                     <div class="m-form__section m-form__section--last">
                         <div class="m-form__heading">
                             <h3 class="m-form__heading-title">
-                                2. Card Identify:
+                                2. Chứng minh thư:
                             </h3>
                         </div>
                         <div class="form-group m-form__group">
                             <label for="example_input_full_name">
-                                Name:
+                                Tên:
                             </label>
-                            <input class="form-control m-input" placeholder="Card Name" asp-for="IDCardName">
+                            <input class="form-control m-input" placeholder="Tên" asp-for="IDCardName">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Number:
+                                Số chứng minh thư:
                             </label>
-                            <input class="form-control m-input" placeholder="Card Number" asp-for="IDCardNumber">
+                            <input class="form-control m-input" placeholder="Số chứng minh thư" asp-for="IDCardNumber">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                DateTime:
+                                Ngày cấp:
                             </label>
-                            <input class="form-control m-input" placeholder="Card Time" asp-for="IDCardTime">
+                            <input class="form-control m-input" placeholder="Ngày cấp" asp-for="IDCardTime">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                City:
+                                Thành phố:
                             </label>
-                            <input class="form-control m-input" placeholder="City" asp-for="IDCardCity">
+                            <input class="form-control m-input" placeholder="Thành phố" asp-for="IDCardCity">
                         </div>
                     </div>
                     <div class="m-form__seperator m-form__seperator--dashed mt-5 mb-5"></div>
                     <div class="m-form__section m-form__section--first">
                         <div class="m-form__heading">
                             <h3 class="m-form__heading-title">
-                                3. Payment Info:
+                                3. Thông tin thanh toán:
                             </h3>
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Bank Account Name:
+                                Tên tài khoản:
                             </label>
-                            <input class="form-control m-input" placeholder="Bank Account Name" asp-for="BankAccountName">
+                            <input class="form-control m-input" placeholder="Tên tài khoản" asp-for="BankAccountName">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Bank Account Number:
+                                Số tài khoản:
                             </label>
-                            <input class="form-control m-input" placeholder="Bank Account Number" asp-for="BankAccountNumber">
+                            <input class="form-control m-input" placeholder="Số tài khoản" asp-for="BankAccountNumber">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Bank Name:
+                                Tên ngân hàng:
                             </label>
-                            <input class="form-control m-input" placeholder="Bank Name" asp-for="BankAccountBank">
+                            <input class="form-control m-input" placeholder="Tên ngân hàng" asp-for="BankAccountBank">
                         </div>
                         <div class="form-group m-form__group">
                             <label>
-                                Bank Branch:
+                                Chi nhánh:
                             </label>
-                            <input class="form-control m-input" placeholder="Bank Branch" asp-for="BankAccountBranch">
+                            <input class="form-control m-input" placeholder="Chi nhánh" asp-for="BankAccountBranch">
                         </div>
                     </div>
                 </div>
                 <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
                     <div class="m-form__actions m-form__actions--solid">
-                        <button type="submit" class="btn btn-primary">
-                            Submit
-                        </button>
-                        <button type="reset" class="btn btn-secondary">
-                            Cancel
-                        </button>
+                        <button type="submit" class="btn btn-primary" style="font-family:roboto;">
+                            Thay đổi
+                        </button>                       
                     </div>
                 </div>
             </form>

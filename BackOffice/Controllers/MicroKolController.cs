@@ -64,7 +64,7 @@ namespace BackOffice.Controllers
             var list = _IAccountBusiness.GetListAccount(pageindex, 25);
             if(list == null)
             {
-                TempData["MessageError"] = "No data microkols for binding";
+                TempData["MessageError"] = "Không có dữ liệu người ảnh hưởng";
             }
             return View(list);
         }
@@ -118,7 +118,7 @@ namespace BackOffice.Controllers
             var list = _IAccountBusiness.Search(keyword, type, pageindex, 25);
             if (list == null)
             {
-                TempData["MessageError"] = "No data microkols for binding";
+                TempData["MessageError"] = "Không có dữ liệu người ảnh hưởng";
             }
             return View(list);
         }
@@ -237,11 +237,11 @@ namespace BackOffice.Controllers
 
             ViewBag.MocrokolTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Regular", Value = "0"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotTeen", Value = "1"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotMom", Value = "2"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "HotFacebooker", Value = "3"},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Kols", Value = "4"}
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tài khoản thường", Value = "0"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tài khoản Hot Teen", Value = "1"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tài khoản Hot Mom", Value = "2"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tài khoản Hot Facebooker", Value = "3"},
+                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tài khoản Kols", Value = "4"}
             };
 
 

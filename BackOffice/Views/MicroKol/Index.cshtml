@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        MicroKOls Listing
+        Danh sách người ảnh hưởng
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -28,7 +28,7 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <h3 class="m-portlet__head-text">
-                                MicroKOls Listing
+                                Danh sách người ảnh hưởng
                             </h3>
                         </div>
                     </div>                    
@@ -52,37 +52,39 @@
                                                 #
                                             </th>
                                             <th>
-                                                CAMPAIGNS
+                                                Chiến dịch
                                             </th>
                                             <th>
-                                                EMAIL
+                                                Email
                                             </th>
                                             <th>
-                                                PHONE
+                                                Số điện thoại
                                             </th>
                                             <th>
-                                                NAME
+                                                Tên
                                             </th>
                                             <th>
-                                                TYPE
+                                                Loại
                                             </th>
                                             <th>
-                                                ACTIVED
+                                                Hoạt động
                                             </th>
                                             <th>
-                                                VERIFY
+                                                Xác thực
                                             </th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @{ int count = 1;}
+                                        @{ 
+                                            int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1: ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25)==0?1: ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
+                                        }
                                         @foreach (var item in Model.Accounts)
                                         {
                                         <tr>
                                             <td>@(count)</td>
                                             <td>
-                                                <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary">CAMPAIGNS</a>
+                                                <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary" style="font-family:roboto;">Chiến dịch tham gia</a>
                                             </td>
                                             <td>@item.Email</td>
                                             <td>@item.Phone</td>
@@ -91,25 +93,25 @@
 
                                             <td>
 
-                                                @(item.Actived == true ? "Active" : "Not Active")
+                                                @(item.Actived == true ? "Hoạt động" : "Không hoạt động")
 
                                             </td>
                                             <td>
 
                                                 @if(item.Status == AccountStatus.Verified || item.Status == AccountStatus.Normal)
                                                 {
-                                                    <a href="/microkol/verify/?id=@item.Id">Need Verify</a>
+                                                    <a href="/microkol/verify/?id=@item.Id">Cần xác thực</a>
                                                 }
                                                 else
                                                 {
-                                                    <span>Verified</span>
+                                                    <span>Đã xác thực</span>
                                                 }
 
                                             </td>
 
 
                                             <td>
-                                                <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info">DETAIL</a>
+                                                <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info" style="font-family:roboto;">Chi tiết</a>
                                             </td>
                                         </tr>
                                             count++;

@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        MicroKOls Listing
+        Danh sách người ảnh hưởng
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -22,7 +22,7 @@
         <li class="m-nav__item">
             <a href="/microkol" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    MicroKOls Listing
+                    Danh sách người ảnh hưởng
                 </span>
             </a>
         </li>
@@ -44,7 +44,7 @@
             <li class="m-nav__item">
                 <a href="/microkol/campaigncharge?id=@(ViewBag.Microkol.Id)" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        Campaign charge
+                        Chi phí trả bởi chiến dịch
                     </span>
                 </a>
             </li>
@@ -58,7 +58,7 @@
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon flaticon-add"></i>
                 <span class="m-menu__link-text">
-                    Actions
+                    Menu
                 </span>
                 <i class="m-menu__hor-arrow la la-angle-down"></i>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
@@ -67,26 +67,18 @@
                 <span class="m-menu__arrow m-menu__arrow--adjust" style="left: 73px;"></span>
                 <ul class="m-menu__subnav">
                     <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/changepassword?id=@(Context.Request.Query["id"])" class="m-menu__link ">
+                        <a href="/microkol/changepassword?id=@(ViewBag.Microkol.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Change Password
-                            </span>
-                        </a>
-                    </li>
-                    <li class="m-menu__item" aria-haspopup="true">
-                        <a href="/microkol/changetype?id=@(Context.Request.Query["id"])" class="m-menu__link ">
-                            <i class="m-menu__link-icon flaticon-file"></i>
-                            <span class="m-menu__link-text">
-                                Config MicroKOL Type
+                                Thay đổi mật khẩu
                             </span>
                         </a>
                     </li>
                     <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/campaigncharge?id=@(Context.Request.Query["id"])" class="m-menu__link ">
+                        <a href="/microkol/changetype?id=@(ViewBag.Microkol.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Config MicroKOL Campaign Charge
+                                Cấu hình loại người ảnh hưởng
                             </span>
                         </a>
                     </li>

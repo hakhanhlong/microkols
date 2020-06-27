@@ -17,13 +17,14 @@ namespace Core.Specifications
         }
 
         public AccountSpecification(string keyword, AccountType type) :
-            base(m => (string.IsNullOrEmpty(keyword) || m.Email.Contains(keyword) || m.Name.Contains(keyword)) && ( type== AccountType.All ||m.Type == type))
+            base(m => (string.IsNullOrEmpty(keyword) || m.Email.Contains(keyword) || m.Name.Contains(keyword) || m.Phone.Contains(keyword) || m.IDCardNumber.Contains(keyword)) 
+            && ( type== AccountType.All ||m.Type == type))
         {
 
         }
 
 
-        public AccountSpecification(string email, string name) : base(m => m.Email.Contains(email) || m.Name.Contains(name))
+        public AccountSpecification(string email, string name) : base(m => m.Email.Contains(email) || m.Name.Contains(name) || m.Phone.Contains(name) || m.IDCardNumber.Contains(name))
         {
 
         }

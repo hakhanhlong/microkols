@@ -10,7 +10,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        MicroKOls Listing
+        Danh sách người ảnh hưởng
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -24,7 +24,7 @@
         <li class="m-nav__item">
             <a href="/microkol" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    MicroKOls Listing
+                    Danh sách người ảnh hưởng
                 </span>
             </a>
         </li>
@@ -47,7 +47,7 @@
             <li class="m-nav__item">
                 <a href="/microkol/changetype?id=@(Model.Id)" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        Change Type
+                        Loại người ảnh hưởng
                     </span>
                 </a>
             </li>
@@ -61,7 +61,7 @@
             <a href="javascript:;" class="m-menu__link m-menu__toggle">
                 <i class="m-menu__link-icon flaticon-add"></i>
                 <span class="m-menu__link-text">
-                    Actions
+                    Menu
                 </span>
                 <i class="m-menu__hor-arrow la la-angle-down"></i>
                 <i class="m-menu__ver-arrow la la-angle-right"></i>
@@ -73,7 +73,7 @@
                         <a href="/microkol/changepassword?id=@(Model.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Change Password
+                                Thay đổi mật khẩu
                             </span>
                         </a>
                     </li>
@@ -81,15 +81,7 @@
                         <a href="/microkol/changetype?id=@(Model.Id)" class="m-menu__link ">
                             <i class="m-menu__link-icon flaticon-file"></i>
                             <span class="m-menu__link-text">
-                                Config MicroKOL Type
-                            </span>
-                        </a>
-                    </li>
-                    <li class="m-menu__item " aria-haspopup="true">
-                        <a href="/microkol/campaigncharge?id=@Model.Id" class="m-menu__link ">
-                            <i class="m-menu__link-icon flaticon-file"></i>
-                            <span class="m-menu__link-text">
-                                Config MicroKOL Campaign Charge
+                                Cấu hình loại người ảnh hưởng
                             </span>
                         </a>
                     </li>
@@ -112,7 +104,7 @@
                             <i class="la la-gear"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
-                            Change Type @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
+                            Thay đổi @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
                         </h3>
                     </div>
                 </div>
@@ -123,7 +115,7 @@
                     <input type="hidden" asp-for="Id">
                     <div class="form-group m-form__group">
                         <label for="exampleSelect1">
-                            Select type
+                            Chọn loại
                         </label>
                         <select class="form-control m-input" asp-for="Type" asp-items="@ViewBag.MocrokolTypes">                                                        
                         </select>
@@ -132,10 +124,10 @@
                 <div class="m-portlet__foot m-portlet__foot--fit">
                     <div class="m-form__actions">
                         <button type="submit" class="btn btn-primary">
-                            Submit
+                            Thay đổi
                         </button>
                         <button type="reset" class="btn btn-secondary">
-                            Cancel
+                            Hủy bỏ
                         </button>
                     </div>
                 </div>
