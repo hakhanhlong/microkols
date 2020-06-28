@@ -76,7 +76,7 @@ namespace BackOffice.Controllers
             var microkol = await _IAccountBusiness.GetAccount(id);
             if (microkol == null)
             {
-                TempData["MessageError"] = "MicroKol do not exist!";
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
             }
             return View(microkol);
         }
@@ -88,21 +88,21 @@ namespace BackOffice.Controllers
             var microkol = _IAccountRepository.GetById(model.Id);
             if (microkol == null)
             {
-                TempData["MessageError"] = "MicroKol do not exist!";
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
             }
             else
             {
                 if(chkConfirmVerify == 0)
                 {
-                    microkol.Status = AccountStatus.Verified;
-                    TempData["MessageError"] = "MicroKol need Re-Verify!";
+                    microkol.Status = AccountStatus.NeedVerified;
+                    TempData["MessageError"] = "Người ảnh hưởng cần xác thực lại!";
                     await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifyDenied, txtMessage, "");
                     
                 }
                 else
                 {
                     microkol.Status = AccountStatus.SystemVerified;
-                    TempData["MessageSuccess"] = "Verified Success!";
+                    TempData["MessageSuccess"] = "Xác thực thành công!";
                     await _INotificationBusiness.CreateNotificationAccountVerify(model.Id, model.Id, NotificationType.AccountVerifySuccess, "Bạn đã được hệ thống xác thực thành công!", "");
                 }
 
@@ -128,7 +128,7 @@ namespace BackOffice.Controllers
             var microkol = await _IAccountBusiness.GetAccount(id);
             if(microkol == null)
             {
-                TempData["MessageError"] = "MicroKol do not exist!";
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
             }
 
             return View(microkol);
@@ -144,7 +144,7 @@ namespace BackOffice.Controllers
                     var microkol = _IAccountRepository.GetById(model.Id);
                     if (microkol == null)
                     {
-                        TempData["MessageError"] = "MicroKol do not exist!";
+                        TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
                     }
                     else
                     {
@@ -169,7 +169,7 @@ namespace BackOffice.Controllers
 
                         await _IAccountRepository.UpdateAsync(microkol);
 
-                        TempData["MessageSuccess"] = "MicroKol update success!";
+                        TempData["MessageSuccess"] = "Thay đổi thông tin người ảnh hưởng thành công!";
 
 
                     }
@@ -186,7 +186,7 @@ namespace BackOffice.Controllers
             var microkol = await _IAccountBusiness.GetAccount(id);
             if (microkol == null)
             {
-                TempData["MessageError"] = "MicroKol do not exist!";
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
             }
 
             return View(microkol);

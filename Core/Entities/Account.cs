@@ -105,7 +105,7 @@ namespace Core.Entities
     public enum AccountStatus
     {
         Normal = 0,
-        Verified = 1,
+        NeedVerified = 1,
         SystemVerified = 2,
     }
   

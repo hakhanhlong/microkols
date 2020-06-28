@@ -210,7 +210,9 @@ namespace WebServices.Services
                         Deleted = false,
                         DistrictId = null,
                         Type = AccountType.Regular,
-                        Status = AccountStatus.SystemVerified //mặc định user là đã verified, để tạm thôi cho fb duyệt đã
+                        Status = AccountStatus.NeedVerified 
+                        
+                        //mặc định user là đã verified, để tạm thôi cho fb duyệt đã
                         
 
                     };
@@ -591,7 +593,7 @@ namespace WebServices.Services
                     entity.DistrictId = null;
 
                 entity.Address = model.Address;
-                entity.Status = AccountStatus.Verified;
+                entity.Status = AccountStatus.NeedVerified;
                 entity.DateModified = DateTime.Now;
                 entity.UserModified = username;
 

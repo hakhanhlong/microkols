@@ -98,7 +98,7 @@
                                             </td>
                                             <td>
 
-                                                @if(item.Status == AccountStatus.Verified || item.Status == AccountStatus.Normal)
+                                                @if(item.Status == AccountStatus.NeedVerified || item.Status == AccountStatus.Normal)
                                                 {
                                                     <a href="/microkol/verify/?id=@item.Id">Cần xác thực</a>
                                                 }

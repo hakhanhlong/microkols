@@ -131,7 +131,7 @@
                                 2. Card Identify:
                             </h3>
                             @if ((string.IsNullOrEmpty(Model.IDCardImageBack) || string.IsNullOrEmpty(Model.IDCardImageFront))
-                               && (Model.Status == AccountStatus.Normal || Model.Status == AccountStatus.Verified))
+                               && (Model.Status == AccountStatus.Normal || Model.Status == AccountStatus.NeedVerified))
                             {
                                 <div class="alert alert-danger" role="alert">
                                     <strong>
@@ -186,7 +186,7 @@
                         }
 
                         @if ((!string.IsNullOrEmpty(Model.IDCardImageBack) || !string.IsNullOrEmpty(Model.IDCardImageFront))
-                               && (Model.Status == AccountStatus.Normal || Model.Status == AccountStatus.Verified))
+                               && (Model.Status == AccountStatus.Normal || Model.Status == AccountStatus.NeedVerified))
                         {
                             <div class="m-form__group form-group">
                                 <div class="m-checkbox-list">
