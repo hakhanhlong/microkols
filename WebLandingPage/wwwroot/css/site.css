@@ -1,10 +1,4 @@
 ﻿
-/*body {
-    font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300))) !important;
-    line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300))) !important;
-}*/
-
-
 .icon-facebook-float img {
     position: absolute;
     top: -70px;
@@ -32,11 +26,8 @@
     z-index: 1;
 }
 
-section#content-page .right-column {
-    
-    
-    background-repeat: repeat-y !important;
-    
+section#content-page .right-column {        
+    background-repeat: repeat-y !important;    
 }
 
 .video-gallery li{
@@ -119,13 +110,7 @@ section#content-page .right-column {
 
 
 @media screen and (max-width: 768px) {
-
-    /*.txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
-        font-weight: 700;
-        font-size: 22px;
-    }*/
-
- 
+     
 
     .youtube {
         width: 320px;
@@ -215,14 +200,7 @@ section#content-page .right-column {
 }
 
 @media screen and (max-width: 320px) {
-    /*.txt-h1-bold-2, h1, .txt-h1-bold, .h1, .qa-title {
-        font-weight: 700;
-        font-size: 22px;
-    }*/
-
-   
-
-
+       
     .youtube {
         width: 320px;
         height: 175px;
@@ -308,5 +286,44 @@ section#content-page .right-column {
 
   
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .example {
+        background: red;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .example {
+        background: green;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .example {
+        background: blue;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    .example {
+        background: orange;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .example {
+        background: pink;
+    }
+}
+
+
+
+
 
 
