@@ -23,9 +23,7 @@ namespace BackOffice.Controllers
 
         public IActionResult Index(int pageindex = 1)
         {
-
             var _list = _ICategoryRepository.ListPaging("" , pageindex, 50);
-
             return View(_list);
         }
 
@@ -39,20 +37,27 @@ namespace BackOffice.Controllers
         {
             if(id != 0)
             {
-                var category = await _ICategoryRepository.GetByIdAsync(id);
+                var filter = new CategorySpecification(id);
+                var category = await _ICategoryRepository.GetSingleBySpecAsync(filter);
                 if(category!= null)
                 {
+                    ViewBag.CountInfluencer = category.AccountCategory.Count();
+                    ViewBag.CountMale = category.AccountCategory.Where(a => a.Account.Gender == Gender.Male).Count();
+                    ViewBag.CountFemale = category.AccountCategory.Where(a => a.Account.Gender == Gender.Female).Count();
+
                     return View(new CategoryCreateEditModel() {
                         Id = category.Id,
                         Name = category.Name,
                         Published = category.Published,
-                        Deleted = category.Deleted
+                        Deleted = category.Deleted                        
                     });
+
+                    
 
                 }
                 else
                 {
-                    TempData["MessageError"] = string.Format("{0}", "Category empty, do not exist!");
+                    TempData["MessageError"] = string.Format("{0}", "Lĩnh vực không tồn tại!");
                 }
 
             }
@@ -78,15 +83,15 @@ namespace BackOffice.Controllers
                         category.Deleted = model.Deleted;
                         try {
                             await _ICategoryRepository.UpdateAsync(category);
-                            TempData["MessageSuccess"] = string.Format("Update Category {0} successfully", model.Id);
+                            TempData["MessageSuccess"] = string.Format("Thay đổi lĩnh vực {0} thành công", model.Id);
                         }
                         catch(Exception ex) {
-                            TempData["MessageError"] = string.Format("Error: {0}", ex.Message);
+                            TempData["MessageError"] = string.Format("Lỗi: {0}", ex.Message);
                         }                       
                     }
                     else
                     {
-                        TempData["MessageError"] = string.Format("{0}", "Category empty, do not exist!");
+                        TempData["MessageError"] = string.Format("{0}", "Lĩnh vực không tồn tại!");
                     }
                 }
                 else //insert
@@ -102,11 +107,11 @@ namespace BackOffice.Controllers
                     try
                     {
                         await _ICategoryRepository.AddAsync(_category);
-                        TempData["MessageSuccess"] = "Insert Category successfully";
+                        TempData["MessageSuccess"] = "Thêm mới lĩnh vực thành công!";
                     }
                     catch (Exception ex)
                     {
-                        TempData["MessageError"] = string.Format("Error: {0}", ex.Message);
+                        TempData["MessageError"] = string.Format("Lỗi: {0}", ex.Message);
                     }
 
                 }

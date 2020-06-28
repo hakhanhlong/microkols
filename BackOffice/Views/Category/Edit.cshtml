@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Categories Listing
+        Danh sách lĩnh vực
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -22,7 +22,7 @@
         <li class="m-nav__item">
             <a href="/category" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Category Listing
+                    Danh sách lĩnh vực
                 </span>
             </a>
         </li>
@@ -34,7 +34,7 @@
             <li class="m-nav__item">
                 <a href="/category/add" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        Add Category
+                        Thêm mới lĩnh vực
                     </span>
                 </a>
             </li>
@@ -44,7 +44,7 @@
             <li class="m-nav__item">
                 <a href="" class="m-nav__link">
                     <span class="m-nav__link-text">
-                        Edit Category
+                        Thay đổi lĩnh vực
                     </span>
                 </a>
             </li>
@@ -65,7 +65,7 @@
                             <i class="la la-gear"></i>
                         </span>
                         <h3 class="m-portlet__head-text">
-                            @(Model.Id == 0?"Add Category":"Edit Category")
+                            @(Model.Id == 0?"Thêm mới lĩnh vực":"Thay đổi lĩnh vực")
                         </h3>
                     </div>
                 </div>
@@ -77,24 +77,35 @@
                     <div asp-validation-summary=" All" class="text-danger"></div>
                     <div class="form-group m-form__group">
                         <label for="category_name">
-                            Category Name
+                            Tên lĩnh vực
                         </label>
-                        <input class="form-control m-input m-input--square" placeholder="Category Name" asp-for="Name">
+                        <input class="form-control m-input m-input--square" placeholder="Tên lĩnh vực" asp-for="Name">
                     </div>
                     <div class="m-form__group form-group">
-                        <label for=""> Status </label>
+                        <label for=""> Trạng thái </label>
                         <div class="m-checkbox-inline">
                             <label class="m-checkbox">
                                 <input asp-for="Published">
-                                Published
+                                Hoạt động/Không hoạt động
                                 <span></span>
                             </label>
                             <label class="m-checkbox">
                                 <input asp-for="Deleted">
-                                Deleted
+                                Xóa bỏ
                                 <span></span>
                             </label>
                         </div>
+                    </div>
+                    <div class="m-form__group form-group">
+                        <label for="" style="text-align:left;">
+                            @if (Model.Id > 0)
+                            {
+                                <p>Có <span style="color:red;">@ViewBag.CountInfluencer </span>người ảnh hưởng thuộc lĩnh vực này</p>
+                                <p>Nam <span style="color:red;">@ViewBag.CountMale </span>người</p>
+                                <p>Nữ <span style="color:red;">@ViewBag.CountFemale </span>người</p>
+                                
+                            }
+                        </label>                        
                     </div>
                 </div>
                 <div class="m-portlet__foot m-portlet__foot--fit">

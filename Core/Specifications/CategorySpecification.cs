@@ -12,7 +12,10 @@ namespace Core.Specifications
 
         public CategorySpecification(int id)
          : base(i => i.Id == id)
-        {}
+        {
+            AddInclude(c => c.AccountCategory);
+            AddInclude($"{nameof(Category.AccountCategory)}.{nameof(AccountCategory.Account)}");
+        }
 
     }
 
@@ -22,11 +25,15 @@ namespace Core.Specifications
         public CategoryPublishedSpecification(int id)
          : base(i => i.Id == id && i.Published)
         {
+            AddInclude(c => c.AccountCategory);
+            AddInclude($"{nameof(Category.AccountCategory)}.{nameof(AccountCategory.Account)}");
         }
 
         public CategoryPublishedSpecification()
             : base(i => i.Published)
         {
+            AddInclude(c => c.AccountCategory);
+            AddInclude($"{nameof(Category.AccountCategory)}.{nameof(AccountCategory.Account)}");
         }
     }
 
