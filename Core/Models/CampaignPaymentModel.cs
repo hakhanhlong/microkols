@@ -21,18 +21,26 @@ namespace Core.Models
         {
             CampaignId = campaign.Id;
 
-            TotalChargeAmount = campaign.ToServiceChargeAmount(campaignAccounts, campaignOptions);
+            
             CampaignCode = campaign.Code;
+
             TotalPaidAmount = campaign.ToTotalPaidAmount(transactions);
 
             TotalOriginalChargeAmount = campaign.ToOriginalServiceChargeAmount(campaignAccounts, campaignOptions);
             AmountSeparateServiceCharge = TotalOriginalChargeAmount.ToServiceCharge(campaign.ServiceChargePercent);
-            AmountSeparateVAT = AmountSeparateServiceCharge.ToServiceChargeWithVAT(campaign.ServiceVATPercent??0);
+            AmountSeparateVAT = (TotalOriginalChargeAmount + AmountSeparateServiceCharge).ToServiceChargeWithVAT(campaign.ServiceVATPercent??0);
+
+            TotalChargeAmount = campaign.ToServiceChargeAmount(campaignAccounts, campaignOptions);
+
 
             ServiceChargePercent = campaign.ServiceChargePercent;
             ServiceVATPercent = campaign.ServiceVATPercent??0;
 
+            CampaignAccounts = campaignAccounts.ToList();
+
         }
+
+        public List<CampaignAccount> CampaignAccounts { get; set; }
 
         public int ServiceChargePercent { get; set; }
         public int ServiceVATPercent { get; set; }

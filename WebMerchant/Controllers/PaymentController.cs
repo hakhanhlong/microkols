@@ -51,8 +51,8 @@ namespace WebMerchant.Controllers
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
             if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Amount > 0)
             {
+                
                 BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
-
                 //########### Longhk add create notification ##########################################################
                 string _msg = string.Format("Chiến dịch \"{0}\" đã được thanh toán bởi doanh nghiệp \"{1}\", với số tiền {2}.", model.CampaignId, CurrentUser.Username, paymentResult.Amount.ToPriceText());
                 string _data = "Campaign";

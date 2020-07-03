@@ -141,7 +141,7 @@
                             <tbody>
                                 @if (Model != null)
                                 {
-                                    int count = 1;
+                                    int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
                                     foreach (var item in Model.Campaigns)
                                     {
                                         <tr>

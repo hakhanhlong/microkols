@@ -7,9 +7,9 @@
 @model ListAgencyViewModel
 
 @section Subheaders{
-    <h3 class="m-subheader__title m-subheader__title--separator">
-        Agency Listing
-    </h3>
+<h3 class="m-subheader__title m-subheader__title--separator">
+    Danh sách doanh nghiệp
+</h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
             <a href="#" class="m-nav__link m-nav__link--icon">
@@ -27,7 +27,7 @@
                     <div class="m-portlet__head-caption">
                         <div class="m-portlet__head-title">
                             <h3 class="m-portlet__head-text">
-                                Agency Listing
+                                Danh sách doanh nghiệp
                             </h3>
                         </div>
                     </div>
@@ -48,19 +48,19 @@
                                             #
                                         </th>
                                         <th>
-                                            NAME
+                                            Tên doanh nghiệp
                                         </th>
                                         <th>
-                                            USERNAME
+                                            Username
                                         </th>
                                         <th>
-                                            TAX NUMBER
+                                            Mã số thuế
                                         </th>
                                         <th>
-                                            PHONE
+                                            Phone
                                         </th>
                                         <th>
-                                            ACTIVED
+                                            Actived
                                         </th>
                                         <th></th>
                                     </tr>
@@ -68,10 +68,11 @@
                                 <tbody>
                                     @if (Model != null)
                                     {
-                                        int count = 0;
+                                       
+                                        int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) + 1;                                       
                                         foreach (var item in Model.Agencies)
                                         {
-                                            count++;
+                                            
                                             <tr>
                                                 <td>@count</td>
                                                 <td><a href="/agency/detail?id=@item.Id">@item.Name</a></td>
@@ -96,10 +97,13 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm" href="/campaign/campaignfollowagency?agencyid=@item.Id">Campaigns</a>
+                                                    <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm"
+                                                       href="/campaign/campaignfollowagency?agencyid=@item.Id" style="font-family:Roboto;">Chiến dịch</a>
                                                 </td>
 
                                             </tr>
+
+                                            count++;
 
                                         }
                                     }

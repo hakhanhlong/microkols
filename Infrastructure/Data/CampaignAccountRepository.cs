@@ -18,6 +18,13 @@ namespace Infrastructure.Data
         {
 
         }
+
+        public async Task UpdateMerchantPaidToSystem(int id, bool paid)
+        {
+            var campaignAccount = await _dbContext.CampaignAccount.FirstOrDefaultAsync(m => m.Id == id);
+            campaignAccount.MerchantPaidToSystem = paid;
+            await _dbContext.SaveChangesAsync();
+        }
         #region Campaign Account
 
         public async Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username)

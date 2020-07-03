@@ -27,10 +27,10 @@
         </tr>
     </thead>
     <tbody>
-        @{int count = 0; }
+        @{int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) + 1;                                        }
         @foreach (var item in Model.Transactions)
         {
-            count++;
+            
             item.Number = count;
             <tr id="transaction_@(item.Id)">
             <td>@item.Number</td>
@@ -109,23 +109,23 @@
 
             </td>
         </tr>
-        @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
-            {
-        <tr id="transaction_note_@(item.Id)">
-            <td colspan="8">
-                @if (!string.IsNullOrEmpty(item.Note))
-                        {
-                @("Note:" + item.Note)
-                        }
-                @if (!string.IsNullOrEmpty(item.AdminNote))
-                        {
-                <br />
-                @("Admin Note:" + item.AdminNote)
-                        }
-            </td>
-        </tr>
-            }
-
+            @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
+                {
+                <tr id="transaction_note_@(item.Id)">
+                    <td colspan="8">
+                        @if (!string.IsNullOrEmpty(item.Note))
+                                {
+                        @("Note:" + item.Note)
+                                }
+                        @if (!string.IsNullOrEmpty(item.AdminNote))
+                                {
+                        <br />
+                        @("Admin Note:" + item.AdminNote)
+                                }
+                    </td>
+                </tr>
+                }
+            count++;
         }
 
     </tbody>

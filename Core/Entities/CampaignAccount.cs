@@ -26,6 +26,8 @@ namespace Core.Entities
         public string RefId { get; set; }
         public string RefContent { get; set; }
 
+        public bool MerchantPaidToSystem { get; set; }
+
         public string RefData { get; set; }
         [NotMapped]
         public object RefDataObj

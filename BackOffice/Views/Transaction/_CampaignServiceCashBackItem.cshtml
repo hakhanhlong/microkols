@@ -27,10 +27,10 @@
         </tr>
     </thead>
     <tbody>
-        @{int count = 0; }
+        @{int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) + 1; }
         @foreach (var item in Model.Transactions)
         {
-            count++;
+            
             item.Number = count;
             <tr id="transaction_@(item.Id)">
                 <td>@item.Number</td>
@@ -114,6 +114,7 @@
                     </td>
                 </tr>
             }
+            count++;
 
         }
 

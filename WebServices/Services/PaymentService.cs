@@ -46,6 +46,7 @@ namespace WebServices.Services
             var payment = await _campaignRepository.GetCampaignPaymentByAgency(agencyId, model.CampaignId);
             if (payment == null)
             {
+                
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
             long amount = 0;
@@ -65,7 +66,19 @@ namespace WebServices.Services
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
                 if (transactionType == TransactionType.CampaignServiceCharge)
                 {
-                    return await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);
+                    //############# a Long sửa #############################################################
+                    PaymentResultViewModel _PaymentResultViewModel = await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);                    
+                    if(_PaymentResultViewModel.Status == TransactionStatus.Completed && _PaymentResultViewModel.Amount > 0)
+                    {
+                        foreach(var campaignAccount in payment.CampaignAccounts)
+                        {
+                            //_campaignAccountRepository.UpdateMerchantPaidToSystem();
+                        }
+                    }
+                    //#####################################################################################
+
+                    return _PaymentResultViewModel;
+
                 }
 
                 // nếu là yêu cầu rút tiền -- Đổi sender - recivert -> số tiền dương

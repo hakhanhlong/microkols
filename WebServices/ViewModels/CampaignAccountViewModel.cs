@@ -38,6 +38,8 @@ namespace WebServices.ViewModels
             ReportNote = campaignAccount.ReportNote;
             ReportImages = campaignAccount.ReportImages.ToListString();
             KPICommitted = campaignAccount.KPICommitted;
+
+            MerchantPaidToSystem = campaignAccount.MerchantPaidToSystem;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -58,6 +60,8 @@ namespace WebServices.ViewModels
         public int AccountChargeAmount { get; set; } // chi phi cho tung nguoi tham gia 
 
         public int AgencyChagreAmount { get; set; }
+
+        public bool MerchantPaidToSystem { get; set; }
 
         public DateTime? DateFinished { get; set; }
 

@@ -21,7 +21,7 @@ namespace Core.Extensions
                 CampaignAccountStatus.WaitToPay,
                 CampaignAccountStatus.All
             };
-            accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
+            accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status) && m.MerchantPaidToSystem != true);
 
             foreach (var item in accounts)
             {
@@ -45,7 +45,7 @@ namespace Core.Extensions
                 CampaignAccountStatus.WaitToPay,
                 CampaignAccountStatus.All
             };
-            accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status));
+            accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status) && m.MerchantPaidToSystem != true);
 
             foreach (var item in accounts)
             {
@@ -67,7 +67,11 @@ namespace Core.Extensions
         {
             var _ServiceChargePercent = percentage_service_charge; //phí dịch vụ chiến dịch
             var _AccountChargeAmount = amount;
-            var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
+
+            //var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
+
+            var _amountServiceCharge = (_AccountChargeAmount * _ServiceChargePercent) / 100;
+
             return Convert.ToInt32(_amountServiceCharge);
 
         }
@@ -84,13 +88,15 @@ namespace Core.Extensions
         {
 
             var _ServiceChargePercent = campaign.ServiceChargePercent; //phí dịch vụ chiến dịch
+
             var _AccountChargeAmount = campaignAccount.AccountChargeAmount;
+
             var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
 
             var _VATPercent = campaign.ServiceVATPercent ?? 0; //phần trăm VAT
-            var _amountVAT = (_amountServiceCharge * _VATPercent) / 100;
+            var _amountVAT = (_amountServiceCharge * (100 + _VATPercent)) / 100;
 
-            return Convert.ToInt32(_amountServiceCharge + _amountVAT); //total amount include (percentage servicecharge and vatcharge)
+            return Convert.ToInt32(_amountVAT); //total amount include (percentage servicecharge and vatcharge)
 
             //var t1 = campaign.ServiceChargePercent;
             //var t2 = campaign.ServiceVATPercent ?? 0;
