@@ -33,6 +33,24 @@ namespace Core.Extensions
             return result;
         }
 
+        public static long ToAmountPayback(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
+        {
+            long result = 0;
+            
+            accounts = accounts.Where(m => m.Status == CampaignAccountStatus.Unfinished);
+
+            foreach (var item in accounts)
+            {
+                result += campaign.GetAgencyChagreAmount(item);
+            }
+            //long totalAccountPrice = accounts.Select(m => m.AccountChargeAmount).Sum();
+            //return totalAccountPrice;
+
+            return result;
+        }
+
+
+
         public static long ToOriginalServiceChargeAmount(this Campaign campaign, IEnumerable<CampaignAccount> accounts, IEnumerable<CampaignOption> options)
         {
             long result = 0;
@@ -89,11 +107,15 @@ namespace Core.Extensions
 
             var _ServiceChargePercent = campaign.ServiceChargePercent; //phí dịch vụ chiến dịch
 
+            //tiền gốc
             var _AccountChargeAmount = campaignAccount.AccountChargeAmount;
 
+            //tiền có có dịch vụ
             var _amountServiceCharge = (_AccountChargeAmount * (100 + _ServiceChargePercent)) / 100;
 
             var _VATPercent = campaign.ServiceVATPercent ?? 0; //phần trăm VAT
+
+            //tiền dịch vụ có VAT
             var _amountVAT = (_amountServiceCharge * (100 + _VATPercent)) / 100;
 
             return Convert.ToInt32(_amountVAT); //total amount include (percentage servicecharge and vatcharge)

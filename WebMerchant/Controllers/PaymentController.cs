@@ -38,7 +38,7 @@ namespace WebMerchant.Controllers
 
             if (payment.IsValid)
             {
-                if (payment.TotalChargeValue < 0)
+                if (payment.TotalChargeAmount == 0)
                 {
                     ViewBag.IsRutTienExist = await _paymentService.IsExistPaymentServiceCashBack(CurrentUser.Id, campaignid);
                 }

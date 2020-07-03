@@ -72,7 +72,8 @@ namespace WebServices.Services
                     {
                         foreach(var campaignAccount in payment.CampaignAccounts)
                         {
-                            //_campaignAccountRepository.UpdateMerchantPaidToSystem();
+                            //update campaign account mark as agency had paid
+                            await _campaignAccountRepository.UpdateMerchantPaidToSystem(campaignAccount.Id, true);
                         }
                     }
                     //#####################################################################################

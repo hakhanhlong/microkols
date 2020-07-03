@@ -330,10 +330,10 @@
                         if (Model.Payment.IsValid)
                         {
 
-                            if (Model.Payment.TotalChargeValue > 0)
+                            if (Model.Payment.TotalChargeAmount > 0)
                             {
 
-                                if (Model.Payment.TotalChargeValue > balance)
+                                if (Model.Payment.TotalChargeAmount > balance)
                                 {
                                     <input type="button" value="Nạp tiền" class="wallet-recharge btn btn-info" data-campaignid="@Model.Id" />
                                 }
@@ -345,15 +345,18 @@
                             }
                             else
                             {
+                                if (Model.Payment.TotalPayback > 0)
+                                {
+                                    if (false == ViewBag.IsRutTienExist)
+                                    {
+                                        <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng chờ ban quản trị duyệt yêu cầu rút tiền</div>
+                                    }
+                                }
 
-                                if (false == ViewBag.IsRutTienExist)
-                                {
-                                    <btnpayment campaign-id="Model.Id" text="Rút tiền thừa"></btnpayment>
-                                }
-                                else
-                                {
-                                    <div class="alert alert-info">Bạn đã gửi yêu cầu rút tiền thừa. Vui lòng chờ ban quản trị duyệt yêu cầu rút tiền</div>
-                                }
 
                             }
                         }

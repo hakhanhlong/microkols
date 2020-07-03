@@ -24,17 +24,29 @@ namespace Core.Models
             
             CampaignCode = campaign.Code;
 
-            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions);
+            TotalPaidAmount = campaign.ToTotalPaidAmount(transactions); // tổng tiền đã trả
 
+            // tiền chưa tính phần trăm dịch vụ
             TotalOriginalChargeAmount = campaign.ToOriginalServiceChargeAmount(campaignAccounts, campaignOptions);
-            AmountSeparateServiceCharge = TotalOriginalChargeAmount.ToServiceCharge(campaign.ServiceChargePercent);
-            AmountSeparateVAT = (TotalOriginalChargeAmount + AmountSeparateServiceCharge).ToServiceChargeWithVAT(campaign.ServiceVATPercent??0);
 
+            // tiền dịch vụ
+            AmountSeparateServiceCharge = TotalOriginalChargeAmount.ToServiceCharge(campaign.ServiceChargePercent);
+
+            // tiền gốc + phần trăm dịch vụ
+            AmountSeparateVAT = (TotalOriginalChargeAmount + AmountSeparateServiceCharge);//.ToServiceChargeWithVAT(campaign.ServiceVATPercent??0);
+
+
+            //tổng tiền doanh nghiệp cần phải trả cho hệ thống
             TotalChargeAmount = campaign.ToServiceChargeAmount(campaignAccounts, campaignOptions);
 
+            //tổng tiền hệ thống phải trả lại cho doanh nghiệp
+            TotalPayback = campaign.ToAmountPayback(campaignAccounts, campaignOptions);
 
-            ServiceChargePercent = campaign.ServiceChargePercent;
-            ServiceVATPercent = campaign.ServiceVATPercent??0;
+
+
+
+            ServiceChargePercent = campaign.ServiceChargePercent; // phần trăm tính tiền dịch vụ
+            ServiceVATPercent = campaign.ServiceVATPercent??0; // tiền VAT
 
             CampaignAccounts = campaignAccounts.ToList();
 
@@ -55,6 +67,10 @@ namespace Core.Models
         public long TotalChargeAmount { get; set; } = 0;
 
 
+        //khi có influencer nào ko thực hiện chiến dịch thì sẽ trả lại tiền cho doanh nghiệp.
+        public long TotalPayback { get; set; } = 0;
+
+
         public long TotalPaidAmount { get; set; }
 
         public bool IsValid
@@ -72,6 +88,7 @@ namespace Core.Models
                 return TotalChargeValue <= 0;
             }
         }
+
         public long TotalChargeValue
         {
             get

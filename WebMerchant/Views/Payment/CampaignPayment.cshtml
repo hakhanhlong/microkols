@@ -5,10 +5,18 @@
     var amount = (int)ViewBag.Amount;
 }
 
-<div class="modal-dialog modal-dialog-centered">
+<div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">Thanh toán </h5>
+            @if (payment.TotalPayback > 0)
+            {
+                <h5 class="modal-title">Rút tiền thừa </h5>
+            }
+            else
+            {
+                <h5 class="modal-title">Thanh toán </h5>
+            }
+
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -22,7 +30,7 @@
                 <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
             </div>
         }
-        else if (payment.TotalChargeValue == 0)
+        else if (payment.TotalPayback == 0 && payment.TotalChargeAmount == 0)
         {
             <div class="modal-body">
                 <div class="alert alert-success">Chiến dịch đã được thanh toán đủ</div>
@@ -61,39 +69,45 @@
                         </div>
                     </div>
 
-
-
-                    @if (payment.TotalChargeValue >= 0)
+                    @if (payment.TotalChargeAmount > 0)
                     {
 
                         <div class="form-group row">
-                            <label class="col-4">Tiền chiến dịch</label>
+                            <label class="col-4">Chi phí thanh toán cho influencer</label>
                             <div class="col-8 text-danger">
                                 @payment.TotalOriginalChargeAmount.ToPriceText()
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-4">Phí dịch vụ: <span style="color:red;">@payment.ServiceChargePercent %</span></label>
+                            <label class="col-4">Phí hệ thống <span style="color:red;">@payment.ServiceChargePercent %</span></label>
                             <div class="col-8 text-danger">
                                 @payment.AmountSeparateServiceCharge.ToPriceText()
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-4">VAT: <span style="color:red;">@payment.ServiceVATPercent %</span></label>
+                            <label class="col-4">Tổng phí dịch vụ</label>
                             <div class="col-8 text-danger">
                                 @payment.AmountSeparateVAT.ToPriceText()
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-4">Tổng tiền chiến dịch</label>
+                            <label class="col-4">VAT <span style="color:red;">@payment.ServiceVATPercent %</span></label>
+                            <div class="col-8 text-danger">
+                                @(((payment.AmountSeparateVAT * 10)/100).ToPriceText())
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-4">Tổng chi phí phải trả</label>
                             <div class="col-8 text-danger">
                                 @payment.TotalChargeAmount.ToPriceText()
                             </div>
                         </div>
                     }
-                    else
+
+                    @if(payment.TotalPayback > 0)
                     {
-                        var val = 0 - payment.TotalChargeValue;
+                        //var val = 0 - payment.TotalChargeValue;
+                        var val = payment.TotalPayback;
                         <div class="form-group row">
                             <label class="col-4">Số tiền rút</label>
                             <div class="col-8 text-danger">

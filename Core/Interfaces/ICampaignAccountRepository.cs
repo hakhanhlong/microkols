@@ -12,5 +12,7 @@ namespace Core.Interfaces
     public interface ICampaignAccountRepository : IRepository<CampaignAccount>, IAsyncRepository<CampaignAccount>
     {
         Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username);
+
+        Task UpdateMerchantPaidToSystem(int id, bool paid);
     }
 }
