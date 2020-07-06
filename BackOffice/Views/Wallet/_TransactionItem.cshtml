@@ -8,79 +8,79 @@
                 #
             </th>
             <th>
-                CODE
+                Mã giao dịch
             </th>
             <th>
-                CAMPAIGN
+                Chiến dịch
             </th>
             <th>
-                AMOUNT
+                Số tiền
             </th>
             <th>
-                TYPE
+                Loại
             </th>
-            <th>STATUS</th>
-            <th>TIME</th>
+            <th>Trạng thái</th>
+            <th>Thời gian</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @{
 
-            int count = 0;
+            int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
             int current_walletid = Convert.ToInt32(Context.Request.Query["walletid"]);
         }
         @foreach (var item in Model.Transactions)
         {
-            count++;
+            
             item.Number = count;
-        <tr id="transaction_@(item.Id)">
-            <td>@item.Number</td>
-            <td>@item.Code</td>
-            <td>
-                
-                <a href="/campaign/detail/?campaignid=@item.RefId">@item.RefId</a>
-            </td>
-            <td>
+            <tr id="transaction_@(item.Id)">
+                <td>@item.Number</td>
+                <td>@item.Code</td>
+                <td>
 
-                @if (item.SenderId == current_walletid)
-                {
-                    <h6 class="m--font-danger">
-                        @if (item.Amount < 0)
-                        {
-                            <span>@item.Amount.ToPriceText()</span>
-                        }
-                        else
-                        {
-                            <span>-@item.Amount.ToPriceText()</span>
-                        }
+                    <a href="/campaign/detail/?campaignid=@item.RefId">@item.RefId</a>
+                </td>
+                <td>
 
-                    </h6>
-                }
-                else if (item.ReceiverId == current_walletid)
-                {
-                    <h6 class="m--font-info">
-                        +@item.Amount.ToPriceText()
-                    </h6>
-                }
+                    @if (item.SenderId == current_walletid)
+                    {
+                        <h6 class="m--font-danger">
+                            @if (item.Amount < 0)
+                            {
+                                <span>@item.Amount.ToPriceText()</span>
+                            }
+                            else
+                            {
+                                <span>-@item.Amount.ToPriceText()</span>
+                            }
 
-            </td>
-            <td>@item.Type.ToBadge()</td>
-            <td>@item.Status.ToBadge()</td>
-            <td>
+                        </h6>
+                    }
+                    else if (item.ReceiverId == current_walletid)
+                    {
+                        <h6 class="m--font-info">
+                            +@item.Amount.ToPriceText()
+                        </h6>
+                    }
+
+                </td>
+                <td>@item.Type.ToBadge()</td>
+                <td>@item.Status.ToBadge()</td>
+                <td>
 
 
-                @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
+                    @(item.DateCreated.ToString("dd/MM/yyyy hh:mm tt"))
 
-            </td>
-            <td>
-                <div class="btn-group btn-group-sm pull-right" role="group">
-                    <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
-                        <i class="fa fa-history"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
+                </td>
+                <td>
+                    <div class="btn-group btn-group-sm pull-right" role="group">
+                        <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                            <i class="fa fa-history"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
             {
                 <tr id="transaction_note_@(item.Id)">
@@ -97,6 +97,8 @@
                     </td>
                 </tr>
             }
+
+            count++;
 
         }
 

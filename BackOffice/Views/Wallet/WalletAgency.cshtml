@@ -48,13 +48,13 @@
                                         #
                                     </th>
                                     <th>
-                                        HỌ & TÊN
+                                        Họ & tên
                                     </th>
                                     <th>
-                                        SỐ DƯ VÍ
+                                        Số dư ví
                                     </th>
                                     <th>
-                                        DATE CREATED
+                                        Ngày tạo
                                     </th>
                                     <th></th>
                                 </tr>
@@ -62,10 +62,10 @@
                             <tbody>
                                 @if (Model != null)
                                 {
-                                    int count = 0;
+                                    int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
                                     foreach (var item in Model.Wallets)
                                     {
-                                        count++;
+                                        
                                         <tr>
                                             <td>@count</td>
                                             <td>
@@ -78,12 +78,13 @@
                                                     @item.Balance.ToPriceText()
                                                 </h6>
                                             </td>
-                                            <td>@item.DateCreated</td>                                            
-                                            <td>                                                
-                                                <a style="font-family:Roboto;text-decoration:none;" href="/wallet/transactionagency?walletid=@(item.Id)" 
+                                            <td>@item.DateCreated</td>
+                                            <td>
+                                                <a style="font-family:Roboto;text-decoration:none;" href="/wallet/transactionagency?walletid=@(item.Id)"
                                                    class="m-badge m-badge--warning m-badge--wide">Giao dịch</a>
                                             </td>
                                         </tr>
+                                        count++;
                                     }
 
                                 }

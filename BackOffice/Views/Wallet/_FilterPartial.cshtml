@@ -3,13 +3,13 @@
     <div class="row m--margin-bottom-20">
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Name:
+                Tên:
             </label>
-            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Name or Email, Tax Number" data-col-index="0">
+            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Tên doanh nghiệp, email, mã số thuế" data-col-index="0">
         </div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Entity Type:
+                Loại:
             </label>            
             <select id="sl-entity-type" class="form-control m-input" asp-for="@Model.EntityType" asp-items="@ViewBag.EntityTypes"></select>
 
@@ -19,7 +19,7 @@
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile"></div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Type:
+                Loại:
             </label>           
             <select id="sl-type" class="form-control m-input" asp-for="@Model.AccountType" asp-items="@ViewBag.AccountTypes"></select>
         </div>

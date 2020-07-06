@@ -60,7 +60,7 @@
                                         <th>
                                             Người ảnh hưởng
                                         </th>
-                                        <th>
+                                        <th style="width:400px;">
                                             Chiến dịch
                                         </th>
                                         <th>
@@ -74,7 +74,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @{ int count = 1;}
+                                    @{int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1; }
                                     @foreach (var item in Model.Campaigns)
                                     {
                                         <tr>
@@ -84,7 +84,7 @@
                                                 <br />
                                                 <span class="m--font-danger">
                                                     @item.CampaignAccount.AccountChargeAmount.ToPriceText()
-                                                </span>                                                
+                                                </span>
                                             </td>
                                             <td>
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
@@ -99,7 +99,7 @@
                                             <td>
                                                 <span class="m--font-danger">
 
-                                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }                                                    
+                                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }
                                                     @agencyCharge.ToPriceText()
 
 
@@ -110,25 +110,25 @@
                                             </td>
                                             <td>
                                                 @*@if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Unfinished)
-                                                {
-                                                    if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
                                                     {
-                                                        <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
-                                                    }
-                                                    else
-                                                    {
-                                                        if (item.CampaignAccount.IsRefundToAgency.Value == false)
+                                                        if (item.CampaignAccount.IsRefundToAgency.HasValue == false)
                                                         {
                                                             <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
                                                         }
                                                         else
                                                         {
-                                                            <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
+                                                            if (item.CampaignAccount.IsRefundToAgency.Value == false)
+                                                            {
+                                                                <a href="/MicroKol/MicroKolSubstractMoney?caid=@(item.CampaignAccount.Id)" class="btn btn-danger btn-sm">Refund $</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="m-badge m-badge--success m-badge--wide">Refunded</span>
+                                                            }
                                                         }
-                                                    }
 
 
-                                                }*@
+                                                    }*@
                                             </td>
 
                                         </tr>

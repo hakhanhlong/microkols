@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Wallet Searching
+        Tìm kiếm ví
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -27,7 +27,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Searching
+                            Tìm kiếm ví
                         </h3>
                     </div>
                 </div>
@@ -48,20 +48,18 @@
                                         #
                                     </th>
                                     <th>
-                                        ENTITY
+                                        Loại ví
                                     </th>
                                     <th>
-                                        NAME
+                                        Tên
                                     </th>
                                     <th>
-                                        BALANCE
+                                        Số dư
                                     </th>
                                     <th>
-                                        DATE CREATED
+                                        Ngày tạo
                                     </th>
-                                    <th>
-                                        TYPE
-                                    </th>
+                                  
                                     <th></th>
                                 </tr>
                             </thead>
@@ -81,9 +79,8 @@
                                                     @item.Balance.ToPriceText()
                                                 </h6>
                                             </td>
-                                            <td>@item.DateCreated</td>
-                                            <td>@item.Type</td>
-                                            <td><a class="btn btn-sm btn-info" href="/wallet/transaction?walletid=@(item.Id)">TRANSACTIONS</a></td>
+                                            <td>@item.DateCreated</td>                                            
+                                            <td><a class="btn btn-sm btn-info" href="/wallet/transaction?walletid=@(item.Id)" style="font-family:roboto;">Giao dịch</a></td>
                                         </tr>
                                     }
 
