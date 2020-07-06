@@ -10,7 +10,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Campaign Service CashBack Search
+        Tìm kiếm rút tiền thừa chiến dịch
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -25,7 +25,7 @@
         <li class="m-nav__item">
             <a href="/transaction" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Transaction
+                    Giao dịch
                 </span>
             </a>
         </li>
@@ -35,7 +35,7 @@
         <li class="m-nav__item">
             <a href="/transaction/campaignservicecashback" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Campaign Service CashBack
+                    Tìm kiếm rút tiền thừa chiến dịch
                 </span>
             </a>
         </li>
@@ -49,7 +49,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Deposite Search
+                            Tìm kiếm rút tiền thừa chiến dịch
                         </h3>
                     </div>
                 </div>
@@ -57,27 +57,27 @@
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line--info" role="tablist">
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/campaignservicecashback?status=Created" role="tab">
-                                Created
+                                @TransactionStatus.Created.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/campaignservicecashback?status=Canceled" role="tab">
-                                Canceled
+                                @TransactionStatus.Canceled.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/campaignservicecashback?status=Processing" role="tab">
-                                Processing
+                                @TransactionStatus.Processing.ToDisplayName();
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/campaignservicecashback?status=Completed" role="tab">
-                                Completed
+                                @TransactionStatus.Completed.ToDisplayName();
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/campaignservicecashback?status=Error" role="tab">
-                                Error
+                                @TransactionStatus.Error.ToDisplayName();
                             </a>
                         </li>
                     </ul>

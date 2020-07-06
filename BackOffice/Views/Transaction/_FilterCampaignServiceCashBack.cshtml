@@ -4,13 +4,13 @@
     <div class="row m--margin-bottom-20">
         <div class="col-lg-9 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Name:
+                Từ khóa:
             </label>
-            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Email or Name" data-col-index="0">
+            <input type="text" name="keyword" value="@(Context.Request.Query["keyword"])" class="form-control m-input" placeholder="Địa chỉ email, tên doanh nghiệp" data-col-index="0">
         </div>
         <div class="col-lg-3 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Status:
+                Trạng thái:
             </label>
             <select id="select-transaction-status" class="form-control m-input" asp-for="TransactionStatus" asp-items="@ViewBag.TransactionStatus"></select>
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-6 m--margin-bottom-10-tablet-and-mobile">
             <label>
-                Select DateTime:
+                Chọn DateTime:
             </label>
             <div class="input-daterange input-group" id="m_datepicker_5">
                 <input type="text" class="form-control m-input" asp-for="StartDate">
