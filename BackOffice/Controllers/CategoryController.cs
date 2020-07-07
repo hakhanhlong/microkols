@@ -42,8 +42,9 @@ namespace BackOffice.Controllers
                 if(category!= null)
                 {
                     ViewBag.CountInfluencer = category.AccountCategory.Count();
-                    ViewBag.CountMale = category.AccountCategory.Where(a => a.Account.Gender == Gender.Male).Count();
-                    ViewBag.CountFemale = category.AccountCategory.Where(a => a.Account.Gender == Gender.Female).Count();
+                    ViewBag.Influencers = category.AccountCategory;
+
+
 
                     return View(new CategoryCreateEditModel() {
                         Id = category.Id,

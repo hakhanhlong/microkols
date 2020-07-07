@@ -93,6 +93,36 @@ namespace Infrastructure.Data
 
         }
 
+        public async Task<int> CreateTransaction(int senderid, int receiverid, long amount, long amountOriginal,
+           TransactionType type, string note, string data, string username, int refId = 0, string refData = "")
+        {
+            var code = $"{(int)type}{Common.Helpers.StringHelper.GetHexTime()}";
+            var transaction = new Transaction()
+            {
+                Amount = amount,
+                AmountOriginal = amountOriginal,
+                Code = code,
+                RefData = refData,
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                Note = note,
+                ReceiverId = receiverid,
+                SenderId = senderid,
+                Status = TransactionStatus.Created,
+                Type = type,
+                UserCreated = username,
+                UserModified = username,
+                RefId = refId,
+                AdminNote = string.Empty,
+                Data = data
+            };
+            await _dbContext.Transaction.AddAsync(transaction);
+            await _dbContext.SaveChangesAsync();
+            return transaction.Id;
+
+        }
+
+
 
 
         public async Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username)

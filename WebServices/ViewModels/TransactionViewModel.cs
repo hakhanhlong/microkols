@@ -19,6 +19,7 @@ namespace WebServices.ViewModels
             SenderId = transaction.SenderId;
             ReceiverId = transaction.ReceiverId;
             Amount = transaction.Amount;
+            AmountOriginal = transaction.AmountOriginal;
             Type = transaction.Type;
             Status = transaction.Status;
             Data = transaction.Data;
@@ -40,6 +41,8 @@ namespace WebServices.ViewModels
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public long Amount { get; set; }
+
+        public long AmountOriginal { get; set; }
 
         public string AmountToText { get; set; }
 

@@ -96,17 +96,59 @@
                             </label>
                         </div>
                     </div>
-                    <div class="m-form__group form-group">
-                        <label for="" style="text-align:left;">
-                            @if (Model.Id > 0)
-                            {
-                                <p>Có <span style="color:red;">@ViewBag.CountInfluencer </span>người ảnh hưởng thuộc lĩnh vực này</p>
-                                <p>Nam <span style="color:red;">@ViewBag.CountMale </span>người</p>
-                                <p>Nữ <span style="color:red;">@ViewBag.CountFemale </span>người</p>
-                                
-                            }
-                        </label>                        
-                    </div>
+                    @if (ViewBag.Influencers != null)
+                    {
+                        <div class="m-form__group form-group">
+                            <label for="" style="text-align:left;">
+                                @if (Model.Id > 0)
+                                {
+                                    <p>Có <span style="color:red;">@ViewBag.CountInfluencer </span>người ảnh hưởng thuộc lĩnh vực này</p>
+                                }
+                            </label>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Tên người ảnh hưởng
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Năm sinh
+                                        </th>
+                                        <th>
+                                            Giới tính
+                                        </th>
+                                        <th>
+                                            Khu vực
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{ int count = 1;}
+                                    @foreach (var item in (IEnumerable<AccountCategory>)ViewBag.Influencers)
+                                    {
+                                    <tr>
+                                        <td>@(count)</td>
+                                        <td>@item.Account.Name</td>
+                                        <td>@item.Account.Email</td>
+                                        <td>@item.Account.Birthday</td>
+                                        <td>@item.Account.Gender.ToDisplayName()</td>
+                                        <td>@item.Account.City.Name</td>
+                                    </tr>
+                                        count++;
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+
                 </div>
                 <div class="m-portlet__foot m-portlet__foot--fit">
                     <div class="m-form__actions">

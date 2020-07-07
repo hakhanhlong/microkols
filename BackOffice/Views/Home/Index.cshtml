@@ -28,22 +28,23 @@
 
                 </div>
                 <div class="m-portlet__body">
-                    <form class="m-form m-form--fit m-form--label-align-right">
+                    <form class="m-form m-form--fit m-form--label-align-right" method="get">
                         <div class="m-portlet__body">
                             <div class="form-group m-form__group row">
                                 <label class="col-form-label col-lg-3 col-sm-12">
                                     Chọn ngày bắt đầu và ngày kết thúc
                                 </label>
-                                <div class="col-lg-4 col-md-9 col-sm-12">
+                                <div class="col-md-8 col-sm-12">
                                     <div class="input-daterange input-group" id="m_datepicker_5">
-                                        <input type="text" class="form-control m-input" name="start" id="startDate"/>
+                                        <input type="text" class="form-control m-input" name="start" id="startDate" />
                                         <div class="input-group-append">
                                             <span class="input-group-text">
                                                 <i class="la la-ellipsis-h"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" name="end" id="endDate"/>&nbsp;
-                                        <button type="button" class="btn btn-sm btn-info" id="btn-statistic">ĐỒNG Ý</button>
+                                        <input type="text" class="form-control" name="end" id="endDate" />&nbsp;
+                                        <button type="button" class="btn btn-sm btn-info" id="btn-statistic">ĐỒNG Ý</button>&nbsp;
+                                        <button type="submit" class="btn btn-sm btn-success">EXPORT to EXCEL</button>
                                     </div>
                                     <span class="m-form__help">
                                         Chọn khoảng thời gian để kết xuất biểu đồ

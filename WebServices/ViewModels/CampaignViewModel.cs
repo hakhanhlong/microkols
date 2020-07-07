@@ -140,6 +140,11 @@ namespace WebServices.ViewModels
             ReviewAddress = campaign.ReviewAddress;
             AmountMin = campaign.AmountMin;
             AmountMax = campaign.AmountMax;
+
+            if(campaign.Agency != null)
+            {
+                Agency = campaign.Agency;
+            }
         }
 
 
@@ -199,6 +204,8 @@ namespace WebServices.ViewModels
 
         //longhk addition
         public int ServiceChargePercent { get; set; }
+
+        public Agency Agency { get; set; }
     }
 
    

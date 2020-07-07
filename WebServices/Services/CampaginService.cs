@@ -70,6 +70,14 @@ namespace WebServices.Services
             return null;
         }
 
+        public async Task<CampaignViewModel> GetCampaignById(int id)
+        {
+            var filter = new CampaignSpecification(id);
+            var campaign = await _campaignRepository.GetSingleBySpecAsync(filter);
+            if (campaign != null) { return new CampaignViewModel(campaign); }
+            return null;
+        }
+
         public async Task<List<int>> GetEndedCampaignIds()
         {
             return await _campaignRepository.GetCampaignIds(CampaignStatus.Ended);

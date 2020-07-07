@@ -12,6 +12,9 @@ namespace Core.Entities
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public long Amount { get; set; }
+
+        public long AmountOriginal { get; set; }
+
         public TransactionType Type { get; set; }
         public TransactionStatus Status { get; set; }
         public string Data { get; set; }

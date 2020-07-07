@@ -13,6 +13,8 @@ namespace WebServices.Interfaces
 
         Task<TransactionViewModel> GetTransaction(TransactionType type, int RefId);
 
+        Task<List<TransactionViewModel>> GetTransactionForExport(TransactionType type, TransactionStatus status, DateTime startDate, DateTime endDate);
+
         Task<long> GetTotalAmount(int agencyid, TransactionType type);
         Task<int> CreateTransaction(EntityType entityType, int entityId, RechargeViewModel model, string username);
         Task<int> CreateTransaction(EntityType entityType, int entityId, WithDrawViewModel model, string username);

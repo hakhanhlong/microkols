@@ -13,8 +13,9 @@ namespace Core.Specifications
         public CategorySpecification(int id)
          : base(i => i.Id == id)
         {
-            AddInclude(c => c.AccountCategory);
+            AddInclude(c => c.AccountCategory);            
             AddInclude($"{nameof(Category.AccountCategory)}.{nameof(AccountCategory.Account)}");
+            AddInclude($"{nameof(Category.AccountCategory)}.{nameof(AccountCategory.Account)}.{nameof(Account.City)}");
         }
 
     }

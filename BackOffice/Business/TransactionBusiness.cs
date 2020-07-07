@@ -38,9 +38,9 @@ namespace BackOffice.Business
             var transaction = await _ITransactionRepository.GetSingleBySpecAsync(filter);
 
             return new TransactionViewModel(transaction);
-
-
         }
+
+
 
         public async Task<ListTransactionViewModel> GetTransactionByType(TransactionType type, int pageindex, int pagesize)
         {
@@ -73,6 +73,8 @@ namespace BackOffice.Business
 
         }
 
+        
+
         public async Task<ListTransactionViewModel> GetTransactions(TransactionType type, TransactionStatus status, int pageindex, int pagesize)
         {
             var filter = new TransactionSpecification(type, status);
@@ -85,6 +87,8 @@ namespace BackOffice.Business
                 Pager = new PagerViewModel(pageindex, pagesize, total)
             };
         }
+
+      
 
 
 

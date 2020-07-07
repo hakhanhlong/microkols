@@ -24,6 +24,7 @@ namespace BackOffice.Controllers
         ITransactionService _ITransactionService;
 
         ITransactionRepository _ITransactionRepository;
+        ICampaignService _ICampaignService;
 
         IWalletBusiness _IWalletBusiness;
         private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
@@ -35,7 +36,7 @@ namespace BackOffice.Controllers
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
             IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
-            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService)
+            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService, ICampaignService __ICampaignService)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
@@ -44,6 +45,8 @@ namespace BackOffice.Controllers
             _INotificationBusiness = __INotificationBusiness;
             _ITransactionHistoryBusiness = __ITransactionHistoryBusiness;
             _ITransactionService = __ITransactionService;
+
+            _ICampaignService = __ICampaignService;
         }
 
         public IActionResult Index()
@@ -535,30 +538,7 @@ namespace BackOffice.Controllers
                 catch { }
 
                 return File(reportBytes, XlsxContentType, string.Format("{0}{1}{2}_{3}{4}{5}_{6}.xlsx", startDate.Day, startDate.Month, startDate.Year, endDate.Day, endDate.Month, endDate.Year, type.ToString()));
-
-
-
-                //worksheet.Cells[2, 1].Value = 1000;
-                //worksheet.Cells[2, 2].Value = "Jon";
-                //worksheet.Cells[2, 3].Value = "M";
-                //worksheet.Cells[2, 4].Value = 5000;
-                //worksheet.Cells[2, 4].Style.Numberformat.Format = numberformat;
-
-                //worksheet.Cells[3, 1].Value = 1001;
-                //worksheet.Cells[3, 2].Value = "Graham";
-                //worksheet.Cells[3, 3].Value = "M";
-                //worksheet.Cells[3, 4].Value = 10000;
-                //worksheet.Cells[3, 4].Style.Numberformat.Format = numberformat;
-
-                //worksheet.Cells[4, 1].Value = 1002;
-                //worksheet.Cells[4, 2].Value = "Jenny";
-                //worksheet.Cells[4, 3].Value = "F";
-                //worksheet.Cells[4, 4].Value = 5000;
-                //worksheet.Cells[4, 4].Style.Numberformat.Format = numberformat;
-
-
-
-
+               
 
             }
 
@@ -566,8 +546,80 @@ namespace BackOffice.Controllers
         }
 
 
+        //public async Task<IActionResult> ExportTransactionCampaignServiceCharge(DateTime start, DateTime end)
+        //{
 
-        //dùng cho nap tiền agency
+        //    var _listTransaction = await _ITransactionService.GetTransactionForExport(TransactionType.CampaignServiceCharge, TransactionStatus.Completed, start, end);
+
+        //    if (_listTransaction != null)
+        //    {
+        //        var package = new ExcelPackage();
+        //        package.Workbook.Properties.Title = "Phí dịch vụ của chiến dịch";
+        //        package.Workbook.Properties.Author = "MicroKols.";
+        //        package.Workbook.Properties.Subject = "Campaign Service Charge";
+        //        package.Workbook.Properties.Keywords = "Campaign Service Charge";
+
+
+        //        var worksheet = package.Workbook.Worksheets.Add("Phí dịch vụ các chiến dịch chiến dịch");
+
+        //        int count_row_header = 1;
+        //        int number_stt = 1;
+        //        //First add the headers
+        //        worksheet.Cells[count_row_header, 1].Value = "STT";
+        //        worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 2].Value = "Tên chiến dịch";
+        //        worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 3].Value = "Loại chiến dịch";
+        //        worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 4].Value = "Doanh nghiệp tạo";
+        //        worksheet.Cells[count_row_header, 4].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 5].Value = "Chi phí trả Influencer(vnđ)";
+        //        worksheet.Cells[count_row_header, 5].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 6].Value = "Phí dịch vụ (%)";
+        //        worksheet.Cells[count_row_header, 6].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 7].Value = "Thành tiền phí dịch vụ (%)";
+        //        worksheet.Cells[count_row_header, 7].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 8].Value = "Tổng chi phí (vnđ)";
+        //        worksheet.Cells[count_row_header, 8].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 9].Value = "Thời gian bắt đầu";
+        //        worksheet.Cells[count_row_header, 9].Style.Font.Bold = true;
+        //        worksheet.Cells[count_row_header, 10].Value = "Thời gian kết thúc";
+        //        worksheet.Cells[count_row_header, 10].Style.Font.Bold = true;
+
+
+        //        foreach (var transaction in _listTransaction)
+        //        {
+
+        //            count_row_header++;
+
+        //            var campaign = await _ICampaignService.GetCampaignById(transaction.RefId.Value);
+
+
+        //            worksheet.Cells[count_row_header, 1].Value = number_stt; //stt
+        //            worksheet.Cells[count_row_header, 2].Value = campaign.Title; //tên chiến dịch
+        //            worksheet.Cells[count_row_header, 3].Value = campaign.Type.ToText(); //loại chiến dịch
+        //            worksheet.Cells[count_row_header, 4].Value = campaign.Agency.Name; //doanh nghiệp tạo
+        //            worksheet.Cells[count_row_header, 5].Value = (transaction.Amount * (100 - campaign.ServiceChargePercent))/100; //chi phí trả influencer
+        //            worksheet.Cells[count_row_header, 6].Value = campaign.ServiceChargePercent;//phí dịch vụ
+        //            worksheet.Cells[count_row_header, 7].Value = transaction.Amount;//thành tiền phí dịch vụ
+
+
+        //            number_stt++;
+        //        }
+
+
+        //    }
+
+
+
+        //}
+
+
+
+
+
+
+        //dùng cho nạp tiền agency
         public async Task<IActionResult> TransactionUpdateStatus(int id, TransactionStatus status)
         {         
             ViewBag.TransactionStatus = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>

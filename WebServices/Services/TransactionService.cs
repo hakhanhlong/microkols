@@ -45,10 +45,14 @@ namespace WebServices.Services
             }
 
             return null;
-
-
         }
 
+        public async Task<List<TransactionViewModel>> GetTransactionForExport(TransactionType type, TransactionStatus status, DateTime startDate, DateTime endDate)
+        {
+            var filter = new TransactionSpecification(type, status, startDate, endDate);
+            var transactions = await _transactionRepository.ListAsync(filter);
+            return transactions.Select(t => new TransactionViewModel(t)).ToList();
+        }
 
         #region Create Transaction
 

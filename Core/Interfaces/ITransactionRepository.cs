@@ -17,7 +17,12 @@ namespace Core.Interfaces
         Task<int> CreateTransaction(int senderid, int receiverid, long amount,
              TransactionType type, string note, string data, string username, int refId = 0, string refData = "");
 
-        Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username);
+        Task<int> CreateTransaction(int senderid, int receiverid, long amount, long amountOriginal,
+           TransactionType type, string note, string data, string username, int refId = 0, string refData = "");
+        
+
+
+            Task<bool> UpdateTransactionStatus(int id, TransactionStatus status, string note, string username);
         Task UpdateTransactionHistory(int transactionid, int walletid, long amount, long balance, string note);
 
         int CountAll();

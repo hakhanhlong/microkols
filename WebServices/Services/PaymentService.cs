@@ -50,6 +50,7 @@ namespace WebServices.Services
                 return new PaymentResultViewModel(PaymentResultErrorCode.ThongTinThanhToanKhongChinhXac);
             }
             long amount = 0;
+            long amountOriginal = 0;
             var senderId = 0;
             var receiverId = 0;
             var transactionType = TransactionType.Undefined;
@@ -62,12 +63,13 @@ namespace WebServices.Services
                 receiverId = await _walletRepository.GetSystemId();
                 senderId = await _walletRepository.GetWalletId(Core.Entities.EntityType.Agency, agencyId);
                 amount = payment.TotalChargeValue;
+                amountOriginal = payment.TotalOriginalChargeAmount;
 
                 transactionType = amount > 0 ? TransactionType.CampaignServiceCharge : TransactionType.CampaignServiceCashBack;
                 if (transactionType == TransactionType.CampaignServiceCharge)
                 {
                     //############# a Long sửa #############################################################
-                    PaymentResultViewModel _PaymentResultViewModel = await Pay(senderId, receiverId, amount, transactionType, model.Note, username, refId, refData);                    
+                    PaymentResultViewModel _PaymentResultViewModel = await Pay(senderId, receiverId, amount, amountOriginal, transactionType, model.Note, username, refId, refData);                    
                     if(_PaymentResultViewModel.Status == TransactionStatus.Completed && _PaymentResultViewModel.Amount > 0)
                     {
                         foreach(var campaignAccount in payment.CampaignAccounts)
@@ -158,6 +160,77 @@ namespace WebServices.Services
 
             return new PaymentResultViewModel(errorCode);
         }
+
+        public async Task<PaymentResultViewModel> Pay(int senderId, int receiverId, long amount, long amountOriginal, TransactionType transactionType,
+           string note, string username, int refId, string refData)
+        {
+            var transactionid = await _transactionRepository.CreateTransaction(senderId, receiverId, amount, amountOriginal, transactionType, note,
+                string.Empty, username, refId, refData);
+
+            string logText = $"CreatePayment -> {transactionid}|{senderId}|{receiverId}|{amount}";
+            _logger.LogInformation($"{logText} -> Start");
+
+            var transactionStatus = TransactionStatus.Processing;
+            var errorCode = PaymentResultErrorCode.KhongLoi;
+            var transactionNote = "";
+            try
+            {
+                //tru tien
+                var senderBalance = await _walletRepository.Exchange(senderId, 0 - amount, username);
+                _logger.LogInformation($"{logText} -> SenderExchange {senderBalance}");
+                if (senderBalance > 0)
+                {
+                    await _transactionRepository.UpdateTransactionHistory(transactionid, senderId, 0 - amount, senderBalance, $"");
+                    // cong tien
+                    var receiverBalance = await _walletRepository.Exchange(receiverId, amount, username);
+                    _logger.LogInformation($"{logText} -> ReceiverExchange {senderBalance}");
+
+                    if (receiverBalance > 0)
+                    {
+                        await _transactionRepository.UpdateTransactionHistory(transactionid, receiverId, amount, receiverBalance, $"");
+                        await _transactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, string.Empty, username);
+
+                        return new PaymentResultViewModel()
+                        {
+                            Amount = amount,
+                            ReceiverBalance = receiverBalance,
+                            SenderBalance = senderBalance,
+                            Status = TransactionStatus.Completed,
+                            ErrorCode = PaymentResultErrorCode.KhongLoi,
+                            TransactionId = transactionid,
+                            Type = transactionType
+                        };
+                    }
+                    else
+                    {
+                        errorCode = PaymentResultErrorCode.CongTienLoi;
+                    }
+                }
+                else if (senderBalance == -2)
+                {
+                    errorCode = PaymentResultErrorCode.KhongDuTien;
+                }
+                else
+                {
+                    errorCode = PaymentResultErrorCode.TruTienLoi;
+                }
+            }
+            catch (Exception ex)
+            {
+                transactionStatus = TransactionStatus.Error;
+                if (errorCode == PaymentResultErrorCode.KhongLoi)
+                {
+                    errorCode = PaymentResultErrorCode.KhongXacDinh;
+                }
+                transactionNote = ex.Message;
+            }
+            _logger.LogInformation($"{logText} -> End -> {transactionStatus}|{transactionNote}");
+            await _transactionRepository.UpdateTransactionStatus(transactionid, transactionStatus, transactionNote, username);
+
+            return new PaymentResultViewModel(errorCode);
+        }
+
+
 
 
         public async Task<bool> VerifyPaybackCampaignAccount(int campaignid)

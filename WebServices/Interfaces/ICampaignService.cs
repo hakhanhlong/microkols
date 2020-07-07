@@ -18,6 +18,7 @@ namespace WebServices.Interfaces
         Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username);
         Task<bool> UpdateExecutionTime(int agencyid, int campaignid, string date, string username);
         Task<CampaignViewModel> GetCampaign(int id);
+        Task<CampaignViewModel> GetCampaignById(int id);
         Task<bool> RequestJoinCampaignByAccount(int accountid, RequestJoinCampaignViewModel model, string username);
        
         Task<CampaignAccountCountingViewModel> GetCampaignAccountCounting(int campaignid, CampaignType type, int total);
