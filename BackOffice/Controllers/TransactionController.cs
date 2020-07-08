@@ -546,73 +546,86 @@ namespace BackOffice.Controllers
         }
 
 
-        //public async Task<IActionResult> ExportTransactionCampaignServiceCharge(DateTime start, DateTime end)
-        //{
+        public async Task<IActionResult> ExportTransactionCampaignServiceCharge(DateTime start, DateTime end)
+        {
 
-        //    var _listTransaction = await _ITransactionService.GetTransactionForExport(TransactionType.CampaignServiceCharge, TransactionStatus.Completed, start, end);
+            var _listTransaction = await _ITransactionService.GetTransactionForExport(TransactionType.CampaignServiceCharge, TransactionStatus.Completed, start, end);
 
-        //    if (_listTransaction != null)
-        //    {
-        //        var package = new ExcelPackage();
-        //        package.Workbook.Properties.Title = "Phí dịch vụ của chiến dịch";
-        //        package.Workbook.Properties.Author = "MicroKols.";
-        //        package.Workbook.Properties.Subject = "Campaign Service Charge";
-        //        package.Workbook.Properties.Keywords = "Campaign Service Charge";
-
-
-        //        var worksheet = package.Workbook.Worksheets.Add("Phí dịch vụ các chiến dịch chiến dịch");
-
-        //        int count_row_header = 1;
-        //        int number_stt = 1;
-        //        //First add the headers
-        //        worksheet.Cells[count_row_header, 1].Value = "STT";
-        //        worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 2].Value = "Tên chiến dịch";
-        //        worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 3].Value = "Loại chiến dịch";
-        //        worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 4].Value = "Doanh nghiệp tạo";
-        //        worksheet.Cells[count_row_header, 4].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 5].Value = "Chi phí trả Influencer(vnđ)";
-        //        worksheet.Cells[count_row_header, 5].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 6].Value = "Phí dịch vụ (%)";
-        //        worksheet.Cells[count_row_header, 6].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 7].Value = "Thành tiền phí dịch vụ (%)";
-        //        worksheet.Cells[count_row_header, 7].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 8].Value = "Tổng chi phí (vnđ)";
-        //        worksheet.Cells[count_row_header, 8].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 9].Value = "Thời gian bắt đầu";
-        //        worksheet.Cells[count_row_header, 9].Style.Font.Bold = true;
-        //        worksheet.Cells[count_row_header, 10].Value = "Thời gian kết thúc";
-        //        worksheet.Cells[count_row_header, 10].Style.Font.Bold = true;
+            if (_listTransaction != null)
+            {
+                var package = new ExcelPackage();
+                package.Workbook.Properties.Title = "Phí dịch vụ của chiến dịch";
+                package.Workbook.Properties.Author = "MicroKols.";
+                package.Workbook.Properties.Subject = "Campaign Service Charge";
+                package.Workbook.Properties.Keywords = "Campaign Service Charge";
 
 
-        //        foreach (var transaction in _listTransaction)
-        //        {
+                var worksheet = package.Workbook.Worksheets.Add("Phí dịch vụ các chiến dịch chiến dịch");
 
-        //            count_row_header++;
+                int count_row_header = 1;
+                int number_stt = 1;
+                //First add the headers
+                worksheet.Cells[count_row_header, 1].Value = "STT";
+                worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 2].Value = "Tên chiến dịch";
+                worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 3].Value = "Loại chiến dịch";
+                worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 4].Value = "Doanh nghiệp tạo";
+                worksheet.Cells[count_row_header, 4].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 5].Value = "Chi phí trả Influencer(vnđ)";
+                worksheet.Cells[count_row_header, 5].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 6].Value = "Phí dịch vụ (%)";
+                worksheet.Cells[count_row_header, 6].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 7].Value = "Thành tiền phí dịch vụ (%)";
+                worksheet.Cells[count_row_header, 7].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 8].Value = "Tổng chi phí (vnđ)";
+                worksheet.Cells[count_row_header, 8].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 9].Value = "Thời gian bắt đầu";
+                worksheet.Cells[count_row_header, 9].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 10].Value = "Thời gian kết thúc";
+                worksheet.Cells[count_row_header, 10].Style.Font.Bold = true;
 
-        //            var campaign = await _ICampaignService.GetCampaignById(transaction.RefId.Value);
+
+                foreach (var transaction in _listTransaction)
+                {
+
+                    count_row_header++;
+
+                    var campaign = await _ICampaignService.GetCampaignById(transaction.RefId.Value);
+
+                    long tien_phidichvu = (transaction.AmountOriginal * campaign.ServiceChargePercent) / 100;
+
+                    worksheet.Cells[count_row_header, 1].Value = number_stt; //stt
+                    worksheet.Cells[count_row_header, 2].Value = campaign.Title; //tên chiến dịch
+                    worksheet.Cells[count_row_header, 3].Value = campaign.Type.ToText(); //loại chiến dịch
+                    worksheet.Cells[count_row_header, 4].Value = campaign.Agency.Name; //doanh nghiệp tạo
+                    worksheet.Cells[count_row_header, 5].Value = transaction.AmountOriginal; //chi phí trả influencer
+                    worksheet.Cells[count_row_header, 6].Value = campaign.ServiceChargePercent;//phí dịch vụ
+                    worksheet.Cells[count_row_header, 7].Value = tien_phidichvu;//thành tiền phí dịch vụ
+                    worksheet.Cells[count_row_header, 8].Value = (transaction.AmountOriginal + tien_phidichvu);//tổng chi phí
+                    worksheet.Cells[count_row_header, 9].Value = campaign.ExecutionStart.Value.ToShortDateString();//thời gian bắt đầu
+                    worksheet.Cells[count_row_header, 10].Value = campaign.ExecutionEnd.Value.ToShortDateString();//thời gian kết thúc
 
 
-        //            worksheet.Cells[count_row_header, 1].Value = number_stt; //stt
-        //            worksheet.Cells[count_row_header, 2].Value = campaign.Title; //tên chiến dịch
-        //            worksheet.Cells[count_row_header, 3].Value = campaign.Type.ToText(); //loại chiến dịch
-        //            worksheet.Cells[count_row_header, 4].Value = campaign.Agency.Name; //doanh nghiệp tạo
-        //            worksheet.Cells[count_row_header, 5].Value = (transaction.Amount * (100 - campaign.ServiceChargePercent))/100; //chi phí trả influencer
-        //            worksheet.Cells[count_row_header, 6].Value = campaign.ServiceChargePercent;//phí dịch vụ
-        //            worksheet.Cells[count_row_header, 7].Value = transaction.Amount;//thành tiền phí dịch vụ
+                    number_stt++;
+                }
+
+                try
+                {
+                    byte[] reportBytes = new byte[] { };
+                    reportBytes = package.GetAsByteArray();
+                    return File(reportBytes, XlsxContentType, string.Format("chiphichiendich_{3}{4}{5}_{6}{7}{8}.xlsx", start.Day, start.Month, start.Year, end.Day, end.Month, end.Year));
+                }
+                catch { }                
+            }
+
+            TempData["MessageInfo"] = "Không có dữ liệu chi phí chiến dịch để xuất file.";
+            return RedirectToAction("Index", "Home");
 
 
-        //            number_stt++;
-        //        }
 
-
-        //    }
-
-
-
-        //}
+        }
 
 
 

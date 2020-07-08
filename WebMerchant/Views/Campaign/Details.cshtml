@@ -245,18 +245,34 @@
                                 </span>
                             </div>
                         }
+                        <div class="mb-2">
+                            @{ stt++;}
+                            <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
+                            <span>
+                                @foreach (var item in Model.AccountTypes)
+                                {
+                                    <strong>@item.ToDisplayName()</strong>
+                                }
+                            </span>
+                        </div>
+                        @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption ||
+                           Model.Type == CampaignType.ReviewProduct)
+                        {
                             <div class="mb-2">
                                 @{ stt++;}
-                                <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
+                                <h5 class="mr-2">@stt. KPIs yêu cầu tối thiểu:</h5>
                                 <span>
-                                    @foreach (var item in Model.AccountTypes)
-                                    {
-                                        <strong>@item.ToDisplayName()</strong>
-                                    }
+                                    <strong>@Model.InteractiveMin</strong>
                                 </span>
                             </div>
+
+
+
+                        }
+
                         @if (Model.CountOption > 0)
                         {
+                            stt++;
                             <div class="mb-2">
                                 <h5 class="mr-2">@stt.  Tiêu chí:</h5><br>
                                 <ul>

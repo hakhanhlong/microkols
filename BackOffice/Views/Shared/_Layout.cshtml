@@ -222,7 +222,7 @@
                             {
                                 <div class="alert alert-success" role="alert">
                                     <strong>
-                                        Success!
+                                        Thống báo!
                                     </strong>
                                     @TempData["MessageSuccess"]
                                 </div>
@@ -232,9 +232,19 @@
                             {
                                 <div class="alert alert-danger" role="alert">
                                     <strong>
-                                        Error!
+                                        Thống báo!
                                     </strong>
                                     @TempData["MessageError"]
+                                </div>
+                            }
+
+                            @if (TempData["MessageInfo"] != null)
+                            {
+                                <div class="alert alert-info" role="alert">
+                                    <strong>
+                                        Thống báo!
+                                    </strong>
+                                    @TempData["MessageInfo"]
                                 </div>
                             }
 
