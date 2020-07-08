@@ -574,6 +574,17 @@ namespace WebMerchant.Controllers
         }
 
 
+        public async Task<IActionResult> CaptionHistory(int campaignaccountid, int accountId, int campaignid, int pageindex = 1)
+        {            
+            var model = await _campaignAccountCaptionService.GetCampaignAccountCaptions(campaignaccountid, "", pageindex, 25);
+            var campaign = await _campaignService.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();
+            ViewBag.Campaign = campaign;
+            return View(model);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> FeedbackCaption(int campaignid, List<int> ids, int type, string returnurl = "")
         {

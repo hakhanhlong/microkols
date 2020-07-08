@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>    
+    <partial name="_StylePartial" />
+    @RenderSection("Styles", required: false)    
+</head>
+<body>
+
+    <div class="d-flex">     
+        <main role="main" class="flex-grow-1 px-3">
+            <div class="main container-fluid">                  
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+    
+    <partial name="_ScriptPartial" />
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+
+

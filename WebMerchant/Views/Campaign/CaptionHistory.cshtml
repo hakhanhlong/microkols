@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewData["Title"] = "CaptionHistory";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+@inject WebServices.Interfaces.IAccountService  AccountService
+
+@{ 
+    int accountid = Convert.ToInt32(Context.Request.Query["accountId"]);
+    var account = await AccountService.GetAccount(accountid);
+    var campaign = (CampaignViewModel)ViewBag.Campaign;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="title-campaign">@campaign.Title</h6>
+        <div class="statistic-social">
+            <a href="javascript:;" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a>
+            <span title="Lượt thích trung bình">@account.AccountCounting.AvgLikeCount <i class="fa fa-thumbs-up"></i></span>
+            <span class="px-2" title="Lượt chia sẻ trung bình">@account.AccountCounting.AvgShareCount <i class="fa fa-share"></i></span>
+            <span title="Lượt bình luận trung bình">@account.AccountCounting.AvgCommentCount <i class="fa fa-comment"></i></span>
+        </div>
+    </div>
+</div>
+
