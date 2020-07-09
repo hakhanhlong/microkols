@@ -14,17 +14,17 @@
             </th>
             <th>
                 Tên người chia sẻ
-            </th>
-            <th width="250">
-                Link facebook
-            </th>
+            </th>          
             @if (haskpi > 0)
             {
                 <th>KPI cam kết</th>
             }
-            <th>
-                nội dung chia sẻ
-            </th>
+            @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
+            {
+                <th>
+                    Nội dung chia sẻ
+                </th>
+            }
             <th>
                 Trạng thái
             </th>
@@ -45,15 +45,12 @@
         <tr>
             <td>@stt</td>
             <td>
-
-                <a href="@campaignAccount.Account.Link" target="_blank">
-                    @campaignAccount.Account.Name
-
-                   
-                </a>
+                <div>
+                    <a href="@campaignAccount.Account.Link" target="_blank">
+                        @campaignAccount.Account.Name
+                    </a>
+                </div>
              
-            </td>
-            <td>
                 @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                 {
                     if (campaignAccount.Type.IsShareCampaign())
@@ -110,64 +107,103 @@
 
                         </div>
                     }
-                  
+
                 }
-            </td>
+
+            </td>            
             @if (haskpi > 0)
             {
                 <td>
                     @campaignAccount.KPICommitted
                 </td>
             }
-            <td>
-                <span class="text-info"> @campaignAccount.RefContent</span>
-            </td>
+            @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
+            {
+                <td>
+                    @if (Model.Type == CampaignType.ReviewProduct)
+                    { //lịch sử sửa nội dung
+                        <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-process" onclick="ContentHistory(this);"
+                            data-href="/campaign/contenthistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+                            
+                                @if(campaignAccount.RefContent.Length > 50)
+                                {
+                                    <span class="text-info">
+                                        @campaignAccount.RefContent.Substring(0, 50)...
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="text-info">
+                                        @campaignAccount.RefContent);
+                                    </span>
+                                }
+
+                        </a>
+                    }
+                    else if (Model.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        //lịch sử sửa caption
+                        <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-process" onclick="CaptionHistory(this);"
+                           data-href="/campaign/captionhistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+
+                            @if (campaignAccount.RefContent.Length > 50)
+                            {
+                                <span class="text-info">
+                                    @campaignAccount.RefContent.Substring(0, 50)...
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-info">
+                                    @campaignAccount.RefContent);
+                                </span>
+                            }
+                        </a>
+                    }
+
+                </td>
+            }            
+
             <td>
                 @campaignAccount.Status.ToAgencyBadge()
             </td>
             <td>
-            @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
-            {
-                <div>
-                    <form asp-action="FeedbackAccountJoinCampaign" method="post">
-                        <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
-                        <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
+                @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
+                {
+                    <div>
+                        <form asp-action="FeedbackAccountJoinCampaign" method="post">
+                            <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
+                            <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
 
-                        @if (Model.Type.IsHasCaption())
-                        {
-                            <a class="btn btn-outline-success btn-sm" href="@Url.Action("Caption", new { campaignid= Model.Id })">Duyệt Caption</a>
-                        }
-                        @*else if (Model.Type.IsHasContent())
+                            @if (Model.Type.IsHasCaption())
+                            {
+                                <a class="btn btn-outline-success btn-sm" href="@Url.Action("Caption", new { campaignid= Model.Id })">Duyệt Caption</a>
+                            }
+                            @*else if (Model.Type.IsHasContent())
                         {
                             <a class="btn btn-outline-success btn-sm" href="@Url.Action("Content", new { campaignid= Model.Id })">Duyệt Content</a>
                         }*@
-                        else
-                        {
+                            else
+                            {
 
-                            <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
-                        }
+                                <button class="btn btn-outline-success btn-sm" name="type" value="1"> Đồng ý</button>
+                            }
 
-                        <button class="btn btn-outline-danger btn-sm" name="type" value="0">Từ chối</button>
-                    </form>
-                </div>
-            }
-            else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
-            {
-                @*<form asp-action="FeedbackAccountJoinCampaign" method="post">
+                            <button class="btn btn-outline-danger btn-sm" name="type" value="0">Từ chối</button>
+                        </form>
+                    </div>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
+                {
+                    @*<form asp-action="FeedbackAccountJoinCampaign" method="post">
                     <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
                     <input type="hidden" name="accountid" value="@campaignAccount.AccountId" />
 
                     <button class="btn btn-outline-danger btn-sm" value="0">Hủy yêu cầu</button>
                 </form>*@
-            }
-            else if (campaignAccount.Status == CampaignAccountStatus.Finished || campaignAccount.Status == CampaignAccountStatus.Unfinished)
-            {
-                <div>
-                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#caption-history-caption-account-process">Lịch sử</button>
-                </div>
-            }
-            else if (campaignAccount.Status == CampaignAccountStatus.SubmittedContent)
-            {
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.SubmittedContent)
+                {
 
                     <form asp-action="FeedbackCampaignAccountRefContent" method="post">
                         <input type="hidden" name="campaignid" value="@campaignAccount.CampaignId" />
@@ -177,7 +213,7 @@
                         <button class="btn btn-outline-secondary btn-sm" type="submit" name="type" value="0">Y/c sửa lại</button>
                         @{
                             var modalId = $"updateRefContent{campaignAccount.AccountId}";
-                }
+                        }
                         <button class="btn btn-outline-info  btn-sm" type="button" data-toggle="modal" data-target="#@modalId">Sửa lại</button>
 
 
@@ -207,10 +243,10 @@
     </tbody>
 </table>
 
-<div class="modal fade" style="z-index: 9999999;" id="caption-history-caption-account-process" tabindex="-1"
+<div class="modal fade" style="z-index: 9999999;" id="caption-history-account-process" tabindex="-1"
      role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
+        <div class="modal-content h-75">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa caption</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -218,7 +254,27 @@
                 </button>
             </div>
             <div class="modal-body">
-              
+                <iframe frameborder="0" scrolling="no" id="iframe-caption-history" width="100%" height="100%"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" style="z-index: 9999999;" id="content-history-account-process" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content h-75">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa nội dung</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe frameborder="0" scrolling="no" id="iframe-content-history" width="100%" height="100%"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

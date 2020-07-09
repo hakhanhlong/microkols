@@ -1,17 +1,19 @@
 ﻿
 @{
-    ViewData["Title"] = "CaptionHistory";
+    ViewData["Title"] = "ContentHistory";
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
+
 @inject WebServices.Interfaces.IAccountService  AccountService
 
-@{ 
+@{
     int accountid = Convert.ToInt32(Context.Request.Query["accountId"]);
     var account = await AccountService.GetAccount(accountid);
     var campaign = (CampaignViewModel)ViewBag.Campaign;
 }
 
-@model ListCampaignAccountCaptionViewModel
+@model ListCampaignAccountContentViewModel
+
 
 <div class="row">
     <div class="col-md-12">
@@ -37,7 +39,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item2 in Model.CampaignAccountCaptions)
+                @foreach (var item2 in Model.CampaignAccountContents)
                 {
                     <tr>
                         <th scope="row">@no</th>
@@ -64,4 +66,3 @@
         </table>
     </div>
 </div>
-

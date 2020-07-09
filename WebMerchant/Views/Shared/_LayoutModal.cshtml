@@ -6,14 +6,8 @@
 </head>
 <body>
 
-    <div class="d-flex">     
-        <main role="main" class="flex-grow-1 px-3">
-            <div class="main container-fluid">                  
-                @RenderBody()
-            </div>
-        </main>
-    </div>
-    
+    @RenderBody()
+
     <partial name="_ScriptPartial" />
     @RenderSection("Scripts", required: false)
 </body>

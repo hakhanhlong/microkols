@@ -635,6 +635,16 @@ namespace WebMerchant.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> ContentHistory(int campaignaccountid, int accountId, int campaignid, int pageindex = 1)
+        {
+            var campaign = await _campaignService.GetCampaign(campaignid);
+            if (campaign == null) return NotFound();            
+            var model = await _campaignAccountContentService.GetCampaignAccountContents(campaignaccountid, "", pageindex, 25);
+            ViewBag.CampaignId = campaign.Id;
+            ViewBag.Campaign = campaign;
+            return View(model);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> FeedbackContent(int campaignid, List<int> ids, int type, string returnurl = "")
