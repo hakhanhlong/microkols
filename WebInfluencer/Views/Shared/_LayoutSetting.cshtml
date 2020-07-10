@@ -16,12 +16,18 @@
     @RenderSection("Styles", required: false)
     <link href="/img/favicon.png" type="image/png" rel="shortcut icon" />
 </head>
-<body>    
+<body>
     <div>
 
 
 
         <div class="d-flex">
+            <div class="navbar-m">
+                <a href="" class="logo"><img src="/img/logo_influencer.png" alt=""></a>
+                <button class="navbar-toggler" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
             <div class="sidebar">
                 <partial name="_HeaderPartial" />
             </div>
@@ -30,7 +36,7 @@
 
                 <div class="main container-fluid">
 
-                    <h1 class="page-title">Thông tin tài khoản</h1>                    
+                    <h1 class="page-title">Thông tin tài khoản</h1>
 
                     @RenderSection("Nav", required: false)
 
@@ -118,5 +124,21 @@
     @RenderSection("Scripts", required: false)
 
     <partial name="_MessageModalPartial" />
+
+    <script>
+    $(document).ready(function () {
+        // active navbar of page current
+        var urlcurrent = window.location.href;
+        $(".sidebar-sticky ul li a[href$='"+urlcurrent+"']").addClass('active');
+
+        $('.navbar-toggler').on('click',function () {
+            $('.sidebar').toggleClass('is-show');
+        });
+        $('.sidebar .close').on('click',function () {
+            $('.sidebar').removeClass('is-show');
+        });
+    });
+    </script>
+
 </body>
 </html>
