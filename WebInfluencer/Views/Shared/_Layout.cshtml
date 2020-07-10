@@ -23,6 +23,12 @@
 
 
         <div class="d-flex">
+            <div class="navbar-m">
+                <a href="" class="logo"><img src="/img/logo_influencer.png" alt=""></a>
+                <button class="navbar-toggler" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
             <div class="sidebar">
 
                 <partial name="_HeaderPartial" />
@@ -71,7 +77,7 @@
                             @Html.Raw(TempData["MessageInfo"])
                         </div>
                     }
-                    
+
                     @if (TempData["MessageError"] != null)
                     {
                         <div class="alert alert-danger" role="alert">
@@ -99,5 +105,19 @@
     @RenderSection("Scripts", required: false)
 
     <partial name="_MessageModalPartial" />
+    <script>
+    $(document).ready(function () {
+        // active navbar of page current
+        var urlcurrent = window.location.href;
+        $(".sidebar-sticky ul li a[href$='"+urlcurrent+"']").addClass('active');
+
+        $('.navbar-toggler').on('click',function () {
+            $('.sidebar').toggleClass('is-show');
+        });
+        $('.sidebar .close').on('click',function () {
+            $('.sidebar').removeClass('is-show');
+        });
+    });
+    </script>
 </body>
 </html>

@@ -19,102 +19,79 @@
 
 </head>
 <body>
-
+  
 
     <div class="d-flex">
-        <div class="sidebar">
+            <div class="sidebar">
 
-            <partial name="_HeaderPartial" />
+                <partial name="_HeaderPartial" />
 
-        </div>
+            </div>
 
-        <main role="main" class="flex-grow-1 px-3">
+            <main role="main" class="flex-grow-1 px-3">
 
-            <div class="main container-fluid">
+                <div class="main container-fluid">
 
-                @if (IsSectionDefined("Top"))
-                {
-                    @RenderSection("Top", required: false)
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(title))
+                    @if (IsSectionDefined("Top"))
                     {
-                        <h1 class="page-title">@title</h1>
+                        @RenderSection("Top", required: false)
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(title))
+                        {
+                            <h1 class="page-title">@title</h1>
+                        }
+
+
                     }
 
+                    @if (TempData["MessageSuccess"] != null)
+                    {
+                        <div class="alert alert-success" role="alert">
+                            <strong>
+                                Success!
+                            </strong>
+                            @TempData["MessageSuccess"]
+                        </div>
+                    }
 
-                }
+                    @if (TempData["MessageInfo"] != null)
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <strong>
+                                Info!
+                            </strong>
+                            @Html.Raw(TempData["MessageInfo"])
+                        </div>
+                    }
+                    @if (TempData["MessageWarning"] != null)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            <strong>
+                                Warning!
+                            </strong>
+                            @Html.Raw(TempData["MessageInfo"])
+                        </div>
+                    }
 
-                @if (TempData["MessageSuccess"] != null)
-                {
-                    <div class="alert alert-success" role="alert">
-                        <strong>
-                            Success!
-                        </strong>
-                        @TempData["MessageSuccess"]
-                    </div>
-                }
+                    @if (TempData["MessageError"] != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <strong>
+                                Error!
+                            </strong>
+                            @TempData["MessageError"]
+                        </div>
+                    }
 
-                @if (TempData["MessageInfo"] != null)
-                {
-                    <div class="alert alert-info" role="alert">
-                        <strong>
-                            Info!
-                        </strong>
-                        @Html.Raw(TempData["MessageInfo"])
-                    </div>
-                }
-                @if (TempData["MessageWarning"] != null)
-                {
-                    <div class="alert alert-warning" role="alert">
-                        <strong>
-                            Warning!
-                        </strong>
-                        @Html.Raw(TempData["MessageInfo"])
-                    </div>
-                }
-
-                @if (TempData["MessageError"] != null)
-                {
-                    <div class="alert alert-danger" role="alert">
-                        <strong>
-                            Error!
-                        </strong>
-                        @TempData["MessageError"]
-                    </div>
-                }
-
-                @RenderBody()
-            </div>
-        </main>
-    </div>
-
-
-    @*<partial name="_HeaderPartial" />
-
-        @RenderSection("Top", required: false)
-
-        <nav class="navbar sticky-top flex-md-nowrap p-0">
-            <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3 py-4" href="/">
-                <img src="~/img//merchant_logo.png" />
-            </a>
-            <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
-                    data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-
-        <div class="container-fluid">
-            <div class="row">
-                <partial name="_SidebarPartial" />
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 ml-5 pl-5 pr-5" style="margin-top:-10px;">
-                    <alert></alert>
                     @RenderBody()
-                </main>
+                </div>
+            </main>
+        </div>
 
-            </div>
-        </div>*@
+
+
 
 
     <div class="modal fade " id="imagemodal" tabindex="-1" role="dialog" aria-hidden="true" style="z-index:99999999">
@@ -128,7 +105,7 @@
     <partial name="_FooterPartial" />
     <partial name="_ScriptPartial" />
 
-    @RenderSection("Scripts", required: false)    
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
 
