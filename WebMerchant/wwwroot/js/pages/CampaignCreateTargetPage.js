@@ -105,6 +105,7 @@ var CampaignCreateTargetPage = (function () {
 
             var regDrp = $('#RegisterTime').data('daterangepicker');
             var excDrp = $('#ExecutionTime').data('daterangepicker');
+
             console.log('regDrp', regDrp.startDate, regDrp.endDate);
             console.log('excDrp', excDrp.startDate, excDrp.endDate);
 

@@ -140,7 +140,11 @@ namespace WebMerchant.Controllers
                             {
                                 var amount = model.AmountMax; //model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
 
-                                BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, accountids[i], amount, CurrentUser.Username));
+                                //Anh Long sửa lại, không cần thiết phải BackgroundJob
+                                await _campaignService.CreateCampaignAccount(CurrentUser.Id, id, accountids[i], amount, CurrentUser.Username);
+                                //BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, id, accountids[i], amount, CurrentUser.Username));
+
+
 
                             }
                         }
@@ -371,7 +375,7 @@ namespace WebMerchant.Controllers
             return PartialView(model);
         }
 
-        public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int pageindex = 1, int pagesize = 10)
+        public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int pageindex = 1, int pagesize = 8)
         {
             var model = await _accountService.GetAccounts(type ?? AccountType.All, kw, string.Empty, pageindex, pagesize);
 

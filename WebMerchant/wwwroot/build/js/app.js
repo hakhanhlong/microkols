@@ -1411,6 +1411,7 @@ var CampaignCreateTargetPage = (function () {
 
             var regDrp = $('#RegisterTime').data('daterangepicker');
             var excDrp = $('#ExecutionTime').data('daterangepicker');
+
             console.log('regDrp', regDrp.startDate, regDrp.endDate);
             console.log('excDrp', excDrp.startDate, excDrp.endDate);
 
@@ -1496,6 +1497,7 @@ var CampaignCreateTargetPage = (function () {
             var parram = $(this).serialize(0);
 
             $('#list-influencer').html(AppConstants.HtmlSpinner);
+
             $.post(url, parram, function (html) {
 
                 $('#list-influencer').html(html);
@@ -1505,14 +1507,7 @@ var CampaignCreateTargetPage = (function () {
 
         });
 
-        //gán action cho button paging chỗ tìm account chỉ định lúc edit, add chiến dịch
-        $('#campaign-get-account-paging-control ul li').each(function () {
-            var page = $(this).find('.page-link');
-
-            console.log($(this).text());
-
-
-        });
+     
     }
 
     function handlerSearchInfluencer() {

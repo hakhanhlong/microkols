@@ -110,7 +110,8 @@ namespace WebServices.ViewModels
                 Hashtag = info.HashTag.ToListString(),
                 SampleContentText = info.SampleContentText,
                 KPIMin = target.KPIMin,
-                InteractiveMin = target.InteractiveMin,
+                //InteractiveMin = target.InteractiveMin,
+                InteractiveMin = target.KPIMin + target.InteractiveMin,
                 ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
                 ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End.AddSeconds(59) : null,
                 FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
@@ -291,9 +292,13 @@ namespace WebServices.ViewModels
                 EnabledAccount = true;
                 AccountIds = campaignAccounts.Select(m => m.AccountId).ToList();
             }
+
             KPIMin = campaign.KPIMin ?? 0;
 
             InteractiveMin = campaign.InteractiveMin ?? 0;
+
+            
+
             Code = campaign.Code;
             ExecutionTime = campaign.ExecutionStart.ToDateRange(campaign.ExecutionEnd);
             RegisterTime = campaign.DateStart.ToDateRange(campaign.DateEnd);
@@ -336,7 +341,8 @@ namespace WebServices.ViewModels
             campaign.DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null;
             campaign.CustomKolNames = CustomKolNames.ToListString();
             campaign.KPIMin = KPIMin;
-            campaign.InteractiveMin = InteractiveMin;
+            //campaign.InteractiveMin = InteractiveMin;
+            campaign.InteractiveMin = KPIMin + InteractiveMin;
             campaign.ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null;
             campaign.ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null;
             campaign.FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null;
@@ -356,10 +362,12 @@ namespace WebServices.ViewModels
         [Display(Name = "Tên chiến dịch")]
         public string Title { get; set; }
 
+        [Required(ErrorMessage = "Yêu cầu {0}")]
         [Display(Name = "Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch")]
         public string Description { get; set; }
 
-        [Display(Name = "Liên kết URL nội dung")]
+        [Required(ErrorMessage = "Yêu cầu {0}")]
+        [Display(Name = "Liên kết URL")]
         public string Data { get; set; }
 
         [Display(Name = "Hình ảnh")]
@@ -369,6 +377,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Hình ảnh đính kèm")]
         public List<string> AddonImages { get; set; } = new List<string>();
 
+        [Required(ErrorMessage = "Hãy nhập dữ liệu {0}")]
         [Display(Name = "Yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }
 

@@ -13,12 +13,12 @@
         </tr>
     </thead>
     <tbody>
-        @{
-            var no = 0;
+        @{            
+            int no = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 8) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 8) + 1;
         }
         @foreach (var account in Model.Accounts)
         {
-            no++;
+            
 
             var counting = account.AccountCounting; //await AccountService.GetAccountCounting(account.Id);
             <tr>
@@ -39,14 +39,16 @@
                 <td>@account.Type.ToDisplayName()</td>
                 <td></td>
             </tr>
-
+            no++;
         }
     </tbody>
 </table>
 <div id="campaign-get-account-paging-control">
-    <pager pager="@Model.Pager" asp-action="/Campaign/GetAccounts" asp-route-kw="@(Context.Request.Query["kw"])" asp-route-type="@(Context.Request.Query["type"])"></pager>
-
+    <pager pager="@Model.Pager" asp-action="/Campaign/GetAccounts" asp-route-kw="@(Context.Request.Query["kw"])" asp-route-type="@(Context.Request.Query["type"])"></pager>    
     <script type="text/javascript">
+
+        
+
         $(document).ready(function () {
             //gán action cho button paging chỗ tìm account chỉ định lúc edit, add chiến dịch
             $('#campaign-get-account-paging-control ul li').each(function () {
@@ -70,6 +72,27 @@
                 
 
             });
+
+            var $target = $('#list-influencer');
+            $target.find('.cb-checkall').click(function () {
+                $('.cb-checkitem').prop('checked', this.checked);
+                handlerVisibleCheckItem($target);
+            });
+
+            $target.find('.cb-checkitem').change(function () {
+                handlerVisibleCheckItem($target);
+            });
+
+            function handlerVisibleCheckItem($target) {                
+                var cb = '.cb-checkitem:checked';// '.cb-checkitemMatchAccount:checked';
+                var length = $target.find(cb).length;
+                if (length > 0) {
+                    $('#btn-submitInfluencer').show();
+                } else {
+                    $('#btn-submitInfluencer').hide();
+                }
+
+            }
         });
     </script>
 </div>
