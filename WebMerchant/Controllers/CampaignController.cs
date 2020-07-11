@@ -152,12 +152,14 @@ namespace WebMerchant.Controllers
 
                         //#####################################################################################################
 
+                        TempData["MessageSuccess"] = "Tạo chiến dịch thành công, bạn vui lòng chờ hệ thống duyệt chiến dịch của bạn!";
+
                         return RedirectToAction("Details", new { id = id });
 
                     }
                     else
                     {
-                        this.AddAlertDanger("Lỗi khi tạo chiến dịch vui lòng thử lại");
+                        TempData["MessageError"] = "Lỗi khi tạo chiến dịch vui lòng thử lại";
                     }
                 }
 
@@ -231,11 +233,14 @@ namespace WebMerchant.Controllers
                         for (var i = 0; i < accountids.Count; i++)
                         {
                             var amount = model.AmountMax; //model.AccountType.Contains(AccountType.Regular) ? model.AccountChargeAmount ?? 0 : model.AccountChargeAmounts[i];
-                            BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, model.Id, accountids[i], amount, CurrentUser.Username));
+                            //Anh Long sửa lại, không cần thiết phải BackgroundJob
+                            await _campaignService.CreateCampaignAccount(CurrentUser.Id, model.Id, accountids[i], amount, CurrentUser.Username);
+                            //BackgroundJob.Enqueue<ICampaignService>(m => m.CreateCampaignAccount(CurrentUser.Id, model.Id, accountids[i], amount, CurrentUser.Username));
 
                         }
                     }
                 }
+
                 return RedirectToAction("Details", new { id = model.Id });
 
             }
@@ -366,9 +371,9 @@ namespace WebMerchant.Controllers
             return PartialView(model);
         }
 
-        public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int page = 1, int pagesize = 10)
+        public async Task<IActionResult> GetAccounts(AccountType? type, string kw, int pageindex = 1, int pagesize = 10)
         {
-            var model = await _accountService.GetAccounts(type ?? AccountType.All, kw, string.Empty, page, pagesize);
+            var model = await _accountService.GetAccounts(type ?? AccountType.All, kw, string.Empty, pageindex, pagesize);
 
             return PartialView(model);
         }

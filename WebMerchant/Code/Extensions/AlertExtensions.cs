@@ -14,27 +14,29 @@ namespace Microsoft.AspNetCore.Mvc
         private const string AlertKey = "AppAlert";
         public static void AddAlertSuccess(this Controller page, string message)
         {
-            var alerts = GetAlerts(page);
-            alerts.Add(new Alert(message, "alert-success"));
-            page.TempData[AlertKey] = JsonConvert.SerializeObject(alerts);
+            //var alerts = GetAlerts(page);
+            //alerts.Add(new Alert(message, "alert-success"));
+            //page.TempData["MessageSuccess"] = JsonConvert.SerializeObject(alerts);
+            page.TempData["MessageSuccess"] = message;
+                           
         }
         public static void AddAlertInfo(this Controller page, string message)
         {
-            var alerts = GetAlerts(page);
-            alerts.Add(new Alert(message, "alert-info"));
-            page.TempData[AlertKey] = JsonConvert.SerializeObject(alerts);
+            //var alerts = GetAlerts(page);
+            //alerts.Add(new Alert(message, "alert-info"));
+            page.TempData["MessageInfo"] = message;
         }
         public static void AddAlertWarning(this Controller page, string message)
         {
-            var alerts = GetAlerts(page);
-            alerts.Add(new Alert(message, "alert-warning"));
-            page.TempData[AlertKey] = JsonConvert.SerializeObject(alerts);
+            //var alerts = GetAlerts(page);
+            //alerts.Add(new Alert(message, "alert-warning"));
+            page.TempData["MessageWarning"] = message;
         }
         public static void AddAlertDanger(this Controller page, string message)
         {
-            var alerts = GetAlerts(page);
-            alerts.Add(new Alert(message, "alert-danger"));
-            page.TempData[AlertKey] = JsonConvert.SerializeObject(alerts);
+            //var alerts = GetAlerts(page);
+            //alerts.Add(new Alert(message, "alert-danger"));
+            page.TempData["MessageError"] = message;
         }
 
         public static void AddAlert(this Controller page, bool r, string message = "")

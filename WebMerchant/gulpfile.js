@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='sass' Clean='sass' />
+/// <binding AfterBuild='js' />
 var gulp = require("gulp"),
     fs = require("fs"),
     //less = require("gulp-less"),

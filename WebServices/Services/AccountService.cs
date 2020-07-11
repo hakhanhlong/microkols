@@ -99,21 +99,27 @@ namespace WebServices.Services
             var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
             return new AccountViewModel(account, accountCouting);
         }
-        public async Task<List<AccountViewModel>> GetAccounts(AccountType type, string kw, string order,int page,int pagesize)
+        public async Task<ListAccountViewModel> GetAccounts(AccountType type, string kw, string order, int page, int pagesize)
         {
             var filter = new AccountSpecification(kw, type);
-            var accounts = await _accountRepository.ListPagedAsync(filter, order,page,pagesize);
+            var accounts = await _accountRepository.ListPagedAsync(filter, order, page, pagesize);
             var list = new List<AccountViewModel>();
+            int total = await _accountRepository.CountAsync(filter);
 
             foreach (var account in accounts)
             {
-                var accountCouting = await _accountFbPostRepository.GetAccountCounting(account.Id);
+                var accountCounting = await _accountFbPostRepository.GetAccountCounting(account.Id);
 
-                list.Add(new AccountViewModel(account, accountCouting));
+                list.Add(new AccountViewModel(account, accountCounting));
             }
 
-
-            return list;
+            return new ListAccountViewModel()
+            {
+                Accounts = list,
+                Pager = new PagerViewModel(page, pagesize, total)
+            };
+            
+            
         }
         public async Task<ListAccountViewModel> GetMatchedAccountByCampaignId(int campaignid,
 

@@ -54,6 +54,7 @@ var CampaignCreateTargetPage = (function () {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
+
         $('#ExecutionTime').on('apply.daterangepicker', function (ev, picker) {
 
             var regDrp = $('#RegisterTime').data('daterangepicker');
@@ -101,7 +102,6 @@ var CampaignCreateTargetPage = (function () {
         });
 
         $('.form-create-campaign').submit(function (e) {
-
 
             var regDrp = $('#RegisterTime').data('daterangepicker');
             var excDrp = $('#ExecutionTime').data('daterangepicker');
@@ -184,17 +184,23 @@ var CampaignCreateTargetPage = (function () {
 
 
         $('#modal-influencer-selection .frm-search').submit(function () {
+
             var url = $(this).data('action');
 
             var parram = $(this).serialize(0);
+
             $('#list-influencer').html(AppConstants.HtmlSpinner);
+
             $.post(url, parram, function (html) {
 
                 $('#list-influencer').html(html);
+
                 handlerSearchInfluencer();
             });
 
         });
+
+     
     }
 
     function handlerSearchInfluencer() {

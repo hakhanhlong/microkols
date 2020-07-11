@@ -1,4 +1,4 @@
-﻿@model List<AccountViewModel>
+﻿@model ListAccountViewModel
 
 @inject WebServices.Interfaces.IAccountService AccountService
 <table class="table table-hover mt-3">
@@ -16,7 +16,7 @@
         @{
             var no = 0;
         }
-        @foreach (var account in Model)
+        @foreach (var account in Model.Accounts)
         {
             no++;
 
@@ -43,3 +43,33 @@
         }
     </tbody>
 </table>
+<div id="campaign-get-account-paging-control">
+    <pager pager="@Model.Pager" asp-action="/Campaign/GetAccounts" asp-route-kw="@(Context.Request.Query["kw"])" asp-route-type="@(Context.Request.Query["type"])"></pager>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //gán action cho button paging chỗ tìm account chỉ định lúc edit, add chiến dịch
+            $('#campaign-get-account-paging-control ul li').each(function () {
+                var page = $(this).find('.page-link');
+
+                page.click(function (evt) {
+                    var self = $(this);
+                    var href = self.attr('href');
+                    evt.preventDefault();
+
+                    $('#list-influencer').html("Đang xử lý ...");
+
+                    $.get(href, function (html) {
+
+                        $('#list-influencer').html(html);
+                        
+                    });
+
+                });
+
+                
+
+            });
+        });
+    </script>
+</div>

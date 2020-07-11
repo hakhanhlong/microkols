@@ -114,10 +114,12 @@
                 <td>
                     @if (Model.Type == CampaignType.ReviewProduct)
                     { //lịch sử sửa nội dung
-                        <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-process" onclick="ContentHistory(this);"
-                           data-href="/campaign/contenthistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+                    <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-process" onclick="ContentHistory(this);"
+                       data-href="/campaign/contenthistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
 
-                            @if (campaignAccount.RefContent.Length > 50)
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
+                        {
+                            if (campaignAccount.RefContent.Length > 50)
                             {
                                 <span class="text-info">
                                     @campaignAccount.RefContent.Substring(0, 50)...
@@ -129,16 +131,21 @@
                                     @campaignAccount.RefContent);
                                 </span>
                             }
+                        }
 
-                        </a>
+
+
+                    </a>
                     }
                     else if (Model.Type == CampaignType.ShareContentWithCaption)
                     {
                         //lịch sử sửa caption
-                        <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-process" onclick="CaptionHistory(this);"
-                           data-href="/campaign/captionhistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+                    <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-process" onclick="CaptionHistory(this);"
+                       data-href="/campaign/captionhistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
 
-                            @if (campaignAccount.RefContent.Length > 50)
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
+                        {
+                            if (campaignAccount.RefContent.Length > 50)
                             {
                                 <span class="text-info">
                                     @campaignAccount.RefContent.Substring(0, 50)...
@@ -150,7 +157,9 @@
                                     @campaignAccount.RefContent);
                                 </span>
                             }
-                        </a>
+                        }
+
+                    </a>
                     }
 
                 </td>

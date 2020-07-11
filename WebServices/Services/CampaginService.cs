@@ -365,9 +365,11 @@ namespace WebServices.Services
         public async Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username)
         {
             var campaign = await _campaignRepository.GetByIdAsync(model.Id);
+
             if (campaign == null || campaign.Status != CampaignStatus.Created) return false;
 
             campaign = model.GetEntity(campaign);
+
             campaign.UserModified = username;
             campaign.DateModified = DateTime.Now;
 

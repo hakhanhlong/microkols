@@ -66,7 +66,8 @@ namespace WebInfluencer.Controllers
 
         public async Task<IActionResult> FbAccount()
         {
-            ViewBag.Accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 200);
+            var accounts = await _accountService.GetAccounts(AccountType.All, string.Empty, string.Empty, 1, 200);
+            ViewBag.Accounts = accounts.Accounts;
             return View();
         }
 

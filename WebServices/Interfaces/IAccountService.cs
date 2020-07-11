@@ -77,6 +77,6 @@ namespace WebServices.Interfaces
         Task<List<CampaignType>> GetIgnoreCampaignTypes(int accountid);
         Task<bool> UpdateIgnoreCampaignTypes(int accountid, CampaignType type, bool removed, string username);
 
-        Task<List<AccountViewModel>> GetAccounts(AccountType type, string kw, string order, int page, int pagesize);
+        Task<ListAccountViewModel> GetAccounts(AccountType type, string kw, string order, int page, int pagesize);
     }
 }
