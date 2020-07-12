@@ -1,15 +1,18 @@
 ﻿@model int
-<ul class="nav nav-tabs nav-campaign">
-    <li class="nav-item">
-        <a class="nav-link @(Model == 0? "active":"")" asp-action="ChangeInfo">Thông tin cá nhân</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(Model == 1? "active":"")" asp-action="ChangeContact">Thông tin liên lạc</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(Model == 2? "active":"")" asp-action="ChangeIDCard">Xác minh tài khoản</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link @(Model == 3? "active":"")" asp-action="ChangeBankAccount">Tài khoản ngân hàng</a>
-    </li>
-</ul>
+<div class="nav-responsive">
+    <ul class="nav nav-tabs nav-campaign">
+        <li class="nav-item">
+            <a class="nav-link @(Model == 0? "active":"")" asp-action="ChangeInfo">Thông tin cá nhân</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model == 1? "active":"")" asp-action="ChangeContact">Thông tin liên lạc</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model == 2? "active":"")" asp-action="ChangeIDCard">Xác minh tài khoản</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model == 3? "active":"")" asp-action="ChangeBankAccount">Tài khoản ngân hàng</a>
+        </li>
+    </ul>
+</div>
+
