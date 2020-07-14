@@ -586,38 +586,40 @@ namespace BackOffice.Controllers
                 worksheet.Cells[count_row_header, 10].Value = "Thời gian kết thúc";
                 worksheet.Cells[count_row_header, 10].Style.Font.Bold = true;
 
-
-                foreach (var transaction in _listTransaction)
-                {
-
-                    count_row_header++;
-
-                    var campaign = await _ICampaignService.GetCampaignById(transaction.RefId.Value);
-
-                    long tien_phidichvu = (transaction.AmountOriginal * campaign.ServiceChargePercent) / 100;
-
-                    worksheet.Cells[count_row_header, 1].Value = number_stt; //stt
-                    worksheet.Cells[count_row_header, 2].Value = campaign.Title; //tên chiến dịch
-                    worksheet.Cells[count_row_header, 3].Value = campaign.Type.ToText(); //loại chiến dịch
-                    worksheet.Cells[count_row_header, 4].Value = campaign.Agency.Name; //doanh nghiệp tạo
-                    worksheet.Cells[count_row_header, 5].Value = transaction.AmountOriginal; //chi phí trả influencer
-                    worksheet.Cells[count_row_header, 6].Value = campaign.ServiceChargePercent;//phí dịch vụ
-                    worksheet.Cells[count_row_header, 7].Value = tien_phidichvu;//thành tiền phí dịch vụ
-                    worksheet.Cells[count_row_header, 8].Value = (transaction.AmountOriginal + tien_phidichvu);//tổng chi phí
-                    worksheet.Cells[count_row_header, 9].Value = campaign.ExecutionStart.Value.ToShortDateString();//thời gian bắt đầu
-                    worksheet.Cells[count_row_header, 10].Value = campaign.ExecutionEnd.Value.ToShortDateString();//thời gian kết thúc
-
-
-                    number_stt++;
-                }
-
                 try
                 {
+                    foreach (var transaction in _listTransaction)
+                    {
+
+                        count_row_header++;
+
+                        var campaign = await _ICampaignService.GetCampaignById(transaction.RefId.Value);
+
+                        long tien_phidichvu = (transaction.AmountOriginal * campaign.ServiceChargePercent) / 100;
+
+                        worksheet.Cells[count_row_header, 1].Value = number_stt; //stt
+                        worksheet.Cells[count_row_header, 2].Value = campaign.Title; //tên chiến dịch
+                        worksheet.Cells[count_row_header, 3].Value = campaign.Type.ToText(); //loại chiến dịch
+                        worksheet.Cells[count_row_header, 4].Value = campaign.Agency.Name; //doanh nghiệp tạo
+                        worksheet.Cells[count_row_header, 5].Value = transaction.AmountOriginal; //chi phí trả influencer
+                        worksheet.Cells[count_row_header, 6].Value = campaign.ServiceChargePercent;//phí dịch vụ
+                        worksheet.Cells[count_row_header, 7].Value = tien_phidichvu;//thành tiền phí dịch vụ
+                        worksheet.Cells[count_row_header, 8].Value = (transaction.AmountOriginal + tien_phidichvu);//tổng chi phí
+                        worksheet.Cells[count_row_header, 9].Value = campaign.ExecutionStart.Value.ToShortDateString();//thời gian bắt đầu
+                        worksheet.Cells[count_row_header, 10].Value = campaign.ExecutionEnd.Value.ToShortDateString();//thời gian kết thúc
+
+
+                        number_stt++;
+                    }
+
+              
                     byte[] reportBytes = new byte[] { };
                     reportBytes = package.GetAsByteArray();
                     return File(reportBytes, XlsxContentType, string.Format("chiphichiendich_{0}{1}{2}_{3}{4}{5}.xlsx", start.Day, start.Month, start.Year, end.Day, end.Month, end.Year));
                 }
-                catch(Exception ex) { }                
+                catch(Exception ex) {
+                    TempData["MessageError"] = ex.Message;
+                }                
             }
 
             TempData["MessageInfo"] = "Không có dữ liệu chi phí chiến dịch để xuất file.";
