@@ -615,9 +615,9 @@ namespace BackOffice.Controllers
                 {
                     byte[] reportBytes = new byte[] { };
                     reportBytes = package.GetAsByteArray();
-                    return File(reportBytes, XlsxContentType, string.Format("chiphichiendich_{3}{4}{5}_{6}{7}{8}.xlsx", start.Day, start.Month, start.Year, end.Day, end.Month, end.Year));
+                    return File(reportBytes, XlsxContentType, string.Format("chiphichiendich_{0}{1}{2}_{3}{4}{5}.xlsx", start.Day, start.Month, start.Year, end.Day, end.Month, end.Year));
                 }
-                catch { }                
+                catch(Exception ex) { }                
             }
 
             TempData["MessageInfo"] = "Không có dữ liệu chi phí chiến dịch để xuất file.";
