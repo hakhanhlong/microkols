@@ -127,10 +127,14 @@ namespace BackOffice.Controllers
         {
             var microkol = await _IAccountBusiness.GetAccount(id);
             if(microkol == null)
-            {
+            {                
                 TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
+                return RedirectToAction("Detail", "Microkol", new { id = id });
             }
 
+            var filter = new AccountWithCategorySpecification(id);
+            var influencer = await _IAccountRepository.GetSingleBySpecAsync(filter);
+            ViewBag.Influencer = influencer;
             return View(microkol);
         }
 

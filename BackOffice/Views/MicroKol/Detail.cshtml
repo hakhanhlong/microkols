@@ -159,7 +159,7 @@
                                 Ngày sinh:
                             </label>
                             <div class="m-input-icon m-input-icon--left">
-                                <span>@(Model.Birthday.HasValue == true?Model.Birthday.Value.ToShortDateString():"Chưa rõ")</span>
+                                <span>@(Model.Birthday.HasValue == true ? Model.Birthday.Value.ToShortDateString() : "Chưa rõ")</span>
                             </div>
                         </div>
                         <div class="m-form__group form-group">
@@ -179,6 +179,25 @@
                                 </label>
                             </div>
                         </div>
+                        @if (ViewBag.Influencer != null)
+                        {
+                            <div class="m-form__group form-group">
+                                <label for="">
+                                    Lĩnh vực quan tâm, sở thích:
+                                </label>
+                                <div>
+                                    @{ 
+                                        string str_category = "";
+                                        ICollection<AccountCategory> _list = ((ICollection<AccountCategory>)ViewBag.Influencer.AccountCategory);
+                                    }
+                                    @foreach (var item in _list)
+                                    {
+                                        str_category += str_category == "" ? item.Category.Name : ", " + item.Category.Name;
+                                    }
+                                    <span>@str_category</span>
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div class="m-form__seperator m-form__seperator--dashed"></div>
                     <div class="m-form__section m-form__section--last">

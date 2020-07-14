@@ -36,6 +36,7 @@ namespace Core.Specifications
         public AccountWithCategorySpecification(int accountid) : base(m => m.Id == accountid)
         {
             AddInclude(m => m.AccountCategory);
+            AddInclude($"{nameof(Account.AccountCategory)}.{nameof(AccountCategory.Category)}");
         }
     }
 

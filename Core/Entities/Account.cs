@@ -94,12 +94,12 @@ namespace Core.Entities
 
 
 
-        private List<AccountCategory> _AccountCategory = new List<AccountCategory>();
-        public IEnumerable<AccountCategory> AccountCategory => _AccountCategory.AsReadOnly();
+        
+        public IEnumerable<AccountCategory> AccountCategory { get; set; }
 
 
-        private List<AccountProvider> _AccountProvider = new List<AccountProvider>();
-        public IEnumerable<AccountProvider> AccountProvider => _AccountProvider.AsReadOnly();
+        
+        public IEnumerable<AccountProvider> AccountProvider { get; set; }
     }
 
     public enum AccountStatus
