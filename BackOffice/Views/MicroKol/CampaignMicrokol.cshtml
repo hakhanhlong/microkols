@@ -66,7 +66,7 @@
                                         <th>
                                             Trạng thái chiến dịch
                                         </th>
-                                        <th>$</th>
+                                        <th>Tiền + Phí dịch vụ</th>
                                         <th>
                                             Trạng thái người ảnh hưởng
                                         </th>
@@ -82,9 +82,13 @@
                                             <td>
                                                 <a href="/microkol/detail?id=@(item.CampaignAccount.Account.Id)"> @item.CampaignAccount.Account.Name</a>
                                                 <br />
-                                                <span class="m--font-danger">
-                                                    @item.CampaignAccount.AccountChargeAmount.ToPriceText()
-                                                </span>
+                                                @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Finished)
+                                                {
+                                                    <span class="m--font-danger">
+                                                        @item.CampaignAccount.AccountChargeAmount.ToPriceText()
+                                                    </span>
+                                                }
+
                                             </td>
                                             <td>
                                                 <a href="/campaign/detail/?agencyid=@(item.AgencyId)&campaignid=@(item.Id)"> @item.Title</a><br />
@@ -99,8 +103,13 @@
                                             <td>
                                                 <span class="m--font-danger">
 
-                                                    @{var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id); }
-                                                    @agencyCharge.ToPriceText()
+                                                    @if (item.Status == CampaignStatus.Completed && item.CampaignAccount.Status == CampaignAccountStatus.Finished)
+                                                    {
+                                                        var agencyCharge = await CampaignService.GetAgencyChagreAmount(item.CampaignAccount.Id);
+                                                        <span>@agencyCharge.ToPriceText()</span>
+                                                    }
+
+
 
 
                                                 </span>
