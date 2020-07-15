@@ -411,7 +411,12 @@ namespace WebMerchant.Controllers
             if (ModelState.IsValid)
             {
                 var r = await _campaignService.ReportCampaignAccount(CurrentUser.Id, model, CurrentUser.Username);
-                this.AddAlert(r);
+
+                if (r == true)
+                {
+                    this.AddAlert(r, "Báo cáo người ảnh hưởng thành công!");
+                }
+                else { this.AddAlert(r); }
             }
             return RedirectToAction("Details", new { id = model.CampaignId, vt = "2" });
         }
@@ -428,13 +433,19 @@ namespace WebMerchant.Controllers
             };
             return PartialView(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateCampaignAccountRating(UpdateCampaignAccountRatingViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var r = await _campaignService.UpdateCampaignAccountRating(CurrentUser.Id, model, CurrentUser.Username);
-                this.AddAlert(r);
+                if(r == true)
+                {
+                    this.AddAlert(r, "Đánh giá người ảnh hưởng thành công!");
+                }
+                else { this.AddAlert(r); }
+                
             }
             return RedirectToAction("Details", new { id = model.CampaignId, vt = "2" });
         }
@@ -692,6 +703,19 @@ namespace WebMerchant.Controllers
 
 
         #endregion
+
+
+        #region Thong ke chien dich hoan thanh
+        public async Task<IActionResult> StatisticReportCampain(int campaignid)
+        {
+
+            var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
+
+            return PartialView(model);
+        }
+
+        #endregion
+
 
         #region Update  Execution
 

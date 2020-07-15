@@ -939,24 +939,33 @@ namespace WebServices.Services
         public async Task<bool> ReportCampaignAccount(int agencyid, ReportCampaignAccountViewModel model, string username)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);
-            if (campaignAccount == null || campaignAccount.ReportStatus.HasValue)
+            if (campaignAccount.ReportStatus.HasValue && campaignAccount != null)
+            {
+                if(campaignAccount.ReportStatus.Value != CampaignAccountReportStatus.Reported)
+                {
+                    campaignAccount.ReportStatus = CampaignAccountReportStatus.Reported;
+                    campaignAccount.ReportNote = model.Note;
+                    campaignAccount.ReportImages = model.Image;
+                    campaignAccount.DateModified = DateTime.Now;
+                    campaignAccount.UserModified = username;
+                    await _campaignAccountRepository.UpdateAsync(campaignAccount);
+                }
+                
+            }
+            else
             {
                 return false;
             }
+            
 
-            campaignAccount.ReportStatus = CampaignAccountReportStatus.Reported;
-            campaignAccount.ReportNote = model.Note;
-            campaignAccount.ReportImages = model.Image;
-            campaignAccount.DateModified = DateTime.Now;
-            campaignAccount.UserModified = username;
-            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+           
             return true;
         }
 
         public async Task<bool> UpdateCampaignAccountRating(int agencyid, UpdateCampaignAccountRatingViewModel model, string username)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(model.Id);
-            if (campaignAccount == null || campaignAccount.ReportStatus.HasValue)
+            if (campaignAccount == null)
             {
                 return false;
             }

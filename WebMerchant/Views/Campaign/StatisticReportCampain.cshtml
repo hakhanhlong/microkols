@@ -1,0 +1,213 @@
+﻿@model CampaignDetailsViewModel
+@inject WebServices.Interfaces.IAccountService AccountService
+@inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
+
+<div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">
+                Báo cáo chiến dịch
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            @if (Model != null)
+            {
+                <h6 class="title-campaign">@Model.Title</h6>
+
+            }
+
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="w-">
+                            STT
+                        </th>
+                        <th>
+                            Tên người chia sẻ
+                        </th>
+                        @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
+                        {
+                            <th>
+                                Nội dung chia sẻ
+                            </th>
+                        }
+                        <th>
+                            Lượng tương tác
+                        </th>
+                        <th>
+                            Trạng thái
+                        </th>
+                    </tr>
+
+
+                </thead>
+                <tbody>
+                    @{ var stt = 0;}
+
+                    @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished || m.Status == CampaignAccountStatus.Unfinished))
+                    {
+                        stt++;
+                        <tr>
+                            <td>@stt</td>
+                            <td>
+
+                                <div>
+                                    <a href="@campaignAccount.Account.Link" target="_blank">
+                                        @campaignAccount.Account.Name
+                                    </a>
+                                </div>
+                                @if (campaignAccount.Status == CampaignAccountStatus.Finished)
+                                {
+                                    if (campaignAccount.Type.IsShareCampaign())
+                                    {
+                                        if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
+                                        {
+                                            <div>
+                                                <a href="@campaignAccount.RefUrl" target="_blank"><i class="fal fa-link"></i> FB.com</a>
+                                            </div>                                            
+                                        }
+                                    }
+                                    else if (campaignAccount.Type == CampaignType.ChangeAvatar)
+                                    {
+                                        var logAvatarTimes = (List<CampaignAccountRefDataChangeAvatar>)campaignAccount.RefData;
+                                        var accountFbId = await AccountService.GetProviderIdByAccount(campaignAccount.AccountId, AccountProviderNames.Facebook);
+                                        var avatarurl = FacebookHelper.GetAvatarUrl(accountFbId);
+                                        <div class="row">
+                                            <div class="col-12 text-center">
+                                                <img src="@avatarurl" class="img-fluid" /> <br />
+                                                <small class="text-muted">Avatar Hiện tại</small>
+                                            </div>
+
+                                            @if (logAvatarTimes != null)
+                                            {
+                                                foreach (var logAvatar in logAvatarTimes)
+                                                {
+
+                                                    <div class="col-12 text-center">
+                                                        <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
+                                                        <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
+                                                    </div>
+                                                }
+                                            }
+
+                                        </div>
+                                    }
+
+                                }
+                            </td>
+
+                            @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
+                            {
+                                <td>
+                                    @if (Model.Type == CampaignType.ReviewProduct)
+                                    { //lịch sử sửa nội dung
+                                        <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-process" onclick="ContentHistory(this);"
+                                           data-href="/campaign/contenthistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+
+                                            @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
+                                            {
+                                                if (campaignAccount.RefContent.Length > 50)
+                                                {
+                                                    <span class="text-info">
+                                                        @campaignAccount.RefContent.Substring(0, 50)...
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-info">
+                                                        @campaignAccount.RefContent);
+                                                    </span>
+                                                }
+                                            }
+
+
+
+                                        </a>
+                                    }
+                                    else if (Model.Type == CampaignType.ShareContentWithCaption)
+                                    {
+                                        //lịch sử sửa caption
+                                        <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-process" onclick="CaptionHistory(this);"
+                                           data-href="/campaign/captionhistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
+
+                                            @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
+                                            {
+                                                if (campaignAccount.RefContent.Length > 50)
+                                                {
+                                                    <span class="text-info">
+                                                        @campaignAccount.RefContent.Substring(0, 50)...
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-info">
+                                                        @campaignAccount.RefContent);
+                                                    </span>
+                                                }
+                                            }
+
+                                        </a>
+                                    }
+
+                                </td>
+                            }
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                                    {
+                                        var post = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId);
+                                        if (post != null)
+                                        {
+                                            <div class="d-flex align-items-center" style="color:#56CCF2;">
+
+                                                <span data-toggle="tooltip" title="Lượt thích">
+                                                    @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                </span>&nbsp;
+                                                <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
+
+                                                    @post.ShareCount <i class="fal fa-share"></i>
+                                                </span>&nbsp;
+                                                <span data-toggle="tooltip" title="Lượt bình luận">
+                                                    @post.CommentCount <i class="fal fa-comment"></i>
+                                                </span>
+
+                                                @if (Model.Type == CampaignType.ShareContentWithCaption)
+                                                {
+                                                    var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
+                                                    <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
+
+                                                }
+                                            </div>
+                                        }
+                                    }
+
+
+                                </td>
+                            <td>
+
+
+                                @campaignAccount.Status.ToAgencyBadge()
+
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Đóng</button>
+
+        </div>
+
+
+    </div>
+</div>

@@ -168,6 +168,19 @@
 
                                             }
                                         }
+
+                                        @if (item.Status == CampaignStatus.Completed)
+                                        {
+                                            
+                                            <li class="list-inline-item">
+                                                <a href="javascript:;" class="text-primary btn-remotemodal campaign-time-begin" 
+                                                   data-url="@Url.Action("StatisticReportCampain", new { campaignid = item.Id })" title="Báo cáo chiến dịch">
+                                                    <i class="fas fa-chart-pie"></i>
+                                                </a>
+                                            </li>
+
+                                        }
+
                                     </ul>
 
                                 </td>
