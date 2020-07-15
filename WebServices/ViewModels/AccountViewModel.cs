@@ -29,11 +29,23 @@ namespace WebServices.ViewModels
             Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
             Type = customer.Type;
             AccountCounting = new AccountCountingViewModel(accountCounting);
-            var provider= customer.AccountProvider.FirstOrDefault(m=>m.Provider == AccountProviderNames.Facebook);
-            if(provider!= null)
+
+            // fix chưa có facebook provider
+            if(customer.AccountProvider != null)
             {
-                Link = provider.Link;
+                try
+                {
+                    var provider = customer.AccountProvider.FirstOrDefault(m => m.Provider == AccountProviderNames.Facebook);
+                    if (provider != null)
+                    {
+                        Link = provider.Link;
+                    }
+                }
+                catch { }
             }
+            
+            //###########################################################################
+            
             
         }
 
