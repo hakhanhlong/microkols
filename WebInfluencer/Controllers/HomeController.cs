@@ -24,19 +24,22 @@ namespace WebInfluencer.Controllers
         private readonly ISharedService _sharedService;
 
         private readonly IAccountService _accountService;
+        IFacebookJob _IFacebookJob;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService, IAccountService __IAccountService)
+        public HomeController(IHostingEnvironment hostingEnvironment, IFileHelper fileHelper, ISharedService sharedService, 
+            IAccountService __IAccountService, IFacebookJob __IFacebookJob)
         {
             _hostingEnvironment = hostingEnvironment;
             _fileHelper = fileHelper;
             _sharedService = sharedService;
             _accountService = __IAccountService;
+            _IFacebookJob = __IFacebookJob;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
-
+            //await _IFacebookJob.UpdateFbInfo(CurrentUser.Id);
             return RedirectToAction("MarketPlace","Campaign");
         }
 
