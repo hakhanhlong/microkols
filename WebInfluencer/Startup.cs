@@ -61,8 +61,11 @@ namespace WebInfluencer
                 facebookOptions.Scope.Add("public_profile");
                 facebookOptions.Scope.Add("email");
                 facebookOptions.Scope.Add("user_link");
-                //facebookOptions.Scope.Add("user_friends");
-                //facebookOptions.Scope.Add("user_posts");
+                facebookOptions.Scope.Add("user_friends");
+                facebookOptions.Scope.Add("user_posts");
+
+                
+
                 facebookOptions.Events = new OAuthEvents()
                 {
                     OnRemoteFailure = ctx =>
@@ -77,6 +80,8 @@ namespace WebInfluencer
                         return Task.FromResult(0);
                     }
                 };
+
+                
             });
 
             var connection = Configuration.GetConnectionString("AppContext");

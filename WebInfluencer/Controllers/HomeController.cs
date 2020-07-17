@@ -36,7 +36,7 @@ namespace WebInfluencer.Controllers
             _IFacebookJob = __IFacebookJob;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
             //await _IFacebookJob.UpdateFbInfo(CurrentUser.Id);
