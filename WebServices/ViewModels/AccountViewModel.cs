@@ -396,6 +396,6 @@ namespace WebServices.ViewModels
 
     public class Permissions
     {
-        public List<FacebookPermission> data { get; set; }
+        public IEnumerable<FacebookPermission> data { get; set; }
     }
 }

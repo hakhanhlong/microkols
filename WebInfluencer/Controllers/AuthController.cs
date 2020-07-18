@@ -112,6 +112,53 @@ namespace WebInfluencer.Controllers
             var token = string.Empty;
             var val = authenticateResult.Ticket.Properties.Items.TryGetValue(".Token.access_token", out token);
 
+
+
+            // check permission first #########################################################################
+            var permissions = await _facebookHelper.GetPermissions(token);
+            string _msg_permission = string.Empty;
+            Permissions list_permissions;
+            if (permissions != null)
+            {
+                string data = JsonConvert.SerializeObject(permissions);
+                list_permissions = JsonConvert.DeserializeObject<Permissions>(data);
+                bool check_permission = true;
+                foreach(var peritem in list_permissions.data)
+                {
+
+                    if(peritem.permission == "email" && peritem.status == "declined")
+                    {
+                        _msg_permission += "Địa chỉ email,";
+                        check_permission = false;
+                    }
+                    if (peritem.permission == "user_link" && peritem.status == "declined")
+                    {
+                        _msg_permission += "Liên kết dòng thời gian,";
+                        check_permission = false;
+                    }
+                    if (peritem.permission == "user_posts" && peritem.status == "declined")
+                    {
+                        _msg_permission += "Bài viết trên dòng thời gian,";
+                        check_permission = false;
+                    }
+                    if (peritem.permission == "user_friends" && peritem.status == "declined")
+                    {
+                        _msg_permission += "Danh sách bạn bè,";
+                        check_permission = false;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(_msg_permission) && check_permission == false)
+                {
+                    this.AddAlertInfo($"Bạn cần cho phép Microkol quyền đọc {_msg_permission} để đăng nhập hệ thống!");
+                    await SignOut();
+                    return RedirectToAction("Login");
+                }
+
+            }
+            //#################################################################################################
+
+
             var loginInfo = await _facebookHelper.GetLoginProviderAsync(token);
             if (loginInfo == null)
             {
@@ -139,14 +186,7 @@ namespace WebInfluencer.Controllers
             }
             */
 
-            var permissions = await _facebookHelper.GetPermissions(token);
-            Permissions list_permissions;
-            if (permissions != null)
-            {
-                string data = JsonConvert.SerializeObject(permissions);
-
-                list_permissions = JsonConvert.DeserializeObject<Permissions>(data);
-            }
+           
 
             await SignIn(auth);
             //CurrentUser.AccessToken = loginInfo.AccessToken; //gan accesstoken 
