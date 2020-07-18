@@ -382,8 +382,20 @@ namespace WebServices.ViewModels
 
     }
 
-        public class UpdateAccountProviderViewModel : LoginProviderViewModel
+    public class UpdateAccountProviderViewModel : LoginProviderViewModel
     {
 
+    }
+
+
+    public class FacebookPermission
+    {
+        public string permission { get; set; }
+        public string status { get; set; }
+    }
+
+    public class Permissions
+    {
+        public List<FacebookPermission> data { get; set; }
     }
 }

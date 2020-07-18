@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebServices.Code.Helpers;
 using WebServices.Interfaces;
 using WebServices.Jobs;
@@ -40,6 +41,11 @@ namespace WebInfluencer.Controllers
             return View();
         }
 
+
+        public IActionResult SigninFacebook()
+        {
+            return RedirectToAction("Login", "Auth");
+        }
 
         #endregion
 
@@ -133,8 +139,17 @@ namespace WebInfluencer.Controllers
             }
             */
 
+            var permissions = await _facebookHelper.GetPermissions(token);
+            Permissions list_permissions;
+            if (permissions != null)
+            {
+                string data = JsonConvert.SerializeObject(permissions);
+
+                list_permissions = JsonConvert.DeserializeObject<Permissions>(data);
+            }
 
             await SignIn(auth);
+            //CurrentUser.AccessToken = loginInfo.AccessToken; //gan accesstoken 
 
             var status = await _accountService.GetAccountStatus(auth.Id);
             if(status== AccountStatus.Normal)

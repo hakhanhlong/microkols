@@ -230,6 +230,10 @@ var App = (function () {
                     var token = response.authResponse.accessToken;
 
                     $('#frmUpdatefbpostToken').val(token);
+
+
+                    
+
                     $('#frmUpdatefbpost').submit();
                 } else {
                     alert('Bạn cần cập nhật quyền trên hệ thống của Facebook');

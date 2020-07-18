@@ -16,6 +16,8 @@ namespace WebServices.Code.Helpers
         Task<AccountFbInfoViewModel> GetInfo(string accessToken, string fid);
         Task<FbExtendTokenViewModel> GetExtendToken(string accessToken);
 
+        Task<dynamic> GetPermissions(string accessToken);
+
     }
     public class FacebookHelper : IFacebookHelper
     {
@@ -92,8 +94,19 @@ namespace WebServices.Code.Helpers
             return new AccountFbInfoViewModel(postResult);
         }
 
+        public async Task<dynamic> GetPermissions(string accessToken)
+        {
 
-        
+            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, "/me/permissions");
+
+            return postResult;
+        }
+
+
+
+
+
+
 
         public async Task<FbExtendTokenViewModel> GetExtendToken(string accessToken)
         {

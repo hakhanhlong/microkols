@@ -16,6 +16,9 @@
 <script src="~/lib/owlcarousel2/dist/owl.carousel.min.js"></script>
 <script src="~/lib/vuejs/vue.js"></script>
 <script src="~/build/js/app.js" asp-append-version="true"></script>
+<script id="facebook-jssdk" async="" src="//connect.facebook.net/en_US/all.js"></script>
+
+
 @if (User.Identity.IsAuthenticated)
 {
 
@@ -24,6 +27,31 @@
         AppSettings.CurrentUser.Username = '@CurrentUser.Username';
         AppSettings.CurrentUser.Name = '@CurrentUser.Name';
         AppSettings.CurrentUser.Type = @((int) CurrentUser.Type);
+
+
+
+      
+
+        
+
+        //var checkPermissions = function () {
+        //    FB.api('/me/permissions', function (response) {
+        //        var perms = response.data[4];
+        //        console.log(response);
+        //        // Check for publish_stream permission
+        //        if (perms.permission == "user_posts" && perms.status == "granted")
+        //        {
+        //            console.log('User has permission');
+        //        } else {
+        //            FB.login(function (response) {
+        //                // Request permission
+        //            }, { scope: 'user_posts' });
+        //        }
+
+        //    });
+        //};
+
+
     </script>
 
 }

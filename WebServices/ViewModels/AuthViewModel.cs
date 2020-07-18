@@ -37,7 +37,7 @@ namespace WebServices.ViewModels
         public EntityType Type { get; set; }
         public string Username { get; set; }
         public string Avatar { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; }        
 
         public List<Claim> GetClaims()
         {
@@ -56,7 +56,8 @@ namespace WebServices.ViewModels
         }
         public static AuthViewModel GetModel(ClaimsPrincipal principal)
         {
-            var id = int.Parse(principal.FindFirst(ClaimTypes.NameIdentifier).Value);
+            int id = 0;
+            Int32.TryParse(principal.FindFirst(ClaimTypes.NameIdentifier).Value, out id);
             var username = principal.FindFirst(ClaimTypes.Name).Value;
             var name = principal.FindFirst(ClaimTypes.GivenName).Value;
 
