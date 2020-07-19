@@ -62,7 +62,7 @@
     Sanitize Title
     If the caption data is trusted, for example you are hardcoding it in, then leave this to false.
     This will free you to add html tags, such as links, in the caption.
-     If the caption data is user submitted or from some other untrusted source, then set this to true
+      If the caption data is user submitted or from some other untrusted source, then set this to true
     to prevent xss and other injection attacks.
      */
     sanitizeTitle: false
@@ -172,10 +172,10 @@
     });
     /*
       Show context menu for image on right-click
-       There is a div containing the navigation that spans the entire image and lives above of it. If
+        There is a div containing the navigation that spans the entire image and lives above of it. If
       you right-click, you are right clicking this div and not the image. This prevents users from
       saving the image or using other context menu actions with the image.
-       To fix this, when we detect the right mouse button is pressed down, but not yet clicked, we
+        To fix this, when we detect the right mouse button is pressed down, but not yet clicked, we
       set pointer-events to none on the nav div. This is so that the upcoming right-click event on
       the next mouseup will bubble down to the image. Once the right-click/contextmenu event occurs
       we set the pointer events back to auto for the nav div so it can capture hover and left-click
@@ -303,7 +303,7 @@
       SVGs that don't have width and height attributes specified are reporting width and height
       values of 0 in Firefox 47 and IE11 on Windows. To fix, we set the width and height to the max
       dimensions for the viewport rather than 0 x 0.
-       https://github.com/lokesh/lightbox2/issues/552
+        https://github.com/lokesh/lightbox2/issues/552
       */
 
       if (filetype === 'svg') {

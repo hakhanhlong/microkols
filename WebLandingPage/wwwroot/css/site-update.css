@@ -46,6 +46,16 @@
           align-items: center;
 }
 
+.flex-cl-re {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+  -webkit-flex-direction: column-reverse;
+     -moz-box-orient: vertical;
+     -moz-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
 .col-md-12 {
   width: 100%;
 }
@@ -208,6 +218,14 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
   font-size: 18px;
 }
 
+section#content-page .row-4 .list-unstyled {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+     -moz-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .landing-page .row-4 h4.pl-20 {
   padding-left: 50px;
 }
@@ -221,7 +239,7 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     line-height: 1.3;
   }
   .txt-h1-bold-2, h1 {
-    font-size: 32px;
+    font-size: 26px;
   }
   .landing-page .row-1 .h1 {
     margin-top: 0;
@@ -229,6 +247,12 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
   .landing-page .row-1 .icon img {
     max-width: 90%;
     padding-top: 0;
+  }
+  .landing-page .row-2 .icon, .landing-page .row-3 .icon {
+    width: 60px;
+  }
+  .landing-page .row-2 .icon img, .landing-page .row-3 .icon img {
+    max-width: 100%;
   }
   section#content-page .row-5 .txt-box {
     padding: 30px;
@@ -246,6 +270,9 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     left: 520px;
     padding: 20px;
   }
+  section#content-page .row-1 .introduce-txt-box-02 {
+    left: 0;
+  }
   section#content-page .row-2 .influencer-txt-box-01 {
     padding: 30px;
     left: 520px;
@@ -255,6 +282,20 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
   }
   section#content-page .row-2 .influencer-txt-box-02 .h2, section#content-page .row-2 .influencer-txt-box-02 h2 {
     font-size: 20px;
+  }
+  section#content-page .row-3 .introduce-txt-box-02 {
+    left: 0;
+  }
+  section#content-page .row-3 .introduce-txt-box-01 {
+    left: inherit;
+    right: 0;
+  }
+  section#content-page .row-4 .influencer-txt-box-01 {
+    left: 540px;
+  }
+  section#content-page .row-2 .influencer-txt-box-02 {
+    left: 0;
+    right: initial;
   }
   section#content-page .influencer-row3 .txt-bold {
     min-height: 120px;
@@ -278,6 +319,10 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
   }
   .shape-circle h1 {
     font-size: 28px;
+  }
+  .whylist li {
+    margin: 0;
+    font-size: 14px;
   }
 }
 
@@ -377,6 +422,15 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     float: left;
     margin-right: 10px;
   }
+  section#content-page .row-2 .row-re {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+    -webkit-flex-direction: column-reverse;
+       -moz-box-orient: vertical;
+       -moz-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+  }
   section#policy-intro-header .container {
     width: 100%;
   }
@@ -402,15 +456,21 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     background-position: 60% 0;
   }
   section#agency-intro-header {
-    background-position: 42% 0;
+    background-position: 0 0;
+    -webkit-background-size: inherit inherit;
+       -moz-background-size: inherit;
+            background-size: inherit;
   }
   section#agency-intro-header .container {
     width: 100%;
   }
   section#agency-intro-header h1, section#agency-intro-header h2, section#agency-intro-header h3, section#agency-intro-header h4, section#agency-intro-header h6 {
     margin: 10px 0;
-    font-size: 28px;
+    font-size: 26px;
     color: #333;
+  }
+  section#agency-intro-header h1 {
+    max-width: 100%;
   }
   section#agency-intro-header h6 {
     max-width: 80%;
@@ -523,7 +583,7 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
   }
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 1300px) {
   .nav > li > a {
     padding: 10px;
     font-size: 12px;
@@ -536,13 +596,15 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     left: 200px;
   }
   section#content-page .row-1 .introduce-txt-box-02 {
-    height: 100%;
+    /*height: 100%;*/
+    width: 46%;
     padding: 30px;
     left: 0;
   }
   section#content-page .row-2 .agency-txt-box-01 {
     left: initial;
-    height: 100%;
+    width: 46%;
+    /*height: 100%;*/
     padding: 30px;
     right: 0;
     bottom: 0;
@@ -557,17 +619,29 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     bottom: 0;
   }
   section#content-page .row-3 .introduce-txt-box-01 {
-    padding: 30px;
+    padding: 20px;
+    width: 43%;
     right: 0;
     left: initial;
-    height: 90%;
-    top: 5%;
+    height: initial;
+    top: 51.5%;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
+            transform: translateY(-50%);
   }
   section#content-page .row-3 .introduce-txt-box-02 {
-    top: 5%;
-    height: 90%;
+    top: 51.5%;
+    -webkit-transform: translateY(-50%);
+       -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
+            transform: translateY(-50%);
+    width: 43%;
+    height: initial;
     left: 0;
-    padding: 30px;
+    padding: 20px;
   }
   section#content-page .row-2 .influencer-txt-box-01, section#content-page .row-4 .influencer-txt-box-01 {
     left: initial;
@@ -577,8 +651,21 @@ section#content-page .influencer-row4 .h3, section#content-page .influencer-row4
     left: 0;
     right: initial;
   }
+  section#content-page .row-4 .agency-txt-box-03 {
+    left: initial;
+    right: 0;
+  }
   .qa-title {
     font-size: 30px;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1200px) {
+  section#agency-intro-header h1 {
+    font-size: 40px;
+  }
+  section#agency-intro-header h6 {
+    font-size: 32px;
   }
 }
 
