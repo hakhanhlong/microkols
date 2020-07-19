@@ -186,7 +186,9 @@ namespace WebInfluencer.Controllers
             }
             */
 
-           
+
+            //update info facebook 
+            BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbInfo(auth.Id));
 
             await SignIn(auth);
             //CurrentUser.AccessToken = loginInfo.AccessToken; //gan accesstoken 

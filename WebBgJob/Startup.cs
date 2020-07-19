@@ -67,9 +67,14 @@ namespace WebBgJob
 
             // A Long them Local Time Zone de theo gio VN
             var campaignProcessTimer = Configuration.GetValue<string>("CampaignProcessTimer");
-            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer, TimeZoneInfo.Local); // "*/10 * * * *"                                
+
+            RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer, TimeZoneInfo.Local); // "*/10 * * * *"   
+            
             var updateFbPostTimer = Configuration.GetValue<string>("UpdateFbPostTimer");
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), updateFbPostTimer, TimeZoneInfo.Local);
+
+
+            RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbInfo(), "*/20 * * * *", TimeZoneInfo.Local);
 
             RecurringJob.AddOrUpdate<ICampaignJob>(m => m.CheckLockedCampagin(), "*/5 * * * *", TimeZoneInfo.Local);
 
