@@ -141,47 +141,44 @@ namespace BackOffice.Controllers
         [HttpPost]
         public async Task<IActionResult> Detail(AccountViewModel model)
         {
-            if (ModelState.IsValid)
+            if (model.Id > 0)
             {
-                if(model.Id > 0)
+                var microkol = _IAccountRepository.GetById(model.Id);
+                if (microkol == null)
                 {
-                    var microkol = _IAccountRepository.GetById(model.Id);
-                    if (microkol == null)
-                    {
-                        TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
-                    }
-                    else
-                    {
-                        microkol.Name = model.Name;
-                        microkol.Email = model.Email;
-                        microkol.Address = model.Address;
-                        microkol.Phone = model.Phone;
+                    TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
+                }
+                else
+                {
+                    microkol.Name = model.Name;
+                    microkol.Email = model.Email;
+                    microkol.Address = model.Address;
+                    microkol.Phone = model.Phone;
 
-                        microkol.Actived = model.Actived;
-                        microkol.Deleted = model.Deleted;
+                    microkol.Actived = model.Actived;
+                    microkol.Deleted = model.Deleted;
 
-                        microkol.IDCardName = model.IDCardName;
-                        microkol.IDCardNumber = model.IDCardNumber;
-                        microkol.IDCardTime = model.IDCardTime;
-                        microkol.IDCardCity = model.IDCardCity;
+                    microkol.IDCardName = model.IDCardName;
+                    microkol.IDCardNumber = model.IDCardNumber;
+                    microkol.IDCardTime = model.IDCardTime;
+                    microkol.IDCardCity = model.IDCardCity;
 
-                        microkol.BankAccountName = model.BankAccountName;
-                        microkol.BankAccountNumber = model.BankAccountNumber;
-                        microkol.BankAccountBank = model.BankAccountBank;
-                        microkol.BankAccountBranch = model.BankAccountBranch;
+                    microkol.BankAccountName = model.BankAccountName;
+                    microkol.BankAccountNumber = model.BankAccountNumber;
+                    microkol.BankAccountBank = model.BankAccountBank;
+                    microkol.BankAccountBranch = model.BankAccountBranch;
 
 
-                        await _IAccountRepository.UpdateAsync(microkol);
+                    await _IAccountRepository.UpdateAsync(microkol);
 
-                        TempData["MessageSuccess"] = "Thay đổi thông tin người ảnh hưởng thành công!";
+                    TempData["MessageSuccess"] = "Thay đổi thông tin người ảnh hưởng thành công!";
 
 
-                    }
                 }
             }
-        
 
-            return View(model);
+
+            return RedirectToAction("Detail", "Microkol", new { id = model.Id });
         }
 
 

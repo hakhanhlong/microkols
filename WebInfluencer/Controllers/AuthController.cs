@@ -105,7 +105,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> LoginCallback(string returnUrl)
         {
             var authenticateResult = await HttpContext.AuthenticateAsync(FacebookDefaults.AuthenticationScheme);
-
+            
             if (!authenticateResult.Succeeded)
                 return BadRequest(); // TODO: Handle this better.
 
@@ -170,6 +170,9 @@ namespace WebInfluencer.Controllers
             //var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
+
+
+
             if (auth == null)
             {
                 this.AddAlertDanger("Lỗi khi lấy thông tin đăng nhập. Tài khoản đã bị khóa hoặc xóa. Xin vui lòng liên hệ quản trị hệ thống");

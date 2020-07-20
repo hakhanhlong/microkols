@@ -31,7 +31,7 @@ namespace Infrastructure.Data
 
         public async Task<Account> GetActivedAccount(int id)
         {
-            return await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == id && m.Actived);
+            return await _dbContext.Account.FirstOrDefaultAsync(m => m.Id == id && m.Actived == true);
         }
 
         public async Task<List<int>> GetActivedAccountIds()
