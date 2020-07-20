@@ -29,9 +29,10 @@ namespace WebServices.ViewModels
             Avatar = !string.IsNullOrEmpty(customer.Avatar) ? customer.Avatar : "account/avatar.png";
             Type = customer.Type;
             AccountCounting = new AccountCountingViewModel(accountCounting);
+            Actived = customer.Actived;
 
             // fix chưa có facebook provider
-            if(customer.AccountProvider != null)
+            if (customer.AccountProvider != null)
             {
                 try
                 {
@@ -69,6 +70,9 @@ namespace WebServices.ViewModels
         public string Avatar { get; set; }
 
         public string Link { get; set; }
+
+        public bool Actived { get; set; }
+
         public AccountCountingViewModel AccountCounting { get; set; }
     }
 

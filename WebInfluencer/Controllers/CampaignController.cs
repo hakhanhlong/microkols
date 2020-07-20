@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Interfaces;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,15 +27,18 @@ namespace WebInfluencer.Controllers
 
         private readonly ISharedService _sharedService;
         private readonly IAccountService _accountService;
+        private readonly IAccountRepository _IAccountRepository;
+
         private readonly IFacebookHelper _facebookHelper;
         private readonly IFileHelper _fileHelper;
+
         public CampaignController(ISharedService sharedService,
             IFacebookHelper facebookHelper, IFileHelper fileHelper,
             ICampaignAccountCaptionService campaignAccountCaptionService,
             ICampaignAccountContentService campaignAccountContentService,
             ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService,
-            ICampaignService campaignService)
+            ICampaignService campaignService, IAccountRepository __IAccountRepository)
         {
             _campaignAccountCaptionService = campaignAccountCaptionService;
             _campaignAccountContentService = campaignAccountContentService;
@@ -44,16 +48,36 @@ namespace WebInfluencer.Controllers
             _fileHelper = fileHelper;
             _sharedService = sharedService;
             _accountService = accountService;
+            _IAccountRepository = __IAccountRepository;
         }
 
 
 
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
         {
+
+            //############# check account unactived => signout ########################################
+
+            try
+            {
+                var _account = _IAccountRepository.GetById(CurrentUser.Id);
+                if (_account != null)
+                {
+                    if(_account.Actived == false)
+                    {
+                        await this.SignOut();
+                        TempData["MessageInfo"] = "Tài khoản của bạn đã bị vô hiệu hóa!";
+                        return RedirectToAction("Login", "Auth");
+                    }
+                }
+            }
+            catch { }
+
+            //#########################################################################################
+
             ViewBag.Kw = kw;
             ViewBag.type = type;
             var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
-
 
             try {
                 bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);

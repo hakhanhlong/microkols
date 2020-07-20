@@ -22,6 +22,7 @@ namespace WebServices.ViewModels
             Type = EntityType.Account;
             Avatar = account.Avatar;
             Roles = new List<string>() { "Account" };
+            //AccountActived = account.Actived?"Actived":"UnActived";
         }
         public AuthViewModel(Agency agency)
         {
@@ -37,7 +38,9 @@ namespace WebServices.ViewModels
         public EntityType Type { get; set; }
         public string Username { get; set; }
         public string Avatar { get; set; }
-        public string Name { get; set; }        
+        public string Name { get; set; }
+        
+        public string AccountActived { get; set; }
 
         public List<Claim> GetClaims()
         {
@@ -48,6 +51,8 @@ namespace WebServices.ViewModels
             claims.Add(new Claim(ClaimTypes.Name, Username));
             claims.Add(new Claim("Avatar", Avatar));
             claims.Add(new Claim("Type", Type.ToString()));
+            //claims.Add(new Claim("AccountActived", AccountActived));
+
             foreach (var role in Roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
@@ -62,10 +67,7 @@ namespace WebServices.ViewModels
             var name = principal.FindFirst(ClaimTypes.GivenName).Value;
 
             var avatar = principal.FindFirst("Avatar").Value;
-            var type = principal.FindFirst("Type").Value;
-       
-
-
+            var type = principal.FindFirst("Type").Value;            
 
             return new AuthViewModel()
             {
@@ -73,8 +75,9 @@ namespace WebServices.ViewModels
                 Name = name,
                 Username = username,
                 Avatar = avatar,
-                Type = type.ToEnum<EntityType>(),
+                Type = type.ToEnum<EntityType>(),                
                 Roles = new List<string>() // not get roles ,
+                
             };
         }
 

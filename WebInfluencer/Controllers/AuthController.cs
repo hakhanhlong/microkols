@@ -175,6 +175,7 @@ namespace WebInfluencer.Controllers
 
             if (auth == null)
             {
+                await SignOut();
                 this.AddAlertDanger("Lỗi khi lấy thông tin đăng nhập. Tài khoản đã bị khóa hoặc xóa. Xin vui lòng liên hệ quản trị hệ thống");
                 return RedirectToAction("Login");
             }
