@@ -31,6 +31,7 @@ namespace WebInfluencer.Controllers
 
         private readonly IFacebookHelper _facebookHelper;
         private readonly IFileHelper _fileHelper;
+        private readonly IFacebookJob _IFacebookJob;
 
         public CampaignController(ISharedService sharedService,
             IFacebookHelper facebookHelper, IFileHelper fileHelper,
@@ -38,7 +39,7 @@ namespace WebInfluencer.Controllers
             ICampaignAccountContentService campaignAccountContentService,
             ICampaignAccountStatisticService campaignAccountStatisticService,
              IAccountService accountService,
-            ICampaignService campaignService, IAccountRepository __IAccountRepository)
+            ICampaignService campaignService, IAccountRepository __IAccountRepository, IFacebookJob __IFacebookJob)
         {
             _campaignAccountCaptionService = campaignAccountCaptionService;
             _campaignAccountContentService = campaignAccountContentService;
@@ -49,6 +50,7 @@ namespace WebInfluencer.Controllers
             _sharedService = sharedService;
             _accountService = accountService;
             _IAccountRepository = __IAccountRepository;
+            _IFacebookJob = __IFacebookJob;
         }
 
 
@@ -56,8 +58,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
         {
 
-            //############# check account unactived => signout ########################################
-
+            //############# check account unactived => signout ########################################                        
             try
             {
                 var _account = _IAccountRepository.GetById(CurrentUser.Id);

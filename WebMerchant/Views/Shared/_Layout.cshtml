@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     @if (!string.IsNullOrEmpty(title))
     {
         <title>@title - Microkols | Nền tảng influencer marketing dẫn đầu Việt Nam</title>
@@ -22,73 +22,79 @@
   
 
     <div class="d-flex">
-            <div class="sidebar">
-
-                <partial name="_HeaderPartial" />
-
-            </div>
-
-            <main role="main" class="flex-grow-1 px-3">
-
-                <div class="main container-fluid">
-
-                    @if (IsSectionDefined("Top"))
-                    {
-                        @RenderSection("Top", required: false)
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(title))
-                        {
-                            <h1 class="page-title">@title</h1>
-                        }
-
-
-                    }
-
-                    @if (TempData["MessageSuccess"] != null)
-                    {
-                        <div class="alert alert-success" role="alert">
-                            <strong>
-                                Success!
-                            </strong>
-                            @TempData["MessageSuccess"]
-                        </div>
-                    }
-
-                    @if (TempData["MessageInfo"] != null)
-                    {
-                        <div class="alert alert-info" role="alert">
-                            <strong>
-                                Info!
-                            </strong>
-                            @Html.Raw(TempData["MessageInfo"])
-                        </div>
-                    }
-                    @if (TempData["MessageWarning"] != null)
-                    {
-                        <div class="alert alert-warning" role="alert">
-                            <strong>
-                                Warning!
-                            </strong>
-                            @Html.Raw(TempData["MessageInfo"])
-                        </div>
-                    }
-
-                    @if (TempData["MessageError"] != null)
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            <strong>
-                                Error!
-                            </strong>
-                            @TempData["MessageError"]
-                        </div>
-                    }
-
-                    @RenderBody()
-                </div>
-            </main>
+        <div class="navbar-m">
+            <a href="" class="logo"><img src="/img/logo_merchant.png" alt=""></a>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
+        <div class="sidebar">
+
+            <partial name="_HeaderPartial" />
+
+        </div>
+
+        <main role="main" class="flex-grow-1 px-3">
+
+            <div class="main container-fluid">
+
+                @if (IsSectionDefined("Top"))
+                {
+                    @RenderSection("Top", required: false)
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(title))
+                    {
+                        <h1 class="page-title">@title</h1>
+                    }
+
+
+                }
+
+                @if (TempData["MessageSuccess"] != null)
+                {
+                    <div class="alert alert-success" role="alert">
+                        <strong>
+                            Success!
+                        </strong>
+                        @TempData["MessageSuccess"]
+                    </div>
+                }
+
+                @if (TempData["MessageInfo"] != null)
+                {
+                    <div class="alert alert-info" role="alert">
+                        <strong>
+                            Info!
+                        </strong>
+                        @Html.Raw(TempData["MessageInfo"])
+                    </div>
+                }
+                @if (TempData["MessageWarning"] != null)
+                {
+                    <div class="alert alert-warning" role="alert">
+                        <strong>
+                            Warning!
+                        </strong>
+                        @Html.Raw(TempData["MessageInfo"])
+                    </div>
+                }
+
+                @if (TempData["MessageError"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>
+                            Error!
+                        </strong>
+                        @TempData["MessageError"]
+                    </div>
+                }
+
+                @RenderBody()
+            </div>
+        </main>
+    </div>
 
 
 

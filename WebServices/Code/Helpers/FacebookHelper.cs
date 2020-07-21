@@ -69,9 +69,11 @@ namespace WebServices.Code.Helpers
         public async Task<List<AccountFbPostViewModel>> GetPosts(string accessToken, string fid, long since = 1514764800, int limit = 10000)
         {
 
-            var p = $"limit={limit}&since={since}&fields=full_picture,permalink_url,message,created_time,link,shares,comments.summary(1),likes.limit(0).summary(1),reactions.summary(1)";
-            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}/posts", p);
-          
+            //var p = $"limit={limit}&since={since}&fields=full_picture,permalink_url,message,created_time,link,shares,comments.summary(1),likes.limit(0).summary(1),reactions.summary(1)";            
+            //var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}/posts", p);
+            var p = $"limit={limit}&since={since}&"+"fields=message,comments.limit(10).summary(true){message,from,likes.limit(0).summary(true)},reactions.limit(0).summary(true),created_time,link,permalink_url,full_picture";
+            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"me/feed", p);
+
             var result = new List<AccountFbPostViewModel>();
             if (postResult != null)
             {

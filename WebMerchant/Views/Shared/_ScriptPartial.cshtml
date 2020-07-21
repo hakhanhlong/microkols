@@ -25,6 +25,29 @@
         AppSettings.CurrentUser.Username = '@CurrentUser.Username';
         AppSettings.CurrentUser.Name = '@CurrentUser.Name';
         AppSettings.CurrentUser.Type = @((int) CurrentUser.Type);
+
+
+
+          $(document).ready(function () {
+            // active navbar of page current
+            var urlcurrent = window.location.href;
+            $(".sidebar-sticky ul li a[href$='"+urlcurrent+"']").addClass('active');
+
+            $('.navbar-toggler').on('click',function () {
+              $('.sidebar').toggleClass('is-show');
+           });
+           $('.sidebar .close').on('click',function () {
+               $('.sidebar').removeClass('is-show');
+           });
+            $(document).mouseup(function(e){
+                var container = $(".sidebar,.navbar-toggler");
+                if (!container.is(e.target) && container.has(e.target).length === 0)
+                {
+                    $('.sidebar').removeClass('is-show');
+                }
+            });
+        });
+
     </script>
 
 }

@@ -50,36 +50,42 @@
     <div class="col-lg-12 col-ms-12">
         @{ var countall = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, null, kw); }
 
-        <ul class="nav nav-tabs nav-px-sm mb-3 nav-campaign">
-            <li class="nav-item">
-                <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">
-                    Tất cả
-                    @if (countall > 0)
+        <div class="nav-responsive">
+
+
+
+            <ul class="nav nav-tabs nav-px-sm mb-3 nav-campaign">
+                <li class="nav-item">
+                    <a class="nav-link @(!status.HasValue? "active": "")" asp-action="Index" asp-route-status="">
+                        Tất cả
+                        @if (countall > 0)
+                        {
+                            <span class="badge badge-pill badge-danger">@countall</span>
+                        }
+
+                    </a>
+                </li>
+                @foreach (var statusItem in stautusArr)
+                {
+                    var isactived = statusItem == status;
+                    if (statusItem != CampaignStatus.Ended)
                     {
-                        <span class="badge badge-pill badge-danger">@countall</span>
+                        var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
+                        <li class="nav-item">
+                            <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">
+                                @statusItem.ToDisplayName()
+                                @if (count > 0)
+                                {
+                                    <span class="badge badge-pill badge-danger">@count</span>
+                                }
+                            </a>
+                        </li>
                     }
 
-                </a>
-            </li>
-            @foreach (var statusItem in stautusArr)
-            {
-                var isactived = statusItem == status;
-                if (statusItem != CampaignStatus.Ended)
-                {
-                    var count = await CampaignService.GetCountCampaignByAgency(CurrentUser.Id, type, statusItem, kw);
-                    <li class="nav-item">
-                        <a class="nav-link @(isactived? "active": "")" asp-action="Index" asp-route-status="@statusItem">
-                            @statusItem.ToDisplayName()
-                            @if (count > 0)
-                            {
-                                <span class="badge badge-pill badge-danger">@count</span>
-                            }
-                        </a>
-                    </li>
                 }
+            </ul>
+        </div>
 
-            }
-        </ul>
     </div>
 </div>
 

@@ -49,7 +49,7 @@ namespace WebServices.ViewModels
             try { Link = (string)obj.link; } catch { }
             try { PostTime = (DateTime)obj.created_time; } catch { }
             try { ShareCount = (int)obj.shares.count; } catch { }
-            try { LikeCount = (int)obj.likes.summary.total_count; } catch { }
+            try { LikeCount = (int)obj.reactions.summary.total_count; } catch { }
             try { CommentCount = (int)obj.comments.summary.total_count; } catch { }
             try { PostId = (string)obj.id; } catch { }
             try { Permalink = (string)obj.permalink_url; } catch { }

@@ -71,6 +71,7 @@ namespace WebBgJob
             RecurringJob.AddOrUpdate<ICampaignJob>(m => m.UpdateCampaignProcess(), campaignProcessTimer, TimeZoneInfo.Local); // "*/10 * * * *"   
             
             var updateFbPostTimer = Configuration.GetValue<string>("UpdateFbPostTimer");
+
             RecurringJob.AddOrUpdate<IFacebookJob>(m => m.UpdateFbPost(), updateFbPostTimer, TimeZoneInfo.Local);
 
 

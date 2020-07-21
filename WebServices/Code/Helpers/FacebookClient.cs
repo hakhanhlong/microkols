@@ -24,6 +24,7 @@ namespace WebServices.Code.Helpers
             _httpClient = new HttpClient
             {
                 BaseAddress = new Uri("https://graph.facebook.com/v3.2/")
+                
             };
             _httpClient.DefaultRequestHeaders
                 .Accept
