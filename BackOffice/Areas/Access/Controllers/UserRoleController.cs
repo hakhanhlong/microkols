@@ -8,21 +8,22 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Security.Data;
+using BackOffice.Security;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access"), Authorize]
+    [Area("Access")]
     [DisplayName("User Role Management")]
     public class UserRoleController : Controller
     {
         private readonly AppIdentityDbContext _dbContext;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public UserRoleController(
             AppIdentityDbContext dbContext,
             RoleManager<IdentityRole> roleManager,
-            UserManager<IdentityUser> userManager
+            UserManager<AppUser> userManager
             )
         {
             _roleManager = roleManager;
