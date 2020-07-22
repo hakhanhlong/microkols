@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BackOffice.Models;
 using BackOffice.Security.Enum;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -31,10 +32,7 @@ namespace BackOffice.Security.Data
 
             if(await _userManager.FindByNameAsync(_username) == null)
             {
-                if(await _roleManager.FindByNameAsync(Role.Administratror.GetRoleName()) == null)
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(Role.Administratror.GetRoleName()));
-                }
+                
 
                 AppUser _appUser = new AppUser()
                 {
@@ -43,10 +41,7 @@ namespace BackOffice.Security.Data
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(_appUser, _password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(_appUser, Role.Administratror.GetRoleName());
-                }
+                
 
             }
 

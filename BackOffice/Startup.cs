@@ -15,6 +15,9 @@ using BackOffice.Security.Data;
 using Infrastructure.Data;
 using BackOffice.CommonHelpers;
 
+using DynamicAuthorization.Mvc.Core.Extensions;
+using DynamicAuthorization.Mvc.JsonStore.Extensions;
+
 namespace BackOffice
 {
     public class Startup
@@ -62,15 +65,22 @@ namespace BackOffice
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             //services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultUI().AddDefaultTokenProviders();
-            services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<AppUser, IdentityRole>(options=>options.SignIn.RequireConfirmedEmail = false).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin").AddJsonStore(options => options.FilePath = "secret.json");
 
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
 
             services.AddAppServices();
+            
+
+            
 
             services.AddMemoryCache();
 
             services.AddSession();
+
+            services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin@gmail.com").AddJsonStore();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -95,6 +105,10 @@ namespace BackOffice
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                  name: "MyArea",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

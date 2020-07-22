@@ -45,6 +45,7 @@
     <link rel="shortcut icon" href="/assets/demo/default/media/img/logo/favicon.ico">
 
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/jquery.bonsai.css" />
 
 
 </head>
@@ -166,7 +167,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>                                    
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -303,6 +304,8 @@
     <script src="/assets/demo/default/custom/components/base/sweetalert2.js" type="text/javascript"></script>
     <script src="/assets/demo/default/custom/crud/forms/widgets/bootstrap-datepicker.js" type="text/javascript"></script>
     <script src="/assets/vendors/scrollbar/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
+    <script src="~/js/jquery.qubit.js" type="text/javascript"></script>
+    <script src="~/js/jquery.bonsai.js" type="text/javascript"></script>
 
 
 
@@ -321,7 +324,7 @@
                     success: function (data) {
 
                         $('#drop-notification').html(data);
-                        
+
 
 
                     },
@@ -367,7 +370,7 @@
                         else {
                             $('#campaign-service-cashback').hide();
                         }
-                      
+
                     },
                     dataType: "json",
                     traditional: true
@@ -380,7 +383,7 @@
 
             //################### intervel load notification ################################
 
-            
+
 
 
             $('#walletdeposit-count-menu').hide();
