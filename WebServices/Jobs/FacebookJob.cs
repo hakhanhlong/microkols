@@ -75,7 +75,8 @@ namespace WebServices.Jobs
             var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
             if (accountProvider != null)
             {
-                var since = type == 1 ? new DateTime(2019, 1, 1).ToUnixTime() : DateTime.Now.AddDays(-5).ToUnixTime();
+                var since = type == 1 ? DateTime.Now.AddMonths(-6).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
+                //var since = DateTime.Now.AddDays(-5).ToUnixTime();
                 // chi lay 1000 bai`
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
@@ -83,6 +84,7 @@ namespace WebServices.Jobs
                 {
                     return;
                 }
+
                 foreach (var fbPost in fbPosts)
                 {
                     if (!string.IsNullOrEmpty(fbPost.PostId))
@@ -95,7 +97,7 @@ namespace WebServices.Jobs
                 if (type == 2)
                 {
 
-                    var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, 100);
+                    var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, fbPosts.Count);
                     foreach (var campaign in campaignAccounts.Campaigns)
                     {
                         AccountFbPostViewModel fbPost = null;

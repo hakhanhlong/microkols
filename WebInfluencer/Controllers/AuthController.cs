@@ -193,12 +193,13 @@ namespace WebInfluencer.Controllers
 
             //update info facebook 
             BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbInfo(auth.Id));
+            BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(auth.Id, "system", 1)); //update fb post
 
             await SignIn(auth);
             //CurrentUser.AccessToken = loginInfo.AccessToken; //gan accesstoken 
 
             var status = await _accountService.GetAccountStatus(auth.Id);
-            if(status== AccountStatus.Normal)
+            if(status== AccountStatus.NeedVerified)
             {
                 return RedirectToAction("ChangeFacebookUrl", "Account");
             }
