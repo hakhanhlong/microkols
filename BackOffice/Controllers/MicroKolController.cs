@@ -11,9 +11,11 @@ using Core.Specifications;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
 using Common.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackOffice.Controllers
 {
+    [Authorize]
     public class MicroKolController : Controller
     {
 

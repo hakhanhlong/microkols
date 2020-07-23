@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access")]
+    [Area("Access"), Authorize]
     [DisplayName("Role Management")]
     public class RoleController : Controller
     {
@@ -91,7 +91,8 @@ namespace BackOffice.Areas.Access.Controllers
         [DisplayName("Edit Role")]
         public async Task<ActionResult> Edit(string id)
         {
-            ViewData["Controllers"] = _mvcControllerDiscovery.GetControllers();
+            var controllers = _mvcControllerDiscovery.GetControllers();
+            ViewData["Controllers"] = controllers;
             var role = await _roleManager.FindByIdAsync(id);
             if (role == null)
                 return NotFound();

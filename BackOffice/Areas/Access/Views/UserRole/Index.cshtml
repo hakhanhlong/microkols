@@ -12,6 +12,7 @@
             <thead>
                 <tr>
                     <th scope="col"> @Html.DisplayNameFor(m => m.UserName) </th>
+                    <th scope="col"> @Html.DisplayNameFor(m => m.Email) </th>
                     <th scope="col"> @Html.DisplayNameFor(m => m.Roles) </th>
                     <th> </th>
                 </tr>
@@ -19,18 +20,19 @@
             <tbody>
                 @foreach (var user in Model)
                 {
-                    <tr>
-                        <td>@Html.DisplayFor(m => user.UserName)</td>
-                        <td>
-                            @foreach (var role in user.Roles)
-                            {
-                                <span>@Html.DisplayFor(m => role) | </span>
-                            }
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@Html.DisplayFor(m => user.UserName)</td>
+                    <td>@Html.DisplayFor(m => user.Email)</td>
+                    <td>
+                        @foreach (var role in user.Roles)
+                        {
+                            <span>@Html.DisplayFor(m => role) | </span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@user.UserId">Edit</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -1,1 +1,1212 @@
-{}
+{
+  "roleAccess": [
+    {
+      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f8",
+      "controllers": [
+        {
+          "id": ":Agency",
+          "name": "Agency",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Agency:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Active",
+              "name": "Active",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:UnActive",
+              "name": "UnActive",
+              "displayName": null,
+              "controllerId": ":Agency"
+            }
+          ]
+        },
+        {
+          "id": ":Authen",
+          "name": "Authen",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Authen:Logout",
+              "name": "Logout",
+              "displayName": null,
+              "controllerId": ":Authen"
+            },
+            {
+              "id": ":Authen:ChangePassword",
+              "name": "ChangePassword",
+              "displayName": null,
+              "controllerId": ":Authen"
+            }
+          ]
+        },
+        {
+          "id": ":Campaign",
+          "name": "Campaign",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Campaign:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:CampaignFollowAgency",
+              "name": "CampaignFollowAgency",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Configuration",
+              "name": "Configuration",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:TakeNoteChangeStatus",
+              "name": "TakeNoteChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:ChangeStatus",
+              "name": "ChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Microkol",
+              "name": "Microkol",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignRevenue",
+              "name": "Statistic_CampaignRevenue",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignService",
+              "name": "Statistic_CampaignService",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignCashback",
+              "name": "Statistic_CampaignCashback",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignAccountCashback",
+              "name": "Statistic_CampaignAccountCashback",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            }
+          ]
+        },
+        {
+          "id": ":CampaignTypeCharge",
+          "name": "CampaignTypeCharge",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":CampaignTypeCharge:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":CampaignTypeCharge"
+            },
+            {
+              "id": ":CampaignTypeCharge:Edit",
+              "name": "Edit",
+              "displayName": null,
+              "controllerId": ":CampaignTypeCharge"
+            }
+          ]
+        },
+        {
+          "id": ":Category",
+          "name": "Category",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Category:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Add",
+              "name": "Add",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Edit",
+              "name": "Edit",
+              "displayName": null,
+              "controllerId": ":Category"
+            }
+          ]
+        },
+        {
+          "id": ":Home",
+          "name": "Home",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Home:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Privacy",
+              "name": "Privacy",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Error",
+              "name": "Error",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:ImageUpload",
+              "name": "ImageUpload",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:UploadImage",
+              "name": "UploadImage",
+              "displayName": null,
+              "controllerId": ":Home"
+            }
+          ]
+        },
+        {
+          "id": ":LandingPage",
+          "name": "LandingPage",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":LandingPage:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:QnA",
+              "name": "QnA",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:CreateQnA",
+              "name": "CreateQnA",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:UpdateQnA",
+              "name": "UpdateQnA",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:QnAVideo",
+              "name": "QnAVideo",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:RemoveQnAVideo",
+              "name": "RemoveQnAVideo",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:QnAImage",
+              "name": "QnAImage",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:RemoveQnAImage",
+              "name": "RemoveQnAImage",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:VideoGallery",
+              "name": "VideoGallery",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:CreateVideoGallery",
+              "name": "CreateVideoGallery",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            },
+            {
+              "id": ":LandingPage:UpdateVideoGallery",
+              "name": "UpdateVideoGallery",
+              "displayName": null,
+              "controllerId": ":LandingPage"
+            }
+          ]
+        },
+        {
+          "id": ":MicroKol",
+          "name": "MicroKol",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":MicroKol:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Verify",
+              "name": "Verify",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:ChangePassword",
+              "name": "ChangePassword",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:ChangeType",
+              "name": "ChangeType",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignCharge",
+              "name": "CampaignCharge",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignMicrokol",
+              "name": "CampaignMicrokol",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:AjaxCampaignMicrokol",
+              "name": "AjaxCampaignMicrokol",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignMicrokolDetail",
+              "name": "CampaignMicrokolDetail",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:MicroKolSubstractMoney",
+              "name": "MicroKolSubstractMoney",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            }
+          ]
+        },
+        {
+          "id": ":Notification",
+          "name": "Notification",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Notification:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:Goto",
+              "name": "Goto",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxDropNotification",
+              "name": "AjaxDropNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxRecentNotification",
+              "name": "AjaxRecentNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:CountNewNotification",
+              "name": "CountNewNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            }
+          ]
+        },
+        {
+          "id": ":Transaction",
+          "name": "Transaction",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Transaction:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceCashBack",
+              "name": "CampaignServiceCashBack",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceCashBackSearch",
+              "name": "CampaignServiceCashBackSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletRecharge",
+              "name": "WalletRecharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletRechargeSearch",
+              "name": "WalletRechargeSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletWithdraw",
+              "name": "WalletWithdraw",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ServiceCharge",
+              "name": "ServiceCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceSearch",
+              "name": "CampaignServiceSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountCharge",
+              "name": "AccountCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:History",
+              "name": "History",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountPayback",
+              "name": "AccountPayback",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountSubtractWallet",
+              "name": "AccountSubtractWallet",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ExportAccountPayback",
+              "name": "ExportAccountPayback",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ExportTransactionCampaignServiceCharge",
+              "name": "ExportTransactionCampaignServiceCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:TransactionUpdateStatus",
+              "name": "TransactionUpdateStatus",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ChangeStatus",
+              "name": "ChangeStatus",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:FillTransactions",
+              "name": "FillTransactions",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            }
+          ]
+        },
+        {
+          "id": ":Wallet",
+          "name": "Wallet",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Wallet:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:WalletAgency",
+              "name": "WalletAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:WalletInfluencer",
+              "name": "WalletInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Transaction",
+              "name": "Transaction",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionAgency",
+              "name": "TransactionAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Statistic_TransactionAgency",
+              "name": "Statistic_TransactionAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionAgencySearch",
+              "name": "TransactionAgencySearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionInfluencer",
+              "name": "TransactionInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Statistic_TransactionInfluencer",
+              "name": "Statistic_TransactionInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionInfluencerSearch",
+              "name": "TransactionInfluencerSearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionSearch",
+              "name": "TransactionSearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionHistory",
+              "name": "TransactionHistory",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f9",
+      "controllers": [
+        {
+          "id": ":Agency",
+          "name": "Agency",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Agency:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Active",
+              "name": "Active",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:UnActive",
+              "name": "UnActive",
+              "displayName": null,
+              "controllerId": ":Agency"
+            }
+          ]
+        },
+        {
+          "id": ":Campaign",
+          "name": "Campaign",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Campaign:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:CampaignFollowAgency",
+              "name": "CampaignFollowAgency",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Configuration",
+              "name": "Configuration",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:TakeNoteChangeStatus",
+              "name": "TakeNoteChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:ChangeStatus",
+              "name": "ChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Microkol",
+              "name": "Microkol",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            }
+          ]
+        },
+        {
+          "id": ":Category",
+          "name": "Category",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Category:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Add",
+              "name": "Add",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Edit",
+              "name": "Edit",
+              "displayName": null,
+              "controllerId": ":Category"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f10",
+      "controllers": [
+        {
+          "id": ":Agency",
+          "name": "Agency",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Agency:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:Active",
+              "name": "Active",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
+              "id": ":Agency:UnActive",
+              "name": "UnActive",
+              "displayName": null,
+              "controllerId": ":Agency"
+            }
+          ]
+        },
+        {
+          "id": ":Campaign",
+          "name": "Campaign",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Campaign:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:CampaignFollowAgency",
+              "name": "CampaignFollowAgency",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Configuration",
+              "name": "Configuration",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:TakeNoteChangeStatus",
+              "name": "TakeNoteChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:ChangeStatus",
+              "name": "ChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Microkol",
+              "name": "Microkol",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignRevenue",
+              "name": "Statistic_CampaignRevenue",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignService",
+              "name": "Statistic_CampaignService",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignCashback",
+              "name": "Statistic_CampaignCashback",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:Statistic_CampaignAccountCashback",
+              "name": "Statistic_CampaignAccountCashback",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            }
+          ]
+        },
+        {
+          "id": ":Category",
+          "name": "Category",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Category:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Add",
+              "name": "Add",
+              "displayName": null,
+              "controllerId": ":Category"
+            },
+            {
+              "id": ":Category:Edit",
+              "name": "Edit",
+              "displayName": null,
+              "controllerId": ":Category"
+            }
+          ]
+        },
+        {
+          "id": ":MicroKol",
+          "name": "MicroKol",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":MicroKol:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Verify",
+              "name": "Verify",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:ChangePassword",
+              "name": "ChangePassword",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:ChangeType",
+              "name": "ChangeType",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignCharge",
+              "name": "CampaignCharge",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignMicrokol",
+              "name": "CampaignMicrokol",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:AjaxCampaignMicrokol",
+              "name": "AjaxCampaignMicrokol",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:CampaignMicrokolDetail",
+              "name": "CampaignMicrokolDetail",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:MicroKolSubstractMoney",
+              "name": "MicroKolSubstractMoney",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f11",
+      "controllers": [
+        {
+          "id": ":Home",
+          "name": "Home",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Home:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Privacy",
+              "name": "Privacy",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Error",
+              "name": "Error",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:ImageUpload",
+              "name": "ImageUpload",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:UploadImage",
+              "name": "UploadImage",
+              "displayName": null,
+              "controllerId": ":Home"
+            }
+          ]
+        },
+        {
+          "id": ":Transaction",
+          "name": "Transaction",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Transaction:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceCashBack",
+              "name": "CampaignServiceCashBack",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceCashBackSearch",
+              "name": "CampaignServiceCashBackSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletRecharge",
+              "name": "WalletRecharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletRechargeSearch",
+              "name": "WalletRechargeSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:WalletWithdraw",
+              "name": "WalletWithdraw",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ServiceCharge",
+              "name": "ServiceCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:CampaignServiceSearch",
+              "name": "CampaignServiceSearch",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountCharge",
+              "name": "AccountCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:History",
+              "name": "History",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountPayback",
+              "name": "AccountPayback",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:AccountSubtractWallet",
+              "name": "AccountSubtractWallet",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:Detail",
+              "name": "Detail",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ExportAccountPayback",
+              "name": "ExportAccountPayback",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ExportTransactionCampaignServiceCharge",
+              "name": "ExportTransactionCampaignServiceCharge",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:TransactionUpdateStatus",
+              "name": "TransactionUpdateStatus",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:ChangeStatus",
+              "name": "ChangeStatus",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
+              "id": ":Transaction:FillTransactions",
+              "name": "FillTransactions",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            }
+          ]
+        },
+        {
+          "id": ":Wallet",
+          "name": "Wallet",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Wallet:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:WalletAgency",
+              "name": "WalletAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:WalletInfluencer",
+              "name": "WalletInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Search",
+              "name": "Search",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Transaction",
+              "name": "Transaction",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionAgency",
+              "name": "TransactionAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Statistic_TransactionAgency",
+              "name": "Statistic_TransactionAgency",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionAgencySearch",
+              "name": "TransactionAgencySearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionInfluencer",
+              "name": "TransactionInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:Statistic_TransactionInfluencer",
+              "name": "Statistic_TransactionInfluencer",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionInfluencerSearch",
+              "name": "TransactionInfluencerSearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionSearch",
+              "name": "TransactionSearch",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            },
+            {
+              "id": ":Wallet:TransactionHistory",
+              "name": "TransactionHistory",
+              "displayName": null,
+              "controllerId": ":Wallet"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -40,8 +40,8 @@ namespace BackOffice.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser user = await _userManager.FindByEmailAsync(details.Email);
-                if(user != null)
+                AppUser user = await _userManager.FindByEmailAsync(details.Email);                
+                if (user != null)
                 {
                     await _signInManager.SignOutAsync();
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, details.Password, true, false);

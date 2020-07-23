@@ -12,7 +12,7 @@ using BackOffice.Security;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access")]
+    [Area("Access"), Authorize]
     [DisplayName("User Role Management")]
     public class UserRoleController : Controller
     {
@@ -52,12 +52,49 @@ namespace BackOffice.Areas.Access.Controllers
                 {
                     UserId = first.user.Id,
                     UserName = first.user.UserName,
+                    Email = first.user.Email,
                     Roles = first.role != null ? grp.Select(g => g.role).Select(r => r.Name) : new List<string>()
                 });
             }
 
             return View(userList);
         }
+
+        // GET: Access/Create
+        [DisplayName("Edit User Roles")]
+        public async Task<ActionResult> Create()
+        {                 
+            var roles = await _roleManager.Roles.ToListAsync();
+            ViewData["Roles"] = roles;
+
+            return View(new UserRoleViewModel());
+        }
+
+        // POST: Access/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(UserRoleViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["Roles"] = await _roleManager.Roles.ToListAsync();
+                
+            }
+
+            AppUser _appUser = new AppUser()
+            {
+                UserName = viewModel.UserName,
+                Email = viewModel.Email
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(_appUser, viewModel.Password);            
+            await _userManager.AddToRolesAsync(_appUser, viewModel.Roles);
+
+            return RedirectToAction("Index");
+        }
+
+
+
 
         // GET: Access/Edit
         [DisplayName("Edit User Roles")]

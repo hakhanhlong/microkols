@@ -14,6 +14,7 @@ namespace BackOffice.Controllers
 
 
 
+
     public class AjaxChartController : Controller
     {
 

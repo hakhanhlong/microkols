@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Models.Wrap;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
 using WebServices.ViewModels;
 
 namespace BackOffice.Controllers
 {
+    [Authorize]
     public class NotificationController : Controller
     {
 
