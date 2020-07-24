@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access"), Authorize]
+    [Area("Access")]
     [DisplayName("Role Management")]
     public class RoleController : Controller
     {
@@ -152,7 +152,7 @@ namespace BackOffice.Areas.Access.Controllers
             var roleAccess = new RoleAccess
             {
                 Controllers = viewModel.SelectedControllers?.ToList(),
-                RoleId = role.Id
+                RoleId = id
             };
             await _roleAccessStore.EditRoleAccessAsync(roleAccess);
 

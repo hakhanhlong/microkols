@@ -78,6 +78,19 @@ namespace WebServices.Jobs
                 var since = type == 1 ? DateTime.Now.AddMonths(-6).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
                 //var since = DateTime.Now.AddDays(-5).ToUnixTime();
                 // chi lay 1000 bai`
+
+
+                if(accountProvider.Expired < DateTime.Now)
+                {
+                    var accessToken = await _facebookHelper.GetExtendToken(accountProvider.AccessToken);
+                    if (accessToken != null)
+                    {
+                        await _accountService.UpdateAccountProvidersAccessToken(accountid, accessToken.AccessToken, accessToken.ExpiresIn);
+                        accountProvider.AccessToken = accessToken.AccessToken;
+                    }
+                }
+
+
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
                 if (fbPosts == null || fbPosts.Count == 0)

@@ -616,7 +616,7 @@
       ]
     },
     {
-      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f9",
+      "roleId": "de7163ef-940b-48aa-b8a4-1ddde53f8acb",
       "controllers": [
         {
           "id": ":Agency",
@@ -657,127 +657,22 @@
           ]
         },
         {
-          "id": ":Campaign",
-          "name": "Campaign",
+          "id": ":Authen",
+          "name": "Authen",
           "displayName": null,
           "areaName": null,
           "actions": [
             {
-              "id": ":Campaign:Index",
-              "name": "Index",
+              "id": ":Authen:Logout",
+              "name": "Logout",
               "displayName": null,
-              "controllerId": ":Campaign"
+              "controllerId": ":Authen"
             },
             {
-              "id": ":Campaign:CampaignFollowAgency",
-              "name": "CampaignFollowAgency",
+              "id": ":Authen:ChangePassword",
+              "name": "ChangePassword",
               "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:Search",
-              "name": "Search",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:Detail",
-              "name": "Detail",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:Configuration",
-              "name": "Configuration",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:TakeNoteChangeStatus",
-              "name": "TakeNoteChangeStatus",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:ChangeStatus",
-              "name": "ChangeStatus",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            },
-            {
-              "id": ":Campaign:Microkol",
-              "name": "Microkol",
-              "displayName": null,
-              "controllerId": ":Campaign"
-            }
-          ]
-        },
-        {
-          "id": ":Category",
-          "name": "Category",
-          "displayName": null,
-          "areaName": null,
-          "actions": [
-            {
-              "id": ":Category:Index",
-              "name": "Index",
-              "displayName": null,
-              "controllerId": ":Category"
-            },
-            {
-              "id": ":Category:Add",
-              "name": "Add",
-              "displayName": null,
-              "controllerId": ":Category"
-            },
-            {
-              "id": ":Category:Edit",
-              "name": "Edit",
-              "displayName": null,
-              "controllerId": ":Category"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f10",
-      "controllers": [
-        {
-          "id": ":Agency",
-          "name": "Agency",
-          "displayName": null,
-          "areaName": null,
-          "actions": [
-            {
-              "id": ":Agency:Index",
-              "name": "Index",
-              "displayName": null,
-              "controllerId": ":Agency"
-            },
-            {
-              "id": ":Agency:Search",
-              "name": "Search",
-              "displayName": null,
-              "controllerId": ":Agency"
-            },
-            {
-              "id": ":Agency:Detail",
-              "name": "Detail",
-              "displayName": null,
-              "controllerId": ":Agency"
-            },
-            {
-              "id": ":Agency:Active",
-              "name": "Active",
-              "displayName": null,
-              "controllerId": ":Agency"
-            },
-            {
-              "id": ":Agency:UnActive",
-              "name": "UnActive",
-              "displayName": null,
-              "controllerId": ":Agency"
+              "controllerId": ":Authen"
             }
           ]
         },
@@ -888,6 +783,44 @@
           ]
         },
         {
+          "id": ":Home",
+          "name": "Home",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Home:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Privacy",
+              "name": "Privacy",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:Error",
+              "name": "Error",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:ImageUpload",
+              "name": "ImageUpload",
+              "displayName": null,
+              "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:UploadImage",
+              "name": "UploadImage",
+              "displayName": null,
+              "controllerId": ":Home"
+            }
+          ]
+        },
+        {
           "id": ":MicroKol",
           "name": "MicroKol",
           "displayName": null,
@@ -960,12 +893,70 @@
               "controllerId": ":MicroKol"
             }
           ]
+        },
+        {
+          "id": ":Notification",
+          "name": "Notification",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Notification:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:Goto",
+              "name": "Goto",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxDropNotification",
+              "name": "AjaxDropNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxRecentNotification",
+              "name": "AjaxRecentNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:CountNewNotification",
+              "name": "CountNewNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            }
+          ]
         }
       ]
     },
     {
-      "roleId": "fc6387be-b4ee-4385-a76f-6db7a2c153f11",
+      "roleId": "8388079e-2302-443b-9b74-88b434cf1812",
       "controllers": [
+        {
+          "id": ":Authen",
+          "name": "Authen",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Authen:Logout",
+              "name": "Logout",
+              "displayName": null,
+              "controllerId": ":Authen"
+            },
+            {
+              "id": ":Authen:ChangePassword",
+              "name": "ChangePassword",
+              "displayName": null,
+              "controllerId": ":Authen"
+            }
+          ]
+        },
         {
           "id": ":Home",
           "name": "Home",
@@ -1001,6 +992,44 @@
               "name": "UploadImage",
               "displayName": null,
               "controllerId": ":Home"
+            }
+          ]
+        },
+        {
+          "id": ":Notification",
+          "name": "Notification",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":Notification:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:Goto",
+              "name": "Goto",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxDropNotification",
+              "name": "AjaxDropNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:AjaxRecentNotification",
+              "name": "AjaxRecentNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
+            },
+            {
+              "id": ":Notification:CountNewNotification",
+              "name": "CountNewNotification",
+              "displayName": null,
+              "controllerId": ":Notification"
             }
           ]
         },

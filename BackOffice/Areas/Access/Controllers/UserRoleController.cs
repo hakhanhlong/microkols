@@ -12,7 +12,7 @@ using BackOffice.Security;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access"), Authorize]
+    [Area("Access")]
     [DisplayName("User Role Management")]
     public class UserRoleController : Controller
     {

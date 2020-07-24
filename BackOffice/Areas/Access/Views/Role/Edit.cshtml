@@ -1,10 +1,10 @@
 ﻿@model RoleViewModel
 @{
-    ViewData["Title"] = "Edit Role";
+    ViewData["Title"] = "Thay đổi vai trò";
     var controllers = (IEnumerable<MvcControllerInfo>)ViewData["Controllers"];
 }
 
-<h2>Edit Role</h2>
+<h2>Thay đổi vai trò</h2>
 
 <hr />
 
@@ -22,7 +22,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-3 col-form-label">Access List</label>
+                <label class="col-md-3 col-form-label">Danh sách quyền truy cập</label>
                 <div class="col-md-9">
                     <ol id="tree">
                         @foreach (var controller in controllers)
@@ -55,15 +55,13 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Edit" class="btn btn-primary" />
+                <input type="submit" value="Thay đổi" class="btn btn-primary" style="font-family:roboto;"/>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
 

@@ -17,14 +17,16 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/agency" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        QL.Doanh nghiệp
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Agency" asp-action="Index">
+                    <a href="/agency" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            QL.Doanh nghiệp
+                        </span>
+                    </a>
+                </secure-content>
             </li>            
         </ul>
     </div>
@@ -48,41 +50,48 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/campaign" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        QL.Chiến dịch
-                        <span class="m-badge m-badge--danger" id="campaign-count-menu">
+                <secure-content asp-area="" asp-controller="Campaign" asp-action="Index">
 
+                    <a href="/campaign" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            QL.Chiến dịch
+                            <span class="m-badge m-badge--danger" id="campaign-count-menu">
+
+                            </span>
                         </span>
-                    </span>
 
-                </a>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/transaction/servicecharge" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Phí dịch vụ                        
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Transaction" asp-action="ServiceCharge">
+                    <a href="/transaction/servicecharge" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Phí dịch vụ
+                        </span>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/transaction/campaignservicecashback" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Rút tiền thừa
-                        <span class="m-badge m-badge--danger" id="campaign-service-cashback">
+                <secure-content asp-area="" asp-controller="Transaction" asp-action="CampaignServiceCashBack">
+                    <a href="/transaction/campaignservicecashback" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Rút tiền thừa
+                            <span class="m-badge m-badge--danger" id="campaign-service-cashback">
 
+                            </span>
                         </span>
-                    </span>
-                </a>
+                    </a>
+                </secure-content>
             </li>
         </ul>
     </div>
@@ -106,27 +115,31 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/microkol" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Người ảnh hưởng
-                        <span class="m-badge m-badge--danger" id="account-count-menu">
+                <secure-content asp-area="" asp-controller="MicroKol" asp-action="Index">
+                    <a href="/microkol" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Người ảnh hưởng
+                            <span class="m-badge m-badge--danger" id="account-count-menu">
 
+                            </span>
                         </span>
-                    </span>
-                </a>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/microkol/campaignmicrokol" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Chiến dịch tham gia
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="MicroKol" asp-action="CampaignMicrokol">
+                    <a href="/microkol/campaignmicrokol" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Chiến dịch tham gia
+                        </span>
+                    </a>
+                </secure-content>
             </li>
 
             
@@ -152,24 +165,28 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/wallet/walletagency" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Ví Doanh nghiệp
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Wallet" asp-action="WalletAgency">
+                    <a href="/wallet/walletagency" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Ví Doanh nghiệp
+                        </span>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/wallet/walletinfluencer" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Ví Người ảnh hưởng
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Wallet" asp-action="WalletInfluencer">
+                    <a href="/wallet/walletinfluencer" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Ví Người ảnh hưởng
+                        </span>
+                    </a>
+                </secure-content>
             </li>
         </ul>
     </div>
@@ -193,17 +210,19 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/transaction/walletrecharge" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Nạp ví
-                        <span class="m-badge m-badge--danger" id="walletdeposit-count-menu">
+                <secure-content asp-area="" asp-controller="Transaction" asp-action="WalletRecharge">
+                    <a href="/transaction/walletrecharge" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Nạp ví
+                            <span class="m-badge m-badge--danger" id="walletdeposit-count-menu">
 
+                            </span>
                         </span>
-                    </span>
-                </a>
+                    </a>
+                </secure-content>
             </li>
             @*<li class="m-menu__item " aria-haspopup="true">
             <a href="/transaction/walletwithdraw" class="m-menu__link ">
@@ -237,14 +256,16 @@
         </li>*@
       
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/transaction/accountpayback?type=Regular" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Account Payback
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Transaction" asp-action="AccountPayback">
+                    <a href="/transaction/accountpayback?type=Regular" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Account Payback
+                        </span>
+                    </a>
+                </secure-content>
             </li>            
         </ul>
     </div>
@@ -268,24 +289,28 @@
                 </span>
             </li>            
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/campaigntypecharge" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Campaign Type
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="CampaignTypeCharge" asp-action="Index">
+                    <a href="/campaigntypecharge" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Campaign Type
+                        </span>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/category" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Categories
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="Category" asp-action="Index">
+                    <a href="/category" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Lĩnh vực
+                        </span>
+                    </a>
+                </secure-content>
             </li>        
         </ul>
     </div>
@@ -309,24 +334,28 @@
                 </span>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/landingpage/qna" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        QnA
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="LandingPage" asp-action="QnA">
+                    <a href="/landingpage/qna" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            QnA
+                        </span>
+                    </a>
+                </secure-content>
             </li>
             <li class="m-menu__item " aria-haspopup="true">
-                <a href="/landingpage/videogallery" class="m-menu__link ">
-                    <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                        <span></span>
-                    </i>
-                    <span class="m-menu__link-text">
-                        Video Gallery
-                    </span>
-                </a>
+                <secure-content asp-area="" asp-controller="LandingPage" asp-action="VideoGallery">
+                    <a href="/landingpage/videogallery" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            Video Gallery
+                        </span>
+                    </a>
+                </secure-content>
             </li>
         </ul>
     </div>

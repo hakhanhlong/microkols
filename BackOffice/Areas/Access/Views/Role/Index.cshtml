@@ -4,9 +4,9 @@
     ViewData["Title"] = "Role List";
 }
 
-<h2>Role List</h2>
+<h2>Danh sách vai trò</h2>
 
-<a asp-action="Create">Create Role</a>
+<a asp-action="Create">Tạo mới vai trò</a>
 <div class="row">
     <div class="col-md-4">
         <table class="table table-bordered">
@@ -20,7 +20,7 @@
                 @if (!Model.Any())
                 {
                     <tr>
-                        <td colspan="2">There is no role!</td>
+                        <td colspan="2">Không có vai trò nào!</td>
                     </tr>
                 }
                 @foreach (var role in Model)
@@ -28,8 +28,8 @@
                     <tr>
                         <td>@Html.DisplayFor(m => role.Name)</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@role.Id">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@role.Id" class="delete-item">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@role.Id">Thay đổi</a> |
+                            <a asp-action="Delete" asp-route-id="@role.Id" class="delete-item">Xóa</a>
                         </td>
                     </tr>
                 }

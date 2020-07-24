@@ -1,12 +1,12 @@
 ﻿@model UserRoleViewModel
 @{
-    ViewData["Title"] = "Edit User Access";
+    ViewData["Title"] = "Thay đổi quyền người dùng";
     var roles = (IEnumerable<IdentityRole>)ViewData["Roles"];
 }
 
 
 
-<h2>Edit User Access</h2>
+<h2>Thay đổi quyền người dùng</h2>
 
 <hr />
 <div class="row">
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-2 control-label">Roles</label>
+                <label class="col-md-2 control-label">Vai trò</label>
                 <div class="col-md-10">
                     @foreach (var role in roles)
                     {
@@ -39,7 +39,7 @@
 
             <div class="form-group row">
                 <div class="col-md-10">
-                    <input type="submit" class="btn btn-primary" value="Edit" />
+                    <input type="submit" class="btn btn-primary" value="Thay đổi" style="font-family:roboto;"/>
                 </div>
             </div>
         </form>
