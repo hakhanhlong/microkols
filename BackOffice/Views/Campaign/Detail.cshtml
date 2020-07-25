@@ -240,7 +240,16 @@
                                                 @Model.AmountMax.ToPriceText()
                                             </span>
                                         </div>
-
+                                        @if (Model.Type == CampaignType.ShareContentWithCaption ||
+                                        Model.Type == CampaignType.ReviewProduct)
+                                        {
+                                            <div class="mb-2">
+                                                <strong class="mr-2">KPIs yêu cầu tối thiểu cho mỗi người:</strong>
+                                                <span>
+                                                    @Model.InteractiveMin
+                                                </span>
+                                            </div>
+                                        }
 
                                         @if (!string.IsNullOrEmpty(Model.Requirement))
                                         {
