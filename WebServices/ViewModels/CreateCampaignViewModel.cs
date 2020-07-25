@@ -436,13 +436,13 @@ namespace WebServices.ViewModels
 
 
         [Range(10000, 100000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
-        [Display(Name = "Chi phí tối thiểu")]
+        [Display(Name = "Tối thiểu (Vnđ)")]
         public int AmountMin { get; set; } = 10000;
 
         [Range(10000, 100000000, ErrorMessage = "Chi phí phải lớn hơn 1.000đ")]
 
         [GreaterThan("AmountMin", ErrorMessage = "Chi phí tối đa phải lớn hơn chi phí tối thiểu")]
-        [Display(Name = "Chi phí tối đa")]
+        [Display(Name = "Tối đa (Vnđ)")]
         public int AmountMax { get; set; } = 100000;
 
         [Display(Name = "Giới tính")]
@@ -475,7 +475,7 @@ namespace WebServices.ViewModels
 
 
 
-        [Display(Name = "KPIs(Like + Share + Comments) tối thiểu mà influencer sẽ phải đạt cho mỗi post để được ghi nhận doanh thu")]
+        [Display(Name = "KPIs(Like + Share + Comments) tối thiểu mà influencer sẽ phải đạt cho mỗi post để được ghi nhận doanh thu:")]
         public int KPIMin { get; set; }
 
         [GreaterThan("KPIMin", ErrorMessage = "Cam kết lượng tương tác được tối thiểu phải lớn hơn hoặc bằng KPIMin")]
@@ -496,7 +496,7 @@ namespace WebServices.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Thời gian nhận đăng ký")]
+        [Display(Name = "Thời gian nhận đăng ký và gửi nội dung")]
         public string RegisterTime { get; set; }
 
         [Display(Name = "Thời gian gửi mẫu nội dung")]
