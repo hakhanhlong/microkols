@@ -1156,6 +1156,26 @@ namespace WebServices.Services
             return -1;
         }
 
+        public async Task<int> UpdateCampaignAccountStatus(int id, CampaignAccountStatus status, string msg)
+        {
+            var accountCampaign = await _campaignAccountRepository.GetByIdAsync(id);
+            if (accountCampaign != null)
+            {
+
+                accountCampaign.Status = status;
+                accountCampaign.Note = msg;
+                accountCampaign.DateModified = DateTime.Now;
+                await _campaignAccountRepository.UpdateAsync(accountCampaign);
+                return accountCampaign.CampaignId;
+
+                
+            }
+
+            return -1;
+        }
+
+
+
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
         {
             var campaign = await _campaignRepository.GetByIdAsync(model.CampaignId);

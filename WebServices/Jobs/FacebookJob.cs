@@ -80,15 +80,15 @@ namespace WebServices.Jobs
                 // chi lay 1000 bai`
 
 
-                if(accountProvider.Expired < DateTime.Now)
-                {
-                    var accessToken = await _facebookHelper.GetExtendToken(accountProvider.AccessToken);
-                    if (accessToken != null)
-                    {
-                        await _accountService.UpdateAccountProvidersAccessToken(accountid, accessToken.AccessToken, accessToken.ExpiresIn);
-                        accountProvider.AccessToken = accessToken.AccessToken;
-                    }
-                }
+                //if(accountProvider.Expired < DateTime.Now)
+                //{
+                //    var accessToken = await _facebookHelper.GetExtendToken(accountProvider.AccessToken);
+                //    if (accessToken != null)
+                //    {
+                //        await _accountService.UpdateAccountProvidersAccessToken(accountid, accessToken.AccessToken, accessToken.ExpiresIn);
+                //        accountProvider.AccessToken = accessToken.AccessToken;
+                //    }
+                //}
 
 
                 var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
@@ -98,19 +98,14 @@ namespace WebServices.Jobs
                     return;
                 }
 
-                foreach (var fbPost in fbPosts)
-                {
-                    if (!string.IsNullOrEmpty(fbPost.PostId))
-                    {
-                        await _accountService.UpdateFbPost(accountid, fbPost, username);
-                    }
-                }
+                
 
 
                 if (type == 2)
                 {
 
                     var campaignAccounts = await _campaignService.GetListCampaignByAccount(accountid, 0, string.Empty, 1, fbPosts.Count);
+
                     foreach (var campaign in campaignAccounts.Campaigns)
                     {
                         AccountFbPostViewModel fbPost = null;
@@ -118,23 +113,28 @@ namespace WebServices.Jobs
                         var refid = campaign.CampaignAccount.RefId;
 
                         // chỉ check facebook post của người đã đồng ý tham gia chiến dịch
-                        if (campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed)
+                        if (campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed ||
+                            campaign.CampaignAccount.Status == CampaignAccountStatus.ApprovedContent ||
+                            campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                         {
                             if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                             {
-
+                                // truong hop influencer tụ cạp nhat link kết quả 
                                 fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
                                 if (fbPost == null)
                                 {
+                                    //truong hop link user cạp nhạt ko khớp với link lấy từ fb
                                     fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Link)).FirstOrDefault();
                                 }
                                 if (fbPost == null)
                                 {
+                                    //truong hop link lấy từ fb ko khớp với link user
                                     fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
                                 }
                             }
                             else
                             {
+                                //truong hop tu dong
                                 if (!string.IsNullOrEmpty(campaign.Data))
                                 {
                                     fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
@@ -153,12 +153,24 @@ namespace WebServices.Jobs
                                     RefUrl = fbPost.Permalink,
                                     RefImage = new List<string>()
                                 }, username);
-
-
                                 if (campaignAccountId > 0)
                                 {
                                     await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
                                 }
+                            }
+                            else
+                            {
+                                //truong hợp bằng null vì user làm ko đúng
+                                if (!string.IsNullOrEmpty(campaign.Data))
+                                {
+                                    if (campaign.Data.Contains("http"))
+                                    {
+                                        string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
+                                        await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, CampaignAccountStatus.Unfinished, msg);
+                                    }
+                                }
+                                
+
                             }
                         } 
 
@@ -166,6 +178,16 @@ namespace WebServices.Jobs
                         
 
 
+                    }
+                }
+
+
+                //update thong tin like,share,comment
+                foreach (var fbPost in fbPosts)
+                {
+                    if (!string.IsNullOrEmpty(fbPost.PostId))
+                    {
+                        await _accountService.UpdateFbPost(accountid, fbPost, username);
                     }
                 }
             }

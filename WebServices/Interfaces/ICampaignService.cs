@@ -10,6 +10,8 @@ namespace WebServices.Interfaces
 {
     public interface ICampaignService
     {
+
+        Task<int> UpdateCampaignAccountStatus(int id, CampaignAccountStatus status, string msg);
         Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id);
         Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username);
         Task<int> UpdateReviewAddress(int id, string addresss, string username);

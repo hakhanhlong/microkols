@@ -58,6 +58,11 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
         {
 
+
+
+            await _IFacebookJob.UpdateFbPost(112, "system", 2);
+
+
             //############# check account unactived => signout ########################################                        
             try
             {
