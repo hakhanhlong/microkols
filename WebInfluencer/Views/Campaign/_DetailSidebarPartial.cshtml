@@ -203,7 +203,7 @@ else
                             <div>
                                 @if (Model.Campaign.Type.IsShareCampaign())
                                 {
-                                    <button class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+                                    <button id="btn-facebook-share" class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
 
                                         <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
                                     </button>
