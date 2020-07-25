@@ -709,7 +709,7 @@ namespace WebServices.Services
 
             if (campaignAccount == null)
             {
-                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+                
                 if (campaign == null)
                 {
                     return false;

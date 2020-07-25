@@ -211,51 +211,51 @@ namespace Core.Entities
             else
            if (type == NotificationType.AccountDeclineJoinCampaign)
             {
-                message = "Thành viên {0} đã không đồng ý tham gia chiến dịch {1} của bạn";
+                message = "Thành viên {0} đã không đồng ý tham gia chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AccountConfirmJoinCampaign)
             {
-                message = "Thành viên {0} đã đồng ý tham gia chiến dịch {1}";
+                message = "Thành viên {0} đã đồng ý tham gia chiến dịch \"{1}\"";
             }
             else if (type == NotificationType.AccountFinishCampaignRefContent)
             {
-                message = "Thành viên {0} đã thực hiện công việc chiến dịch {1}";
+                message = "Thành viên {0} đã thực hiện công việc chiến dịch \"{1}\"";
             }
 
             else if(type == NotificationType.AgencyCancelAccountJoinCampaign)
             {
-                message = "Doanh nghiệp {0} đã từ chối quyền tham gia chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã từ chối quyền tham gia chiến dịch \"{1}\" của bạn";
             }
             
             else if (type == NotificationType.AgencyApproveCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} đã duyệt nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã duyệt nội dung Caption chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AgencyDeclineCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} từ chối nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} từ chối nội dung Caption chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AgencyUpdatedCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} yêu cầu bạn sửa nội dung Caption chiến dịch {1}";
+                message = "Doanh nghiệp {0} yêu cầu bạn sửa nội dung Caption chiến dịch \"{1}\"";
             }
             
             else if (type == NotificationType.AccountSubmitCampaignRefContent)
             {
-                message = "Thành viên {0} đã gửi nội dung Caption chiến dịch {1}";
+                message = "Thành viên {0} đã gửi nội dung Caption chiến dịch \"{1}\"";
             }
             
             else if (type == NotificationType.AgencyConfirmJoinCampaign)
             {
-                message = "Doanh nghiệp {0} đã duyệt yêu cầu tham gia chiến dịch {1}";
+                message = "Doanh nghiệp {0} đã duyệt yêu cầu tham gia chiến dịch \"{1}\"";
             }
             else if (type == NotificationType.AccountRequestJoinCampaign)
             {
-                message = "Thành viên {0} đã đề xuất được tham gia chiến dịch {1}";
+                message = "Thành viên {0} đã đề xuất được tham gia chiến dịch \"{1}\"";
             }
             else if (type == NotificationType.AgencyRequestJoinCampaign)
             {
-                message = "Doanh nghiệp {0} mời bạn tham gia chiến dịch {1}";
+                message = "Doanh nghiệp {0} mời bạn tham gia chiến dịch \"{1}\"";
             }
             else if (type == NotificationType.CampaignStarted)
             {
@@ -263,7 +263,7 @@ namespace Core.Entities
             }
             else if (type == NotificationType.CampaignCantStarted)
             {
-                message = "{0} tạm khóa chiến dịch {1} vì: {2}";
+                message = "{0} tạm khóa chiến dịch \"{1}\" vì: {2}";
             }            
             else if (type == NotificationType.CampaignEnded)
             {
@@ -271,52 +271,52 @@ namespace Core.Entities
             }
             else if (type == NotificationType.CampaignCanceled)
             {
-                message = "Chiến dịch {0} bị hủy vì lí do {1}";
+                message = "Chiến dịch {0} bị hủy vì lí do \"{1}\"";
             }
             else if (type == NotificationType.SystemUpdateCanceledAccountCampaign)
             {
-                message = "Chiến dịch {0} bị hủy vì lí do {1}";
+                message = "Chiến dịch {0} bị hủy vì lí do \"{1}\"";
             }
             
             else if (type == NotificationType.CampaignCompleted)
             {
-                message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận {1} ";
+                message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận \"{1}\" ";
             }
 
             else if (type == NotificationType.AgencyDeclineCampaignCaption)
             {
-                message = "Doanh nghiệp {0} đã không duyệt nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã không duyệt nội dung Caption chiến dịch \"{1}\" của bạn";
             }
 
             else if (type == NotificationType.AgencyApproveCampaignCaption)
             {
-                message = "Doanh nghiệp {0} đã duyệt nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã duyệt nội dung Caption chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AgencyUpdatedCampaignCaption)
             {
-                message = "Doanh nghiệp {0} thêm ghi chú cho Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} thêm ghi chú cho Caption chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AccountSubmitCampaignCaption)
             {
-                message = "Thành viên {0} đã gửi nội dung Caption chiến dịch {1}";
+                message = "Thành viên {0} đã gửi nội dung Caption chiến dịch \"{1}\"";
             }
 
             else if (type == NotificationType.AgencyDeclineCampaignContent)
             {
-                message = "Doanh nghiệp {0} từ chối nội dung chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} từ chối nội dung chiến dịch \"{1}\" của bạn";
             }
 
             else if (type == NotificationType.AgencyApproveCampaignContent)
             {
-                message = "Doanh nghiệp {0} đã duyệt nội dung  chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã duyệt nội dung  chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AgencyUpdatedCampaignContent)
             {
-                message = "Doanh nghiệp {0} thêm ghi chú  chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} thêm ghi chú  chiến dịch \"{1}\" của bạn";
             }
             else if (type == NotificationType.AccountSubmitCampaignContent)
             {
-                message = "Thành viên {0} đã gửi nội dung chiến dịch {1}";
+                message = "Thành viên {0} đã gửi nội dung chiến dịch \"{1}\"";
             }
 
             else if (type == NotificationType.AccountVerifyDenied)
