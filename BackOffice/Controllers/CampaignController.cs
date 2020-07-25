@@ -104,7 +104,7 @@ namespace BackOffice.Controllers
             ViewBag.CampaignTypes = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>
             {
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Tất cả", Value = ""},
-                new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareContent.ToShowName(), Value = "1"},
+                //new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareContent.ToShowName(), Value = "1"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ShareContentWithCaption.ToShowName(), Value = "2"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ChangeAvatar.ToShowName(), Value = "3"},
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = CampaignType.ReviewProduct.ToShowName(), Value = "4"},

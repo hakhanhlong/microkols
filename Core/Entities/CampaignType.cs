@@ -9,8 +9,8 @@ namespace Core.Entities
 {
     public enum CampaignType
     {
-        [Display(Name = "Chia sẻ thông điệp, không cần viết caption", Description = "", ShortName = "/img/share_no_caption.png")]
-        ShareContent = 1,
+        //[Display(Name = "Chia sẻ thông điệp, không cần viết caption", Description = "", ShortName = "/img/share_no_caption.png")]
+        //ShareContent = 1,
         [Display(Name = "Chia sẻ thông điệp, viết thêm caption", Description = "", ShortName = "/img/share_with_caption.png")]
         ShareContentWithCaption = 2,
         [Display(Name = "Thay hình Avatar", Description = "", ShortName = "/img/share_change_avatar.png")]
@@ -30,7 +30,8 @@ namespace Core.Entities
     {
         public static bool IsShareCampaign(this CampaignType type)
         {
-            return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
+            //return type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
+            return  type == CampaignType.ShareContentWithCaption || type == CampaignType.ShareStreamUrl;
 
         }
         public static bool IsHasAccountProcess(this CampaignStatus status)
@@ -52,10 +53,11 @@ namespace Core.Entities
 
         public static int GetKpiMin(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent)
-            {
-                return 30;
-            }
+            //if (type == CampaignType.ShareContent)
+            //{
+            //    return 30;
+            //}
+
             if (type == CampaignType.ShareContentWithCaption)
             {
                 return 100;
@@ -70,10 +72,10 @@ namespace Core.Entities
 
         public static int GetInteractiveMin(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent)
-            {
-                return 0;
-            }
+            //if (type == CampaignType.ShareContent)
+            //{
+            //    return 0;
+            //}
             if (type == CampaignType.ShareContentWithCaption)
             {
                 return 100;
@@ -94,10 +96,16 @@ namespace Core.Entities
 
         public static string ToActionText(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //{
+            //    return "Chia sẻ";
+            //}
+
+            if (type == CampaignType.ShareContentWithCaption)
             {
                 return "Chia sẻ";
             }
+
             if (type == CampaignType.ReviewProduct)
             {
                 return "Review Sản phẩm";
@@ -126,7 +134,12 @@ namespace Core.Entities
         }
         public static string ToPriceLabel(this CampaignType type)
         {
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ReviewProduct || type == CampaignType.ShareStreamUrl)
+            //if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption || type == CampaignType.ReviewProduct || type == CampaignType.ShareStreamUrl)
+            //{
+            //    return "/người/lần";
+            //}
+
+            if (type == CampaignType.ShareContentWithCaption || type == CampaignType.ReviewProduct || type == CampaignType.ShareStreamUrl)
             {
                 return "/người/lần";
             }
@@ -135,10 +148,16 @@ namespace Core.Entities
             {
                 return "/người/tuần";
             }
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //{
+            //    return "/người/lần";
+            //}
+
+            if (type == CampaignType.ShareContentWithCaption)
             {
                 return "/người/lần";
             }
+
             if (type == CampaignType.CustomService || type == CampaignType.JoinEvent)
             {
                 return "";
@@ -153,10 +172,17 @@ namespace Core.Entities
             {
                 return "Hình ảnh Avatar";
             }
-            if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
+            //{
+            //    return "Link nội dung";
+            //}
+
+            if (type == CampaignType.ShareContentWithCaption)
             {
                 return "Link nội dung";
             }
+
+
 
 
             if (type == CampaignType.ReviewProduct)

@@ -98,7 +98,7 @@
 
                             <span class="text-primary"> @Model.Type.ToDisplayName()</span>
 
-                            @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption)
+                            @if (Model.Type == CampaignType.ShareContentWithCaption)
                             {
                                 if (Model.EnabledAccountChargeExtra)
                                 {
@@ -255,7 +255,7 @@
                                 }
                             </span>
                         </div>
-                        @if (Model.Type == CampaignType.ShareContent || Model.Type == CampaignType.ShareContentWithCaption ||
+                        @if (Model.Type == CampaignType.ShareContentWithCaption ||
                            Model.Type == CampaignType.ReviewProduct)
                         {
                             <div class="mb-2">

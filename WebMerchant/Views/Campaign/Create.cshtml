@@ -108,7 +108,7 @@
                 </div>
 
 
-                @if (campaignType == CampaignType.ShareContent)
+                @*@if (campaignType == CampaignType.ShareContent)
                 {
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -117,7 +117,7 @@
                         </div>
                     </div>
 
-                }
+                }*@
 
                 <div class="form-group">
                     <label asp-for="SampleContentText" style="font-weight:bold;"></label>
@@ -182,7 +182,7 @@
                     <input type="hidden" asp-for="ReviewDate" />
                 }
 
-                @if (campaignType != CampaignType.ShareContent && campaignType != CampaignType.ChangeAvatar)
+                @if (campaignType != CampaignType.ChangeAvatar)
                 {
 
                     <div>

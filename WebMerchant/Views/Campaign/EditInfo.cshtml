@@ -99,7 +99,7 @@
                 </div>
 
 
-                @if (campaignType == CampaignType.ShareContent)
+                @*@if (campaignType == CampaignType.ShareContent)
                 {
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
@@ -107,7 +107,7 @@
                             <label class="custom-control-label" asp-for="EnabledExtraType"></label>
                         </div>
                     </div>
-                }
+                }*@
 
                 @if (campaignType == CampaignType.ReviewProduct)
                 {
@@ -120,7 +120,7 @@
                     </div>
                 }
 
-                @if (campaignType != CampaignType.ShareContent && campaignType != CampaignType.ChangeAvatar)
+                @if (campaignType != CampaignType.ChangeAvatar)
                 {
 
                     <div>
@@ -183,15 +183,16 @@
                         </p>
                     </div>
                 </div>
-                @if (campaignType != CampaignType.ShareContent)
+                @*@if (campaignType != CampaignType.ShareContent)
                 {
-                    <div class="card border-0">
-                        <div class="card-body">
-                            <h5>Nội dung mẫu</h5>
-                            <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
-                        </div>
+
+                }*@
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5>Nội dung mẫu</h5>
+                        <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
                     </div>
-                }
+                </div>
             </div>
         </div>
     </div>

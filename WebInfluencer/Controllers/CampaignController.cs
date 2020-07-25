@@ -84,7 +84,7 @@ namespace WebInfluencer.Controllers
                 bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);
                 if(filledInfoBank == false)
                 {
-                    TempData["MessageInfo"] = "Bạn cần bổ xung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
+                    TempData["MessageInfo"] = "Bạn cần bổ sung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
                 }
             }
             catch { }

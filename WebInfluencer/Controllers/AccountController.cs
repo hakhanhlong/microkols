@@ -311,7 +311,7 @@ namespace WebInfluencer.Controllers
         {
             var model = await _accountService.GetBankAccount(CurrentUser.Id);
 
-            //############# anh Long bổ xung ##############################################################################
+            //############# anh Long bổ sung ##############################################################################
             var banks = await _IBankService.ListAll();
             var list_bank = new List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>();
             list_bank.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem { Text = "Chọn ngân hàng", Value = "" });
