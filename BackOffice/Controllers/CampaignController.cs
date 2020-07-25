@@ -211,12 +211,12 @@ namespace BackOffice.Controllers
                     if (status == CampaignStatus.Canceled)
                     {
                         notificationType = NotificationType.CampaignCanceled;
-                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã bị hủy, bởi hệ thống", campaign.Title);
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã bị hủy, bởi hệ thống. Lý do: {1}", campaign.Title, txt_note);
                     }
                     else if (status == CampaignStatus.Error)
                     {
                         notificationType = NotificationType.CampaignError;
-                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã có lỗi, hệ thống đã phát hiện lỗi và gửi thông báo đến bạn", campaign.Title);
+                        msg = string.Format("Chiến dịch \"{0}\" bạn tạo đã có lỗi, hệ thống đã phát hiện lỗi và gửi thông báo đến bạn. Lý do: {1}", campaign.Title, txt_note);
                     }
                     else if (status == CampaignStatus.Ended)
                     {
@@ -237,9 +237,15 @@ namespace BackOffice.Controllers
                                 //item.Status = CampaignAccountStatus.AgencyRequest;
                                 //await _ICampaignAccountRepository.UpdateAsync(item);
 
-                                NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
-                                string notify_message = string.Format("Bạn đã được doanh nghiệp {0} mời tham gia chiến dịch {1}", campaign.UserCreated, campaign.Title);
-                                await _INotificationService.CreateNotification(campaign.Id, EntityType.Account, item.AccountId, _notiType, notify_message, "");
+                                try {
+                                    var agency = await _IAgencyBusiness.GetAgency(campaign.AgencyId);
+
+                                    NotificationType _notiType = NotificationType.AgencyRequestJoinCampaign;
+                                    string notify_message = string.Format("Bạn đã được doanh nghiệp \"{0}\" mời tham gia chiến dịch \"{1}\"", agency.Name, campaign.Title);
+                                    await _INotificationService.CreateNotification(campaign.Id, EntityType.Account, item.AccountId, _notiType, notify_message, "");
+                                }
+                                catch { }
+                                
                             }
                             
                         }

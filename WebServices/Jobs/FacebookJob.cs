@@ -75,7 +75,7 @@ namespace WebServices.Jobs
             var accountProvider = await _accountService.GetAccountProviderByAccount(accountid, AccountProviderNames.Facebook);
             if (accountProvider != null)
             {
-                var since = type == 1 ? DateTime.Now.AddMonths(-6).ToUnixTime() : DateTime.Now.AddMonths(-1).ToUnixTime();
+                var since = type == 1 ? DateTime.Now.AddMonths(-6).ToUnixTime() : DateTime.Now.AddMonths(-2).ToUnixTime();
                 //var since = DateTime.Now.AddDays(-5).ToUnixTime();
                 // chi lay 1000 bai`
 

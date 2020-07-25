@@ -224,7 +224,7 @@ namespace Core.Entities
 
             else if(type == NotificationType.AgencyCancelAccountJoinCampaign)
             {
-                message = "Doanh nghiệp {0} đã hủy quyền tham gia dự án chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} đã từ chối quyền tham gia chiến dịch {1} của bạn";
             }
             
             else if (type == NotificationType.AgencyApproveCampaignRefContent)
@@ -233,11 +233,11 @@ namespace Core.Entities
             }
             else if (type == NotificationType.AgencyDeclineCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} yêu cầu sửa lại nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} từ chối nội dung Caption chiến dịch {1} của bạn";
             }
             else if (type == NotificationType.AgencyUpdatedCampaignRefContent)
             {
-                message = "Doanh nghiệp {0} từ sửa nội dung Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} yêu cầu bạn sửa nội dung Caption chiến dịch {1}";
             }
             
             else if (type == NotificationType.AccountSubmitCampaignRefContent)
@@ -264,9 +264,7 @@ namespace Core.Entities
             else if (type == NotificationType.CampaignCantStarted)
             {
                 message = "{0} tạm khóa chiến dịch {1} vì: {2}";
-            }
-
-            
+            }            
             else if (type == NotificationType.CampaignEnded)
             {
                 message = "Chiến dịch {0} đã kết thúc";
@@ -296,7 +294,7 @@ namespace Core.Entities
             }
             else if (type == NotificationType.AgencyUpdatedCampaignCaption)
             {
-                message = "Doanh nghiệp {0} thêm ghi chú Caption chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} thêm ghi chú cho Caption chiến dịch {1} của bạn";
             }
             else if (type == NotificationType.AccountSubmitCampaignCaption)
             {
@@ -305,7 +303,7 @@ namespace Core.Entities
 
             else if (type == NotificationType.AgencyDeclineCampaignContent)
             {
-                message = "Doanh nghiệp {0} đã không duyệt nội dung chiến dịch {1} của bạn";
+                message = "Doanh nghiệp {0} từ chối nội dung chiến dịch {1} của bạn";
             }
 
             else if (type == NotificationType.AgencyApproveCampaignContent)

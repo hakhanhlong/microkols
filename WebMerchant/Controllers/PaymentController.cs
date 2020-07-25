@@ -19,15 +19,17 @@ namespace WebMerchant.Controllers
         private readonly ICampaignService _campaignService;
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
+        private readonly IAgencyService _IAgencyService;
 
 
         public PaymentController(IWalletService walletService, ICampaignService campaignService, 
-            IPaymentService paymentService, INotificationService __INotificationService)
+            IPaymentService paymentService, INotificationService __INotificationService, IAgencyService ___IAgencyService)
         {
             _campaignService = campaignService;
             _walletService = walletService;
             _paymentService = paymentService;
             _notificationService = __INotificationService;
+            _IAgencyService = ___IAgencyService;
         }
 
         public async Task<IActionResult> CampaignPayment(int campaignid)
@@ -49,12 +51,19 @@ namespace WebMerchant.Controllers
         public async Task<IActionResult> CampaignPayment(CreateCampaignPaymentViewModel model)
         {
             var paymentResult = await _paymentService.CreateAgencyPayment(CurrentUser.Id, model, CurrentUser.Username);
+            var campaign = await _campaignService.GetCampaignById(model.CampaignId);
             if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Amount > 0)
             {
+
+
                 
+
+
                 BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
                 //########### Longhk add create notification ##########################################################
-                string _msg = string.Format("Chiến dịch \"{0}\" đã được thanh toán bởi doanh nghiệp \"{1}\", với số tiền {2}.", model.CampaignId, CurrentUser.Username, paymentResult.Amount.ToPriceText());
+
+                
+                string _msg = string.Format("Chiến dịch \"{0}\" đã được thanh toán bởi doanh nghiệp \"{1}\", với số tiền {2}.", campaign.Title , CurrentUser.Name, paymentResult.Amount.ToPriceText());
                 string _data = "Campaign";
                 await _notificationService.CreateNotification(model.CampaignId, EntityType.System, 0, NotificationType.AgencyPayCampaignService, _msg, _data);
                 //#####################################################################################################
@@ -65,7 +74,7 @@ namespace WebMerchant.Controllers
             {
                 try {
                     //########### Longhk add create notification ##########################################################
-                    string _msg = string.Format("Doanh nghiệp \"{0}\" yêu cầu rút tiền chiến dịch \"{1}\", với số tiền {2}.", CurrentUser.Username, model.CampaignId, paymentResult.Amount.ToPriceText());
+                    string _msg = string.Format("Doanh nghiệp \"{0}\" yêu cầu rút tiền chiến dịch \"{1}\", với số tiền {2}.", CurrentUser.Name, campaign.Title, paymentResult.Amount.ToPriceText());
                     string _data = "Transaction";
                     await _notificationService.CreateNotification(paymentResult.TransactionId, EntityType.System, 0, NotificationType.AgencyRequestWithdrawFromCampaign, _msg, _data);
                     //#####################################################################################################

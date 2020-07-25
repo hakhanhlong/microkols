@@ -438,9 +438,13 @@ namespace BackOffice.Controllers
                                         campaignaccount.IsRefundToAgency = true;
                                         await _ICampaignAccountRepository.UpdateAsync(campaignaccount);
                                         await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "[Hoàn lại tiền Agency từ người dùng tham gia chiến dịch][CampaignAccountRefundAgency] Success", HttpContext.User.Identity.Name);// delete transaction if case error
-                                       
+
                                         //############# send notification to agency ############################################
-                                        string message = string.Format("Influencer {0}, trả lại {1} từ chiến dịch {2}, vì chưa hoàn thành! Đã được thực hiện từ hệ thống.", campaignaccount.Account.Name, money_number.ToPriceText(), campaignaccount.Campaign.Title);
+
+                                        string message = string.Format("Tiền \"{0}\" trả cho Influencer \"{1}\" từ chiến dịch \"{2}\" đã được thu hồi về ví của bạn, do không thực hiện thành công.",
+                                            money_number.ToPriceText(), campaignaccount.Account.Name, campaignaccount.Campaign.Title);
+                                        
+
                                         await _INotificationService.CreateNotification(campaignaccount.CampaignId, EntityType.Agency, campaignaccount.Campaign.AgencyId, NotificationType.TransactionAccountRefundToAgency, message, "");
                                         //######################################################################################
 

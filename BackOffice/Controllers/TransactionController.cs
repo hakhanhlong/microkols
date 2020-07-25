@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using WebServices.Interfaces;
+using BackOffice.Extensions;
 
 namespace BackOffice.Controllers
 {
@@ -355,7 +356,7 @@ namespace BackOffice.Controllers
                                             await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);//
                                             await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);// delete transaction if case error
                                             NotificationType notificationType = NotificationType.ExcecutedPaymentToAccountBanking;
-                                            string msg = string.Format("Hệ thống đã chuyển tiền {0} đ tới tài khoản ngân hàng của bạn và tự động trừ tiền trong ví tương ứng với số tiền {1}, từ chiến dịch bạn đã tham gia", money_number, money_number);
+                                            string msg = string.Format("Hệ thống đã chuyển tiền {0} đ tới tài khoản ngân hàng của bạn và tự động trừ tiền trong ví tương ứng với số tiền {1}, từ chiến dịch bạn đã tham gia.", money_number, money_number);
                                             await _INotificationBusiness.CreateNotificationExcecutedPaymentToAccountBanking(campaignid, accountid, notificationType, msg, "");
                                             break;
                                         case 10:
@@ -677,17 +678,17 @@ namespace BackOffice.Controllers
 
                                 if (transaction.Type == TransactionType.WalletRecharge)
                                 {
-                                    string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                     await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionDepositeApprove, _msg, model.AdminNote);
                                 }
                                 else if (transaction.Type == TransactionType.WalletWithdraw)
                                 {
-                                    string _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    string _msg = string.Format("Lệnh rút tiền {0}, từ ví với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                     await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionWithdrawApprove, _msg, model.AdminNote);
                                 }
                                 else if (transaction.Type == TransactionType.CampaignServiceCashBack)
                                 {
-                                    string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                    string _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, đã được duyệt!", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                     await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, NotificationType.TransactionCampaignServiceCashBackApprove, _msg, model.AdminNote);
                                 }
 
@@ -718,13 +719,13 @@ namespace BackOffice.Controllers
                             try
                             {
                                 NotificationType _notifyType = NotificationType.TransactionDepositeCancel;
-                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                string _msg = string.Format("Lệnh nạp tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                 if (model.Status == TransactionStatus.Processing)
                                 {
                                     if (transaction.Type == TransactionType.CampaignServiceCashBack)
                                     {
                                         _notifyType = NotificationType.TransactionCampaignServiceCashBackProcessing;
-                                        _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                        _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
 
                                     }
                                     else if (model.Type == TransactionType.WalletRecharge)
@@ -733,7 +734,7 @@ namespace BackOffice.Controllers
                                     }
                                     else if (model.Type == TransactionType.WalletWithdraw)
                                     {
-                                        _msg = string.Format("Lệnh rút tiền {0}, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToString());
+                                        _msg = string.Format("Lệnh rút tiền {0}, từ ví với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                         _notifyType = NotificationType.TransactionWithdrawProcessing;
                                     }
                                 }
