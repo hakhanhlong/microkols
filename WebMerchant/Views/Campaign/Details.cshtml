@@ -58,7 +58,7 @@
                         {
 
                             <div class="mb-2">
-                                <h5 class="mr-2">8. Thời gian nhận đăng ký:</h5>
+                                <h5 class="mr-2">8. Thời gian nhận đăng ký gửi nội dung:</h5>
                                 <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
                                 <span class="text-info">
                                     @Model.DateEnd.Value.ToViDateTime()
@@ -150,14 +150,36 @@
                         </div>*@
                     </div>
 
+
                     <div class="col-md-6">
                         @{ stt++;}
                         <div class="mb-2">
+                            <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
+                            <span>
+                                @foreach (var item in Model.AccountTypes)
+                                {
+                                    <strong>@item.ToDisplayName()</strong>
+                                }
+                            </span>
+                        </div>
+                        <div class="mb-2">
+                            @{ stt++;}
                             <h5 class="mr-2">@stt. Số lượng người cần:</h5>
                             <span>
                                 @Model.Quantity
                             </span>
                         </div>
+                        @if (Model.Type == CampaignType.ShareContentWithCaption ||
+                      Model.Type == CampaignType.ReviewProduct)
+                        {
+                            <div class="mb-2">
+                                @{ stt++;}
+                                <h5 class="mr-2">@stt. KPIs yêu cầu tối thiểu cho mỗi người:</h5>
+                                <span>
+                                    <strong>@Model.InteractiveMin</strong>
+                                </span>
+                            </div>
+                        }
                         @{ stt++;}
                         <div class="mb-2">
                             <h5 class="mr-2">@stt. Chi phí tối thiểu:</h5>
@@ -183,15 +205,16 @@
                             </div>
 
                         }
-                        @if (!string.IsNullOrEmpty(Model.SampleContentText))
+                        @if (Model.Hashtag.Count > 0)
                         {
-
+                            stt++;
                             <div class="mb-2">
-                                @{ stt++;}
-                                <h5 class="mr-2">@stt. Nội dung mẫu:</h5><br>
+                                <h5 class="mr-2">@stt. HashTag:</h5><br>
                                 <span>
-
-                                    @Model.SampleContentText
+                                    @foreach (var item in Model.Hashtag)
+                                    {
+                                        <span>#@item.Trim('#')</span>
+                                    }
                                 </span>
                             </div>
                         }
@@ -213,6 +236,19 @@
                             </div>
 
                         }
+                        @if (!string.IsNullOrEmpty(Model.SampleContentText))
+                        {
+
+                            <div class="mb-2">
+                                @{ stt++;}
+                                <h5 class="mr-2">@stt. Nội dung mẫu:</h5><br>
+                                <span>
+
+                                    @Model.SampleContentText
+                                </span>
+                            </div>
+                        }
+
                         @if (Model.Image.Count > 0)
                         {
 
@@ -232,43 +268,9 @@
                             </div>
                         }
 
-                        @if (Model.Hashtag.Count > 0)
-                        {
-                            stt++;
-                            <div class="mb-2">
-                                <h5 class="mr-2">@stt. HashTag:</h5><br>
-                                <span>
-                                    @foreach (var item in Model.Hashtag)
-                                    {
-                                        <span>#@item.Trim('#')</span>
-                                    }
-                                </span>
-                            </div>
-                        }
-                        <div class="mb-2">
-                            @{ stt++;}
-                            <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
-                            <span>
-                                @foreach (var item in Model.AccountTypes)
-                                {
-                                    <strong>@item.ToDisplayName()</strong>
-                                }
-                            </span>
-                        </div>
-                        @if (Model.Type == CampaignType.ShareContentWithCaption ||
-                           Model.Type == CampaignType.ReviewProduct)
-                        {
-                            <div class="mb-2">
-                                @{ stt++;}
-                                <h5 class="mr-2">@stt. KPIs yêu cầu tối thiểu:</h5>
-                                <span>
-                                    <strong>@Model.InteractiveMin</strong>
-                                </span>
-                            </div>
 
 
 
-                        }
 
                         @if (Model.CountOption > 0)
                         {

@@ -1165,6 +1165,23 @@ namespace WebServices.Services
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
             if (campaignAccount == null) return -1;
 
+
+
+            if(campaign.Type != CampaignType.ChangeAvatar || campaign.Type  != CampaignType.ReviewProduct || campaign.Type != CampaignType.JoinEvent)
+            {
+                if (campaign.Data.Contains("https") || campaign.Data.Contains("http"))
+                {
+                    if (!model.RefUrl.Contains(campaign.Data))
+                    {
+                        return -1;
+                    }
+                }
+            }
+
+            
+
+
+
             if (!string.IsNullOrEmpty(model.RefId))
             {
                 campaignAccount.RefId = model.RefId;
@@ -1173,6 +1190,9 @@ namespace WebServices.Services
             {
                 campaignAccount.RefUrl = model.RefUrl;
             }
+
+
+
             campaignAccount.RefImage = model.RefImage.ToListString();
             campaignAccount.Status = CampaignAccountStatus.Finished;
             campaignAccount.DateModified = DateTime.Now;

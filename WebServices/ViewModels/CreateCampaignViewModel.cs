@@ -366,11 +366,11 @@ namespace WebServices.ViewModels
         [Display(Name = "Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Yêu cầu {0}")]
+        //[Required(ErrorMessage = "Yêu cầu {0}")]
         [Display(Name = "Liên kết URL")]
         public string Data { get; set; }
 
-        [Display(Name = "Hình ảnh")]
+        [Display(Name = "Hình ảnh dùng làm Avatar")]
         public string Image { get; set; } = string.Empty;
 
 
