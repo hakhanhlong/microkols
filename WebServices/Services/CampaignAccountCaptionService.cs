@@ -108,7 +108,7 @@ namespace WebServices.Services
                 DateCreated = DateTime.Now,
                 EntityType = EntityType.Agency,
                 EntityId = campaign.AgencyId,
-                Message = notifType.GetMessageText(username, campaign.Id.ToString()),
+                Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                 Status = NotificationStatus.Created
             });
             return entity.Id;
@@ -187,6 +187,7 @@ namespace WebServices.Services
             }
 
             var notifType = status== CampaignAccountCaptionStatus.DaDuyet ? NotificationType.AgencyApproveCampaignCaption : NotificationType.AgencyDeclineCampaignCaption;
+            var campaign = await _campaignRepository.GetByIdAsync(campaignaccount.CampaignId);
             await _notificationRepository.AddAsync(new Notification()
             {
                 Type = notifType,
@@ -195,7 +196,7 @@ namespace WebServices.Services
                 DateCreated = DateTime.Now,
                 EntityType = EntityType.Account,
                 EntityId = campaignaccount.AccountId,
-                Message = notifType.GetMessageText(username, campaignaccount.CampaignId.ToString()),
+                Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                 Status = NotificationStatus.Created
             });
             return true;
@@ -225,6 +226,7 @@ namespace WebServices.Services
             await _CampaignAccountCaptionRepository.UpdateAsync(CampaignAccountCaption);
 
             var notifType =  NotificationType.AgencyUpdatedCampaignCaption ;
+            var campaign = await _campaignRepository.GetByIdAsync(campaignaccount.CampaignId);
             await _notificationRepository.AddAsync(new Notification()
             {
                 Type = notifType,
@@ -233,7 +235,7 @@ namespace WebServices.Services
                 DateCreated = DateTime.Now,
                 EntityType = EntityType.Account,
                 EntityId = campaignaccount.AccountId,
-                Message = notifType.GetMessageText(username, campaignaccount.CampaignId.ToString()),
+                Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                 Status = NotificationStatus.Created
             });
             return true;

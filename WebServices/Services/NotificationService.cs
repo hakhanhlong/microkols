@@ -349,7 +349,7 @@ namespace WebServices.Services
                     long amount = campaign.GetAccountChagreAmount(campaignAccount);
 
                     await _notificationRepository.CreateNotification(NotificationType.CampaignCompleted, EntityType.Account, campaignAccount.AccountId, campaignid,
-                   NotificationType.CampaignCompleted.GetMessageText(campaignid.ToString(), amount.ToPriceText()));
+                   NotificationType.CampaignCompleted.GetMessageText(campaign.Title.ToString(), amount.ToPriceText()));
                 }
             }
           
@@ -364,8 +364,9 @@ namespace WebServices.Services
 
             foreach (var campaignAccount in campaignAccounts)
             {
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
                 await _notificationRepository.CreateNotification(NotificationType.CampaignStarted, EntityType.Account, campaignAccount.AccountId, campaignid,
-               NotificationType.CampaignStarted.GetMessageText(campaignid.ToString()));
+               NotificationType.CampaignStarted.GetMessageText(campaign.Title.ToString()));
             }
         }
 
@@ -376,10 +377,11 @@ namespace WebServices.Services
             var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, new List<CampaignAccountStatus>(){
                 CampaignAccountStatus.Finished
             }, null));
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
             foreach (var campaignAccount in campaignAccounts)
             {
                 await _notificationRepository.CreateNotification(NotificationType.CampaignEnded, EntityType.Account, campaignAccount.AccountId, campaignid,
-                NotificationType.CampaignEnded.GetMessageText(campaignid.ToString()));
+                NotificationType.CampaignEnded.GetMessageText(campaign.Title.ToString()));
             }
         }
         #endregion

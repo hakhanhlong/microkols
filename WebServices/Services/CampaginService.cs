@@ -565,6 +565,8 @@ namespace WebServices.Services
             }
             else
             {
+                var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+
                 var username = "bot";
                 var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid, CampaignAccountStatus.AgencyRequest));
 
@@ -584,7 +586,7 @@ namespace WebServices.Services
                         DateCreated = DateTime.Now,
                         EntityType = EntityType.Agency,
                         EntityId = agencyid,
-                        Message = notifType.GetMessageText(username, campaignid.ToString()),
+                        Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                         Status = NotificationStatus.Created
                     });
 
@@ -622,6 +624,7 @@ namespace WebServices.Services
         public async Task<bool> RequestJoinCampaignByAgency(int agencyid, int campaignid, string username)
         {
             var campaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaignid, CampaignAccountStatus.WaitToPay), false);
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
 
             foreach (var campaignAccount in campaignAccounts)
             {
@@ -631,7 +634,7 @@ namespace WebServices.Services
                 await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
                 await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, campaignAccount.AccountId, campaignid,
-                    NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+                    NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaign.Title.ToString()));
             }
 
 
@@ -689,7 +692,7 @@ namespace WebServices.Services
 
 
                     await _notificationRepository.CreateNotification(NotificationType.AccountRequestJoinCampaign, EntityType.Agency, campaign.AgencyId, campaign.Id,
-                        NotificationType.AccountRequestJoinCampaign.GetMessageText(username, campaign.Id.ToString()));
+                        NotificationType.AccountRequestJoinCampaign.GetMessageText(username, campaign.Title.ToString()));
 
                     return true;
 
@@ -702,6 +705,7 @@ namespace WebServices.Services
         {
 
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(new CampaignAccountByAccountSpecification(accountid, campaignid));
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
 
             if (campaignAccount == null)
             {
@@ -730,20 +734,22 @@ namespace WebServices.Services
             else
             {
 
+                
+
                 campaignAccount.Status = CampaignAccountStatus.AgencyRequest;
                 campaignAccount.DateModified = DateTime.Now;
                 campaignAccount.UserModified = username;
                 await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
                 await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
-                    NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+                    NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaign.Title.ToString()));
 
 
 
             }
 
             await _notificationRepository.CreateNotification(NotificationType.AgencyRequestJoinCampaign, EntityType.Account, accountid, campaignid,
-                NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaignid.ToString()));
+                NotificationType.AgencyRequestJoinCampaign.GetMessageText(username, campaign.Title.ToString()));
 
             return true;
 
@@ -786,7 +792,7 @@ namespace WebServices.Services
                             DateCreated = DateTime.Now,
                             EntityType = EntityType.Agency,
                             EntityId = campaign.AgencyId,
-                            Message = notifType.GetMessageText(username, campaign.Id.ToString()),
+                            Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                             Status = NotificationStatus.Created
                         });
 
@@ -837,7 +843,7 @@ namespace WebServices.Services
                             DateCreated = DateTime.Now,
                             EntityType = EntityType.Account,
                             EntityId = accountid,
-                            Message = notifType.GetMessageText(username, campaign.Id.ToString()),
+                            Message = notifType.GetMessageText(username, campaign.Title.ToString()),
                             Status = NotificationStatus.Created
                         });
 
@@ -1130,7 +1136,7 @@ namespace WebServices.Services
 
             await _notificationRepository.CreateNotification(NotificationType.AccountFinishCampaignRefContent,
                 EntityType.Agency, campaign.AgencyId, campaign.Id,
-                 NotificationType.AccountFinishCampaignRefContent.GetMessageText(username, campaign.Id.ToString()),
+                 NotificationType.AccountFinishCampaignRefContent.GetMessageText(username, campaign.Title.ToString()),
                  campaignAccount.Id.ToString());
             return 1;
         }
@@ -1223,7 +1229,7 @@ namespace WebServices.Services
 
             await _notificationRepository.CreateNotification(NotificationType.AccountFinishCampaignRefContent,
                 EntityType.Agency, campaign.AgencyId, campaign.Id,
-                 NotificationType.AccountFinishCampaignRefContent.GetMessageText(username, campaign.Id.ToString()),
+                 NotificationType.AccountFinishCampaignRefContent.GetMessageText(username, campaign.Title.ToString()),
                  campaignAccount.Id.ToString());
             return campaignAccount.Id;
         }
@@ -1269,7 +1275,7 @@ namespace WebServices.Services
 
             await _notificationRepository.CreateNotification(NotificationType.AccountSubmitCampaignRefContent,
                 EntityType.Agency, campaign.AgencyId, campaign.Id,
-                 NotificationType.AccountSubmitCampaignRefContent.GetMessageText(username, campaign.Id.ToString()),
+                 NotificationType.AccountSubmitCampaignRefContent.GetMessageText(username, campaign.Title.ToString()),
                  campaignAccount.Id.ToString());
 
             return 1;
@@ -1302,7 +1308,7 @@ namespace WebServices.Services
             var notiftype = type == 1 ? NotificationType.AgencyApproveCampaignRefContent : NotificationType.AgencyDeclineCampaignRefContent;
             await _notificationRepository.CreateNotification(notiftype,
                 EntityType.Account, campaignAccount.AccountId, campaign.Id,
-                 notiftype.GetMessageText(username, campaign.Id.ToString()),
+                 notiftype.GetMessageText(username, campaign.Title.ToString()),
                  campaignAccount.Id.ToString());
 
             return 1;
@@ -1322,9 +1328,10 @@ namespace WebServices.Services
             await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
             //notification
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
             await _notificationRepository.CreateNotification(NotificationType.AgencyCancelAccountJoinCampaign,
                 EntityType.Account, campaignAccount.AccountId, campaignid,
-                 NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText(username, campaignid.ToString()),
+                 NotificationType.AgencyCancelAccountJoinCampaign.GetMessageText(username, campaign.Title.ToString()),
                  campaignAccount.Id.ToString());
 
             return 1;

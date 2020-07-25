@@ -246,7 +246,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> SubmitCampaignAccountSharedContent()
         {
             BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
-            ViewBag.Success = "Bạn hãy cập nhật Link vừa chia sẻ để hoàn tất chiến dịch.";
+            ViewBag.Success = "Cảm ơn bạn đã thực hiện chiến dịch, bạn sẽ nhận được thanh toán khi chiến dịch kết thúc và đạt đủ KPI.";
 
             return PartialView("UpdateCampaignAccountMessage");
         }
