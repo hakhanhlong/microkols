@@ -60,7 +60,7 @@ namespace WebInfluencer.Controllers
 
 
 
-            await _IFacebookJob.UpdateFbPost(112, "system", 2);
+            
 
 
             //############# check account unactived => signout ########################################                        
@@ -246,7 +246,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> SubmitCampaignAccountSharedContent()
         {
             BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
-            ViewBag.Success = "Hệ thống đang cập nhật thông tin Facebook của bạn. Vui lòng đợi";
+            ViewBag.Success = "Bạn hãy cập nhật Link vừa chia sẻ nhé";
 
             return PartialView("UpdateCampaignAccountMessage");
         }

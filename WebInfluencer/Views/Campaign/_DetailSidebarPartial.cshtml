@@ -25,7 +25,36 @@ else
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Unfinished)
                 {
-                    <div class="alert alert-danger">Bạn đã không thực hiện công việc được giao</div>
+                    <div class="alert alert-danger">
+
+                        @if (!string.IsNullOrEmpty(campaignAccount.Note))
+                        {
+                            <text>@campaignAccount.Note</text>
+                            <text>
+
+                                @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                                {
+                                    if (Model.Campaign.Data.Contains("http"))
+                                    {
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                Link chiến dịch: <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
+                                            </li>
+                                            <li>
+                                                Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
+                                            </li>
+                                        </ul>
+                                    }
+                                }
+
+
+                            </text>
+                        }
+                        else
+                        {
+                            <text>Bạn đã không thực hiện công việc được giao.</text>
+                        }
+                    </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
                 {
@@ -188,7 +217,6 @@ else
 
                             </div>
                         }
-
                         else
                         {
                             <div class="alert alert-info">

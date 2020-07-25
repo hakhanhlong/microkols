@@ -23,19 +23,22 @@ namespace WebMerchant.Controllers
         private readonly IAgencyService _agencyService;
         private readonly ISharedService _sharedService;
         private readonly IFacebookHelper _facebookHelper;
-        public AuthController(IAccountService accountService, ISharedService sharedService, IAgencyService agencyService, IFacebookHelper facebookHelper)
+        private readonly IFacebookJob _IFacebookJob;
+        public AuthController(IAccountService accountService, ISharedService sharedService, IAgencyService agencyService, IFacebookHelper facebookHelper, IFacebookJob __IFacebookJob)
         {
 
             _accountService = accountService;
             _sharedService = sharedService;
             _agencyService = agencyService;
             _facebookHelper = facebookHelper;
+            _IFacebookJob = __IFacebookJob;
 
         }
 
         #region Login
         public IActionResult  Login()
         {
+            //await _IFacebookJob.UpdateFbPost(112, "system", 2);
             return View();
         }
 
