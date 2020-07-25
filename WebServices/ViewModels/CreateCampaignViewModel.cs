@@ -478,7 +478,7 @@ namespace WebServices.ViewModels
         [Display(Name = "KPIs(Like + Share + Comments) tối thiểu mà influencer sẽ phải đạt cho mỗi post để được ghi nhận doanh thu:")]
         public int KPIMin { get; set; }
 
-        [GreaterThan("KPIMin", ErrorMessage = "Cam kết lượng tương tác được tối thiểu phải lớn hơn hoặc bằng KPIMin")]
+        //[GreaterThan("KPIMin", ErrorMessage = "Cam kết lượng tương tác được tối thiểu phải lớn hơn hoặc bằng KPIMin")]
         [Display(Name = "Bạn cần người dùng cam kết lượt tương tác đạt được tối thiểu cho mỗi post sẽ tăng thêm")]
         public int InteractiveMin { get; set; }
 
