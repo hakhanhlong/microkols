@@ -150,7 +150,7 @@ namespace WebServices.Jobs
                                     CampaignType = campaign.Type,
                                     Note = string.Empty,
                                     RefId = fbPost.PostId,
-                                    RefUrl = fbPost.Permalink,
+                                    RefUrl = fbPost.Link,
                                     RefImage = new List<string>()
                                 }, username);
                                 if (campaignAccountId > 0)
