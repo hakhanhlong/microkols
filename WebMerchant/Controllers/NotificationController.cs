@@ -6,6 +6,7 @@ using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
+using WebServices.ViewModels;
 
 namespace WebMerchant.Controllers
 {
@@ -30,8 +31,38 @@ namespace WebMerchant.Controllers
         {
             ViewBag.type = type;
             ViewBag.daterange = daterange;
-            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, type, daterange,string.Empty, pageindex, pagesize);
-            return View(model);
+
+            ListNotificationViewModel _list = new ListNotificationViewModel();
+
+            if(type == null)
+            {
+                _list = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, type, daterange, string.Empty, pageindex, pagesize);
+            }
+
+
+            if (type == NotificationTypeGroup.System)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, pageindex, pagesize);
+            }
+
+
+            if (type == NotificationTypeGroup.Campaign)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, pageindex, pagesize);
+            }
+
+            if (type == NotificationTypeGroup.Payment)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, pageindex, pagesize);
+            }
+
+            if (type == NotificationTypeGroup.Influencer)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, pageindex, pagesize);
+            }
+
+
+            return View(_list);
         }
 
         public async Task<IActionResult> IndexPartial()

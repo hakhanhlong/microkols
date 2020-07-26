@@ -25,8 +25,9 @@ namespace Core.Entities
         AgencyRequestJoinCampaign = 0,
         AgencyConfirmJoinCampaign = 1,
         AccountRequestJoinCampaign  = 2, 
-        AccountConfirmJoinCampaign = 3,      
-        
+        AccountConfirmJoinCampaign = 3,
+        AccountDeclineJoinCampaign = 10,
+
         AccountSubmitCampaignRefContent = 4,
         AccountFinishCampaignRefContent =5,
         AgencyApproveCampaignRefContent = 6,
@@ -34,7 +35,7 @@ namespace Core.Entities
         AgencyUpdatedCampaignRefContent = 8,
         AgencyCancelAccountJoinCampaign = 9,
 
-        AccountDeclineJoinCampaign = 10,
+        
         SystemUpdateUnfinishedAccountCampaign  = 11,
         SystemUpdateCanceledAccountCampaign = 111,
 
@@ -110,7 +111,9 @@ namespace Core.Entities
         [Display(Name = "Chiến dịch")]
         Campaign,
         [Display(Name = "Thanh toán")]
-        Payment
+        Payment,
+        [Display(Name = "Người ảnh hưởng")]
+        Influencer
     }
     public enum NotificationStatus
     {

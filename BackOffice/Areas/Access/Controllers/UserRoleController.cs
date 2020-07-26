@@ -12,7 +12,7 @@ using BackOffice.Security;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access")]
+    [Area("Access"), Authorize]
     [DisplayName("User Role Management")]
     public class UserRoleController : Controller
     {
@@ -61,7 +61,7 @@ namespace BackOffice.Areas.Access.Controllers
         }
 
         // GET: Access/Create
-        [DisplayName("Edit User Roles")]
+        [DisplayName("Create User Roles")]
         public async Task<ActionResult> Create()
         {                 
             var roles = await _roleManager.Roles.ToListAsync();

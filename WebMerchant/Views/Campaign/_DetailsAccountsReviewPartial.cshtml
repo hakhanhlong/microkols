@@ -114,7 +114,7 @@
                     <td>
                         @if (Model.Type == CampaignType.ReviewProduct)
                         { //lịch sử sửa nội dung
-                            <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-process" onclick="ContentHistory(this);"
+                            <a href="javascript:;" data-toggle="modal" data-target="#content-history-account-review" onclick="CaptionHistoryReview(this);"
                                data-href="/campaign/contenthistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
 
                                 @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
@@ -140,7 +140,7 @@
                         else if (Model.Type == CampaignType.ShareContentWithCaption)
                         {
                             //lịch sử sửa caption
-                            <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-process" onclick="CaptionHistory(this);"
+                            <a href="javascript:;" data-toggle="modal" data-target="#caption-history-account-review" onclick="CaptionHistoryReview(this);"
                                data-href="/campaign/captionhistory/?campaignaccountid=@campaignAccount.Id&accountId=@campaignAccount.AccountId&campaignid=@Model.Id" title="@campaignAccount.RefContent">
 
                                 @if (!string.IsNullOrEmpty(campaignAccount.RefContent))
@@ -216,7 +216,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <iframe frameborder="0" scrolling="no" id="iframe-caption-history" width="100%" height="100%"></iframe>
+                <iframe frameborder="0" scrolling="no" id="iframe-caption-history-review" width="100%" height="100%"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -236,7 +236,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <iframe frameborder="0" scrolling="no" id="iframe-content-history" width="100%" height="100%"></iframe>
+                <iframe frameborder="0" scrolling="no" id="iframe-content-history-review" width="100%" height="100%"></iframe>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>

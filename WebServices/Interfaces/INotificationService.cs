@@ -18,6 +18,8 @@ namespace WebServices.Interfaces
         //######## longhk add #######################################################
         Task<Notification> GetNotification(int notificationid);
 
+        Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, int entityId, string groupName, string daterange, int pageindex, int pagesize);
+
         Task<int> CountNotification(EntityType entityType, NotificationStatus? status, NotificationType type);
 
         Task<int> CountNotification(EntityType entityType, NotificationStatus? status, List<NotificationType> type);

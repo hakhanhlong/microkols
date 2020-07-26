@@ -22,8 +22,9 @@
 
                     var options = {
                         title: 'Thống kê',
-                        curveType: 'function',
-                        legend: { position: 'bottom' }
+                        pointSize: 10,
+                        legend: { position: 'bottom' },
+                        lineWidth: 5,
                     };
 
                     var chart = new google.visualization.LineChart(document.getElementById('chartStatistic'));
@@ -70,7 +71,7 @@
                                 chartData.Add(new object[] { "Ngày", "Thích", "Share", "Comment" });
                                 foreach (var item in statistics)
                                 {
-                                    chartData.Add(new object[] { item.Date, item.CountLike, item.CountShare, item.CountComment });
+                                    chartData.Add(new object[] { item.Date.Trim(), item.CountLike, item.CountShare, item.CountComment });
                                 }
 
                                 <script type="text/template" id="chartModel">

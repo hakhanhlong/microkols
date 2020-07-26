@@ -43,6 +43,7 @@ namespace WebServices.ViewModels
             Address = entity.Address;
             Email = entity.Email;
             Phone = entity.Phone;
+            CheckVerified = entity.CheckVerified;
         }
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
@@ -76,6 +77,8 @@ namespace WebServices.ViewModels
         [Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
 
+        public string CheckVerified { get; set; }
+
     }
 
     public class RegisterAgencyViewModel 
@@ -103,6 +106,9 @@ namespace WebServices.ViewModels
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Tên doanh nghiệp", Prompt = "Tên doanh nghiệp")]
         public string Name { get; set; }
+
+        public string CheckVerified { get; set; }
+
 
         public Agency GetEntity()
         {

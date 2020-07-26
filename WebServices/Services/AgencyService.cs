@@ -110,7 +110,7 @@ namespace WebServices.Services
             var agency = await _agencyRepository.GetByIdAsync(id);
             if (agency != null)
             {
-                agency.Email = "Verified";
+                agency.CheckVerified = "Verified";
                 agency.Actived = true;
                 await _agencyRepository.UpdateAsync(agency);
                 return agency.Id;
@@ -134,6 +134,8 @@ namespace WebServices.Services
                 agency.Phone = model.Phone;
                 agency.Address = model.Address;
                 agency.Type = model.Type;
+                agency.Email = model.Email;
+
                 await _agencyRepository.UpdateAsync(agency);
 
                 return true;

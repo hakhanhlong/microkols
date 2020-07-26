@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Agency Listing
+        Danh sách doanh nghiệp
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -22,7 +22,7 @@
         <li class="m-nav__item">
             <a href="/agency" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Agency Listing
+                    Danh sách doanh nghiệp
                 </span>
             </a>
         </li>
@@ -55,7 +55,7 @@
                                 <i class="la la-gear"></i>
                             </span>
                             <h3 class="m-portlet__head-text">
-                                Detail @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
+                                Doanh nghiệp @(Model != null ? string.Format("\"{0}\"", Model.Name) : "")
                             </h3>
                         </div>
                     </div>
@@ -67,12 +67,12 @@
                         <div class="m-form__section m-form__section--first">
                             <div class="m-form__heading">
                                 <h3 class="m-form__heading-title">
-                                    1. Agency Info:
+                                    1. Thông tin doanh nghiệp:
                                 </h3>
                             </div>
                             <div class="form-group m-form__group">
                                 <label for="example_input_full_name">
-                                    Full Name:
+                                    Tên doanh nghiệp:
                                 </label>
                                 <input class="form-control m-input" placeholder="Enter full name" asp-for="Name">
                                 <span class="m-form__help">
@@ -81,24 +81,24 @@
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
-                                    Email address:
+                                    Địa chỉ email:
                                 </label>
-                                <input class="form-control m-input" placeholder="Enter email" asp-for="Email">
+                                <input class="form-control m-input" placeholder="Enter email" asp-for="UserName">
                                 <span class="m-form__help">
                                     We'll never share your email with anyone else
                                 </span>
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
-                                    Address:
+                                    Địa chỉ:
                                 </label>
                                 <input class="form-control m-input" placeholder="Address" asp-for="Address">
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
-                                    Tax Number:
+                                    Tax:
                                 </label>
-                                <input class="form-control m-input" placeholder="Address" asp-for="TaxNumber">
+                                <input class="form-control m-input" placeholder="Tax" asp-for="TaxNumber">
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
@@ -115,12 +115,12 @@
                             </div>
                             <div class="m-form__group form-group">
                                 <label for="">
-                                    Status:
+                                    Trạng thái:
                                 </label>
                                 <div class="m-checkbox-list">
                                     <label class="m-checkbox">
                                         <input type="checkbox" asp-for="Actived">
-                                        Actived
+                                        Kích hoạt
                                         <span></span>
                                     </label>
                                     <label class="m-checkbox">

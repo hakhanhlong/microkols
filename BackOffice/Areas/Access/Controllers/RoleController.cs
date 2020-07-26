@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice.Areas.Access.Controllers
 {
-    [Area("Access")]
+    [Area("Access"), Authorize]
     [DisplayName("Role Management")]
     public class RoleController : Controller
     {
@@ -21,8 +21,7 @@ namespace BackOffice.Areas.Access.Controllers
         public RoleController(
             IMvcControllerDiscovery mvcControllerDiscovery,
             IRoleAccessStore roleAccessStore,
-            RoleManager<IdentityRole> roleManager
-            )
+            RoleManager<IdentityRole> roleManager)
         {
             _mvcControllerDiscovery = mvcControllerDiscovery;
             _roleManager = roleManager;

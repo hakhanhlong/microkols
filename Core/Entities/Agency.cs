@@ -25,6 +25,8 @@ namespace Core.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
 
+        public string CheckVerified { get; set; }
+
         private List<Campaign> _Campaign = new List<Campaign>();
         public IEnumerable<Campaign> Campaign => _Campaign.AsReadOnly();
         

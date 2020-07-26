@@ -31,6 +31,7 @@ namespace WebServices.Services
         private readonly List<NotificationType> GroupCampaign;
         private readonly List<NotificationType> GroupPayment;
         private readonly List<NotificationType> GroupInfluencer;
+        private readonly List<NotificationType> GroupSystem;
 
 
         public NotificationService(ILoggerFactory loggerFactory, IMemoryCache cache, ICampaignRepository campaignRepository,
@@ -68,7 +69,18 @@ namespace WebServices.Services
 
             GroupInfluencer = new List<NotificationType>()
             {
-                NotificationType.AccountSendVerify                
+                NotificationType.AccountSendVerify,
+                NotificationType.AccountRequestJoinCampaign,
+                NotificationType.AccountConfirmJoinCampaign,
+                NotificationType.AccountDeclineJoinCampaign,
+                NotificationType.AccountSendVerify,
+                NotificationType.AccountVerifyDenied,
+                NotificationType.AccountVerifySuccess,
+            };
+
+            GroupSystem = new List<NotificationType>()
+            {
+                
             };
 
 
@@ -88,6 +100,7 @@ namespace WebServices.Services
         {
             return await _notificationRepository.GetByIdAsync(notificationid);
         }
+
 
 
         public async Task<int> CountNotification(EntityType entityType, NotificationStatus? status, NotificationType type)
@@ -303,8 +316,7 @@ namespace WebServices.Services
             var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
             var filter = new NotificationSpecification(entityType, entityId, statusArr, dtRange);
 
-            var notifications = await _notificationRepository.ListPagedAsync(filter,
-                order, page, pagesize);
+            var notifications = await _notificationRepository.ListPagedAsync(filter,order, page, pagesize);
             var total = await _notificationRepository.CountAsync(filter);
 
             var list = await GetNotifications(notifications);
@@ -315,7 +327,33 @@ namespace WebServices.Services
             };
         }
 
-         
+        public async Task<ListNotificationViewModel> GetNotificationByGroup(EntityType entityType, int entityId, string groupName, string daterange, int pageindex, int pagesize)
+        {
+            List<NotificationType> _list_notification_type = new List<NotificationType>();
+            if (groupName == "Campaign")
+                _list_notification_type = GroupCampaign;
+            else if (groupName == "Payment")
+                _list_notification_type = GroupPayment;
+            else if (groupName == "Influencer")
+                _list_notification_type = GroupInfluencer;
+
+            var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
+            var filter = new NotificationSpecification(entityType, entityId , _list_notification_type.AsEnumerable(), dtRange);
+
+            var notifications = await _notificationRepository.ListPagedAsync(filter, "DateCreated_desc", pageindex, pagesize);
+            var total = await _notificationRepository.CountAsync(filter);
+            var list = await GetNotifications(notifications);
+            return new ListNotificationViewModel()
+            {
+                Notifications = list,
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+
+        }
+
+
+
 
         public async Task UpdateNotificationChecked(EntityType entityType, int entityId)
         {

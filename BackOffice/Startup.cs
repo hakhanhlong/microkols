@@ -17,6 +17,8 @@ using BackOffice.CommonHelpers;
 
 using DynamicAuthorization.Mvc.Core.Extensions;
 using DynamicAuthorization.Mvc.JsonStore.Extensions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net;
 
 namespace BackOffice
 {
@@ -66,9 +68,11 @@ namespace BackOffice
 
             //services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultUI().AddDefaultTokenProviders();
             services.AddIdentity<AppUser, IdentityRole>(options=>options.SignIn.RequireConfirmedEmail = false).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
-            services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin").AddJsonStore(options => options.FilePath = "secret.json");
+            services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin@gmail.com").AddJsonStore();
 
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
+            
+
 
             services.AddAppServices();
             
@@ -79,7 +83,7 @@ namespace BackOffice
 
             services.AddSession();
 
-            services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin@gmail.com").AddJsonStore();
+            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -103,6 +107,15 @@ namespace BackOffice
             app.UseAuthentication();
             app.UseSession();
 
+            app.UseStatusCodePages(async context => {
+                var response = context.HttpContext.Response;
+
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+                    response.StatusCode == (int)HttpStatusCode.Forbidden)
+                    response.Redirect("/Authen/Login");
+            });
+
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -114,7 +127,7 @@ namespace BackOffice
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+            //AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
         }
     }

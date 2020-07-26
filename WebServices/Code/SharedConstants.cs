@@ -12,7 +12,7 @@ namespace WebServices.Code
       
         public static string USERNAME { get; set; } = "system";
         public static string APP_SETTING_KEY { get; set; } = "APP_SETTING_KEY";
-        public static string MASTER_PASSWORD { get; set; } = "hoangquy@kol@321";
+        public static string MASTER_PASSWORD { get; set; } = "longhk@123aA@";
 
     }
 
