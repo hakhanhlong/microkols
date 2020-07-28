@@ -9,6 +9,8 @@ namespace WebServices.Interfaces
     public interface IAgencyService
     {
 
+
+        Task<AuthViewModel> GetAuth2(AgencyLoginViewModel model);
         Task<AgencyViewModel> GetAgency(int id);
 
         Task<AgencyViewModel> GetAgency(string salt);

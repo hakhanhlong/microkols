@@ -14,6 +14,7 @@ using WebServices.Interfaces;
 using WebServices.Jobs;
 using WebServices.ViewModels;
 using Common;
+using Common.Helpers;
 
 namespace WebMerchant.Controllers
 {
@@ -47,16 +48,22 @@ namespace WebMerchant.Controllers
         {
             if (ModelState.IsValid)
             {
-                var auth = await _agencyService.GetAuth(model);
+                var auth = await _agencyService.GetAuth2(model);
 
                 if (auth != null)
                 {
-                    await SignIn(auth);
-                    if (!string.IsNullOrEmpty(returnurl)) return Redirect(returnurl);
-
-                    return RedirectToAction("Index", "Home");
+                    if (auth.AgencyActived)
+                    {                        
+                        await SignIn(auth);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        this.AddAlertDanger("Tài khoản của bạn chưa được kích hoạt!");
+                    }                    
                 }
-                this.AddAlertDanger("Tên đăng nhập hoặc mật khẩu không đúng");
+                else { this.AddAlertDanger("Tên đăng nhập hoặc mật khẩu không đúng"); }
+                
             }
             return View(model);
         }

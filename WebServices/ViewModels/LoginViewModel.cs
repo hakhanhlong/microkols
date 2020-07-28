@@ -38,6 +38,8 @@ namespace WebServices.ViewModels
         [Display(Name = "Mật khẩu",Prompt ="Mật khẩu")]
         public string Password { get; set; }
 
+        public bool IsActive { get; set; }
+
 
         [Display(Name = "Ghi nhớ")]
         public bool Remember { get; set; }

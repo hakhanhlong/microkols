@@ -32,6 +32,7 @@ namespace WebServices.ViewModels
             Type = EntityType.Agency;
             Avatar = agency.Image;
             Roles = new List<string>() { "Agency" };
+            AgencyActived = agency.Actived;
         }
         public List<string> Roles { get; set; } = new List<string>();
         public int Id { get; set; }
@@ -40,7 +41,7 @@ namespace WebServices.ViewModels
         public string Avatar { get; set; }
         public string Name { get; set; }
         
-        public string AccountActived { get; set; }
+        public bool AgencyActived { get; set; }
 
         public List<Claim> GetClaims()
         {
