@@ -93,7 +93,7 @@
                         <div class="form-group row">
                             <label class="col-4">VAT <span style="color:red;">@payment.ServiceVATPercent %</span></label>
                             <div class="col-8 text-danger">
-                                @(((payment.AmountSeparateVAT * 10)/100).ToPriceText())
+                                @(((payment.AmountSeparateVAT * 10) / 100).ToPriceText())
                             </div>
                         </div>
                         <div class="form-group row">
@@ -104,7 +104,7 @@
                         </div>
                     }
 
-                    @if(payment.TotalPayback > 0)
+                    @if (payment.TotalPayback > 0)
                     {
                         //var val = 0 - payment.TotalChargeValue;
                         var val = payment.TotalPayback;
@@ -115,6 +115,13 @@
                             </div>
                         </div>
 
+                    }
+
+                    @if (ViewBag.ListPayInfluencer != null)
+                    {
+                        <div class="form-group row">
+                            <partial name="_DetailsAccountsPaymentPartial" model="@(CampaignDetailsViewModel)ViewBag.ListPayInfluencer" />
+                        </div>
                     }
 
                     <div class="form-group row">

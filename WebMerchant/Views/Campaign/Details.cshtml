@@ -348,7 +348,8 @@
                         if (Model.Payment.IsValid)
                         {
 
-                            if (Model.Payment.TotalChargeAmount > 0)
+                            if (Model.Payment.TotalChargeAmount > 0 && 
+                                ((Model.Status == CampaignStatus.Confirmed) || (Model.Status == CampaignStatus.Locked)))
                             {
 
                                 if (Model.Payment.TotalChargeAmount > balance)

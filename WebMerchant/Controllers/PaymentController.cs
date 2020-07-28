@@ -35,6 +35,7 @@ namespace WebMerchant.Controllers
         public async Task<IActionResult> CampaignPayment(int campaignid)
         {
             var payment = await _campaignService.GetCampaignPaymentByAgency(CurrentUser.Id, campaignid);
+            var list_pay_influencer = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
             ViewBag.Amount = await _walletService.GetAmount(CurrentUser);
             ViewBag.Payment = payment;
 
@@ -44,6 +45,8 @@ namespace WebMerchant.Controllers
                 {
                     ViewBag.IsRutTienExist = await _paymentService.IsExistPaymentServiceCashBack(CurrentUser.Id, campaignid);
                 }
+
+                ViewBag.ListPayInfluencer = list_pay_influencer;
             }
             return PartialView();
         }
@@ -54,11 +57,7 @@ namespace WebMerchant.Controllers
             var campaign = await _campaignService.GetCampaignById(model.CampaignId);
             if (paymentResult.Status == Core.Entities.TransactionStatus.Completed && paymentResult.Amount > 0)
             {
-
-
-                
-
-
+               
                 BackgroundJob.Enqueue<ICampaignService>(m => m.RequestJoinCampaignByAgency(CurrentUser.Id, model.CampaignId, CurrentUser.Username));
                 //########### Longhk add create notification ##########################################################
 

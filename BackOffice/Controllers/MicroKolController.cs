@@ -76,6 +76,9 @@ namespace BackOffice.Controllers
         {
 
             var microkol = await _IAccountBusiness.GetAccount(id);
+            var filter = new AccountWithCategorySpecification(id);
+            var influencer = await _IAccountRepository.GetSingleBySpecAsync(filter);
+            ViewBag.Influencer = influencer;
             if (microkol == null)
             {
                 TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
@@ -158,7 +161,14 @@ namespace BackOffice.Controllers
                     microkol.Phone = model.Phone;
 
                     microkol.Actived = model.Actived;
-                    microkol.Deleted = model.Deleted;
+
+                    if(model.Deleted == true)
+                    {
+                        microkol.Deleted = model.Deleted;
+                        microkol.Actived = false;
+                    }
+
+                    
 
                     microkol.IDCardName = model.IDCardName;
                     microkol.IDCardNumber = model.IDCardNumber;

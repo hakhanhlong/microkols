@@ -230,6 +230,25 @@
                             </label>
                             <input class="form-control m-input" placeholder="Thành phố" asp-for="IDCardCity">
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.IDCardImageFront))
+                        {
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Mặt trước :
+                                </label>
+
+                                <img src="@AppHelpers.CurrentValue.GetImageUrl(Model.IDCardImageFront)" width="640px" height="480px"/>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.IDCardImageBack))
+                        {
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Mặt sau
+                                </label>
+                                <img src="@AppHelpers.CurrentValue.GetImageUrl(Model.IDCardImageBack)" width="640px" height="480px"/>
+                            </div>
+                        }
                     </div>
                     <div class="m-form__seperator m-form__seperator--dashed mt-5 mb-5"></div>
                     <div class="m-form__section m-form__section--first">

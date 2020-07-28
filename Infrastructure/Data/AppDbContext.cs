@@ -99,7 +99,7 @@ namespace Infrastructure.Data
 
         private void ConfigureAccount(EntityTypeBuilder<Account> builder)
         {
-            builder.HasQueryFilter(p => !p.Deleted);
+            //builder.HasQueryFilter(p => !p.Deleted);
 
             builder.Metadata.FindNavigation(nameof(Core.Entities.Account.AccountCategory)).SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.Metadata.FindNavigation(nameof(Core.Entities.Account.AccountProvider)).SetPropertyAccessMode(PropertyAccessMode.Field);
