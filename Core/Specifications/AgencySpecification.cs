@@ -16,7 +16,7 @@ namespace Core.Specifications
 
         }
 
-        public AgencySpecification(string taxnumber, string name) : base(m => m.TaxIdNumber.Contains(taxnumber) || m.Name.Contains(name))
+        public AgencySpecification(string taxnumber, string name) : base(m => m.TaxIdNumber.Contains(taxnumber) || m.Name.Contains(name) || m.Username.Contains(name) || m.Phone.Contains(name))
         {
 
         }
