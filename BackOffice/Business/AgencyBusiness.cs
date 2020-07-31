@@ -28,6 +28,21 @@ namespace BackOffice.Business
             return GetAgencyViewModel(agency);
         }
 
+        public async Task UpdateAgency(AgencyViewModel model)
+        {
+            var agency = await _IAgencyRepository.GetByIdAsync(model.Id);
+            agency.Name = model.Name;
+            agency.Email = model.Email;
+            agency.Address = model.Address;
+            agency.TaxIdNumber = model.TaxNumber;
+            agency.Phone = model.Phone;
+            agency.Actived = model.Actived;
+            await _IAgencyRepository.UpdateAsync(agency);
+
+
+
+        }
+
         private AgencyViewModel GetAgencyViewModel(Agency agency)
         {
             return (agency == null) ? null : new AgencyViewModel(agency);

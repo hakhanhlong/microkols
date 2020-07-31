@@ -57,6 +57,12 @@ namespace WebServices.Services
                 NotificationType.CampaignError,
                 NotificationType.CampaignCreated,
                 NotificationType.CampaignLocked,
+                NotificationType.AccountSubmitCampaignRefContent,
+                NotificationType.AccountFinishCampaignRefContent,
+                NotificationType.AgencyApproveCampaignRefContent,
+                NotificationType.AgencyDeclineCampaignRefContent,
+                NotificationType.AgencyUpdatedCampaignRefContent,
+                NotificationType.AgencyCancelAccountJoinCampaign
             };
 
             GroupPayment = new List<NotificationType>()
@@ -64,7 +70,8 @@ namespace WebServices.Services
                 NotificationType.AgencyWalletDeposit,
                 NotificationType.AgencyWalletWithDraw,
                 NotificationType.AgencyPayCampaignService,
-                NotificationType.AgencyRequestWithdrawFromCampaign
+                NotificationType.AgencyRequestWithdrawFromCampaign,
+                NotificationType.ExcecutedPaymentToAccountBanking
             };
 
             GroupInfluencer = new List<NotificationType>()
@@ -72,8 +79,7 @@ namespace WebServices.Services
                 NotificationType.AccountSendVerify,
                 NotificationType.AccountRequestJoinCampaign,
                 NotificationType.AccountConfirmJoinCampaign,
-                NotificationType.AccountDeclineJoinCampaign,
-                NotificationType.AccountSendVerify,
+                NotificationType.AccountDeclineJoinCampaign,                
                 NotificationType.AccountVerifyDenied,
                 NotificationType.AccountVerifySuccess,
             };

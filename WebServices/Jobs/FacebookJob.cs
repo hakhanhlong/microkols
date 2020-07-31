@@ -115,7 +115,8 @@ namespace WebServices.Jobs
                         // chỉ check facebook post của người đã đồng ý tham gia chiến dịch
                         if ((campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed ||
                             campaign.CampaignAccount.Status == CampaignAccountStatus.ApprovedContent ||
-                            campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent) && campaign.Status == CampaignStatus.Started)
+                            campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent) 
+                            && campaign.Status == CampaignStatus.Started)
                         {
                             if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                             {
@@ -172,12 +173,7 @@ namespace WebServices.Jobs
                                 
 
                             }
-                        } 
-
-
-                        
-
-
+                        }                         
                     }
                 }
 
@@ -199,7 +195,7 @@ namespace WebServices.Jobs
 
             foreach (var accountId in accountIds)
             {
-                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(accountId, SharedConstants.USERNAME, 2));
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(accountId, SharedConstants.USERNAME, 1));
             }
         }
 

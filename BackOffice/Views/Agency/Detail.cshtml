@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <!--begin::Form-->
-                <form class="m-form m-form--fit" action="/microkol/detail" method="post">
+                <form class="m-form m-form--fit" action="/agency/detail" method="post">
                     <input type="hidden" asp-for="Id">
                     <div class="m-portlet__body">
                         <div class="m-form__section m-form__section--first">
@@ -75,18 +75,18 @@
                                     Tên doanh nghiệp:
                                 </label>
                                 <input class="form-control m-input" placeholder="Enter full name" asp-for="Name">
-                                <span class="m-form__help">
-                                    Please enter your full name
-                                </span>
+                            </div>
+                            <div class="form-group m-form__group">
+                                <label>
+                                    Email đăng nhập
+                                </label>
+                                <input class="form-control m-input" placeholder="Enter email" asp-for="UserName" disabled>
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
                                     Địa chỉ email:
                                 </label>
-                                <input class="form-control m-input" placeholder="Enter email" asp-for="UserName">
-                                <span class="m-form__help">
-                                    We'll never share your email with anyone else
-                                </span>
+                                <input class="form-control m-input" placeholder="Enter email" asp-for="Email">
                             </div>
                             <div class="form-group m-form__group">
                                 <label>
@@ -123,25 +123,22 @@
                                         Kích hoạt
                                         <span></span>
                                     </label>
-                                    <label class="m-checkbox">
-                                        <input type="checkbox" asp-for="Deleted">
-                                        Deleted
-                                        <span></span>
-                                    </label>
+                                    @*<label class="m-checkbox">
+                    <input type="checkbox" asp-for="Deleted">
+                    Deleted
+                    <span></span>
+                </label>*@
                                 </div>
                             </div>
                         </div>                                                                      
                     </div>
-                    @*<div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
+                    <div class="m-portlet__foot m-portlet__no-border m-portlet__foot--fit">
                         <div class="m-form__actions m-form__actions--solid">
                             <button type="submit" class="btn btn-primary">
                                 Submit
-                            </button>
-                            <button type="reset" class="btn btn-secondary">
-                                Cancel
-                            </button>
+                            </button>                          
                         </div>
-                    </div>*@
+                    </div>
                 </form>
                 <!--end::Form-->
             </div>

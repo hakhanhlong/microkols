@@ -13,6 +13,8 @@ namespace BackOffice.Business.Interfaces
 
         ListAgencyViewModel Search(string kw, int pageindex, int pagesize);
 
+        Task UpdateAgency(AgencyViewModel model);
+
         bool Active(int id);
         bool UnActive(int id);
 

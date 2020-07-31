@@ -6,6 +6,7 @@ using Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebServices.Interfaces;
+using WebServices.ViewModels;
 
 namespace WebInfluencer.Controllers
 {
@@ -32,8 +33,37 @@ namespace WebInfluencer.Controllers
         {
             ViewBag.type = type;
             ViewBag.daterange = daterange;
-            var model = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, null, daterange,string.Empty, page, pagesize);
-            return View(model);
+
+            ListNotificationViewModel _list = new ListNotificationViewModel();
+
+            if (type == null)
+            {
+                _list = await _notificationService.GetNotifications(CurrentUser.Type, CurrentUser.Id, type, daterange, string.Empty, page, pagesize);
+            }
+
+
+            if (type == NotificationTypeGroup.System)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, page, pagesize);
+            }
+
+
+            if (type == NotificationTypeGroup.Campaign)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, page, pagesize);
+            }
+
+            if (type == NotificationTypeGroup.Payment)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, page, pagesize);
+            }
+
+            if (type == NotificationTypeGroup.Influencer)
+            {
+                _list = await _notificationService.GetNotificationByGroup(CurrentUser.Type, CurrentUser.Id, type.ToString(), daterange, page, pagesize);
+            }
+
+            return View(_list);
         }
 
         public async Task<IActionResult> IndexPartial()

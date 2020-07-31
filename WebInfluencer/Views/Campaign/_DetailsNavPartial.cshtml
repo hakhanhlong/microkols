@@ -6,18 +6,22 @@
     @*<li class="nav-item">
             <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
         </li>*@
+    @{ var CurrentCampaignAccount = Model.CurrentCampaignAccount(CurrentUser.Id);}
     @if (Model.Campaign.Type.IsHasCaption())
     {
-        <li class="nav-item">
-            <a class="nav-link @(2 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })">Caption</a>
-        </li>
+        if (CurrentCampaignAccount != null)
+        {
+            if (CurrentCampaignAccount.Status == CampaignAccountStatus.ApprovedContent || CurrentCampaignAccount.Status == CampaignAccountStatus.Confirmed)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(2 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })">Caption</a>
+                </li>
+            }
+        }
+
     }
     else if (Model.Campaign.Type.IsHasContent())
     {
-        var CurrentCampaignAccount = Model.CurrentCampaignAccount(CurrentUser.Id);
-
-
-
         if (CurrentCampaignAccount != null)
         {
             if (CurrentCampaignAccount.Status == CampaignAccountStatus.ApprovedContent || CurrentCampaignAccount.Status == CampaignAccountStatus.Confirmed)
@@ -30,5 +34,5 @@
     }
 
 
-    
+
 </ul>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
+using BackOffice.Models;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,6 +38,15 @@ namespace BackOffice.Controllers
             var agency = await _IAgencyBusiness.GetAgency(id);
             return View(agency);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Detail(AgencyViewModel model)
+        {
+            await _IAgencyBusiness.UpdateAgency(model);
+            TempData["MessageSuccess"] = "Update thành công!";
+            return Redirect("/agency/detail/?id=" + model.Id);
+        }
+
 
         public IActionResult Active(int id)
         {

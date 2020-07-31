@@ -270,14 +270,11 @@
                     if (campaignAccount != null)
                     {
 
-                        <div>
+                        <div style="margin-bottom:5px;">
                             <h5 class="mb-2">Thu nhập mong muốn của bạn</h5>
 
                             <div class="text-danger">
-                                <strong>
-                                    @campaignAccount.AccountChargeAmount.ToPriceText()
-                                </strong>
-
+                                @campaignAccount.AccountChargeAmount.ToPriceText()
                             </div>
                         </div>
                     }
