@@ -134,8 +134,8 @@
                         {
 
                             <h5> Thời gian viết nội dung</h5>
-                            <p>
-                            </p><ul class="list-unstyled">
+                            <p></p>
+                            <ul class="list-unstyled">
                                 <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
                             </ul>
                         }
@@ -154,21 +154,20 @@
                     if (Model.Campaign.Type == CampaignType.ReviewProduct)
                     {
 
-                        <div class="mb-2">
-                            <h5>
-                                @Model.Campaign.ReviewType.ToDisplayName()
-                            </h5>
+                            <div class="mb-2">
+                                <h5>
+                                    @Model.Campaign.ReviewType.ToDisplayName()
+                                </h5>
 
 
-                            @if (Model.Campaign.ReviewPayback.HasValue)
-                            {
-                                <span> - Trả lại sản phẩm sau khi trải nghiệm</span>
-                            }
-
-                            <br />
-                            <h5 class="mr-2"> Địa điểm trả lại sản phẩm:</h5>
-                            @Model.Campaign.ReviewAddress
-                        </div>
+                                @if (Model.Campaign.ReviewPayback.HasValue)
+                                {
+                                    <p> - Trả lại sản phẩm sau khi trải nghiệm</p>
+                                }
+                                
+                                <h5 class="mr-2"> Địa điểm trả lại sản phẩm:</h5>                                
+                                <p>@Model.Campaign.ReviewAddress</p>
+                            </div>
 
                         @*<div>
                                 @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)

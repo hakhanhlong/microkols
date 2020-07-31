@@ -113,9 +113,9 @@ namespace WebServices.Jobs
                         var refid = campaign.CampaignAccount.RefId;
 
                         // chỉ check facebook post của người đã đồng ý tham gia chiến dịch
-                        if (campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed ||
+                        if ((campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed ||
                             campaign.CampaignAccount.Status == CampaignAccountStatus.ApprovedContent ||
-                            campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent)
+                            campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent) && campaign.Status == CampaignStatus.Started)
                         {
                             if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                             {

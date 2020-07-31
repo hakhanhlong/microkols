@@ -52,75 +52,65 @@
                     @if (TempData["MessageSuccess"] != null)
                     {
                         <div class="alert alert-success" role="alert">
-                            <strong>
-                                Success!
-                            </strong>
-                            @TempData["MessageSuccess"]
-                        </div>
-                    }
+                            @Html.Raw(TempData["MessageSuccess"])
+                       </div>
+                   }
 
-                    @if (TempData["MessageInfo"] != null)
-                    {
-                        <div class="alert alert-info" role="alert">
-                            <strong>
-                                Info!
-                            </strong>
-                            @Html.Raw(TempData["MessageInfo"])
-                        </div>
-                    }
-                    @if (TempData["MessageWarning"] != null)
-                    {
-                        <div class="alert alert-warning" role="alert">
-                            <strong>
-                                Warning!
-                            </strong>
-                            @Html.Raw(TempData["MessageInfo"])
-                        </div>
-                    }
+                   @if (TempData["MessageInfo"] != null)
+                   {
+                       <div class="alert alert-info" role="alert">                
+                           @Html.Raw(TempData["MessageInfo"])
+                       </div>
+                   }
+                   @if (TempData["MessageWarning"] != null)
+                   {
+                       <div class="alert alert-warning" role="alert">                    
+                           @Html.Raw(TempData["MessageInfo"])
+                       </div>
+                   }
 
-                    @if (TempData["MessageError"] != null)
-                    {
-                        <div class="alert alert-danger" role="alert">
-                            <strong>
-                                Error!
-                            </strong>
-                            @TempData["MessageError"]
-                        </div>
-                    }
+                   @if (TempData["MessageError"] != null)
+                   {
+                       <div class="alert alert-danger" role="alert">                   
+                           @TempData["MessageError"]
+                       </div>
+                   }
 
-                    @RenderBody()
-                </div>
-            </main>
-        </div>
+                   @RenderBody()
+               </div>
+           </main>
+       </div>
 
-    </div>
+   </div>
 
 
-    <partial name="_FooterPartial" />
+   <partial name="_FooterPartial" />
 
 
-    @*<partial name="_CookieConsentPartial" />*@
-    <partial name="_ScriptPartial" />
+                        @*<partial name="_CookieConsentPartial" />*@
 
-    @RenderSection("Scripts", required: false)
+                            /**/
+                            <partial name="_ScriptPartial" />
 
-    <partial name="_MessageModalPartial" />
-    <script>
-    $(document).ready(function () {
-        // active navbar of page current
-        var urlcurrent = window.location.href;
-        $(".sidebar-sticky ul li a[href$='"+urlcurrent+"']").addClass('active');
+                            @RenderSection("Scripts", required: false)
 
-        $('.navbar-toggler').on('click',function () {
-            $('.sidebar').toggleClass('is-show');
-        });
-        $('.sidebar .close').on('click',function () {
-            $('.sidebar').removeClass('is-show');
-        });
+                            <partial name="_MessageModalPartial" />
+                            <script>
+                                $(document).ready(function () {
+                                    // active navbar of page current
+                                    var urlcurrent = window.location.href;
+                                    $(".sidebar-sticky ul li a[href$='" + urlcurrent + "']").addClass('active');
+
+                                    $('.navbar-toggler').on('click', function () {
+                                        $('.sidebar').toggleClass('is-show');
+                                    });
+                                    $('.sidebar .close').on('click', function () {
+                                        $('.sidebar').removeClass('is-show');
+                                    });
 
 
 
-    });
-    </script>
+                                });
+                            </script>
 </body>
 </html>

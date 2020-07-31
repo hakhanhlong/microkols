@@ -60,8 +60,8 @@ namespace WebInfluencer.Controllers
 
 
             //await _IFacebookJob.UpdateFbPost(112, "system", 2);
-            
 
+            string msg = string.Empty;
 
             //############# check account unactived => signout ########################################                        
             try
@@ -74,6 +74,11 @@ namespace WebInfluencer.Controllers
                         await this.SignOut();
                         TempData["MessageInfo"] = "Tài khoản của bạn đã bị vô hiệu hóa!";
                         return RedirectToAction("Login", "Auth");
+                    }
+                    
+                    if(_account.Status == AccountStatus.NeedVerified)
+                    {
+                        msg = "Bạn cần xác minh tài khoản <a href=\"/Account/ChangeIDCard\"><b>tại đây</b></a>!<br/>";
                     }
                 }
             }
@@ -89,10 +94,14 @@ namespace WebInfluencer.Controllers
                 bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);
                 if(filledInfoBank == false)
                 {
-                    TempData["MessageInfo"] = "Bạn cần bổ sung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
+                    msg += "Bạn cần bổ sung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
                 }
             }
             catch { }
+            if (!string.IsNullOrEmpty(msg))
+            {
+                TempData["MessageInfo"] = msg;
+            }
 
 
             return View(model);

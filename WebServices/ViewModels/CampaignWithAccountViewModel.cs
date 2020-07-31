@@ -90,5 +90,10 @@ namespace WebServices.ViewModels
                 return CampaignAccounts.Where(m => !arr.Contains(m.Status)).Count();
             }
         }
+
+        public CampaignAccount CurrentCampaignAccount(int accountid)
+        {
+            return CampaignAccounts.Where(m => m.AccountId == accountid).FirstOrDefault();
+        }
     }
 }

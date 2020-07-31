@@ -3,7 +3,7 @@
     ViewData["Title"] = "Thông tin ví";
 }
 
-
+<h3>Số dư ví: <span style="color:red;">@(((long)ViewBag.Balance).ToPriceText())</span></h3>
 <div class="row">
     <div class="col-md-4">
         <a href="@Url.Action("Recharge")">
@@ -16,7 +16,7 @@
                     <hr />
                     <p class="mb-1">Số lần nạp tiền <strong>@ViewBag.CountRecharge</strong></p>
                     @{
-                        var total = (long)(long)ViewBag.TotalRecharge;
+                        var total = (long)ViewBag.TotalRecharge;
                     }
                     <p>Tổng tiền đã nạp <strong class="text-danger">@total.ToPriceText()</strong></p>
                 </div>
@@ -34,7 +34,7 @@
                     <hr />
                     <p class="mb-1">Số lần rút tiền <strong>@ViewBag.CountWithdraw</strong></p>
                     @{
-                        total = (long)(long)ViewBag.TotalWithdraw;
+                        total = (long)ViewBag.TotalWithdraw;
                     }
                     <p>Tổng tiền đã rút <strong class="text-danger">@total.ToPriceText()</strong></p>
                 </div>

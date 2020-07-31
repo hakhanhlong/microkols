@@ -44,6 +44,9 @@ namespace WebMerchant.Controllers
             ViewBag.CountWithdraw = await _transactionService.GetCount(CurrentUser.Id, Core.Entities.TransactionType.WalletWithdraw);
             ViewBag.TotalRecharge = await _transactionService.GetTotalAmount(CurrentUser.Id, Core.Entities.TransactionType.WalletRecharge);
             ViewBag.TotalWithdraw = await _transactionService.GetTotalAmount(CurrentUser.Id, Core.Entities.TransactionType.WalletWithdraw);
+
+            ViewBag.Balance = await _walletService.GetAmount(CurrentUser);
+
             return View();
         }
 

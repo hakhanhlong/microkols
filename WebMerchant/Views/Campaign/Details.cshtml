@@ -58,13 +58,27 @@
                         {
 
                             <div class="mb-2">
-                                <h5 class="mr-2">8. Thời gian nhận đăng ký gửi nội dung:</h5>
+                                <h5 class="mr-2">8. Thời gian đăng ký và nhận thông tin sản phẩm/dịch vụ trải nghiệm:</h5>
                                 <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
                                 <span class="text-info">
                                     @Model.DateEnd.Value.ToViDateTime()
                                 </span>
                             </div>
                             stt = 8;
+                        }
+                        @if (Model.Type == CampaignType.ReviewProduct)
+                        {
+                            if (Model.FeedbackStart.HasValue)
+                            {
+                                stt++;
+                                <div class="mb-2">
+                                    <h5 class="mr-2">@stt. Thời gian gửi và duyệt nội dung mẫu</h5>
+                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
+                                    <span class="text-info">
+                                        @Model.FeedbackEnd.Value.ToViDateTime()
+                                    </span>
+                                </div>
+                            }
                         }
                         @if (Model.ExecutionStart.HasValue)
                         {
@@ -78,20 +92,7 @@
                                 </span>
                             </div>
                         }
-                        @if (Model.Type == CampaignType.ReviewProduct)
-                        {
-                            if (Model.FeedbackStart.HasValue)
-                            {
-                                stt++;
-                                <div class="mb-2">
-                                    <h5 class="mr-2">@stt. Thời gian gửi nội dung</h5>
-                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
-                                    <span class="text-info">
-                                        @Model.FeedbackEnd.Value.ToViDateTime()
-                                    </span>
-                                </div>
-                            }
-                        }
+
                         <div class="mb-2">
                             @{stt++;}
                             <h5 class="mr-2">@stt. Loại chiến dịch:</h5>
@@ -141,13 +142,13 @@
                             </span>
                         </div>
                         @*<div class="mb-2">
-                            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
-                            <span>
-                                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
-                                <span>
-                                </span>
-                            </span>
-                        </div>*@
+            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
+            <span>
+                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
+                <span>
+                </span>
+            </span>
+        </div>*@
                     </div>
 
 

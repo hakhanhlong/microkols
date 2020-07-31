@@ -41,9 +41,9 @@ namespace WebMerchant.Controllers
             if (ModelState.IsValid)
             {
                 model.Image = _fileHelper.MoveTempFile(model.Image, "agency");
-                var r = await _agencyService.UpdateAgency(CurrentUser.Id, model, CurrentUser.Username);
+                var r = await _agencyService.UpdateAgency(CurrentUser.Id, model, CurrentUser.Username);                
 
-                this.AddAlert(r);
+                this.AddAlert(r, "Bạn thay đổi thông tin thành công, nếu bạn có thay đổi hình avatar bạn hãy Đăng xuất và Đăng nhập lại để cập nhật avatar.");
                 return RedirectToAction("ChangeInfo");
             }
             return View(model);

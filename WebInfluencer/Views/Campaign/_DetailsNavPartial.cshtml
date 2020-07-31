@@ -4,8 +4,8 @@
         <a class="nav-link @(0 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 0})">Thông tin chung</a>
     </li>
     @*<li class="nav-item">
-        <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
-    </li>*@
+            <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
+        </li>*@
     @if (Model.Campaign.Type.IsHasCaption())
     {
         <li class="nav-item">
@@ -14,8 +14,21 @@
     }
     else if (Model.Campaign.Type.IsHasContent())
     {
-        <li class="nav-item">
-            <a class="nav-link @(3 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })">Nội dung</a>
-        </li>
+        var CurrentCampaignAccount = Model.CurrentCampaignAccount(CurrentUser.Id);
+
+
+
+        if (CurrentCampaignAccount != null)
+        {
+            if (CurrentCampaignAccount.Status == CampaignAccountStatus.ApprovedContent || CurrentCampaignAccount.Status == CampaignAccountStatus.Confirmed)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(3 == ViewBag.Tab ? "active" : "")" href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 3 })">Nội dung</a>
+                </li>
+            }
+        }
     }
+
+
+    
 </ul>

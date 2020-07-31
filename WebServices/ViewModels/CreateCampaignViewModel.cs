@@ -496,7 +496,7 @@ namespace WebServices.ViewModels
 
 
         [Required(ErrorMessage = "Hãy nhập {0}")]
-        [Display(Name = "Thời gian nhận đăng ký và gửi nội dung")]
+        [Display(Name = "Thời gian nhận đăng ký")]
         public string RegisterTime { get; set; }
 
         [Display(Name = "Thời gian gửi mẫu nội dung")]
