@@ -60,6 +60,23 @@ namespace WebMerchant.Controllers
             ViewBag.Kw = kw;
             ViewBag.type = type;
             ViewBag.status = status;
+
+            try {
+                var agency = await _agencyService.GetAgencyById(CurrentUser.Id);
+                if (agency != null)
+                {
+                    if (string.IsNullOrEmpty(agency.Phone) && string.IsNullOrEmpty(agency.Email) && string.IsNullOrEmpty(agency.TaxIdNumber))
+                    {
+                        string msg = "Bạn cần hoàn tất việc đăng ký thông tin doanh nghiệp trong phần <a href=\"/Agency/ChangeInfo\">“thông tin tài khoản”</a> để thực hiện chiến dịch, cảm ơn bạn.";
+                        TempData["MessageInfo"] = msg;
+                    }
+                }
+            }
+            catch { }
+            
+
+
+
             return View(model);
         }
 
