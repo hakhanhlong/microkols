@@ -108,7 +108,7 @@ namespace WebMerchant.Controllers
                         htmlText += "<p><b>Phòng Dịch Vụ Khách Hàng</b></p>";
                         htmlText += "<p>Microkols Platform</p>";
                         await SendEmailHelpers.SendEmail(from, to, subject, plainText, htmlText, model.Name);
-                        this.AddAlertSuccess("Đăng ký doanh nghiệp thành công. Bạn vui lòng kiểm tra email, để xác thực tài khoản doanh nghiệp của bạn.");
+                        this.AddAlertSuccess("Bạn đã đăng ký tài khoản doanh nghiệp, vui lòng kiểm tra email để xác thực thông tin.");
                     }
                     catch(Exception ex) {
                         this.AddAlertDanger(ex.Message);

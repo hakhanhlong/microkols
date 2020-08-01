@@ -63,6 +63,9 @@
                                             Tên
                                         </th>
                                         <th>
+                                            Ngày đăng ký
+                                        </th>
+                                        <th>
                                             Loại
                                         </th>
                                         <th>
@@ -80,39 +83,40 @@
                                     }
                                     @foreach (var item in Model.Accounts)
                                     {
-                                        <tr>
-                                            <td>@(count)</td>
-                                            <td>
-                                                <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary" style="font-family:roboto;">Chiến dịch tham gia</a>
-                                            </td>
-                                            <td>@item.Email</td>
-                                            <td>@item.Phone</td>
-                                            <td>@item.Name</td>
-                                            <td>@item.Type.ToString()</td>
+                                    <tr>
+                                        <td>@(count)</td>
+                                        <td>
+                                            <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary" style="font-family:roboto;">Chiến dịch tham gia</a>
+                                        </td>
+                                        <td>@item.Email</td>
+                                        <td>@item.Phone</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.DateCreated.ToShortDateString()</td>
+                                        <td>@item.Type.ToString()</td>
 
-                                            <td>
+                                        <td>
 
-                                                @(item.Actived == true ? "Hoạt động" : "Không hoạt động")
+                                            @(item.Actived == true ? "Hoạt động" : "Không hoạt động")
 
-                                            </td>
-                                            <td>
+                                        </td>
+                                        <td>
 
-                                                @if (item.Status == AccountStatus.NeedVerified || item.Status == AccountStatus.Normal)
-                                                {
-                                                    <a href="/microkol/verify/?id=@item.Id">Cần xác thực</a>
-                                                }
-                                                else
-                                                {
-                                                    <span>Đã xác thực</span>
-                                                }
+                                            @if (item.Status == AccountStatus.NeedVerified || item.Status == AccountStatus.Normal)
+                                            {
+                                                <a href="/microkol/verify/?id=@item.Id">Cần xác thực</a>
+                                            }
+                                            else
+                                            {
+                                                <span>Đã xác thực</span>
+                                            }
 
-                                            </td>
+                                        </td>
 
 
-                                            <td>
-                                                <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info" style="font-family:roboto;">Chi tiết</a>
-                                            </td>
-                                        </tr>
+                                        <td>
+                                            <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info" style="font-family:roboto;">Chi tiết</a>
+                                        </td>
+                                    </tr>
                                         count++;
                                     }
                                 </tbody>

@@ -62,6 +62,9 @@
                                         <th>
                                             Actived
                                         </th>
+                                        <th>
+                                            Ngày đăng ký
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -96,6 +99,7 @@
 
                                                     }
                                                 </td>
+                                                <td>@item.DateCreated.ToShortDateString()</td>
                                                 <td>
                                                     <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm"
                                                        href="/campaign/campaignfollowagency?agencyid=@item.Id" style="font-family:Roboto;">Chiến dịch</a>

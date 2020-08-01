@@ -109,15 +109,15 @@
 
 
                 @*@if (campaignType == CampaignType.ShareContent)
-                {
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                            <label class="custom-control-label" asp-for="EnabledExtraType" style="font-weight:bold;"></label>
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                                <label class="custom-control-label" asp-for="EnabledExtraType" style="font-weight:bold;"></label>
+                            </div>
                         </div>
-                    </div>
 
-                }*@
+                    }*@
 
                 <div class="form-group">
                     <label asp-for="SampleContentText" style="font-weight:bold;"></label>
@@ -201,11 +201,11 @@
                                     </li>
                                 }
                                 @*else
-                        {
-                            <li>
-                                <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                            </li>
-                        }*@
+                                    {
+                                        <li>
+                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                                        </li>
+                                    }*@
                             </ul>
                         </div>
 
@@ -234,3 +234,12 @@
 </form>
 
 
+@section scripts{
+    <script>
+    tinymce.init({
+        selector: '#SampleContentText',      
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded'      
+    });
+    </script>
+}

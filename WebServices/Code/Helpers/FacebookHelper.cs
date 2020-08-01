@@ -91,9 +91,9 @@ namespace WebServices.Code.Helpers
         public async Task<AccountFbInfoViewModel> GetInfo(string accessToken, string fid)
         {
 
-            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}", $"fields=id,friends.limit(0),link");
-
+            var postResult = await _facebookClient.GetAsync<dynamic>(accessToken, $"{fid}", $"fields=id,friends.limit(0),link");            
             return new AccountFbInfoViewModel(postResult);
+
         }
 
         public async Task<dynamic> GetPermissions(string accessToken)

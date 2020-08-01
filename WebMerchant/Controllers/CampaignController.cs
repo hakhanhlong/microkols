@@ -56,8 +56,6 @@ namespace WebMerchant.Controllers
         public async Task<IActionResult> Index(CampaignType? type, CampaignStatus? status, string kw, int pageindex = 1, int pagesize = 20)
         {
 
-
-
             var model = await _campaignService.GetListCampaignByAgency(CurrentUser.Id, type, status, kw, pageindex, pagesize);
             ViewBag.Kw = kw;
             ViewBag.type = type;

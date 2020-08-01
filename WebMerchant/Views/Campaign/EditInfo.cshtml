@@ -6,10 +6,10 @@
 
 }
 
-<h2>@ViewData["Title"]</h2>
 <h3 class="mt-4 mb-4">Thay đổi Thông tin về chiến dịch</h3>
-<form class="form-create-campaign" asp-action="EditInfo">
-    <div class="shadow p-3 mb-5 bg-white rounded">
+
+<form asp-action="EditInfo">
+    <div class="p-3 mb-5 bg-white">
         <div class="row">
             <div class="col-lg-8">
 
@@ -89,7 +89,7 @@
                     <label asp-for="HashTag"></label>
 
                     <select asp-for="HashTag" multiple class="form-control">
-                        @foreach(var item in Model.HashTag)
+                        @foreach (var item in Model.HashTag)
                         {
                             <option value="@item">@item</option>
                         }
@@ -100,14 +100,14 @@
 
 
                 @*@if (campaignType == CampaignType.ShareContent)
-                {
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                            <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                    {
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                            </div>
                         </div>
-                    </div>
-                }*@
+                    }*@
 
                 @if (campaignType == CampaignType.ReviewProduct)
                 {
@@ -148,9 +148,9 @@
                         </div>
 
                         <div id="sampleContentWrap" class="list-sample-campaign-images mt-3">
-                            @foreach(var item in Model.SampleContent)
+                            @foreach (var item in Model.SampleContent)
                             {
-                                <img src="@AppOptions.CurrentValue.GetImageUrl(item)"/>
+                                <img src="@AppOptions.CurrentValue.GetImageUrl(item)" />
                             }
 
                         </div>
@@ -184,9 +184,9 @@
                     </div>
                 </div>
                 @*@if (campaignType != CampaignType.ShareContent)
-                {
+                    {
 
-                }*@
+                    }*@
                 <div class="card border-0">
                     <div class="card-body">
                         <h5>Nội dung mẫu</h5>
@@ -237,3 +237,13 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script>
+    tinymce.init({
+        selector: '#SampleContentText',
+      toolbar_mode: 'floating',
+      tinycomments_mode: 'embedded'
+    });
+    </script>
+}

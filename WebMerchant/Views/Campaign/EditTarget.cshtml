@@ -14,13 +14,14 @@
     var i = 0;
 }
 
-<h2>@ViewData["Title"]</h2>
+
 <h3 class="mt-4 mb-4">Thay đổi đối tượng của chiến dịch</h3>
 <form class="form-create-campaign" asp-action="EditTarget">
+    <div asp-validation-summary="All"></div>
     <div class="row">
         <div class="col-lg-8">
-            <form class="form-create-campaign" asp-action="CreateTarget">
-                <div asp-validation-summary="All"></div>
+            
+
 
                 <h6>Loại influencer bạn cần</h6>
                 <div class="form-group">
@@ -201,12 +202,12 @@
                                 </button>
 
 
-                            <div id="AccountIdsArea">
-                                @foreach (var accid in Model.AccountIds)
-                                {
-                                    <span><input type="hidden" name="AccountIds" value="@accid"></span>
-                                }
-                            </div>
+                                <div id="AccountIdsArea">
+                                    @foreach (var accid in Model.AccountIds)
+                                    {
+                                        <span><input type="hidden" name="AccountIds" value="@accid"></span>
+                                    }
+                                </div>
 
                             </div>
 
@@ -316,8 +317,7 @@
                         Cập nhật
                     </button>
                 </div>
-
-            </form>
+            
         </div>
         <div class="col-lg-4">
             <div class="card border-0">

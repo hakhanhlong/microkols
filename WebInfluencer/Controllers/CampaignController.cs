@@ -59,7 +59,7 @@ namespace WebInfluencer.Controllers
         {
 
 
-            //await _IFacebookJob.UpdateFbPost(112, "system", 2);
+            //await _IFacebookJob.UpdateFbInfo(115);
 
             string msg = string.Empty;
 

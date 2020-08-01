@@ -64,6 +64,9 @@
                                                 Tên
                                             </th>
                                             <th>
+                                                Ngày đăng ký
+                                            </th>
+                                            <th>
                                                 Loại
                                             </th>
                                             <th>
@@ -89,6 +92,7 @@
                                             <td>@item.Email</td>
                                             <td>@item.Phone</td>
                                             <td>@item.Name</td>
+                                            <td>@item.DateCreated.ToShortDateString()</td>
                                             <td>@item.Type.ToString()</td>
 
                                             <td>
@@ -98,7 +102,7 @@
                                             </td>
                                             <td>
 
-                                                @if(item.Status == AccountStatus.NeedVerified || item.Status == AccountStatus.Normal)
+                                                @if (item.Status == AccountStatus.NeedVerified || item.Status == AccountStatus.Normal)
                                                 {
                                                     <a href="/microkol/verify/?id=@item.Id">Cần xác thực</a>
                                                 }
