@@ -436,7 +436,6 @@ namespace WebServices.Services
             }
         }
 
-
         public async Task<int> GetAgencyChagreAmount(int campaignAccountId)
         {
             var campaignAccount = await _campaignAccountRepository.GetByIdAsync(campaignAccountId);
