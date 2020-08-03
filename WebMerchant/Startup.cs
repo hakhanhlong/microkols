@@ -77,6 +77,7 @@ namespace WebMerchant
                 DisableGlobalLocks = true,
                 SchemaName = "Merchant"
             }));
+
             services.AddAppServices();
 
             services.AddSession();
