@@ -56,7 +56,7 @@
 
 
     <div class="tab-pane fade active show " id="campaign-info" role="tabpanel">
-        <form action="@(formAction)" class="campaigndetails">
+        <form action="@(formAction)" class="campaigndetails" name="formCampaignDetail">
             @if (hasProccess)
             {
                 <partial name="_DetailSidebarPartial" model="Model" />
@@ -233,7 +233,8 @@
                         else
                         {
                             <li>
-                                <input type="number" name="KPICommitted" class="form-control" value="@Model.Campaign.InteractiveMin" min="@Model.Campaign.InteractiveMin" />
+                                <input type="number" id="txtKPICommitted" name="KPICommitted" 
+                                       class="form-control" value="@Model.Campaign.InteractiveMin" min="@Model.Campaign.InteractiveMin" />
                             </li>
 
                         }
@@ -419,6 +420,29 @@
             }
         }*@
 </div>
+
+
+@section Scripts{ 
+    <script>
+        $(function () {
+            $("#txtKPICommitted").change(function () {
+                //var max = parseInt($(this).attr('max'));
+                var min = parseInt($(this).attr('min'));
+
+                if ($(this).val() < min) {
+                    $(this).val(min);
+                }
+
+                //if ($(this).val() > max) {
+                //    $(this).val(max);
+                //}
+                //else if ($(this).val() < min) {
+                //    $(this).val(min);
+                //}
+            });
+        });
+    </script>
+}
 
 
 
