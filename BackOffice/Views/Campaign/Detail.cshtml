@@ -171,6 +171,19 @@
                                                 </span>
                                             </div>
                                         }
+                                        @if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ReviewProduct)
+                                        {
+                                            if (Model.Type == CampaignType.ReviewProduct)
+                                            {                                                
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Thời gian viết nội dung:</strong>
+                                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
+                                                    <span class="text-info">
+                                                        @Model.FeedbackEnd.Value.ToViDateTime()
+                                                    </span>
+                                                </div>
+                                            }
+                                        }
                                         <div class="mb-2">
                                             <strong class="mr-2"> Loại chiến dịch:</strong>
 

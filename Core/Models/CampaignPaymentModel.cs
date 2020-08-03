@@ -66,6 +66,9 @@ namespace Core.Models
         public string CampaignCode { get; set; }
         public long TotalChargeAmount { get; set; } = 0;
 
+        public long TotalFee { get; set; }
+
+
 
         //khi có influencer nào ko thực hiện chiến dịch thì sẽ trả lại tiền cho doanh nghiệp.
         public long TotalPayback { get; set; } = 0;
