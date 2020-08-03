@@ -1,5 +1,6 @@
 ﻿@model ListTransactionViewModel
 @using BackOffice.Extensions;
+@using Newtonsoft.Json;
 
 <table class="table">
     <thead>
@@ -12,9 +13,12 @@
             </th>
             <th>
                 NGƯỜI NHẬN
-            </th>        
+            </th>
             <th>
                 SỐ TIỀN
+            </th>
+            <th>
+                LOẠI
             </th>
             <th>
                 TRẠNG THÁI
@@ -31,75 +35,93 @@
         {
             count++;
             item.Number = count;
-            <tr id="transaction_@(item.Id)">
-                <td>@item.Number</td>
-                <td>@item.SenderName</td>
+        <tr id="transaction_@(item.Id)">
+            <td>@item.Number</td>
+            <td>@item.SenderName</td>
 
-                <td>
-                    @if (item.Wallet.EntityType == EntityType.Agency)
-                    {
-                        <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
-                    }
-                    else
-                    {
-                        <a href="/microkol/detail?id=item.Wallet.EntityId">@item.ReceiverName</a>
-                    }
+            <td>
+                @if (item.Wallet.EntityType == EntityType.Agency)
+                {
+                    <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+                }
+                else
+                {
+                    <a href="/microkol/detail?id=item.Wallet.EntityId">@item.ReceiverName</a>
+                }
 
-                </td>                
-                <td>
-                    <h6 class="m--font-danger">
-                        @item.Amount.ToPriceText()
-                    </h6>
-                </td>
-                <td>@item.Status.ToBadge()</td>
-                <td>@item.DateCreated.ToString()</td>
-                <td>@item.DateModified.ToString()</td>
-                <td>
+            </td>
+            <td>
+                <h6 class="m--font-danger">
+                    @item.Amount.ToPriceText()
+                </h6>
+            </td>
+            <td>@item.Type.ToBadge()</td>
+            <td>@item.Status.ToBadge()</td>
+            <td>@item.DateCreated.ToString()</td>
+            <td>@item.DateModified.ToString()</td>
+            <td>
 
-                    @if (item.Status == TransactionStatus.Created)
-                    {
-                        <div class="btn-group btn-group-sm pull-right" role="group">
-                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
-                                <i class="fa fa-check"></i>
-                            </button>
-                            <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');" title="Processing">
-                                <i class="fa fa-clock-o"></i>
-                            </button>
-                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
-                                <i class="fa fa-remove"></i>
-                            </button>
-                        </div>
-                    }
-                    else if (item.Status == TransactionStatus.Processing)
-                    {
-                        <div class="btn-group btn-group-sm pull-right" role="group">
-                            <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
-                                <i class="fa fa-check"></i>
-                            </button>                         
-                            <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
-                                <i class="fa fa-remove"></i>
-                            </button>
-                        </div>
-                    }
-                    else if(item.Status == TransactionStatus.Completed)
-                    {
-                        <div class="btn-group btn-group-sm pull-right" role="group">
-                            <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
-                                <i class="fa fa-history"></i>
-                            </button>                            
-                        </div>
-                    }
+                @if (item.Status == TransactionStatus.Created)
+                {
+                    <div class="btn-group btn-group-sm pull-right" role="group">
+                        <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button type="button" class="m-btn btn btn-warning" onclick="UpdateTransactionStatus('Processing', '@(item.Id)');" title="Processing">
+                            <i class="fa fa-clock-o"></i>
+                        </button>
+                        <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                    </div>
+                }
+                else if (item.Status == TransactionStatus.Processing)
+                {
+                    <div class="btn-group btn-group-sm pull-right" role="group">
+                        <button type="button" class="m-btn btn btn-primary" onclick="UpdateTransactionStatus('Completed', '@(item.Id)');" title="Approve">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button type="button" class="m-btn btn btn-danger" onclick="UpdateTransactionStatus('Canceled', '@(item.Id)');" title="Canceled">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                    </div>
+                }
+                else if (item.Status == TransactionStatus.Completed)
+                {
+                    <div class="btn-group btn-group-sm pull-right" role="group">
+                        <button type="button" class="m-btn btn btn-info" onclick="ShowHistory('@(item.Id)', '@(item.ReceiverId)');" title="History">
+                            <i class="fa fa-history"></i>
+                        </button>
+                    </div>
+                }
 
 
 
-                </td>
-            </tr>
-            @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote))
+            </td>
+        </tr>
+            @if (!string.IsNullOrEmpty(item.Note) || !string.IsNullOrEmpty(item.AdminNote) || !string.IsNullOrEmpty(item.Data))
             {
                 <tr id="transaction_note_@(item.Id)">
                     <td colspan="8">
+                        @if (!string.IsNullOrEmpty(item.Data))
+                        {
+                            var _bankinfo = JsonConvert.DeserializeObject<BackOffice.ViewModels.BankInfo>(item.Data);
+
+                            if (item.Type == TransactionType.WalletWithdraw)
+                            {
+                                <span>
+                                    <b>Tài khoản:</b> @(_bankinfo.BankAccount)
+                                </span>
+                                <span><b>Số tài khoản:</b> @(_bankinfo.BankNumber)</span>
+                                <span><b>Ngân hàng:</b> @(_bankinfo.BankName)</span>
+                                <span><b>Chi nhánh:</b> @(_bankinfo.BankBranch)</span>
+                            }
+
+                        }
+
                         @if (!string.IsNullOrEmpty(item.Note))
                         {
+                            <br />
                             @("Note:" + item.Note)
                         }
                         @if (!string.IsNullOrEmpty(item.AdminNote))

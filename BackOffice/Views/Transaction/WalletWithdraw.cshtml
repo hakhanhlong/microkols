@@ -23,7 +23,7 @@
         <li class="m-nav__item">
             <a href="/transaction" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Transaction
+                    Giao dịch
                 </span>
             </a>
         </li>
@@ -33,7 +33,7 @@
         <li class="m-nav__item">
             <a href="/transaction/walletwithdraw" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Wallet Withdraw
+                    D/N Rút tiền
                 </span>
             </a>
         </li>
@@ -47,7 +47,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Wallet Withdraw
+                            D/N Rút tiền
                         </h3>
                     </div>
                 </div>
@@ -55,27 +55,27 @@
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/walletwithdraw?status=Created" role="tab">
-                                Created
+                                @TransactionStatus.Created.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/walletwithdraw?status=Canceled" role="tab">
-                                Canceled
+                                @TransactionStatus.Canceled.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/walletwithdraw?status=Processing" role="tab">
-                                Processing
+                                @TransactionStatus.Processing.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/walletwithdraw?status=Completed" role="tab">
-                                Completed
+                                @TransactionStatus.Completed.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/walletwithdraw?status=Error" role="tab">
-                                Error
+                                @TransactionStatus.Error.ToDisplayName()
                             </a>
                         </li>
                     </ul>

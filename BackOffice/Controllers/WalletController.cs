@@ -239,6 +239,8 @@ namespace BackOffice.Controllers
 
             var list = await _ITransactionBusiness.GetTransactions(walletid, walletid, pageindex, 25);
 
+            
+
             var wallet = _IWalletRepository.GetById(walletid);
             if (wallet != null)
             {

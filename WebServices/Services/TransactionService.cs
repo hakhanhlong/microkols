@@ -98,7 +98,11 @@ namespace WebServices.Services
                 BankAccount = model.Name,
                 BankBranch = model.Branch
             });
-            var transactionId = await _transactionRepository.CreateTransaction(systemid, wallet.Id, model.Amount, TransactionType.WalletWithdraw,
+
+            int sender = wallet.Id;
+            int receiver = systemid;
+
+            var transactionId = await _transactionRepository.CreateTransaction(sender, receiver, model.Amount, TransactionType.WalletWithdraw,
              model.Note, data, username);
             return transactionId;
 

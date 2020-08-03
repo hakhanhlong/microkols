@@ -160,14 +160,21 @@ namespace BackOffice.Controllers
             int WalletDeposite = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyWalletDeposit});
             int AccountCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AccountSendVerify });
 
-            int CampaignServiceCashBackCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, new List<NotificationType>() { NotificationType.AgencyRequestWithdrawFromCampaign });
+            int CampaignServiceCashBackCount = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created, 
+                new List<NotificationType>() { NotificationType.AgencyRequestWithdrawFromCampaign });
+
+            int AgencyWalletWithDraw = await _notificationService.CountNotification(Core.Entities.EntityType.System, Core.Entities.NotificationStatus.Created,
+                new List<NotificationType>() { NotificationType.AgencyWalletWithDraw });
+
+
 
 
             return Json(new {
                 CampaignTotal = CampaignCount,
                 WalletDepositeTotal = WalletDeposite,
                 AccountTotal = AccountCount,
-                CampaignServiceCashBackTotal = CampaignServiceCashBackCount
+                CampaignServiceCashBackTotal = CampaignServiceCashBackCount,
+                AgencyWalletWithDrawTotal = AgencyWalletWithDraw
             });
         }
 

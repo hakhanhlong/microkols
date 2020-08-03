@@ -78,7 +78,8 @@ namespace WebInfluencer.Controllers
                     
                     if(_account.Status == AccountStatus.NeedVerified)
                     {
-                        msg = "Bạn cần xác minh tài khoản <a href=\"/Account/ChangeIDCard\"><b>tại đây</b></a>!<br/>";
+                        msg = "Bạn cần hoàn tất hồ sơ của mình tại phần “cấu hình” và tài khoản” trước khi trải nghiệm nền tảng này nhé.<br/>";
+                        msg += "Bạn cần xác minh tài khoản <a href=\"/Account/ChangeIDCard\"><b>tại đây</b></a>!<br/>";
                     }
                 }
             }
@@ -98,6 +99,7 @@ namespace WebInfluencer.Controllers
                 }
             }
             catch { }
+
             if (!string.IsNullOrEmpty(msg))
             {
                 TempData["MessageInfo"] = msg;

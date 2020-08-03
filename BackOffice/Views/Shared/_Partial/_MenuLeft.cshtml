@@ -224,16 +224,21 @@
                     </a>
                 </secure-content>
             </li>
-            @*<li class="m-menu__item " aria-haspopup="true">
-            <a href="/transaction/walletwithdraw" class="m-menu__link ">
-                <i class="m-menu__link-bullet m-menu__link-bullet--dot">
-                    <span></span>
-                </i>
-                <span class="m-menu__link-text">
-                    Wallet Withdraw
-                </span>
-            </a>
-        </li>*@
+            <li class="m-menu__item " aria-haspopup="true">
+                <secure-content asp-area="" asp-controller="Transaction" asp-action="WalletWithdraw">
+                    <a href="/transaction/walletwithdraw" class="m-menu__link ">
+                        <i class="m-menu__link-bullet m-menu__link-bullet--dot">
+                            <span></span>
+                        </i>
+                        <span class="m-menu__link-text">
+                            D/N rút tiền
+                            <span class="m-badge m-badge--danger" id="walletwitdraw-count-menu">
+
+                            </span>
+                        </span>
+                    </a>
+                </secure-content>
+            </li>
             @*<li class="m-menu__item " aria-haspopup="true">
             <a href="/transaction/servicecharge" class="m-menu__link ">
                 <i class="m-menu__link-bullet m-menu__link-bullet--dot">

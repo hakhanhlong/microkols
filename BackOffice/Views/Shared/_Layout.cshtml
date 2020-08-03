@@ -355,6 +355,14 @@
                             $('#walletdeposit-count-menu').hide();
                         }
 
+                        if (data.agencyWalletWithDrawTotal > 0) {
+                            $('#walletwitdraw-count-menu').show();
+                            $('#walletwitdraw-count-menu').html(data.agencyWalletWithDrawTotal);
+                        }
+                        else {
+                            $('#walletwitdraw-count-menu').hide();
+                        }
+                        
                         if (data.accountTotal > 0) {
                             $('#account-count-menu').show();
                             $('#account-count-menu').html(data.accountTotal);
@@ -370,6 +378,9 @@
                         else {
                             $('#campaign-service-cashback').hide();
                         }
+
+
+                        
 
                     },
                     dataType: "json",

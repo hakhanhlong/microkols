@@ -665,6 +665,14 @@ namespace BackOffice.Controllers
                     var wallet = _IWalletBusiness.Get(transaction.ReceiverId); // walletid receiver
                     int agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
 
+                    if(transaction.Type == TransactionType.WalletWithdraw) //withdraw phía doanh nghiệp
+                    {
+                        wallet = _IWalletBusiness.Get(transaction.SenderId);
+                        agencyid = wallet.EntityType == EntityType.Agency ? wallet.EntityId : 0;
+                    }
+
+
+
                     if (agencyid > 0)
                     {
                         if (model.Status == TransactionStatus.Completed) // duyệt thì mới +- tiền vào ví
