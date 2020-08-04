@@ -544,7 +544,7 @@ var AppNotification = (function () {
         });
     }
     function getNotificationDropdown() {
-        console.log('getNotificationDropdown');
+        
         $.get(AppConstants.UrlGetNotification, function (html) {
             $notifDropdown.html(html);
 
@@ -905,7 +905,7 @@ var  CampaignDetailsPage = (function () {
             var caption = $(this).data('caption');
             
             //var caption = $(this).data('caption');
-
+            //FB.Canvas.scrollTo(0, 0);
             FB.ui(
                 {
                     method: 'share',
@@ -915,6 +915,7 @@ var  CampaignDetailsPage = (function () {
                     picture: picture,
                     caption: caption,
                     description: description,
+                    display: 'popup'
                 },
                 function (response) {
                     if (response && !response.error_message) {
@@ -925,8 +926,11 @@ var  CampaignDetailsPage = (function () {
                         AppBsModal.HideModal();
                     }
                 });
+                               
         });
     }
+
+
     function handlerUpdateRefImages() {
         $.validator.unobtrusive.parse($('#frmUpdateCampaignAccountRefImages'));
        

@@ -400,6 +400,7 @@ namespace WebServices.Services
             }
             var settings = await _settingRepository.GetSetting();
             var code = await _campaignRepository.GetValidCode(agencyid);
+
             var campaign = CreateCampaignViewModel.GetEntity(agencyid, info, target, campaignTypeCharge, settings, code, username);
 
 

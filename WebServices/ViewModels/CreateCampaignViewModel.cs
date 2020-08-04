@@ -112,6 +112,7 @@ namespace WebServices.ViewModels
                 KPIMin = target.KPIMin,
                 //InteractiveMin = target.InteractiveMin,
                 InteractiveMin = target.KPIMin + target.InteractiveMin,
+
                 ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
                 ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End.AddSeconds(59) : null,
                 FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
@@ -341,8 +342,11 @@ namespace WebServices.ViewModels
             campaign.DateEnd = regTime != null ? (DateTime?)regTime.Value.End : null;
             campaign.CustomKolNames = CustomKolNames.ToListString();
             campaign.KPIMin = KPIMin;
-            //campaign.InteractiveMin = InteractiveMin;
-            campaign.InteractiveMin = KPIMin + InteractiveMin;
+
+            campaign.InteractiveMin = InteractiveMin;
+
+            //campaign.InteractiveMin = KPIMin + InteractiveMin;
+
             campaign.ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null;
             campaign.ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null;
             campaign.FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null;

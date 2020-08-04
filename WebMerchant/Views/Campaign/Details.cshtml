@@ -57,13 +57,22 @@
                         @if (Model.DateStart.HasValue)
                         {
 
-                            <div class="mb-2">
+                        <div class="mb-2">
+                            @if (Model.Type == CampaignType.ReviewProduct)
+                            {
                                 <h5 class="mr-2">8. Thời gian đăng ký và nhận thông tin sản phẩm/dịch vụ trải nghiệm:</h5>
-                                <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
-                                <span class="text-info">
-                                    @Model.DateEnd.Value.ToViDateTime()
-                                </span>
-                            </div>
+                            }
+                            else
+                            {
+                                <h5 class="mr-2">8. Thời gian đăng ký và gửi nội dung:</h5>
+                            }
+
+
+                            <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
+                            <span class="text-info">
+                                @Model.DateEnd.Value.ToViDateTime()
+                            </span>
+                        </div>
                             stt = 8;
                         }
                         @if (Model.Type == CampaignType.ReviewProduct)

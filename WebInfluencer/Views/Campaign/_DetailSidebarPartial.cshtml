@@ -8,6 +8,8 @@
     var campaignType = Model.Campaign.Type;
 }
 
+
+
 @if (Model.Campaign.Status == CampaignStatus.Canceled)
 {
 }
@@ -17,6 +19,7 @@ else
     {
         <div class="card" style="border:none;">
             <div class="card-body">
+
 
 
                 @if (campaignAccount.Status == CampaignAccountStatus.Canceled)
