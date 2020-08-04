@@ -260,6 +260,7 @@ namespace Infrastructure.Data
             var joinCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
 
             var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status!= CampaignStatus.Created);
+
             queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) || (m.Status == CampaignStatus.Confirmed)));
 
             if (!string.IsNullOrEmpty(keyword))
