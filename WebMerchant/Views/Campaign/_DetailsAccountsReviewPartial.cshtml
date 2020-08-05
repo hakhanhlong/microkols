@@ -38,7 +38,7 @@
                 <td>
 
                     <div>
-                        <a href="@campaignAccount.Account.Link" target="_blank">
+                        <a href="@campaignAccount.RefUrl" target="_blank">
                             @campaignAccount.Account.Name
                         </a>
                     </div>
@@ -48,14 +48,15 @@
                         {
                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                             {
-                                <div>
-                                    <a href="@campaignAccount.RefUrl" target="_blank"><i class="fal fa-link"></i> FB.com</a>
-                                </div>
                                 if (!string.IsNullOrEmpty(campaignAccount.RefId))
                                 {
                                     var post = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId);
                                     if (post != null)
                                     {
+
+                                        <div>
+                                            <a href="@post.Permalink" target="_blank"><i class="fal fa-link"></i> FB.com</a>
+                                        </div>
                                         <div class="d-flex align-items-center">
 
                                             <span data-toggle="tooltip" title="Lượt thích">
@@ -70,11 +71,11 @@
                                             </span>
 
                                             @*@if (Model.Type == CampaignType.ShareContentWithCaption)
-                                            {
-                                                var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
-                                                <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
+                                {
+                                    var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
+                                    <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
 
-                                            }*@
+                                }*@
                                         </div>
                                     }
                                 }

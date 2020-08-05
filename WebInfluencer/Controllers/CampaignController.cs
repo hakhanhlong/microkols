@@ -82,6 +82,23 @@ namespace WebInfluencer.Controllers
                         msg += "Bạn cần xác minh tài khoản <a href=\"/Account/ChangeIDCard\"><b>tại đây</b></a>!<br/>";
                     }
                 }
+
+                try
+                {
+                    bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);
+                    if (filledInfoBank == false)
+                    {
+                        msg += "Bạn cần bổ sung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
+                    }
+                }
+                catch { }
+
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    TempData["MessageInfo"] = msg;
+                    return RedirectToAction("InfluencerInfo", "Home");
+                }
+
             }
             catch { }
 
@@ -91,19 +108,7 @@ namespace WebInfluencer.Controllers
             ViewBag.type = type;
             var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
 
-            try {
-                bool filledInfoBank = _accountService.CheckFilledBankAccount(CurrentUser.Id);
-                if(filledInfoBank == false)
-                {
-                    msg += "Bạn cần bổ sung thông tin tài khoản ngân hàng <a href=\"/Account/ChangeBankAccount\"><b>tại đây</b></a>, để hệ thống có thể thanh toán cho bạn khi bạn hoàn thành chiến dịch.";
-                }
-            }
-            catch { }
-
-            if (!string.IsNullOrEmpty(msg))
-            {
-                TempData["MessageInfo"] = msg;
-            }
+           
 
 
             return View(model);
@@ -348,22 +353,14 @@ namespace WebInfluencer.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCampaignAccountRef(UpdateCampaignAccountRefViewModel model)
         {
-            if (ModelState.IsValid)
+            var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
+            if (r > 0)
             {
-                var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
-                if (r > 0)
-                {
-                    ViewBag.Success = "Bạn đã thực hiện thành công công việc";
-                }
-                else
-                {
-                    ViewBag.Error = "Thông tin chiến dịch không đúng";
-                }
-
+                ViewBag.Success = "Bạn đã thực hiện thành công công việc";
             }
             else
             {
-                ViewBag.Error = "Hãy nhập đầy đủ thông tin";
+                ViewBag.Error = "Thông tin chiến dịch không đúng";
             }
 
             return PartialView("UpdateCampaignAccountMessage");

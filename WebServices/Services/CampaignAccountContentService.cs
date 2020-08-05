@@ -187,7 +187,7 @@ namespace WebServices.Services
                 if(campaignaccount.Status== CampaignAccountStatus.AccountRequest || campaignaccount.Status== CampaignAccountStatus.AgencyRequest)
                 {
                     campaignaccount.Status = CampaignAccountStatus.Confirmed;
-
+                    campaignaccount.RefContent = CampaignAccountContent.Content;
                     campaignaccount.UserModified = username;
                     campaignaccount.DateModified = DateTime.Now;
                     await _campaignAccountRepository.UpdateAsync(campaignaccount);

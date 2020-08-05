@@ -73,6 +73,8 @@ namespace BackOffice.Models
 
         public WalletViewModel Wallet { get; set; }
 
+        public WalletViewModel WalletReceiver { get; set; }
+
         public int Id { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }

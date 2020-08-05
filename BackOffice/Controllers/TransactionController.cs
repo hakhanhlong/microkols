@@ -736,16 +736,17 @@ namespace BackOffice.Controllers
                                         _msg = string.Format("Lệnh rút tiền {0} từ chiến dịch, với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
 
                                     }
-                                    else if (model.Type == TransactionType.WalletRecharge)
+                                    else if (transaction.Type == TransactionType.WalletRecharge)
                                     {
                                         _notifyType = NotificationType.TransactionDepositeProcessing;
                                     }
-                                    else if (model.Type == TransactionType.WalletWithdraw)
+                                    else if (transaction.Type == TransactionType.WalletWithdraw)
                                     {
                                         _msg = string.Format("Lệnh rút tiền {0}, từ ví với số tiền {1} đ, có trạng thái là {2}", transaction.Code, transaction.Amount.ToString(), model.Status.ToShowName().ToString());
                                         _notifyType = NotificationType.TransactionWithdrawProcessing;
                                     }
                                 }
+
                                 await _INotificationBusiness.CreateNotificationTransactionByStatus(transaction.Id, agencyid, _notifyType, _msg, model.AdminNote);
                             }
                             catch { }
@@ -827,10 +828,11 @@ namespace BackOffice.Controllers
                     
                 }
                 catch { } 
+
                 try {
                     var wallet = _IWalletBusiness.Get(item.ReceiverId);
                     item.ReceiverName = wallet.Name;
-                    item.Wallet = wallet;
+                    item.WalletReceiver = wallet;
                 }
                 catch { }
             }

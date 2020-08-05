@@ -42,37 +42,57 @@
                         <div class="mb-2">
                             <h5 class="mr-2">3. Trạng thái:</h5>@Model.Status.ToBadge()
                         </div>
-                        <div class="mb-2">
-                            <h5 class="mr-2">4. Tổng phí:</h5> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                        </div>
-                        <div class="mb-2">
-                            <h5 class="mr-2">5. Đã thanh toán:</h5> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
-                        </div>
-                        <div class="mb-2">
-                            <h5 class="mr-2">6. Còn lại:</h5>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
-                        </div>
+
+                        @if (Model.Payment.TotalChargeAmount > 0)
+                        {
+                            <div class="mb-2">
+                                <h5 class="mr-2">4. Tổng phí:</h5> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
+                            </div>
+                            <div class="mb-2">
+                                <h5 class="mr-2">5. Đã thanh toán:</h5> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                            </div>
+                            <div class="mb-2">
+                                <h5 class="mr-2">6. Còn lại:</h5>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="mb-2">
+                                <h5 class="mr-2">4. Tổng phí:</h5> <span class="text-danger">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                            </div>
+                            <div class="mb-2">
+                                <h5 class="mr-2">5. Đã thanh toán:</h5> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                            </div>
+                            <div class="mb-2">
+                                <h5 class="mr-2">6. Còn lại:</h5>  <span class="text-success">0 đ</span>
+                            </div>
+                        }
+
+
+
+
                         <div class="mb-2">
                             <h5 class="mr-2">7. Ngày tạo:</h5> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
                         </div>
                         @if (Model.DateStart.HasValue)
                         {
 
-                        <div class="mb-2">
-                            @if (Model.Type == CampaignType.ReviewProduct)
-                            {
-                                <h5 class="mr-2">8. Thời gian đăng ký và nhận thông tin sản phẩm/dịch vụ trải nghiệm:</h5>
-                            }
-                            else
-                            {
-                                <h5 class="mr-2">8. Thời gian đăng ký và gửi nội dung:</h5>
-                            }
+                            <div class="mb-2">
+                                @if (Model.Type == CampaignType.ReviewProduct)
+                                {
+                                    <h5 class="mr-2">8. Thời gian đăng ký và nhận thông tin sản phẩm/dịch vụ trải nghiệm:</h5>
+                                }
+                                else
+                                {
+                                    <h5 class="mr-2">8. Thời gian đăng ký và gửi nội dung:</h5>
+                                }
 
 
-                            <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
-                            <span class="text-info">
-                                @Model.DateEnd.Value.ToViDateTime()
-                            </span>
-                        </div>
+                                <span class="text-info">@Model.DateStart.Value.ToViDateTime()</span> -
+                                <span class="text-info">
+                                    @Model.DateEnd.Value.ToViDateTime()
+                                </span>
+                            </div>
                             stt = 8;
                         }
                         @if (Model.Type == CampaignType.ReviewProduct)
@@ -119,21 +139,21 @@
                         @if (Model.Type == CampaignType.ReviewProduct)
                         {
 
-                            <div class="mb-2">
-                                <strong>
-                                    @Model.ReviewType.ToDisplayName()
-                                </strong>
+                        <div class="mb-2">
+                            <strong>
+                                @Model.ReviewType.ToDisplayName()
+                            </strong>
 
 
-                                @if (Model.ReviewPayback.HasValue)
-                                {
-                                    <span> - Thu hồi sản phẩm</span>
-                                }
-
-                                <br />
-                                <strong class="mr-2"> Địa chỉ:</strong>
-                                @Model.ReviewAddress
-                            </div>
+                            @if (Model.ReviewPayback.HasValue)
+                            {
+                                <span> - Thu hồi sản phẩm</span>
+                            }
+                            <br />
+                            <br />
+                            <strong>Địa chỉ:</strong>
+                            @Model.ReviewAddress
+                        </div>
 
                         }
                         @if (!string.IsNullOrEmpty(Model.Data))

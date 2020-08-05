@@ -53,8 +53,17 @@
 
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input image-upload"
-                               id="uploadimg01" data-target="#ImageFront" data-preview=".img-ImageFront" />
+                        @if (string.IsNullOrEmpty(Model.ImageFront))
+                        {
+                            <input type="file" class="custom-file-input image-upload"
+                                   id="uploadimg01" data-target="#ImageFront" data-preview=".img-ImageFront" required/>
+                        }
+                        else
+                        {
+                            <input type="file" class="custom-file-input image-upload"
+                                   id="uploadimg01" data-target="#ImageFront" data-preview=".img-ImageFront" />
+                        }
+
                         <label class="custom-file-label" for="uploadimg01">
                             Chọn file
                         </label>
@@ -75,8 +84,17 @@
 
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input image-upload"
-                               id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack" />
+                        @if (string.IsNullOrEmpty(Model.ImageBack))
+                        {
+                            <input type="file" class="custom-file-input image-upload"
+                                   id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack" required/>
+                        }
+                        else
+                        {
+                            <input type="file" class="custom-file-input image-upload"
+                                   id="uploadimg02" data-target="#ImageBack" data-preview=".img-ImageBack" />
+                        }
+
                         <label class="custom-file-label" for="uploadimg02">
                             Chọn file
                         </label>

@@ -43,7 +43,16 @@ namespace WebInfluencer.Controllers
             return RedirectToAction("MarketPlace","Campaign");
         }
 
-        
+        public IActionResult InfluencerInfo()
+        {
+            //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
+            //await _IFacebookJob.UpdateFbInfo(CurrentUser.Id);
+            return View();
+        }
+
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

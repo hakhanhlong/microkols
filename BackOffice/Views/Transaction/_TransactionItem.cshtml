@@ -40,19 +40,61 @@
             <td>@item.SenderName</td>
 
             <td>
-                @if (item.Wallet.EntityType == EntityType.Agency)
+                @if (item.Wallet != null)
                 {
-                    <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+
+                    if (item.Wallet.EntityType == EntityType.Agency)
+                    {
+                        <a href="/agency/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
+                    else
+                    {
+                        <a href="/microkol/detail?id=@item.Wallet.EntityId">@item.ReceiverName</a>
+                    }
                 }
                 else
                 {
-                    <a href="/microkol/detail?id=item.Wallet.EntityId">@item.ReceiverName</a>
+                    if (item.WalletReceiver.EntityType == EntityType.Agency)
+                    {
+                        <a href="/agency/detail?id=@item.WalletReceiver.EntityId">@item.ReceiverName</a>
+                    }
+                    else
+                    {
+                        <a href="/microkol/detail?id=@item.WalletReceiver.EntityId">@item.ReceiverName</a>
+                    }
                 }
+
+
 
             </td>
             <td>
                 <h6 class="m--font-danger">
-                    @item.Amount.ToPriceText()
+                    @if (item.Wallet != null)
+                    {
+                        @if (item.Wallet.EntityType == EntityType.Agency)
+                        {
+                            <a href="/agency/detail?id=@item.Wallet.EntityId" style="color:red;text-decoration:none;">@item.Amount.ToPriceText()</a>
+                        }
+                        else
+                        {
+                            <a href="/microkol/detail?id=@item.Wallet.EntityId" style="color:red;text-decoration:none;">@item.Amount.ToPriceText()</a>
+                        }
+                    }
+                    else
+                    {
+                        @if (item.WalletReceiver.EntityType == EntityType.Agency)
+                        {
+                            <a href="/agency/detail?id=@item.WalletReceiver.EntityId" style="color:red;text-decoration:none;">@item.Amount.ToPriceText()</a>
+                        }
+                        else
+                        {
+                            <a href="/microkol/detail?id=@item.WalletReceiver.EntityId" style="color:red;text-decoration:none;">@item.Amount.ToPriceText()</a>
+                        }
+                    }
+
+
+
+
                 </h6>
             </td>
             <td>@item.Type.ToBadge()</td>

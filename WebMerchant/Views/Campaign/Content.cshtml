@@ -28,17 +28,17 @@
                     </tr>
                 </thead>
                 <tbody>
-
+                    @{ int count = 0;}
                     @foreach (var item in Model.CampaignGroupAccountContents)
                     {
                         var lastContent = item.LastContent;
-
+                        count++;
                         var account = await AccountService.GetAccount(lastContent.AccountId);
 
                         <tr>
 
                             <td><input type="checkbox" class="cb-checkitem cb-checkitemChuaDuyet" value="@lastContent.Id" /></td>
-                            <th scope="row">1</th>
+                            <th scope="row">@count</th>
                             <td><a href="#" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a></td>
                             <td>
                                 <p class="d-inline-block text-wrap" style="max-width: 550px">
