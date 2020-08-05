@@ -1193,16 +1193,16 @@ namespace WebServices.Services
 
 
 
-            if(campaign.Type != CampaignType.ChangeAvatar || campaign.Type  != CampaignType.ReviewProduct || campaign.Type != CampaignType.JoinEvent)
-            {
-                if (campaign.Data.Contains("https") || campaign.Data.Contains("http"))
-                {
-                    if (!model.RefUrl.Contains(campaign.Data))
-                    {
-                        return -1;
-                    }
-                }
-            }
+            //if(campaign.Type != CampaignType.ChangeAvatar || campaign.Type  != CampaignType.ReviewProduct || campaign.Type != CampaignType.JoinEvent)
+            //{
+            //    if (campaign.Data.Contains("https") || campaign.Data.Contains("http"))
+            //    {
+            //        if (!model.RefUrl.Contains(campaign.Data))
+            //        {
+            //            return -1;
+            //        }
+            //    }
+            //}
 
             
 
