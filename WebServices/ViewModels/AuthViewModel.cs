@@ -30,7 +30,7 @@ namespace WebServices.ViewModels
             Name = agency.Name;
             Username = agency.Username;
             Type = EntityType.Agency;
-            Avatar = agency.Image;
+            Avatar = string.IsNullOrEmpty(agency.Image)? "":agency.Image;
             Roles = new List<string>() { "Agency" };
             AgencyActived = agency.Actived;
         }

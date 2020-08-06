@@ -46,14 +46,25 @@ namespace WebServices.ViewModels
 
             var image = string.Empty;
 
-            if (info.Type == CampaignType.ChangeAvatar)
+            if (!string.IsNullOrEmpty(info.Image))
             {
                 image = info.Image;
             }
-            else if (info.Type == CampaignType.ShareContentWithCaption)
+            else
             {
                 image = info.AddonImages.ToListString();
             }
+
+            
+
+            //if (info.Type == CampaignType.ChangeAvatar)
+            //{
+                
+            //}
+            //else if (info.Type == CampaignType.ShareContentWithCaption)
+            //{
+            //    image = info.AddonImages.ToListString();
+            //}
 
             var reviewaddress = "";
             var reviewpayback = false;
@@ -153,7 +164,8 @@ namespace WebServices.ViewModels
             Title = campaign.Title;
             Description = campaign.Description;
             Data = campaign.Data;
-            if (campaign.Type == CampaignType.ChangeAvatar)
+
+            if (!string.IsNullOrEmpty(campaign.Image))
             {
                 Image = campaign.Image;
             }
@@ -161,6 +173,17 @@ namespace WebServices.ViewModels
             {
                 Image = string.Empty;
             }
+
+            //if (campaign.Type == CampaignType.ChangeAvatar)
+            //{
+            //    Image = campaign.Image;
+            //}
+            //else
+            //{
+            //    Image = string.Empty;
+            //}
+
+
             if (campaign.Type == CampaignType.ShareContentWithCaption)
             {
                 AddonImages = campaign.Image.ToListString();
@@ -195,14 +218,24 @@ namespace WebServices.ViewModels
             campaign.Data = Data;
             var image = string.Empty;
 
-            if (Type == CampaignType.ChangeAvatar)
+            if (!string.IsNullOrEmpty(Image))
             {
                 image = Image;
             }
-            else if (Type == CampaignType.ShareContentWithCaption)
+            else
             {
                 image = AddonImages.ToListString();
             }
+
+            //if (Type == CampaignType.ChangeAvatar)
+            //{
+            //    image = Image;
+            //}
+            //else if (Type == CampaignType.ShareContentWithCaption)
+            //{
+            //    image = AddonImages.ToListString();
+            //}
+
             campaign.Image = image;
             campaign.Requirement = Requirement;
 

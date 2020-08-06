@@ -6,9 +6,11 @@
     {
     <a asp-action="Details" asp-route-id="@Model.Campaign.Id" data-id="@Model.Campaign.Id" class="campaign-link">
 
-        @if (!string.IsNullOrEmpty(Model.Campaign.Image))
+        @if (!string.IsNullOrEmpty(Model.Campaign.SampleContent))
         {
-            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Campaign.Image)" style="height:300px;" class="card-img-top img-thumbnail border-0" alt="">
+            string imgUrl = Model.Campaign.SampleContent.Split(new char[] { '|' })[0];
+
+            <img src="@AppOptions.CurrentValue.GetImageUrl(imgUrl)" style="height:300px;" class="card-img-top img-thumbnail border-0" alt="">
         }
         else
         {

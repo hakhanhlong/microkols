@@ -338,13 +338,13 @@ namespace WebServices.Services
         }
         public async Task<bool> EditCampaignInfo(EditCampaignInfoViewModel model, string username)
         {
-            var campiagn = await _campaignRepository.GetByIdAsync(model.Id);
-            if (campiagn == null || campiagn.Status != CampaignStatus.Created) return false;
+            var campaign = await _campaignRepository.GetByIdAsync(model.Id);
+            if (campaign == null || campaign.Status != CampaignStatus.Created) return false;
 
-            campiagn = model.GetEntity(campiagn);
-            campiagn.UserModified = username;
-            campiagn.DateModified = DateTime.Now;
-            await _campaignRepository.UpdateAsync(campiagn);
+            campaign = model.GetEntity(campaign);
+            campaign.UserModified = username;
+            campaign.DateModified = DateTime.Now;
+            await _campaignRepository.UpdateAsync(campaign);
 
             return true;
         }
