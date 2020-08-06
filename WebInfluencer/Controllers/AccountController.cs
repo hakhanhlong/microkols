@@ -134,6 +134,12 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> ChangeFacebookUrl()
         {
             var model = await _accountService.GetChangeFacebookUrl(CurrentUser.Id);
+
+            if (model.FacebookUrl.Contains("app_scoped_user_id"))
+            {
+                model.FacebookUrl = "";
+            }
+
             return View(model);
         }
 

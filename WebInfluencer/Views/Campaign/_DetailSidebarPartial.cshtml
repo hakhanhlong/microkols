@@ -72,46 +72,42 @@ else
                 {
                     <div class="alert alert-info">Bạn đã yêu cầu tham gia chiến dịch thành công. Vui lòng chờ doanh nghiệp xác nhận</div>
                 }
-
                 else if (campaignAccount.Status == CampaignAccountStatus.Finished)
                 {
                     if (Model.Campaign.Status == CampaignStatus.Completed)
                     {
-                        <div class="alert alert-info">
+                    <div class="alert alert-info">
 
+
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefId) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
+                        {
                             <p>
                                 Bạn đã thực hiện chiến dịch.
-
                             </p>
-
-                            @if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                            var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+                            @if (fbPost != null)
                             {
-                                <p>Facebook Id thực hiện: @campaignAccount.RefId</p>
-                            }
-                            @if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
-                            {
-
-                                var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
                                 <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank"> <i class="fab fa-facebook"></i> @campaignAccount.RefUrl</a></p>
+                                <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
+
                                 <p>
-                                    @if (fbPost != null)
-                                    {
-                                        <span>
-                                            @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
-                                        </span>
-                                        <span class="px-2">
-                                            @fbPost.ShareCount <i class="fal fa-share"></i>
-                                        </span>
-                                        <span>
-                                            @fbPost.CommentCount <i class="fal fa-comment"></i>
-                                        </span>
-                                    }
+                                    <span>
+                                        @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                    </span>
+                                    <span class="px-2">
+                                        @fbPost.ShareCount <i class="fal fa-share"></i>
+                                    </span>
+                                    <span>
+                                        @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                    </span>
+
 
                                 </p>
                             }
 
-                        </div>
+                        }
 
+                    </div>
                     }
                     else
                     {
@@ -146,9 +142,19 @@ else
 
                                 </p>
                             }
-                            <p>
-                                Ngay sau khi chiến dịch kết thúc và đạt đủ KPI bạn sẽ nhận được thanh toán vào tài khoản.
-                            </p>
+                                <p>
+                                    @if (Model.Campaign.Type == CampaignType.ChangeAvatar)
+                                    {
+                                        <text>Ngay sau khi chiến dịch kết thúc đúng thời gian và yêu cầu bạn sẽ nhận được thanh toán vào tài khoản.</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Ngay sau khi chiến dịch kết thúc và đạt đủ KPI bạn sẽ nhận được thanh toán vào tài khoản.</text>
+                                    }
+
+
+
+                                </p>
                             @*<p>
                                     <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
                                 </p>*@
