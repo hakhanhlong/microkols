@@ -10,6 +10,8 @@ namespace WebServices.Interfaces
     public interface IAccountService
     {
         Task<int> GetAccountUpdateInfoStatus(int id);
+
+        Task<bool> UpdateAccountProviderInfo(int accountproviderid, string link, int friendscount, string username, string email);
         Task<ChangeFacebookUrlViewModel> GetChangeFacebookUrl(int id);
         Task<bool> ChangeFacebookUrl(int id, ChangeFacebookUrlViewModel model);
 

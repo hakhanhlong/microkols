@@ -45,8 +45,7 @@ namespace Core.Entities
 
         public static bool IsHasContent(this CampaignType type)
         {
-            return type == CampaignType.JoinEvent //type == CampaignType.ChangeAvatar ||
-        || type == CampaignType.ShareStreamUrl || type == CampaignType.ReviewProduct;
+            return type == CampaignType.ReviewProduct;
         }
 
 

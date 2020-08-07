@@ -38,7 +38,7 @@
                 <td>
 
                     <div>
-                        <a href="@campaignAccount.RefUrl" target="_blank">
+                        <a href="@campaignAccount.Account.Link" target="_blank">
                             @campaignAccount.Account.Name
                         </a>
                     </div>
@@ -58,24 +58,41 @@
                                             <a href="@post.Permalink" target="_blank"><i class="fal fa-link"></i> FB.com</a>
                                         </div>
                                         <div class="d-flex align-items-center">
+                                            @if (Model.Type != CampaignType.ChangeAvatar)
+                                            {
+                                                <a href="@post.Permalink" target="_blank" style="text-decoration:none;">
+                                                    <span data-toggle="tooltip" title="Lượt thích">
+                                                        @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                    </span>
+                                                    <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
 
-                                            <span data-toggle="tooltip" title="Lượt thích">
-                                                @post.LikeCount <i class="fal fa-thumbs-up"></i>
-                                            </span>
-                                            <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
+                                                        @post.ShareCount <i class="fal fa-share"></i>
+                                                    </span>
+                                                    <span data-toggle="tooltip" title="Lượt bình luận">
+                                                        @post.CommentCount <i class="fal fa-comment"></i>
+                                                    </span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span data-toggle="tooltip" title="Lượt thích">
+                                                    @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                </span>
+                                                <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
 
-                                                @post.ShareCount <i class="fal fa-share"></i>
-                                            </span>
-                                            <span data-toggle="tooltip" title="Lượt bình luận">
-                                                @post.CommentCount <i class="fal fa-comment"></i>
-                                            </span>
+                                                    @post.ShareCount <i class="fal fa-share"></i>
+                                                </span>
+                                                <span data-toggle="tooltip" title="Lượt bình luận">
+                                                    @post.CommentCount <i class="fal fa-comment"></i>
+                                                </span>
+                                            }
 
-                                            @*@if (Model.Type == CampaignType.ShareContentWithCaption)
-                                {
-                                    var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
-                                    <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
+                                                                                @*@if (Model.Type == CampaignType.ShareContentWithCaption)
+                                            {
+                                                var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
+                                                <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
 
-                                }*@
+                                            }*@
                                         </div>
                                     }
                                 }

@@ -291,12 +291,18 @@
                     {
                         if (true == Model.Campaign.ReviewPayback)
                         {
-                            <div>
-                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                        <div>
+                            <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                            @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                            {
+                                <p>@campaignAccount.ReviewAddress</p>
+                            }
+                            else
+                            {
                                 <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                            }
 
-
-                            </div>
+                        </div>
                         }
                     }
                 }

@@ -64,6 +64,14 @@ namespace WebInfluencer.Controllers
             }
 
             var accountProvider = await _accountService.GetAccountProviderByProvider(provider, loginInfo.ProviderId, token);
+            if (accountProvider.FbProfileLink.Contains("facebook.com/app_scoped_user_id"))
+            {
+                return RedirectToAction("ChangeFacebookUrl", "Account");
+            }
+
+            
+
+
             var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
@@ -166,13 +174,13 @@ namespace WebInfluencer.Controllers
                 return RedirectToAction("Login");
             }
 
+
+
+
             //var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId, token);
             //var accountProviderExist = accountProvider != null;
 
             var auth = await _accountService.GetAuth(loginInfo);
-
-
-
             if (auth == null)
             {
                 await SignOut();
@@ -198,10 +206,20 @@ namespace WebInfluencer.Controllers
             await SignIn(auth);
             //CurrentUser.AccessToken = loginInfo.AccessToken; //gan accesstoken 
 
+
+                                    
+            var accountProvider = await _accountService.GetAccountProviderByProvider(AccountProviderNames.Facebook, loginInfo.ProviderId, token);
             var status = await _accountService.GetAccountStatus(auth.Id);
-            if(status== AccountStatus.NeedVerified)
+            if(status== AccountStatus.NeedVerified || string.IsNullOrEmpty(accountProvider.FbProfileLink))//check influencer đã update profile link fb hay chưa
             {
                 return RedirectToAction("ChangeFacebookUrl", "Account");
+            }
+            else
+            {
+                if (accountProvider.FbProfileLink.Contains("facebook.com/app_scoped_user_id"))
+                {
+                    return RedirectToAction("ChangeFacebookUrl", "Account");
+                }
             }
 
             return RedirectToAction("Index", "Home");

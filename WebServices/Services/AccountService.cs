@@ -218,7 +218,7 @@ namespace WebServices.Services
                         Type = AccountType.Regular,
                         Status = AccountStatus.NeedVerified 
                         
-                        //mặc định user là đã verified, để tạm thôi cho fb duyệt đã
+                        
                         
 
                     };
@@ -498,6 +498,29 @@ namespace WebServices.Services
          
         }
 
+        public async Task<bool> UpdateAccountProviderInfo(int accountproviderid, string link, int friendscount, string username, string email)
+        {
+            if (accountproviderid == 5)
+            {
+
+            }
+            var accountprovider = await _accountProviderRepository.GetByIdAsync(accountproviderid);
+            if (accountprovider != null)
+            {
+                //accountprovider.Link = link;
+                accountprovider.Email = email;
+                accountprovider.FriendsCount = friendscount;
+
+                await _accountProviderRepository.UpdateAsync(accountprovider);
+                return true;
+            }
+            return false;
+
+
+        }
+
+
+
 
         #endregion
 
@@ -599,7 +622,16 @@ namespace WebServices.Services
                     entity.DistrictId = null;
 
                 entity.Address = model.Address;
-                entity.Status = AccountStatus.NeedVerified;
+
+
+                if(entity.Status != AccountStatus.SystemVerified)
+                {
+                    entity.Status = AccountStatus.NeedVerified;
+                }
+
+                
+
+
                 entity.DateModified = DateTime.Now;
                 entity.UserModified = username;
 

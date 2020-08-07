@@ -228,7 +228,7 @@ namespace WebServices.Jobs
                 var info = await _facebookHelper.GetInfo(accountProvider.AccessToken, accountProvider.ProviderId);
                 if (info != null)
                 {
-                    await _accountService.UpdateAccountProviderInfo(accountProvider.Id, info.Link, info.FriendsCount, "bot");
+                    await _accountService.UpdateAccountProviderInfo(accountProvider.Id, "", info.FriendsCount, "bot", info.Email);
                 }
             }
         }

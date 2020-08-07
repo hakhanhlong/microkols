@@ -30,10 +30,14 @@ namespace WebServices.ViewModels
         {
             try { Link = (string)obj.link; } catch { }
 
+            try { Email = (string)obj.email; } catch { }
+
 
             try { FriendsCount = (int)obj.friends.summary.total_count; } catch { }
         }
         public string Link { get; set; }
+
+        public string Email { get; set; }
 
         public int FriendsCount { get; set; }
     }

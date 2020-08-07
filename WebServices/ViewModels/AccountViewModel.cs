@@ -91,6 +91,7 @@ namespace WebServices.ViewModels
             ProviderId = accountProvider.ProviderId;
             Name = accountProvider.Name;
             Email = accountProvider.Email;
+            FbProfileLink = accountProvider.Link;
         }
         public static List<AccountProviderViewModel> GetList(IEnumerable<AccountProvider> accounts)
         {
@@ -105,6 +106,8 @@ namespace WebServices.ViewModels
         public string ProviderId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+
+        public string FbProfileLink { get; set; }
     }
 
     public class ChangePasswordViewModel

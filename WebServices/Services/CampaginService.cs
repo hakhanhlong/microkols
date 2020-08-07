@@ -774,7 +774,7 @@ namespace WebServices.Services
                         if (confirmed)
                         {
                             campaignAccount.AccountChargeAmount = model.AccountChargeAmount;
-                            campaignAccount.ReviewAddress = model.ReviewAddress;
+                            campaignAccount.ReviewAddress = model.ReviewAddress; //địa chỉ nhận sản phẩm của influencer
                         }
                         else
                         {
