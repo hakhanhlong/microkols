@@ -21,8 +21,8 @@
 
                         <th><input type="checkbox" class="cb-checkall" /></th>
                         <th scope="col">#</th>
-                        <th scope="col">Họ và Tên</th>
-                        <th scope="col" width="550">Nội dung</th>
+                        <th scope="col" width="250">Họ và Tên</th>
+                        <th scope="col" width="450">Nội dung</th>
                         <th scope="col">Trạng thái</th>
                         <th scope="col"></th>
                     </tr>
@@ -34,12 +34,15 @@
                         var lastContent = item.LastContent;
                         count++;
                         var account = await AccountService.GetAccount(lastContent.AccountId);
+                        
 
                         <tr>
 
                             <td><input type="checkbox" class="cb-checkitem cb-checkitemChuaDuyet" value="@lastContent.Id" /></td>
                             <th scope="row">@count</th>
-                            <td><a href="#" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a></td>
+                            <td>
+                                <a href="@(account.Link)" class="kol-join"><img src="@AppOptions.CurrentValue.GetImageUrl(account.Avatar)" width="32" height="32">@account.Name</a>
+                            </td>
                             <td>
                                 <p class="d-inline-block text-wrap" style="max-width: 550px">
                                     @lastContent.Content

@@ -223,7 +223,7 @@ namespace WebServices.ViewModels
                 image = Image;
             }
             else
-            {
+            {               
                 image = AddonImages.ToListString();
             }
 
@@ -244,7 +244,13 @@ namespace WebServices.ViewModels
             campaign.IsSendProduct = SendProduct;
             campaign.Code = campaign.Code;
             campaign.Hashtag = HashTag.ToListString();
-            campaign.SampleContent = SampleContent.ToListString();
+
+            if(!string.IsNullOrEmpty(SampleContent.ToListString()))
+            {
+                campaign.SampleContent = SampleContent.ToListString();
+            }
+            
+          
             campaign.SampleContentText = SampleContentText;
             campaign.Method = Method;
 

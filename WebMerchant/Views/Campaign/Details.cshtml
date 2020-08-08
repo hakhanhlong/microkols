@@ -257,9 +257,12 @@
                                 <ul class="list-inline">
                                     @foreach (var imgItem in Model.SampleContent)
                                     {
-                                        <li class="list-inline-item">
+                                    <li class="list-inline-item">
+                                        <a href="@(AppOptions.CurrentValue.GetImageUrl(imgItem))" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
                                             <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-                                        </li>
+                                        </a>
+                                            
+                                    </li>
                                     }
 
                                 </ul>

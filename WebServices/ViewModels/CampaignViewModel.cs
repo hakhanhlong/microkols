@@ -51,6 +51,8 @@ namespace WebServices.ViewModels
             SampleContentText = campaign.SampleContentText;
             ServiceChargePercent = campaign.ServiceChargePercent;
 
+            SystemNote = campaign.SystemNote;
+
             if (campaign.InteractiveMin.HasValue)
             {
                 InteractiveMin = campaign.InteractiveMin.Value;
@@ -214,6 +216,8 @@ namespace WebServices.ViewModels
         public Agency Agency { get; set; }
 
         public int InteractiveMin { get; set; }
+
+        public string SystemNote { get; set; }
     }
 
    

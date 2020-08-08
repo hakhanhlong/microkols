@@ -202,7 +202,7 @@ namespace BackOffice.Controllers
                     campaign.Status = status;
                     campaign.UserModified = HttpContext.User.Identity.Name;
                     campaign.DateModified = DateTime.Now;
-                    //campaign.SystemNote = txt_note;
+                    campaign.SystemNote = txt_note;
                     _ICampaignRepository.Update(campaign);
 
 

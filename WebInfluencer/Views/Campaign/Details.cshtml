@@ -54,7 +54,7 @@
 
 
     <div class="tab-pane fade active show " id="campaign-info" role="tabpanel">
-        <form action="@(formAction)" class="campaigndetails" name="formCampaignDetail">
+        <form action="@(formAction)" class="campaigndetails" name="formCampaignDetail" id="form-campaign-detail">
             @if (hasProccess)
             {
                 <partial name="_DetailSidebarPartial" model="Model" />
@@ -315,9 +315,12 @@
 
                             @foreach (var item in sampleimages)
                             {
-                                <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
-                            }
-                        </div>
+                                <a href="@AppOptions.CurrentValue.GetImageUrl(item)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                    <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
+                                </a>
+                                    
+                             }
+                       </div>
                     }
                 }
 
@@ -445,6 +448,15 @@
                 //    $(this).val(min);
                 //}
             });
+
+            $('#form-campaign-detail').on('keyup keypress', function (e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
         });
     </script>
 }

@@ -136,6 +136,18 @@
                                             @item.Title
                                         </span>
                                     }
+                                    @if ((!string.IsNullOrEmpty(item.SystemNote)) &&
+                                       (item.Status != CampaignStatus.Created && item.Status != CampaignStatus.Completed))
+                                    {
+
+                                        @if (item.Status == CampaignStatus.Error || item.Status == CampaignStatus.Canceled)
+                                        {
+                                            <br />
+                                            <div style="color:Highlight;"><strong>Hệ thống ghi chú: </strong><span><i>@item.SystemNote</i></span></div>
+                                        }
+
+                                    }
+
 
                                 </td>
                                 <td>@item.Type.ToDisplayName()</td>
@@ -156,7 +168,8 @@
 
                                             <li class="list-inline-item"><a href="javascript:;" class="text-primary campaign-lock" title="Tạm khóa"><i class="fa fa-lock"></i></a></li>
                                             <li class="list-inline-item">
-                                                <a href="javascript:;" class="text-primary btn-remotemodal campaign-time-begin" data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
+                                                <a href="javascript:;" class="text-primary btn-remotemodal campaign-time-begin" 
+                                                   data-url="@Url.Action("UpdateExecutionTime", new { campaignid = item.Id })" title="Thay đổi thời gian thực hiện chiến dịch">
                                                     <i class="fa fa-history"></i>
                                                 </a>
                                             </li>

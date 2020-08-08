@@ -54,22 +54,22 @@
 
                 @if (TempData["MessageSuccess"] != null)
                 {
-                        <div class="alert alert-success" role="alert">
-                            @Html.Raw(TempData["MessageSuccess"])
-                        </div>
+                    <div class="alert alert-success" role="alert">
+                        @Html.Raw(TempData["MessageSuccess"])
+                    </div>
                 }
 
                 @if (TempData["MessageInfo"] != null)
                 {
                     <div class="alert alert-info" role="alert">
-                        
+
                         @Html.Raw(TempData["MessageInfo"])
                     </div>
                 }
                 @if (TempData["MessageWarning"] != null)
                 {
                     <div class="alert alert-warning" role="alert">
-                        
+
                         @Html.Raw(TempData["MessageInfo"])
                     </div>
                 }
@@ -99,8 +99,9 @@
     </div>
 
     <partial name="_FooterPartial" />
-    <partial name="_ScriptPartial" />    
+    <partial name="_ScriptPartial" />
     <script src="https://cdn.tiny.cloud/1/yjtd23uy8llom36xytgmy5qhke6bgmne593uqbtil18kxan8/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="/js/lightbox.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
