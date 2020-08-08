@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@inject WebServices.Interfaces.IAccountService accountService
+
 @model ListAccountViewModel
 
 @section Subheaders{
@@ -20,76 +22,79 @@
 }
 
 
-    <div class="row">
-        <div class="col-xl-12">
-            <!--begin::Portlet-->
-            <div class="m-portlet m-portlet--tabs">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <h3 class="m-portlet__head-text">
-                                Danh sách người ảnh hưởng
-                            </h3>
-                        </div>
-                    </div>                    
-                </div>
-                <div class="m-portlet__body">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="m_portlet_tab_1_1">
-                            @await Html.PartialAsync("~/Views/MicroKol/_FilterPartial.cshtml")
-                        </div>
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Danh sách người ảnh hưởng
+                        </h3>
                     </div>
-                    <!--begin::Section-->
-                    <div class="m-section">
-                        <div class="m-section__content">
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="m_portlet_tab_1_1">
+                        @await Html.PartialAsync("~/Views/MicroKol/_FilterPartial.cshtml")
+                    </div>
+                </div>
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
 
-                            @if (Model != null)
-                            {
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                #
-                                            </th>
-                                            <th>
-                                                Chiến dịch
-                                            </th>
-                                            <th>
-                                                Email
-                                            </th>
-                                            <th>
-                                                Số điện thoại
-                                            </th>
-                                            <th>
-                                                Tên
-                                            </th>
-                                            <th>
-                                                Ngày đăng ký
-                                            </th>
-                                            <th>
-                                                Loại
-                                            </th>
-                                            <th>
-                                                Hoạt động
-                                            </th>
-                                            <th>
-                                                Xác thực
-                                            </th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @{ 
-                                            int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1: ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25)==0?1: ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
-                                        }
-                                        @foreach (var item in Model.Accounts)
-                                        {
+                        @if (Model != null)
+                        {
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Chiến dịch
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Số điện thoại
+                                        </th>
+                                        <th>
+                                            Tên
+                                        </th>
+                                        <th>
+                                            Ngày đăng ký
+                                        </th>
+                                        <th>
+                                            Loại
+                                        </th>
+                                        <th>
+                                            Hoạt động
+                                        </th>
+                                        <th>
+                                            Xác thực
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 25) + 1;
+                                    }
+                                    @foreach (var item in Model.Accounts)
+                                    {
+                                        string profileURL = await accountService.GetFacebookProfileUrl(item.Id);
                                         <tr>
                                             <td>@(count)</td>
                                             <td>
                                                 <a href="/microkol/CampaignMicrokolDetail?accountid=@item.Id" class="btn btn-sm btn-primary" style="font-family:roboto;">Chiến dịch tham gia</a>
                                             </td>
-                                            <td>@item.Email</td>
+                                            <td>
+                                                @item.Email
+                                            </td>
                                             <td>@item.Phone</td>
                                             <td>@item.Name</td>
                                             <td>@item.DateCreated.ToShortDateString()</td>
@@ -118,19 +123,29 @@
                                                 <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info" style="font-family:roboto;">Chi tiết</a>
                                             </td>
                                         </tr>
-                                            count++;
+                                        @if (!string.IsNullOrEmpty(profileURL))
+                                        {
+
+                                            <tr>
+                                                <td colspan="10">
+                                                    Facebook Profile: <a href="profileURL" target="_blank">@profileURL</a>
+                                                </td>
+                                            </tr>
                                         }
-                                    </tbody>
-                                </table>
-                                <pager pager="@Model.Pager" asp-action="Index"></pager>
-                            }
-                        </div>
+
+                                        count++;
+                                    }
+                                </tbody>
+                            </table>
+                            <pager pager="@Model.Pager" asp-action="Index"></pager>
+                        }
                     </div>
-                    <!--end::Section-->
                 </div>
-                <!--end::Form-->
+                <!--end::Section-->
             </div>
-            <!--end::Portlet-->
+            <!--end::Form-->
         </div>
+        <!--end::Portlet-->
     </div>
+</div>
 
