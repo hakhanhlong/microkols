@@ -137,15 +137,34 @@
                                             <strong class="mr-2"> Trạng thái:</strong>
                                             <select campaign-id="@(Model.Id)" id="select-campaign-status" class="form-control m-input" asp-for="@Model.Status" asp-items="@ViewBag.CampaignStatus"></select>
                                         </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <strong class="mr-2"> Còn lại:</strong>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
-                                        </div>
+
+                                        @if (Model.Payment.TotalChargeAmount > 0)
+                                        {
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalChargeAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Còn lại:</strong>  <span class="text-success">@Model.Payment.TotalChargeValue.ToPriceText()</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Tổng phí:</strong> <span class="text-danger">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Đã thanh toán:</strong> <span class="text-success">@Model.Payment.TotalPaidAmount.ToPriceText()</span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Còn lại:</strong>  <span class="text-success">0 đ</span>
+                                            </div>
+                                        }
+
+                                       
+
                                         <div class="mb-2">
                                             <strong class="mr-2">Ngày tạo:</strong> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
                                         </div>

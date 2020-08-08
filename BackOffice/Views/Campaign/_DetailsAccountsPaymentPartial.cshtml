@@ -25,16 +25,24 @@
 
     </thead>
     <tbody>
-        @{ var stt = 0;
+        @{
+            var stt = 0;
             long total = 0;
+            var campaign = await CampaignService.GetCampaignById(Model.Id);
         }
+
+
+
 
         @foreach (var campaignAccount in Model.CampaignAccounts.Where(m => m.Status != CampaignAccountStatus.AccountRequest && m.Status != CampaignAccountStatus.AgencyRequest))
         {
             stt++;
 
+
             var agencyCharge = await CampaignService.GetAgencyChagreAmount(campaignAccount.Id);
-            total += agencyCharge;
+            var _amountServiceCharge = (campaignAccount.AccountChargeAmount * (100 + campaign.ServiceChargePercent)) / 100; //tiền có dịch vụ
+
+            total += _amountServiceCharge;
             <tr>
                 <td>@stt</td>
                 <td>
@@ -47,14 +55,22 @@
                     @campaignAccount.Status.ToBadge()
                 </td>
                 <td class="text-danger">
-                    @agencyCharge.ToPriceText()
+                    @campaignAccount.AccountChargeAmount.ToPriceText()
                 </td>
             </tr>
         }
         <tr>
-            <td colspan="3" class="text-right">Tổng</td>
+            <td colspan="3" class="text-right">Phí dịch vụ</td>
             <td class="text-danger">@total.ToPriceText()</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-right">VAT 10%</td>
+            <td class="text-danger">@(Convert.ToInt64(total * 0.1).ToPriceText())</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="text-right">Tổng</td>
+            <td class="text-danger">@((total + Convert.ToInt64(total * 0.1)).ToPriceText())</td>
         </tr>
     </tbody>
 
-</table>
+</table></table>
