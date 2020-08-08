@@ -63,13 +63,21 @@
                                 </div>
                                 @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                                 {
-                                    if (campaignAccount.Type.IsShareCampaign())
+                                    if (campaignAccount.Type.IsShareCampaign() || campaignAccount.Type == CampaignType.ReviewProduct)
                                     {
                                         if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                                         {
-                                            <div>
-                                                <a href="@campaignAccount.RefUrl" target="_blank"><i class="fal fa-link"></i> FB.com</a>
-                                            </div>                                            
+
+                                            if (!string.IsNullOrEmpty(campaignAccount.RefId))
+                                            {
+                                                var post = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId);
+                                                if (post != null)
+                                                {
+                                                    <div>
+                                                        <a href="@post.Permalink" target="_blank"><i class="fal fa-link"></i> FB.com</a>
+                                                    </div>                                                   
+                                                }
+                                            }
                                         }
                                     }
                                     else if (campaignAccount.Type == CampaignType.ChangeAvatar)

@@ -53,7 +53,7 @@
 
                     @if (campaignAccount.Status == CampaignAccountStatus.Finished)
                     {
-                        if (campaignAccount.Type.IsShareCampaign())
+                        if (campaignAccount.Type.IsShareCampaign() || campaignAccount.Type == CampaignType.ReviewProduct)
                         {
                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                             {

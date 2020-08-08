@@ -39,8 +39,7 @@
         $().ready(function () {
 
             var t = 0;
-            $('#modal-campaign-form-Content').on('shown.bs.modal', function (e) {
-                console.log('modal open');
+            $('#modal-campaign-form-Content').on('shown.bs.modal', function (e) {                
                 if (t == 0) {
                     $('#dataImageFile').change(function () {
                         var id = $(this).attr('id');
@@ -48,12 +47,24 @@
                         var preview = $(this).data('preview');
                         var sizetype = $(this).data('sizetype');
                         var files = document.getElementById(id).files;
-
+                        console.log("data image change");
                         AppCommon.uploadTempImage(files, function (datas) {
                             if (datas.length > 0) {
-                                $(target).val(datas[0].path);
-                                $(target).trigger("change");
-                                $(preview).attr('src', datas[0].url);
+
+                                var strImages = '';
+                                datas.forEach(function (item) {
+                                    var html = '<div class="addonimage"><span class="remove"><i class="fal fa-times"></i></span> <img src="' + item.url + '" class="img-thumbnail mt-2" style="" /><input type="hidden" name="content_image" value="' + item.path + '" /></div>';
+                                    strImages += strImages == '' ? item.path : '|' + item.path;
+                                    $(target).append(html);
+                                });
+
+                                $(preview).val(strImages);
+
+                                $('.addonimage .remove').unbind('click');
+                                $('.addonimage .remove').click(function () {
+                                    $(this).closest('.addonimage').remove();
+                                });
+
                             }
                         }, sizetype);
 
@@ -128,7 +139,10 @@
                                     @foreach (var img in item.Image)
                                     {
                                         <li class="list-inline-item">
-                                            <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
+                                            <a data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu" href="@AppOptions.CurrentValue.GetImageUrl(img)">
+                                                <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
+                                            </a>
+                                            
                                         </li>
                                     }
                                 </ul>
@@ -225,11 +239,11 @@
                             }
 
 
-                            <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" />
-                            <input type="hidden" id="Image" name="Image" />
+                            <input type="file" id="dataImageFile" class="form-control" data-target="#list-images" data-preview="#strImages" multiple/>
+                            <input type="hidden" id="strImages" name="strImages" />
 
-                            <div>
-                                <img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
+                            <div id="list-images">
+                                @*<img src="" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />*@
                             </div>
 
 

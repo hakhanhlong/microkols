@@ -160,6 +160,19 @@
                                                 </span>
                                             </div>
                                         }
+                                        @if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ReviewProduct)
+                                        {
+                                            if (Model.Type == CampaignType.ReviewProduct)
+                                            {
+                                                <div class="mb-2">
+                                                    <strong class="mr-2"> Thời gian viết nội dung:</strong>
+                                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
+                                                    <span class="text-info">
+                                                        @Model.FeedbackEnd.Value.ToViDateTime()
+                                                    </span>
+                                                </div>
+                                            }
+                                        }
                                         @if (Model.ExecutionStart.HasValue)
                                         {
 
@@ -171,19 +184,7 @@
                                                 </span>
                                             </div>
                                         }
-                                        @if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ReviewProduct)
-                                        {
-                                            if (Model.Type == CampaignType.ReviewProduct)
-                                            {                                                
-                                                <div class="mb-2">
-                                                    <strong class="mr-2"> Thời gian viết nội dung:</strong>
-                                                    <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
-                                                    <span class="text-info">
-                                                        @Model.FeedbackEnd.Value.ToViDateTime()
-                                                    </span>
-                                                </div>
-                                            }
-                                        }
+
                                         <div class="mb-2">
                                             <strong class="mr-2"> Loại chiến dịch:</strong>
 
@@ -510,7 +511,7 @@
                     </span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin:3px;">
                 <iframe id="iframenotestatus" src="" height="480px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
             </div>
 

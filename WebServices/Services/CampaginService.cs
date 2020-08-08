@@ -35,6 +35,8 @@ namespace WebServices.Services
         private readonly ISettingRepository _settingRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
+
 
         public CampaignService(ICampaignRepository campaignRepository,
             ITransactionRepository transactionRepository,
@@ -46,7 +48,7 @@ namespace WebServices.Services
             IAsyncRepository<CampaignAccountCaption> campaignAccountCaptionRepository,
             IAsyncRepository<CampaignAccountContent> campaignAccountContentRepository,
             INotificationRepository notificationRepository,
-             ISettingRepository settingRepository)
+             ISettingRepository settingRepository, IAsyncRepository<AccountProvider> accountProviderRepository)
         {
             _campaignAccountTypeRepository = campaignAccountTypeRepository;
             _campaignTypeChargeRepository = campaignTypeChargeRepository;
@@ -59,6 +61,7 @@ namespace WebServices.Services
             _transactionRepository = transactionRepository;
             _campaignAccountRepository = campaignAccountRepository;
             _notificationRepository = notificationRepository;
+            _accountProviderRepository = accountProviderRepository;
         }
 
         #region Campaigns
@@ -1212,15 +1215,47 @@ namespace WebServices.Services
             {
                 campaignAccount.RefId = model.RefId;
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(model.RefUrl))
+                {
+                    AccountProviderSpecification _filter = new AccountProviderSpecification(accountid, AccountProviderNames.Facebook);
+                    var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(_filter);
+
+                    string[] strPosts = model.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
+                    if(strPosts.Count() > 1)
+                    {
+                        try {
+                            if (!string.IsNullOrEmpty(strPosts[1]))
+                            {
+                                campaignAccount.RefId = $"{accountProvider.ProviderId}_{strPosts[1]}";
+                            }
+                        }
+                        catch { }
+                        
+                    }
+
+                    //string post_id = 
+
+                }
+                
+            }
+
+
             if (!string.IsNullOrEmpty(model.RefUrl))
             {
                 campaignAccount.RefUrl = model.RefUrl;
             }
-
-
-
             campaignAccount.RefImage = model.RefImage.ToListString();
-            campaignAccount.Status = CampaignAccountStatus.Finished;
+            
+            if(!string.IsNullOrEmpty(campaignAccount.RefUrl) && !string.IsNullOrEmpty(campaignAccount.RefId))
+            {
+                campaignAccount.Status = CampaignAccountStatus.Finished;
+            }
+            else {
+                campaignAccount.Status = CampaignAccountStatus.Unfinished;
+                campaignAccount.Note = "Link Facebook Post không đúng";
+            }            
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;
             await _campaignAccountRepository.UpdateAsync(campaignAccount);

@@ -56,9 +56,7 @@ namespace WebInfluencer.Controllers
 
 
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
-        {
-
-
+        {          
             //await _IFacebookJob.UpdateFbInfo(114);
 
             string msg = string.Empty;
@@ -164,24 +162,22 @@ namespace WebInfluencer.Controllers
         #endregion
 
         #region Content
-        public async Task<IActionResult> CreateContent(CreateCampaignAccountContentViewModel model, List<IFormFile> file)
+        [HttpPost]
+        public async Task<IActionResult> CreateContent(CreateCampaignAccountContentViewModel model, List<IFormFile> file, List<string> content_image)
         {
             if (ModelState.IsValid)
             {
-                //var imgs = new List<string>();
-                //if (file != null)
-                //    foreach (var item in file)
+                var imgs = content_image;
+                //if (strImages != null)
+                //{
+                //    string[] arrayImages = strImages.Split(new string[] { "|" }, StringSplitOptions.None);
+
+                //    foreach(string img in arrayImages)
                 //    {
-
-                //        var newpath = await _fileHelper.UploadTempFile(item);
-                //        var tmp = _fileHelper.MoveTempFile(newpath, "campaigncontent");
-                //        if (!string.IsNullOrEmpty(tmp))
-                //        {
-                //            imgs.Add(tmp);
-                //        }
+                //        imgs.Add(img);
                 //    }
-
-                //model.Image = imgs;
+                //}                   
+                model.Image = imgs;
 
                 var r = await _campaignAccountContentService.CreateCampaignAccountContent(model, CurrentUser.Username);
                 SetMessageModal("Đã gửi nội dung thành công, Nội dung của bạn đang chờ được xét duyệt.");
@@ -356,6 +352,7 @@ namespace WebInfluencer.Controllers
             var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
             if (r > 0)
             {
+                
                 ViewBag.Success = "Bạn đã thực hiện thành công công việc";
             }
             else
