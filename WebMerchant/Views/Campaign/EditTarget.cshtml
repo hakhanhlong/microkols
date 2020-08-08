@@ -279,7 +279,14 @@
                 </div>
                 <h6>Thời gian</h6>
                 <div class="form-group ">
-                    <label asp-for="RegisterTime"></label>
+                    @if (campaignType == CampaignType.JoinEvent)
+                    {
+                        <label>Thời gian nhận đăng ký</label>
+                    }
+                    else
+                    {
+                        <label asp-for="RegisterTime"></label>
+                    }
 
                     <input type="text" class="form-control form-daterangepicker" id="RegisterTime2" asp-for="RegisterTime" autocomplete="off" />
                     <span asp-validation-for="RegisterTime"></span>
@@ -299,13 +306,20 @@
                     <input type="hidden" asp-for="FeedbackBefore" />
                 }
 
-                <div class="form-group ">
-                    <label asp-for="ExecutionTime"></label>
+                    <div class="form-group ">
+                        @if (campaignType == CampaignType.JoinEvent)
+                        {
+                            <label>Thời gian check-in và post nội dung</label>
+                        }
+                        else
+                        {
+                            <label asp-for="ExecutionTime"></label>
+                        }
 
-                    <input type="text" class="form-control" id="ExecutionTime2" asp-for="ExecutionTime" autocomplete="off" />
-                    <span asp-validation-for="ExecutionTime"></span>
+                        <input type="text" class="form-control" id="ExecutionTime2" asp-for="ExecutionTime" autocomplete="off" />
+                        <span asp-validation-for="ExecutionTime"></span>
 
-                </div>
+                    </div>
 
 
                 <div class="text-center form-group">

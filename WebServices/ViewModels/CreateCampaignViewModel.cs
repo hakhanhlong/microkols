@@ -424,7 +424,7 @@ namespace WebServices.ViewModels
         [Display(Name = "Yêu cầu cụ thể chiến dịch")]
         public string Requirement { get; set; }
 
-        [Display(Name = "Thời gian")]
+        [Display(Name = "Thời gian")] //thời gian yêu cầu để avatar
         public int? AccountChargeTime { get; set; } = 1;
 
 

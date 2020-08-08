@@ -288,7 +288,15 @@
     <h6 style="font-weight:bold;">Thời gian</h6>
     <div class="form-group ">
 
-        <label asp-for="RegisterTime"></label>
+        @if (campaignType == CampaignType.JoinEvent)
+        {
+            <label>Thời gian nhận đăng ký</label>
+        }
+        else
+        {
+            <label asp-for="RegisterTime"></label>
+        }
+
 
 
         <input type="text" class="form-control form-daterangepicker" asp-for="RegisterTime" autocomplete="off" />
@@ -310,13 +318,22 @@
     }
 
 
-    <div class="form-group ">
-        <label asp-for="ExecutionTime"></label>
+        <div class="form-group ">
 
-        <input type="text" class="form-control" asp-for="ExecutionTime" autocomplete="off" />
-        <span asp-validation-for="ExecutionTime"></span>
+            @if (campaignType == CampaignType.JoinEvent)
+            {
+            <label>Thời gian check-in và post nội dung</label>
+            }
+            else
+            {
+                <label asp-for="ExecutionTime"></label>
+            }
 
-    </div>
+
+            <input type="text" class="form-control" asp-for="ExecutionTime" autocomplete="off" />
+            <span asp-validation-for="ExecutionTime"></span>
+
+        </div>
     @if (campaignType == CampaignType.ChangeAvatar && ViewBag.Image != null)
     {
         var img = (string)ViewBag.Image;
