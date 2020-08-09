@@ -163,7 +163,7 @@
                                             </div>
                                         }
 
-                                       
+
 
                                         <div class="mb-2">
                                             <strong class="mr-2">Ngày tạo:</strong> <span class="text-info">@Model.DateCreated.ToViDateTime()</span>
@@ -217,6 +217,19 @@
                                                 }
                                             }
                                         </div>
+
+                                        @if (Model.Type == CampaignType.ChangeAvatar)
+                                        {
+                                            
+                                            <div class="mb-2">
+                                                <strong class="mr-2">Thời gian yêu cầu để Avatar:</strong>
+                                                <span class="text-primary">
+                                                    @Model.AccountChargeTime Tuần
+                                                </span>
+                                            </div>
+
+                                        }
+
                                         @if (Model.Type == CampaignType.ReviewProduct)
                                         {
 

@@ -136,24 +136,37 @@
                                 }
                             }
                         </div>
+
+                        @if (Model.Type == CampaignType.ChangeAvatar)
+                        {
+                            stt++;
+                            <div class="mb-2">
+                                <h5>@stt. Thời gian yêu cầu để Avatar:</h5>
+                                <p>
+                                    @Model.AccountChargeTime Tuần
+                                </p>
+                            </div>
+                               
+                        }
+
                         @if (Model.Type == CampaignType.ReviewProduct)
                         {
 
-                        <div class="mb-2">
-                            <strong>
-                                @Model.ReviewType.ToDisplayName()
-                            </strong>
+                            <div class="mb-2">
+                                <strong>
+                                    @Model.ReviewType.ToDisplayName()
+                                </strong>
 
 
-                            @if (Model.ReviewPayback.HasValue)
-                            {
-                                <span> - Thu hồi sản phẩm</span>
-                            }
-                            <br />
-                            <br />
-                            <strong>Địa chỉ:</strong>
-                            @Model.ReviewAddress
-                        </div>
+                                @if (Model.ReviewPayback.HasValue)
+                                {
+                                    <span> - Thu hồi sản phẩm</span>
+                                }
+                                <br />
+                                <br />
+                                <strong>Địa chỉ:</strong>
+                                @Model.ReviewAddress
+                            </div>
 
                         }
                         @if (!string.IsNullOrEmpty(Model.Data))
@@ -170,210 +183,210 @@
                                 @Model.Description
                             </span>
                         </div>
-                        @*<div class="mb-2">
-            <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
-            <span>
-                Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
-                <span>
-                </span>
-            </span>
-        </div>*@
-                    </div>
+                                @*<div class="mb-2">
+                    <strong class="mr-2">12. Thông tin phần thưởng:</strong><br>
+                    <span>
+                        Phần thưởng cho influencer tham gia chiến dịch: Sản phẩm trị giá 500.000 VND và 1 voucher 20% kèm với 300.000 VND tiền mặt.
+                        <span>
+                        </span>
+                    </span>
+                </div>*@
+                            </div>
 
 
-                    <div class="col-md-6">
-                        @{ stt++;}
-                        <div class="mb-2">
-                            <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
-                            <span>
-                                @foreach (var item in Model.AccountTypes)
-                                {
-                                    <strong>@item.ToDisplayName()</strong>
-                                }
-                            </span>
-                        </div>
-                        <div class="mb-2">
-                            @{ stt++;}
-                            <h5 class="mr-2">@stt. Số lượng người cần:</h5>
-                            <span>
-                                @Model.Quantity
-                            </span>
-                        </div>
-                        @if (Model.Type == CampaignType.ShareContentWithCaption ||
-                      Model.Type == CampaignType.ReviewProduct)
-                        {
-                            <div class="mb-2">
+                            <div class="col-md-6">
                                 @{ stt++;}
-                                <h5 class="mr-2">@stt. KPIs yêu cầu tối thiểu cho mỗi người:</h5>
-                                <span>
-                                    <strong>@Model.InteractiveMin</strong>
-                                </span>
-                            </div>
-                        }
-                        @{ stt++;}
-                        <div class="mb-2">
-                            <h5 class="mr-2">@stt. Chi phí tối thiểu:</h5>
-                            <span class="text-danger">
-                                @Model.AmountMin.ToPriceText()
-                            </span>
-                        </div>
-                        @{ stt++;}
-                        <div class="mb-2">
-                            <h5 class="mr-2">@stt. Chi phí tối đa:</h5>
-                            <span class="text-danger">
-                                @Model.AmountMax.ToPriceText()
-                            </span>
-                        </div>
-                        @if (!string.IsNullOrEmpty(Model.Requirement))
-                        {
-                            stt++;
-                            <div class="mb-2">
-                                <h5 class="mr-2">@stt. Yêu cầu về chiến dịch:</h5><br>
-                                <span>
-                                    @Model.Requirement
-                                </span>
-                            </div>
-
-                        }
-                        @if (Model.Hashtag.Count > 0)
-                        {
-                            stt++;
-                            <div class="mb-2">
-                                <h5 class="mr-2">@stt. HashTag:</h5><br>
-                                <span>
-                                    @foreach (var item in Model.Hashtag)
-                                    {
-                                        <span>#@item.Trim('#')</span>
-                                    }
-                                </span>
-                            </div>
-                        }
-                        @if (Model.SampleContent.Count > 0)
-                        {
-
-                            <div class="mb-2">
-                                @{ stt++;}
-                                <h5 class="mr-2">@stt. Ảnh mẫu:</h5><br>
-                                <ul class="list-inline">
-                                    @foreach (var imgItem in Model.SampleContent)
-                                    {
-                                    <li class="list-inline-item">
-                                        <a href="@(AppOptions.CurrentValue.GetImageUrl(imgItem))" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
-                                            <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-                                        </a>
-                                            
-                                    </li>
-                                    }
-
-                                </ul>
-                            </div>
-
-                        }
-                        @if (!string.IsNullOrEmpty(Model.SampleContentText))
-                        {
-
-                            <div class="mb-2">
-                                @{ stt++;}
-                                <h5 class="mr-2">@stt. Nội dung mẫu:</h5><br>
-                                <span>
-
-                                    @Html.Raw(Model.SampleContentText)
-                                </span>
-                            </div>
-                        }
-
-                        @if (Model.Image.Count > 0)
-                        {
-
-                            @*<div class="mb-2">
-                                @{ stt++;}
-                                <h5 class="mr-2">@stt.  Ảnh chiến dịch cung cấp:</h5><br>
-
-                                <ul class="list-inline">
-                                    @foreach (var imgItem in Model.Image)
-                                    {
-                                        <li class="list-inline-item">
-                                            <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
-
-                                        </li>
-                                    }
-                                </ul>
-                            </div>*@
-                        }
-
-
-
-
-
-                        @if (Model.CountOption > 0)
-                        {
-                            stt++;
-                            <div class="mb-2">
-                                <h5 class="mr-2">@stt.  Tiêu chí:</h5><br>
-                                <ul>
-                                    @if (Model.Gender.HasValue)
-                                    {
-                                        <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
-                                    }
-                                    @if (Model.CityId.Count > 0)
-                                    {
-                                        var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
-                                        if (listcity.Any())
+                                <div class="mb-2">
+                                    <h5 class="mr-2">@stt. Đối tượng tham gia:</h5>
+                                    <span>
+                                        @foreach (var item in Model.AccountTypes)
                                         {
-                                            <li>
-                                                Khu vực:
-
-                                                @foreach (var city in listcity)
-                                                {
-                                                    <strong>@city.Name</strong>
-                                                }
-
-                                            </li>
+                                            <strong>@item.ToDisplayName()</strong>
                                         }
-                                    }
-                                    @if (Model.AgeStart.HasValue)
-                                    {
-                                        <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
-                                    }
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    @{ stt++;}
+                                    <h5 class="mr-2">@stt. Số lượng người cần:</h5>
+                                    <span>
+                                        @Model.Quantity
+                                    </span>
+                                </div>
+                                @if (Model.Type == CampaignType.ShareContentWithCaption ||
+                             Model.Type == CampaignType.ReviewProduct)
+                                {
+                                    <div class="mb-2">
+                                        @{ stt++;}
+                                        <h5 class="mr-2">@stt. KPIs yêu cầu tối thiểu cho mỗi người:</h5>
+                                        <span>
+                                            <strong>@Model.InteractiveMin</strong>
+                                        </span>
+                                    </div>
+                                }
+                                @{ stt++;}
+                                <div class="mb-2">
+                                    <h5 class="mr-2">@stt. Chi phí tối thiểu:</h5>
+                                    <span class="text-danger">
+                                        @Model.AmountMin.ToPriceText()
+                                    </span>
+                                </div>
+                                @{ stt++;}
+                                <div class="mb-2">
+                                    <h5 class="mr-2">@stt. Chi phí tối đa:</h5>
+                                    <span class="text-danger">
+                                        @Model.AmountMax.ToPriceText()
+                                    </span>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.Requirement))
+                                {
+                                    stt++;
+                                    <div class="mb-2">
+                                        <h5 class="mr-2">@stt. Yêu cầu về chiến dịch:</h5><br>
+                                        <span>
+                                            @Model.Requirement
+                                        </span>
+                                    </div>
 
-                                    @if (Model.CategoryIds.Count > 0)
-                                    {
-                                        var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
-
-                                        <li>
-                                            Lĩnh vực quan tâm/thế mạnh:
-                                            @foreach (var cat in cats)
+                                }
+                                @if (Model.Hashtag.Count > 0)
+                                {
+                                    stt++;
+                                    <div class="mb-2">
+                                        <h5 class="mr-2">@stt. HashTag:</h5><br>
+                                        <span>
+                                            @foreach (var item in Model.Hashtag)
                                             {
-                                                <strong>@cat.Name</strong>
+                                                <span>#@item.Trim('#')</span>
                                             }
-                                        </li>
-                                    }
+                                        </span>
+                                    </div>
+                                }
+                                @if (Model.SampleContent.Count > 0)
+                                {
+
+                                    <div class="mb-2">
+                                        @{ stt++;}
+                                        <h5 class="mr-2">@stt. Ảnh mẫu:</h5><br>
+                                        <ul class="list-inline">
+                                            @foreach (var imgItem in Model.SampleContent)
+                                            {
+                                                <li class="list-inline-item">
+                                                    <a href="@(AppOptions.CurrentValue.GetImageUrl(imgItem))" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                                        <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                                                    </a>
+
+                                                </li>
+                                            }
+
+                                        </ul>
+                                    </div>
+
+                                }
+                                @if (!string.IsNullOrEmpty(Model.SampleContentText))
+                                {
+
+                                    <div class="mb-2">
+                                        @{ stt++;}
+                                        <h5 class="mr-2">@stt. Nội dung mẫu:</h5><br>
+                                        <span>
+
+                                            @Html.Raw(Model.SampleContentText)
+                                        </span>
+                                    </div>
+                                }
+
+                                @if (Model.Image.Count > 0)
+                                {
+
+                                    @*<div class="mb-2">
+                        @{ stt++;}
+                        <h5 class="mr-2">@stt.  Ảnh chiến dịch cung cấp:</h5><br>
+
+                        <ul class="list-inline">
+                            @foreach (var imgItem in Model.Image)
+                            {
+                                <li class="list-inline-item">
+                                    <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+
+                                </li>
+                            }
+                        </ul>
+                    </div>*@
+                                }
 
 
-                                    @if (Model.AccountTypes.Contains(AccountType.HotMom))
-                                    {
 
-                                        <li>
-                                            Con cái:
 
-                                            @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
 
-                                            @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                @if (Model.CountOption > 0)
+                                {
+                                    stt++;
+                                    <div class="mb-2">
+                                        <h5 class="mr-2">@stt.  Tiêu chí:</h5><br>
+                                        <ul>
+                                            @if (Model.Gender.HasValue)
+                                            {
+                                                <li>Giới tính: @Model.Gender.Value.ToDisplayName()</li>
+                                            }
+                                            @if (Model.CityId.Count > 0)
+                                            {
+                                                var listcity = cities.Where(m => Model.CityId.Contains(m.Id));
+                                                if (listcity.Any())
+                                                {
+                                                    <li>
+                                                        Khu vực:
+
+                                                        @foreach (var city in listcity)
+                                                        {
+                                                            <strong>@city.Name</strong>
+                                                        }
+
+                                                    </li>
+                                                }
+                                            }
+                                            @if (Model.AgeStart.HasValue)
+                                            {
+                                                <li>Độ tuổi: <strong>@Model.AgeStart</strong> - <strong>@Model.AgeEnd</strong></li>
+                                            }
+
+                                            @if (Model.CategoryIds.Count > 0)
+                                            {
+                                                var cats = categories.Where(m => Model.CategoryIds.Contains(m.Id));
+
+                                                <li>
+                                                    Lĩnh vực quan tâm/thế mạnh:
+                                                    @foreach (var cat in cats)
+                                                    {
+                                                        <strong>@cat.Name</strong>
+                                                    }
+                                                </li>
+                                            }
+
+
+                                            @if (Model.AccountTypes.Contains(AccountType.HotMom))
                                             {
 
-                                                <span>
-                                                    -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
-                                                </span>
+                                                <li>
+                                                    Con cái:
+
+                                                    @(Model.ChildType == 0 ? "Tất cả giới tính " : Model.ChildType == 1 ? "Con trai" : Model.ChildType == 2 ? "Con gái" : "")
+
+                                                    @if (Model.ChildAgeMin > 0 || Model.ChildAgeMax > 0)
+                                                    {
+
+                                                        <span>
+                                                            -  Độ tuổi @Model.ChildAgeMin  - @Model.ChildAgeMax
+                                                        </span>
+                                                    }
+
+                                                </li>
                                             }
 
-                                        </li>
-                                    }
-
-                                </ul>
+                                        </ul>
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
-                </div>
+                        </div>
 
                 <div class="mt-2">
                     @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Created && Model.Status != CampaignStatus.Started)

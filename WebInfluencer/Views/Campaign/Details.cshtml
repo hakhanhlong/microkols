@@ -73,6 +73,13 @@
                 <p>
                     @Model.Campaign.Requirement
                 </p>
+                @if(Model.Campaign.Type == CampaignType.ChangeAvatar)
+                {
+                    <h5>Thời gian yêu cầu để Avatar:</h5>
+                    <p>
+                        @Model.Campaign.AccountChargeTime Tuần
+                    </p>
+                }
                 @if (!string.IsNullOrEmpty(Model.Campaign.Data))
                 {
                     <h5>@Model.Campaign.Type.ToActionText():</h5>

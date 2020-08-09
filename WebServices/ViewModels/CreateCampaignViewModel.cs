@@ -425,6 +425,7 @@ namespace WebServices.ViewModels
         public string Requirement { get; set; }
 
         [Display(Name = "Thời gian")] //thời gian yêu cầu để avatar
+        [Required(ErrorMessage = "Hãy nhập dữ liệu {0}")]
         public int? AccountChargeTime { get; set; } = 1;
 
 
