@@ -55,7 +55,7 @@
                                         {
 
                                             <li class="list-inline-item">
-                                                <a href="@AppOptions.CurrentValue.GetImageUrl(img)" class="open-img-popup" target="_blank">
+                                                <a href="@AppOptions.CurrentValue.GetImageUrl(img)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
 
                                                     <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
                                                 </a>
@@ -159,9 +159,13 @@
                                                                                         @foreach (var img in item2.Image)
                                                                                         {
 
-                                                                                            <li class="list-inline-item">
+                                                                                        <li class="list-inline-item">
+                                                                                            <a href="@AppOptions.CurrentValue.GetImageUrl(img)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+
                                                                                                 <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
-                                                                                            </li>
+                                                                                            </a>
+                                                                                            
+                                                                                        </li>
                                                                                         }
                                                                                     </ul>
                                                                                 }
@@ -240,9 +244,14 @@
                                                                                 @foreach (var img in item2.Image)
                                                                                 {
 
-                                                                                    <li class="list-inline-item">
+                                                                                <li class="list-inline-item">
+                                                                                    
+                                                                                    <a href="@AppOptions.CurrentValue.GetImageUrl(img)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+
                                                                                         <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
-                                                                                    </li>
+                                                                                    </a>
+
+                                                                                </li>
                                                                                 }
                                                                             </ul>
                                                                         }
