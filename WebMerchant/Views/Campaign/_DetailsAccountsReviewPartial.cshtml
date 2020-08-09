@@ -37,7 +37,7 @@
                 <td>@stt</td>
                 <td>
 
-                    <div>
+                    <div style="font-weight:bold;">
                         <a href="@campaignAccount.Account.Link" target="_blank">
                             @campaignAccount.Account.Name
                         </a>
@@ -87,12 +87,12 @@
                                                 </span>
                                             }
 
-                                                                                @*@if (Model.Type == CampaignType.ShareContentWithCaption)
-                                            {
-                                                var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
-                                                <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
+                                            @*@if (Model.Type == CampaignType.ShareContentWithCaption)
+                                {
+                                    var matchpercent = StringHelper.Compute(campaignAccount.RefContent, post.Message);
+                                    <span data-toggle="tooltip" title="Tỷ lệ chính xác">@matchpercent% <i class="fal fa-smile"></i> </span>
 
-                                            }*@
+                                }*@
                                         </div>
                                     }
                                 }
@@ -121,6 +121,17 @@
                                     }
                                 }
 
+                            </div>
+                        }
+
+                    }
+
+                    @if (Model.Type == CampaignType.ReviewProduct)
+                    {
+                        if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                        {
+                            <div>
+                                <span>Địa chỉ nhận sản phẩm: @campaignAccount.ReviewAddress</span>
                             </div>
                         }
 

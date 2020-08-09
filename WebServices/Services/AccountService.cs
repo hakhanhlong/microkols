@@ -450,6 +450,18 @@ namespace WebServices.Services
             return accountProvider != null ? accountProvider.ProviderId : string.Empty;
         }
 
+        public async Task UpdateFacebookUrlProfile(int accountid, AccountProviderNames provider, string urlFacebookProfile)
+        {
+            var filter = new AccountProviderSpecification(accountid, provider);
+            var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(filter);
+
+            accountProvider.Link = urlFacebookProfile;
+
+            await _accountProviderRepository.UpdateAsync(accountProvider);
+
+
+        }
+
         public async Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username)
         {
             var filter = new AccountProviderSpecification(model.Provider, model.ProviderId);

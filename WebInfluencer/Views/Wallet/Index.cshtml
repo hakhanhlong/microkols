@@ -69,7 +69,7 @@
                             var url = "";
                             if (CurrentUser.Type == EntityType.Account)
                             {
-                                url = Url.Action("Details", "AccountCampaign", new { id = item.RefId });
+                                url = Url.Action("Details", "Campaign", new { id = item.RefId });
                             }
                             else
                             {
@@ -80,8 +80,10 @@
 
                         @if (item.Type.ToString().Contains("Campaign"))
                         {
-                            var code = await CampaignService.GetCampaignCode(item.RefId);
-                            <a href="@url"> @item.Type.ToDisplayName() chiến dịch @code</a>
+                            //var code = await CampaignService.GetCampaignCode(item.RefId);
+                            var _campaign = await CampaignService.GetCampaignById(item.RefId);
+
+                            <a href="@url"> @item.Type.ToDisplayName() chiến dịch <span style="font-weight:bold;">"@_campaign.Title"</span></a>
 
                         }
                         else

@@ -129,6 +129,16 @@
                         }
 
                     }
+                    @if (Model.Type == CampaignType.ReviewProduct)
+                    {
+                        if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                        {
+                            <div>
+                                <span>Địa chỉ nhận sản phẩm: @campaignAccount.ReviewAddress</span>
+                            </div>
+                        }
+
+                    }
 
                 </td>
                 @if (haskpi > 0)

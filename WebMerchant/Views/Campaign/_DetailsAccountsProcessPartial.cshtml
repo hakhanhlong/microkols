@@ -45,7 +45,7 @@
             <tr>
                 <td>@stt</td>
                 <td>
-                    <div>
+                    <div style="font-weight:bold;">
                         <a href="@campaignAccount.Account.Link" target="_blank">
                             @campaignAccount.Account.Name
                         </a>
@@ -123,6 +123,17 @@
                                     }
                                 }
 
+                            </div>
+                        }
+
+                    }
+
+                    @if (Model.Type == CampaignType.ReviewProduct)
+                    {
+                        if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                        {
+                            <div>
+                                <span>Địa chỉ nhận sản phẩm: @campaignAccount.ReviewAddress</span>
                             </div>
                         }
 

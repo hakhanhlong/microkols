@@ -240,7 +240,19 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> ChangeInfo(int vtype = 0)
         {
             var model = await _accountService.GetInformation(CurrentUser.Id);
+            var accountProvider = await _accountService.GetAccountProviderByAccount(CurrentUser.Id, AccountProviderNames.Facebook);
             ViewBag.Categories = await _sharedService.GetCategories();
+            model.FacebookProfile = accountProvider.FbProfileLink;
+
+            if (!string.IsNullOrEmpty(model.Birthday))
+            {
+                DateTime birthday = DateTime.Parse(model.Birthday);
+                if((DateTime.Now.Year - birthday.Year) < 18)
+                {
+                    TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                }
+            }
+
             if (vtype == 1)
             {
                 return View("AuthChangeInfo", model);
@@ -254,7 +266,19 @@ namespace WebInfluencer.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!string.IsNullOrEmpty(model.Birthday))
+                {
+                    DateTime birthday = DateTime.Parse(model.Birthday);
+                    if ((DateTime.Now.Year - birthday.Year) < 18)
+                    {
+                        TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                        return RedirectToAction("ChangeInfo");
+                    }
+                    
+                }
+
                 var r = await _accountService.ChangeInformation(CurrentUser.Id, model, CurrentUser.Username);
+                await _accountService.UpdateFacebookUrlProfile(CurrentUser.Id, AccountProviderNames.Facebook, model.FacebookProfile);
                 if (vtype == 1 && r)
                 {
                     return RedirectToAction("ChangeContact", new { vtype = 1 });

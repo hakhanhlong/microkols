@@ -39,12 +39,16 @@ namespace WebServices.ViewModels
             ReportImages = campaignAccount.ReportImages.ToListString();
             KPICommitted = campaignAccount.KPICommitted;
 
+            ReviewAddress = campaignAccount.ReviewAddress;
+
             MerchantPaidToSystem = campaignAccount.MerchantPaidToSystem;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
             return campaignAccounts.Select(m => new CampaignAccountViewModel(m)).ToList();
         }
+
+        public string ReviewAddress { get; set; }
         public int KPICommitted { get; set; }
         public int Id { get; set; }
         public CampaignAccountRating? Rating { get; set; }

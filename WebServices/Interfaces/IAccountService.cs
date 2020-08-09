@@ -65,6 +65,9 @@ namespace WebServices.Interfaces
         Task<int> UpdateAccountProvider(int accountid, UpdateAccountProviderViewModel model, string username);
         Task<AccountProviderViewModel> GetAccountProviderByAccount(int accountid, AccountProviderNames provider);
         Task<string> GetProviderIdByAccount(int accountid, AccountProviderNames provider);
+
+        Task UpdateFacebookUrlProfile(int accountid, AccountProviderNames provider, string urlFacebookProfile);
+
         Task<bool> UpdateAccountProvidersAccessToken(int id, string accessToken, int expiredIn);
 
         #endregion

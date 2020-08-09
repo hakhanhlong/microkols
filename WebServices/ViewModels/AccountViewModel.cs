@@ -171,6 +171,11 @@ namespace WebServices.ViewModels
         [Display(Name = "Tình trạng hôn nhân")]
         public MaritalStatus MaritalStatus { get; set; } = MaritalStatus.Single;
 
+        [Required(ErrorMessage = "Hãy nhập {0}")]
+        [Display(Name = "URL Facebook cá nhân")]
+        public string FacebookProfile { get; set; }
+
+
 
     }
 

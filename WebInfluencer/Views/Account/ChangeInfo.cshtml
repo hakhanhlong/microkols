@@ -95,6 +95,11 @@
 
         </ul>
     </div> 
+    <div class="form-group">
+        <label asp-for="FacebookProfile"></label>
+        <input type="url" class="form-control" asp-for="FacebookProfile">
+        <span asp-validation-for="FacebookProfile"></span>
+    </div>
     <partial name="_WarningTextPartial" />
     <div class="form-group">
         <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>

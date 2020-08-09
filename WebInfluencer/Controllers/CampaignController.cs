@@ -283,7 +283,7 @@ namespace WebInfluencer.Controllers
                 var r = await _campaignService.SubmmitCampaignAccountChangeAvatar(CurrentUser.Id, model, CurrentUser.Username);
                 if (r > 0)
                 {
-                    ViewBag.Success = "Bạn đã thực hiện thành công công việc";
+                    ViewBag.Success = "Cảm ơn bạn đã thực hiện công việc";
                 }
                 else
                 {
@@ -352,8 +352,21 @@ namespace WebInfluencer.Controllers
             var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
             if (r > 0)
             {
-                
-                ViewBag.Success = "Bạn đã thực hiện thành công công việc";
+                try
+                {
+                    if (model.CampaignType != CampaignType.ShareContentWithCaption)
+                    {
+                        ViewBag.Success = "Cảm ơn bạn đã thực hiện công việc";
+                    }
+                    else
+                    {
+                        ViewBag.Success = "Bạn đã thực hiện thành công công việc";
+                    }
+                }
+                catch
+                {
+                    ViewBag.Success = "Bạn đã thực hiện thành công công việc";
+                }                
             }
             else
             {
