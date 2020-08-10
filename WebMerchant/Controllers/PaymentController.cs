@@ -35,7 +35,9 @@ namespace WebMerchant.Controllers
         public async Task<IActionResult> CampaignPayment(int campaignid)
         {
             var payment = await _campaignService.GetCampaignPaymentByAgency(CurrentUser.Id, campaignid);
+
             var list_pay_influencer = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, campaignid);
+
             ViewBag.Amount = await _walletService.GetAmount(CurrentUser);
             ViewBag.Payment = payment;
 

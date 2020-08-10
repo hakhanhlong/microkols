@@ -92,7 +92,6 @@ namespace Core.Entities
     public enum CampaignReviewType
     {
         [Display(Name = "Gửi sản phẩm trải nghiệm đến địa chỉ của Influencers", Description ="Nhập địa chỉ nhận lại sản phẩm sau khi người dùng trải nghiệm")]
-
         GuiSanPham = 0,
         [Display(Name = "Mời người dùng đến trải nghiệm", Description = "Nhập địa chỉ trải nghiệm sản phẩm")]
         MoiNguoiDung = 1

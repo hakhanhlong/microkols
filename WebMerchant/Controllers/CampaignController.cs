@@ -498,7 +498,7 @@ namespace WebMerchant.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost] //duyệt influencer tham gia chiến dịch (influencer request)
         public async Task<IActionResult> FeedbackAccountJoinCampaign(int campaignid, int accountid, int type, string returnurl = "")
         {
             var result = await _campaignService.FeedbackJoinCampaignByAgency(CurrentUser.Id, campaignid, accountid, type == 1, CurrentUser.Name);

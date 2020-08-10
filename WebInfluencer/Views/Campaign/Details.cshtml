@@ -73,7 +73,7 @@
                 <p>
                     @Model.Campaign.Requirement
                 </p>
-                @if(Model.Campaign.Type == CampaignType.ChangeAvatar)
+                @if (Model.Campaign.Type == CampaignType.ChangeAvatar)
                 {
                     <h5>Thời gian yêu cầu để Avatar:</h5>
                     <p>
@@ -145,15 +145,25 @@
                             </ul>
                         }
                         @*else
-                            {
-                                <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                                <p>
-                                </p><ul class="list-unstyled">
-                                    <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+                        {
+                            <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                            <p>
+                            </p><ul class="list-unstyled">
+                                <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
 
-                                </ul>
-                            }*@
+                            </ul>
+                        }*@
 
+                    }
+
+
+                    @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
+                    {
+                        <h5> Thời gian thực hiện chiến dịch</h5>
+                        <p>
+                        </p><ul class="list-unstyled">
+                            <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
+                        </ul>
                     }
 
                     if (Model.Campaign.Type == CampaignType.ReviewProduct)
@@ -164,46 +174,50 @@
                                 @Model.Campaign.ReviewType.ToDisplayName()
                             </h5>
 
-
-                            @if (Model.Campaign.ReviewPayback.HasValue)
+                            @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
                             {
-                                <p> - Trả lại sản phẩm sau khi trải nghiệm</p>
+
+                                if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                                {
+                                    <p></p>
+                                    <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                                    <p></p>
+                                }
+                            }
+                            else
+                            {
+
+                                <p></p>
+                                <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                                <p></p>
                             }
 
-                            <h5 class="mr-2"> Địa điểm trả lại sản phẩm:</h5>
-                            <p>@Model.Campaign.ReviewAddress</p>
+
+
                         </div>
 
                         @*<div>
-                                @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-                                {
-                                    <strong> Thời gian trải nghiệm</strong>
+                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+                    {
+                        <strong> Thời gian trải nghiệm</strong>
 
-                                    <ul class="list-unstyled">
-                                        <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                                    </ul>
-                                }
-                                @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                {
-                                    <strong> Địa điểm trải nghiệm</strong>
-                                    <p>
-                                        @Model.Campaign.ReviewAddress
-                                    </p>
-                                }
+                        <ul class="list-unstyled">
+                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                        </ul>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <strong> Địa điểm trải nghiệm</strong>
+                        <p>
+                            @Model.Campaign.ReviewAddress
+                        </p>
+                    }
 
-                            </div>*@
+                </div>*@
                     }
 
                 }
 
-                @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
-                {
-                    <h5> Thời gian thực hiện chiến dịch</h5>
-                    <p>
-                    </p><ul class="list-unstyled">
-                        <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
-                    </ul>
-                }
 
 
                 @if (Model.Campaign.Type != CampaignType.ChangeAvatar && Model.Campaign.Type != CampaignType.JoinEvent && Model.Campaign.Type != CampaignType.ShareStreamUrl)
@@ -221,12 +235,12 @@
                                 </li>
                             }
                             @*else
-                                if (Model.Campaign.InteractiveMin.HasValue)
-                                {
-                                    <li>
-                                        @Model.Campaign.InteractiveMin.Value
-                                    </li>
-                                }*@
+                    if (Model.Campaign.InteractiveMin.HasValue)
+                    {
+                        <li>
+                            @Model.Campaign.InteractiveMin.Value
+                        </li>
+                    }*@
                             else
                             {
                                 <li>
@@ -298,18 +312,22 @@
                     {
                         if (true == Model.Campaign.ReviewPayback)
                         {
-                        <div>
-                            <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                            @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
-                            {
-                                <p>@campaignAccount.ReviewAddress</p>
-                            }
-                            else
-                            {
-                                <input type="text" name="ReviewAddress" class="form-control" required value="" />
-                            }
+                            <div>
+                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                @if (campaignAccount != null)
+                                {
+                                    @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                                    {
+                                        <p>@campaignAccount.ReviewAddress</p>
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                }
 
-                        </div>
+
+                            </div>
                         }
                     }
                 }
@@ -325,9 +343,9 @@
                                 <a href="@AppOptions.CurrentValue.GetImageUrl(item)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
                                     <img src="@AppOptions.CurrentValue.GetImageUrl(item)" style="height:80px" />
                                 </a>
-                                    
-                             }
-                       </div>
+
+                            }
+                        </div>
                     }
                 }
 

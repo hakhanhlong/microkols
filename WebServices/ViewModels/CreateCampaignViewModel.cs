@@ -202,12 +202,24 @@ namespace WebServices.ViewModels
             SampleContent = campaign.SampleContent.ToListString();
             SampleContentText = campaign.SampleContentText;
             Method = campaign.Method ?? CampaignMethod.OpenJoined;
+
             if (campaign.ReviewStart.HasValue && campaign.ReviewEnd.HasValue)
             {
                 ReviewDate = $"{campaign.ReviewStart.Value.ToViDateTime()} - {campaign.ReviewEnd.Value.ToViDateTime()}";
 
                 ReviewAddress = campaign.ReviewAddress;
             }
+
+            ReviewAddress = campaign.ReviewAddress;
+            ReviewType = campaign.ReviewType;
+
+            if (campaign.ReviewPayback.HasValue)
+            {
+                ReviewPayback = campaign.ReviewPayback.Value == true?1:0;
+            }
+
+            
+
         }
         public int Id { get; set; }
 
@@ -259,7 +271,37 @@ namespace WebServices.ViewModels
 
             campaign.ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null;
             campaign.ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null;
-            campaign.ReviewAddress = ReviewAddress;
+
+            if(ReviewType == CampaignReviewType.GuiSanPham)
+            {
+                campaign.ReviewAddress = ReviewAddress;
+            }
+            else
+            {
+                campaign.ReviewAddress = ReviewAddress2;
+            }
+            
+
+            if(ReviewPayback.HasValue == true)
+            {
+                if(ReviewPayback.Value == 1)
+                {
+                    campaign.ReviewPayback = true;
+                }
+                else
+                {
+                    campaign.ReviewPayback = false;
+                }                
+            }
+            else
+            {
+                campaign.ReviewPayback = false;
+            }
+
+            campaign.ReviewType = ReviewType;
+
+
+
             return campaign;
         }
     }

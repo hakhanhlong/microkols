@@ -141,7 +141,7 @@
                         {
                             stt++;
                             <div class="mb-2">
-                                <h5>@stt. Thời gian yêu cầu để Avatar:</h5>
+                                <h5 class="mr-2">@stt. Thời gian yêu cầu để Avatar:</h5>
                                 <p>
                                     @Model.AccountChargeTime Tuần
                                 </p>
@@ -151,28 +151,43 @@
 
                         @if (Model.Type == CampaignType.ReviewProduct)
                         {
-
+                            stt++;
                             <div class="mb-2">
-                                <strong>
-                                    @Model.ReviewType.ToDisplayName()
-                                </strong>
+                                <h5 class="mr-2">
+                                    @stt. @Model.ReviewType.ToDisplayName()
+                                </h5>
 
-
-                                @if (Model.ReviewPayback.HasValue)
+                                @if (Model.ReviewType == CampaignReviewType.GuiSanPham)
                                 {
-                                    <span> - Thu hồi sản phẩm</span>
+                                    @if (Model.ReviewPayback.HasValue)
+                                    {
+                                        if (Model.ReviewPayback.Value == true)
+                                        {
+
+                                            @if (!string.IsNullOrEmpty(Model.ReviewAddress))
+                                            {
+                                                <strong>Địa chỉ thu hồi sản phẩm:</strong><span>&nbsp;@Model.ReviewAddress</span>
+
+                                            }
+                                        }
+                                    }
                                 }
-                                <br />
-                                <br />
-                                <strong>Địa chỉ:</strong>
-                                @Model.ReviewAddress
+                                else
+                                {
+                                    <strong>Địa chỉ:</strong><span>&nbsp;@Model.ReviewAddress</span>
+                                }
+
+
+
+
                             </div>
 
                         }
                         @if (!string.IsNullOrEmpty(Model.Data))
                         {
+                            stt++;
                             <div class="mb-2">
-                                <strong> @Model.Type.ToDataText()</strong>:  <a href="@Model.Data" target="_blank">@Model.Data</a>
+                                <h5 class="mr-2">@stt. @Model.Type.ToDataText()</h5>  <a href="@Model.Data" target="_blank">@Model.Data</a>
                             </div>
                         }
 

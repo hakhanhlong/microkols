@@ -25,7 +25,17 @@ namespace Core.Extensions
 
             foreach (var item in accounts)
             {
-                result += campaign.GetAgencyChagreAmount(item);
+                if (campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ReviewProduct)
+                {
+                    if (item.IsApprovedContent == true)
+                    {
+                        result += campaign.GetAgencyChagreAmount(item);
+                    }
+                }
+                else
+                {
+                    result += campaign.GetAgencyChagreAmount(item);
+                }
             }
             //long totalAccountPrice = accounts.Select(m => m.AccountChargeAmount).Sum();
             //return totalAccountPrice;
@@ -41,7 +51,19 @@ namespace Core.Extensions
 
             foreach (var item in accounts)
             {
-                result += campaign.GetAgencyChagreAmount(item);
+                if (campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ReviewProduct)
+                {
+                    if (item.IsApprovedContent == true)
+                    {
+                        result += campaign.GetAgencyChagreAmount(item);
+                    }
+                }
+                else
+                {
+                    result += campaign.GetAgencyChagreAmount(item);
+                }
+
+                
             }
             //long totalAccountPrice = accounts.Select(m => m.AccountChargeAmount).Sum();
             //return totalAccountPrice;
@@ -67,7 +89,18 @@ namespace Core.Extensions
 
             foreach (var item in accounts)
             {
-                result += item.AccountChargeAmount;
+                if(campaign.Type == CampaignType.ShareContentWithCaption || campaign.Type == CampaignType.ReviewProduct)
+                {
+                    if(item.IsApprovedContent == true)
+                    {
+                        result += item.AccountChargeAmount;
+                    }
+                }
+                else
+                {
+                    result += item.AccountChargeAmount;
+                }
+                
             }
             
             return result;

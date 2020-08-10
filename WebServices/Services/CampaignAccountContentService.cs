@@ -187,6 +187,9 @@ namespace WebServices.Services
                 campaignaccount.RefContent = CampaignAccountContent.Content;
                 campaignaccount.UserModified = username;
                 campaignaccount.DateModified = DateTime.Now;
+
+                campaignaccount.IsApprovedContent = true;
+
                 await _campaignAccountRepository.UpdateAsync(campaignaccount);
             }
 

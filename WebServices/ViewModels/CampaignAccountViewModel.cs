@@ -42,6 +42,8 @@ namespace WebServices.ViewModels
             ReviewAddress = campaignAccount.ReviewAddress;
 
             MerchantPaidToSystem = campaignAccount.MerchantPaidToSystem;
+
+            IsApprovedContent = campaignAccount.IsApprovedContent;
         }
         public static List<CampaignAccountViewModel> GetList(IEnumerable<CampaignAccount> campaignAccounts)
         {
@@ -78,6 +80,8 @@ namespace WebServices.ViewModels
 
         public DateTime DateCreated { get; set; }
         public DateTime DateModified { get; set; }
+
+        public bool? IsApprovedContent { get; set; }
     }
     
     public class ListCampaignAccountViewModel

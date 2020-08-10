@@ -100,25 +100,84 @@
 
 
                 @*@if (campaignType == CampaignType.ShareContent)
-                    {
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
-                                <label class="custom-control-label" asp-for="EnabledExtraType"></label>
-                            </div>
-                        </div>
-                    }*@
+        {
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" asp-for="EnabledExtraType" />
+                    <label class="custom-control-label" asp-for="EnabledExtraType"></label>
+                </div>
+            </div>
+        }*@
+
+                @*@if (campaignType == CampaignType.ReviewProduct)
+        {
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" asp-for="SendProduct" />
+                    <label class="custom-control-label" asp-for="SendProduct"></label>
+                </div>
+
+            </div>
+
+        }*@
 
                 @if (campaignType == CampaignType.ReviewProduct)
                 {
-                    <div class="form-group">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" asp-for="SendProduct" />
-                            <label class="custom-control-label" asp-for="SendProduct"></label>
+                    var arrType = Common.Helpers.StringHelper.GetEnumArray<CampaignReviewType>();
+
+
+                    foreach (var item in arrType)
+                    {
+                        var radioid = $"reviewtype{item}";
+
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" required class="custom-control-input" name="ReviewType" value="@item" id="@radioid" data-desc="" @(Model.ReviewType.Value == item? "checked=\"checked\"":"")/>
+                                <label class="custom-control-label" for="@radioid">@item.ToDisplayName()</label>
+                            </div>
+
                         </div>
 
-                    </div>
+                        <div class="reviewaddress-container reviewaddress-container-@item">
+
+
+                            @if (item == CampaignReviewType.GuiSanPham)
+                            {
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="ReviewPayback" id="ReviewPayback" 
+                                               value="1" @(Model.ReviewPayback.Value == 1?"checked=\"checked\"":"")/>
+
+                                        <label class="custom-control-label" asp-for="ReviewPayback" style="font-weight:bold;"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group form-reviewAddress" style="display:none">
+                                    <label style="font-weight:bold;">@item.ToDescription()</label>
+                                    <textarea class="form-control " asp-for="ReviewAddress"></textarea>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="form-group">
+                                    <label style="font-weight:bold;">@item.ToDescription()</label>
+                                    <textarea class="form-control " asp-for="ReviewAddress2"></textarea>
+                                </div>
+                            }
+
+                        </div>
+                    }
+
+
+                    <span asp-validation-for="ReviewType" class="text-danger"></span>
                 }
+                else
+                {
+
+                    <input type="hidden" asp-for="ReviewType" />
+                    <input type="hidden" asp-for="ReviewAddress" />                    
+                    <input type="hidden" asp-for="ReviewDate" />
+                }
+
 
                 @if (campaignType != CampaignType.ChangeAvatar)
                 {
@@ -139,11 +198,11 @@
                                     </li>
                                 }
                                 @*else
-                                    {
-                                        <li>
-                                            <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                                        </li>
-                                    }*@
+                        {
+                            <li>
+                                <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                            </li>
+                        }*@
                             </ul>
                         </div>
 
@@ -164,6 +223,7 @@
                     <input type="hidden" asp-for="ReviewAddress" />
                     <input type="hidden" asp-for="ReviewDate" />
                     <input type="hidden" asp-for="Type" />
+                    <br />
                     <button class="btn btn-outline-primary btn-bold-text" type="submit">
                         Cập nhật
                     </button>

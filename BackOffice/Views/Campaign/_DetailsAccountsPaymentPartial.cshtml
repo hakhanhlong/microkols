@@ -41,8 +41,22 @@
 
             var agencyCharge = await CampaignService.GetAgencyChagreAmount(campaignAccount.Id);
             var _amountServiceCharge = (campaignAccount.AccountChargeAmount * (100 + campaign.ServiceChargePercent)) / 100; //tiền có dịch vụ
+            string AccountChargeAmount = string.Empty;
 
-            total += _amountServiceCharge;
+            if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
+            {
+                if (campaignAccount.IsApprovedContent == true)
+                {
+                    total += _amountServiceCharge;
+                    AccountChargeAmount = campaignAccount.AccountChargeAmount.ToPriceText();
+                }
+            }
+            else
+            {
+                total += _amountServiceCharge;
+                AccountChargeAmount = campaignAccount.AccountChargeAmount.ToPriceText();
+            }
+
             <tr>
                 <td>@stt</td>
                 <td>
@@ -55,9 +69,10 @@
                     @campaignAccount.Status.ToBadge()
                 </td>
                 <td class="text-danger">
-                    @campaignAccount.AccountChargeAmount.ToPriceText()
+                    @AccountChargeAmount
                 </td>
             </tr>
+  
         }
         <tr>
             <td colspan="3" class="text-right">Phí dịch vụ</td>
@@ -73,4 +88,4 @@
         </tr>
     </tbody>
 
-</table></table>
+</table>

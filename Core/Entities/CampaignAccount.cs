@@ -62,6 +62,9 @@ namespace Core.Entities
         public string Note { get; set; }
 
         public bool? IsRefundToAgency { get; set; }
+
+        public bool? IsApprovedContent { get; set; }
+
         public string ReviewAddress { get; set; }
     }
 

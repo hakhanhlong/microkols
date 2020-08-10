@@ -220,7 +220,7 @@
 
                                         @if (Model.Type == CampaignType.ChangeAvatar)
                                         {
-                                            
+
                                             <div class="mb-2">
                                                 <strong class="mr-2">Thời gian yêu cầu để Avatar:</strong>
                                                 <span class="text-primary">
@@ -238,18 +238,40 @@
                                                     @Model.ReviewType.ToDisplayName()
                                                 </strong>
 
-
-                                                @if (Model.ReviewPayback.HasValue)
+                                                @if (Model.ReviewType == CampaignReviewType.GuiSanPham)
                                                 {
-                                                    <span> - Thu hồi sản phẩm</span>
+                                                    @if (Model.ReviewPayback.HasValue)
+                                                    {
+                                                        if (Model.ReviewPayback.Value == true)
+                                                        {
+
+                                                            @if (!string.IsNullOrEmpty(Model.ReviewAddress))
+                                                            {
+                                                                <br />
+                                                                <strong>Địa chỉ thu hồi sản phẩm:</strong>
+                                                                <p>@Model.ReviewAddress</p>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    if (!string.IsNullOrEmpty(Model.ReviewAddress))
+                                                    {
+                                                        <br />
+                                                        <strong>Địa chỉ:</strong>
+                                                        <p>@Model.ReviewAddress</p>
+                                                    }
                                                 }
 
-                                                <br />
-                                                <strong class="mr-2"> Địa chỉ:</strong>
-                                                @Model.ReviewAddress
+
+
+
                                             </div>
 
                                         }
+
+
                                         @if (!string.IsNullOrEmpty(Model.Data))
                                         {
                                             <div class="mb-2">

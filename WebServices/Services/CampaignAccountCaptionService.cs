@@ -172,9 +172,15 @@ namespace WebServices.Services
             if (status == CampaignAccountCaptionStatus.DaDuyet)
             {
                 campaignaccount.RefContent = CampaignAccountCaption.Content;
+
                 campaignaccount.UserModified = username;
+
                 campaignaccount.DateModified = DateTime.Now;
+
                 campaignaccount.Status = CampaignAccountStatus.ApprovedContent;
+
+                campaignaccount.IsApprovedContent = true;
+
                 await _campaignAccountRepository.UpdateAsync(campaignaccount);
 
             }
