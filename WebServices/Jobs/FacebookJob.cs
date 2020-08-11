@@ -132,6 +132,20 @@ namespace WebServices.Jobs
                                     //truong hop link lấy từ fb ko khớp với link user
                                     fbPost = fbPosts.Where(m => m.Link.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
                                 }
+
+
+                                //check bên permalink
+                                if (fbPost == null)
+                                {
+                                    //truong hop link user cạp nhạt ko khớp với link lấy từ fb
+                                    fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Permalink)).FirstOrDefault();
+                                }
+                                if (fbPost == null)
+                                {
+                                    //truong hop link lấy từ fb ko khớp với link user
+                                    fbPost = fbPosts.Where(m => m.Permalink.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
+                                }
+
                             }
                             else
                             {

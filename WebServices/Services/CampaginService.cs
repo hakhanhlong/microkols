@@ -215,6 +215,7 @@ namespace WebServices.Services
             var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type, keyword);
 
             var total = await query.CountAsync();
+
             var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
 
             //var filter = new CampaignByAccountSpecification(accountid, keyword);

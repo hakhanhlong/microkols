@@ -259,9 +259,17 @@ namespace Infrastructure.Data
 
             var joinCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
 
-            var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status!= CampaignStatus.Created);
+            var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status != CampaignStatus.Created);
 
-            queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) || (m.Status == CampaignStatus.Confirmed)));
+            //queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) || (m.Status == CampaignStatus.Confirmed)));
+
+            queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) && (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed)) 
+            || m.Status == CampaignStatus.Confirmed);
+
+            
+
+
+
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -271,6 +279,7 @@ namespace Infrastructure.Data
             {
                 queryCampaign = queryCampaign.Where(m => m.Type == type.Value);
             }
+
             return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.Agency);
         }
 
