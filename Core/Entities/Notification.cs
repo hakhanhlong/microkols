@@ -33,6 +33,7 @@ namespace Core.Entities
         AgencyApproveCampaignRefContent = 6,
         AgencyDeclineCampaignRefContent = 7,
         AgencyUpdatedCampaignRefContent = 8,
+
         AgencyCancelAccountJoinCampaign = 9,
 
         

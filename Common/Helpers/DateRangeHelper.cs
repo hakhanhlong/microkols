@@ -83,6 +83,7 @@ namespace Common.Helpers
                 {
                     var start = arrDate[0].Trim().ToViDateTime();
                     var end = arrDate[1].Trim().ToViDateTime();
+
                     if (start.HasValue && end.HasValue)
                     {
                         return new DateRange()

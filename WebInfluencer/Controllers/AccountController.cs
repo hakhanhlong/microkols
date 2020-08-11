@@ -239,25 +239,28 @@ namespace WebInfluencer.Controllers
         #region Change Info
         public async Task<IActionResult> ChangeInfo(int vtype = 0)
         {
-            var model = await _accountService.GetInformation(CurrentUser.Id);
+            var model = await _accountService.GetInformation(CurrentUser.Id);            
             var accountProvider = await _accountService.GetAccountProviderByAccount(CurrentUser.Id, AccountProviderNames.Facebook);
             ViewBag.Categories = await _sharedService.GetCategories();
             model.FacebookProfile = accountProvider.FbProfileLink;
 
-            if (!string.IsNullOrEmpty(model.Birthday))
-            {
-                DateTime birthday = DateTime.Parse(model.Birthday);
-                if((DateTime.Now.Year - birthday.Year) < 18)
+            try {
+                DateTime birthday;
+                DateTime.TryParse(model.Birthday, out birthday);
+                if (birthday != null)
                 {
-                    TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                    if ((DateTime.Now.Year - birthday.Year) < 18)
+                    {
+                        TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                    }
                 }
             }
-
+            catch { }
+            
             if (vtype == 1)
             {
                 return View("AuthChangeInfo", model);
             }
-
 
             return View(model);
         }
@@ -268,13 +271,19 @@ namespace WebInfluencer.Controllers
             {
                 if (!string.IsNullOrEmpty(model.Birthday))
                 {
-                    DateTime birthday = DateTime.Parse(model.Birthday);
-                    if ((DateTime.Now.Year - birthday.Year) < 18)
-                    {
-                        TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
-                        return RedirectToAction("ChangeInfo");
+                    try {
+                        DateTime birthday;
+                        DateTime.TryParse(model.Birthday, out birthday);
+                        if (birthday != null)
+                        {
+                            if ((DateTime.Now.Year - birthday.Year) < 18)
+                            {
+                                TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                                return RedirectToAction("ChangeInfo");
+                            }
+                        }
                     }
-                    
+                    catch { }                                                            
                 }
 
                 var r = await _accountService.ChangeInformation(CurrentUser.Id, model, CurrentUser.Username);

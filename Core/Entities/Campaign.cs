@@ -25,7 +25,7 @@ namespace Core.Entities
         // Lay o settings
         public int ServiceChargePercent { get; set; }
         // Lay o settings
-        public int ExtraOptionChargePercent { get; set; }        
+        public int ExtraOptionChargePercent { get; set; }
         // Lay o settings
         public int? ServiceVATPercent { get; set; }
 
@@ -66,12 +66,12 @@ namespace Core.Entities
         public DateTime? ReviewStart { get; set; }
         public DateTime? ReviewEnd { get; set; }
 
-        public string ReviewAddress{ get; set; }
+        public string ReviewAddress { get; set; }
 
         public CampaignReviewType? ReviewType { get; set; }
         public bool? ReviewPayback { get; set; }
 
-        public int  AmountMin { get; set; }
+        public int AmountMin { get; set; }
         public int AmountMax { get; set; }
         public int Quantity { get; set; }
 
@@ -86,6 +86,8 @@ namespace Core.Entities
 
         private List<CampaignAccountType> _CampaignAccountType = new List<CampaignAccountType>();
         public IEnumerable<CampaignAccountType> CampaignAccountType => _CampaignAccountType.AsReadOnly();
+
+        public string HrefCompare { get; set; }
 
     }
 

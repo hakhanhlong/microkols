@@ -51,6 +51,8 @@ namespace WebServices.ViewModels
             SampleContentText = campaign.SampleContentText;
             ServiceChargePercent = campaign.ServiceChargePercent;
 
+            HrefCompare = campaign.HrefCompare;
+
             SystemNote = campaign.SystemNote;
 
             if (campaign.InteractiveMin.HasValue)
@@ -161,6 +163,7 @@ namespace WebServices.ViewModels
             return campaigns.Select(m => new CampaignViewModel(m)).ToList();
         }
 
+        public string HrefCompare { get; set; }
 
         public int Id { get; set; }
         public string Title { get; set; }

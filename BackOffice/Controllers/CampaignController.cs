@@ -294,6 +294,32 @@ namespace BackOffice.Controllers
             return RedirectToAction("TakeNoteChangeStatus", "Campaign", new { id = id, status = (int)status });
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateHrefCompare(int id, string HrefCompare)
+        {
+            var campaign = await _ICampaignRepository.GetByIdAsync(id);
+
+            try
+            {
+                if (campaign != null)
+                {
+
+                    campaign.HrefCompare = HrefCompare;
+                    _ICampaignRepository.Update(campaign);
+                    TempData["MessageSuccess"] = "Cập nhật link đối chiếu thành công!";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["MessageError"] = ex.Message;
+            }
+
+            //return RedirectToAction("Detail", "Campaign", new { id = id });
+
+            return Redirect("/campaign/detail?campaignid=" + id);
+        }
+
+
 
 
         [HttpPost]

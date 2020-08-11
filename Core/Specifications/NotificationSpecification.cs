@@ -19,7 +19,7 @@ namespace Core.Specifications
         public NotificationSpecification(EntityType entityType, int entityId, IEnumerable<NotificationType> type, Common.Helpers.DateRange? dateRange) :
 
         base(m => m.EntityId == entityId && m.EntityType == entityType &&
-            type.Contains(m.Type) && (!dateRange.HasValue || (m.DateCreated > dateRange.Value.Start && m.DateCreated < dateRange.Value.End)))
+            type.Contains(m.Type) && (!dateRange.HasValue || (m.DateCreated.Date >= dateRange.Value.Start.Date && m.DateCreated.Date <= dateRange.Value.End.Date)))
         {
 
         }

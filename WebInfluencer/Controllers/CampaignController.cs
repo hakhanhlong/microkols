@@ -57,7 +57,7 @@ namespace WebInfluencer.Controllers
 
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
         {          
-            //await _IFacebookJob.UpdateFbInfo(114);
+            //await _IFacebookJob.UpdateFbPost(120, "sysytem", 2);
 
             string msg = string.Empty;
 

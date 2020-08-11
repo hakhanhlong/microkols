@@ -277,6 +277,21 @@
                                             <div class="mb-2">
                                                 <strong> @Model.Type.ToDataText()</strong>:  <a href="@Model.Data" target="_blank">@Model.Data</a>
                                             </div>
+                                            @if (Model.Type == CampaignType.JoinEvent || Model.Type == CampaignType.ReviewProduct ||
+                                            Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ShareStreamUrl)
+                                            {
+                                                <div class="mb-2">
+                                                    <form action="/campaign/UpdateHrefCompare" method="post">
+                                                        <input type="hidden" name="id" value="@Model.Id"/>                                                        
+                                                        <strong>Link tham chiếu: </strong>:
+                                                        <input class="form-control" type="url" name="HrefCompare" value="@Model.HrefCompare" required/>
+                                                        <div class="text-right" style="padding-top:5px;">
+                                                            <input type="submit" class="btn btn-primary btn-sm" value="Submit" />
+                                                        </div>
+                                                    </form>
+                                                    
+                                                </div>
+                                            }
                                         }
 
 

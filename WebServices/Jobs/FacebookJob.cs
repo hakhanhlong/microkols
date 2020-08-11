@@ -139,6 +139,15 @@ namespace WebServices.Jobs
                                 if (!string.IsNullOrEmpty(campaign.Data))
                                 {
                                     fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
+                                    //truong hợp check với link đối chiếu (post lên tường chính bằng link fb)
+                                    if(fbPost == null)
+                                    {
+                                        if (!string.IsNullOrEmpty(campaign.HrefCompare))
+                                        {
+                                            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.HrefCompare)).FirstOrDefault();
+                                        }
+                                    }
+
                                 }
 
                             }
@@ -153,6 +162,7 @@ namespace WebServices.Jobs
                                     RefId = fbPost.PostId,
                                     RefUrl = fbPost.Link,
                                     RefImage = new List<string>()
+
                                 }, username);
                                 if (campaignAccountId > 0)
                                 {

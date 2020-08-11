@@ -62,6 +62,14 @@ namespace WebServices.Services
                 NotificationType.AgencyApproveCampaignRefContent,
                 NotificationType.AgencyDeclineCampaignRefContent,
                 NotificationType.AgencyUpdatedCampaignRefContent,
+                NotificationType.AccountSubmitCampaignCaption,
+                NotificationType.AgencyApproveCampaignCaption,
+                NotificationType.AgencyDeclineCampaignCaption,
+                NotificationType.AgencyUpdatedCampaignCaption,
+                NotificationType.AccountSubmitCampaignContent,
+                NotificationType.AgencyApproveCampaignContent,
+                NotificationType.AgencyDeclineCampaignContent,
+                NotificationType.AgencyUpdatedCampaignContent,
                 NotificationType.AgencyCancelAccountJoinCampaign
             };
 
@@ -320,6 +328,7 @@ namespace WebServices.Services
             
             var statusArr = typeGroup.GetNotificationTypes();
             var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
+
             var filter = new NotificationSpecification(entityType, entityId, statusArr, dtRange);
 
             var notifications = await _notificationRepository.ListPagedAsync(filter,order, page, pagesize);
