@@ -327,7 +327,8 @@ namespace WebServices.Services
         {
             
             var statusArr = typeGroup.GetNotificationTypes();
-            var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
+
+            var dtRange = Common.Helpers.DateRangeHelper.GetDateRange2(daterange);
 
             var filter = new NotificationSpecification(entityType, entityId, statusArr, dtRange);
 

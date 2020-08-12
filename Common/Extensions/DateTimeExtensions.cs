@@ -90,10 +90,16 @@ namespace Common.Extensions
         }
         public static DateTime? ToViDateTime(this string input)
         {
-            //return DateTime.ParseExact(input, "hh:mm tt dd/MM/yyyy", CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(input, "hh:mm tt dd/MM/yyyy", CultureInfo.InvariantCulture);
+          
+        }
+
+        public static DateTime? ToViDateTime2(this string input)
+        {
             DateTime dt;
             DateTime.TryParseExact(input, "dd/MM/yyyy", null, DateTimeStyles.None, out dt);
             return dt;
+
         }
 
     }

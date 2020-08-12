@@ -98,6 +98,31 @@ namespace Common.Helpers
             return null;
         }
 
+        public static DateRange? GetDateRange2(string input)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                var arrDate = input.Split('-');
+                if (arrDate.Length == 2)
+                {
+                    var start = arrDate[0].Trim().ToViDateTime2();
+                    var end = arrDate[1].Trim().ToViDateTime2();
+
+                    if (start.HasValue && end.HasValue)
+                    {
+                        return new DateRange()
+                        {
+                            End = end.Value,
+                            Start = start.Value
+                        };
+                    }
+                }
+
+            }
+            return null;
+        }
+
+
         public static DateRange? GetDateRangeByDate(string input)
         {
             if (!string.IsNullOrEmpty(input))
