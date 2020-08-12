@@ -832,7 +832,8 @@ namespace WebServices.Services
                         else
                         {
                             notifType = NotificationType.AgencyCancelAccountJoinCampaign;
-                            campaignAccount.Status = CampaignAccountStatus.Canceled;
+                            //campaignAccount.Status = CampaignAccountStatus.Canceled;
+                            campaignAccount.Status = CampaignAccountStatus.AgencyCanceled;
                         }
 
                         campaignAccount.DateModified = DateTime.Now;
@@ -1184,6 +1185,23 @@ namespace WebServices.Services
             return -1;
         }
 
+        public async Task<int> UpdateCampaignAccountRef(int accountid, int campaignid,  string RefUrl)
+        {
+            var campaign = await _campaignRepository.GetByIdAsync(campaignid);
+            if (campaign == null) return -1;
+
+            var filter = new CampaignAccountByAccountSpecification(accountid, campaign.Id);
+            var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
+            if (campaignAccount == null) return -1;
+
+
+            campaignAccount.RefUrl = RefUrl;
+            await _campaignAccountRepository.UpdateAsync(campaignAccount);
+
+
+            return 1;
+        }
+
 
 
         public async Task<int> UpdateCampaignAccountRef(int accountid, UpdateCampaignAccountRefViewModel model, string username)
@@ -1218,27 +1236,27 @@ namespace WebServices.Services
             }
             else
             {
-                if (!string.IsNullOrEmpty(model.RefUrl))
-                {
-                    AccountProviderSpecification _filter = new AccountProviderSpecification(accountid, AccountProviderNames.Facebook);
-                    var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(_filter);
+                //if (!string.IsNullOrEmpty(model.RefUrl))
+                //{
+                //    AccountProviderSpecification _filter = new AccountProviderSpecification(accountid, AccountProviderNames.Facebook);
+                //    var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(_filter);
 
-                    string[] strPosts = model.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
-                    if(strPosts.Count() > 1)
-                    {
-                        try {
-                            if (!string.IsNullOrEmpty(strPosts[1]))
-                            {
-                                campaignAccount.RefId = $"{accountProvider.ProviderId}_{strPosts[1]}";
-                            }
-                        }
-                        catch { }
+                //    string[] strPosts = model.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
+                //    if(strPosts.Count() > 1)
+                //    {
+                //        try {
+                //            if (!string.IsNullOrEmpty(strPosts[1]))
+                //            {
+                //                campaignAccount.RefId = $"{accountProvider.ProviderId}_{strPosts[1]}";
+                //            }
+                //        }
+                //        catch { }
                         
-                    }
+                //    }
 
-                    //string post_id = 
+                //    //string post_id = 
 
-                }
+                //}
                 
             }
 

@@ -26,11 +26,19 @@ else
                 {
                     <div class="alert alert-info">Bạn đã từ chối không tham gia chiến dịch</div>
                 }
+                else if (campaignAccount.Status == CampaignAccountStatus.AgencyCanceled)
+                {
+                    <div class="alert alert-info">Doanh nghiệp từ chối vì bạn không phù hợp</div>
+                }
                 else if (campaignAccount.Status == CampaignAccountStatus.Unfinished)
                 {
                     <div class="alert alert-danger">
 
-                        @if (!string.IsNullOrEmpty(campaignAccount.Note))
+                        <span>Bạn đã không thực hiện công việc được giao.</span>
+                        <br />
+                        <span>@(campaignAccount.Note)</span>
+
+                        @*@if (!string.IsNullOrEmpty(campaignAccount.Note))
                         {
                             <text>@campaignAccount.Note</text>
                             <text>
@@ -60,7 +68,13 @@ else
                         else
                         {
                             <text>Bạn đã không thực hiện công việc được giao.</text>
-                        }
+                        }*@
+                    </div>
+                }
+                else if (campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign) // trường hợp phải kiểm tra lại
+                {
+                    <div class="alert alert-info">
+                        Cám ơn bạn đã thực hiện chiến dịch, hệ thống sẽ tự động cập nhật thông tin công việc của bạn.
                     </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
@@ -107,7 +121,7 @@ else
 
                         }
 
-                    
+
                     }
                     else
                     {
@@ -156,8 +170,8 @@ else
 
                             </p>
                             @*<p>
-                                <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
-                            </p>*@
+                        <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
+                    </p>*@
                         </div>
 
                     }
@@ -216,12 +230,12 @@ else
                             <div>
                                 @if (Model.Campaign.Type.IsShareCampaign())
                                 {
-                                    <button id="btn-facebook-share" class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
+                                    @*<button id="btn-facebook-share" class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
 
-                                        <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
-                                    </button>
+                                <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
+                            </button>
 
-                                    <hr>
+                            <hr>*@
                                 }
 
                                 <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">

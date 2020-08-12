@@ -175,6 +175,38 @@ namespace BackOffice.Controllers
         }
 
 
+        public IActionResult CampaignAccountChangeStatus(int campaignaccountid)
+        {
+            ViewBag.CampaignaccountId = campaignaccountid;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CampaignAccountChangeStatus(int campaignaccountid, CampaignAccountStatus selectStatus, string txt_note)
+        {
+            var campaignAccount = _ICampaignAccountRepository.GetById(campaignaccountid);
+            if(campaignAccount!= null)
+            {
+                campaignAccount.Status = selectStatus;
+                if (!string.IsNullOrEmpty(txt_note))
+                {
+                    campaignAccount.Note = txt_note;
+                }
+                
+                _ICampaignAccountRepository.Update(campaignAccount);
+                TempData["MessageSuccess"] = "Thay đổi trạng thái thành công!";
+            }
+            else
+            {
+                TempData["MessageError"] = "Dữ liệu không hợp lệ";
+            }
+
+            return Redirect("/campaign/campaignaccountchangestatus/?campaignaccountid=" + campaignaccountid);
+        }
+
+        
+
+
         public async Task<IActionResult> TakeNoteChangeStatus(int id, CampaignStatus status)
         {            
             var campaign = await _ICampaignRepository.GetByIdAsync(id);

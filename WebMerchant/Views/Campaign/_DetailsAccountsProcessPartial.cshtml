@@ -17,7 +17,7 @@
             </th>
             @if (haskpi > 0)
             {
-                <th>KPI cam kết</th>
+                @*<th>KPI cam kết</th>*@
             }
             @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
             {
@@ -142,9 +142,9 @@
                 </td>
                 @if (haskpi > 0)
                 {
-                    <td>
+                    @*<td>
                         @campaignAccount.KPICommitted
-                    </td>
+                    </td>*@
                 }
                 @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
                 {

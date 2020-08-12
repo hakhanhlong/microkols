@@ -12,6 +12,9 @@ namespace WebServices.Interfaces
     {
 
         Task<int> UpdateCampaignAccountStatus(int id, CampaignAccountStatus status, string msg);
+
+        Task<int> UpdateCampaignAccountRef(int accountid, int campaignid, string RefUrl);
+
         Task<EditCampaignTargetViewModel> GetEditCampaignTarget(int agencyid, int id);
         Task<bool> EditCampaignTarget(EditCampaignTargetViewModel model, string username);
         Task<int> UpdateReviewAddress(int id, string addresss, string username);

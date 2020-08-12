@@ -71,6 +71,16 @@ namespace BackOffice.Extensions
                 type = "warning";
             }
 
+            if (status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
+            {
+                type = "warning";
+            }
+
+            if (status == CampaignAccountStatus.AgencyCanceled)
+            {
+                type = "danger";
+            }
+
             if (status == CampaignAccountStatus.Unfinished)
             {
                 type = "danger";

@@ -231,20 +231,19 @@
     </div>
 
 
-    @if (campaignType == CampaignType.ShareContentWithCaption ||
-   campaignType == CampaignType.ReviewProduct)
+    @if (campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
     {
-        <h6 style="font-weight:bold;">3. Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
+        @*<h6 style="font-weight:bold;">3. Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
 
-        <div class="form-group">
-            <label asp-for="KPIMin"></label>
-            <span style="font-weight:bold;">@Model.KPIMin</span>
-            <input type="hidden" asp-for="KPIMin" />
-            @*<span asp-validation-for="KPIMin"></span>*@
-        </div>
+            <div class="form-group">
+                <label asp-for="KPIMin"></label>
+                <span style="font-weight:bold;">@Model.KPIMin</span>
+                <input type="hidden" asp-for="KPIMin" />*@
+        @*<span asp-validation-for="KPIMin"></span>*@
+        @*</div>*@
 
 
-        <div class="form-group">
+        @*<div class="form-group">
             <label asp-for="InteractiveMin"></label>
 
             <div class="d-flex">
@@ -253,10 +252,10 @@
                     <input type="number" asp-for="InteractiveMin" class="form-control" />
                 </div>
 
-            </div>
+            </div>*@
 
-            @*<span asp-validation-for="InteractiveMin"></span>*@
-        </div>
+        @*<span asp-validation-for="InteractiveMin"></span>*@
+        @*</div>*@
 
 
 
@@ -318,22 +317,22 @@
     }
 
 
-        <div class="form-group ">
+    <div class="form-group ">
 
-            @if (campaignType == CampaignType.JoinEvent)
-            {
+        @if (campaignType == CampaignType.JoinEvent)
+        {
             <label>Thời gian check-in và post nội dung</label>
-            }
-            else
-            {
-                <label asp-for="ExecutionTime"></label>
-            }
+        }
+        else
+        {
+            <label asp-for="ExecutionTime"></label>
+        }
 
 
-            <input type="text" class="form-control" asp-for="ExecutionTime" autocomplete="off" />
-            <span asp-validation-for="ExecutionTime"></span>
+        <input type="text" class="form-control" asp-for="ExecutionTime" autocomplete="off" />
+        <span asp-validation-for="ExecutionTime"></span>
 
-        </div>
+    </div>
     @if (campaignType == CampaignType.ChangeAvatar && ViewBag.Image != null)
     {
         var img = (string)ViewBag.Image;

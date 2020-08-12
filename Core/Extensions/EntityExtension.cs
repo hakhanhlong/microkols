@@ -19,7 +19,9 @@ namespace Core.Extensions
                 CampaignAccountStatus.AccountRequest,
                 CampaignAccountStatus.AgencyRequest,
                 CampaignAccountStatus.WaitToPay,
-                CampaignAccountStatus.All
+                CampaignAccountStatus.All,
+                CampaignAccountStatus.NeedToCheckExcecuteCampaign,
+                CampaignAccountStatus.AgencyCanceled
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status) && m.MerchantPaidToSystem != true);
 
@@ -83,7 +85,9 @@ namespace Core.Extensions
                 CampaignAccountStatus.AccountRequest,
                 CampaignAccountStatus.AgencyRequest,
                 CampaignAccountStatus.WaitToPay,
-                CampaignAccountStatus.All
+                CampaignAccountStatus.All,
+                CampaignAccountStatus.NeedToCheckExcecuteCampaign,
+                CampaignAccountStatus.AgencyCanceled
             };
             accounts = accounts.Where(m => !arrIgnoreStatus.Contains(m.Status) && m.MerchantPaidToSystem != true);
 

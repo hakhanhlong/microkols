@@ -57,7 +57,7 @@ namespace WebInfluencer.Controllers
 
         public async Task<IActionResult> MarketPlace(string kw, CampaignType? type, int pageindex = 1, int pagesize = 20)
         {          
-            //await _IFacebookJob.UpdateFbPost(120, "sysytem", 2);
+            //await _IFacebookJob.UpdateFbPost(121, "sysytem", 2);
 
             string msg = string.Empty;
 
@@ -257,7 +257,7 @@ namespace WebInfluencer.Controllers
        // [HttpPost]
         public async Task<IActionResult> SubmitCampaignAccountSharedContent()
         {
-            BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
+            //BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
             ViewBag.Success = "Cảm ơn bạn đã thực hiện chiến dịch, bạn sẽ nhận được thanh toán khi chiến dịch kết thúc và đạt đủ KPI.";
 
             return PartialView("UpdateCampaignAccountMessage");
@@ -349,9 +349,12 @@ namespace WebInfluencer.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCampaignAccountRef(UpdateCampaignAccountRefViewModel model)
         {
-            var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model, CurrentUser.Username);
+            var r = await _campaignService.UpdateCampaignAccountRef(CurrentUser.Id, model.CampaignId, model.RefUrl);
+            
             if (r > 0)
             {
+                //check thực hiện công việc
+                BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
                 try
                 {
                     if (model.CampaignType != CampaignType.ShareContentWithCaption)

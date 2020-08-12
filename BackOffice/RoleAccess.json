@@ -98,6 +98,12 @@
               "controllerId": ":Campaign"
             },
             {
+              "id": ":Campaign:CampaignAccountChangeStatus",
+              "name": "CampaignAccountChangeStatus",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
               "id": ":Campaign:TakeNoteChangeStatus",
               "name": "TakeNoteChangeStatus",
               "displayName": null,
@@ -773,6 +779,12 @@
             {
               "id": ":Campaign:Configuration",
               "name": "Configuration",
+              "displayName": null,
+              "controllerId": ":Campaign"
+            },
+            {
+              "id": ":Campaign:CampaignAccountChangeStatus",
+              "name": "CampaignAccountChangeStatus",
               "displayName": null,
               "controllerId": ":Campaign"
             },

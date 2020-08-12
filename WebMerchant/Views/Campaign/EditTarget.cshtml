@@ -226,17 +226,17 @@
 
                 @if (campaignType == CampaignType.ShareContentWithCaption || campaignType == CampaignType.ReviewProduct)
                 {
-                    <h6>Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
+                    @*<h6>Yêu cầu về KPIs - lượt tương tác cho mỗi post (Yêu cầu tăng KPIs sẽ làm tăng mức giá bạn phải trả) </h6>
 
                     <div class="form-group">
                         <label asp-for="KPIMin"></label>
                         <strong>@Model.KPIMin</strong>
-                        <input type="hidden" asp-for="KPIMin" />
+                        <input type="hidden" asp-for="KPIMin" />*@
                         @*<span asp-validation-for="KPIMin"></span>*@
-                    </div>
+                    @*</div>*@
 
 
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label asp-for="InteractiveMin"></label>
 
                         <div class="d-flex">
@@ -245,10 +245,10 @@
                                 <input type="number" asp-for="InteractiveMin" class="form-control" />
                             </div>
 
-                        </div>
+                        </div>*@
 
                         @*<span asp-validation-for="InteractiveMin"></span>*@
-                    </div>
+                    @*</div>*@
 
 
 

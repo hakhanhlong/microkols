@@ -19,7 +19,7 @@
             </th>
             @if (haskpi > 0)
             {
-                <th>KPI cam kết</th>
+                @*<th>KPI cam kết</th>*@
             }
             @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
             {
@@ -143,9 +143,9 @@
                 </td>
                 @if (haskpi > 0)
                 {
-                    <td>
+                    @*<td>
                         @campaignAccount.KPICommitted
-                    </td>
+                    </td>*@
                 }
                 @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.ShareContentWithCaption)
                 {
@@ -203,9 +203,19 @@
                     </td>
                 }
 
-                <td>
-                    @campaignAccount.Status.ToBadge()
-                </td>
+                    <td>
+                        @if (campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
+                        {
+                            <a href="javascript:;" onclick="change_accountcampaign_status(@(campaignAccount.Id))">@campaignAccount.Status.ToBadge()</a>
+                        }
+                        else
+                        {
+                            @*<span>@campaignAccount.Status.ToBadge()</span>*@
+                            <a href="javascript:;" onclick="change_accountcampaign_status(@(campaignAccount.Id))">@campaignAccount.Status.ToBadge()</a>
+                        }
+
+
+                    </td>
                 <td>
                     @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
                     {

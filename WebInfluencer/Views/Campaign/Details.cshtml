@@ -223,41 +223,41 @@
                 @if (Model.Campaign.Type != CampaignType.ChangeAvatar && Model.Campaign.Type != CampaignType.JoinEvent && Model.Campaign.Type != CampaignType.ShareStreamUrl)
                 {
 
-                    <h5>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</h5>
+                    @*<h5>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</h5>*@
 
-                    <ul class="list-unstyled">
+                    @*<ul class="list-unstyled">*@
                         @if (!hasApply && !hasConfirmJoin)
                         {
                             if (campaignAccount != null && campaignAccount.KPICommitted > 0)
                             {
-                                <li>
+                                @*<li>
                                     @campaignAccount.KPICommitted
-                                </li>
+                                </li>*@
                             }
                             @*else
-                    if (Model.Campaign.InteractiveMin.HasValue)
-                    {
-                        <li>
-                            @Model.Campaign.InteractiveMin.Value
-                        </li>
-                    }*@
-                            else
+                            if (Model.Campaign.InteractiveMin.HasValue)
                             {
                                 <li>
-                                    @Model.Campaign.KPIMin
+                                    @Model.Campaign.InteractiveMin.Value
                                 </li>
+                            }*@
+                            else
+                            {
+                                @*<li>
+                                    @Model.Campaign.KPIMin
+                                </li>*@
                             }
                             @*<li>@Model.InteractiveMin</li>*@
                         }
                         else
                         {
-                            <li>
+                            @*<li>
                                 <input type="number" id="txtKPICommitted" name="KPICommitted"
                                        class="form-control" value="@Model.Campaign.InteractiveMin" min="@Model.Campaign.InteractiveMin" />
-                            </li>
+                            </li>*@
 
                         }
-                    </ul>
+                    @*</ul>*@
                 }
                 else
                 {

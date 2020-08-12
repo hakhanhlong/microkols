@@ -98,9 +98,7 @@ namespace WebServices.Jobs
                     return;
                 }
 
-                
-
-
+               
                 if (type == 2)
                 {
 
@@ -120,11 +118,11 @@ namespace WebServices.Jobs
                         {
                             if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
                             {
-                                // truong hop influencer tụ cạp nhat link kết quả 
+                                // truong hop influencer tụ cập nhật link kết quả 
                                 fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
                                 if (fbPost == null)
                                 {
-                                    //truong hop link user cạp nhạt ko khớp với link lấy từ fb
+                                    //trường hợp link user cập nhật ko khớp với link lấy từ fb
                                     fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Link)).FirstOrDefault();
                                 }
                                 if (fbPost == null)
@@ -137,14 +135,49 @@ namespace WebServices.Jobs
                                 //check bên permalink
                                 if (fbPost == null)
                                 {
-                                    //truong hop link user cạp nhạt ko khớp với link lấy từ fb
+                                    
                                     fbPost = fbPosts.Where(m => campaign.CampaignAccount.RefUrl.Contains(m.Permalink)).FirstOrDefault();
                                 }
                                 if (fbPost == null)
                                 {
-                                    //truong hop link lấy từ fb ko khớp với link user
+                                    
                                     fbPost = fbPosts.Where(m => m.Permalink.Contains(campaign.CampaignAccount.RefUrl)).FirstOrDefault();
                                 }
+
+                                if (fbPost == null)
+                                {
+                                    
+                                    fbPost = fbPosts.Where(m => m.Permalink == campaign.CampaignAccount.RefUrl).FirstOrDefault();
+                                }
+
+
+                                //#######################################################################################################
+                                string fbpostid = string.Empty;
+                                if (campaign.CampaignAccount.RefUrl.Contains("posts/"))
+                                {
+                                    string[] strPosts = campaign.CampaignAccount.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
+                                    if (strPosts.Count() > 1)
+                                    {
+                                        try
+                                        {
+                                            if (!string.IsNullOrEmpty(strPosts[1]))
+                                            {
+                                                fbpostid = strPosts[1];
+                                            }
+                                        }
+                                        catch { }
+                                    }
+                                }
+                                if (!string.IsNullOrEmpty(fbpostid))
+                                {
+                                    if (fbPost == null)
+                                    {
+                                        fbPost = fbPosts.Where(m => m.Permalink.Contains(fbpostid)).FirstOrDefault();
+                                    }
+                                }
+                                
+
+                                //#######################################################################################################
 
                             }
                             else
@@ -185,17 +218,17 @@ namespace WebServices.Jobs
                             }
                             else
                             {
-                                //truong hợp bằng null vì user làm ko đúng
+                                //truong hợp fbPost bằng null vì user làm ko đúng
                                 if (!string.IsNullOrEmpty(campaign.Data))
                                 {
                                     if (campaign.Data.Contains("http"))
                                     {
-                                        string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
-                                        await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, CampaignAccountStatus.Unfinished, msg);
+                                        //string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
+                                        string msg = $"Cần xác minh thực hiện chiến dịch!";
+                                        await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, CampaignAccountStatus.NeedToCheckExcecuteCampaign, msg);
                                     }
                                 }
                                 
-
                             }
                         }                         
                     }

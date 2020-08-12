@@ -119,8 +119,17 @@ namespace Core.Entities
         [Display(Name = "Hủy tham gia")]
         Canceled = 7,
 
+        [Display(Name = "Doanh nghiệp từ chối Influencer")]
+        AgencyCanceled = 10,
+
         [Display(Name = "Chưa hoàn thành")]
         Unfinished = 8,
+        
+        [Display(Name = "Cần xác minh thực hiện chiến dịch")]
+        NeedToCheckExcecuteCampaign = 9
+
+        
+        
 
 
     }
