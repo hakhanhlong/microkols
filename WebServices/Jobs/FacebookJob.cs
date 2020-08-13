@@ -116,7 +116,8 @@ namespace WebServices.Jobs
                             campaign.CampaignAccount.Status == CampaignAccountStatus.UpdatedContent) 
                             && campaign.Status == CampaignStatus.Started)
                         {
-                            if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
+                            //if (string.IsNullOrEmpty(refid) && !string.IsNullOrEmpty(refurl))
+                            if (!string.IsNullOrEmpty(refurl))
                             {
                                 // truong hop influencer tụ cập nhật link kết quả 
                                 fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.PostId2) && refurl.Contains(m.PostId2)).FirstOrDefault();
@@ -175,61 +176,64 @@ namespace WebServices.Jobs
                                         fbPost = fbPosts.Where(m => m.Permalink.Contains(fbpostid)).FirstOrDefault();
                                     }
                                 }
-                                
+
 
                                 //#######################################################################################################
 
-                            }
-                            else
-                            {
-                                //truong hop tu dong
-                                if (!string.IsNullOrEmpty(campaign.Data))
+                                if (fbPost != null)
                                 {
-                                    fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
-                                    //truong hợp check với link đối chiếu (post lên tường chính bằng link fb)
-                                    if(fbPost == null)
+                                    var campaignAccountId = await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
                                     {
-                                        if (!string.IsNullOrEmpty(campaign.HrefCompare))
+                                        CampaignId = campaign.Id,
+                                        CampaignType = campaign.Type,
+                                        Note = string.Empty,
+                                        RefId = fbPost.PostId,
+                                        RefUrl = fbPost.Link,
+                                        RefImage = new List<string>()
+
+                                    }, username);
+                                    if (campaignAccountId > 0)
+                                    {
+                                        await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
+                                    }
+                                }
+                                else
+                                {
+                                    //truong hợp fbPost bằng null vì user làm ko đúng
+                                    if (!string.IsNullOrEmpty(campaign.Data))
+                                    {
+                                        if (campaign.Data.Contains("http"))
                                         {
-                                            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.HrefCompare)).FirstOrDefault();
+                                            //string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
+                                            string msg = $"Cần xác minh thực hiện chiến dịch!";
+                                            await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, CampaignAccountStatus.NeedToCheckExcecuteCampaign, msg);
                                         }
                                     }
 
                                 }
 
-                            }
 
-                            if (fbPost != null)
-                            {
-                                var campaignAccountId = await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
-                                {
-                                    CampaignId = campaign.Id,
-                                    CampaignType = campaign.Type,
-                                    Note = string.Empty,
-                                    RefId = fbPost.PostId,
-                                    RefUrl = fbPost.Link,
-                                    RefImage = new List<string>()
-
-                                }, username);
-                                if (campaignAccountId > 0)
-                                {
-                                    await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
-                                }
                             }
                             else
                             {
-                                //truong hợp fbPost bằng null vì user làm ko đúng
-                                if (!string.IsNullOrEmpty(campaign.Data))
-                                {
-                                    if (campaign.Data.Contains("http"))
-                                    {
-                                        //string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
-                                        string msg = $"Cần xác minh thực hiện chiến dịch!";
-                                        await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, CampaignAccountStatus.NeedToCheckExcecuteCampaign, msg);
-                                    }
-                                }
-                                
+                                ////truong hop tu dong
+                                //if (!string.IsNullOrEmpty(campaign.Data))
+                                //{
+                                //    fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
+                                //    //truong hợp check với link đối chiếu (post lên tường chính bằng link fb)
+                                //    if(fbPost == null)
+                                //    {
+                                //        if (!string.IsNullOrEmpty(campaign.HrefCompare))
+                                //        {
+                                //            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.HrefCompare)).FirstOrDefault();
+                                //        }
+                                //    }
+
+                                //}
+
                             }
+
+                          
                         }                         
                     }
                 }
