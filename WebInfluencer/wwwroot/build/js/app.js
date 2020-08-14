@@ -937,13 +937,24 @@ var  CampaignDetailsPage = (function () {
         $('#addonImages').change(function () {
             var id = $(this).attr('id');
             var target = $(this).data('target');
+            var preview = $(this).data('preview');
+
             var files = document.getElementById(id).files;
 
             AppCommon.uploadTempImage(files, function (datas) {
+                var strImages = '';
                 datas.forEach(function (item) {
-                    var html = '<img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /><input type="hidden" name="RefImage" value="' + item.path + '" />';
-                    $(target).append(html);
+                    var html = '<div class="addonimage"><span class="remove"><i class="fal fa-times"></i></span><img src="' + item.url + '"  class="img-thumbnail mt-2" style="max-height:400px" /></div>';
+                    strImages += strImages == '' ? item.path : '|' + item.path;
+                    $(preview).append(html);
                 })
+                $(target).val(strImages);
+
+                $('.addonimage .remove').unbind('click');
+                $('.addonimage .remove').click(function () {
+                    $(this).closest('.addonimage').remove();
+                });
+
 
             });
 

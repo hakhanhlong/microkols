@@ -152,6 +152,9 @@ namespace WebServices.ViewModels
      
         [Display(Name = "Hình ảnh thực hiện chiến dịch")]
         public List<string> RefImage { get; set; } = new List<string>();
+
+        public string ImagePath { get; set; }
+
         public int CampaignId { get; set; }
         public CampaignType CampaignType { get; set; }
 

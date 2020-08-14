@@ -80,18 +80,7 @@ namespace WebServices.Jobs
                 // chi lay 1000 bai`
 
 
-                //if(accountProvider.Expired < DateTime.Now)
-                //{
-                //    var accessToken = await _facebookHelper.GetExtendToken(accountProvider.AccessToken);
-                //    if (accessToken != null)
-                //    {
-                //        await _accountService.UpdateAccountProvidersAccessToken(accountid, accessToken.AccessToken, accessToken.ExpiresIn);
-                //        accountProvider.AccessToken = accessToken.AccessToken;
-                //    }
-                //}
-
-
-                var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
+               var fbPosts = await _facebookHelper.GetPosts(accountProvider.AccessToken, accountProvider.ProviderId, since);
 
                 if (fbPosts == null || fbPosts.Count == 0)
                 {
@@ -162,119 +151,96 @@ namespace WebServices.Jobs
                                 }
 
                                 //#######################################################################################################
-                                string fbpostid = string.Empty;
-                                if (campaign.CampaignAccount.RefUrl.Contains("posts/"))
+                                try
                                 {
-                                    string[] strPosts = campaign.CampaignAccount.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
-                                    if (strPosts.Count() > 1)
+                                    string fbpostid = string.Empty;
+                                    if (campaign.CampaignAccount.RefUrl.Contains("posts/"))
                                     {
-                                        try
+                                        string[] strPosts = campaign.CampaignAccount.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
+                                        if (strPosts.Count() > 1)
                                         {
-                                            if (!string.IsNullOrEmpty(strPosts[1]))
+                                            try
                                             {
-                                                fbpostid = strPosts[1];
+                                                if (!string.IsNullOrEmpty(strPosts[1]))
+                                                {
+                                                    fbpostid = strPosts[1];
+                                                }
                                             }
+                                            catch { }
                                         }
-                                        catch { }
                                     }
-                                }
-                                if (!string.IsNullOrEmpty(fbpostid))
-                                {
-                                    if (fbPost == null)
+                                    if (!string.IsNullOrEmpty(fbpostid))
                                     {
-                                        fbPost = fbPosts.Where(m => m.Permalink.Contains(fbpostid)).FirstOrDefault();
+                                        if (fbPost == null)
+                                        {
+                                            fbPost = fbPosts.Where(m => m.Permalink.Contains(fbpostid)).FirstOrDefault();
+                                        }
                                     }
-                                }
 
+                                }
+                                catch { }
+                          
 
                                 //#######################################################################################################
 
                                 if (fbPost != null)
                                 {
+                                    string msg = string.Empty;
                                     if (!string.IsNullOrEmpty(campaign.Data)) //kiểm tra xem link yêu cầu chia sẻ user có chia sẻ đúng link ko
                                     {
-                                        if(campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link))
+                                        
+                                        if (campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link))
                                         {
-                                            string msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
-                                            await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id,
-                                                CampaignAccountStatus.NeedToCheckExcecuteCampaign, msg);
+                                            msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
                                         }
+                                        else
+                                        {
+                                            // Xử lý khi link cần chia sẻ đã được chia sẻ đúng
+                                            msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ đúng";
+
+                                        }
+                                        
                                     }
                                     else
                                     {
-                                        var campaignAccountId = await _campaignService.UpdateCampaignAccountRef(accountid, new ViewModels.UpdateCampaignAccountRefViewModel()
-                                        {
-                                            CampaignId = campaign.Id,
-                                            CampaignType = campaign.Type,
-                                            Note = string.Empty,
-                                            RefId = fbPost.PostId,
-                                            RefUrl = fbPost.Link,
-                                            RefImage = new List<string>()
+                                        msg = $"Cần xác minh thực hiện chiến dịch!";                                        
 
-                                        }, username);
-
-
-                                        if (campaignAccountId > 0)
-                                        {
-                                            await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
-                                        }
                                     }
 
-                                  
-                                }
-                                else
-                                {
-                                    //truong hợp fbPost bằng null vì user làm ko đúng
-                                    //string msg = $"Link chia sẻ của bạn không đúng với link chia sẻ của chiến dịch đề ra!";
-                                    string msg = $"Cần xác minh thực hiện chiến dịch!";
-                                    await _campaignService.UpdateCampaignAccountStatus(campaign.CampaignAccount.Id, 
-                                        CampaignAccountStatus.NeedToCheckExcecuteCampaign, msg);
-
-                                    //if (!string.IsNullOrEmpty(campaign.Data))
-                                    //{
-                                    //    if (campaign.Data.Contains("http"))
-                                    //    {
-
-                                    //    }
-                                    //}
+                                    var campaignAccountId = await _campaignService.UpdateCampaignAccountRef(accountid, 
+                                        new ViewModels.UpdateCampaignAccountRefViewModel()
+                                    {
+                                        CampaignId = campaign.Id,
+                                        CampaignType = campaign.Type,                                        
+                                        RefId = fbPost.PostId,
+                                        RefUrl = fbPost.Link,
+                                        Note = msg
+                                        }, username);                                                                     
+                                    if (campaignAccountId > 0)
+                                    {
+                                        await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
+                                    }
 
                                 }
 
 
-                            }
-                            else
-                            {
-                                ////truong hop tu dong
-                                //if (!string.IsNullOrEmpty(campaign.Data))
-                                //{
-                                //    fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.Data)).FirstOrDefault();
-                                //    //truong hợp check với link đối chiếu (post lên tường chính bằng link fb)
-                                //    if(fbPost == null)
-                                //    {
-                                //        if (!string.IsNullOrEmpty(campaign.HrefCompare))
-                                //        {
-                                //            fbPost = fbPosts.Where(m => !string.IsNullOrEmpty(m.Link) && m.Link.Contains(campaign.HrefCompare)).FirstOrDefault();
-                                //        }
-                                //    }
-
-                                //}
-
-                            }
-
-                          
+                            }                                                    
                         }                         
                     }
                 }
-
-
-                //update thong tin like,share,comment
-                foreach (var fbPost in fbPosts)
-                {
-                    if (!string.IsNullOrEmpty(fbPost.PostId))
+                else {
+                    //update thong tin like,share,comment
+                    foreach (var fbPost in fbPosts)
                     {
-                        await _accountService.UpdateFbPost(accountid, fbPost, username);
+                        if (!string.IsNullOrEmpty(fbPost.PostId))
+                        {
+                            await _accountService.UpdateFbPost(accountid, fbPost, username);
+                        }
                     }
                 }
+
+
+                
             }
         }
 

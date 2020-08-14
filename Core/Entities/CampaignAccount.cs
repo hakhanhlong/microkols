@@ -126,10 +126,13 @@ namespace Core.Entities
         Unfinished = 8,
         
         [Display(Name = "Cần xác minh thực hiện chiến dịch")]
-        NeedToCheckExcecuteCampaign = 9
+        NeedToCheckExcecuteCampaign = 9,
+        
 
-        
-        
+
+
+
+
 
 
     }

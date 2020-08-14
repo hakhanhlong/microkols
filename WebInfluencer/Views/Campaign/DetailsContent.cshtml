@@ -46,8 +46,7 @@
                         var target = $(this).data('target');
                         var preview = $(this).data('preview');
                         var sizetype = $(this).data('sizetype');
-                        var files = document.getElementById(id).files;
-                        console.log("data image change");
+                        var files = document.getElementById(id).files;                        
                         AppCommon.uploadTempImage(files, function (datas) {
                             if (datas.length > 0) {
 

@@ -20,6 +20,15 @@ else
         <div class="card" style="border:none;">
             <div class="card-body">
 
+                @*<button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages",
+                                                new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                    Hình ảnh thực hiện chiến dịch của bạn
+                </button>
+
+                <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                    Cập nhật thông tin công việc
+                </button>*@
+
 
 
                 @if (campaignAccount.Status == CampaignAccountStatus.Canceled)
@@ -32,50 +41,53 @@ else
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.Unfinished || campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
                 {
-                    <div class="alert alert-danger">
+                    <div class="alert alert-warning">
+                        <p>Cám ơn bạn đã thực hiện chiến dịch</p>
 
-                        <span>Bạn đã thực hiện chiến dịch.</span>
-                        <br />
-                        <span>@(campaignAccount.Note)</span>
-                        <br />                
-                        <span>
-
-                            @if (!string.IsNullOrEmpty(Model.Campaign.Data) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
-                            {
-                                if (Model.Campaign.Data.Contains("http"))
-                                {
-                                    if ((Model.Campaign.Data != campaignAccount.RefUrl) || !campaignAccount.RefUrl.Contains(Model.Campaign.Data))
-                                    {
-                                        var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                Link chiến dịch: <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
-                                            </li>
-                                            <li>
-                                                Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
-                                            </li>
-                                            @if(fbPost!= null)
-                                            {
-                                              <li>
-                                                Facebook post của bạn: <a href="@(fbPost.Permalink)" target="_blank">@(fbPost.Permalink)</a>
-                                              </li>
-                                            }
-                                        </ul>
-                                    }
-
-                                }
-                            }
+                        @if (!string.IsNullOrEmpty(campaignAccount.Note))
+                        {
+                            <p>Ghi chú từ hệ thống: @(campaignAccount.Note)</p>
+                        }
 
 
-                        </span>
+
+                        @{var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId); }
+
+
+                        @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                        {
+                            <p>
+                                Link chiến dịch: <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
+                            </p>
+                            <p>
+                                Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
+                            </p>
+                        }
+                        @if (fbPost != null)
+                        {
+                            <p>
+                                Facebook post của bạn: <a href="@(fbPost.Permalink)" target="_blank">@(fbPost.Permalink)</a>
+                            </p>
+                            <p>
+                                <span>
+                                    @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                </span>
+                                <span class="px-2">
+                                    @fbPost.ShareCount <i class="fal fa-share"></i>
+                                </span>
+                                <span>
+                                    @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                </span>
+                            </p>
+                        }
+
+
 
                     </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign) // trường hợp phải kiểm tra lại
                 {
-                    <div class="alert alert-info">
-                        Cám ơn bạn đã thực hiện chiến dịch, hệ thống sẽ tự động cập nhật thông tin công việc của bạn.
-                    </div>
+
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.AgencyRequest)
                 {
@@ -100,7 +112,12 @@ else
                                 @{var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);}
                                 @if (fbPost != null)
                                 {
-                                    <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank"> @campaignAccount.RefUrl</a></p>
+                                    @if (!string.IsNullOrEmpty(Model.Campaign.Data))
+                                    {
+                                        <p>Bài viết đã thực hiện:<a href="@campaignAccount.RefUrl" target="_blank"> @campaignAccount.RefUrl</a></p>
+
+                                    }
+                                    <p></p>
                                     <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
 
                                     <p>
@@ -118,7 +135,6 @@ else
                                     </p>
                                 }
                             </div>
-
                         }
 
 
@@ -170,14 +186,13 @@ else
 
 
                             </p>
-                            @*<p>
-                        <button class="btn btn-info btn-updaterefimages" data-url="@Url.Action("UpdateCampaignAccountRefImages", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">Thêm Hình ảnh thực hiện chiến dịch </button>
-                    </p>*@
+
                         </div>
 
                     }
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed || campaignAccount.Status == CampaignAccountStatus.ApprovedContent
+                else if (campaignAccount.Status == CampaignAccountStatus.Confirmed ||
+                                        campaignAccount.Status == CampaignAccountStatus.ApprovedContent
                         || campaignAccount.Status == CampaignAccountStatus.UpdatedContent)
                 {
 
@@ -194,7 +209,7 @@ else
                         }
                         else
                         {
-                            <div class="alert alert-info">Caption  của bạn chưa có hoặc chưa được duyệt. Vui lòng kiểm tra lại <a href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })"> tại đây</a> </div>
+                            <div class="alert alert-info">Caption của bạn chưa có hoặc chưa được duyệt. Vui lòng kiểm tra lại <a href="@Url.Action("Details", new { id = Model.Campaign.Id, tab = 2 })"> tại đây</a> </div>
                         }
                     }
                     else if (Model.Campaign.Type.IsHasContent())
@@ -239,9 +254,34 @@ else
                             <hr>*@
                                 }
 
-                                <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                    Cập nhật thông tin công việc
-                                </button>
+
+                                @if (Model.Campaign.Type == CampaignType.JoinEvent)
+                                {
+
+                                    @if (string.IsNullOrEmpty(campaignAccount.RefImage))
+                                    {
+                                        <button class="btn btn-info btn-updaterefimages btn-block" data-url="@Url.Action("UpdateCampaignAccountRefImages",
+                                                new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                            Hình ảnh thực hiện chiến dịch của bạn
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                            Cập nhật thông tin công việc
+                                        </button>
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                        Cập nhật thông tin công việc
+                                    </button>
+                                }
+
+
 
                             </div>
                         }

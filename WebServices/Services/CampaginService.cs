@@ -37,6 +37,9 @@ namespace WebServices.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
 
+        private readonly IAgencyRepository _IAgencyRepository;
+
+
 
         public CampaignService(ICampaignRepository campaignRepository,
             ITransactionRepository transactionRepository,
@@ -48,7 +51,7 @@ namespace WebServices.Services
             IAsyncRepository<CampaignAccountCaption> campaignAccountCaptionRepository,
             IAsyncRepository<CampaignAccountContent> campaignAccountContentRepository,
             INotificationRepository notificationRepository,
-             ISettingRepository settingRepository, IAsyncRepository<AccountProvider> accountProviderRepository)
+             ISettingRepository settingRepository, IAsyncRepository<AccountProvider> accountProviderRepository, IAgencyRepository __IAgencyRepository)
         {
             _campaignAccountTypeRepository = campaignAccountTypeRepository;
             _campaignTypeChargeRepository = campaignTypeChargeRepository;
@@ -62,6 +65,7 @@ namespace WebServices.Services
             _campaignAccountRepository = campaignAccountRepository;
             _notificationRepository = notificationRepository;
             _accountProviderRepository = accountProviderRepository;
+            _IAgencyRepository = __IAgencyRepository;
         }
 
         #region Campaigns
@@ -117,7 +121,9 @@ namespace WebServices.Services
                 CampaignAccountStatus.Finished,
                 CampaignAccountStatus.SubmittedContent,
                 CampaignAccountStatus.UpdatedContent,
-                CampaignAccountStatus.WaitToPay,
+                CampaignAccountStatus.WaitToPay
+                
+
             }));
 
             if (type.IsHasCaption())
@@ -1196,6 +1202,7 @@ namespace WebServices.Services
 
 
             campaignAccount.RefUrl = RefUrl;
+
             await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
 
@@ -1211,72 +1218,37 @@ namespace WebServices.Services
 
             var filter = new CampaignAccountByAccountSpecification(accountid, campaign.Id);
             var campaignAccount = await _campaignAccountRepository.GetSingleBySpecAsync(filter);
-            if (campaignAccount == null) return -1;
-
-
-
-            //if(campaign.Type != CampaignType.ChangeAvatar || campaign.Type  != CampaignType.ReviewProduct || campaign.Type != CampaignType.JoinEvent)
-            //{
-            //    if (campaign.Data.Contains("https") || campaign.Data.Contains("http"))
-            //    {
-            //        if (!model.RefUrl.Contains(campaign.Data))
-            //        {
-            //            return -1;
-            //        }
-            //    }
-            //}
-
-            
-
-
+            if (campaignAccount == null) return -1;                
 
             if (!string.IsNullOrEmpty(model.RefId))
             {
                 campaignAccount.RefId = model.RefId;
             }
-            else
-            {
-                //if (!string.IsNullOrEmpty(model.RefUrl))
-                //{
-                //    AccountProviderSpecification _filter = new AccountProviderSpecification(accountid, AccountProviderNames.Facebook);
-                //    var accountProvider = await _accountProviderRepository.GetSingleBySpecAsync(_filter);
-
-                //    string[] strPosts = model.RefUrl.Split(new string[] { "posts/" }, StringSplitOptions.None);
-                //    if(strPosts.Count() > 1)
-                //    {
-                //        try {
-                //            if (!string.IsNullOrEmpty(strPosts[1]))
-                //            {
-                //                campaignAccount.RefId = $"{accountProvider.ProviderId}_{strPosts[1]}";
-                //            }
-                //        }
-                //        catch { }
-                        
-                //    }
-
-                //    //string post_id = 
-
-                //}
-                
-            }
-
+           
 
             if (!string.IsNullOrEmpty(model.RefUrl))
             {
                 campaignAccount.RefUrl = model.RefUrl;
             }
-            campaignAccount.RefImage = model.RefImage.ToListString();
+
+            //campaignAccount.RefImage = model.RefImage.ToListString();
             
             if(!string.IsNullOrEmpty(campaignAccount.RefUrl) && !string.IsNullOrEmpty(campaignAccount.RefId))
             {
-                campaignAccount.Status = CampaignAccountStatus.Finished;
+                //campaignAccount.Status = CampaignAccountStatus.Finished;
             }
             else {
-                campaignAccount.Status = CampaignAccountStatus.Unfinished;
-                campaignAccount.Note = "Link Facebook Post không đúng";
-            }            
+                //campaignAccount.Status = CampaignAccountStatus.Unfinished;
+                //campaignAccount.Note = "Link Facebook Post không đúng";
+            }
+
+            campaignAccount.Note = model.Note;
+            campaignAccount.Status = CampaignAccountStatus.NeedToCheckExcecuteCampaign;
+
             campaignAccount.DateModified = DateTime.Now;
+
             campaignAccount.UserModified = username;
+
             await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
             //notification
@@ -1298,12 +1270,15 @@ namespace WebServices.Services
             if (campaignAccount == null) return -1;
 
 
-            campaignAccount.RefImage = model.RefImage.ToListString();
+            //campaignAccount.RefImage = model.RefImage.ToListString();
+            campaignAccount.RefImage = model.ImagePath;
+
             campaignAccount.DateModified = DateTime.Now;
             campaignAccount.UserModified = username;
             await _campaignAccountRepository.UpdateAsync(campaignAccount);
 
             return 1;
+
         }
 
 
@@ -1421,7 +1396,7 @@ namespace WebServices.Services
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);             
                 if (campaign != null && campaign.Status == CampaignStatus.Confirmed)
                 {
-
+                    
                     //check them thời gian nhận đăng ký thì mới quyết định start
                     //ví dụ trường hợp này sẽ lỗi làm cho chiến dịch bị cancel trong khi chưa hết thời gian chạy chiến dịch
                     //thời gian nhận đăng ký và chạy chiến dịch quá gần nhau sẽ bị trường hợp này -> cancel đột ngột.
@@ -1433,6 +1408,9 @@ namespace WebServices.Services
                     if (campaign.DateStart <= now && campaign.DateEnd >= now)
                         return;
                     //------------------------------------------------------------------------------------------------------------
+
+
+                    var agency = await _IAgencyRepository.GetByIdAsync(campaign.AgencyId);
 
                     #region check thanh toán đủ chưa
                     //check da thanh toan chua                    
@@ -1499,7 +1477,7 @@ namespace WebServices.Services
                         //################ anh Long add them notification gửi về admin ####################################################################
                         try
                         {
-                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. Không có thành viên thực hiện chiến dịch", campaign.Title, campaign.UserCreated);
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. Không có thành viên thực hiện chiến dịch", campaign.Title, agency.Name);
                             string _data = "Campaign";
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
                         }
@@ -1521,7 +1499,7 @@ namespace WebServices.Services
                     //################ anh Long add them notification gửi về admin ####################################################################
                     try
                     {
-                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã bắt đầu", campaign.Title, campaign.UserCreated);
+                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã bắt đầu", campaign.Title, agency.Name);
                         string _data = "Campaign";
                         await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignStarted, _msg, _data);
                     }
@@ -1598,10 +1576,12 @@ namespace WebServices.Services
 
 
                 try {
+
                     var username = "system";
                     var campaign = await _campaignRepository.GetByIdAsync(campaignid);
                     if (campaign != null)
                     {
+                        var agency = await _IAgencyRepository.GetByIdAsync(campaign.AgencyId);
                         if (campaign.Status == CampaignStatus.Locked)
                         {
                             /*Kiểm tra thời gian thực hiện chiến dịch kết thúc có bé hơn ngày giờ hiện tại hay không để hủy bỏ chiến dịch*/
@@ -1629,7 +1609,8 @@ namespace WebServices.Services
                                     EntityType.Agency, campaign.AgencyId, campaign.Id, _message);
                                     try
                                     {
-                                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title, campaign.UserCreated);
+                                        string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", đã bị hủy. vì thời gian thực hiện đã hết và chưa thanh toán", campaign.Title,
+                                            agency.Name);
                                         string _data = "Campaign";
                                         await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
                                     }
@@ -1657,7 +1638,6 @@ namespace WebServices.Services
                 {
                     BackgroundJob.Enqueue<ICampaignService>(m => m.AutoUpdateEndedStatus(id));
 
-
                 }
             }
             else
@@ -1666,6 +1646,7 @@ namespace WebServices.Services
                 var campaign = await _campaignRepository.GetByIdAsync(campaignid);
                 if (campaign != null)
                 {
+                    var agency = await _IAgencyRepository.GetByIdAsync(campaign.AgencyId);
                     if (campaign.Status == CampaignStatus.Started)
                     {
                         campaign.Status = CampaignStatus.Ended;
@@ -1679,7 +1660,7 @@ namespace WebServices.Services
                         //################ anh Long add them notification gửi về admin ####################################################################
                         try
                         {
-                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc", campaign.Title, campaign.UserCreated);
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc", campaign.Title, agency.Name);
                             string _data = "Campaign";
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignEnded, _msg, _data);
                         }
@@ -1692,12 +1673,13 @@ namespace WebServices.Services
 
 
 
-                        //huy campaing account chua hoan thanh 
+                        //huy campaign account chua hoan thanh 
                         var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
                             , new List<CampaignAccountStatus> {
-                            CampaignAccountStatus.Finished,
-                            CampaignAccountStatus.Canceled,
-                            CampaignAccountStatus.Unfinished
+                                CampaignAccountStatus.Finished,
+                                CampaignAccountStatus.Canceled,
+                                CampaignAccountStatus.Unfinished,
+                                CampaignAccountStatus.NeedToCheckExcecuteCampaign
                             }));
 
                         foreach (var campaignAccount in needUnFinishedCampaignAccounts)
@@ -1728,7 +1710,7 @@ namespace WebServices.Services
 
                         try
                         {
-                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc, Hết thời gian thực hiện", campaign.Title, campaign.UserCreated);
+                            string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", Đã kết thúc, Hết thời gian thực hiện", campaign.Title, agency.Name);
                             string _data = "Campaign";
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignCanceled, _msg, _data);
                         }

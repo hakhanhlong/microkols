@@ -355,6 +355,7 @@ namespace WebInfluencer.Controllers
             {
                 //check thực hiện công việc
                 BackgroundJob.Enqueue<IFacebookJob>(m => m.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2));
+                //await _IFacebookJob.UpdateFbPost(CurrentUser.Id, CurrentUser.Username, 2);
                 try
                 {
                     if (model.CampaignType != CampaignType.ShareContentWithCaption)
