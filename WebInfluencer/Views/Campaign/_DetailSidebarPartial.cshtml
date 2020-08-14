@@ -30,45 +30,45 @@ else
                 {
                     <div class="alert alert-info">Doanh nghiệp từ chối vì bạn không phù hợp</div>
                 }
-                else if (campaignAccount.Status == CampaignAccountStatus.Unfinished)
+                else if (campaignAccount.Status == CampaignAccountStatus.Unfinished || campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
                 {
                     <div class="alert alert-danger">
 
-                        <span>Bạn đã không thực hiện công việc được giao.</span>
+                        <span>Bạn đã thực hiện chiến dịch.</span>
                         <br />
                         <span>@(campaignAccount.Note)</span>
+                        <br />                
+                        <span>
 
-                        @*@if (!string.IsNullOrEmpty(campaignAccount.Note))
-                        {
-                            <text>@campaignAccount.Note</text>
-                            <text>
-
-                                @if (!string.IsNullOrEmpty(Model.Campaign.Data) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
+                            @if (!string.IsNullOrEmpty(Model.Campaign.Data) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
+                            {
+                                if (Model.Campaign.Data.Contains("http"))
                                 {
-                                    if (Model.Campaign.Data.Contains("http"))
+                                    if ((Model.Campaign.Data != campaignAccount.RefUrl) || !campaignAccount.RefUrl.Contains(Model.Campaign.Data))
                                     {
-                                        if ((Model.Campaign.Data != campaignAccount.RefUrl) || !campaignAccount.RefUrl.Contains(Model.Campaign.Data))
-                                        {
-                                            <ul class="list-unstyled">
-                                                <li>
-                                                    Link chiến dịch: <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
-                                                </li>
-                                                <li>
-                                                    Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
-                                                </li>
-                                            </ul>
-                                        }
-
+                                        var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                Link chiến dịch: <a href="@Model.Campaign.Data" target="_blank">@Model.Campaign.Data</a>
+                                            </li>
+                                            <li>
+                                                Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
+                                            </li>
+                                            @if(fbPost!= null)
+                                            {
+                                              <li>
+                                                Facebook post của bạn: <a href="@(fbPost.Permalink)" target="_blank">@(fbPost.Permalink)</a>
+                                              </li>
+                                            }
+                                        </ul>
                                     }
+
                                 }
+                            }
 
 
-                            </text>
-                        }
-                        else
-                        {
-                            <text>Bạn đã không thực hiện công việc được giao.</text>
-                        }*@
+                        </span>
+
                     </div>
                 }
                 else if (campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign) // trường hợp phải kiểm tra lại
@@ -132,29 +132,30 @@ else
 
                             @if (!string.IsNullOrEmpty(campaignAccount.RefId) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
                             {
-                                <div class="alert alert-info">
-                                    <p>
-                                        Bạn đã thực hiện chiến dịch.
-                                    </p>
-                                    @{var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);}
-                                    @if (fbPost != null)
-                                    {
-                                        <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank">  @campaignAccount.RefUrl</a></p>
-                                        <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
 
-                                        <p>
-                                            <span>
-                                                @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
-                                            </span>
-                                            <span class="px-2">
-                                                @fbPost.ShareCount <i class="fal fa-share"></i>
-                                            </span>
-                                            <span>
-                                                @fbPost.CommentCount <i class="fal fa-comment"></i>
-                                            </span>
-                                        </p>
-                                    }
-                                </div>
+                                var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+                                @if (fbPost != null)
+                                {
+
+                                    <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank">  @campaignAccount.RefUrl</a></p>
+                                    <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
+
+                                    <p>
+                                        <span>
+                                            @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                        </span>
+                                        <span class="px-2">
+                                            @fbPost.ShareCount <i class="fal fa-share"></i>
+                                        </span>
+                                        <span>
+                                            @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                        </span>
+                                    </p>
+
+
+                                }
+
+
                             }
                             <p>
                                 @if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent)
