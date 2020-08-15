@@ -189,7 +189,8 @@ namespace WebServices.Jobs
                                     if (!string.IsNullOrEmpty(campaign.Data)) //kiểm tra xem link yêu cầu chia sẻ user có chia sẻ đúng link ko
                                     {
                                         
-                                        if (campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link))
+                                        if ((campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link)) ||
+                                            (campaign.HrefCompare != fbPost.Link || !campaign.HrefCompare.Contains(fbPost.Link)))
                                         {
                                             msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
                                         }
@@ -215,7 +216,8 @@ namespace WebServices.Jobs
                                         RefId = fbPost.PostId,
                                         RefUrl = fbPost.Link,
                                         Note = msg
-                                        }, username);                                                                     
+                                        }, username);             
+                                    
                                     if (campaignAccountId > 0)
                                     {
                                         await _campaignAccountStatisticRepository.Update(campaignAccountId, fbPost.LikeCount, fbPost.ShareCount, fbPost.CommentCount);
@@ -228,19 +230,17 @@ namespace WebServices.Jobs
                         }                         
                     }
                 }
-                else {
-                    //update thong tin like,share,comment
-                    foreach (var fbPost in fbPosts)
+                //update thong tin like,share,comment
+                foreach (var fbPost in fbPosts)
+                {
+                    if (!string.IsNullOrEmpty(fbPost.PostId))
                     {
-                        if (!string.IsNullOrEmpty(fbPost.PostId))
-                        {
-                            await _accountService.UpdateFbPost(accountid, fbPost, username);
-                        }
+                        await _accountService.UpdateFbPost(accountid, fbPost, username);
                     }
                 }
 
 
-                
+
             }
         }
 
