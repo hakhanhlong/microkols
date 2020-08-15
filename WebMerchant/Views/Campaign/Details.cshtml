@@ -314,19 +314,19 @@
                                 {
 
                                     @*<div class="mb-2">
-                        @{ stt++;}
-                        <h5 class="mr-2">@stt.  Ảnh chiến dịch cung cấp:</h5><br>
+                                        @{ stt++;}
+                                        <h5 class="mr-2">@stt.  Ảnh chiến dịch cung cấp:</h5><br>
 
-                        <ul class="list-inline">
-                            @foreach (var imgItem in Model.Image)
-                            {
-                                <li class="list-inline-item">
-                                    <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
+                                        <ul class="list-inline">
+                                            @foreach (var imgItem in Model.Image)
+                                            {
+                                                <li class="list-inline-item">
+                                                    <img src="@AppOptions.CurrentValue.GetImageUrl(imgItem)" class="img-thumbnail mr-2" style="height:120px" />
 
-                                </li>
-                            }
-                        </ul>
-                    </div>*@
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>*@
                                 }
 
 
@@ -336,7 +336,7 @@
                                 @if (Model.CountOption > 0)
                                 {
                                     stt++;
-                                    <div class="mb-2">
+                                    <div class="mb-2" style="display:block;">
                                         <h5 class="mr-2">@stt.  Tiêu chí:</h5><br>
                                         <ul>
                                             @if (Model.Gender.HasValue)

@@ -262,6 +262,7 @@ namespace Infrastructure.Data
             var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status != CampaignStatus.Created);
 
             //queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) || (m.Status == CampaignStatus.Confirmed)));
+            
 
             queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) && (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed)) 
             || m.Status == CampaignStatus.Confirmed);
@@ -280,7 +281,12 @@ namespace Infrastructure.Data
                 queryCampaign = queryCampaign.Where(m => m.Type == type.Value);
             }
 
-            return queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.Agency);
+            return  queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.Agency);
+
+            
+
+           
+
         }
 
         public async Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword)

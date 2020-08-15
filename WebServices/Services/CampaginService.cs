@@ -38,6 +38,7 @@ namespace WebServices.Services
         private readonly IAsyncRepository<AccountProvider> _accountProviderRepository;
 
         private readonly IAgencyRepository _IAgencyRepository;
+        private readonly IAccountRepository _IAccountRepository;
 
 
 
@@ -51,7 +52,8 @@ namespace WebServices.Services
             IAsyncRepository<CampaignAccountCaption> campaignAccountCaptionRepository,
             IAsyncRepository<CampaignAccountContent> campaignAccountContentRepository,
             INotificationRepository notificationRepository,
-             ISettingRepository settingRepository, IAsyncRepository<AccountProvider> accountProviderRepository, IAgencyRepository __IAgencyRepository)
+             ISettingRepository settingRepository, IAsyncRepository<AccountProvider> accountProviderRepository, 
+             IAgencyRepository __IAgencyRepository, IAccountRepository __IAccountRepository)
         {
             _campaignAccountTypeRepository = campaignAccountTypeRepository;
             _campaignTypeChargeRepository = campaignTypeChargeRepository;
@@ -66,6 +68,7 @@ namespace WebServices.Services
             _notificationRepository = notificationRepository;
             _accountProviderRepository = accountProviderRepository;
             _IAgencyRepository = __IAgencyRepository;
+            _IAccountRepository = __IAccountRepository;
         }
 
         #region Campaigns
@@ -121,8 +124,9 @@ namespace WebServices.Services
                 CampaignAccountStatus.Finished,
                 CampaignAccountStatus.SubmittedContent,
                 CampaignAccountStatus.UpdatedContent,
-                CampaignAccountStatus.WaitToPay
-                
+                CampaignAccountStatus.WaitToPay,
+                CampaignAccountStatus.NeedToCheckExcecuteCampaign
+
 
             }));
 
@@ -229,13 +233,58 @@ namespace WebServices.Services
             //var total = await _campaignRepository.CountAsync(filter);
 
 
+            var account = _IAccountRepository.GetById(accountid);
             var list = new List<MarketPlaceViewModel>();
+
+
+
 
             foreach (var campaign in campaigns)
             {
                 var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
 
-                list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+
+                var AgeRange = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.AgeRange).FirstOrDefault();
+                var Gender = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.Gender).FirstOrDefault();
+
+                try {
+                    if (AgeRange != null)
+                    {
+                        string[] ageArray = AgeRange.Value.Split(new string[] { "-" }, StringSplitOptions.None);
+                        int minAge = 0;
+                        Int32.TryParse(ageArray[0], out minAge);
+
+                        int maxAge = 0;
+                        Int32.TryParse(ageArray[1], out maxAge);
+
+                        try
+                        {
+                            int currentAge = account.Birthday.Value.Year;
+                            if (minAge <= currentAge && maxAge >= currentAge)
+                            { }
+                            else { continue; }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (Gender != null)
+                    {
+                        if (Gender.Value != account.Gender.ToString())
+                        {
+                            continue;
+                        }
+                    }
+
+                    list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+                }
+                catch { }
+            
+
+               
+                
 
             }
 

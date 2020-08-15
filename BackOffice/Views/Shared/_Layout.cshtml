@@ -46,6 +46,8 @@
 
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/jquery.bonsai.css" />
+    <link rel="stylesheet" href="~/css/lightbox.css" />
+
 
 
 </head>
@@ -306,6 +308,7 @@
     <script src="/assets/vendors/scrollbar/jquery.mCustomScrollbar.concat.min.js" type="text/javascript"></script>
     <script src="~/js/jquery.qubit.js" type="text/javascript"></script>
     <script src="~/js/jquery.bonsai.js" type="text/javascript"></script>
+    <script src="~/js/lightbox.js" type="text/javascript"></script>
 
 
 
@@ -362,7 +365,7 @@
                         else {
                             $('#walletwitdraw-count-menu').hide();
                         }
-                        
+
                         if (data.accountTotal > 0) {
                             $('#account-count-menu').show();
                             $('#account-count-menu').html(data.accountTotal);
@@ -380,7 +383,7 @@
                         }
 
 
-                        
+
 
                     },
                     dataType: "json",

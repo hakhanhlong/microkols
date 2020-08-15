@@ -51,9 +51,10 @@
                         </a>
                     </div>
 
-                    @if (campaignAccount.Status == CampaignAccountStatus.Finished)
+                    @if (campaignAccount.Status == CampaignAccountStatus.Finished || 
+                        campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
                     {
-                        if (campaignAccount.Type.IsShareCampaign() || campaignAccount.Type == CampaignType.ReviewProduct)
+                        if (campaignAccount.Type.IsShareCampaign() || campaignAccount.Type == CampaignType.ReviewProduct || campaignAccount.Type == CampaignType.JoinEvent)
                         {
                             if (!string.IsNullOrEmpty(campaignAccount.RefUrl))
                             {

@@ -94,6 +94,7 @@ namespace Core.Specifications
     {
         public CampaignAccountByAgencySpecification(int campaignid) : base(m => m.CampaignId == campaignid)
         {
+            AddInclude(m => m.Account);
         }
 
         public CampaignAccountByAgencySpecification(int campaignid, CampaignAccountStatus status) : base(m => m.CampaignId == campaignid && m.Status == status)

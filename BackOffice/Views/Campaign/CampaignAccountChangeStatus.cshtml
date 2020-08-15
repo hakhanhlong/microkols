@@ -4,18 +4,63 @@
     Layout = "~/Views/Shared/_LayoutModal.cshtml";
 }
 
-<div class="row">
+@inject WebServices.Interfaces.IAccountService AccountService
+@inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
+@inject WebServices.Interfaces.ICampaignService CampaignService
+
+@{ 
+    var campaignAccount = (CampaignAccount)ViewBag.CampaignAccount;
+    var campaign = await CampaignService.GetCampaignById(campaignAccount.CampaignId);
+}
+
+<div class="row" style="font-size:14px;font-family:roboto;">
     <div class="col-md-12">
         <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/Campaign/CampaignAccountChangeStatus">
             <input type="hidden" name="campaignaccountid" value="@(ViewBag.CampaignaccountId)" />
             <div class="m-portlet__body">
                 <div class="form-group m-form__group">
+
+                    @if (!string.IsNullOrEmpty(campaignAccount.Note))
+                    {
+                        <p>Ghi chú từ hệ thống: @(campaignAccount.Note)</p>
+                    }
+                    @{var fbPost = await AccountService.GetAccountFbPost(campaignAccount.AccountId, campaignAccount.RefId); }
+
+
+                    @if (!string.IsNullOrEmpty(campaign.Data))
+                    {
+                        <p>
+                            Link chiến dịch: <a href="@campaign.Data" target="_blank">@campaign.Data</a>
+                        </p>
+                        <p>
+                            Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
+                        </p>
+                    }
+                    @if (fbPost != null)
+                    {
+                        <p>
+                            Facebook post của bạn: <a href="@(fbPost.Permalink)" target="_blank">@(fbPost.Permalink)</a>
+                        </p>
+                        <p>
+                            <span>
+                                Lượt like: @fbPost.LikeCount 
+                            </span>
+                            <span class="px-2">
+                                Lượt chia sẻ: @fbPost.ShareCount
+                            </span>
+                            <span>
+                                Lượt comment: @fbPost.CommentCount
+                            </span>
+                        </p>
+                    }
+                </div>
+                <div class="form-group m-form__group">
                     <label for="exampleInputPassword1">
                         Thay đổi trạng thái thực hiện chiến dịch influencer
                     </label>
                     <select name="selectStatus" id="selectStatus" class="form-control m-input">
-                        <option value="8">Chưa hoàn thành</option>
                         <option value="9">Cần xác minh thực hiện chiến dịch</option>
+                        <option value="8">Chưa hoàn thành</option>
                         <option value="6">Đã hoàn thành</option>
                     </select>
                 </div>

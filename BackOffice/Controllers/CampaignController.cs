@@ -178,6 +178,8 @@ namespace BackOffice.Controllers
         public IActionResult CampaignAccountChangeStatus(int campaignaccountid)
         {
             ViewBag.CampaignaccountId = campaignaccountid;
+            var campaignAccount = _ICampaignAccountRepository.GetById(campaignaccountid);
+            ViewBag.CampaignAccount = campaignAccount;
             return View();
         }
 

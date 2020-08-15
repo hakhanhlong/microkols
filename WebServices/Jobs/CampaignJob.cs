@@ -54,6 +54,7 @@ namespace WebServices.Jobs
                     //if (isvalid)
                     //{
                         await _campaignService.UpdateCampaignCompleted(campaignid, SharedConstants.USERNAME);
+
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignCompleted(campaignid));
                     //}
                     //else
