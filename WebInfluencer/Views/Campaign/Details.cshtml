@@ -130,92 +130,98 @@
                     </ul>
                 }
 
-                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption || Model.Campaign.Type == CampaignType.ReviewProduct)
+                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption || Model.Campaign.Type == CampaignType.ReviewProduct || Model.Campaign.Type == CampaignType.JoinEvent)
                 {
 
                     if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
                     {
-                        if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                        if (Model.Campaign.Type == CampaignType.ReviewProduct || Model.Campaign.Type == CampaignType.JoinEvent)
                         {
 
-                            <h5> Thời gian viết nội dung</h5>
+                            @if (Model.Campaign.Type == CampaignType.JoinEvent)
+                            {
+                                <h5>Thời gian check-in và gửi hình bài post tại thời điểm check-in</h5>
+                            }
+                            else
+                            {
+                                <h5> Thời gian viết nội dung</h5>
+                            }
+
                             <p></p>
                             <ul class="list-unstyled">
                                 <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
                             </ul>
                         }
                         @*else
+                {
+                    <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
+                    <p>
+                    </p><ul class="list-unstyled">
+                        <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
+
+                    </ul>
+                }*@
+
+                    }
+                }
+
+                @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
+                {
+                    <h5> Thời gian thực hiện chiến dịch</h5>
+                    <p>
+                    </p><ul class="list-unstyled">
+                        <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
+                    </ul>
+                }
+
+                @if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                {
+
+                <div class="mb-2">
+                    <h5>
+                        @Model.Campaign.ReviewType.ToDisplayName()
+                    </h5>
+
+                    @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
+                    {
+
+                        if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
                         {
-                            <strong> Thời gian &amp; địa điểm trải nghiệm sản phẩn/dịch vụ</strong>
-                            <p>
-                            </p><ul class="list-unstyled">
-                                <li>  @Model.Campaign.FeedbackStart.Value.ToViDateTime() -  @Model.Campaign.FeedbackEnd.Value.ToViDateTime()</li>
-
-                            </ul>
-                        }*@
-
+                            <p></p>
+                            <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                            <p></p>
+                        }
                     }
-
-
-                    @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
-                    {
-                        <h5> Thời gian thực hiện chiến dịch</h5>
-                        <p>
-                        </p><ul class="list-unstyled">
-                            <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
-                        </ul>
-                    }
-
-                    if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                    else
                     {
 
-                        <div class="mb-2">
-                            <h5>
-                                @Model.Campaign.ReviewType.ToDisplayName()
-                            </h5>
-
-                            @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
-                            {
-
-                                if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                {
-                                    <p></p>
-                                    <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                                    <p></p>
-                                }
-                            }
-                            else
-                            {
-
-                                <p></p>
-                                <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                                <p></p>
-                            }
-
-
-
-                        </div>
-
-                        @*<div>
-                    @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-                    {
-                        <strong> Thời gian trải nghiệm</strong>
-
-                        <ul class="list-unstyled">
-                            <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                        </ul>
-                    }
-                    @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                    {
-                        <strong> Địa điểm trải nghiệm</strong>
-                        <p>
-                            @Model.Campaign.ReviewAddress
-                        </p>
+                        <p></p>
+                        <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                        <p></p>
                     }
 
-                </div>*@
-                    }
 
+
+                </div>
+
+                @*<div>
+            @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+            {
+                <strong> Thời gian trải nghiệm</strong>
+
+                <ul class="list-unstyled">
+                    <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                </ul>
+            }
+            @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+            {
+                <strong> Địa điểm trải nghiệm</strong>
+                <p>
+                    @Model.Campaign.ReviewAddress
+                </p>
+            }
+
+        </div>*@
                 }
 
 
@@ -226,37 +232,37 @@
                     @*<h5>KPIs tối thiểu mà doanh nghiệp yêu cầu bạn đạt được:</h5>*@
 
                     @*<ul class="list-unstyled">*@
-                        @if (!hasApply && !hasConfirmJoin)
+                    @if (!hasApply && !hasConfirmJoin)
+                    {
+                        if (campaignAccount != null && campaignAccount.KPICommitted > 0)
                         {
-                            if (campaignAccount != null && campaignAccount.KPICommitted > 0)
-                            {
-                                @*<li>
-                                    @campaignAccount.KPICommitted
-                                </li>*@
-                            }
-                            @*else
-                            if (Model.Campaign.InteractiveMin.HasValue)
-                            {
-                                <li>
-                                    @Model.Campaign.InteractiveMin.Value
-                                </li>
-                            }*@
-                            else
-                            {
-                                @*<li>
-                                    @Model.Campaign.KPIMin
-                                </li>*@
-                            }
-                            @*<li>@Model.InteractiveMin</li>*@
+                            @*<li>
+                        @campaignAccount.KPICommitted
+                    </li>*@
                         }
+                        @*else
+                if (Model.Campaign.InteractiveMin.HasValue)
+                {
+                    <li>
+                        @Model.Campaign.InteractiveMin.Value
+                    </li>
+                }*@
                         else
                         {
                             @*<li>
-                                <input type="number" id="txtKPICommitted" name="KPICommitted"
-                                       class="form-control" value="@Model.Campaign.InteractiveMin" min="@Model.Campaign.InteractiveMin" />
-                            </li>*@
-
+                        @Model.Campaign.KPIMin
+                    </li>*@
                         }
+                        @*<li>@Model.InteractiveMin</li>*@
+                    }
+                    else
+                    {
+                        @*<li>
+                    <input type="number" id="txtKPICommitted" name="KPICommitted"
+                           class="form-control" value="@Model.Campaign.InteractiveMin" min="@Model.Campaign.InteractiveMin" />
+                </li>*@
+
+                    }
                     @*</ul>*@
                 }
                 else

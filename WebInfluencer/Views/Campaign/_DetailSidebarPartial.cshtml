@@ -64,6 +64,7 @@ else
                                 Link bạn chia sẻ: <a href="@(campaignAccount.RefUrl)" target="_blank">@(campaignAccount.RefUrl)</a>
                             </p>
                         }
+
                         @if (fbPost != null)
                         {
                             <p>
@@ -79,6 +80,26 @@ else
                                 <span>
                                     @fbPost.CommentCount <i class="fal fa-comment"></i>
                                 </span>
+                            </p>
+                        }
+
+                        @if (!string.IsNullOrEmpty(campaignAccount.RefImage) && Model.Campaign.Type == CampaignType.JoinEvent)
+                        {
+                            <p>
+                                Hình ảnh check-in của bạn:
+                            </p>
+                            <p>
+                                @{
+                                    string[] _imageURLs = campaignAccount.RefImage.Split(new string[] { "|" }, StringSplitOptions.None);
+                                }
+                                @foreach (var url in _imageURLs)
+                                {
+                                    <span>
+                                        <a href="@AppOptions.CurrentValue.GetImageUrl(url)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                            <img src="@AppOptions.CurrentValue.GetImageUrl(url)" style="height:80px" />
+                                        </a>
+                                    </span>
+                                }
                             </p>
                         }
 
@@ -131,8 +152,25 @@ else
                                         <span>
                                             @fbPost.CommentCount <i class="fal fa-comment"></i>
                                         </span>
-
-
+                                    </p>
+                                }
+                                @if (!string.IsNullOrEmpty(campaignAccount.RefImage) && Model.Campaign.Type == CampaignType.JoinEvent)
+                                {
+                                    <p>
+                                        Hình ảnh check-in của bạn:
+                                    </p>
+                                    <p>
+                                        @{
+                                            string[] _imageURLs = campaignAccount.RefImage.Split(new string[] { "|" }, StringSplitOptions.None);
+                                        }
+                                        @foreach (var url in _imageURLs)
+                                        {
+                                            <span>
+                                                <a href="@AppOptions.CurrentValue.GetImageUrl(url)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                                    <img src="@AppOptions.CurrentValue.GetImageUrl(url)" style="height:80px" />
+                                                </a>
+                                            </span>
+                                        }
                                     </p>
                                 }
                             </div>
@@ -142,53 +180,72 @@ else
                     }
                     else
                     {
-                        <div class="alert alert-info">
-                            <p>
-                                Bạn đã thực hiện chiến dịch.
-                            </p>
+                            <div class="alert alert-info">
+                                <p>
+                                    Bạn đã thực hiện chiến dịch.
+                                </p>
 
-                            @if (!string.IsNullOrEmpty(campaignAccount.RefId) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
-                            {
-
-                                var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
-                                @if (fbPost != null)
+                                @if (!string.IsNullOrEmpty(campaignAccount.RefId) && !string.IsNullOrEmpty(campaignAccount.RefUrl))
                                 {
 
-                                    <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank">  @campaignAccount.RefUrl</a></p>
-                                    <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
+                                    var fbPost = await AccountService.GetAccountFbPost(CurrentUser.Id, campaignAccount.RefId);
+                                    @if (fbPost != null)
+                                    {
 
+                                        <p>Bài viết đã thực hiện: <a href="@campaignAccount.RefUrl" target="_blank">  @campaignAccount.RefUrl</a></p>
+                                        <p>Facebook thực hiện: <a href="@fbPost.Permalink" target="_blank"> <i class="fab fa-facebook"></i> @fbPost.Permalink</a></p>
+
+                                        <p>
+                                            <span>
+                                                @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
+                                            </span>
+                                            <span class="px-2">
+                                                @fbPost.ShareCount <i class="fal fa-share"></i>
+                                            </span>
+                                            <span>
+                                                @fbPost.CommentCount <i class="fal fa-comment"></i>
+                                            </span>
+                                        </p>
+
+
+                                    }
+
+
+                                }
+                                @if (!string.IsNullOrEmpty(campaignAccount.RefImage) && Model.Campaign.Type == CampaignType.JoinEvent)
+                                {
                                     <p>
-                                        <span>
-                                            @fbPost.LikeCount <i class="fal fa-thumbs-up"></i>
-                                        </span>
-                                        <span class="px-2">
-                                            @fbPost.ShareCount <i class="fal fa-share"></i>
-                                        </span>
-                                        <span>
-                                            @fbPost.CommentCount <i class="fal fa-comment"></i>
-                                        </span>
+                                        Hình ảnh check-in của bạn:
                                     </p>
-
-
+                                    <p>
+                                        @{
+                                            string[] _imageURLs = campaignAccount.RefImage.Split(new string[] { "|" }, StringSplitOptions.None);
+                                        }
+                                        @foreach (var url in _imageURLs)
+                                        {
+                                            <span>
+                                                <a href="@AppOptions.CurrentValue.GetImageUrl(url)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                                    <img src="@AppOptions.CurrentValue.GetImageUrl(url)" style="height:80px" />
+                                                </a>
+                                            </span>
+                                        }
+                                    </p>
                                 }
-
-
-                            }
-                            <p>
-                                @if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent)
-                                {
-                                    <text>Ngay sau khi chiến dịch kết thúc đúng thời gian và yêu cầu bạn sẽ nhận được thanh toán vào tài khoản.</text>
-                                }
-                                else
-                                {
-                                    <text>Ngay sau khi chiến dịch kết thúc và đạt đủ KPI bạn sẽ nhận được thanh toán vào tài khoản.</text>
-                                }
+                                <p>
+                                    @if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.JoinEvent)
+                                    {
+                                        <text>Ngay sau khi chiến dịch kết thúc đúng thời gian và yêu cầu bạn sẽ nhận được thanh toán vào tài khoản.</text>
+                                    }
+                                    else
+                                    {
+                                        <text>Ngay sau khi chiến dịch kết thúc và đạt đủ KPI bạn sẽ nhận được thanh toán vào tài khoản.</text>
+                                    }
 
 
 
-                            </p>
+                                </p>
 
-                        </div>
+                            </div>
 
                     }
                 }
@@ -249,29 +306,64 @@ else
                                 {
                                     @*<button id="btn-facebook-share" class="btn btn-primary btn-rounded btn-block btn-shareui" data-urlsubmit="@Url.Action("SubmitCampaignAccountSharedContent")" data-caption="@campaignAccount.RefContent" data-href="@Model.Campaign.Data">
 
-                                <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
-                            </button>
+                <i class="fab fa-facebook"></i> Chia sẻ trên Facebook
+            </button>
 
-                            <hr>*@
+            <hr>*@
                                 }
 
 
                                 @if (Model.Campaign.Type == CampaignType.JoinEvent)
                                 {
 
-                                    @if (string.IsNullOrEmpty(campaignAccount.RefImage))
+                                    if (Model.Campaign.FeedbackStart.HasValue && Model.Campaign.FeedbackEnd.HasValue)
                                     {
-                                        <button class="btn btn-info btn-updaterefimages btn-block" data-url="@Url.Action("UpdateCampaignAccountRefImages",
-                                                new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                            Hình ảnh thực hiện chiến dịch của bạn
-                                        </button>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                            Cập nhật thông tin công việc
-                                        </button>
-                                    }
+                                            if (Model.Campaign.FeedbackStart.Value <= DateTime.Now && Model.Campaign.FeedbackEnd.Value >= DateTime.Now)
+                                            {
+
+                                                <strong>Bước 1:</strong>
+                                                if (string.IsNullOrEmpty(campaignAccount.RefImage))
+                                                {
+
+                                                    <button class="btn btn-info btn-updaterefimages btn-block" data-url="@Url.Action("UpdateCampaignAccountRefImages",
+                                                    new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                                        Gửi hình bài post tại thời điểm check-in
+                                                    </button>
+                                                }
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(campaignAccount.RefImage))
+                                            {
+                                                <p>
+                                                    Hình ảnh check-in của bạn:
+                                                </p>
+                                                <p>
+                                                    @{
+                                                        string[] _imageURLs = campaignAccount.RefImage.Split(new string[] { "|" }, StringSplitOptions.None);
+                                                    }
+                                                    @foreach (var url in _imageURLs)
+                                                    {
+                                                        <span>
+                                                            <a href="@AppOptions.CurrentValue.GetImageUrl(url)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                                                <img src="@AppOptions.CurrentValue.GetImageUrl(url)" style="height:80px" />
+                                                            </a>
+                                                        </span>
+                                                    }
+                                                </p>
+                                            }
+                                            <strong>Bước 2:</strong>
+                                        }
+                                        else
+                                        {
+                                            if (string.IsNullOrEmpty(campaignAccount.RefImage))
+                                            {
+                                                <strong>Đã hết thời gian gửi hình bài post tại thời điểm check-in </strong>
+                                            }
+                                        }
+
+                                    <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                        Cập nhật thông tin công việc
+                                    </button>
 
 
                                 }

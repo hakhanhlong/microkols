@@ -179,12 +179,20 @@
                                                 </span>
                                             </div>
                                         }
-                                        @if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ReviewProduct)
+                                        @if (Model.Type == CampaignType.ShareContentWithCaption || Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.JoinEvent)
                                         {
-                                            if (Model.Type == CampaignType.ReviewProduct)
+                                            if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.JoinEvent)
                                             {
                                                 <div class="mb-2">
-                                                    <strong class="mr-2"> Thời gian viết nội dung:</strong>
+                                                    @if (Model.Type == CampaignType.JoinEvent)
+                                                    {
+                                                    <strong class="mr-2"> Thời gian check-in và gửi hình bài post tại thời điểm check-in:</strong>
+                                                    }
+                                                    else
+                                                    {
+                                                        <strong class="mr-2"> Thời gian viết nội dung:</strong>
+                                                    }
+
                                                     <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
                                                     <span class="text-info">
                                                         @Model.FeedbackEnd.Value.ToViDateTime()

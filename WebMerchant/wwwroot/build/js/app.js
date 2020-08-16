@@ -1324,6 +1324,7 @@ var CampaignCreateTargetPage = (function () {
 
         $('#FeedbackBefore').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             minDate: moment(),
             startDate: moment(),
             endDate: moment().startOf('hour').add(defaultHour, 'hour'),
@@ -1334,6 +1335,7 @@ var CampaignCreateTargetPage = (function () {
 
         $('#RegisterTime').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             minDate: moment(),
             startDate: moment(),
             endDate: moment().startOf('hour').add(defaultHour, 'hour'),
@@ -1353,6 +1355,7 @@ var CampaignCreateTargetPage = (function () {
         });
         $('#ExecutionTime').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             minDate: moment(),
             startDate: moment().startOf('hour').add(defaultHour, 'hour').add(1, 'minute'),
             endDate: moment().startOf('hour').add(2 * defaultHour, 'hour'),
@@ -1390,18 +1393,21 @@ var CampaignCreateTargetPage = (function () {
 
         $('#FeedbackBefore2').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
         $('#RegisterTime2').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }
         });
         $('#ExecutionTime2').daterangepicker({
             timePicker: true,
+            timePicker24Hour: true,
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }

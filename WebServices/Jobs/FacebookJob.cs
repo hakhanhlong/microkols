@@ -99,6 +99,7 @@ namespace WebServices.Jobs
                         var refurl = campaign.CampaignAccount.RefUrl;
                         var refid = campaign.CampaignAccount.RefId;
 
+                      
                         // chỉ check facebook post của người đã đồng ý tham gia chiến dịch
                         if ((campaign.CampaignAccount.Status == CampaignAccountStatus.Confirmed ||
                             campaign.CampaignAccount.Status == CampaignAccountStatus.ApprovedContent ||
@@ -188,19 +189,52 @@ namespace WebServices.Jobs
                                     string msg = string.Empty;
                                     if (!string.IsNullOrEmpty(campaign.Data)) //kiểm tra xem link yêu cầu chia sẻ user có chia sẻ đúng link ko
                                     {
-                                        
-                                        if ((campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link)) &&
-                                            (campaign.HrefCompare != fbPost.Link || !campaign.HrefCompare.Contains(fbPost.Link)))
+                                        if (string.IsNullOrEmpty(campaign.HrefCompare))
+                                            campaign.HrefCompare = "";
+
+                                        if (string.IsNullOrEmpty(fbPost.Link))
+                                            fbPost.Link = "";
+
+
+                                        try
                                         {
-                                            msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
-                                        }
-                                        else
-                                        {
-                                            // Xử lý khi link cần chia sẻ đã được chia sẻ đúng
-                                            msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ đúng";
+                                            if ((campaign.Data != fbPost.Link || !campaign.Data.Contains(fbPost.Link)))
+                                            {
+                                                msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
+                                            }
+
+                                            if (campaign.HrefCompare != fbPost.Link || !campaign.HrefCompare.Contains(fbPost.Link) ||
+                                                !fbPost.Link.Contains(campaign.HrefCompare))
+                                            {
+                                                msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ không đúng";
+                                            }
+
+                                            if ((campaign.Data == fbPost.Link || campaign.Data.Contains(fbPost.Link)))
+                                            {
+                                                // Xử lý khi link cần chia sẻ đã được chia sẻ đúng
+                                                msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ đúng";
+                                            }
+
+                                            if(!string.IsNullOrEmpty(campaign.HrefCompare) && !string.IsNullOrEmpty(fbPost.Link))
+                                            {
+                                                if (campaign.HrefCompare == fbPost.Link || campaign.HrefCompare.Contains(fbPost.Link)
+                                                || fbPost.Link.Contains(campaign.HrefCompare))
+                                                {
+                                                    msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ đúng";
+                                                }
+
+                                            }
+                                            
+
+                                            if (fbPost.Message.Contains(campaign.Data) || fbPost.Message.Contains(campaign.HrefCompare))
+                                            {
+                                                msg = $"Cần xác minh thực hiện chiến dịch! Link chia sẻ đúng";
+                                            }
+
 
                                         }
-                                        
+                                        catch
+                                        {}                                     
                                     }
                                     else
                                     {

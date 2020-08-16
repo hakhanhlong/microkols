@@ -95,13 +95,25 @@
                             </div>
                             stt = 8;
                         }
-                        @if (Model.Type == CampaignType.ReviewProduct)
+                        @if (Model.Type == CampaignType.ReviewProduct || Model.Type == CampaignType.JoinEvent)
                         {
                             if (Model.FeedbackStart.HasValue)
                             {
                                 stt++;
                                 <div class="mb-2">
-                                    <h5 class="mr-2">@stt. Thời gian gửi và duyệt nội dung mẫu</h5>
+
+                                    @if (Model.Type == CampaignType.JoinEvent)
+                                    {
+                                    <h5 class="mr-2">
+                                        @stt. Thời gian check-in và gửi hình bài post tại thời điểm check-in
+                                    </h5>
+                                    }
+                                    else
+                                    {
+                                        <h5 class="mr-2">@stt. Thời gian gửi và duyệt nội dung mẫu</h5>
+                                    }
+
+
                                     <span class="text-info">@Model.FeedbackStart.Value.ToViDateTime()</span> -
                                     <span class="text-info">
                                         @Model.FeedbackEnd.Value.ToViDateTime()

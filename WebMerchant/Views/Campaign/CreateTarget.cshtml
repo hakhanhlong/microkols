@@ -296,20 +296,26 @@
             <label asp-for="RegisterTime"></label>
         }
 
-
-
         <input type="text" class="form-control form-daterangepicker" asp-for="RegisterTime" autocomplete="off" />
         <span asp-validation-for="RegisterTime"></span>
 
     </div>
-    @if (campaignType == CampaignType.ReviewProduct)
+    @if (campaignType == CampaignType.ReviewProduct || campaignType == CampaignType.JoinEvent)
     {
-        <div class="form-group ">
+    <div class="form-group ">
+        @if (campaignType == CampaignType.JoinEvent)
+        {
+            <label>Thời gian check-in và gửi hình bài post tại thời điểm check-in</label>
+        }
+        else
+        {
             <label asp-for="FeedbackBefore"></label>
-            <input type="text" class="form-control" asp-for="FeedbackBefore" autocomplete="off" />
-            <span asp-validation-for="FeedbackBefore"></span>
+        }
 
-        </div>
+        <input type="text" class="form-control" asp-for="FeedbackBefore" autocomplete="off" />
+        <span asp-validation-for="FeedbackBefore"></span>
+
+    </div>
     }
     else
     {
