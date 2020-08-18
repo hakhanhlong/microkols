@@ -518,7 +518,19 @@
                                                     <partial name="_DetailsAccountsProcessPartial" model="Model" />
                                                 </div>
                                                 <div class="tab-pane" id="m_tabs_6_3" role="tabpanel">
-                                                    <partial name="_DetailsAccountsReviewPartial" model="Model" />
+
+
+                                                    @if (Model.Type == CampaignType.JoinEvent)
+                                                    {
+                                                        
+                                                        await Html.RenderPartialAsync("_DetailsAccountsReviewCheckinPartial", Model);
+                                                    }
+                                                    else
+                                                    {
+                                                        <partial name="_DetailsAccountsReviewPartial" model="Model" />
+                                                    }
+
+
                                                 </div>
                                                 <div class="tab-pane" id="m_tabs_6_4" role="tabpanel">
                                                     <partial name="_DetailsAccountsPaymentPartial" model="Model" />

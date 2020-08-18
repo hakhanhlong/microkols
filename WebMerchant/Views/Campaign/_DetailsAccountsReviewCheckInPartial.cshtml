@@ -36,9 +36,8 @@
     <tbody>
         @{ var stt = 0;}
         @{ 
-            var listCampaignAccount = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished
+            var listCampaignAccount = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished || m.RefImage.Count > 0
          || m.Status == CampaignAccountStatus.Unfinished || m.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign);
-
         }
         @foreach (var campaignAccount in listCampaignAccount)
         {
@@ -152,7 +151,7 @@
             </td>
             @if (Model.Type == CampaignType.JoinEvent)
             {
-                <td class="d-flex align-items-center">
+                <td class="align-items-center">
 
 
 

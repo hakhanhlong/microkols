@@ -1310,7 +1310,7 @@ var CampaignCreateTargetPage = (function () {
     function init() {
         handler();
 
-        console.log('CampaignCreateTargetPage');
+        //console.log('CampaignCreateTargetPage');
     }
 
     function handler() {
@@ -1345,20 +1345,22 @@ var CampaignCreateTargetPage = (function () {
         });
         $('#RegisterTime').on('apply.daterangepicker', function (ev, picker) {
             
-            var startDate = moment(picker.endDate).add(1, 'minute');
-            var endDate = moment(picker.endDate).add(defaultHour, 'hour');
-            console.log('start11',startDate);
-            console.log('end11',endDate);
-            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate);
-            $('#ExecutionTime').data('daterangepicker').setEndDate(endDate);
+            //var startDate = moment(picker.endDate).add(1, 'minute');
+            //var endDate = moment(picker.endDate).add(defaultHour, 'hour');
+            //console.log('start11',startDate);
+            //console.log('end11',endDate);
+            //$('#ExecutionTime').data('daterangepicker').setStartDate(startDate);
+            //$('#ExecutionTime').data('daterangepicker').setEndDate(endDate);
 
         });
         $('#ExecutionTime').daterangepicker({
             timePicker: true,
             timePicker24Hour: true,
             minDate: moment(),
-            startDate: moment().startOf('hour').add(defaultHour, 'hour').add(1, 'minute'),
-            endDate: moment().startOf('hour').add(2 * defaultHour, 'hour'),
+            //startDate: moment().startOf('hour').add(defaultHour, 'hour').add(1, 'minute'),
+            //endDate: moment().startOf('hour').add(2 * defaultHour, 'hour'),
+            startDate: moment(),
+            endDate: moment().startOf('hour').add(defaultHour, 'hour'),
             locale: {
                 format: 'hh:mm A DD/MM/YYYY'
             }

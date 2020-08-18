@@ -1,6 +1,9 @@
-﻿@model CampaignDetailsViewModel
+﻿@model WebServices.ViewModels.CampaignDetailsViewModel
+
 @inject WebServices.Interfaces.IAccountService AccountService
 @inject WebServices.Code.Helpers.IFacebookHelper FacebookHelper
+
+@using BackOffice.Extensions;
 
 <table class="table table-bordered">
     <thead>
@@ -35,10 +38,9 @@
     </thead>
     <tbody>
         @{ var stt = 0;}
-        @{ 
-            var listCampaignAccount = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished
+        @{
+            var listCampaignAccount = Model.CampaignAccounts.Where(m => m.Status == CampaignAccountStatus.Finished || m.RefImage.Count > 0
          || m.Status == CampaignAccountStatus.Unfinished || m.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign);
-
         }
         @foreach (var campaignAccount in listCampaignAccount)
         {
@@ -47,13 +49,12 @@
             <td>@stt</td>
             <td>
 
-                <div style="font-weight:bold;">
+                <div>
                     <a href="@campaignAccount.Account.Link" target="_blank">
                         @campaignAccount.Account.Name
                     </a>
                 </div>
-                @if (campaignAccount.Status == CampaignAccountStatus.Finished ||
-                  campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
+                @if (campaignAccount.Status == CampaignAccountStatus.Finished || campaignAccount.Status == CampaignAccountStatus.NeedToCheckExcecuteCampaign)
                 {
                     if (campaignAccount.Type.IsShareCampaign() || campaignAccount.Type == CampaignType.ReviewProduct || campaignAccount.Type == CampaignType.JoinEvent)
                     {
@@ -66,35 +67,35 @@
                                 {
 
                                     <div>
-                                        <a href="@post.Permalink" target="_blank"><i class="fal fa-link"></i> FB.com</a>
+                                        <a href="@post.Permalink" target="_blank"><i class="fa fa-link"></i> FB.com</a>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         @if (Model.Type != CampaignType.ChangeAvatar)
                                         {
                                             <a href="@post.Permalink" target="_blank" style="text-decoration:none;">
                                                 <span data-toggle="tooltip" title="Lượt thích">
-                                                    @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                    @post.LikeCount <i class="fa fa-thumbs-up"></i>
                                                 </span>
                                                 <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
 
-                                                    @post.ShareCount <i class="fal fa-share"></i>
+                                                    @post.ShareCount <i class="fa fa-share"></i>
                                                 </span>
                                                 <span data-toggle="tooltip" title="Lượt bình luận">
-                                                    @post.CommentCount <i class="fal fa-comment"></i>
+                                                    @post.CommentCount <i class="fa fa-comment"></i>
                                                 </span>
                                             </a>
                                         }
                                         else
                                         {
                                             <span data-toggle="tooltip" title="Lượt thích">
-                                                @post.LikeCount <i class="fal fa-thumbs-up"></i>
+                                                @post.LikeCount <i class="fa fa-thumbs-up"></i>
                                             </span>
                                             <span class="px-2" data-toggle="tooltip" title="Lượt Chia sẻ">
 
-                                                @post.ShareCount <i class="fal fa-share"></i>
+                                                @post.ShareCount <i class="fa fa-share"></i>
                                             </span>
                                             <span data-toggle="tooltip" title="Lượt bình luận">
-                                                @post.CommentCount <i class="fal fa-comment"></i>
+                                                @post.CommentCount <i class="fa fa-comment"></i>
                                             </span>
                                         }
 
@@ -105,8 +106,6 @@
 
                                     }*@
                                     </div>
-
-
                                 }
                             }
                         }
@@ -128,7 +127,7 @@
                                 {
 
                                     <div class="col-12 text-center">
-                                        <img src="@AppOptions.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
+                                        <img src="@AppHelpers.CurrentValue.GetImageUrl(logAvatar.Avatar)" class="img-fluid" />
                                         <small class="text-muted">@logAvatar.TimeUpdate.ToViDateTime()</small>
                                     </div>
                                 }
@@ -152,7 +151,7 @@
             </td>
             @if (Model.Type == CampaignType.JoinEvent)
             {
-                <td class="d-flex align-items-center">
+                <td class="align-items-center">
 
 
 
@@ -161,9 +160,9 @@
                         {
 
                             <li class="list-inline-item">
-                                <a href="@AppOptions.CurrentValue.GetImageUrl(img)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
+                                <a href="@AppHelpers.CurrentValue.GetImageUrl(img)" data-lightbox="Ảnh mẫu" data-title="Ảnh mẫu">
 
-                                    <img src="@AppOptions.CurrentValue.GetImageUrl(img)" height="32">
+                                    <img src="@AppHelpers.CurrentValue.GetImageUrl(img)" height="32">
                                 </a>
                             </li>
                         }
@@ -190,7 +189,7 @@
                                 else
                                 {
                                     <span class="text-info">
-                                        @campaignAccount.RefContent
+                                        @campaignAccount.RefContent);
                                     </span>
                                 }
                             }
@@ -229,17 +228,15 @@
             <td>
                 @if (campaignAccount.Rating.HasValue)
                 {
-                    <span class="btn btn-outline-info btn-sm">@campaignAccount.Rating.Value.ToDisplayName()</span>
+                    <span>@campaignAccount.Rating.Value.ToDisplayName()</span>
 
                 }
                 else
                 {
-                    <button class="btn btn-sm btn-outline-primary btn-remotemodal"
-                            data-url="@Url.Action("UpdateCampaignAccountRating", new { id = campaignAccount.Id,campaignid = campaignAccount.CampaignId, rating = campaignAccount.Rating})">
 
 
-                        Chưa đánh giá
-                    </button>
+
+                    <text>Chưa đánh giá</text>
 
                 }
 
@@ -251,13 +248,11 @@
                 @if (CampaignAccountReportStatus.Reported == campaignAccount.ReportStatus)
                 {
                     var title = $"Nội dung: {campaignAccount.ReportNote}";
-                    <button class="btn btn-sm btn-outline-danger" data-toggle="tooltip" title="@title"><i class=" fal fa-check"> </i> Đã báo cáo</button>
+                    <text>@title</text>
                 }
                 else
                 {
-                    var reportUrl = Url.Action("ReportCampaignAccount", new { id = campaignAccount.Id, campaignid = campaignAccount.CampaignId });
-
-                    <button class="btn btn-sm btn-outline-danger btn-remotemodal" data-url="@reportUrl">Báo cáo</button>
+                    <text>Chưa báo cáo</text>
                 }
 
 
@@ -268,42 +263,3 @@
     </tbody>
 </table>
 
-<div class="modal fade" style="z-index: 9999999;" id="caption-history-account-review" tabindex="-1"
-     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content h-75">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa caption</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <iframe frameborder="0" scrolling="no" id="iframe-caption-history-review" width="100%" height="100%"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" style="z-index: 9999999;" id="content-history-account-review" tabindex="-1"
-     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content h-75">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Lịch sử sửa nội dung</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <iframe frameborder="0" scrolling="no" id="iframe-content-history-review" width="100%" height="100%"></iframe>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
-</div>
