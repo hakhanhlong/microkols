@@ -416,7 +416,8 @@
                         </div>
 
                 <div class="mt-2">
-                    @if (Model.Status != CampaignStatus.Canceled && Model.Status != CampaignStatus.Created && Model.Status != CampaignStatus.Started)
+                    @if (Model.Status != CampaignStatus.Canceled && Model.Status 
+                        != CampaignStatus.Created && Model.Status != CampaignStatus.Started)
                     {
                         if (Model.Payment.IsValid)
                         {

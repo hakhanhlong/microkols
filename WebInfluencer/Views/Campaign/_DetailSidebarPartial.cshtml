@@ -238,7 +238,7 @@ else
                                     }
                                     else
                                     {
-                                        <text>Ngay sau khi chiến dịch kết thúc và đạt đủ KPI bạn sẽ nhận được thanh toán vào tài khoản.</text>
+                                        <text>Ngay sau khi chiến dịch kết thúc bạn sẽ nhận được thanh toán vào tài khoản.</text>
                                     }
 
 
@@ -327,7 +327,7 @@ else
 
                                                     <button class="btn btn-info btn-updaterefimages btn-block" data-url="@Url.Action("UpdateCampaignAccountRefImages",
                                                     new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                                        Gửi hình bài post tại thời điểm check-in
+                                                        Chụp lại màn hình post check-in của bạn
                                                     </button>
                                                 }
                                             }
@@ -361,8 +361,9 @@ else
                                             }
                                         }
 
-                                    <button class="btn btn-warning btn-rounded btn-block btn-updateref" data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
-                                        Cập nhật thông tin công việc
+                                    <button class="btn btn-warning btn-rounded btn-block btn-updateref" 
+                                            data-url="@Url.Action("UpdateCampaignAccountRef", new {campaignid = Model.Campaign.Id, campaigntype = Model.Campaign.Type })">
+                                        Cập nhật link bài post để hoàn thành công việc
                                     </button>
 
 

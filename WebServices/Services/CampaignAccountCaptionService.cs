@@ -70,9 +70,11 @@ namespace WebServices.Services
 
 
             var filter = new CampaignAccountCaptionByCampaignIdSpecification(campaignId);
+
             var query = _CampaignAccountCaptionRepository.GetQueryBySpecification(filter);
 
             var queryCampaignAccounts  = query.Select(m=> m.CampaignAccountId).Distinct();
+
             var total = await queryCampaignAccounts.CountAsync();
             var ids = await queryCampaignAccounts.OrderByDescending(m => m).GetPagedAsync(page, pagesize);
 

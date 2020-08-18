@@ -1465,6 +1465,7 @@ namespace WebServices.Services
                     //check da thanh toan chua                    
                     // trường hợp thanh toán chưa đủ thì campaign sẽ bị khóa 
                     var payment = await _campaignRepository.GetCampaignPaymentByAgency(campaign.AgencyId, campaign.Id);
+
                     if (payment == null || !payment.IsValidToProcess)
                     {
 
@@ -1479,7 +1480,7 @@ namespace WebServices.Services
                         //   NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
 
                         // longhk edit
-                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignCantStarted, 
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignCantStarted,
                             $"Để thực hiện được chiến dịch {campaign.Title}, bạn cần thanh toán {payment.TotalChargeValue.ToPriceText()} cho chiến dịch.");
                         //#################################################################################################################################
 
@@ -1491,9 +1492,53 @@ namespace WebServices.Services
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignLocked, _msg, _data);
                         }
                         catch// tranh loi lam crash 
-                        {}
+                        { }
                         //#################################################################################################################################
                         return;
+                    }
+                    else
+                    {
+                        //đã thanh toán nhưng chưa thanh toán hết hoàn toàn( kiểu như mới thanh toán lần 1, lần 2 chưa thanh toán)
+                        try
+                        {
+                            if (payment.TotalPaidAmount < payment.TotalChargeAmount)
+                            {
+                                long remainAmountNeedPaid = payment.TotalChargeAmount - payment.TotalPaidAmount;
+
+                                campaign.Status = CampaignStatus.Locked; // locked chiến dịch
+                                campaign.SystemNote = "Chưa thanh toán";
+                                campaign.UserModified = username;
+                                campaign.DateModified = DateTime.Now;
+                                await _campaignRepository.UpdateAsync(campaign);
+
+                                //await _notificationRepository.CreateNotification(NotificationType.CampaignCantStarted,
+                                //   EntityType.Agency, campaign.AgencyId, campaign.Id,
+                                //   NotificationType.CampaignCantStarted.GetMessageText("Hệ thống", campaign.Code, "Bạn chưa thanh toán tiền chiến dịch, hãy thanh toán để thực hiện được chiến dịch."));
+
+                                // longhk edit
+                                await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignCantStarted,
+                                    $"Để thực hiện được chiến dịch {campaign.Title}, bạn cần thanh toán {remainAmountNeedPaid.ToPriceText()} cho chiến dịch.");
+                                //#################################################################################################################################
+
+                                //################ anh Long add them notification gửi về admin ####################################################################
+                                try
+                                {
+                                    string _msg = string.Format("Chiến dịch \"{0}\" của doanh nghiệp \"{1}\", chưa thanh toán số tiền {2}. Hệ thống đã khóa", campaign.Title, campaign.UserCreated, remainAmountNeedPaid.ToPriceText());
+                                    string _data = "Campaign";
+                                    await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignLocked, _msg, _data);
+                                }
+                                catch// tranh loi lam crash 
+                                { }
+                                //#################################################################################################################################
+                                return;
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                        
+
                     }
                     //#####################################################################################################################################
                     #endregion

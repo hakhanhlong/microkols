@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Duyệt caption chiến dịch";
     var campaign = (CampaignViewModel)ViewBag.Campaign;
-    
+
     var currenturl = Url.Action("Caption", new { campaignid = campaign.Id, pageindex = Model.Pager.Page, pagesize = Model.Pager.PageSize });
 }
 
@@ -34,7 +34,6 @@
                         var lastCaption = item.LastCaption;
                         count++;
                         var account = await AccountService.GetAccount(lastCaption.AccountId);
-
                         <tr>
 
                             <td><input type="checkbox" class="cb-checkitem cb-checkitemChuaDuyet" value="@lastCaption.Id" /></td>
@@ -98,7 +97,7 @@
                                                                 <div class="form-group">
                                                                     <label for="exampleInputEmail1">Ghi chú sửa caption</label>
                                                                     <textarea class="form-control" rows="3" name="note" required></textarea>
-                                                                    
+
                                                                 </div>
                                                                 <div class="text-center">
                                                                     <input type="hidden" name="id" value="@lastCaption.Id" />
@@ -128,7 +127,7 @@
                                                                             <td>
                                                                                 <p class="d-inline-block text-wrap" style="max-width: 550px;">
                                                                                     @item2.Content
-                                                                                </p> 
+                                                                                </p>
 
                                                                                 @if (!string.IsNullOrEmpty(item2.Note))
                                                                                 {
@@ -163,7 +162,7 @@
                                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#caption-history-@lastCaption.AccountId">Lịch sử</button>
 
 
-                                    <div class="modal fade" style="z-index: 9999999;" id="caption-history-@lastCaption.AccountId" tabindex="-1" 
+                                    <div class="modal fade" style="z-index: 9999999;" id="caption-history-@lastCaption.AccountId" tabindex="-1"
                                          role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
                                             <div class="modal-content">
@@ -235,7 +234,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-                        <form  action="@Url.Action("FeedbackCaption")" class="frmFeedbackAll frmFeedback" method="post" style="display:none">
+                        <form action="@Url.Action("FeedbackCaption")" class="frmFeedbackAll frmFeedback" method="post" style="display:none">
 
                             <input type="hidden" name="returnurl" value="@currenturl" />
                             <input type="hidden" name="campaignid" value="@campaign.Id" />

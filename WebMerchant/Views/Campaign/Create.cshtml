@@ -182,7 +182,8 @@
                     <input type="hidden" asp-for="ReviewDate" />
                 }
 
-                @if (campaignType != CampaignType.ChangeAvatar)
+                @if (campaignType != CampaignType.ChangeAvatar && 
+                    campaignType != CampaignType.ShareStreamUrl)
                 {
 
                     <div>

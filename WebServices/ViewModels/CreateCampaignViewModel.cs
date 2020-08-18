@@ -278,7 +278,7 @@ namespace WebServices.ViewModels
             }
             else
             {
-                campaign.ReviewAddress = ReviewAddress2;
+                campaign.ReviewAddress = ReviewAddress;
             }
             
 

@@ -58,16 +58,19 @@ namespace Infrastructure.Data
 
             var campaign = await _dbContext.Campaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccount).ThenInclude(m => m.Account).AsNoTracking()
                 .FirstOrDefaultAsync(m => m.AgencyId == agencyid && m.Published && m.Id == id);
+
             if (campaign != null)
             {
                 var wallet = await _dbContext.Wallet.FirstOrDefaultAsync(m => m.EntityType == EntityType.Agency && m.EntityId == agencyid);
 
                 var types = new List<TransactionType>() { TransactionType.CampaignAccountCharge, TransactionType.CampaignServiceCharge };
+
                 var transactions = await _dbContext.Transaction.Where(m => m.RefId == campaign.Id && (m.SenderId == wallet.Id || m.ReceiverId == wallet.Id)).ToListAsync();
 
                 return new CampaignPaymentModel(campaign, campaign.CampaignOption,
                     campaign.CampaignAccount, transactions);
             }
+
             return null;
 
         }
