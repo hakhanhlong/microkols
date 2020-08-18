@@ -11,10 +11,12 @@
     var campaignType = Model.Campaign.Type;
 
     var accountStatus = (AccountStatus)ViewBag.AccountStatus;
+
     var hasProccess = accountStatus == AccountStatus.SystemVerified;
 
     var hasApply = hasProccess && campaignAccount == null && Model.Campaign.Status != CampaignStatus.Canceled
         && Model.Campaign.DateStart.Value <= now && now <= Model.Campaign.DateEnd.Value;
+
     var hasConfirmJoin = hasProccess && Model.Campaign.Status != CampaignStatus.Canceled && campaignAccount != null && campaignAccount.Status == CampaignAccountStatus.AgencyRequest;
 }
 
