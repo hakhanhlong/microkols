@@ -1748,6 +1748,8 @@ namespace WebServices.Services
                         campaign.DateModified = DateTime.Now;
                         await _campaignRepository.UpdateAsync(campaign);
 
+                        bool checkRemainMoney = false;
+
 
                         BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignEnded(campaignid));
 
@@ -1759,13 +1761,7 @@ namespace WebServices.Services
                             await _notificationRepository.CreateNotification(campaign.Id, EntityType.System, 0, NotificationType.CampaignEnded, _msg, _data);
                         }
                         catch// tranh loi lam crash 
-                        { }
-                        // longhk thêm notification gửi đến agency
-                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignEnded,
-                            $"Chiến dịch {campaign.Title}, của bạn đã kết thúc.");
-                        //#################################################################################################################################
-
-
+                        { }                     
 
                         //huy campaign account chua hoan thanh 
                         var needUnFinishedCampaignAccounts = await _campaignAccountRepository.ListAsync(new CampaignAccountSpecification(campaignid, null
@@ -1788,7 +1784,22 @@ namespace WebServices.Services
                                 EntityType.Account, campaignAccount.AccountId, campaignid,
                                  NotificationType.SystemUpdateUnfinishedAccountCampaign.GetMessageText(campaign.Code),
                                  campaignAccount.Id.ToString());
+
+                            if(checkRemainMoney == false)
+                            {
+                                checkRemainMoney = true;
+                            }
                         }
+
+                        // longhk thêm notification gửi đến agency
+                        string _message = $"Chiến dịch {campaign.Title}, của bạn đã kết thúc.";
+                        if(checkRemainMoney == true)
+                        {
+                            _message = $"Chiến dịch {campaign.Title}, của bạn đã kết thúc. Hãy rút tiền thừa";
+                        }
+                        await _notificationRepository.CreateNotification(campaign.Id, EntityType.Agency, campaign.AgencyId, NotificationType.CampaignEnded, _message);
+                        //#################################################################################################################################
+
                     }
                     else if (campaign.Status == CampaignStatus.Confirmed)
                     {
@@ -1830,9 +1841,6 @@ namespace WebServices.Services
                         }
 
                     }
-
-
-
                 }
             }
 

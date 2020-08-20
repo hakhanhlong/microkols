@@ -18,7 +18,7 @@
                     <th>Bạn bè</th>
                     <th>Thống kê trung bình</th>
                     <th>Trạng thái</th>
-                    <th>Chi phí phải trả</th>
+                    @*<th>Chi phí phải trả</th>*@
                     <th></th>
                 </tr>
             </thead>
@@ -34,10 +34,22 @@
                         <td><input type="checkbox" class="cb-checkitem cb-checkitem@(campaignAccount.Status)" value="@campaignAccount.AccountId" /></td>
                         <td>@stt</td>
                         <td>
-                            <a href="@campaignAccount.Account.Link" target="_blank">
-                                <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
-                                @campaignAccount.Account.Name
-                            </a>
+                            @if (!string.IsNullOrEmpty(campaignAccount.Account.Link))
+                            {
+                                <a href="@campaignAccount.Account.Link" target="_blank">
+                                    <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
+                                    <span>&nbsp;@campaignAccount.Account.Name</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <span>
+                                    <img src="@AppOptions.CurrentValue.GetImageUrl(campaignAccount.Account.Avatar)" width="32" height="32">
+                                    <span>&nbsp;@campaignAccount.Account.Name</span>
+                                </span>
+                            }
+
+
                         </td>
 
                         <td>@counting.FriendsCount</td>
@@ -47,9 +59,9 @@
                             <span title="Lượt bình luận trung bình">@counting.AvgCommentCount <i class="fa fa-comment"></i></span>
                         </td>
                         <td>@campaignAccount.Status.ToBadge()</td>
-                        <td class="text-danger">
+                        @*<td class="text-danger">
                             @amount.ToPriceText()
-                        </td>
+                        </td>*@
                         <td>
                             @if (campaignAccount.Status == CampaignAccountStatus.AccountRequest)
                             {

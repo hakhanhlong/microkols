@@ -107,7 +107,7 @@ namespace WebServices.ViewModels
                 AccountChargeExtraPercent = 0,
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
-                AccountChargeTime = 0,
+                AccountChargeTime = info.AccountChargeTime??1,
                 Requirement = info.Requirement,
                 Type = info.Type,
                 Code = code,
@@ -251,7 +251,7 @@ namespace WebServices.ViewModels
             campaign.Image = image;
             campaign.Requirement = Requirement;
 
-            campaign.AccountChargeTime = AccountChargeTime ?? 0;
+            campaign.AccountChargeTime = AccountChargeTime ?? 1;
             campaign.Type = Type;
             campaign.IsSendProduct = SendProduct;
             campaign.Code = campaign.Code;

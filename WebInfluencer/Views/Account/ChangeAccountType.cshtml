@@ -154,6 +154,7 @@
             <input type="submit" value="Đồng ý" class="btn btn-outline-primary">
         </div>
     }
+
 </form>
 
 
@@ -195,8 +196,8 @@
                         }
                         else
                         {
-                            <label>KPI cam kết tối thiểu</label>
-                            <input type="number" max="@int.MaxValue" min="0" name="Kpi" value="@accountCampaignCharge.Kpi" class="form-control" />
+                            @*<label>KPI cam kết tối thiểu</label>
+                            <input type="number" max="@int.MaxValue" min="0" name="Kpi" value="@accountCampaignCharge.Kpi" class="form-control" />*@
 
                         }
 
@@ -217,18 +218,17 @@
                             <label class="custom-control-label" for="@switchid">Đồng ý</label>
                         </div>
 
-
                     </div>
                 </div>
             }
-
-
             <div class="form-group mt-4">
                 <button class="btn btn-rounded btn-primary" type="submit">Cập nhật</button>
             </div>
         </div>
     </form>
 }
+
+
 
 @if (ViewBag.CampaignTypeCharges != null)
 {
@@ -268,3 +268,4 @@
     }
 
 }
+

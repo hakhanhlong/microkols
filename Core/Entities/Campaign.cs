@@ -116,9 +116,9 @@ namespace Core.Entities
         Confirmed = 1,
         [Display(Name ="Bắt đầu")]
         Started = 2,
-        [Display(Name ="Kết thúc")]
+        [Display(Name ="Ended")]
         Ended = 3,
-        [Display(Name ="Hoàn thành")]
+        [Display(Name = "Kết thúc")] //Hoàn thành
         Completed = 4,
         [Display(Name ="Chiến dịch đã bị hủy")]
         Canceled = 5,
