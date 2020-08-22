@@ -32,5 +32,9 @@ namespace WebServices.Interfaces
 
         Task<AgencyViewModel> GetAgencyById(int id);
 
+        Task<string> ChangePassword(string email);
+
+        Task<AuthViewModel> GetByEmail(string username);
+
     }
 }

@@ -171,5 +171,51 @@ namespace WebMerchant.Controllers
             await SignOut();
             return RedirectToAction("Login");
         }
+
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(string email)
+        {
+            var exist = await _agencyService.VerifyUsername(email);
+            if (exist) {
+
+                var agency = await _agencyService.GetByEmail(email);
+
+                string password = await _agencyService.ChangePassword(email);
+
+                string from = "support@microkols.com";
+                string to = agency.Username;
+                string subject = "[MICROKOLS] Thông tin mật khẩu của bạn";
+
+                string plainText = $"Chào {agency.Name},";
+
+                string htmlText = $"<p>Mật khẩu mới của bạn là: {password}</p>";
+                htmlText += $"<p>Bạn hãy thay đổi mật khẩu sau khi đăng nhập thành công</p>";
+
+                htmlText += "<p>Nếu bạn có bất kỳ thắc mắc nào, hãy liên hệ với chúng tôi để nhận được sự hỗ trợ nhanh nhất.</p>";
+
+                htmlText += "<p>Email: info@microkols.com </p>";
+                htmlText += "<p><b>Hotline hỗ trợ: 0975119599</b> </p>";
+                htmlText += "<p>Cảm ơn bạn đã tham gia sử dụng trang Web của chúng tôi!</p>";
+                htmlText += "<p>Trân trọng,</p>";
+                htmlText += "<p><b>Phòng Dịch Vụ Khách Hàng</b></p>";
+                htmlText += "<p>Microkols Platform</p>";
+
+                await SendEmailHelpers.SendEmail(from, to, subject, plainText, htmlText, agency.Name);
+
+                this.AddAlertDanger("Mật khẩu mới đã được gửi về email của bạn!");
+            }
+            else {
+                this.AddAlertDanger("Không tồn tại email!");
+            }
+
+            return RedirectToAction("ForgetPassword", "Auth");
+        }
+
     }
 }

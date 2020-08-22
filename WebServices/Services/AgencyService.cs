@@ -174,11 +174,24 @@ namespace WebServices.Services
 
             var entity = await _agencyRepository.GetAgency(username);
 
-            if (entity == null)
+            if (entity != null)
             {
                 return true;
             }
             return false;
+        }
+
+        public async Task<AuthViewModel> GetByEmail(string username)
+        {
+
+            var entity = await _agencyRepository.GetAgency(username);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            return new AuthViewModel(entity);
         }
 
         public async Task<bool> VerifyUsername(string username, string name)
@@ -191,6 +204,27 @@ namespace WebServices.Services
             }
             return false;
         }
+
+
+        public async Task<string> ChangePassword(string email)
+        {
+            var entity = await _agencyRepository.GetAgency(email);
+
+            if (entity != null)
+            {
+                string password = StringHelper.UniqueKey(6);
+                var newpw = SecurityHelper.HashPassword(entity.Salt, password);
+
+                entity.Password = newpw;
+                entity.DateModified = DateTime.Now;                
+                await _agencyRepository.UpdateAsync(entity);
+
+                return password;
+
+            }
+            return "";
+        }
+
 
 
 
