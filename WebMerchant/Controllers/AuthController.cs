@@ -88,8 +88,7 @@ namespace WebMerchant.Controllers
                 if (id > 0)
                 {
 
-                    try {
-                        
+                    try {                        
                         //return RedirectToAction("AgencyRegister");
                         var _agency = await _agencyService.GetAgencyById(id);
                         string from = "support@microkols.com";

@@ -57,6 +57,7 @@ function UpdateTransactionStatus(status, id) {
 }
 
 $(function () {
+
     $(".delete-item").click(function (e) {
         confirm("Are you sure want delete this role ?");
         e.preventDefault();
@@ -119,5 +120,55 @@ $(function () {
 
         return true;
     });
+
+
+    tinymce.init({
+        selector: '.form-tinymce',  // change this value according to your HTML
+        height: 350,
+        plugins: 'print preview  searchreplace autolink directionality  visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount   imagetools   contextmenu colorpicker textpattern help',
+        toolbar1: 'formatselect |  fontselect fontsizeselect | bold italic strikethrough forecolor backcolor  | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+        image_advtab: true,
+        convert_urls: false,
+        fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+        content_css: '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
+        images_upload_handler: function (blobInfo, success, failure) {
+            var xhr, formData;
+
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', '/api/editorimageupload');
+
+            xhr.onload = function () {
+
+
+                if (xhr.status != 200) {
+                    failure('HTTP Error: ' + xhr.status);
+                    return;
+                }
+
+                var json = JSON.parse(xhr.responseText);
+
+                if (!json) {
+                    failure('Invalid JSON: ' + xhr.message);
+                    return;
+                }
+
+                if (json.status == 1) {
+                    success(json.imageurl);
+                } else {
+                    failure('error: ' + json.message);
+
+                }
+
+            };
+
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            xhr.send(formData);
+        }
+    });
+
+
 });
 

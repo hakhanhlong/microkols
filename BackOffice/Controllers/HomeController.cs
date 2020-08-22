@@ -104,6 +104,42 @@ namespace BackOffice.Controllers
         }
 
 
+       
+
+
+        [Route("/api/editorimageupload")]
+        [HttpPost]
+        public async Task<IActionResult> EditorImageUpload(IFormFile file, string path = "Editors")
+        {
+
+            if (file != null)
+            {
+                var image = await FileHelpers.UploadFile(file, path);
+
+                if (!string.IsNullOrEmpty(image))
+                {
+                    return Ok(new
+                    {
+                        status = 1,
+                        image = image,
+                        imageurl = $"{AppConstants.RESOURCE_SERVER}/{image}"
+                    });
+                }
+            }
+
+            return Ok(new
+            {
+                status = 0,
+                message = "Không đúng định dạng ảnh",
+            });
+        }
+
+      
+
+
+
+
+
 
 
     }

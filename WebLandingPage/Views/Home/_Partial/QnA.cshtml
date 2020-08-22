@@ -42,7 +42,7 @@
                                                         <div class="panel-body">
                                                             <ul>
                                                                 <li>
-                                                                    @item.Answer
+                                                                    @Html.Raw(item.Answer)
                                                                 </li>
                                                                 @if (item.QnAImages.Count > 0)
                                                                 {
@@ -110,7 +110,7 @@
                                                     </a>
                                                     <div id="collapse_@(item.Order)_merchant" class="panel-collapse collapse @(count_merchant1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
-                                                            @item.Answer
+                                                            @Html.Raw(item.Answer)
                                                         </div>
                                                     </div>
                                                 </div>
@@ -137,7 +137,7 @@
                                                     </a>
                                                     <div id="collapse_@(item.Order)_influencer" class="panel-collapse collapse @(count_influencer1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
-                                                            @item.Answer
+                                                            @Html.Raw(item.Answer)
                                                         </div>
                                                     </div>
                                                 </div>                                                
@@ -201,15 +201,16 @@
                                             @{int count_general = 0;}
                                             @foreach (var item in ViewBag.QnAGeneral)
                                             {
+                                                count_general++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_general-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        @item.Order. @item.Question
+                                                        @count_general. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_general-m" class="panel-collapse collapse @(count_general == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body" style="padding:0px;">
                                                             <ul class="list-unstyled">
                                                                 <li>
-                                                                    @item.Answer
+                                                                    @Html.Raw(item.Answer)
                                                                 </li>
                                                                 @if (item.QnAImages.Count > 0)
                                                                 {
@@ -259,7 +260,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                count_general++;
+                                                
                                             }                                           
                                         </div>
                                     </div>
@@ -271,15 +272,16 @@
                                             @{int count_merchant = 0;}
                                             @foreach (var item in ViewBag.QnAMerchant)
                                             {
+                                                count_merchant++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_merchant-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        @item.Order. @item.Question
+                                                        @count_merchant. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_merchant-m" class="panel-collapse collapse @(count_merchant == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body" style="padding:0px;">
                                                             <ul class="list-unstyled">
                                                                 <li>
-                                                                    @item.Answer
+                                                                    @Html.Raw(item.Answer)
                                                                 </li>
                                                                 @if (item.QnAImages.Count > 0)
                                                                 {
@@ -329,7 +331,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                count_merchant++;
+                                                
                                             }
 
                                     
@@ -345,15 +347,16 @@
                                             @{int count_influencer = 0;}
                                             @foreach (var item in ViewBag.QnAInfluencer)
                                             {
+                                                count_influencer++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" style="padding: 9px 30px 13px 0px;" data-toggle="collapse" data-parent="#agency-m" href="#collapse_@(item.Order)_influencer-m" aria-expanded="true" aria-controls="collapse1a">
-                                                        @item.Order. @item.Question
+                                                        @count_influencer. @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_influencer-m" class="panel-collapse collapse @(count_influencer == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body" style="padding:0px;">
                                                             <ul class="list-unstyled">
                                                                 <li>
-                                                                    @item.Answer
+                                                                    @Html.Raw(item.Answer)
                                                                 </li>
                                                                 @if (item.QnAImages.Count > 0)
                                                                 {
@@ -403,7 +406,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                count_influencer++;
+                                                
                                             }
 
                                         </div>
