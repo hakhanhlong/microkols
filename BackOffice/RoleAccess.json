@@ -240,6 +240,12 @@
               "name": "UploadImage",
               "displayName": null,
               "controllerId": ":Home"
+            },
+            {
+              "id": ":Home:EditorImageUpload",
+              "name": "EditorImageUpload",
+              "displayName": null,
+              "controllerId": ":Home"
             }
           ]
         },
