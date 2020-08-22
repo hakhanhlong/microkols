@@ -94,12 +94,14 @@ namespace Core.Entities
         AgencyPayCampaignService = 48,
 
         AccountSendVerify = 50,
+
         AccountVerifyDenied = 51,
+
         AccountVerifySuccess = 52,
 
         AgencyRequestWithdrawFromCampaign = 55,
-
         //#######################################
+        SystemSendNotifycation = 56
 
 
     }
@@ -168,6 +170,10 @@ namespace Core.Entities
             else if (type == NotificationType.CampaignEnded)
             {
                 text = "Chiến dịch kết thúc";
+            }
+            else if (type == NotificationType.SystemSendNotifycation)
+            {
+                text = "Thông báo từ hệ thống";
             }
 
             return text;

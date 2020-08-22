@@ -94,7 +94,7 @@ namespace WebServices.Services
 
             GroupSystem = new List<NotificationType>()
             {
-                
+                NotificationType.SystemSendNotifycation,
             };
 
 
@@ -352,6 +352,8 @@ namespace WebServices.Services
                 _list_notification_type = GroupPayment;
             else if (groupName == "Influencer")
                 _list_notification_type = GroupInfluencer;
+            else if(groupName == "System")
+                _list_notification_type = GroupSystem;
 
             var dtRange = Common.Helpers.DateRangeHelper.GetDateRange(daterange);
             var filter = new NotificationSpecification(entityType, entityId , _list_notification_type.AsEnumerable(), dtRange);

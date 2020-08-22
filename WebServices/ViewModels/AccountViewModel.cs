@@ -92,6 +92,7 @@ namespace WebServices.ViewModels
             Name = accountProvider.Name;
             Email = accountProvider.Email;
             FbProfileLink = accountProvider.Link;
+            FriendsCount = accountProvider.FriendsCount;
         }
         public static List<AccountProviderViewModel> GetList(IEnumerable<AccountProvider> accounts)
         {
@@ -108,6 +109,8 @@ namespace WebServices.ViewModels
         public string Email { get; set; }
 
         public string FbProfileLink { get; set; }
+
+        public int? FriendsCount { get; set; }
     }
 
     public class ChangePasswordViewModel

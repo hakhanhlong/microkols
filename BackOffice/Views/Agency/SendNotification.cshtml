@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "SendNotification";
+    Layout = "~/Views/Shared/_LayoutModal.cshtml";
+}
+
+@model AgencyViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="m-form m-form--fit m-form--label-align-right" method="post" action="/agency/sendnotification">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="m-portlet__body">
+                <div class="form-group m-form__group">
+                    <label for="exampleInputPassword1">
+                        Nội dung tin nhắn
+                    </label>
+                    <textarea class="form-control m-input" name="txt_note" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="m-portlet__foot m-portlet__foot--fit">
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

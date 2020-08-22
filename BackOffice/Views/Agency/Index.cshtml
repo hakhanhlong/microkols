@@ -7,9 +7,9 @@
 @model ListAgencyViewModel
 
 @section Subheaders{
-<h3 class="m-subheader__title m-subheader__title--separator">
-    Danh sách doanh nghiệp
-</h3>
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Danh sách doanh nghiệp
+    </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
             <a href="#" class="m-nav__link m-nav__link--icon">
@@ -19,107 +19,144 @@
     </ul>
 }
 
-    <div class="row">
-        <div class="col-xl-12">
-            <!--begin::Portlet-->
-            <div class="m-portlet">
-                <div class="m-portlet__head">
-                    <div class="m-portlet__head-caption">
-                        <div class="m-portlet__head-title">
-                            <h3 class="m-portlet__head-text">
-                                Danh sách doanh nghiệp
-                            </h3>
-                        </div>
+<div class="row">
+    <div class="col-xl-12">
+        <!--begin::Portlet-->
+        <div class="m-portlet">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Danh sách doanh nghiệp
+                        </h3>
                     </div>
                 </div>
-                <div class="m-portlet__body">
-                    <div class="tab-content">
-                        <div class="tab-pane active">
-                            @await Html.PartialAsync("~/Views/Agency/_FilterPartial.cshtml")
-                        </div>
-                    </div>
-                    <!--begin::Section-->
-                    <div class="m-section">
-                        <div class="m-section__content">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            #
-                                        </th>
-                                        <th>
-                                            Tên doanh nghiệp
-                                        </th>
-                                        <th>
-                                            Username
-                                        </th>
-                                        <th>
-                                            Mã số thuế
-                                        </th>
-                                        <th>
-                                            Phone
-                                        </th>
-                                        <th>
-                                            Actived
-                                        </th>
-                                        <th>
-                                            Ngày đăng ký
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (Model != null)
-                                    {
-                                       
-                                        int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) + 1;                                       
-                                        foreach (var item in Model.Agencies)
-                                        {
-                                            
-                                            <tr>
-                                                <td>@count</td>
-                                                <td><a href="/agency/detail?id=@item.Id">@item.Name</a></td>
-                                                <td>@item.UserName</td>
-                                                <td>@item.TaxNumber</td>
-                                                <td>@item.Phone</td>
-                                                <td>
-
-                                                    @if (item.Actived)
-                                                    {
-
-                                                        <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
-                                                            True
-                                                        </a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <a href="/agency/active?id=@(item.Id)" class="m-badge m-badge--danger m-badge--wide" style="text-decoration:none;">
-                                                            False
-                                                        </a>
-
-                                                    }
-                                                </td>
-                                                <td>@item.DateCreated.ToShortDateString()</td>
-                                                <td>
-                                                    <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm"
-                                                       href="/campaign/campaignfollowagency?agencyid=@item.Id" style="font-family:Roboto;">Chiến dịch</a>
-                                                </td>
-
-                                            </tr>
-
-                                            count++;
-
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                            <pager pager="@Model.Pager" asp-action="Index"></pager>
-                        </div>
-                    </div>
-                    <!--end::Section-->
-                </div>
-                <!--end::Form-->
             </div>
-            <!--end::Portlet-->
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active">
+                        @await Html.PartialAsync("~/Views/Agency/_FilterPartial.cshtml")
+                    </div>
+                </div>
+                <!--begin::Section-->
+                <div class="m-section">
+                    <div class="m-section__content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        #
+                                    </th>
+                                    <th>
+                                        Tên doanh nghiệp
+                                    </th>
+                                    <th>
+                                        Username
+                                    </th>
+                                    <th>
+                                        Mã số thuế
+                                    </th>
+                                    <th>
+                                        Phone
+                                    </th>
+                                    <th>
+                                        Actived
+                                    </th>
+                                    <th>
+                                        Ngày đăng ký
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+
+                                    int count = string.IsNullOrEmpty(Context.Request.Query["pageindex"]) ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) == 0 ? 1 : ((Convert.ToInt32(Context.Request.Query["pageindex"]) - 1) * 20) + 1;
+                                    foreach (var item in Model.Agencies)
+                                    {
+
+                                        <tr>
+                                            <td>@count</td>
+                                            <td><a href="/agency/detail?id=@item.Id">@item.Name</a></td>
+                                            <td>@item.UserName</td>
+                                            <td>@item.TaxNumber</td>
+                                            <td>@item.Phone</td>
+                                            <td>
+
+                                                @if (item.Actived)
+                                                {
+
+                                                    <a href="/agency/unactive?id=@(item.Id)" class="m-badge m-badge--info m-badge--wide" style="text-decoration:none;">
+                                                        True
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="/agency/active?id=@(item.Id)" class="m-badge m-badge--danger m-badge--wide" style="text-decoration:none;">
+                                                        False
+                                                    </a>
+
+                                                }
+                                            </td>
+                                            <td>@item.DateCreated.ToShortDateString()</td>
+                                            <td>
+                                                <a class="btn btn-info m-btn m-btn--custom m-btn--bolder m-btn--uppercase btn-sm"
+                                                   href="/campaign/campaignfollowagency?agencyid=@item.Id" style="font-family:Roboto;">Chiến dịch</a>
+                                                <a href="javascript:send_message(@item.Id, '@(item.Name)');" class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+                                                    <i class="fa fa-bell"></i>
+                                                </a>
+                                            </td>
+
+                                        </tr>
+
+                                        count++;
+
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <pager pager="@Model.Pager" asp-action="Index"></pager>
+                    </div>
+                </div>
+                <!--end::Section-->
+            </div>
+            <!--end::Form-->
+        </div>
+        <!--end::Portlet-->
+    </div>
+</div>
+
+<div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="model-send-message"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin:3px;">
+                <iframe id="iframeAgency" src="" height="320px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
         </div>
     </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+           function send_message(id, name) {
+               var url = '/Agency/SendNotification?id=' + id;
+               $('#iframeAgency').attr('src', url);
+               $('#model-send-message').html("Gửi tin nhắn tới doanh nghiệp:" + name);
+                $('#m_modal_5').modal({ show: true });
+                $('#m_modal_5').on('hidden.bs.modal', function (e) {
+                    //document.location = document.location.href;
+                });
+            }
+
+    </script>
+}

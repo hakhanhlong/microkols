@@ -16,6 +16,12 @@
               "controllerId": ":Agency"
             },
             {
+              "id": ":Agency:SendNotification",
+              "name": "SendNotification",
+              "displayName": null,
+              "controllerId": ":Agency"
+            },
+            {
               "id": ":Agency:Search",
               "name": "Search",
               "displayName": null,
@@ -320,6 +326,12 @@
             {
               "id": ":MicroKol:Index",
               "name": "Index",
+              "displayName": null,
+              "controllerId": ":MicroKol"
+            },
+            {
+              "id": ":MicroKol:SendNotification",
+              "name": "SendNotification",
               "displayName": null,
               "controllerId": ":MicroKol"
             },

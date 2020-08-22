@@ -18,6 +18,8 @@ namespace BackOffice.Business.Interfaces
 
         Task CreateNotificationTransactionByStatus(int transactionid, int agency_entityid, NotificationType notificationType, string msg, string text);
 
+        Task CreateNotification(EntityType entityType, int entityid, int dataid, NotificationType notificationType, string msg, string text);
+
 
 
     }

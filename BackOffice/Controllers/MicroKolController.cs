@@ -72,6 +72,41 @@ namespace BackOffice.Controllers
         }
 
 
+
+        public async Task<IActionResult> SendNotification(int id = 1)
+        {
+
+            var microkol = await _IAccountBusiness.GetAccount(id);
+            var filter = new AccountWithCategorySpecification(id);
+            var influencer = await _IAccountRepository.GetSingleBySpecAsync(filter);
+            ViewBag.Influencer = influencer;
+            if (microkol == null)
+            {
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
+            }
+            return View(microkol);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendNotification(AccountViewModel model, string txt_note = "")
+        {
+            var microkol = _IAccountRepository.GetById(model.Id);
+            if (microkol == null)
+            {
+                TempData["MessageError"] = "Người ảnh hưởng không tồn tại!";
+            }
+            else
+            {
+                await _INotificationBusiness.CreateNotification(EntityType.Account, model.Id, model.Id, 
+                    NotificationType.SystemSendNotifycation, txt_note, "");
+
+
+                TempData["MessageSuccess"] = "Đã gửi thông báo thành công!";
+            }
+            return RedirectToAction("SendNotification", "Microkol", new { id = model.Id });
+
+        }
+
         public async Task<IActionResult> Verify(int id = 1)
         {
 

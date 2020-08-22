@@ -86,7 +86,8 @@
                                     }
                                     @foreach (var item in Model.Accounts)
                                     {
-                                        string profileURL = await accountService.GetFacebookProfileUrl(item.Id);
+                                        
+                                        var provider = await accountService.GetAccountProviderByAccount(item.Id, AccountProviderNames.Facebook);
                                         <tr>
                                             <td>@(count)</td>
                                             <td>
@@ -121,17 +122,23 @@
 
                                             <td>
                                                 <a href="/microkol/detail?id=@item.Id" class="btn btn-sm btn-info" style="font-family:roboto;">Chi tiết</a>
+                                                <a href="javascript:send_message(@item.Id, '@(item.Name)');" class="btn btn-warning m-btn m-btn--icon m-btn--icon-only m-btn--custom m-btn--pill">
+                                                    <i class="fa fa-bell"></i>
+                                                </a>
                                             </td>
                                         </tr>
-                                        @if (!string.IsNullOrEmpty(profileURL))
-                                        {
 
                                             <tr>
                                                 <td colspan="10">
-                                                    Facebook Profile: <a href="profileURL" target="_blank">@profileURL</a>
+                                                    @if (!string.IsNullOrEmpty(provider.FbProfileLink))
+                                                    {
+                                                        <span>Facebook Profile: <a href="@(provider.FbProfileLink)" target="_blank">@provider.FbProfileLink</a></span>
+                                                    }
+
+                                                    <span style="color:red;">&nbsp; Friends: @(provider.FriendsCount)</span>
                                                 </td>
                                             </tr>
-                                        }
+                                        
 
                                         count++;
                                     }
@@ -149,3 +156,39 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="m_modal_5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="model-send-message">
+                    
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        &times;
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin:3px;">
+                <iframe id="iframeInfluencer" src="" height="320px" width="720px" frameborder="0" scrolling="no" style="overflow: hidden;"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+    <script type="text/javascript">
+           function send_message(id, name) {
+               var url = '/Microkol/SendNotification?id=' + id;
+               $('#iframeInfluencer').attr('src', url);
+               $('#model-send-message').html("Gửi tin nhắn tới Influencer:" + name);
+                $('#m_modal_5').modal({ show: true });
+                $('#m_modal_5').on('hidden.bs.modal', function (e) {
+                    //document.location = document.location.href;
+                });
+            }
+
+    </script>
+}

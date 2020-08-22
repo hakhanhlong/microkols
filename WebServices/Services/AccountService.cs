@@ -216,10 +216,11 @@ namespace WebServices.Services
                         Deleted = false,
                         DistrictId = null,
                         Type = AccountType.Regular,
-                        Status = AccountStatus.NeedVerified 
-                        
-                        
-                        
+                        Status = AccountStatus.SystemVerified
+                        //Status = AccountStatus.NeedVerified 
+
+
+
 
                     };
                     await _accountRepository.AddAsync(account);

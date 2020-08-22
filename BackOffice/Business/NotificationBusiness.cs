@@ -69,6 +69,22 @@ namespace BackOffice.Business
         }
 
 
+        public async Task CreateNotification(EntityType entityType, int entityid, int dataid, NotificationType notificationType, string msg, string text)
+        {
+            Notification _notification = new Notification();
+            _notification.EntityType = entityType;
+            _notification.EntityId = entityid;
+            _notification.DataId = dataid;
+            _notification.Message = msg;
+            _notification.DateCreated = DateTime.Now;
+            _notification.Status = NotificationStatus.Created;
+            _notification.Type = notificationType;
+            _notification.Data = text;
+            await _INotificationRepository.AddAsync(_notification);
+        }
+
+
+
 
         public async Task CreateNotificationTransactionDepositeByStatus(int transactionid, int agency_entityid, NotificationType notificationType, string msg, string text)
         {

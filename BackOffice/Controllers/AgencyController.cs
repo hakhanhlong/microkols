@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using BackOffice.Business.Interfaces;
 using BackOffice.Models;
+using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebServices.Interfaces;
 
 namespace BackOffice.Controllers
 {
@@ -14,17 +16,52 @@ namespace BackOffice.Controllers
     [Authorize]
     public class AgencyController : Controller
     {        
-        private readonly IAgencyBusiness _IAgencyBusiness;
+        private readonly IAgencyBusiness _IAgencyBusiness;        
+        INotificationBusiness _INotificationBusiness;
+        INotificationService _INotificationService;
 
-        public AgencyController(IAgencyBusiness __IAgencyBusiness)
+        public AgencyController(IAgencyBusiness __IAgencyBusiness, INotificationBusiness __INotificationBusiness, INotificationService __INotificationService)
         {
             _IAgencyBusiness = __IAgencyBusiness;
+            _INotificationBusiness = __INotificationBusiness;
+            _INotificationService = __INotificationService;
         }
 
         public IActionResult Index(int pageindex = 1)
         {
             var list_agency = _IAgencyBusiness.GetListAgency(pageindex, 20);
             return View(list_agency);
+        }
+
+
+        public async Task<IActionResult> SendNotification(int id = 1)
+        {
+            var agency = await _IAgencyBusiness.GetAgency(id);                        
+            if (agency == null)
+            {
+                TempData["MessageError"] = "Doanh nghiệp không tồn tại!";
+            }
+            return View(agency);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendNotification(AgencyViewModel model, string txt_note = "")
+        {
+            var agency = await _IAgencyBusiness.GetAgency(model.Id);
+            if (agency == null)
+            {
+                TempData["MessageError"] = "Doanh nghiệp không tồn tại!";
+            }
+            else
+            {
+                await _INotificationBusiness.CreateNotification(EntityType.Agency, model.Id, model.Id,
+                    NotificationType.SystemSendNotifycation, txt_note, "");
+
+
+                TempData["MessageSuccess"] = "Đã gửi thông báo thành công!";
+            }
+            return RedirectToAction("SendNotification", "Agency", new { id = model.Id });
+
         }
 
         public IActionResult Search(string keyword, int pageindex = 1)

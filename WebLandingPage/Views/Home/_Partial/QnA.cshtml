@@ -33,9 +33,10 @@
                                             @{int count_general1 = 0;}
                                             @foreach (var item in ViewBag.QnAGeneral)
                                             {
+                                                count_general1++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_general" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                        <span>@count_general1</span> @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_general" class="panel-collapse collapse @(count_general1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
@@ -90,8 +91,7 @@
 
                                                         </div>
                                                     </div>
-                                                </div>
-                                                count_general1++;
+                                                </div>                                                
                                             }
                                         </div>
                                     </div>
@@ -103,9 +103,10 @@
                                             @{int count_merchant1 = 0;}
                                             @foreach (var item in ViewBag.QnAMerchant)
                                             {
+                                                count_merchant1++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_merchant" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                        <span>@count_merchant1</span> @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_merchant" class="panel-collapse collapse @(count_merchant1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
@@ -113,7 +114,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                count_merchant1++;
+                                                
                                             }
 
 
@@ -129,17 +130,17 @@
                                             @{int count_influencer1 = 0;}
                                             @foreach (var item in ViewBag.QnAInfluencer)
                                             {
+                                                count_influencer1++;
                                                 <div class="panel">
                                                     <a role="button" class="item-question" data-toggle="collapse" data-parent="#agency" href="#collapse_@(item.Order)_influencer" aria-expanded="true" aria-controls="collapse1a">
-                                                        <span>@item.Order</span> @item.Question
+                                                        <span>@count_influencer1</span> @item.Question
                                                     </a>
                                                     <div id="collapse_@(item.Order)_influencer" class="panel-collapse collapse @(count_influencer1 == 0?"in":"collapse")" role="tabpanel">
                                                         <div class="panel-body">
                                                             @item.Answer
                                                         </div>
                                                     </div>
-                                                </div>
-                                                count_influencer1++;
+                                                </div>                                                
                                             }
 
                                         </div>
