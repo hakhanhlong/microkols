@@ -67,8 +67,7 @@ namespace Infrastructure.Data
 
                 var transactions = await _dbContext.Transaction.Where(m => m.RefId == campaign.Id && (m.SenderId == wallet.Id || m.ReceiverId == wallet.Id)).ToListAsync();
 
-                return new CampaignPaymentModel(campaign, campaign.CampaignOption,
-                    campaign.CampaignAccount, transactions);
+                return new CampaignPaymentModel(campaign, campaign.CampaignOption, campaign.CampaignAccount, transactions);
             }
 
             return null;

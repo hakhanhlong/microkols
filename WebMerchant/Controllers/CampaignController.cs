@@ -275,6 +275,9 @@ namespace WebMerchant.Controllers
 
         public async Task<IActionResult> Details(int id, string vt = "1", int tab = 0)
         {
+
+            //await _campaignService.AutoUpdateStartedStatus(666);
+
             var model = await _campaignService.GetCampaignDetailsByAgency(CurrentUser.Id, id);
             
             if (model == null) return NotFound();
@@ -626,6 +629,25 @@ namespace WebMerchant.Controllers
         [HttpPost]
         public async Task<IActionResult> FeedbackCaption(int campaignid, List<int> ids, int type, string returnurl = "")
         {
+
+
+            try
+            {
+                var campaign = await _campaignService.GetCampaign(campaignid);
+                if (campaign != null)
+                {
+                    DateTime now = DateTime.Now;
+                    if (campaign.ExecutionStart.Value <= now)
+                    {
+                        this.AddAlert(true, "Chiến dịch đã đến giờ thực hiện, nên bạn không thể tiếp tục duyệt caption");
+                        return RedirectToAction("Details", new { id = campaignid });
+                    }
+
+                }
+            }
+            catch { }
+            
+
             foreach (var item in ids)
             {
                 await _campaignAccountCaptionService.UpdateStatus(item, type == 1 ? CampaignAccountCaptionStatus.DaDuyet : CampaignAccountCaptionStatus.KhongDuyet, CurrentUser.Name);
@@ -687,6 +709,23 @@ namespace WebMerchant.Controllers
         [HttpPost]
         public async Task<IActionResult> FeedbackContent(int campaignid, List<int> ids, int type, string returnurl = "")
         {
+            try
+            {
+                var campaign = await _campaignService.GetCampaign(campaignid);
+                if (campaign != null)
+                {
+                    DateTime now = DateTime.Now;
+                    if (campaign.ExecutionStart.Value <= now)
+                    {
+                        this.AddAlert(true, "Chiến dịch đã đến giờ thực hiện, nên bạn không thể tiếp tục duyệt nội dung");
+                        return RedirectToAction("Details", new { id = campaignid });
+                    }
+
+                }
+            }
+            catch { }
+
+
             foreach (var item in ids)
             {
                 await _campaignAccountContentService.UpdateStatus(item, type == 1 ? CampaignAccountContentStatus.DaDuyet : CampaignAccountContentStatus.KhongDuyet, CurrentUser.Name);
@@ -704,6 +743,7 @@ namespace WebMerchant.Controllers
             }
             return RedirectToAction("Content", new { campaignid });
         }
+
         [HttpPost]
         public async Task<IActionResult> UpdateContentNote(int campaignid, int id, string note, string returnurl = "")
         {

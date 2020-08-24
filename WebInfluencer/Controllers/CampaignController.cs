@@ -106,7 +106,9 @@ namespace WebInfluencer.Controllers
             ViewBag.type = type;
             var model = await _campaignService.GetCampaignMarketPlaceByAccount(CurrentUser.Id, type, kw, pageindex, pagesize);
 
-           
+            //var model = await _campaignService.GetCampaignMarketPlaceByAccount(120, type, kw, pageindex, pagesize);
+
+
 
 
             return View(model);

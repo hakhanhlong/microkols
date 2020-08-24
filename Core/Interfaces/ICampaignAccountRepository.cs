@@ -13,6 +13,9 @@ namespace Core.Interfaces
     {
         Task<int> CreateCampaignAccount(int agencyid, int campaignid, int accountid, int amount, string username);
 
+
+        Task<CampaignAccount> GetCampaignAccount(int campaignid, int accountid);
+
         Task UpdateMerchantPaidToSystem(int id, bool paid);
     }
 }

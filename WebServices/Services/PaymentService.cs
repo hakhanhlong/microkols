@@ -75,7 +75,25 @@ namespace WebServices.Services
                         foreach(var campaignAccount in payment.CampaignAccounts)
                         {
                             //update campaign account mark as agency had paid
-                            await _campaignAccountRepository.UpdateMerchantPaidToSystem(campaignAccount.Id, true);
+
+                            var arrIgnoreStatus = new List<CampaignAccountStatus>()
+                            {
+                                CampaignAccountStatus.Canceled,
+                                CampaignAccountStatus.Unfinished,
+                                CampaignAccountStatus.AccountRequest,
+                                CampaignAccountStatus.AgencyRequest,
+                                CampaignAccountStatus.WaitToPay,
+                                CampaignAccountStatus.All,
+                                CampaignAccountStatus.NeedToCheckExcecuteCampaign,
+                                CampaignAccountStatus.AgencyCanceled
+                            };
+
+                            if (!arrIgnoreStatus.Contains(campaignAccount.Status) && campaignAccount.MerchantPaidToSystem == false)
+                            {
+                                await _campaignAccountRepository.UpdateMerchantPaidToSystem(campaignAccount.Id, true);
+                            }
+
+                            
                         }
                     }
                     //#####################################################################################

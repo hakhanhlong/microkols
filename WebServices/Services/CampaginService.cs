@@ -243,11 +243,20 @@ namespace WebServices.Services
             {
                 var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
 
+                var _campaignAccountEntity = _campaignAccountRepository.GetCampaignAccount(campaign.Id, accountid);
+                if(_campaignAccountEntity != null)
+                {
+                    list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+                }
+
 
                 var AgeRange = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.AgeRange).FirstOrDefault();
                 var Gender = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.Gender).FirstOrDefault();
 
                 try {
+
+
+
                     if (AgeRange != null)
                     {
                         string[] ageArray = AgeRange.Value.Split(new string[] { "-" }, StringSplitOptions.None);
@@ -278,7 +287,14 @@ namespace WebServices.Services
                         }
                     }
 
-                    list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+
+                    var exist = list.Where(m => m.Campaign.Id == campaign.Id).Count();
+                    if(exist == 0)
+                    {
+                        list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
+                    }
+
+                    
                 }
                 catch { }
             
@@ -1501,7 +1517,8 @@ namespace WebServices.Services
                         //đã thanh toán nhưng chưa thanh toán hết hoàn toàn( kiểu như mới thanh toán lần 1, lần 2 chưa thanh toán)
                         try
                         {
-                            if (payment.TotalPaidAmount < payment.TotalChargeAmount)
+                            //if (payment.TotalPaidAmount < payment.TotalChargeAmount || payment.TotalPaidAmount <= 0)
+                            if (payment.TotalChargeAmount > 0)
                             {
                                 long remainAmountNeedPaid = payment.TotalChargeAmount - payment.TotalPaidAmount;
 
@@ -1535,7 +1552,7 @@ namespace WebServices.Services
                         }
                         catch
                         {
-
+                            
                         }
                         
 
@@ -1587,6 +1604,7 @@ namespace WebServices.Services
                     campaign.UserModified = username;
                     campaign.DateModified = DateTime.Now;
                     await _campaignRepository.UpdateAsync(campaign);
+
                     BackgroundJob.Enqueue<INotificationService>(m => m.CreateNotificationCampaignStarted(campaignid));
 
                     await CampaignStartedNotifyToAccount(campaign); // chien dịch started thi gưi thống báo đến tất cả người đã đồng ý tham gia chiến dịch
