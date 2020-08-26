@@ -14,28 +14,10 @@ namespace WebServices.ViewModels
     public class CreateCampaignViewModel
     {
 
-        public static Campaign GetEntity(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
+        public static Campaign GetEntity(int agencyid, CreateCampaignInfoViewModel info, CreateCampaignTargetViewModel target, 
+            CampaignTypeCharge campaignTypeCharge, Core.Models.SettingModel setting, string code, string username)
         {
-            //var accountChargeAmount = 0;
-            //if (Type == CampaignType.CustomService || Type == CampaignType.JoinEvent)
-            //{
-            //    accountChargeAmount = AccountChargeAmount ?? 0;
-            //}
-            //else
-            //{
-            //    accountChargeAmount = campaignTypeCharge.AccountChargeAmount;
-            //}
-
-
-            //var accountChargeExtraPercent = 0;
-
-            //if (Type == CampaignType.ShareContent || Type == CampaignType.ShareContentWithCaption)
-            //{
-            //    if (EnabledExtraType)
-            //    {
-            //        accountChargeExtraPercent = campaignTypeCharge.AccountChargeExtraPercent;
-            //    }
-            //}
+           
 
             var executionTime = DateRangeHelper.GetDateRange(target.ExecutionTime);
             var regTime = DateRangeHelper.GetDateRange(target.RegisterTime);
@@ -85,7 +67,7 @@ namespace WebServices.ViewModels
                 }
             }
 
-            return new Campaign()
+            var campaign =  new Campaign()
             {
                 DateCreated = DateTime.Now,
                 AgencyId = agencyid,
@@ -107,7 +89,7 @@ namespace WebServices.ViewModels
                 AccountChargeExtraPercent = 0,
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
-                AccountChargeTime = info.AccountChargeTime??1,
+                AccountChargeTime = info.AccountChargeTime ?? 1,
                 Requirement = info.Requirement,
                 Type = info.Type,
                 Code = code,
@@ -125,24 +107,87 @@ namespace WebServices.ViewModels
                 InteractiveMin = target.KPIMin + target.InteractiveMin,
 
                 ExecutionStart = executionTime != null ? (DateTime?)executionTime.Value.Start : null,
-                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End.AddSeconds(59) : null,
+                ExecutionEnd = executionTime != null ? (DateTime?)executionTime.Value.End : null,
+
                 FeedbackStart = feedbackTime != null ? (DateTime?)feedbackTime.Value.Start : null,
-                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End.AddSeconds(59) : null,
+                FeedbackEnd = feedbackTime != null ? (DateTime?)feedbackTime.Value.End : null,
                 AmountMax = target.AmountMax,
                 AmountMin = target.AmountMin,
                 IsSendProduct = info.SendProduct,
-
-
                 ReviewStart = reviewTime != null ? (DateTime?)reviewTime.Value.Start : null,
-                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End.AddSeconds(59) : null,
+                ReviewEnd = reviewTime != null ? (DateTime?)reviewTime.Value.End : null,
+
                 ReviewAddress = reviewaddress,
                 ReviewType = info.ReviewType,
-                ReviewPayback = reviewpayback
-
-
-
-
+                ReviewPayback = reviewpayback                
             };
+
+
+            try {
+
+                AccountType _accountType = target.AccountType[0];
+                campaign.FilterAccountType = (int)_accountType;
+
+
+                if(_accountType == AccountType.HotMom)
+                {
+                    if (target.ChildType.HasValue)
+                    {
+                        campaign.FilterAccountChildrenGender = target.ChildType.Value;
+
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (target.EnabledCity && target.CityId != null && target.CityId.Count > 0)
+                {
+                    string _arrCity = string.Empty;
+                    foreach (var cityId in target.CityId)
+                    {
+                        _arrCity += _arrCity == string.Empty ? $" {cityId.ToString()} " : $"| {cityId} ";
+                    }
+                    campaign.FilterAccountRegion = _arrCity;
+                }
+
+            }
+            catch { }
+
+            try {
+                if (target.EnabledGender && target.Gender.HasValue)
+                {
+                    campaign.FilterAccountGender = (int)target.Gender.Value;
+                }
+            }
+            catch { }
+
+            try {
+                if (target.EnabledAgeRange && target.AgeEnd.HasValue && target.AgeStart.HasValue)
+                {
+                    campaign.FilterAccountAgeFrom = target.AgeStart.Value;
+                    campaign.FilterAccountAgeTo = target.AgeEnd.Value;
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (target.EnabledCategory && target.CategoryId != null && target.CategoryId.Count > 0)
+                {
+                    string _arrCategories = string.Empty;
+                    foreach (var categoryid in target.CategoryId)
+                    {
+                        _arrCategories += _arrCategories == string.Empty ? $" {categoryid.ToString()} " : $"| {categoryid} ";
+                    }
+                    campaign.FilterAccountCategories = _arrCategories;
+                }
+            }
+            catch { }
+
+
+            return campaign;
 
         }
 
@@ -382,9 +427,11 @@ namespace WebServices.ViewModels
             
 
             Code = campaign.Code;
+
             ExecutionTime = campaign.ExecutionStart.ToDateRange(campaign.ExecutionEnd);
             RegisterTime = campaign.DateStart.ToDateRange(campaign.DateEnd);
             FeedbackBefore = campaign.FeedbackStart.ToDateRange(campaign.FeedbackEnd);
+
             CustomKolNames = campaign.CustomKolNames.ToListString();
             AccountChargeAmounts = new List<int>();
 

@@ -223,85 +223,20 @@ namespace WebServices.Services
         {
 
             var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type, keyword);
+            var account = _IAccountRepository.GetById(accountid);
 
             var total = await query.CountAsync();
 
             var campaigns = await query.OrderByDescending(m => m.Id).GetPagedAsync(page, pagesize);
+            
+            
 
-            //var filter = new CampaignByAccountSpecification(accountid, keyword);
-            //var campaigns = await _campaignRepository.ListPagedAsync(filter, "", page, pagesize);
-            //var total = await _campaignRepository.CountAsync(filter);
-
-
-            var account = _IAccountRepository.GetById(accountid);
             var list = new List<MarketPlaceViewModel>();
-
-
-
 
             foreach (var campaign in campaigns)
             {
                 var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
-
-                var _campaignAccountEntity = _campaignAccountRepository.GetCampaignAccount(campaign.Id, accountid);
-                if(_campaignAccountEntity != null)
-                {
-                    list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
-                }
-
-
-                var AgeRange = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.AgeRange).FirstOrDefault();
-                var Gender = campaign.CampaignOption.Where(co => co.Name == CampaignOptionName.Gender).FirstOrDefault();
-
-                try {
-
-
-
-                    if (AgeRange != null)
-                    {
-                        string[] ageArray = AgeRange.Value.Split(new string[] { "-" }, StringSplitOptions.None);
-                        int minAge = 0;
-                        Int32.TryParse(ageArray[0], out minAge);
-
-                        int maxAge = 0;
-                        Int32.TryParse(ageArray[1], out maxAge);
-
-                        try
-                        {
-                            int currentAge = account.Birthday.Value.Year;
-                            if (minAge <= currentAge && maxAge >= currentAge)
-                            { }
-                            else { continue; }
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (Gender != null)
-                    {
-                        if (Gender.Value != account.Gender.ToString())
-                        {
-                            continue;
-                        }
-                    }
-
-
-                    var exist = list.Where(m => m.Campaign.Id == campaign.Id).Count();
-                    if(exist == 0)
-                    {
-                        list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
-                    }
-
-                    
-                }
-                catch { }
-            
-
-               
-                
-
+                list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
             }
 
             return new ListMarketPlaceViewModel()
@@ -452,12 +387,94 @@ namespace WebServices.Services
 
 
 
+            try
+            {
+
+                AccountType _accountType = model.AccountType[0];
+                campaign.FilterAccountType = (int)_accountType;
+
+
+                if (_accountType == AccountType.HotMom)
+                {
+                    if (model.ChildType.HasValue)
+                    {
+                        campaign.FilterAccountChildrenGender = model.ChildType.Value;
+
+                    }
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (model.EnabledCity && model.CityId != null && model.CityId.Count > 0)
+                {
+                    string _arrCity = string.Empty;
+                    foreach (var cityId in model.CityId)
+                    {
+                        _arrCity += _arrCity == string.Empty ? $" {cityId.ToString()} " : $"| {cityId} ";
+                    }
+                    campaign.FilterAccountRegion = _arrCity;
+                }
+                else
+                {
+                    campaign.FilterAccountRegion = string.Empty;
+                }
+
+            }
+            catch { }
+
+            try
+            {
+                if (model.EnabledGender && model.Gender.HasValue)
+                {
+                    campaign.FilterAccountGender = (int)model.Gender.Value;
+                }
+                else
+                {
+                    campaign.FilterAccountGender = 0;
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (model.EnabledAgeRange && model.AgeEnd.HasValue && model.AgeStart.HasValue)
+                {
+                    campaign.FilterAccountAgeFrom = model.AgeStart.Value;
+                    campaign.FilterAccountAgeTo = model.AgeEnd.Value;
+                }
+                else
+                {
+                    campaign.FilterAccountAgeFrom = 0;
+                    campaign.FilterAccountAgeTo = 0;
+                }
+            }
+            catch { }
+
+            try
+            {
+                if (model.EnabledCategory && model.CategoryId != null && model.CategoryId.Count > 0)
+                {
+                    string _arrCategories = string.Empty;
+                    foreach (var categoryid in model.CategoryId)
+                    {
+                        _arrCategories += _arrCategories == string.Empty ? $" {categoryid.ToString()} " : $"| {categoryid} ";
+                    }
+                    campaign.FilterAccountCategories = _arrCategories;
+                }
+                else
+                {
+                    campaign.FilterAccountCategories = "";
+                }
+            }
+            catch { }
+
+
+
+
+
             await _campaignRepository.UpdateAsync(campaign);
-
-
-
-
-
             await CreateCampaignAccountType(campaign.Id, model.AccountType, username,true);
             await CreateCampaignOptions(campaign.Id, model, username, true);
 
@@ -480,10 +497,13 @@ namespace WebServices.Services
 
 
             await _campaignRepository.AddAsync(campaign);
+
             if (campaign.Id > 0)
             {
                 await CreateCampaignAccountType(campaign.Id, target.AccountType, username);
+
                 await CreateCampaignOptions(campaign.Id, target, username);
+
                 return campaign.Id;
             }
 

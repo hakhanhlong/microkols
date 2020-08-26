@@ -89,6 +89,26 @@ namespace Core.Entities
 
         public string HrefCompare { get; set; }
 
+
+        public int? FilterAccountType { get; set; }
+
+        public int? FilterAccountGender { get; set; }
+
+        public string FilterAccountSelected { get; set; }
+
+        public int? FilterAccountChildrenGender { get; set; }
+        public string FilterAccountCategories { get; set; }
+
+        public string FilterAccountRegion { get; set; }
+
+        public int? FilterAccountAgeFrom { get; set; }
+
+        public int? FilterAccountAgeTo { get; set; }
+
+        public int? FilterAccountAgeChildrenFrom { get; set; }
+
+        public int? FilterAccountAgeChildrenTo { get; set; }
+
     }
 
     public enum CampaignReviewType
