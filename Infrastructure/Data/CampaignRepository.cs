@@ -265,9 +265,14 @@ namespace Infrastructure.Data
             var account = _dbContext.Account.Include(a => a.AccountCategory).Where(a => a.Id == accountid).FirstOrDefault();
             
 
-            var joinCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
+            var joinedCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
+
             var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status != CampaignStatus.Created);
             queryCampaign = queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
+
+
+            
+
 
             #region Filter
             //-------------------filter by account type ----------------------------------------------------------------------------------------
@@ -275,17 +280,19 @@ namespace Infrastructure.Data
                     where ((from at in q.CampaignAccountType
                            select at.AccountType).Contains(account.Type))
                            || ((string.IsNullOrEmpty(q.FilterAccountSelected)) || q.FilterAccountSelected.Contains($" {account.Id.ToString()} "))
+                           || joinedCampaignIds.Contains(q.Id)
                     select q;
-            int count = queryCampaign.Count();
+
+            //int count = queryCampaign.Count();
 
             //-------------------filter by account gender ----------------------------------------------------------------------------------------            
 
 
             queryCampaign = from q in queryCampaign
-                            where ((!q.FilterAccountGender.HasValue) || q.FilterAccountGender.Value == (int)account.Gender)
+                            where ((!q.FilterAccountGender.HasValue) || q.FilterAccountGender.Value == (int)account.Gender || joinedCampaignIds.Contains(q.Id))
                             select q;
 
-            count = queryCampaign.Count();
+            //count = queryCampaign.Count();
 
 
             //-------------------filter by account age ------------------------------------------------------------------------------------------
@@ -300,22 +307,23 @@ namespace Infrastructure.Data
                 if (accountAge > 0)
                 {
 
-                    queryCampaign = queryCampaign.Where(c => (!c.FilterAccountAgeFrom.HasValue || c.FilterAccountAgeFrom.Value > 0 ?c.FilterAccountAgeFrom.Value <= accountAge: c.FilterAccountAgeFrom.Value == 0) &&
-                    (!c.FilterAccountAgeTo.HasValue || c.FilterAccountAgeTo.Value > 0?c.FilterAccountAgeTo.Value >= accountAge: c.FilterAccountAgeTo.Value == 0));
+                    queryCampaign = queryCampaign.Where(c => ((!c.FilterAccountAgeFrom.HasValue || c.FilterAccountAgeFrom.Value == 0 || c.FilterAccountAgeFrom.Value <= accountAge) &&
+                    (!c.FilterAccountAgeTo.HasValue || c.FilterAccountAgeTo.Value == 0 || c.FilterAccountAgeTo.Value >= accountAge)) || joinedCampaignIds.Contains(c.Id));
 
                 }
             }
             catch { }
-            count = queryCampaign.Count();
+            //count = queryCampaign.Count();
 
             //-------------------filter by location ------------------------------------------------------------------------------------------
             try
             {                
                 queryCampaign = from q in queryCampaign
-                                where ((string.IsNullOrEmpty(q.FilterAccountRegion)) || q.FilterAccountRegion.Contains($" {account.CityId.ToString()} "))
+                                where ((string.IsNullOrEmpty(q.FilterAccountRegion)) || 
+                                q.FilterAccountRegion.Contains($" {account.CityId.ToString()} ") || joinedCampaignIds.Contains(q.Id))
                                 select q;
 
-                count = queryCampaign.Count();
+                //count = queryCampaign.Count();
 
             }
             catch { }
@@ -331,18 +339,21 @@ namespace Infrastructure.Data
                                 || (from co in q.CampaignOption
                                    where co.Name == CampaignOptionName.Category
                                    select co.Value).Intersect(_arrayCategories).Count() > 0)
+                                   || joinedCampaignIds.Contains(q.Id)
                                 select q;
 
             }
             catch { }
-            count = queryCampaign.Count();
+            //count = queryCampaign.Count();
 
             #endregion
 
 
 
-            queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) && 
-            (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed)) || m.Status == CampaignStatus.Confirmed);
+            //queryCampaign = queryCampaign.Where(m => (joinCampaignIds.Contains(m.Id) && 
+            //(m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed)) || m.Status == CampaignStatus.Confirmed);
+
+            queryCampaign = queryCampaign.Where(m => (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed) || m.Status == CampaignStatus.Confirmed);
 
             //count = queryCampaign.Count();
 

@@ -223,7 +223,7 @@ namespace WebServices.Services
         {
 
             var query = await _campaignRepository.QueryMarketPlaceCampaignByAccount(accountid, type, keyword);
-            var account = _IAccountRepository.GetById(accountid);
+            //var account = _IAccountRepository.GetById(accountid);
 
             var total = await query.CountAsync();
 

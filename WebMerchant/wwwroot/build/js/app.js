@@ -1369,6 +1369,7 @@ var CampaignCreateTargetPage = (function () {
         $('#ExecutionTime').on('apply.daterangepicker', function (ev, picker) {
 
             var regDrp = $('#RegisterTime').data('daterangepicker');
+
             var d1 = moment(regDrp.endDate);
 
             var d2 = moment(picker.startDate);
@@ -1388,8 +1389,8 @@ var CampaignCreateTargetPage = (function () {
             }
 
 
-            var startDate = d1.add(1, 'minute'); 
-            $('#ExecutionTime').data('daterangepicker').setStartDate(startDate); 
+            //var startDate = d1.add(1, 'minute'); 
+            //$('#ExecutionTime').data('daterangepicker').setStartDate(startDate); 
 
         });
 
