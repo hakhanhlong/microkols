@@ -369,11 +369,7 @@ namespace Infrastructure.Data
             }
 
             return  queryCampaign.Include(m => m.Agency);
-
-            
-
-           
-
+                       
         }
 
         public async Task<IQueryable<Campaign>> QueryCampaignByAllAccount(int type, string keyword)
