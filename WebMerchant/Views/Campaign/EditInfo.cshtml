@@ -15,64 +15,197 @@
 
                 <div class="form-group">
 
-                    <label asp-for="Title"></label>
+                    <span>                        
+                        <label asp-for="Title" style="font-weight:bold;"></label>
+                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:16px;"
+                              title="Đặt tên theo ý muốn của bạn, influencer sẽ nhìn thấy thông tin này"><i class="fa fa-question-circle"></i></span>
+                    </span>
                     <input type="text" class="form-control" asp-for="Title" />
                     <span asp-validation-for="Title"></span>
 
                 </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
-                    <div class="form-group">
-                        <label asp-for="Image"></label>
+                <div class="form-group">
+                    <span>
+                        <label asp-for="Image" style="font-weight:bold;"></label>
+                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                              title="Avatar có kích thước 640x640, hệ thống mặc định hình với kích thước này,
+                              bạn hãy kiểm tra hình avatar trước và sau khi tải lên nhé"><i class="fa fa-question-circle"></i></span>
+                    </span>
 
-                        <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
-                        <input type="hidden" asp-for="Image" />
-                        <span asp-validation-for="Image"></span>
-                        <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
+                    <input type="file" id="dataImageFile" class="form-control" data-target="#Image" data-preview="#imagePreview" data-sizetype="1" />
+                    <input type="hidden" asp-for="Image" />
+                    <span asp-validation-for="Image"></span>
+                    <span class="text-danger">* Avatar có kích thước cố định 640x640</span>
 
-                        <div>
-                            <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
-                        </div>
-
-
+                    <div>
+                        <img src="@AppOptions.CurrentValue.GetImageUrl(Model.Image)" id="imagePreview" class="img-thumbnail mt-2" style="max-height:400px" />
                     </div>
 
 
-                    <div class="form-group">
-                        <label asp-for="Data">Url Frame</label>
-                        <input type="text" class="form-control" asp-for="Data" />
-                        <span asp-validation-for="Data"></span>
-                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <span>
+                        <label asp-for="Data" style="font-weight:bold;">Url Frame</label>
+                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                              title="Nếu không chọn hình ảnh bạn có thể tạo frame để việc thay avatar của influencer được thuận tiện hơn"><i class="fa fa-question-circle"></i></span>
+                    </span>
+                    <input type="text" class="form-control" asp-for="Data" />
+                    <span asp-validation-for="Data"></span>
+                </div>
                 }
                 else
                 {
-                    <div class="form-group">
-                        <label asp-for="Data"></label>
-                        <input type="text" class="form-control" asp-for="Data" />
-                        <span asp-validation-for="Data"></span>
-                    </div>
+                <div class="form-group">
+                    @if (campaignType == CampaignType.ReviewProduct)
+                    {
+                        <span>
+                            <label asp-for="Data" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Là link chứa nội dung mà bạn muốn influencer post kèm nội dung review trên tường của họ.
+                                  Nếu link này chỉ để tham khảo, bạn hãy note lại ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
+                        </span>
+                    }
+                    else if (campaignType == CampaignType.JoinEvent)
+                    {
+                        <span>
+                            <label asp-for="Data" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Là link chứa nội dung sự kiện.
+                                  Nếu muốn influencer post kèm lúc check-in bạn hãy viết ra ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
+                        </span>
+                    }
+                    else if (campaignType == CampaignType.ShareStreamUrl)
+                    {
+                        <span>
+                            <label asp-for="Data" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Là link livestream mà bạn muốn người dùng chia sẻ trên tường của họ"><i class="fa fa-question-circle"></i></span>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>
+                            <label asp-for="Data" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Là link chứa nội dung mà bạn muốn influencer post cùng caption mới được tạo
+                                  ra trên tường của họ. Nếu link chỉ để tham khảo, bạn hãy note lại ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
+                        </span>
+                    }
+
+
+
+                    <input type="text" class="form-control" asp-for="Data" />
+                    <span asp-validation-for="Data"></span>
+                </div>
 
                     <input type="hidden" asp-for="Image" />
                 }
-                <div class="form-group">
+                    <div class="form-group">
 
-                    <label asp-for="Description"></label>
-                    <textarea class="form-control" rows="2" asp-for="Description"></textarea>
-                    <span asp-validation-for="Description"></span>
-                </div>
 
-                <div class="form-group">
+                        @if (campaignType == CampaignType.ChangeAvatar)
+                        {
+                            <span>
+                                <label asp-for="Description" style="font-weight:bold;">Giới thiệu ngắn gọn</label>
+                                <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                      title="Hãy giới thiệu thật dễ hiểu sản phẩm dịch vụ của bạn"><i class="fa fa-question-circle"></i></span>
+                            </span>
+                        }
+                        else
+                        {
+                            if (campaignType == CampaignType.JoinEvent)
+                            {
+                                <span>
+                                    <label asp-for="Description" style="font-weight:bold;"></label>
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Hãy giới thiệu thật dễ hiểu sản phẩm dịch vụ tại địa chỉ check in của bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                </span>
+                            }
+                            else if (campaignType == CampaignType.ReviewProduct)
+                            {
+                                <span>
+                                    <label asp-for="Description" style="font-weight:bold;"></label>
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Hãy giới thiệu thật dễ hiểu sản phẩm dịch vụ của bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                </span>
+                            }
+                            else if (campaignType == CampaignType.ShareStreamUrl)
+                            {
+                                <span>
+                                    <label asp-for="Description" style="font-weight:bold;"></label>
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Hãy giới thiệu thật dễ hiểu sản phẩm dịch vụ của bạn trong link live nhé"><i class="fa fa-question-circle"></i></span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span>
+                                    <label asp-for="Description" style="font-weight:bold;"></label>
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Hãy giới thiệu thật dễ hiểu sản phẩm dịch vụ của bạn cho influencer nhé"><i class="fa fa-question-circle"></i></span>
+                                </span>
+                            }
+                        }
+                        <textarea class="form-control" rows="2" asp-for="Description"></textarea>
+                        <span asp-validation-for="Description"></span>
+                    </div>
 
-                    <label asp-for="Requirement"></label>
-                    <textarea class="form-control" rows="2" asp-for="Requirement"></textarea>
-                    <span asp-validation-for="Requirement"></span>
-                </div>
+                    <div class="form-group">
+
+                        <span>
+                            <label asp-for="Requirement" style="font-weight:bold;"></label>
+                            @if (campaignType == CampaignType.ChangeAvatar)
+                            {
+                                <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                      title="Mô tả chi tiết công việc mà bạn muốn influencer thực hiện"><i class="fa fa-question-circle"></i></span>
+                            }
+                            else
+                            {
+                                if (campaignType == CampaignType.ReviewProduct)
+                                {
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Là yêu cầu mà bạn muốn influencer thực hiện. Nếu bạn muốn influencer chụp kèm hình của bạn bạn hãy viết ra nhé.
+                                      Bao gồm cả việc thanh toán cho sản phẩm trải nghiệm nếu cần influencer gửi lại. Hãy viết thật chi tiết và dễ hiểu bạn nhé."><i class="fa fa-question-circle"></i></span>
+                                }
+                                else if (campaignType == CampaignType.JoinEvent)
+                                {
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Là yêu cầu mà bạn muốn người dùng thực hiện. Chẳng hạn “checkin tại địa chỉ bạn đưa ra,
+                                      viết cảm nhận kèm theo hình ảnh influencer tại địa điểm check-in và hình phía dưới cùng với link chương trình. Hãy viết thật chi tiết và dễ hiểu bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                }
+                                else if (campaignType == CampaignType.ShareStreamUrl)
+                                {
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Là yêu cầu mà bạn muốn người dùng thực hiện.
+                                      Chẳng hạn chia sẻ link và livestream ở url phía trên kèm theo hashtag phía dưới"><i class="fa fa-question-circle"></i></span>
+                                }
+                                else
+                                {
+                                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                          title="Là yêu cầu mà bạn muốn người dùng thực hiện, chẳng hạn: chia sẻ nội dung ở đường link phía trên kèm theo hashtag, hình ảnh phía dưới,
+                                        viết một caption phù hợp và hấp dẫn. Nếu bạn muốn người dùng chụp kèm hình của họ, bạn hãy viết ra nhé. Hãy viết thật chi tiết và dễ hiểu yêu cầu của bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                }
+
+                            }
+
+                        </span>
+                        <textarea class="form-control" rows="2" asp-for="Requirement"></textarea>
+                        <span asp-validation-for="Requirement"></span>
+                    </div>
                 @if (campaignType == CampaignType.ChangeAvatar)
                 {
                     <div class="form-group">
-                        <label asp-for="AccountChargeTime"></label>
+                        <span>
+                            <label asp-for="AccountChargeTime" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Bạn muốn influencer thay avatar trong tối thiểu bao lâu (tuần), thời gian càng lâu thì chi phí bạn phải trả càng cao?"><i class="fa fa-question-circle"></i></span>
+                        </span>
                         <div class="input-group">
-                            <input type="number" class="form-control" asp-for="AccountChargeTime" min="1" max="4"/>
+                            <input type="number" class="form-control" asp-for="AccountChargeTime" min="1" max="4" />
                             <div class="input-group-append">
                                 <span class="input-group-text">Tuần</span>
                             </div>
@@ -85,18 +218,22 @@
                     <input type="hidden" asp-for="AccountChargeTime" />
                 }
 
-                <div class="form-group ">
-                    <label asp-for="HashTag"></label>
+                    <div class="form-group ">
+                        <span>
+                            <label asp-for="HashTag" style="font-weight:bold;"></label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:16px;"
+                                  title="Nhập hashtag bạn muốn bằng cách viết hashtag rồi nhấn enter"><i class="fa fa-question-circle"></i></span>
+                        </span>
 
-                    <select asp-for="HashTag" multiple class="form-control">
-                        @foreach (var item in Model.HashTag)
-                        {
-                            <option value="@item">@item</option>
-                        }
-                    </select>
-                    <span asp-validation-for="HashTag"></span>
+                        <select asp-for="HashTag" multiple class="form-control">
+                            @foreach (var item in Model.HashTag)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                        <span asp-validation-for="HashTag"></span>
 
-                </div>
+                    </div>
 
 
                 @*@if (campaignType == CampaignType.ShareContent)
@@ -132,8 +269,25 @@
 
                         <div class="form-group">
                             <div class="custom-control custom-radio">
-                                <input type="radio" required class="custom-control-input" name="ReviewType" value="@item" id="@radioid" data-desc="" @(Model.ReviewType.Value == item? "checked=\"checked\"":"")/>
-                                <label class="custom-control-label" for="@radioid">@item.ToDisplayName()</label>
+                                <input type="radio" required class="custom-control-input" name="ReviewType" value="@item" id="@radioid" data-desc="" @(Model.ReviewType.Value == item ? "checked=\"checked\"" : "") />
+                                @if (item == CampaignReviewType.GuiSanPham)
+                                {
+                                    <span>
+                                        <label class="custom-control-label" for="@radioid">@item.ToDisplayName()</label>
+                                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                              title="Hãy thanh toán chi phí gửi sản phẩm cho influencer nhé bạn.
+                                              Nếu cần influencer gửi trả lại hãy nhập địa chỉ gửi trả ở đây"><i class="fa fa-question-circle"></i></span>
+                                    </span>
+
+                                }
+                                else
+                                {
+                                    <span>
+                                        <label class="custom-control-label" for="@radioid">@item.ToDisplayName()</label>
+                                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                              title="Bạn hãy nhập địa chỉ và thời gian mà các influencer được chọn có thể đến trải nghiệm"><i class="fa fa-question-circle"></i></span>
+                                    </span>
+                                }
                             </div>
 
                         </div>
@@ -183,7 +337,11 @@
                 {
 
                     <div>
-                        <label>Ảnh chiến dịch cung cấp</label>
+                        <span>
+                            <label style="font-weight:bold;">Ảnh chiến dịch cung cấp</label>
+                            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                  title="Nếu bạn muốn influencer đăng hình ảnh sản phẩm/dịch vụ của doanh nghiệp bạn kèm theo nội dung, bạn hãy chèn hình vào đây nhé, càng ít hình chiến dịch của bạn sẽ càng thu hút"><i class="fa fa-question-circle"></i></span>
+                        </span>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="sampleContent" data-target="#sampleContentWrap" multiple>
                             <label class="custom-file-label" for="sampleContent">Tải ảnh chiến dịch</label>
@@ -198,11 +356,11 @@
                                     </li>
                                 }
                                 @*else
-                        {
-                            <li>
-                                <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
-                            </li>
-                        }*@
+                {
+                    <li>
+                        <a data-toggle="popover" href="javascript:;" data-content="Tối thiểu: 1200px x 628px, Tối đa: 3840px x 2400px">Kích cỡ ảnh bài viết?</a>
+                    </li>
+                }*@
                             </ul>
                         </div>
 
@@ -249,7 +407,19 @@
                     }*@
                 <div class="card border-0">
                     <div class="card-body">
-                        <h5>Nội dung mẫu</h5>
+                        <span>
+                            <label asp-for="SampleContentText" style="font-weight:bold;"></label>
+                            @if (campaignType == CampaignType.ChangeAvatar)
+                            {
+                                <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                      title="Là nội dung influencer post lên cùng khi họ thay avatar do bạn cung cấp."><i class="fa fa-question-circle"></i></span>
+                            }
+                            else
+                            {
+                                <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                      title="Bạn hãy viết ra một nội dung để làm mẫu cho các influencer, nội dung mẫu có thể có hashtag, link thông tin nhưng không chèn hình ảnh ở đây bạn nhé."><i class="fa fa-question-circle"></i></span>
+                            }
+                        </span>
                         <textarea class="form-control" rows="3" placeholder="Nội dung mẫu chiến dịch viết tại đây" asp-for="SampleContentText"></textarea>
                     </div>
                 </div>

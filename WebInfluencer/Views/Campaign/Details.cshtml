@@ -125,7 +125,31 @@
 
                 @if (Model.Campaign.DateStart.HasValue && Model.Campaign.DateEnd.HasValue)
                 {
-                    <h5> Thời gian đăng ký</h5>
+                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        <h5>
+                            Thời gian đăng ký&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                         title="Bạn hãy đăng ký trong khoảng thời gian này, đồng thời viết nội dung mới
+                                                         (caption dự kiến sẽ post) kèm hastag mà bạn muốn chia sẻ theo yêu cầu của doanh nghiệp (caption dự kiến không bao gồm hình).
+                                                         Doanh nghiệp sẽ duyệt việc đăng ký tham gia và caption bạn gửi"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ChangeAvatar || Model.Campaign.Type == CampaignType.ReviewProduct || Model.Campaign.Type == CampaignType.JoinEvent)
+                    {
+                        <h5>
+                            Thời gian đăng ký&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                         title="Bạn hãy đăng ký tham gia trong khoảng thời gian này nhé"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5>
+                            Thời gian đăng ký&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                         title="Bạn hãy đăng ký tham gia trong khoảng thời gian này Doanh nghiệp sẽ duyệt việc đăng ký tham gia của bạn"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+
+
                     <p>
                     </p><ul class="list-unstyled">
                         <li>  @Model.Campaign.DateStart.Value.ToViDateTime() -  @Model.Campaign.DateEnd.Value.ToViDateTime()</li>
@@ -142,11 +166,21 @@
 
                             @if (Model.Campaign.Type == CampaignType.JoinEvent)
                             {
-                                <h5>Thời gian check-in và gửi hình bài post tại thời điểm check-in</h5>
+                                <h5>
+                                    Thời gian check-in và gửi hình bài post tại thời điểm check-in&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                                                              title="Khi thực hiện check-in và post nội dung ở chế độ công khai, bạn hãy chụp lại hình bài post của bạn (trên máy tính hoặc điện thoại)
+                                        và gửi đến chiến dịch trong thời gian này theo hướng dẫn của hệ thống các mốc thời gian bắt đầu bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                </h5>
                             }
                             else
                             {
-                                <h5> Thời gian viết nội dung</h5>
+                                <h5>
+                                    Thời gian viết nội dung&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                       title="Là khoảng thời gian bạn viết và gửi nội dung theo yêu cầu của doanh nghiệp.
+                                                                       Doanh nghiệp sẽ duyệt nội dung bạn gửi trong thời gian này.
+                                                                       Nếu có video, bạn hãy up nó lên facebook hoặc youtube rồi gửi lại link
+                                                                       video để duyệt bạn nhé"><i class="fa fa-question-circle"></i></span>
+                                </h5>
                             }
 
                             <p></p>
@@ -169,7 +203,57 @@
 
                 @if (Model.Campaign.ExecutionStart.HasValue && Model.Campaign.ExecutionEnd.HasValue)
                 {
-                    <h5> Thời gian thực hiện chiến dịch</h5>
+
+                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Là thời gian mà bạn post nội dung đã được duyệt, kèm theo hình ảnh (nếu có) lên facebook cá nhân,
+                                                                          bài post được bật ở chế độ công khai. Sau đó hay quay trở lại màn hình này và gửi lại link đã post theo hướng dẫn trong thời gian thực hiện chiến dịch bạn nhé.
+                                                                          Nếu gửi link post khi đã hết thời gian thực hiện chiến dịch, post của bạn sẽ không được công nhận"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.JoinEvent)
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Đây là khoảng thời gian bạn gửi link bài đã post để hoàn thiện chiến dịch, lưu ý bật nội dung post check-in ở chế độ công khai.
+                            Nếu việc gửi link diễn ra sau khoảng thời gian này, chiến dịch của bạn sẽ không được ghi nhận"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Đây là khoảng thời gian bạn post nội dung đã được duyệt  lên facebook của mình ở chế độ công khai.
+                                    Hãy quay trở lại đây để thông báo hoàn thành công việc sau khi bạn đã post bài của mình. Lưu ý bạn cần thực hiện việc thông báo trong thời gian này nhé"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ChangeAvatar)
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Bạn cần thay avatar của mình trong khoảng thời gian này, kéo dài theo số tuần của chiến dịch đưa ra ở trên. Hãy quay trở lại đây để thông báo hoàn thành công việc sau khi bạn đã đổi avatar của mình.
+                                    Nếu bạn đổi avatar sớm hơn số tuần mà chiến dịch yêu cầu bạn sẽ không được ghi nhận việc thực hiện của mình"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ShareStreamUrl)
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="là thời gian mà bạn chia sẻ link livestream của chiến dịch kèm theo caption, hashtag (nếu có) lên facebook cá nhân,
+                            bài post được bật ở chế độ công khai. Sau đó hay quay trở lại màn hình này và gửi lại link đã post theo hướng dẫn trong thời gian thực hiện chiến dịch bạn nhé.
+                            Nếu bạn gửi link đã post khi đã hết thời gian thực hiện chiến dịch, post của bạn sẽ không được công nhận"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5>
+                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Bạn hãy đăng ký tham gia trong khoảng thời gian này Doanh nghiệp sẽ duyệt việc đăng ký tham gia của bạn"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+
                     <p>
                     </p><ul class="list-unstyled">
                         <li>  @Model.Campaign.ExecutionStart.Value.ToViDateTime() -  @Model.Campaign.ExecutionEnd.Value.ToViDateTime()</li>
@@ -179,51 +263,51 @@
                 @if (Model.Campaign.Type == CampaignType.ReviewProduct)
                 {
 
-                <div class="mb-2">
-                    <h5>
-                        @Model.Campaign.ReviewType.ToDisplayName()
-                    </h5>
+                    <div class="mb-2">
+                        <h5>
+                            @Model.Campaign.ReviewType.ToDisplayName()
+                        </h5>
 
-                    @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
-                    {
-
-                        if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                        @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
                         {
+
+                            if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                            {
+                                <p></p>
+                                <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                                <p></p>
+                            }
+                        }
+                        else
+                        {
+
                             <p></p>
-                            <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                            <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
                             <p></p>
                         }
-                    }
-                    else
-                    {
-
-                        <p></p>
-                        <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                        <p></p>
-                    }
 
 
 
-                </div>
+                    </div>
 
-                @*<div>
-            @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
-            {
-                <strong> Thời gian trải nghiệm</strong>
+                    @*<div>
+                @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
+                {
+                    <strong> Thời gian trải nghiệm</strong>
 
-                <ul class="list-unstyled">
-                    <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
-                </ul>
-            }
-            @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-            {
-                <strong> Địa điểm trải nghiệm</strong>
-                <p>
-                    @Model.Campaign.ReviewAddress
-                </p>
-            }
+                    <ul class="list-unstyled">
+                        <li>  @Model.Campaign.ReviewStart.Value.ToViDateTime() -  @Model.Campaign.ReviewEnd.Value.ToViDateTime()</li>
+                    </ul>
+                }
+                @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                {
+                    <strong> Địa điểm trải nghiệm</strong>
+                    <p>
+                        @Model.Campaign.ReviewAddress
+                    </p>
+                }
 
-        </div>*@
+            </div>*@
                 }
 
 
@@ -299,7 +383,12 @@
                     {
 
                         <div style="margin-bottom:5px;">
-                            <h5 class="mb-2">Thu nhập mong muốn của bạn</h5>
+                            <h5 class="mb-2">
+                                Thu nhập mong muốn của bạn&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                      title="Khoản thu nhập này nằm trong khoảng mà doanh nghiệp đưa ra ở trên,
+                                                                                  hãy cân nhắc đưa ra mức thu nhập phù hợp dựa vào lượng friends
+                                                                                  và tương tác tới các bài post trong quá khứ của bạn"><i class="fa fa-question-circle"></i></span>
+                            </h5>
 
                             <div class="text-danger">
                                 @campaignAccount.AccountChargeAmount.ToPriceText()
@@ -310,7 +399,15 @@
                 else
                 {
                     <div class="mb-3">
-                        <h5 class="mb-2">Thu nhập mong muốn của bạn</h5>
+
+                        <h5 class="mb-2">
+                            Thu nhập mong muốn của bạn&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                  title="Khoản thu nhập này nằm trong khoảng mà doanh nghiệp đưa ra ở trên,
+                                                                          hãy cân nhắc đưa ra mức thu nhập phù hợp dựa vào lượng friends
+                                                                          và tương tác tới các bài post trong quá khứ của bạn"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+
+
                         <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
 
 
@@ -360,7 +457,49 @@
                 @if (!string.IsNullOrEmpty(Model.Campaign.SampleContentText))
                 {
 
-                    <h5>Nội dung mẫu  :</h5>
+                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        <h5>
+                            Nội dung mẫu&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                    title="Nội dung mẫu này có thể chưa bao gồm hình ảnh đính kèm trong chiến dịch"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ChangeAvatar)
+                    {
+                        <h5>
+                            Nội dung mẫu&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                    title="Dựa vào nội dung mẫu này bạn hãy post gì đó phù hợp với yêu cầu
+                                                    của doanh nghiệp khi bạn thay avatar nhé"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                    {
+                        <h5>
+                            Nội dung mẫu&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                    title="Dựa vào nội dung mẫu này bạn hãy tạo ra bài review
+                                                    thật sáng tạo và tuân thủ yêu cầu của doanh nghiệp nhé"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.JoinEvent)
+                    {
+                        <h5>
+                            Nội dung mẫu&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                    title="Dựa vào nội dung mẫu này bạn hãy tạo ra nội dung thật hấp dẫn và tuân thủ yêu cầu của doanh nghiệp nhé"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ShareStreamUrl)
+                    {
+                        <h5>
+                            Nội dung mẫu&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                    title="Nội dung mẫu này có thể chưa bao gồm hình ảnh đính kèm trong chiến dịch"><i class="fa fa-question-circle"></i></span>
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5>
+                            Nội dung mẫu
+                        </h5>
+                    }
 
                     <div>
                         @Html.Raw(Model.Campaign.SampleContentText)

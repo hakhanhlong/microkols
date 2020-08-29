@@ -414,11 +414,12 @@ namespace WebServices.Services
                     {
                         _arrCity += _arrCity == string.Empty ? $" {cityId.ToString()} " : $"| {cityId} ";
                     }
+
                     campaign.FilterAccountRegion = _arrCity;
                 }
                 else
                 {
-                    campaign.FilterAccountRegion = string.Empty;
+                    campaign.FilterAccountRegion = null;
                 }
 
             }
@@ -432,7 +433,7 @@ namespace WebServices.Services
                 }
                 else
                 {
-                    campaign.FilterAccountGender = 0;
+                    campaign.FilterAccountGender = null;
                 }
             }
             catch { }
@@ -446,8 +447,8 @@ namespace WebServices.Services
                 }
                 else
                 {
-                    campaign.FilterAccountAgeFrom = 0;
-                    campaign.FilterAccountAgeTo = 0;
+                    campaign.FilterAccountAgeFrom = null;
+                    campaign.FilterAccountAgeTo = null;
                 }
             }
             catch { }
@@ -465,7 +466,7 @@ namespace WebServices.Services
                 }
                 else
                 {
-                    campaign.FilterAccountCategories = "";
+                    campaign.FilterAccountCategories = null;
                 }
             }
             catch { }

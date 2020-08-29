@@ -268,33 +268,24 @@ namespace Infrastructure.Data
             var joinedCampaignIds = await _dbContext.CampaignAccount.Where(m => m.AccountId == accountid).Select(m => m.CampaignId).ToListAsync();
 
             var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status != CampaignStatus.Created);
+
             queryCampaign = queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
 
-
-            
-
-
             #region Filter
-            //-------------------filter by account type ----------------------------------------------------------------------------------------
+            //-------------------filter by account type ----------------------------------------------------------------------------------------        
             queryCampaign = from q in queryCampaign
-                    where ((from at in q.CampaignAccountType
-                           select at.AccountType).Contains(account.Type))
-                           || ((string.IsNullOrEmpty(q.FilterAccountSelected)) || q.FilterAccountSelected.Contains($" {account.Id.ToString()} "))
-                           || joinedCampaignIds.Contains(q.Id)
-                    select q;
-
-            //int count = queryCampaign.Count();
+                            where (((q.FilterAccountType == (int)account.Type) && (q.Status == CampaignStatus.Confirmed))
+                                  || (joinedCampaignIds.Contains(q.Id)))
+                            select q;
+           
+            int count = queryCampaign.Count();
 
             //-------------------filter by account gender ----------------------------------------------------------------------------------------            
 
-
             queryCampaign = from q in queryCampaign
-                            where ((!q.FilterAccountGender.HasValue) || q.FilterAccountGender.Value == (int)account.Gender || joinedCampaignIds.Contains(q.Id))
+                            where ((!q.FilterAccountGender.HasValue) || q.FilterAccountGender.Value > 0 || q.FilterAccountGender.Value == (int)account.Gender)
                             select q;
-
-            //count = queryCampaign.Count();
-
-
+            count = queryCampaign.Count();
             //-------------------filter by account age ------------------------------------------------------------------------------------------
             try
             {
@@ -308,22 +299,22 @@ namespace Infrastructure.Data
                 {
 
                     queryCampaign = queryCampaign.Where(c => ((!c.FilterAccountAgeFrom.HasValue || c.FilterAccountAgeFrom.Value == 0 || c.FilterAccountAgeFrom.Value <= accountAge) &&
-                    (!c.FilterAccountAgeTo.HasValue || c.FilterAccountAgeTo.Value == 0 || c.FilterAccountAgeTo.Value >= accountAge)) || joinedCampaignIds.Contains(c.Id));
+                    (!c.FilterAccountAgeTo.HasValue || c.FilterAccountAgeTo.Value >= accountAge)));
 
                 }
             }
             catch { }
-            //count = queryCampaign.Count();
+            count = queryCampaign.Count();
 
             //-------------------filter by location ------------------------------------------------------------------------------------------
             try
             {                
                 queryCampaign = from q in queryCampaign
                                 where ((string.IsNullOrEmpty(q.FilterAccountRegion)) || 
-                                q.FilterAccountRegion.Contains($" {account.CityId.ToString()} ") || joinedCampaignIds.Contains(q.Id))
+                                q.FilterAccountRegion.Contains($" {account.CityId.ToString()} "))
                                 select q;
 
-                //count = queryCampaign.Count();
+                count = queryCampaign.Count();
 
             }
             catch { }
@@ -338,13 +329,12 @@ namespace Infrastructure.Data
                                 where (string.IsNullOrEmpty(q.FilterAccountCategories)
                                 || (from co in q.CampaignOption
                                    where co.Name == CampaignOptionName.Category
-                                   select co.Value).Intersect(_arrayCategories).Count() > 0)
-                                   || joinedCampaignIds.Contains(q.Id)
+                                   select co.Value).Intersect(_arrayCategories).Count() > 0)                                   
                                 select q;
 
             }
             catch { }
-            //count = queryCampaign.Count();
+            count = queryCampaign.Count();
 
             #endregion
 
@@ -355,7 +345,7 @@ namespace Infrastructure.Data
 
             queryCampaign = queryCampaign.Where(m => (m.Status == CampaignStatus.Started || m.Status == CampaignStatus.Completed) || m.Status == CampaignStatus.Confirmed);
 
-            //count = queryCampaign.Count();
+            count = queryCampaign.Count();
 
 
 
