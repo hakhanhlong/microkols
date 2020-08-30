@@ -22,5 +22,21 @@ namespace Common
             var msg = MailHelper.CreateSingleEmail(_from, _to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
         }
+
+
+        public static async Task SendEmailFromContact(string from, string to, string subject, string plainTextContent, string htmlContent, string receiverName)
+        {
+            var apiKey = SendgridKey;
+            var client = new SendGridClient(apiKey);
+            var _from = new EmailAddress(from);
+            var _subject = subject;
+            var _to = new EmailAddress(to, receiverName);
+            var _plainTextContent = plainTextContent;
+            var _htmlContent = htmlContent;
+            var msg = MailHelper.CreateSingleEmail(_from, _to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+        }
+
+
     }
 }

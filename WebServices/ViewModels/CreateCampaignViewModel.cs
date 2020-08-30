@@ -89,7 +89,7 @@ namespace WebServices.ViewModels
                 AccountChargeExtraPercent = 0,
                 AccountChargeAmount = 0,
                 EnabledAccountChargeExtra = false,
-                AccountChargeTime = info.AccountChargeTime ?? 1,
+                AccountChargeTime = info.AccountChargeTime ?? 1, //change avatar campaign
                 Requirement = info.Requirement,
                 Type = info.Type,
                 Code = code,

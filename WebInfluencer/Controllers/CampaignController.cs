@@ -191,6 +191,9 @@ namespace WebInfluencer.Controllers
         #region Action
         public async Task<IActionResult> FeedbackJoinCampaign(RequestJoinCampaignViewModel model, int type)
         {
+
+
+
             var result = await _campaignService.FeedbackJoinCampaignByAccount(CurrentUser.Id, model, CurrentUser.Username, type == 1);
 
 

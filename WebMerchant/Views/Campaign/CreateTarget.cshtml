@@ -31,7 +31,8 @@
 <form class="form-create-campaign" asp-action="CreateTarget">
     <div asp-validation-summary="All"></div>
 
-    @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl)
+    @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl ||
+      campaignType == CampaignType.CustomService)
     {
         <h6 style="font-weight:bold;">
             1. Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
@@ -113,7 +114,8 @@
     <div class="form-group">
         <span>
             <label asp-for="Quantity"></label>
-            @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl)
+            @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct ||
+               campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl || campaignType == CampaignType.CustomService)
             {
                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                       title="Hãy nhập số lượng influencer bạn cần cho chiến dịch này"><i class="fa fa-question-circle"></i></span>
@@ -324,10 +326,10 @@
             4. Chi phí bạn muốn trả cho mỗi Influencer
             &nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                         title="Bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi influencer tham gia sự kiện và check in.
-                        Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 80k - 300k tùy theo yêu cầu của việc chek-in, Hotmom 200k - 1M,
-                        Hotfacebooker 300k - 1.5M, Hotteen 200k - 1.5M, KOLs bạn có thể liên hệ hotline của MicroKOLs để nhận được tư vấn.
-                        Bạn cần thanh toán trước tổng chi phí phải sau khi bạn duyệt xong influcencer tham gia và nội dung mà họ tạo ra.
-                        Mỗi influencer có thể có một mức phí khác nhau. Lưu ý, chi phí này chưa bao gồm phí dịch vụ và VAT."><i class="fa fa-question-circle"></i></span>
+                        Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 80k - 300k tùy theo yêu cầu của việc chek-in,
+                        Hotmom 200k - 1M, Hotfacebooker 300k - 1.5M, Hotteen 200k - 1.5M, KOLs bạn có thể liên hệ hotline của MicroKOLs để nhận được tư vấn. Bạn cần thanh toán trước tổng chi phí sau khi bạn duyệt xong influcencer
+                        tham gia và nội dung mà họ tạo ra. Mỗi influencer có thể có một mức phí khác nhau. Lưu ý,
+                        chi phí này chưa bao gồm phí dịch vụ và VAT."><i class="fa fa-question-circle"></i></span>
         </h6>
     }
     else if (campaignType == CampaignType.ShareStreamUrl)
@@ -335,10 +337,22 @@
         <h6 style="font-weight:bold;">
             4. Chi phí bạn muốn trả cho mỗi Influencer
             &nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                        title=" bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi post share link của influencer. 
-                        Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 50k - 200k, Hotmom 100k - 500k, Hotfacebooker 200k - 1M, Hotteen 200k - 1M.... 
-                        Bạn cần thanh toán trước tổng chi phí sau khi bạn duyệt xong influcencer tham gia. 
+                        title=" bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi post share link của influencer.
+                        Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 50k - 200k, Hotmom 100k - 500k, Hotfacebooker 200k - 1M, Hotteen 200k - 1M....
+                        Bạn cần thanh toán trước tổng chi phí sau khi bạn duyệt xong influcencer tham gia.
                         Lưu ý, chi phí này chưa bao gồm 10% VAT."><i class="fa fa-question-circle"></i></span>
+        </h6>
+    }
+    else if (campaignType == CampaignType.CustomService)
+    {
+        <h6 style="font-weight:bold;">
+            4. Chi phí bạn muốn trả cho mỗi Influencer
+            &nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                        title="Bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi post/hành động. Mức chi phí cho các tài khoản cũng khác nhau: 
+                        Ví dụ: Chi phí cho mỗi tài khoản thường: 50k - 300k tùy theo yêu cầu và KPIs, Hotmom 100k - 1M, Hotfacebooker 200k - 1M, Hotteen 200k - 1.5M, 
+                        KOLs bạn có thể liên hệ hotline của MicroKOLs để nhận được tư vấn. 
+                        Bạn cần thanh toán trước tổng chi phí phải sau khi bạn duyệt xong influcencer tham gia và nội dung mà họ tạo ra. 
+                        Lưu ý, chi phí này chưa bao gồm phí dịch vụ và VAT."><i class="fa fa-question-circle"></i></span>
         </h6>
     }
     else
@@ -403,7 +417,8 @@
                 <span>
                     <label asp-for="RegisterTime"></label>
                     <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                          title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
+                          title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh
+                          sửa nội dung cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
                           Bạn cần thanh toán cho hệ thống trước tổng chi phí phải trả sau khi bạn duyệt xong influcencer tham gia,
                           mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
                 </span>
@@ -413,9 +428,19 @@
                 <span>
                     <label asp-for="RegisterTime"></label>
                     <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                          title="Thời gian người dùng đăng ký tham gia chiến dịch. 
-                          Bạn cần thanh toán cho hệ thống trước tổng chi phí sau khi bạn duyệt xong influcencer tham gia, 
+                          title="Thời gian người dùng đăng ký tham gia chiến dịch.
+                          Bạn cần thanh toán cho hệ thống trước tổng chi phí sau khi bạn duyệt xong influcencer tham gia,
                           mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
+                </span>
+            }
+            else if (campaignType == CampaignType.CustomService)
+            {
+                <span>
+                    <label asp-for="RegisterTime">Thời gian nhận đăng ký và gửi nội dung</label>
+                    <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                          title="Thời gian người dùng đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung cho phù hợp với nhu cầu của mình hoặc
+                          loại bỏ người dùng/nội dung nếu thấy không phù hợp. Bạn cần thanh toán cho hệ thống trước 
+                          tổng chi phí phải sau khi bạn duyệt xong influcencer tham gia và nội dung mà họ tạo ra trong khoảng thời gian này"><i class="fa fa-question-circle"></i></span>
                 </span>
             }
             else
@@ -440,12 +465,12 @@
         <div class="form-group ">
             @if (campaignType == CampaignType.JoinEvent)
             {
-            
+
                 <span>
                     <label>Thời gian check-in và gửi hình bài post tại thời điểm check-in</label>
                     <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                          title="Là khoảng thời gian mà bạn cần influencer đến để check-in và post checkin. 
-                          Influencer sẽ phải chụp lại màn hình điện thoại của post check-in này 
+                          title="Là khoảng thời gian mà bạn cần influencer đến để check-in và post checkin.
+                          Influencer sẽ phải chụp lại màn hình điện thoại của post check-in này
                           để chứng tỏ họ đã đến và post đúng yêu cầu. Khoảng thời gian này cũng có thể là khoảng thời gian diễn ra chiến dịch"><i class="fa fa-question-circle"></i></span>
                 </span>
             }
@@ -492,8 +517,8 @@
                     <span>
                         <label asp-for="ExecutionTime"></label>
                         <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                              title="Là khoảng thời gian mà influencer sẽ bắt đầu thay avatar của họ, thời gian bắt đầu thay avatar của các influencer
-                            có thể khác nhau nhưng nằm trong khoảng mà bạn đưa ra. Thời gian thực hiện nằm sau thời gian đăng ký"><i class="fa fa-question-circle"></i></span>
+                              title="Là khoảng thời gian mà influencer sẽ bắt đầu thay avatar của họ, thời gian bắt đầu thay avatar của các influencer có thể
+                              khác nhau nhưng sẽ đủ số tuần mà bạn yêu cầu. Thời gian thực hiện sẽ nằm sau thời gian đăng ký"><i class="fa fa-question-circle"></i></span>
                     </span>
                 }
                 else if (campaignType == CampaignType.ReviewProduct)
@@ -512,6 +537,15 @@
                         <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                               title="Là khoảng thời gian mà bạn muốn influencer chia sẻ link livestream này.
                               Thời gian thực hiện nằm sau thời gian đăng ký"><i class="fa fa-question-circle"></i></span>
+                    </span>
+                }
+                else if (campaignType == CampaignType.CustomService)
+                {
+                    <span>
+                        <label>Thời gian thực hiện</label>
+                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                              title="Là khoảng thời gian mà influencer sẽ thực hiện chiến dịch, hãy đưa ra khoảng thời gian mà bạn 
+                              mong muốn influencer được chọn phải thực hiện. Thời gian thực hiện nằm sau thời gian đăng ký"><i class="fa fa-question-circle"></i></span>
                     </span>
                 }
                 else

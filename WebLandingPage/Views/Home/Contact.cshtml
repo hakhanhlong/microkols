@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model ContactViewModel
+
 <section id="contact-intro-header">
     <div class="container">
         <div class="row">
@@ -20,38 +22,64 @@
     <div class="row">
         <div class="col-md-10 left-column">
             <!--row 1-->
+
             <div class="row row-1 pl-70 pt-40 pb-50">
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
-                            <h1 class="txt-h1-bold-2 txt-blue-2">Quan tâm đến MicroKols?<br>Đừng ngại liên lạc với chúng tôi!</h1>
+                            <h1 class="txt-h1-bold-2 txt-blue-2">Quan tâm đến MicroKols?<br>Đừng ngại liên lạc với chúng tôi!</h1>                            
+                            @if (TempData["MessageInfo"] != null)
+                            {
+                                <div class="alert alert-info" role="alert">
+                                    @Html.Raw(TempData["MessageInfo"])
+                                </div>
+                            }
+                            @if (TempData["MessageSuccess"] != null)
+                            {
+                                <div class="alert alert-success" role="alert">
+                                    @Html.Raw(TempData["MessageSuccess"])
+                                </div>
+                            }
+
+                            @if (TempData["MessageWarning"] != null)
+                            {
+                                <div class="alert alert-warning" role="alert">
+                                    @Html.Raw(TempData["MessageInfo"])
+                                </div>
+                            }
+
+                            @if (TempData["MessageError"] != null)
+                            {
+                                <div class="alert alert-danger" role="alert">
+                                    @TempData["MessageError"]
+                                </div>
+                            }
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 pt-30">
                             <img src="/img/contact-img-01.png" class="img-responsive">
-                            <div class="contact-txt-box-01 hidden-xs text-left">
-
-                                <form>
+                            <div class="contact-txt-box-01 hidden-xs text-left">                                                        
+                                <form action="/contact.html" method="post">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Họ &amp; Tên">
+                                            <input type="text" name="HovaTen" class="form-control input-lg" placeholder="Họ &amp; Tên" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Email">
+                                            <input type="email" name="Email" class="form-control input-lg" placeholder="Email" required>
                                         </div>
                                     </div>
                                     <div class="row pt-40">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Công ty">
+                                            <input type="text" name="Cty" class="form-control input-lg" placeholder="Công ty" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Chức vụ">
+                                            <input type="number" name="Phone" class="form-control input-lg" placeholder="Số điện thoại">
                                         </div>
                                     </div>
                                     <div class="row pt-40">
                                         <div class="col-md-12">
-                                            <textarea class="form-control" rows="5" placeholder="Nội dung liên lạc"></textarea>
+                                            <textarea class="form-control" name="Noidung" rows="5" placeholder="Nội dung liên lạc" required></textarea>
                                         </div>
                                     </div>
                                     <div class="row pt-40">
@@ -62,29 +90,29 @@
                                 </form>
                             </div>
                             <div class="visible-xs text-left pt-30">
-                                <form>
+                                <form action="/contact.html" method="post">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Họ &amp; Tên">
+                                            <input type="text" name="HovaTen" class="form-control input-lg" placeholder="Họ &amp; Tên" required>
                                         </div>
-                                        <div class="col-md-6 pt-10">
-                                            <input type="text" class="form-control input-lg" placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="row pt-10">
                                         <div class="col-md-6">
-                                            <input type="text" class="form-control input-lg" placeholder="Công ty">
-                                        </div>
-                                        <div class="col-md-6 pt-10">
-                                            <input type="text" class="form-control input-lg" placeholder="Chức vụ">
+                                            <input type="email" name="Email" class="form-control input-lg" placeholder="Email" required>
                                         </div>
                                     </div>
-                                    <div class="row pt-10">
+                                    <div class="row pt-40">
+                                        <div class="col-md-6">
+                                            <input type="text" name="Cty" class="form-control input-lg" placeholder="Công ty" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="number" name="Phone" class="form-control input-lg" placeholder="Số điện thoại">
+                                        </div>
+                                    </div>
+                                    <div class="row pt-40">
                                         <div class="col-md-12">
-                                            <textarea class="form-control" rows="5" placeholder="Nội dung liên lạc"></textarea>
+                                            <textarea class="form-control" name="Noidung" rows="5" placeholder="Nội dung liên lạc" required></textarea>
                                         </div>
                                     </div>
-                                    <div class="row pt-10">
+                                    <div class="row pt-40">
                                         <div class="col-md-12">
                                             <button class="btn btn-primary btn-regular-text">Gửi đi</button>
                                         </div>

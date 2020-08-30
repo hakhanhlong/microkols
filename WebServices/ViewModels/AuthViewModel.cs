@@ -49,7 +49,18 @@ namespace WebServices.ViewModels
 
             claims.Add(new Claim(ClaimTypes.NameIdentifier, Id.ToString()));
             claims.Add(new Claim(ClaimTypes.GivenName, Name));
-            claims.Add(new Claim(ClaimTypes.Name, Username));
+
+            if (!string.IsNullOrEmpty(Name))
+            {
+                claims.Add(new Claim(ClaimTypes.Name, Name));
+            }
+            else
+            {
+                claims.Add(new Claim(ClaimTypes.Name, Username));
+            }
+
+            
+
             claims.Add(new Claim("Avatar", Avatar));
             claims.Add(new Claim("Type", Type.ToString()));
             //claims.Add(new Claim("AccountActived", AccountActived));
@@ -68,7 +79,11 @@ namespace WebServices.ViewModels
             var name = principal.FindFirst(ClaimTypes.GivenName).Value;
 
             var avatar = principal.FindFirst("Avatar").Value;
-            var type = principal.FindFirst("Type").Value;            
+            var type = principal.FindFirst("Type").Value;  
+            
+
+
+
 
             return new AuthViewModel()
             {

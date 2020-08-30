@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Common;
 using Microsoft.AspNetCore.Mvc;
 using WebLandingPage.Models;
 using WebServices.Interfaces;
@@ -79,6 +80,42 @@ namespace WebLandingPage.Controllers
         {
             return View();
         }
+
+
+        [Route("contact.html")]
+        [HttpPost]
+        public async Task<IActionResult> Contact(ContactViewModel model)
+        {
+            try
+            {
+                                
+                string from = model.Email;
+                string to = "contact.microkols@gmail.com";
+                string subject = $"[Liên hệ] từ {model.HovaTen}";
+
+                string plainText = $"Thông tin liên hệ của {model.HovaTen},";
+
+                string htmlText = string.Empty;
+                htmlText += $"<p>Họ và tên: {model.HovaTen}</p>";
+                if (!string.IsNullOrEmpty(model.Phone))
+                {
+                    htmlText += $"<p>Số điện thoại: {model.Phone}</p>";
+                }
+                htmlText += $"<p>Email: {model.Email}</p>";
+                htmlText += $"<p>Công ty: {model.Cty}</p>";
+                htmlText += $"<p>Nội dung: {model.Noidung}</p>";
+
+                
+                await SendEmailHelpers.SendEmailFromContact(from, to, subject, plainText, htmlText, model.HovaTen);
+                TempData["MessageInfo"] = "Đã gửi thành công, cám ơn bạn đã liên hệ.";
+            }
+            catch (Exception ex)
+            {
+                TempData["MessageError"] = ex.Message;
+            }
+            return View();
+        }
+
 
         [Route("qna.html")]
         public async Task<IActionResult> QnA()
