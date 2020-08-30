@@ -317,12 +317,12 @@
                 <h6 style="font-weight:bold;">
                     Chi phí bạn muốn trả cho mỗi Influencer
                     &nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                                title="Bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi influencer tham gia sự kiện và check in.
-                        Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 80k - 300k tùy theo yêu cầu của việc chek-in,
-                        Hotmom 200k - 1M, Hotfacebooker 300k - 1.5M, Hotteen 200k - 1.5M, KOLs bạn có thể liên hệ hotline của MicroKOLs để nhận được tư vấn.
-                                Bạn cần thanh toán trước tổng chi phí sau khi bạn duyệt xong influcencer
-                        tham gia và nội dung mà họ tạo ra. Mỗi influencer có thể có một mức phí khác nhau. Lưu ý,
-                        chi phí này chưa bao gồm phí dịch vụ và VAT."><i class="fa fa-question-circle"></i></span>
+                                title="Bạn hãy nhập chi phí tối thiểu và tối đa bạn muốn trả cho mỗi influencer tham gia sự kiện và check in. 
+                                Mức chi phí cho các tài khoản cũng khác nhau: Ví dụ: Chi phí cho mỗi tài khoản thường: 80k - 300k tùy theo yêu cầu của việc chek-in, 
+                                Hotmom 200k - 1M, Hotfacebooker 300k - 1.5M, Hotteen 200k - 1.5M, KOLs bạn có thể liên hệ hotline của MicroKOLs để nhận được tư vấn.
+                                Bạn cần thanh toán trước tổng chi phí sau khi bạn duyệt xong 
+                                influcencer tham gia và nội dung mà họ tạo ra. Mỗi influencer có thể có một mức phí khác nhau. 
+                                Lưu ý, chi phí này chưa bao gồm phí dịch vụ và VAT"><i class="fa fa-question-circle"></i></span>
                 </h6>
             }
             else if (campaignType == CampaignType.ShareStreamUrl)
@@ -381,7 +381,14 @@
             <div class="form-group ">
                 @if (campaignType == CampaignType.JoinEvent)
                 {
-                    <label>Thời gian nhận đăng ký</label>
+                    <span>
+                        <label>Thời gian nhận đăng ký</label>
+                        <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                              title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung
+                                  cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
+                                  Bạn cần thanh toán cho hệ thống trước tổng chi phí phải trả sau khi bạn duyệt xong influcencer tham gia,
+                                  mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
+                    </span>
                 }
                 else
                 {
@@ -405,14 +412,14 @@
                     }
                     else if (campaignType == CampaignType.JoinEvent)
                     {
-                        <span>
+                        @*<span>
                             <label asp-for="RegisterTime"></label>
                             <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                                  title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh
-                          sửa nội dung cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
-                          Bạn cần thanh toán cho hệ thống trước tổng chi phí phải trả sau khi bạn duyệt xong influcencer tham gia,
-                          mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
-                        </span>
+                                  title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung
+                                  cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
+                                  Bạn cần thanh toán cho hệ thống trước tổng chi phí phải trả sau khi bạn duyệt xong influcencer tham gia,
+                                  mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
+                        </span>*@
                     }
                     else if (campaignType == CampaignType.ShareStreamUrl)
                     {
