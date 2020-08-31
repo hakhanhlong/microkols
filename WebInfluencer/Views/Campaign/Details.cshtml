@@ -67,7 +67,15 @@
 
             <div class="card-body campaign-text ">
 
-                <h5>Giới thiệu:</h5>
+
+                @if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                {
+                    <h5>Giới thiệu ngắn gọn sản phẩm, dịch vụ chạy chiến dịch:</h5>
+                }
+                else
+                {
+                    <h5>Giới thiệu:</h5>
+                }
                 <p>
                     @Model.Campaign.Description
                 </p>
@@ -77,14 +85,29 @@
                 </p>
                 @if (Model.Campaign.Type == CampaignType.ChangeAvatar)
                 {
-                    <h5>Thời gian yêu cầu để Avatar:</h5>
+                    <h5>Thời gian yêu cầu để Avatar mới:</h5>
                     <p>
                         @Model.Campaign.AccountChargeTime Tuần
                     </p>
                 }
                 @if (!string.IsNullOrEmpty(Model.Campaign.Data))
                 {
-                    <h5>@Model.Campaign.Type.ToActionText():</h5>
+                    if (Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                    {
+                        <h5>Link Nội dung:</h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.JoinEvent)
+                    {
+                        <h5>Link sự kiện:</h5>
+                    }
+                    else if (Model.Campaign.Type == CampaignType.ShareStreamUrl)
+                    {
+                        <h5>Link livestream:</h5>
+                    }
+                    else
+                    {
+                        <h5>Link chia sẻ:</h5>
+                    }
                     <p>
                         <a target="blank" href="@Model.Campaign.Data">
                             @Model.Campaign.Data
@@ -95,7 +118,15 @@
                     var images = Model.Campaign.Image.ToListString();
                     if (images.Count > 0)
                     {
-                        <h5>Hình ảnh:</h5>
+                        if (Model.Campaign.Type == CampaignType.ChangeAvatar)
+                        {
+                            <h5>Hình ảnh dùng làm Avatar:</h5>
+                        }
+                        else
+                        {
+                            <h5>Hình ảnh:</h5>
+                        }
+
                         <ul class="list-inline">
                             @foreach (var imgItem in images)
                             {
@@ -175,8 +206,8 @@
                             else
                             {
                                 <h5>
-                                    Thời gian viết nội dung&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
-                                                                       title="Là khoảng thời gian bạn viết và gửi nội dung theo yêu cầu của doanh nghiệp.
+                                    Thời gian gửi và duyệt nội dung&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                               title="Là khoảng thời gian bạn viết và gửi nội dung theo yêu cầu của doanh nghiệp.
                                                                        Doanh nghiệp sẽ duyệt nội dung bạn gửi trong thời gian này.
                                                                        Nếu có video, bạn hãy up nó lên facebook hoặc youtube rồi gửi lại link
                                                                        video để duyệt bạn nhé"><i class="fa fa-question-circle"></i></span>
@@ -232,8 +263,8 @@
                     else if (Model.Campaign.Type == CampaignType.ChangeAvatar)
                     {
                         <h5>
-                            Thời gian thực hiện chiến dịch&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
-                                                                      title="Bạn cần thay avatar của mình trong khoảng thời gian này, kéo dài theo số tuần của chiến dịch đưa ra ở trên. Hãy quay trở lại đây để thông báo hoàn thành công việc sau khi bạn đã đổi avatar của mình.
+                            Thời gian bắt đầu thực hiện&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                                   title="Bạn cần thay avatar của mình trong khoảng thời gian này, kéo dài theo số tuần của chiến dịch đưa ra ở trên. Hãy quay trở lại đây để thông báo hoàn thành công việc sau khi bạn đã đổi avatar của mình.
                                     Nếu bạn đổi avatar sớm hơn số tuần mà chiến dịch yêu cầu bạn sẽ không được ghi nhận việc thực hiện của mình"><i class="fa fa-question-circle"></i></span>
                         </h5>
                     }
@@ -440,7 +471,16 @@
                     var sampleimages = Model.Campaign.SampleContent.ToListString();
                     if (sampleimages.Count > 0)
                     {
-                        <h5>Hình ảnh bạn cần đăng cùng nội dung :</h5>
+                        if (Model.Campaign.Type == CampaignType.ReviewProduct || Model.Campaign.Type == CampaignType.ShareContentWithCaption)
+                        {
+                            <h5>Ảnh chiến dịch :</h5>
+                        }
+                        else
+                        {
+                            <h5>Hình ảnh bạn cần đăng cùng nội dung :</h5>
+                        }
+
+
                         <div>
 
                             @foreach (var item in sampleimages)

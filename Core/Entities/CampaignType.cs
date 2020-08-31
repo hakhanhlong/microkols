@@ -169,7 +169,7 @@ namespace Core.Entities
 
             if (type == CampaignType.ChangeAvatar)
             {
-                return "Hình ảnh Avatar";
+                return "Hình ảnh dùng làm Avatar";
             }
             //if (type == CampaignType.ShareContent || type == CampaignType.ShareContentWithCaption)
             //{
@@ -186,11 +186,11 @@ namespace Core.Entities
 
             if (type == CampaignType.ReviewProduct)
             {
-                return "Link sản phẩm";
+                return "Link sản phẩm/dịch vụ";
             }
             if (type == CampaignType.ShareStreamUrl)
             {
-                return "Link stream";
+                return "Link livestream";
             }
 
             if (type == CampaignType.JoinEvent)

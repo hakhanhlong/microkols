@@ -31,14 +31,23 @@
 <form class="form-create-campaign" asp-action="CreateTarget">
     <div asp-validation-summary="All"></div>
 
-    @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl ||
-     campaignType == CampaignType.CustomService)
+    @if (campaignType == CampaignType.ChangeAvatar)
     {
         <h6 style="font-weight:bold;">
             1. Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                                   title="Bạn chỉ có thể chọn một trong số các influencer dưới đây. Nếu cần nhiều loại influencer,
                                                   bạn hãy tạo nhiều chiến dịch khác nhau nhé"><i class="fa fa-question-circle"></i></span>
         </h6>
+    }
+    else if (campaignType == CampaignType.ShareContentWithCaption)
+    {
+        <h6 style="font-weight:bold;">
+            1. Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                                                  title="Bạn chỉ có thể chọn một trong số các influencer dưới đây. Nếu cần nhiều loại influencer, 
+                                                  bạn hãy tạo nhiều chiến dịch khác nhau nhé.Như vậy bạn cùng dễ đánh giá đối tượng influencer 
+                                                  phù hợp với mình hơn"><i class="fa fa-question-circle"></i></span>
+        </h6>
+        
     }
     else
     {
@@ -115,7 +124,7 @@
         <span>
             <label asp-for="Quantity"></label>
             @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct ||
-              campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl || campaignType == CampaignType.CustomService)
+             campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl || campaignType == CampaignType.CustomService)
             {
                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                       title="Hãy nhập số lượng influencer bạn cần cho chiến dịch này"><i class="fa fa-question-circle"></i></span>
@@ -391,15 +400,15 @@
 
         @if (campaignType == CampaignType.JoinEvent)
         {
-         
-        <span>
-            <label>Thời gian nhận đăng ký</label>
-            <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                  title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung
+
+            <span>
+                <label>Thời gian nhận đăng ký</label>
+                <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
+                      title="Thời gian influencer đăng ký tham gia chiến dịch và gửi nội dung nháp, bạn có thể yêu cầu người dùng chỉnh sửa nội dung
                                   cho phù hợp với nhu cầu của mình hoặc loại bỏ người dùng/nội dung nếu thấy không phù hợp.
                                   Bạn cần thanh toán cho hệ thống trước tổng chi phí phải trả sau khi bạn duyệt xong influcencer tham gia,
                                   mỗi influencer có thể có một mức phí khác nhau"><i class="fa fa-question-circle"></i></span>
-        </span>
+            </span>
         }
         else
         {
@@ -480,7 +489,7 @@
             {
 
                 <span>
-                    <label asp-for="FeedbackBefore"></label>
+                    <label asp-for="FeedbackBefore">Thời gian gửi và duyệt nội dung mẫu</label>
                     <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                           title=" Là thời gian bạn cần influencer gửi lại nội dung review. Hãy lưu ý cần tính toán cả thời gian bạn gửi
                           sản phẩm tới tay họ (nếu có). Bạn cần thanh toán cho hệ thống tổng chi phí của chiến dịch sau khi bạn duyệt xong nội dung mẫu
@@ -517,7 +526,7 @@
             if (campaignType == CampaignType.ChangeAvatar)
             {
                 <span>
-                    <label asp-for="ExecutionTime"></label>
+                    <label asp-for="ExecutionTime">Thời gian bắt đầu thực hiện</label>
                     <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                           title="Là khoảng thời gian mà influencer sẽ bắt đầu thay avatar của họ, thời gian bắt đầu thay avatar của các influencer có thể
                               khác nhau nhưng sẽ đủ số tuần mà bạn yêu cầu. Thời gian thực hiện sẽ nằm sau thời gian đăng ký"><i class="fa fa-question-circle"></i></span>

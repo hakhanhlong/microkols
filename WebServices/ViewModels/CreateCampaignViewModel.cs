@@ -568,12 +568,11 @@ namespace WebServices.ViewModels
         public int Quantity { get; set; }
 
 
-        [Range(10000, 100000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 1.000đ")]
+        [Range(50000, 100000000, ErrorMessage = "Chi phí tối thiểu phải lớn hơn 50.000đ")]
         [Display(Name = "Tối thiểu (Vnđ)")]
-        public int AmountMin { get; set; } = 10000;
+        public int AmountMin { get; set; } = 50000;
 
-        [Range(10000, 100000000, ErrorMessage = "Chi phí phải lớn hơn 1.000đ")]
-
+        [Range(50000, 100000000, ErrorMessage = "Chi phí phải lớn hơn 50.000đ")]
         [GreaterThan("AmountMin", ErrorMessage = "Chi phí tối đa phải lớn hơn chi phí tối thiểu")]
         [Display(Name = "Tối đa (Vnđ)")]
         public int AmountMax { get; set; } = 100000;

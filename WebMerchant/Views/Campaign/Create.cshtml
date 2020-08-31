@@ -81,7 +81,7 @@
                         @if (campaignType == CampaignType.ReviewProduct)
                         {
                             <span>
-                                <label asp-for="Data" style="font-weight:bold;"></label>
+                                <label asp-for="Data" style="font-weight:bold;">Link sản phẩm/dịch vụ</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là link chứa nội dung mà bạn muốn influencer post kèm nội dung review trên tường của họ.
                                   Nếu link này chỉ để tham khảo, bạn hãy note lại ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
@@ -90,7 +90,7 @@
                         else if (campaignType == CampaignType.JoinEvent)
                         {
                             <span>
-                                <label asp-for="Data" style="font-weight:bold;"></label>
+                                <label asp-for="Data" style="font-weight:bold;">Link sự kiện</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là link chứa nội dung sự kiện.
                                   Nếu muốn influencer post kèm lúc check-in bạn hãy viết ra ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
@@ -99,7 +99,7 @@
                         else if (campaignType == CampaignType.ShareStreamUrl)
                         {
                             <span>
-                                <label asp-for="Data" style="font-weight:bold;"></label>
+                                <label asp-for="Data" style="font-weight:bold;">Link livestream</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là link livestream mà bạn muốn người dùng chia sẻ trên tường của họ"><i class="fa fa-question-circle"></i></span>
                             </span>
@@ -107,7 +107,7 @@
                         else if (campaignType == CampaignType.ShareContentWithCaption)
                         {
                             <span>
-                                <label asp-for="Data" style="font-weight:bold;"></label>
+                                <label asp-for="Data" style="font-weight:bold;">Link nội dung</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là link chứa nội dung mà bạn muốn influencer post cùng caption mới được tạo
                                   ra trên tường của họ. Nếu link chỉ để tham khảo, bạn hãy note lại ở yêu cầu phía dưới"><i class="fa fa-question-circle"></i></span>
@@ -191,9 +191,10 @@
 
                 <div class="form-group">                    
                     <span>
-                        <label asp-for="Requirement" style="font-weight:bold;"></label>
+
                         @if (campaignType == CampaignType.ChangeAvatar)
                         {
+                            <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                             <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                   title="Mô tả chi tiết công việc mà bạn muốn influencer thực hiện"><i class="fa fa-question-circle"></i></span>
                         }
@@ -201,32 +202,37 @@
                         {
                             if (campaignType == CampaignType.ReviewProduct)
                             {
+                                <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là yêu cầu mà bạn muốn influencer thực hiện. Nếu bạn muốn influencer chụp kèm hình của bạn bạn hãy viết ra nhé. Bao gồm cả
                                       việc thanh toán phí vận chuyển cho sản phẩm trải nghiệm nếu cần influencer gửi lại. Hãy viết thật chi tiết và dễ hiểu bạn nhé."><i class="fa fa-question-circle"></i></span>
                             }
                             else if (campaignType == CampaignType.JoinEvent)
                             {
+                                <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là yêu cầu mà bạn muốn người dùng thực hiện. Chẳng hạn “checkin tại địa chỉ bạn đưa ra,
                                       viết cảm nhận kèm theo hình ảnh influencer tại địa điểm check-in và hình phía dưới cùng với link chương trình. Hãy viết thật chi tiết và dễ hiểu bạn nhé"><i class="fa fa-question-circle"></i></span>
                             }
                             else if (campaignType == CampaignType.ShareStreamUrl)
                             {
+                                <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là yêu cầu mà bạn muốn người dùng thực hiện.
                                       Chẳng hạn chia sẻ link và livestream ở url phía trên kèm theo hashtag phía dưới"><i class="fa fa-question-circle"></i></span>
                             }
                             else if (campaignType == CampaignType.ShareContentWithCaption)
                             {
+                                <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Là yêu cầu mà bạn muốn người dùng thực hiện, chẳng hạn: chia sẻ nội dung ở đường link phía trên kèm theo hashtag, hình ảnh phía dưới,
                                         viết một caption phù hợp và hấp dẫn. Nếu bạn muốn người dùng chụp kèm hình của họ, bạn hãy viết ra nhé. Hãy viết thật chi tiết và dễ hiểu yêu cầu của bạn nhé"><i class="fa fa-question-circle"></i></span>
                             }
                             else
                             {
+                                <label asp-for="Requirement" style="font-weight:bold;">Yêu cầu cho influencer</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                                      title="Là yêu cầu mà bạn muốn người dùng thực hiện. Chẳng hạn chia sẻ link và nội dung ở url phía trên kèm theo hashtag phía dưới. 
+                                      title="Là yêu cầu mà bạn muốn người dùng thực hiện. Chẳng hạn chia sẻ link và nội dung ở url phía trên kèm theo hashtag phía dưới.
                                       Nếu bạn muốn người dùng chụp kèm hình của bạn bạn hãy viết ra nhé. Hãy viết thật chi tiết và dễ hiểu bạn nhé"><i class="fa fa-question-circle"></i></span>
                             }
 
@@ -397,7 +403,7 @@
                         @if (campaignType == CampaignType.ReviewProduct)
                         {
                             <span>
-                                <label style="font-weight:bold;">Ảnh chiến dịch cung cấp</label>
+                                <label style="font-weight:bold;">Ảnh chiến dịch</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Nếu bạn muốn influencer đăng hình ảnh sản phẩm/dịch vụ của doanh nghiệp bạn kèm theo nội dung,
                                       bạn hãy chèn hình vào đây nhé. Lưu ý bạn nên nói rõ điều này ở phần yêu cầu phía trên"><i class="fa fa-question-circle"></i></span>
@@ -406,7 +412,7 @@
                         else if (campaignType == CampaignType.CustomService)
                         {
                             <span>
-                                <label style="font-weight:bold;">Ảnh chiến dịch cung cấp</label>
+                                <label style="font-weight:bold;">Ảnh chiến dịch</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Nếu bạn muốn influencer đăng hình ảnh sản phẩm/dịch vụ của doanh nghiệp bạn kèm theo nội dung, 
                                       bạn hãy chèn hình vào đây nhé"><i class="fa fa-question-circle"></i></span>
@@ -415,7 +421,7 @@
                         else
                         {
                             <span>
-                                <label style="font-weight:bold;">Ảnh chiến dịch cung cấp</label>
+                                <label style="font-weight:bold;">Ảnh chiến dịch</label>
                                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                                       title="Nếu bạn muốn influencer đăng hình ảnh sản phẩm/dịch vụ của doanh nghiệp bạn kèm theo nội dung,
                                   bạn hãy chèn hình vào đây nhé, càng ít hình chiến dịch của bạn sẽ càng thu hút"><i class="fa fa-question-circle"></i></span>

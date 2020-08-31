@@ -20,7 +20,10 @@
 
     <div class="card-body">
 
-        <div class="h4 font-weight-bold campaign-type">@Model.Campaign.Type.ToText()</div>
+        <div class="h4 font-weight-bold campaign-type">
+
+            @Model.Campaign.Type.ToText()
+        </div>
 
         <h2 class="card-title">
             <a asp-action="Details" asp-route-id="@Model.Campaign.Id" data-id="@Model.Campaign.Id" class="campaign-link">

@@ -443,7 +443,8 @@ namespace WebInfluencer.Controllers
                         Id = model.Id[i],
                         Min = model.Min[i],
                         Max = model.Max[i],
-                        Kpi = model.Kpi[i],
+                        //Kpi = model.Kpi[i],
+                        Kpi = 0,
                         Type = model.Type[i]
                     });
                 }
