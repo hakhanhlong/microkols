@@ -121,6 +121,7 @@ namespace WebInfluencer.Controllers
             if (tab == 1)
             {
                 var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+                //var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == 121);
                 if (captionaccount != null)
                 {
                     ViewBag.Statistics = await _campaignAccountStatisticService.GetCampaignAccountStatistics(captionaccount.Id, string.Empty, pageindex, pagesize);
@@ -149,6 +150,7 @@ namespace WebInfluencer.Controllers
                 return View("DetailsContent", model);
             }
             ViewBag.AccountStatus = await _accountService.GetAccountStatus(CurrentUser.Id);
+            
             return View(model);
         }
         #region Caption

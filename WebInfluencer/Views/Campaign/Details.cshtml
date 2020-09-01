@@ -6,6 +6,7 @@
     ViewBag.IsDetails = true;
 
     var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
+    //var campaignAccount = Model.CampaignAccounts.FirstOrDefault(m => m.AccountId == 121);
 
     var now = DateTime.Now;
     var campaignType = Model.Campaign.Type;
@@ -332,6 +333,10 @@
                                         {
                                             <p>@campaignAccount.ReviewAddress</p>
                                         }
+                                        else
+                                        {
+                                            <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                        }
                                     }
                                     else
                                     {
@@ -475,6 +480,10 @@
                                         {
                                             <p>@campaignAccount.ReviewAddress</p>
                                         }
+                                        else
+                                        {
+                                            <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                        }
                                     }
                                     else
                                     {
@@ -506,40 +515,42 @@
 
                     if (Model.Campaign.Type == CampaignType.ReviewProduct)
                     {
-                        if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                        if (true == Model.Campaign.ReviewPayback) //thu hôi sản phẩm
                         {
-                            if (true == Model.Campaign.ReviewPayback) //thu hôi sản phẩm
-                            {
-                                <div>
-                                    <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                            <div>
+                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                                {
+                                    <p>@campaignAccount.ReviewAddress</p>
+                                }
+                            </div>
+                        }
+                        else //không thu hồi sản phẩm
+                        {
+                            <div>
+                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                @if (campaignAccount != null)
+                                {
                                     @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
                                     {
                                         <p>@campaignAccount.ReviewAddress</p>
-                                    }
-                                </div>
-                            }
-                            else //không thu hồi sản phẩm
-                            {
-                                <div>
-                                    <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                                    @if (campaignAccount != null)
-                                    {
-                                        @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
-                                        {
-                                            <p>@campaignAccount.ReviewAddress</p>
-                                        }
                                     }
                                     else
                                     {
                                         <input type="text" name="ReviewAddress" class="form-control" required value="" />
                                     }
+                                }
+                                else
+                                {
+                                    <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                }
 
 
-                                </div>
-                            }
+                            </div>
                         }
                     }
                 }
+
                 @{
                     var sampleimages = Model.Campaign.SampleContent.ToListString();
                     if (sampleimages.Count > 0)

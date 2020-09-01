@@ -6,7 +6,10 @@
     @*<li class="nav-item">
             <a class="nav-link @(1 == ViewBag.Tab ? "active":"")" href="@Url.Action("Details",new {  id = Model.Campaign.Id, tab = 1})">Thống kê</a>
         </li>*@
-    @{ var CurrentCampaignAccount = Model.CurrentCampaignAccount(CurrentUser.Id);}
+    @{ 
+        var CurrentCampaignAccount = Model.CurrentCampaignAccount(CurrentUser.Id);
+        
+    }
     @if (Model.Campaign.Type.IsHasCaption())
     {
         if (CurrentCampaignAccount != null)
