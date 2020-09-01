@@ -448,20 +448,24 @@
                     {
                         if (true == Model.Campaign.ReviewPayback)
                         {
-                        <div>
-                            <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                            @if (campaignAccount != null)
-                            {
-                                @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                            <div>
+                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                @if (campaignAccount != null)
                                 {
-                                    <p>@campaignAccount.ReviewAddress</p>
+                                    @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                                    {
+                                        <p>@campaignAccount.ReviewAddress</p>
+                                    }
+                                    else
+                                    {
+                                        <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                    }
                                 }
                                 else
                                 {
                                     <input type="text" name="ReviewAddress" class="form-control" required value="" />
                                 }
-                            }
-                        </div>
+                            </div>
                         }
                     }
                 }
