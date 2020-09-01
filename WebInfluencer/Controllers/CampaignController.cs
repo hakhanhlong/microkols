@@ -116,8 +116,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> Details(int id, int tab = 0, int pageindex = 1, int pagesize = 20)
         {
             var model = await _campaignService.GetCampaignMarketPlace(id);
-            ViewBag.Tab = tab;
-            
+            ViewBag.Tab = tab;            
             if (tab == 1)
             {
                 var captionaccount = model.CampaignAccounts.FirstOrDefault(m => m.AccountId == CurrentUser.Id);
@@ -150,7 +149,8 @@ namespace WebInfluencer.Controllers
                 return View("DetailsContent", model);
             }
             ViewBag.AccountStatus = await _accountService.GetAccountStatus(CurrentUser.Id);
-            
+            //ViewBag.AccountStatus = await _accountService.GetAccountStatus(121);
+
             return View(model);
         }
         #region Caption

@@ -251,6 +251,7 @@ namespace WebServices.Services
             var campaign = await _campaignRepository.GetSingleBySpecAsync(new CampaignSpecification(id));
 
             if (campaign == null) return null;
+
             return new MarketPlaceViewModel(campaign, campaign.CampaignAccount.ToList(), campaign.Agency);
 
         }
