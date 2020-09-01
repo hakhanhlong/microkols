@@ -294,32 +294,35 @@
                 @if (Model.Campaign.Type == CampaignType.ReviewProduct)
                 {
 
-                    <div class="mb-2">
-                        <h5>
-                            @Model.Campaign.ReviewType.ToDisplayName()
-                        </h5>
+            <div class="mb-2">
+                <h5>
+                    @Model.Campaign.ReviewType.ToDisplayName()
+                </h5>
 
-                        @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
-                        {
+                @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
+                {
 
-                            if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                            {
-                                <p></p>
-                                <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                                <p></p>
-                            }
-                        }
-                        else
-                        {
+                    if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <p></p>
+                        <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                        <p></p>
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <p></p>
+                        <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                        <p></p>
+                    }
 
-                            <p></p>
-                            <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                            <p></p>
-                        }
+                }
 
 
 
-                    </div>
+            </div>
 
                     @*<div>
                 @if (Model.Campaign.ReviewStart.HasValue && Model.Campaign.ReviewEnd.HasValue)
@@ -413,7 +416,7 @@
                     if (campaignAccount != null)
                     {
 
-                        <div style="margin-bottom:5px;">
+                        <div class="mb-3">
                             <h5 class="mb-2">
                                 Thu nhập mong muốn của bạn&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
                                                                       title="Khoản thu nhập này nằm trong khoảng mà doanh nghiệp đưa ra ở trên,
@@ -425,6 +428,31 @@
                                 @campaignAccount.AccountChargeAmount.ToPriceText()
                             </div>
                         </div>
+
+                        if (Model.Campaign.Type == CampaignType.ReviewProduct)
+                        {
+                            if (true == Model.Campaign.ReviewPayback)
+                            {
+                                <div>
+                                    <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                    @if (campaignAccount != null)
+                                    {
+                                        @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                                        {
+                                            <p>@campaignAccount.ReviewAddress</p>
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                        }
+                                    }
+                                    @*else
+                                    {
+                                        <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                    }*@
+                                </div>
+                            }
+                        }
                     }
                 }
                 else
