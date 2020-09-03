@@ -481,19 +481,20 @@
                 }
                 else //da apply && confirm
                 {
-                    <div class="mb-3">
+            <div class="mb-3">
 
-                        <h5 class="mb-2">
-                            Thu nhập mong muốn của bạn&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
-                                                                  title="Khoản thu nhập này nằm trong khoảng mà doanh nghiệp đưa ra ở trên,
+                <h5 class="mb-2">
+                    Thu nhập mong muốn của bạn&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#2D9CDB;font-size:18px;"
+                                                          title="Khoản thu nhập này nằm trong khoảng mà doanh nghiệp đưa ra ở trên,
                                                                 hãy cân nhắc đưa ra mức thu nhập phù hợp dựa vào lượng friends
                                                                 và tương tác tới các bài post trong quá khứ của bạn"><i class="fa fa-question-circle"></i></span>
-                        </h5>
-                        <div class="text-danger">
-                            @campaignAccount.AccountChargeAmount.ToPriceText()
-                        </div>
+                </h5>
+                @*<div class="text-danger">
+            @campaignAccount.AccountChargeAmount.ToPriceText()
+        </div>*@
+                <input type="number" name="AccountChargeAmount" class="form-control" value="@amountMin" min="@amountMin" max="@amountMax" />
 
-                    </div>
+            </div>
 
                     if (Model.Campaign.Type == CampaignType.ReviewProduct)
                     {
