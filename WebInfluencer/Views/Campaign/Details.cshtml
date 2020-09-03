@@ -425,8 +425,6 @@
                                             <input type="text" name="ReviewAddress" class="form-control" required value="" />
                                         }
                                     </div>
-
-
                                 }
 
                             }
@@ -498,61 +496,68 @@
 
                     if (Model.Campaign.Type == CampaignType.ReviewProduct)
                     {
-                        <div class="mb-2">
-                            <h5>
-                                @Model.Campaign.ReviewType.ToDisplayName()
-                            </h5>
+            <div class="mb-2">
+                <h5>
+                    @Model.Campaign.ReviewType.ToDisplayName()
+                </h5>
 
-                            @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
+                @if (Model.Campaign.ReviewType == CampaignReviewType.MoiNguoiDung)
+                {
+
+                    if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
+                    {
+                        <p></p>
+                        <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                        <p></p>
+                    }
+                }
+                else
+                {
+                    if (true == Model.Campaign.ReviewPayback) //thu hôi sản phẩm
+                    {
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
                             {
+                                <p></p>
+                                <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
+                                <p></p>
+                            }
+                        </div>
+                    }
+                    else //không thu hồi sản phẩm
+                    {
+                        @if (campaignAccount != null)
+                        {
+                            @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
+                            {
+                                <div>
+                                    <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                    <p>@campaignAccount.ReviewAddress</p>
+                                </div>
 
-                                if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                {
-                                    <p></p>
-                                    <h5> Địa chỉ: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                                    <p></p>
-                                }
                             }
                             else
                             {
-                                if (true == Model.Campaign.ReviewPayback) //thu hôi sản phẩm
-                                {
-                                    <div>
-                                        @if (!string.IsNullOrEmpty(Model.Campaign.ReviewAddress))
-                                        {
-                                            <p></p>
-                                            <h5> Địa chỉ thu hồi sản phẩm: <span style="font-weight:normal;">&nbsp;@Model.Campaign.ReviewAddress</span></h5>
-                                            <p></p>
-                                        }
-                                    </div>
-                                }
-                                else //không thu hồi sản phẩm
-                                {
-                                    @if (campaignAccount != null)
-                                    {
-                                        @if (!string.IsNullOrEmpty(campaignAccount.ReviewAddress))
-                                        {
-                                            <div>
-                                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                                                <p>@campaignAccount.ReviewAddress</p>
-                                            </div>
-
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
-                                            <input type="text" name="ReviewAddress" class="form-control" required value="" />
-                                        </div>
-                                    }
-
-
-                                }
-
+                                <div>
+                                    <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                    <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                                </div>
                             }
+                        }
+                        else
+                        {
+                            <div>
+                                <strong class="mb-2">Địa chỉ nhận sản phẩm</strong>
+                                <input type="text" name="ReviewAddress" class="form-control" required value="" />
+                            </div>
+                        }
 
-                        </div>
+
+                    }
+
+                }
+
+            </div>
                     }
                 }
 
