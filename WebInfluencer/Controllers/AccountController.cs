@@ -401,14 +401,18 @@ namespace WebInfluencer.Controllers
         {
             var model = await _accountService.GetChangeAccountType(CurrentUser.Id);
 
-            if (model.Type != AccountType.Regular)
-            {
-                ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
-            }
-            else
-            {
-                ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
-            }
+
+            ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
+
+            //if (model.Type != AccountType.Regular)
+            //{
+            //    ViewBag.AccountCampaignCharges = await _accountService.GetAccountCampaignCharges(CurrentUser.Id);
+            //}
+            //else
+            //{
+            //    ViewBag.CampaignTypeCharges = await _campaignService.GetCampaignTypeCharges();
+            //}
+
             ViewBag.IgnoreCampaignTypes = await _accountService.GetIgnoreCampaignTypes(CurrentUser.Id);
 
 

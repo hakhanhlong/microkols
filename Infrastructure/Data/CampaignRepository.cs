@@ -267,7 +267,10 @@ namespace Infrastructure.Data
 
             var queryCampaign = _dbContext.Campaign.Where(m => m.Method == CampaignMethod.OpenJoined && m.Status != CampaignStatus.Created);
 
-            queryCampaign = queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType);
+            queryCampaign = queryCampaign.Include(m => m.CampaignOption).Include(m => m.CampaignAccountType).Include(m => m.CampaignAccount);
+
+            var _accountCampaignCharge = _dbContext.AccountCampaignCharge.Where(a=>a.AccountId == accountid);
+
 
             #region Filter
             //-------------------filter by account type ----------------------------------------------------------------------------------------        
@@ -334,13 +337,20 @@ namespace Infrastructure.Data
 
 
             //--------------------filter by amountMax - amountMin ----------------------------------------------------------------------------
-
-            //try
-            //{                
-            //    queryCampaign = from q in queryCampaign
-            //                    select q;
-            //}
-            //catch { }
+            try
+            {
+                if (_accountCampaignCharge != null)
+                {
+                    queryCampaign = (from q in queryCampaign
+                                    from ac in _accountCampaignCharge
+                                    where (q.Type == ac.Type
+                                    && q.AmountMin >= ac.Min
+                                    && q.AmountMax <= ac.Max)
+                                    || joinedCampaignIds.Contains(q.Id)
+                                    select q).Distinct();
+                }                
+            }
+            catch { }
 
             #endregion
 

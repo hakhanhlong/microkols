@@ -935,6 +935,7 @@ namespace WebServices.Services
         {
             if (model.Id == 0)
             {
+                
                 var accountCharge = new AccountCampaignCharge()
                 {
                     AccountId = accountid,
@@ -953,10 +954,18 @@ namespace WebServices.Services
                     return false;
                 }
 
-                accountCharge.Min = model.Min;
-                accountCharge.Max = model.Max;
-                accountCharge.Kpi = model.Kpi;
-                await _accountCampaignChargeRepository.UpdateAsync(accountCharge);
+                await _accountCampaignChargeRepository.DeleteAsync(accountCharge);
+
+                var _accountCharge = new AccountCampaignCharge()
+                {
+                    AccountId = accountid,
+                    Type = model.Type,
+                    Min = model.Min,
+                    Kpi = model.Kpi,
+                    Max = model.Max
+                };
+
+                await _accountCampaignChargeRepository.AddAsync(_accountCharge);
             }
 
             return true;
@@ -970,6 +979,7 @@ namespace WebServices.Services
         public async Task<List<CampaignType>> GetIgnoreCampaignTypes(int accountid)
         {
             var account = await _accountRepository.GetByIdAsync(accountid);
+
             return account != null ? account.IgnoreCampaignTypesObj : new List<CampaignType>();
         }
 

@@ -233,15 +233,16 @@ namespace WebServices.Services
 
             var list = new List<MarketPlaceViewModel>();
 
-            foreach (var campaign in campaigns)
-            {
-                var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
-                list.Add(new MarketPlaceViewModel(campaign, campaignAccount, campaign.Agency));
-            }
+            //foreach (var campaign in campaigns)
+            //{
+            //    //var campaignAccount = await _campaignAccountRepository.ListAsync(new CampaignAccountByAgencySpecification(campaign.Id));
+            //    list.Add(new MarketPlaceViewModel(campaign, campaign.CampaignAccount.ToList(), campaign.Agency));
+            //    //list.Add(new MarketPlaceViewModel(campaign, new List<CampaignAccount>(), campaign.Agency));
+            //}
 
             return new ListMarketPlaceViewModel()
             {
-                MarketPlaces = list,
+                MarketPlaces = campaigns.Select(c=> new MarketPlaceViewModel(c, c.CampaignAccount.ToList(), c.Agency)).ToList(),
                 Pager = new PagerViewModel(page, pagesize, total)
             };
         }
