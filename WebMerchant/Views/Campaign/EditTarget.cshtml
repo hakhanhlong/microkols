@@ -20,7 +20,7 @@
     <div asp-validation-summary="All"></div>
     <div class="row">
         <div class="col-lg-8">
-            @if (campaignType == CampaignType.ChangeAvatar)
+            @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ReviewProduct)
             {
                 <h6 style="font-weight:bold;">
                     Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"

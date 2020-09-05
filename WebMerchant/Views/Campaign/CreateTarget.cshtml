@@ -31,7 +31,7 @@
 <form class="form-create-campaign" asp-action="CreateTarget">
     <div asp-validation-summary="All"></div>
 
-    @if (campaignType == CampaignType.ChangeAvatar)
+    @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ReviewProduct)
     {
         <h6 style="font-weight:bold;">
             1. Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
@@ -43,11 +43,11 @@
     {
         <h6 style="font-weight:bold;">
             1. Loại influencer bạn cần&nbsp;<span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
-                                                  title="Bạn chỉ có thể chọn một trong số các influencer dưới đây. Nếu cần nhiều loại influencer, 
-                                                  bạn hãy tạo nhiều chiến dịch khác nhau nhé.Như vậy bạn cùng dễ đánh giá đối tượng influencer 
+                                                  title="Bạn chỉ có thể chọn một trong số các influencer dưới đây. Nếu cần nhiều loại influencer,
+                                                  bạn hãy tạo nhiều chiến dịch khác nhau nhé.Như vậy bạn cùng dễ đánh giá đối tượng influencer
                                                   phù hợp với mình hơn"><i class="fa fa-question-circle"></i></span>
         </h6>
-        
+
     }
     else
     {
@@ -124,7 +124,7 @@
         <span>
             <label asp-for="Quantity"></label>
             @if (campaignType == CampaignType.ChangeAvatar || campaignType == CampaignType.ReviewProduct ||
-             campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl || campaignType == CampaignType.CustomService)
+            campaignType == CampaignType.JoinEvent || campaignType == CampaignType.ShareStreamUrl || campaignType == CampaignType.CustomService)
             {
                 <span data-toggle="tooltip" data-html="true" style="color:#56CCF2;font-size:18px;"
                       title="Hãy nhập số lượng influencer bạn cần cho chiến dịch này"><i class="fa fa-question-circle"></i></span>
