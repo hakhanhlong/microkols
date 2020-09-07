@@ -43,7 +43,7 @@
         @if (!string.IsNullOrEmpty(Model.Birthday))
         {
             <p>@Model.Birthday</p>
-            <input type="hidden" class="form-control form-datepicker" asp-for="Birthday">
+            <input type="hidden" name="Birthday" id="Birthday" value="@Model.Birthday">
         }
         else
         {

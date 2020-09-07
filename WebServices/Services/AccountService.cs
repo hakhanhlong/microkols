@@ -675,7 +675,15 @@ namespace WebServices.Services
             if (entity != null)
             {
                 entity.Name = model.Name;
+
                 entity.Birthday = model.Birthday.ToViDate();
+                if (entity.Birthday == null)
+                {
+                    DateTime birthday;
+                    DateTime.TryParse(model.Birthday, out birthday);
+                    entity.Birthday = birthday;
+                }
+
                 entity.Gender = model.Gender;
                 entity.MaritalStatus = model.MaritalStatus;
                 entity.DateModified = DateTime.Now;
