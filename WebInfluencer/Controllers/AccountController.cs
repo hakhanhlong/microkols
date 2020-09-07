@@ -278,8 +278,8 @@ namespace WebInfluencer.Controllers
                         {
                             if ((DateTime.Now.Year - birthday.Year) < 18)
                             {
-                                TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
-                                return RedirectToAction("ChangeInfo");
+                                //TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
+                                //return RedirectToAction("ChangeInfo");
                             }
                         }
                     }
@@ -323,6 +323,7 @@ namespace WebInfluencer.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> ChangeContact(ChangeContactViewModel model, int vtype = 0)
         {

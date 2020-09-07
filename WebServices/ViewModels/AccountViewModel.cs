@@ -314,6 +314,13 @@ namespace WebServices.ViewModels
                 HotMomData = new List<AccountTypeHotMomData>();
             }
 
+            if (entity.IsReviewer.HasValue)
+            {
+                Reviewer = entity.IsReviewer.Value;
+            }
+
+            
+
         }
         [Display(Name ="Loại tài khoản")]
         public AccountType Type { get; set; }

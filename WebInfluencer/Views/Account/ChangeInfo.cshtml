@@ -24,13 +24,34 @@
     <div asp-validation-summary="All"></div>
     <div class="form-group">
         <label asp-for="Name"></label>
-        <input type="text" class="form-control" asp-for="Name">
-        <span asp-validation-for="Name"></span>
+        @if (!string.IsNullOrEmpty(Model.Name))
+        {
+            <p>@Model.Name</p>
+            <input type="hidden" class="form-control" asp-for="Name">
+        }
+        else
+        {
+            <input type="text" class="form-control" asp-for="Name">
+            <span asp-validation-for="Name"></span>
+        }
+
+
     </div>
     <div class="form-group">
         <label asp-for="Birthday"></label>
-        <input type="text" class="form-control form-datepicker" asp-for="Birthday">
-        <span asp-validation-for="Birthday"></span>
+
+        @if (!string.IsNullOrEmpty(Model.Birthday))
+        {
+            <p>@Model.Birthday</p>
+            <input type="hidden" class="form-control form-datepicker" asp-for="Birthday">
+        }
+        else
+        {
+            <input type="text" class="form-control form-datepicker" asp-for="Birthday">
+            <span asp-validation-for="Birthday"></span>
+        }
+
+
     </div>
     <div class="form-group">
         <label asp-for="Gender"></label>
@@ -47,7 +68,7 @@
                 <li class="list-inline-item">
                     <div class="form-check pl-@i">
                         <div class="custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="@radioId" name="Gender" value="@item" class="custom-control-input" @(Model != null && item == Model.Gender ? "checked" : "")>
+                            <input type="radio" id="@radioId" name="Gender" value="@item" disabled class="custom-control-input" @(Model != null && item == Model.Gender ? "checked" : "")>
                             <label class="custom-control-label" for="@radioId" style="font-weight: 400">@item.ToDisplayName()</label>
                         </div>
                     </div>
@@ -97,7 +118,16 @@
     </div> 
     <div class="form-group">
         <label asp-for="FacebookProfile"></label>
-        <input type="url" class="form-control" asp-for="FacebookProfile">
+        @if (!string.IsNullOrEmpty(Model.FacebookProfile))
+        {
+            <p>@Model.FacebookProfile</p>
+            <input type="hidden" class="form-control" asp-for="FacebookProfile">
+        }
+        else
+        {
+            <input type="url" class="form-control" asp-for="FacebookProfile">
+        }
+
         <span asp-validation-for="FacebookProfile"></span>
     </div>
     <partial name="_WarningTextPartial" />

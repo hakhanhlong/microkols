@@ -219,9 +219,6 @@ namespace WebServices.Services
                         Status = AccountStatus.SystemVerified
                         //Status = AccountStatus.NeedVerified 
 
-
-
-
                     };
                     await _accountRepository.AddAsync(account);
                     await _walletRepository.CreateWallet(EntityType.Account, account.Id);
@@ -637,10 +634,10 @@ namespace WebServices.Services
                 entity.Address = model.Address;
 
 
-                if(entity.Status != AccountStatus.SystemVerified)
-                {
-                    entity.Status = AccountStatus.NeedVerified;
-                }
+                //if(entity.Status != AccountStatus.SystemVerified)
+                //{
+                //    entity.Status = AccountStatus.NeedVerified;
+                //}
 
                 
 
@@ -899,10 +896,13 @@ namespace WebServices.Services
             if (entity != null)
             {
                 entity.Type = model.Type;
+                
                 if (model.Type == AccountType.HotMom)
                 {
                     entity.TypeData = JsonConvert.SerializeObject(model.HotMomData);
                 }
+
+                entity.IsReviewer = model.Reviewer;
 
                 entity.DateModified = DateTime.Now;
                 entity.UserModified = username;

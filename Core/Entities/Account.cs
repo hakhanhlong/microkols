@@ -90,11 +90,12 @@ namespace Core.Entities
         public string BankAccountBank { get; set; }
         public string BankAccountBranch { get; set; }
 
+        public bool? IsReviewer { get; set; }
 
 
 
 
-        
+
         public IEnumerable<AccountCategory> AccountCategory { get; set; }
 
 
