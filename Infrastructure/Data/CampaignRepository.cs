@@ -344,8 +344,7 @@ namespace Infrastructure.Data
                     queryCampaign = (from q in queryCampaign
                                     from ac in _accountCampaignCharge
                                     where (q.Type == ac.Type
-                                    && q.AmountMin >= ac.Min
-                                    && q.AmountMax <= ac.Max)
+                                    && (ac.Min >= q.AmountMin || ac.Max <= q.AmountMax))
                                     || joinedCampaignIds.Contains(q.Id)
                                     select q).Distinct();
                 }                
