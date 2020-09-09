@@ -81,10 +81,7 @@ namespace BackOffice
 
             services.AddMemoryCache();
 
-            services.AddSession();
-
-            
-
+            services.AddSession();            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -69,6 +69,11 @@ namespace Infrastructure.Data
         public virtual DbSet<TransactionHistory> TransactionHistory { get; set; }
         public virtual DbSet<Wallet> Wallet { get; set; }
 
+
+        public virtual DbSet<BankAccountSystem> BankAccountSystem { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
