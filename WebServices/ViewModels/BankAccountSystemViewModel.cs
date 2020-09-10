@@ -63,11 +63,20 @@ namespace WebServices.ViewModels
 
 
         public EditBankAccountSystemViewModel() { }
-     
+
+        public EditBankAccountSystemViewModel(BankAccountSystem entity) {
+            Id = entity.Id;
+            BankAccountName = entity.BankAccountName;
+            BankAccountNumber = entity.BankAccountNumber;
+            BankBranch = entity.BankBranch;
+
+            BankName = entity.BankName;
+            BankCode = entity.BankCode;
+            BankImageUrl = entity.BankImageUrl;
+            IsActive = entity.IsActive;
+        }
 
         public int Id { get; set; }
-
-
         [Required(ErrorMessage = "Hãy nhập {0}")]
         [Display(Name = "Tên tài khoản")]
         public string BankAccountName { get; set; }

@@ -27,6 +27,7 @@ namespace WebMerchant.Code
         public static void AddAppServices(this IServiceCollection services)
         {
             services.AddSharedServices();
+
             services.AddTransient<AppSettingsMiddleware>();
         }
     }

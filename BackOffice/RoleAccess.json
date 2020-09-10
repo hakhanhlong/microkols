@@ -68,6 +68,32 @@
           ]
         },
         {
+          "id": ":BankAccountSystem",
+          "name": "BankAccountSystem",
+          "displayName": null,
+          "areaName": null,
+          "actions": [
+            {
+              "id": ":BankAccountSystem:Index",
+              "name": "Index",
+              "displayName": null,
+              "controllerId": ":BankAccountSystem"
+            },
+            {
+              "id": ":BankAccountSystem:Create",
+              "name": "Create",
+              "displayName": null,
+              "controllerId": ":BankAccountSystem"
+            },
+            {
+              "id": ":BankAccountSystem:Edit",
+              "name": "Edit",
+              "displayName": null,
+              "controllerId": ":BankAccountSystem"
+            }
+          ]
+        },
+        {
           "id": ":Campaign",
           "name": "Campaign",
           "displayName": null,

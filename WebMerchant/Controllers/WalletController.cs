@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
 using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -21,15 +22,18 @@ namespace WebMerchant.Controllers
         private readonly IAccountService _accountService;
         private readonly ICampaignService _campaignService;
         private readonly INotificationService _INotificationService;
+        private readonly IBankAccountSystemRepository _IBankAccountSystemRepository;
 
         public WalletController(IWalletService walletService, ICampaignService campaignService, 
-            ITransactionService transactionService, IAccountService accountService, INotificationService __INotificationService)
+            ITransactionService transactionService, IAccountService accountService, 
+            INotificationService __INotificationService, IBankAccountSystemRepository __IBankAccountSystemRepository)
         {
             _transactionService = transactionService;
             _walletService = walletService;
             _accountService = accountService;
             _campaignService = campaignService;
             _INotificationService = __INotificationService;
+            _IBankAccountSystemRepository = __IBankAccountSystemRepository;
         }
 
         public async Task<long> GetAmount()
@@ -100,6 +104,7 @@ namespace WebMerchant.Controllers
 
             };
 
+            ViewBag.BankSystem = _IBankAccountSystemRepository.ListAll().Where(b=>b.IsActive == true).ToList();
 
             return View(model);
         }

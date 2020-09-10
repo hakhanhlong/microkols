@@ -1,7 +1,8 @@
 ﻿@model RechargeViewModel
 
 @{
-    var bankAccounts = AppOptions.CurrentValue.BankAccounts;
+    //var bankAccounts = AppOptions.CurrentValue.BankAccounts;
+    var bankAccounts = (List<BankAccountSystem>)ViewBag.BankSystem;
 
     ViewData["Title"] = "Nạp tiền";
 }
@@ -64,7 +65,7 @@
                                 <option>Chọn ngân hàng nhận</option>
                                 @foreach (var bankAccount in bankAccounts)
                                 {
-                                    <option value="@bankAccount.BankCode">@bankAccount.BankName</option>
+                                    <option value="@(bankAccount.Id)">@(bankAccount.BankName)</option>
                                 }
                             </select>
                             <span asp-validation-for="Bank" class="text-danger"></span>
@@ -105,29 +106,16 @@
                 @for (var i = 0; i < bankAccounts.Count; i++)
                 {
                     var bank = bankAccounts[i];
-                    <div id="bankinfo@(bank.BankCode)" class="bankinfo d-none card card-body">
+                    <div id="bankinfo@(bank.Id)" class="bankinfo d-none card card-body">
                         <p><b>@bank.BankName</b></p>
-                        <p>Tài khoản: <span class="text-success">@bank.AccountName</span> </p>
-                        <p>Số tài khoản: <span class="text-danger">@bank.AccountNumber</span> </p>
+                        <p>Tài khoản: <span class="text-success">@(bank.BankAccountName)</span> </p>
+                        <p>Số tài khoản: <span class="text-danger">@(bank.BankAccountNumber)</span> </p>
                         <p>Chi nhánh: <i>@bank.BankBranch</i></p>
                     </div>
 
                 }
 
-                @*<ul class="list-unstyled">
-                        <li class="mb-3"></li>
-                        <li class="mb-3"><strong>Tài Khoản:</strong> Nguyễn Văn A</li>
-                        <li class="mb-3"><strong>Số Tài Khoản:</strong> 0123456789</li>
-                        <li class="mb-3"><strong>Ngân Hàng:</strong> Techcom Bank</li>
-                        <li class="mb-3"><strong>Chi Nhánh:</strong> Hồ gươm</li>
-                        <li>
-                            <small style="color: red">
-                                <i>
-                                    Sau khi chọn ngân hàng mới hiển thị thông tin trên
-                                </i>
-                            </small>
-                        </li>
-                    </ul>*@
+            
             </div>
         </div>
     </div>

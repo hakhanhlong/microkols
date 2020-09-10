@@ -64,9 +64,11 @@ namespace WebMerchant
             });
 
             var connection = Configuration.GetConnectionString("AppContext");
+
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             var hangfireConnectionString = Configuration.GetConnectionString("AppHangfireContext");
+
             services.AddHangfire(options => options.UseSqlServerStorage(hangfireConnectionString, new SqlServerStorageOptions
             {
                 CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),

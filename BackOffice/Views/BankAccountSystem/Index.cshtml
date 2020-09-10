@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model IEnumerable<Core.Entities.BankAccountSystem>
+
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
         Danh sách tài khoản ngân hàng hệ thống
@@ -37,20 +39,36 @@
 
                             @if (Model != null)
                             {
+                                int count = 0;
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                #
-                                            </th>
-                                        
+                                            <th>#</th>
+                                            <th>Tên tài khoản</th>
+                                            <th>Số tài khoản</th>
+                                            <th>Ngân hàng</th>
+                                            <th>Chi nhánh</th>
+                                            <th>Hoạt động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                   
+                                        @foreach(var item in Model)
+                                        {
+                                            count++;
+                                            <tr>
+                                                <td>@(count)</td>
+                                                <td>
+                                                    <a href="/BankAccountSystem/Edit/?id=@(item.Id)">@item.BankAccountName</a>
+                                                </td>
+                                                <td>@item.BankAccountNumber</td>
+                                                <td>@item.BankName</td>
+                                                <td>@item.BankBranch</td>
+                                                <td>@(item.IsActive == true?"Hoạt động": "Không hoạt động")</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
-                                
+
                             }
                         </div>
                     </div>

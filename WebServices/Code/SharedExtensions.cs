@@ -36,6 +36,7 @@ namespace WebServices.Code
             services.AddScoped<ICampaignAccountStatisticRepository, CampaignAccountStatisticRepository>();
 
             services.AddScoped<IBankRepository, BankRepository>();
+            services.AddScoped<IBankAccountSystemRepository, BankAccountSystemRepository>();
 
 
             services.AddScoped<IAccountService, AccountService>();
