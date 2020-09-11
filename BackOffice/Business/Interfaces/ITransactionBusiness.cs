@@ -14,6 +14,7 @@ namespace BackOffice.Business.Interfaces
 
         ListTransactionViewModel GetTransactions(int pageindex, int pagesize);
 
+        Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype, int pageindex, int pagesize);
 
         Task<TransactionViewModel> Get(int id);
 
@@ -22,7 +23,7 @@ namespace BackOffice.Business.Interfaces
 
         Task<ListTransactionViewModel> GetTransactions(int sender_wallet_id, int reciever_wallet_id, int pageindex, int pagesize);
 
-        Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype);
+        Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype);
 
         Task<int> UpdateStatus(TransactionStatus status, int id, string username, string adminnote);
 

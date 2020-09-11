@@ -306,7 +306,7 @@ namespace BackOffice.Business
             };
         }
 
-        public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, AccountType[] accounttype)
+        public async Task<List<GroupTransactionViewModel>> GetPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype)
         {
             var lastDateTime = DateTime.Now.AddMonths(-1);
             DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
@@ -316,20 +316,23 @@ namespace BackOffice.Business
 
             var queries = await _ITransactionRepository.ListAsync(filter);
 
+            var q_accounts = await _IAccountRepository.ListAsync(new AccountSpecification(accounttype));            
+            var q_wallets = await _IWalletRepository.ListAsync(new WalletSpecification(EntityType.Account));
+
             queries = (from q in queries
-                       from a in _IAccountRepository.ListAll().Where(a=>accounttype.Contains(a.Type))
-                       from w in _IWalletRepository.ListAll().Where(w=>w.EntityType == EntityType.Account)
+                       from a in q_accounts
+                       from w in q_wallets
                        where q.ReceiverId == w.Id && a.Id == w.EntityId
                        select q).ToList();
 
 
-            var transactions = from t in queries                                                              
+            var transactions = from t in queries
                                group t by t.ReceiverId into wallet                               
                                select new GroupTransactionViewModel
                                {
                                    Wallet = _IWalletRepository.GetById(wallet.Key),
                                    walletid = wallet.Key,
-                                   Transactions = wallet.Select(t => new TransactionViewModel(t)).ToList(),
+                                   Transactions = wallet.Select(t => new TransactionViewModel(t)),                                   
                                    Account = _IAccountRepository.ListAll().Where(a=>a.Id == _IWalletRepository.GetById(wallet.Key).EntityId).Select(a=>new AccountViewModel(a)).FirstOrDefault(),
                                    IsCashOut = wallet.Count(t=>t.IsCashOut == false) > 0?false:true
                                };
@@ -337,6 +340,55 @@ namespace BackOffice.Business
             return transactions.ToList();
 
         }
+
+        public async Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype, int pageindex, int pagesize)
+        {
+            var lastDateTime = DateTime.Now.AddMonths(-1);
+            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+
+            var filter = new TransactionSpecification(type, status, startDate, endDate);
+
+            var queries = await _ITransactionRepository.ListAsync(filter);
+
+            var q_accounts = await _IAccountRepository.ListAsync(new AccountSpecification(accounttype));
+            var q_wallets = await _IWalletRepository.ListAsync(new WalletSpecification(EntityType.Account));
+
+            queries = (from q in queries
+                       from a in q_accounts
+                       from w in q_wallets
+                       where q.ReceiverId == w.Id && a.Id == w.EntityId
+                       select q).ToList();
+
+
+
+            
+
+            var transactions = from t in queries
+                               group t by t.ReceiverId into wallet
+                               select new GroupTransactionViewModel
+                               {
+                                   Wallet = _IWalletRepository.GetById(wallet.Key),
+                                   walletid = wallet.Key,                                   
+                                   TotalCashOut = wallet.Sum(w=>w.Amount),
+                                   Account = _IAccountRepository.ListAll().Where(a => a.Id == _IWalletRepository.GetById(wallet.Key).EntityId).Select(a => new AccountViewModel(a)).FirstOrDefault(),
+                                   IsCashOut = wallet.Count(t => t.IsCashOut == false) > 0 ? false : true
+                               };
+
+            int total = transactions.Count();
+
+
+
+            return new ListGroupTransactionViewModel()
+            {
+                Transactions = transactions.Skip((pageindex - 1)*pagesize).Take(pagesize).ToList(),
+
+                Pager = new PagerViewModel(pageindex, pagesize, total)
+            };
+
+        }
+
+
 
         public ListTransactionViewModel GetTransactions(int pageindex, int pagesize)
         {

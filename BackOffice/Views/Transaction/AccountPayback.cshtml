@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model List<GroupTransactionViewModel>
+@model ListGroupTransactionViewModel
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
@@ -74,120 +74,94 @@
                             </a>
                         </li>
                         @*<li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Kols"?"active":"")" href="/transaction/accountpayback?type=Kols" role="tab">
-                                Kols
-                            </a>
-                        </li>*@
+                        <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Kols"?"active":"")" href="/transaction/accountpayback?type=Kols" role="tab">
+                            Kols
+                        </a>
+                    </li>*@
                     </ul>
                 </div>
             </div>
             <div class="m-portlet__body">
                 <div class="tab-content">
                     <div class="tab-pane active show">
-                        
-                        @if (Model.Count() > 0)
+
+                        @if (Model.Transactions.Count() > 0)
                         {
-                            
-                        <div class="mb-5 pull-right">
 
-                            @if (ViewBag.PayoutExport != null)
-                            {
-                                var PayoutExport = (PayoutExport)ViewBag.PayoutExport;
-                                if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
+                            <div class="mb-5 pull-right">
+
+                                @if (ViewBag.PayoutExport != null)
                                 {
-                                    <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
+                                    var PayoutExport = (PayoutExport)ViewBag.PayoutExport;
+                                    if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
+                                    {
+                                        <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
-                            }
-                        </div>
-                            foreach (var item in Model)
-                            {
+                                else
+                                {
+                                    <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
+                                }
+                            </div>
 
-                                <div class="m-section">                                    
-                                    <div class="m-section__content">
-                                        <table class="table">
-                                            <thead class="thead-inverse">
+
+                            <div class="m-section">
+                                <div class="m-section__content">
+                                    <table class="table">
+                                        <thead class="thead-inverse">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Tài khoản ngân hàng
+                                                </th>
+                                                <th>
+                                                    Số tài khoản
+                                                </th>
+                                                <th>
+                                                    Tiền trả Influencer
+                                                </th>
+                                                <th>
+                                                    Thông tin ví
+                                                </th>
+                                                <th>Ghi chú</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                long total_amount = 0;
+                                                int count = 0;
+                                            }
+                                            @foreach (var item in Model.Transactions)
+                                            {
+                                                count++;
+                                                total_amount = item.TotalCashOut;
                                                 <tr>
-                                                    <th>
-                                                        #
-                                                    </th>
-                                                    <th>
-                                                        DATETIME
-                                                    </th>
-                                                    <th>
-                                                        AMOUNT CASHOUT
-                                                    </th>
-                                                    <th>
-                                                        STATUS CASHOUT
-                                                    </th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @{
-                                                    int count = 1;
-                                                    long total_amount = 0;
-                                                }
-                                                <tr>
-                                                    <td>NAME</td>
+                                                    <td>@(count)</td>
                                                     <td>
                                                         <a href="/microkol/detail?id=@(item.Account.Id)">@item.Account.BankAccountName</a>
                                                     </td>
-                                                    <td>BANK NUMBER</td>
                                                     <td>@item.Account.BankAccountNumber</td>
-                                                    <td>Balance: <span class="m--font-danger">@item.Wallet.Balance.ToPriceText()</span> | <a href="/wallet/transaction?walletid=@(item.Wallet.Id)">Wallet Transactions</a></td>
+                                                    <td>
+                                                        <span style="font-weight:bold;color:red;">@total_amount.ToPriceText()</span>
+                                                    </td>
+                                                    <td>Số dư: <span style="font-weight:bold;color:red;">@item.Wallet.Balance.ToPriceText()</span> | <a href="/wallet/transaction?walletid=@(item.Wallet.Id)">Wallet Transactions</a></td>
+                                                    <td>
+                                                        @if (item.Wallet.Balance < total_amount)
+                                                        {
+                                                            <span style="font-weight:bold;color:red;">Ví không đủ để thực hiện việc rút tiền</span>
+                                                        }
+                                                    </td>
                                                 </tr>
-                                                @foreach (var transaction in item.Transactions)
-                                                {
-                                                    <tr>
-                                                        <td>@(count)</td>
-                                                        <td>@transaction.DateCreated</td>
-                                                        <td><h6 class="m--font-danger">@transaction.Amount.ToPriceText()</h6></td>
-                                                        <td>
-                                                            @if (transaction.IsCashOut.HasValue == true)
-                                                            {
-                                                                if (transaction.IsCashOut.Value == true)
-                                                                {
-                                                                    <span class="m-badge m-badge--info m-badge--wide">True</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <span class="m-badge m-badge--danger m-badge--wide">False</span>
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="m-badge m-badge--danger m-badge--wide">False</span>
-                                                            }
-                                                        </td>
-                                                        <td>@transaction.AdminNote</td>
-                                                    </tr>
-                                                    count++;
-                                                    total_amount += transaction.Amount;
-                                                }
-                                                <tr>
-                                                    <td colspan="3"><span style="color:red;font-weight:bold;" class="pull-right">TOTAL</span></td>
-                                                    <td colspan="2"><span style="color:red;font-weight:bold;" class="pull-right">@total_amount.ToPriceText()</span></td>
-                                                </tr>
-                                                @if (item.Wallet.Balance < total_amount)
-                                                {
-                                                    <tr>
-                                                        <td colspan="3"><span style="color:red;font-weight:bold;" class="pull-right"></span></td>
-                                                        <td colspan="2">
-                                                            <span style="color:red;font-weight:bold;" class="pull-right">
-                                                                Ví không đủ để thực hiện việc rút tiền
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
                                 </div>
-                            }
+                            </div>
+
 
                         }
                         else
@@ -201,8 +175,15 @@
 
                     </div>
                 </div>
+
             </div>
-            
+            <div class="m-portlet__foot">
+                
+                    <pager pager="@Model.Pager" asp-route-type="@(Context.Request.Query["type"])" asp-action="accountpayback"></pager>
+                
+                
+            </div>
+
         </div>
     </div>
 </div>

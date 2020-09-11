@@ -252,7 +252,7 @@ namespace BackOffice.Controllers
             return View(transactionhistories);
         }
 
-        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All)
+        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
 
@@ -279,9 +279,10 @@ namespace BackOffice.Controllers
 
             var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype);
+            var _listTransaction = await _ITransactionBussiness.GetTotalPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList(), pageindex, pagesize);
 
             ViewBag.PayoutExport = PayoutExport;
+
             return View(_listTransaction);
         }
 
@@ -310,7 +311,7 @@ namespace BackOffice.Controllers
 
             var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype);
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList());
             int count_fail = 0;
 
             if(_listTransaction.Count() > 0)
@@ -460,7 +461,7 @@ namespace BackOffice.Controllers
                 _accounttype[0] = type;
             }
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype);
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype.ToList());
             if (_listTransaction != null)
             {
 

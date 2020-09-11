@@ -6,6 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Transaction\AccountPayback - Copy.cshtml.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Transaction\AccountPayback - Copy.cshtml.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\assets\app\js\dashboard.js" />
     <None Include="wwwroot\assets\app\js\layout-builder.js" />
     <None Include="wwwroot\assets\app\media\img\files\css.svg" />

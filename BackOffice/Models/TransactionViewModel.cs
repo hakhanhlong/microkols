@@ -28,13 +28,33 @@ namespace BackOffice.Models
 
     }
 
+
+    public class ListGroupTransactionViewModel
+    {
+        public List<GroupTransactionViewModel> Transactions { get; set; }
+        public PagerViewModel Pager { get; set; }
+
+       
+
+        public string StartDate { get; set; }
+
+        public string EndDate { get; set; }
+
+       
+
+
+    }
+
+
     public class GroupTransactionViewModel
     {
         public int walletid { get; set; }
-        public List<TransactionViewModel> Transactions { get; set; }
+        public IEnumerable<TransactionViewModel> Transactions { get; set; }
 
         public AccountViewModel Account { get; set; }
         public bool IsCashOut { get; set; }
+
+        public long TotalCashOut { get; set; }
 
         public Wallet Wallet { get; set; }
 
