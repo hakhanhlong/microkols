@@ -126,6 +126,7 @@
                                                     Thông tin ví
                                                 </th>
                                                 <th>Ghi chú</th>
+                                                <td></td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -141,6 +142,12 @@
                                                     <td>@(count)</td>
                                                     <td>
                                                         <a href="/microkol/detail?id=@(item.Account.Id)">@item.Account.BankAccountName</a>
+                                                        <br />
+                                                        <span>@item.Account.BankAccountBank</span>
+                                                        <br />
+                                                        <span>Chi nhánh: @(item.Account.BankAccountBranch)</span>
+
+
                                                     </td>
                                                     <td>@item.Account.BankAccountNumber</td>
                                                     <td>
@@ -152,6 +159,9 @@
                                                         {
                                                             <span style="font-weight:bold;color:red;">Ví không đủ để thực hiện việc rút tiền</span>
                                                         }
+                                                    </td>
+                                                    <td>
+                                                        <a href="/transaction/accountpaybackdetail?accountid=@(item.Account.Id)" class="btn btn-primary">Chi tiết</a>
                                                     </td>
                                                 </tr>
                                             }

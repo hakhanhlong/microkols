@@ -540,6 +540,12 @@
               "controllerId": ":Transaction"
             },
             {
+              "id": ":Transaction:AccountPaybackDetail",
+              "name": "AccountPaybackDetail",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
               "id": ":Transaction:AccountSubtractWallet",
               "name": "AccountSubtractWallet",
               "displayName": null,

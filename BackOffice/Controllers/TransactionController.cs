@@ -252,6 +252,8 @@ namespace BackOffice.Controllers
             return View(transactionhistories);
         }
 
+
+        #region AccountPayback
         public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
@@ -285,6 +287,24 @@ namespace BackOffice.Controllers
 
             return View(_listTransaction);
         }
+
+        public async Task<IActionResult> AccountPaybackDetail(int accountid)
+        {
+            //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
+          
+            var lastDateTime = DateTime.Now.AddMonths(-1);
+            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+            
+            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactionByAccountId(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, accountid);
+            
+
+            return View(_listTransaction);
+        }
+        #endregion
+
+
+
 
         public async Task<IActionResult> AccountSubtractWallet(AccountType type = AccountType.All)
         {

@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewData["Title"] = "AccountPayback";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<GroupTransactionViewModel>
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Chi tiết thanh toán Influencer
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction/accountpayback" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Chi tiết thanh toán Influencer
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Chi tiết thanh toán Influencer
+                        </h3>
+                    </div>
+                </div>       
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+
+                        @if (Model.Count() > 0)
+                        {
+
+                            <div class="mb-5 pull-right">
+
+                               
+                            </div>
+
+
+                            <div class="m-section">
+                                <div class="m-section__content">
+                                    <table class="table">
+                                        <thead class="thead-inverse">
+                                            <tr>                                               
+                                                <th>
+                                                    Tài khoản ngân hàng
+                                                </th>
+                                                <th>
+                                                    Số tài khoản
+                                                </th>                                                
+                                                <th>
+                                                    Thông tin ví
+                                                </th>                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                long total_amount = 0;
+                                                int count = 0;
+                                            }
+                                            @foreach (var item in Model)
+                                            {                                                                                            
+                                                <tr>                                                    
+                                                    <td>
+                                                        <a href="/microkol/detail?id=@(item.Account.Id)">@item.Account.BankAccountName</a>
+                                                        <br />
+                                                        <span>@item.Account.BankAccountBank</span>
+                                                        <br />
+                                                        <span>Chi nhánh: @(item.Account.BankAccountBranch)</span>
+                                                    </td>
+                                                    <td>@item.Account.BankAccountNumber</td>                                                    
+                                                    <td>Số dư: <span style="font-weight:bold;color:red;">@item.Wallet.Balance.ToPriceText()</span> | <a href="/wallet/transaction?walletid=@(item.Wallet.Id)">Wallet Transactions</a></td>                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <table class="table">
+                                                            <thead class="thead-inverse">
+                                                                <tr>
+                                                                    <th>
+                                                                        #
+                                                                    </th>
+                                                                    <th>
+                                                                        Thời gian
+                                                                    </th>
+                                                                    <th>
+                                                                        Chiến dịch
+                                                                    </th>
+                                                                    <th>
+                                                                        Số tiền
+                                                                    </th>
+                                                                    <th>
+                                                                        Trạng thái
+                                                                    </th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var transaction in item.Transactions)
+                                                                {
+                                                                    count++;
+                                                                <tr>
+                                                                    <td>@(count)</td>
+                                                                    <td>@transaction.DateCreated</td>
+                                                                    <td>
+                                                                        <a href="/campaign/detail/?campaignid=@transaction.RefId">@transaction.RefId</a>
+                                                                    </td>
+                                                                    <td><h6 class="m--font-danger">@transaction.Amount.ToPriceText()</h6></td>
+                                                                    <td>
+                                                                        @if (transaction.IsCashOut.HasValue == true)
+                                                                        {
+                                                                            if (transaction.IsCashOut.Value == true)
+                                                                            {
+                                                                                <span class="m-badge m-badge--info m-badge--wide">True</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span class="m-badge m-badge--danger m-badge--wide">False</span>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="m-badge m-badge--danger m-badge--wide">False</span>
+                                                                        }
+                                                                    </td>
+                                                                    <td>@transaction.AdminNote</td>
+                                                                </tr>
+                                                                    total_amount += transaction.Amount;
+                                                                }
+                                                                <tr>                                                                    
+                                                                    <td colspan="6"><span style="color:red;font-weight:bold;" class="pull-right">Tổng tiền: @(total_amount.ToPriceText())</span></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        }
+                        else
+                        {
+                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                <div class="m-demo__preview">
+                                    Sorry, do not have transaction for binding!
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>         
+        </div>
+    </div>
+</div>
+
+
