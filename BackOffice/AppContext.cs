@@ -80,6 +80,8 @@ namespace BackOffice
             services.AddScoped<IBankService, BankService>();
 
             services.AddScoped<IVideoGalleryService, VideoGalleryService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+
 
 
             services.AddScoped<ISharedService, SharedService>();

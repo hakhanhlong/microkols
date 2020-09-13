@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Account Payback
+        Chuyển tiền Influencer
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -33,7 +33,7 @@
         <li class="m-nav__item">
             <a href="/transaction/accountpayback" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Account Payback
+                    Chuyển tiền Influencer
                 </span>
             </a>
         </li>
@@ -47,7 +47,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Account Payback
+                            Chuyển tiền Influencer
                         </h3>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                                                     <td>
                                                         <span style="font-weight:bold;color:red;">@total_amount.ToPriceText()</span>
                                                     </td>
-                                                    <td>Số dư: <span style="font-weight:bold;color:red;">@item.Wallet.Balance.ToPriceText()</span> | <a href="/wallet/transaction?walletid=@(item.Wallet.Id)">Wallet Transactions</a></td>
+                                                    <td>Số dư: <span style="font-weight:bold;color:red;">@item.Wallet.Balance.ToPriceText()</span> | <a href="/wallet/transactioninfluencer?walletid=@(item.Wallet.Id)">Wallet Transactions</a></td>
                                                     <td>
                                                         @if (item.Wallet.Balance < total_amount)
                                                         {

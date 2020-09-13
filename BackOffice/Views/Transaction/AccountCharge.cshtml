@@ -8,7 +8,7 @@
 
 @section Subheaders{
     <h3 class="m-subheader__title m-subheader__title--separator">
-        Account Charge
+    Phí trả Influencer
     </h3>
     <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
         <li class="m-nav__item m-nav__item--home">
@@ -33,7 +33,7 @@
         <li class="m-nav__item">
             <a href="/transaction/accountcharge" class="m-nav__link">
                 <span class="m-nav__link-text">
-                    Account Charge
+                    Phí trả Influencer
                 </span>
             </a>
         </li>
@@ -47,7 +47,7 @@
                 <div class="m-portlet__head-caption">
                     <div class="m-portlet__head-title">
                         <h3 class="m-portlet__head-text">
-                            Account Charge
+                            Phí trả Influencer
                         </h3>
                     </div>
                 </div>
@@ -55,27 +55,27 @@
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Created"?"active":"")" href="/transaction/accountcharge?status=Created" role="tab">
-                                Created
+                                @TransactionStatus.Created.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/accountcharge?status=Canceled" role="tab">
-                                Canceled
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Canceled"?"active":"")" href="/transaction/accountcharge?status=Canceled" role="tab">                                
+                                @TransactionStatus.Canceled.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/accountcharge?status=Processing" role="tab">
-                                Processing
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Processing"?"active":"")" href="/transaction/accountcharge?status=Processing" role="tab">                                
+                                @TransactionStatus.Processing.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
                             <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Completed"?"active":"")" href="/transaction/accountcharge?status=Completed" role="tab">
-                                Completed
+                                @TransactionStatus.Completed.ToDisplayName()
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/accountcharge?status=Error" role="tab">
-                                Error
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["status"] == "Error"?"active":"")" href="/transaction/accountcharge?status=Error" role="tab">                                
+                                @TransactionStatus.Error.ToDisplayName()
                             </a>
                         </li>
                     </ul>

@@ -519,7 +519,10 @@ namespace BackOffice.Controllers
         public async Task<IActionResult> TransactionHistory(int walletid, int pageindex = 1)
         {
             var list = await _ITransactionHistoryBusiness.GetByWalletID(walletid, pageindex);
+
             var wallet = _IWalletRepository.GetById(walletid);
+
+
             if (wallet != null)
             {
                 ViewBag.Wallet = wallet;
@@ -529,6 +532,7 @@ namespace BackOffice.Controllers
                     if (account.Result != null)
                     {
                         ViewBag.Account = account.Result;
+                        ViewBag.WalletFor = "NGƯỜI ẢNH HƯỞNG";
                     }
                 }
                 if (wallet.EntityType == Core.Entities.EntityType.Agency)
@@ -537,6 +541,7 @@ namespace BackOffice.Controllers
                     if (agency.Result != null)
                     {
                         ViewBag.Account = agency.Result;
+                        ViewBag.WalletFor = "DOANH NGHIỆP";
                     }
                 }
             }

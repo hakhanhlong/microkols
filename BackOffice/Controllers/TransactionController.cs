@@ -28,16 +28,17 @@ namespace BackOffice.Controllers
         ICampaignService _ICampaignService;
 
         IWalletBusiness _IWalletBusiness;
-        private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private const string XlsxContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";        
         IPayoutExportRepository _IPayoutExportRepository;
         private readonly INotificationBusiness _INotificationBusiness;
         private readonly ITransactionHistoryBusiness _ITransactionHistoryBusiness;
+        private readonly IPaymentService _paymentService;
 
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
             IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
-            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService, ICampaignService __ICampaignService)
+            ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService, ICampaignService __ICampaignService,
+            IPaymentService _IPaymentService)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
@@ -48,6 +49,7 @@ namespace BackOffice.Controllers
             _ITransactionService = __ITransactionService;
 
             _ICampaignService = __ICampaignService;
+            _paymentService = _IPaymentService;
         }
 
         public IActionResult Index()
@@ -241,7 +243,7 @@ namespace BackOffice.Controllers
 
         public async Task<IActionResult> AccountCharge(TransactionStatus status = TransactionStatus.All, int pageindex = 1)
         {
-            var _listTransaction = await FillTransactions(TransactionType.CampaignAccountCharge, status, pageindex);
+            var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
             return View(_listTransaction);
         }
 
@@ -369,7 +371,6 @@ namespace BackOffice.Controllers
 
                                 try
                                 {
-
                                     switch (retResult)
                                     {
                                         case 9:
@@ -666,6 +667,7 @@ namespace BackOffice.Controllers
                 new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem {Text = "Completed", Value = "3"}
             };
             var transaction = await _ITransactionRepository.GetByIdAsync(id);
+
             return View(new TransactionViewModel(transaction));
         }
 
@@ -780,21 +782,36 @@ namespace BackOffice.Controllers
                         TempData["MessageError"] = "Do not fit with any agency!";
                     }
                 }
+                else if(transaction.Type == TransactionType.CampaignAccountPayback)// influencer nhận thanh toán về ví
+                {
+                    var result = await _paymentService.Pay(transaction.Id, transaction.SenderId, transaction.ReceiverId, transaction.Amount, 
+                        TransactionType.CampaignAccountPayback, model.AdminNote, HttpContext.User.Identity.Name);
+
+                    if(result.ErrorCode == WebServices.ViewModels.PaymentResultErrorCode.KhongLoi)
+                    {                        
+                        int campaignid = 0;
+                        if (transaction.RefId.HasValue)
+                        {
+                            campaignid = transaction.RefId.Value;
+                        }
+                        var campaign = await _ICampaignService.GetCampaignById(campaignid);
+                        if(campaign != null)
+                        {
+                            string _msg = string.Format("Bạn đã được duyệt cộng {0} vào ví. Từ chiến dịch \"{1}\"", transaction.Amount, campaign.Title);
+                            await _INotificationBusiness.CreateNotification(EntityType.Account, transaction.ReceiverId, campaignid, NotificationType.SystemSendNotifycation, _msg, string.Empty);
+                        }                        
+                    }
+                }
                 else
                 {
                     TempData["MessageError"] = "Transaction không thuộc trường hợp để duyệt!";
-                }
-                             
-            
+                }                                         
             }
             catch(Exception ex) {
                 TempData["MessageError"] = ex.Message;
             }
-
             return RedirectToAction("TransactionUpdateStatus", "Transaction", new { id = model.Id, status = model.Status });
         }
-
-
 
         [HttpPost]
         public async Task<JsonResult> ChangeStatus(TransactionStatus status, int id)

@@ -290,7 +290,7 @@ namespace Core.Entities
             
             else if (type == NotificationType.CampaignCompleted)
             {
-                message = "Chiến dịch {0} đã hoàn thành. Bạn đã được nhận \"{1}\" ";
+                message = "Chiến dịch {0} đã hoàn thành. Hệ thống đang duyệt \"{1}\" , vào ví của bạn.";
             }
 
             else if (type == NotificationType.AgencyDeclineCampaignCaption)

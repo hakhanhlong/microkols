@@ -344,8 +344,9 @@ namespace Infrastructure.Data
                     queryCampaign = (from q in queryCampaign
                                     from ac in _accountCampaignCharge
                                     where (q.Type == ac.Type
-                                    && (ac.Min >= q.AmountMin && ac.Min <= q.AmountMax) ||
-                                       (ac.Max >= q.AmountMin && ac.Max <= q.AmountMax))
+                                    && 
+                                        (ac.Min >= q.AmountMin && ac.Min <= q.AmountMax) || 
+                                        (ac.Min <= q.AmountMin && ac.Min <= q.AmountMax))
                                     || joinedCampaignIds.Contains(q.Id)
                                     select q).Distinct();
                 }
@@ -355,7 +356,7 @@ namespace Infrastructure.Data
                                      from ac in _accountCampaignCharge
                                      where (q.Type == ac.Type
                                      && (50000 >= q.AmountMin && 50000 <= q.AmountMax) ||
-                                        (100000 >= q.AmountMin && 100000 <= q.AmountMax))
+                                        (50000 <= q.AmountMin && 50000 <= q.AmountMax))
                                      || joinedCampaignIds.Contains(q.Id)
                                      select q).Distinct();
                 }
