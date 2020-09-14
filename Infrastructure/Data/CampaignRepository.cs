@@ -280,6 +280,24 @@ namespace Infrastructure.Data
                             select q;
                        
 
+            if(account.Type == AccountType.HotMom)
+            {
+                try
+                {
+                    List<AccountTypeHotMomData> _listFilterChild = (List<AccountTypeHotMomData>)account.TypeDataObj;
+                    if (_listFilterChild.Count > 0)
+                    {
+                        List<Gender> list_gender = _listFilterChild.Select(l => l.Gender).ToList();
+                        queryCampaign = from q in queryCampaign
+                                        where ((!q.FilterAccountChildrenGender.HasValue) || list_gender.Contains((Gender)q.FilterAccountChildrenGender.Value))
+                                        select q;
+                    }
+                    
+                }
+                catch { }
+                
+            }
+
             //-------------------filter by account gender ----------------------------------------------------------------------------------------            
 
             queryCampaign = from q in queryCampaign
@@ -345,8 +363,11 @@ namespace Infrastructure.Data
                                     from ac in _accountCampaignCharge
                                     where (q.Type == ac.Type
                                     && 
-                                        (ac.Min >= q.AmountMin && ac.Min <= q.AmountMax) || 
+                                        ((ac.Min >= q.AmountMin && ac.Min <= q.AmountMax) 
+                                        || 
                                         (ac.Min <= q.AmountMin && ac.Min <= q.AmountMax))
+                                        && 
+                                        (ac.Max >= q.AmountMin && ac.Max <= q.AmountMax))
                                     || joinedCampaignIds.Contains(q.Id)
                                     select q).Distinct();
                 }

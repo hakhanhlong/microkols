@@ -136,6 +136,16 @@ namespace WebServices.ViewModels
                         campaign.FilterAccountChildrenGender = target.ChildType.Value;
 
                     }
+
+                    if (target.ChildAgeMin.HasValue)
+                    {
+                        campaign.FilterAccountAgeChildrenFrom = target.ChildAgeMin.Value;
+                    }
+
+                    if (target.ChildAgeMax.HasValue)
+                    {
+                        campaign.FilterAccountAgeChildrenTo = target.ChildAgeMax.Value;
+                    }
                 }
             }
             catch { }

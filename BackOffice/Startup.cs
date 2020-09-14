@@ -63,13 +63,11 @@ namespace BackOffice
 
 
             var connection = Configuration.GetConnectionString("AppContext");
-
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connection));
 
             //services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultUI().AddDefaultTokenProviders();
             services.AddIdentity<AppUser, IdentityRole>(options=>options.SignIn.RequireConfirmedEmail = false).AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
             services.AddDynamicAuthorization<AppIdentityDbContext>(options => options.DefaultAdminUser = "superadmin@gmail.com").AddJsonStore();
-
             services.ConfigureApplicationCookie(options=>options.LoginPath = "/Authen/Login");
             
 

@@ -386,9 +386,6 @@ namespace WebServices.Services
             campaign.DateModified = DateTime.Now;
 
 
-
-
-
             try
             {
 
@@ -398,11 +395,23 @@ namespace WebServices.Services
 
                 if (_accountType == AccountType.HotMom)
                 {
+                    
                     if (model.ChildType.HasValue)
                     {
                         campaign.FilterAccountChildrenGender = model.ChildType.Value;
 
                     }
+
+                    if (model.ChildAgeMin.HasValue)
+                    {
+                        campaign.FilterAccountAgeChildrenFrom = model.ChildAgeMin.Value;
+                    }
+
+                    if (model.ChildAgeMax.HasValue)
+                    {
+                        campaign.FilterAccountAgeChildrenTo = model.ChildAgeMax.Value;
+                    }
+
                 }
             }
             catch { }
