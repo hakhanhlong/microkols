@@ -534,6 +534,12 @@
               "controllerId": ":Transaction"
             },
             {
+              "id": ":Transaction:PayoutExport",
+              "name": "PayoutExport",
+              "displayName": null,
+              "controllerId": ":Transaction"
+            },
+            {
               "id": ":Transaction:AccountPayback",
               "name": "AccountPayback",
               "displayName": null,

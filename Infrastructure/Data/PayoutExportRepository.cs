@@ -18,6 +18,7 @@ namespace Infrastructure.Data
         {
             return _dbContext.PayoutExport.Where(pe=>pe.StartDateExport == StartDate && pe.EndDateExport == EndDate && pe.AccountType == Type).FirstOrDefault();
         }
+        
 
         public bool IsExist(DateTime StartDate, DateTime EndDate, AccountType Type)
         {

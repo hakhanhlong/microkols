@@ -18,6 +18,11 @@ namespace Core.Entities
 
         public DateTime CreatedDate { get; set; }
 
+        public DateTime? PayoutExportFileDate { get; set; }
+
+        public DateTime? PayoutPayDate { get; set; }
+
+
         public string CreatedUser { get; set; }
     }
 }

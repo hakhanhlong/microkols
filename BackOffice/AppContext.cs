@@ -78,6 +78,7 @@ namespace BackOffice
             services.AddScoped<IQnAVideoService, QnAVideoService>();
 
             services.AddScoped<IBankService, BankService>();
+            services.AddScoped<IPayoutExportService, PayoutExportService>();
 
             services.AddScoped<IVideoGalleryService, VideoGalleryService>();
             services.AddScoped<IPaymentService, PaymentService>();

@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewData["Title"] = "Tất toán Influencer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model WebServices.ViewModels.ListPayoutExportViewModel
+
+@section Subheaders{
+    <h3 class="m-subheader__title m-subheader__title--separator">
+        Tất toán Influencer
+    </h3>
+    <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
+        <li class="m-nav__item m-nav__item--home">
+            <a href="#" class="m-nav__link m-nav__link--icon">
+                <i class="m-nav__link-icon la la-home"></i>
+            </a>
+        </li>
+
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Transaction
+                </span>
+            </a>
+        </li>
+        <li class="m-nav__separator">
+            -
+        </li>
+        <li class="m-nav__item">
+            <a href="/transaction/PayoutExport" class="m-nav__link">
+                <span class="m-nav__link-text">
+                    Tất toán Influencer
+                </span>
+            </a>
+        </li>
+    </ul>
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="m-portlet m-portlet--tabs">
+            <div class="m-portlet__head">
+                <div class="m-portlet__head-caption">
+                    <div class="m-portlet__head-title">
+                        <h3 class="m-portlet__head-text">
+                            Tất toán Influencer
+                        </h3>
+                    </div>
+                </div>
+                <div class="m-portlet__head-tools">
+                    <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Regular"?"active":"")" href="/transaction/PayoutExport?type=Regular" role="tab">
+                                Regular
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotTeen"?"active":"")" href="/transaction/PayoutExport?type=HotTeen" role="tab">
+                                HotTeen
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotMom"?"active":"")" href="/transaction/PayoutExport?type=HotMom" role="tab">
+                                HotMom
+                            </a>
+                        </li>
+                        <li class="nav-item m-tabs__item">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotFacebooker"?"active":"")" href="/transaction/PayoutExport?type=HotFacebooker" role="tab">
+                                HotFacebooker
+                            </a>
+                        </li>
+                        @*<li class="nav-item m-tabs__item">
+                                <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Kols"?"active":"")" href="/transaction/accountpayback?type=Kols" role="tab">
+                                    Kols
+                                </a>
+                            </li>*@
+                    </ul>
+                </div>
+            </div>
+            <div class="m-portlet__body">
+                <div class="tab-content">
+                    <div class="tab-pane active show">
+
+                        @if (Model.PayoutExport.Count() > 0)
+                        {
+                 
+                            <div class="m-section">
+                                <div class="m-section__content">
+                                    <table class="table">
+                                        <thead class="thead-inverse">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Ngày bắt đầu
+                                                </th>
+                                                <th>
+                                                    Ngày kết thúc
+                                                </th>
+                                                <th>
+                                                    File thanh toán
+                                                </th>
+                                                <th>
+                                                    Ngày xuất file
+                                                </th>
+                                                <th>
+                                                    Ngày tất toán
+                                                </th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{                                                
+                                                int count = 0;
+                                            }
+                                            @foreach (var item in Model.PayoutExport)
+                                            {
+                                                count++;
+                                                <tr>
+                                                    <td>@(count)</td>
+                                                    <td>@(item.StartDateExport.Date.ToString("dd/MM/yyyy"))</td>
+                                                    <td>@(item.EndDateExport.Date.ToString("dd/MM/yyyy"))</td>
+                                                    <td>@(item.IsExport == true?"Đã xuất file":"Chưa xuất file")</td>
+                                                    <td>
+                                                        @if (item.PayoutExportFileDate.HasValue)
+                                                        {
+                                                            <span>@item.PayoutExportFileDate.Value.Date</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @if (item.PayoutPayDate.HasValue)
+                                                        {
+                                                            <span>@item.PayoutPayDate.Value</span>
+                                                        }
+                                                    </td>
+                                                    <td>                                                        
+                                                        @if (item.IsUpdateWallet == true)
+                                                        {
+                                                            <span class="m-badge m-badge--success m-badge--wide">Đã tất toán & trừ ví</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="m-badge m-badge--danger m-badge--wide">Chưa tất toán</span>
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="btn btn-primary btn-sm" style="font-family:roboto;">Chi tiết</a>
+                                                    </td>
+                                                </tr>
+
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                        }
+                        else
+                        {
+                            <div class="m-demo" data-code-preview="true" data-code-html="true" data-code-js="false">
+                                <div class="m-demo__preview">
+                                    Không có dữ liệu
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="m-portlet__foot">
+
+                <pagerservice pager="@Model.Pager" asp-route-type="@(Context.Request.Query["type"])" asp-action="PayoutExport"></pagerservice>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+

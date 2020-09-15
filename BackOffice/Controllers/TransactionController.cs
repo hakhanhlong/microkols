@@ -34,11 +34,13 @@ namespace BackOffice.Controllers
         private readonly ITransactionHistoryBusiness _ITransactionHistoryBusiness;
         private readonly IPaymentService _paymentService;
 
+        private readonly IPayoutExportService _IPayoutExportService;
+
 
         public TransactionController(ITransactionBusiness __ITransactionBusiness, IWalletBusiness __IWalletBusiness, 
             IPayoutExportRepository __IPayoutExportRepository, ITransactionRepository __ITransactionRepository, INotificationBusiness __INotificationBusiness, 
             ITransactionHistoryBusiness __ITransactionHistoryBusiness, ITransactionService __ITransactionService, ICampaignService __ICampaignService,
-            IPaymentService _IPaymentService)
+            IPaymentService _IPaymentService, IPayoutExportService __IPayoutExportService)
         {
             _ITransactionBussiness = __ITransactionBusiness;
             _IWalletBusiness = __IWalletBusiness;
@@ -50,6 +52,7 @@ namespace BackOffice.Controllers
 
             _ICampaignService = __ICampaignService;
             _paymentService = _IPaymentService;
+            _IPayoutExportService = __IPayoutExportService;
         }
 
         public IActionResult Index()
@@ -256,6 +259,34 @@ namespace BackOffice.Controllers
 
 
         #region AccountPayback
+
+        public async Task<IActionResult> PayoutExport(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
+        {
+            //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
+
+            AccountType[] _accounttype;
+
+            if (type == AccountType.All)
+            {
+                _accounttype = new AccountType[4];
+                _accounttype[0] = AccountType.Regular;
+                _accounttype[1] = AccountType.HotFacebooker;
+                _accounttype[2] = AccountType.HotMom;
+                _accounttype[3] = AccountType.HotTeen;
+                //_accounttype[4] = AccountType.Kols;
+            }
+            else
+            {
+                _accounttype = new AccountType[1];
+                _accounttype[0] = type;
+            }
+
+            var listing = await _IPayoutExportService.ListPayoutExport(_accounttype, pageindex, pagesize);                                  
+            return View(listing);
+        }
+
+
+
         public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
