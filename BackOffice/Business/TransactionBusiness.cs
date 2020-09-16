@@ -378,14 +378,10 @@ namespace BackOffice.Business
 
         }
 
-        public async Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype, int pageindex, int pagesize)
+        public async Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype,DateTime startDate, DateTime endDate, int pageindex, int pagesize)
         {
-            var lastDateTime = DateTime.Now.AddMonths(-1);
-            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
-            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-
+            
             var filter = new TransactionSpecification(type, status, startDate, endDate);
-
             var queries = await _ITransactionRepository.ListAsync(filter);
 
             var q_accounts = await _IAccountRepository.ListAsync(new AccountSpecification(accounttype));

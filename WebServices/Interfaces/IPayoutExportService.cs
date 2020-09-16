@@ -12,6 +12,8 @@ namespace WebServices.Interfaces
 
         PayoutExportViewModel GetPayoutExport(DateTime StartDate, DateTime EndDate, AccountType Type);
 
+        Task<PayoutExportViewModel> GetPayoutExport(int id);
+
         bool IsExist(DateTime StartDate, DateTime EndDate, AccountType Type);
 
         Task<ListPayoutExportViewModel> ListPayoutExport(AccountType[] Type, int pageindex, int pagesize);

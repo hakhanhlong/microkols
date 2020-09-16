@@ -260,7 +260,7 @@ namespace BackOffice.Controllers
 
         #region AccountPayback
 
-        public async Task<IActionResult> PayoutExport(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
+        public async Task<IActionResult> PayoutExport(AccountType type = AccountType.Regular, int pageindex = 1, int pagesize = 25)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
 
@@ -281,13 +281,34 @@ namespace BackOffice.Controllers
                 _accounttype[0] = type;
             }
 
+            try {
+                var lastDateTime = DateTime.Now.AddMonths(-1);
+                DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
+                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+                bool isexist = _IPayoutExportRepository.IsExist(startDate, endDate, type);
+                if (!isexist)
+                {
+                    _IPayoutExportRepository.Add(new PayoutExport()
+                    {
+                        AccountType = type,
+                        CreatedDate = DateTime.Now,
+                        CreatedUser = HttpContext.User.Identity.Name,
+                        IsExport = false,
+                        IsUpdateWallet = false,
+                        StartDateExport = startDate,
+                        EndDateExport = endDate
+                    });
+                }
+            }
+            catch { }
+            
             var listing = await _IPayoutExportService.ListPayoutExport(_accounttype, pageindex, pagesize);                                  
             return View(listing);
         }
 
 
 
-        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.All, int pageindex = 1, int pagesize = 25)
+        public async Task<IActionResult> AccountPayback(AccountType type = AccountType.Regular,int pageindex = 1, int pagesize = 25, int payoutid = 0)
         {
             //var _listTransaction = await FillTransactions(TransactionType.CampaignAccountPayback, status, pageindex);
 
@@ -308,13 +329,11 @@ namespace BackOffice.Controllers
                 _accounttype[0] = type;
             }
 
-            var lastDateTime = DateTime.Now.AddMonths(-1);
-            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
-            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
+            
 
-            var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
+            var PayoutExport = await _IPayoutExportService.GetPayoutExport(payoutid);
 
-            var _listTransaction = await _ITransactionBussiness.GetTotalPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList(), pageindex, pagesize);
+            var _listTransaction = await _ITransactionBussiness.GetTotalPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList(), PayoutExport.StartDateExport.Date, PayoutExport.EndDateExport.Date, pageindex, pagesize);
 
             ViewBag.PayoutExport = PayoutExport;
 

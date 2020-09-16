@@ -25,6 +25,13 @@ namespace WebServices.Services
 
         }
 
+        public async Task<PayoutExportViewModel> GetPayoutExport(int id)
+        {
+            var filter = new PayoutExportSpecification(id);
+            var result = await _IPayoutExportRepository.GetSingleBySpecAsync(filter);
+            return new PayoutExportViewModel(result);
+        }
+
         public bool IsExist(DateTime StartDate, DateTime EndDate, AccountType Type)
         {
             return _IPayoutExportRepository.IsExist(StartDate, EndDate, Type);

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "AccountPayback";
+    ViewData["Title"] = "Chuyển tiền Influencer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -54,22 +54,22 @@
                 <div class="m-portlet__head-tools">
                     <ul class="nav nav-tabs m-tabs m-tabs-line m-tabs-line--right m-tabs-line-danger" role="tablist">
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Regular"?"active":"")" href="/transaction/accountpayback?type=Regular" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "Regular"?"active":"")" href="/transaction/accountpayback?type=Regular&payoutid=@(Context.Request.Query["payoutid"])" role="tab">
                                 Regular
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotTeen"?"active":"")" href="/transaction/accountpayback?type=HotTeen" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotTeen"?"active":"")" href="/transaction/accountpayback?type=HotTeen&payoutid=@(Context.Request.Query["payoutid"])" role="tab">
                                 HotTeen
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotMom"?"active":"")" href="/transaction/accountpayback?type=HotMom" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotMom"?"active":"")" href="/transaction/accountpayback?type=HotMom&payoutid=@(Context.Request.Query["payoutid"])" role="tab">
                                 HotMom
                             </a>
                         </li>
                         <li class="nav-item m-tabs__item">
-                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotFacebooker"?"active":"")" href="/transaction/accountpayback?type=HotFacebooker" role="tab">
+                            <a class="nav-link m-tabs__link @(Context.Request.Query["type"] == "HotFacebooker"?"active":"")" href="/transaction/accountpayback?type=HotFacebooker&payoutid=@(Context.Request.Query["payoutid"])" role="tab">
                                 HotFacebooker
                             </a>
                         </li>
@@ -92,7 +92,7 @@
 
                                 @if (ViewBag.PayoutExport != null)
                                 {
-                                    var PayoutExport = (PayoutExport)ViewBag.PayoutExport;
+                                    var PayoutExport = (WebServices.ViewModels.PayoutExportViewModel)ViewBag.PayoutExport;
                                     if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
                                     {
                                         <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
@@ -161,7 +161,7 @@
                                                         }
                                                     </td>
                                                     <td>
-                                                        <a href="/transaction/accountpaybackdetail?accountid=@(item.Account.Id)" class="btn btn-primary">Chi tiết</a>
+                                                        <a href="/transaction/accountpaybackdetail?accountid=@(item.Account.Id)" class="btn btn-primary btn-sm" style="font-family:roboto;">Chi tiết</a>
                                                     </td>
                                                 </tr>
                                             }
@@ -187,11 +187,8 @@
                 </div>
 
             </div>
-            <div class="m-portlet__foot">
-                
-                    <pager pager="@Model.Pager" asp-route-type="@(Context.Request.Query["type"])" asp-action="accountpayback"></pager>
-                
-                
+            <div class="m-portlet__foot">                
+                    <pager pager="@Model.Pager" asp-route-type="@(Context.Request.Query["type"])" asp-route-payoutid="@(Context.Request.Query["payoutid"])" asp-action="accountpayback"></pager>                                
             </div>
 
         </div>
