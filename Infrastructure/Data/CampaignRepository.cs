@@ -365,9 +365,7 @@ namespace Infrastructure.Data
                                     && 
                                         ((ac.Min >= q.AmountMin && ac.Min <= q.AmountMax) 
                                         || 
-                                        (ac.Min <= q.AmountMin && ac.Min <= q.AmountMax))
-                                        && 
-                                        (ac.Max >= q.AmountMin && ac.Max <= q.AmountMax))
+                                        (ac.Min <= q.AmountMin && ac.Min <= q.AmountMax)))
                                     || joinedCampaignIds.Contains(q.Id)
                                     select q).Distinct();
                 }

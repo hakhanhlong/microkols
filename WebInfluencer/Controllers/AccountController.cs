@@ -245,8 +245,7 @@ namespace WebInfluencer.Controllers
             model.FacebookProfile = accountProvider.FbProfileLink;
 
             try {
-                DateTime birthday;
-                DateTime.TryParse(model.Birthday, out birthday);
+                DateTime birthday = DateTime.ParseExact(model.Birthday, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
                 if (birthday != null)
                 {
                     if ((DateTime.Now.Year - birthday.Year) < 18)
@@ -269,28 +268,7 @@ namespace WebInfluencer.Controllers
         public async Task<IActionResult> ChangeInfo(ChangeInformationViewModel model, int vtype = 0)
         {
             if (ModelState.IsValid)
-            {
-                if (!string.IsNullOrEmpty(model.Birthday))
-                {
-                    try {
-                        DateTime birthday;
-                        DateTime.TryParse(model.Birthday, out birthday);
-                        if (birthday != null)
-                        {
-                            if ((DateTime.Now.Year - birthday.Year) < 18)
-                            {
-                                //TempData["MessageWarning"] = "Bạn chưa đủ 18 tuổi!";
-                                //return RedirectToAction("ChangeInfo");
-                            }
-                            model.Birthday = birthday.ToString("dd/MM/yyyy");
-                        }
-
-                        
-
-                    }
-                    catch { }                                                            
-                }
-                
+            {                                
                 var r = await _accountService.ChangeInformation(CurrentUser.Id, model, CurrentUser.Username);
                 await _accountService.UpdateFacebookUrlProfile(CurrentUser.Id, AccountProviderNames.Facebook, model.FacebookProfile);
                 if (vtype == 1 && r)

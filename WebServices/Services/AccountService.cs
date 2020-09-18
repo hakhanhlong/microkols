@@ -676,12 +676,23 @@ namespace WebServices.Services
             {
                 entity.Name = model.Name;
 
-                entity.Birthday = model.Birthday.ToViDate();
-                if (entity.Birthday == null)
+                
+                if (string.IsNullOrEmpty(model.Birthday))
                 {
-                    DateTime birthday;
-                    DateTime.TryParse(model.Birthday, out birthday);
+                    //DateTime birthday;
+                    //DateTime.TryParse(model.Birthday, out birthday);
+                    //entity.Birthday = birthday;
+                }
+                else
+                {
+
+                    DateTime birthday = DateTime.ParseExact(model.Birthday, "dd/MM/yyyy",
+                                       System.Globalization.CultureInfo.InvariantCulture);
+
+                    
+                    //DateTime.TryParse(model.Birthday, out birthday);
                     entity.Birthday = birthday;
+                    //entity.Birthday = model.Birthday;
                 }
 
                 entity.Gender = model.Gender;

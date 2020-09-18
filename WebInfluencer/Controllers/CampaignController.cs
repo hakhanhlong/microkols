@@ -108,9 +108,6 @@ namespace WebInfluencer.Controllers
 
             //var model = await _campaignService.GetCampaignMarketPlaceByAccount(120, type, kw, pageindex, pagesize);
 
-
-
-
             return View(model);
         }
         public async Task<IActionResult> Details(int id, int tab = 0, int pageindex = 1, int pagesize = 20)
