@@ -88,21 +88,21 @@
                         @if (Model.Transactions.Count() > 0)
                         {
 
-                            <div class="mb-5 pull-right">
-
-                                @if (ViewBag.PayoutExport != null)
+                        <div class="mb-5 pull-right">
+                            @if (ViewBag.PayoutExport != null)
+                            {
+                                var PayoutExport = (WebServices.ViewModels.PayoutExportViewModel)ViewBag.PayoutExport;
+                                if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
                                 {
-                                    var PayoutExport = (WebServices.ViewModels.PayoutExportViewModel)ViewBag.PayoutExport;
-                                    if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
-                                    {
-                                        <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
-                                    }
+                                    <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
                                 }
                                 else
                                 {
-                                    <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
+                                    <a href="/transaction/exportaccountpayback?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())&payoutid=@(PayoutExport.Id)" class="btn btn-primary m-btn--wide mr-3">Export To Excel</a>
                                 }
-                            </div>
+                            }
+
+                        </div>
 
 
                             <div class="m-section">
@@ -157,7 +157,7 @@
                                                     <td>
                                                         @if (item.Wallet.Balance < total_amount)
                                                         {
-                                                            <span style="font-weight:bold;color:red;">Ví không đủ để thực hiện việc rút tiền</span>
+                                                            <span style="font-weight:bold;color:red;">Ví không đủ để thực hiện việc tất toán</span>
                                                         }
                                                     </td>
                                                     <td>

@@ -17,6 +17,8 @@ namespace BackOffice.Business.Interfaces
         Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype, DateTime startDate, DateTime endDate, int pageindex, int pagesize);
         Task<List<GroupTransactionViewModel>> GetPayoutTransactionByAccountId(TransactionType type, TransactionStatus status, int accountid);
 
+        Task<ListGroupTransactionViewModel> GetTotalPayoutTransactions(TransactionType type, TransactionStatus status, List<AccountType> accounttype, DateTime startDate, DateTime endDate);
+
         Task<TransactionViewModel> Get(int id);
 
 

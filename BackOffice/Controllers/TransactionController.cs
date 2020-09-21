@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using WebServices.Interfaces;
 using BackOffice.Extensions;
+using Common.Extensions;
 
 namespace BackOffice.Controllers
 {
@@ -513,7 +514,7 @@ namespace BackOffice.Controllers
 
         }
 
-        public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All)
+        public async Task<IActionResult> ExportAccountPayback(AccountType type = AccountType.All, int payoutid = 0)
         {
             AccountType[] _accounttype;
 
@@ -532,7 +533,9 @@ namespace BackOffice.Controllers
                 _accounttype[0] = type;
             }
 
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype.ToList());
+            //var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed,  _accounttype.ToList());
+            var PayoutExport = await _IPayoutExportService.GetPayoutExport(payoutid);
+            var _listTransaction = await _ITransactionBussiness.GetTotalPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList(), PayoutExport.StartDateExport.Date, PayoutExport.EndDateExport.Date, 1, 500);
             if (_listTransaction != null)
             {
 
@@ -543,7 +546,7 @@ namespace BackOffice.Controllers
                 package.Workbook.Properties.Keywords = "AccountPayback";
 
 
-                var worksheet = package.Workbook.Worksheets.Add("Account Cash Out");
+                var worksheet = package.Workbook.Worksheets.Add("Danh sách tài khoản tất toán");
 
                 int count_row_header = 1;
                 int number_stt = 1;
@@ -553,17 +556,21 @@ namespace BackOffice.Controllers
                 //First add the headers
                 worksheet.Cells[count_row_header, 1].Value = "STT";
                 worksheet.Cells[count_row_header, 1].Style.Font.Bold = true;
-                worksheet.Cells[count_row_header, 2].Value = "BANK ACCOUNT NAME";
+                worksheet.Cells[count_row_header, 2].Value = "Tên tài khoản ";
                 worksheet.Cells[count_row_header, 2].Style.Font.Bold = true;
-                worksheet.Cells[count_row_header, 3].Value = "BANK NUMBER";
+                worksheet.Cells[count_row_header, 3].Value = "Số tài khoản";
                 worksheet.Cells[count_row_header, 3].Style.Font.Bold = true;
-                worksheet.Cells[count_row_header, 4].Value = "BANK NAME";
+                worksheet.Cells[count_row_header, 4].Value = "Ngân hàng";
                 worksheet.Cells[count_row_header, 4].Style.Font.Bold = true;
-                worksheet.Cells[count_row_header, 5].Value = "TOTAL";
+                worksheet.Cells[count_row_header, 5].Value = "Chi nhánh";
                 worksheet.Cells[count_row_header, 5].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 6].Value = "Tiền tất toán";
+                worksheet.Cells[count_row_header, 6].Style.Font.Bold = true;
+                worksheet.Cells[count_row_header, 7].Value = "Ghi chú";
+                worksheet.Cells[count_row_header, 7].Style.Font.Bold = true;
 
 
-                foreach (var transaction in _listTransaction)
+                foreach (var transaction in _listTransaction.Transactions)
                 {
 
                     count_row_header++;
@@ -574,7 +581,18 @@ namespace BackOffice.Controllers
                     worksheet.Cells[count_row_header, 2].Value = transaction.Account.BankAccountName;
                     worksheet.Cells[count_row_header, 3].Value = transaction.Account.BankAccountNumber;
                     worksheet.Cells[count_row_header, 4].Value = transaction.Account.BankAccountBank;
-                    worksheet.Cells[count_row_header, 5].Value = transaction.Transactions.Sum(s=>s.Amount).ToString();
+                    worksheet.Cells[count_row_header, 5].Value = transaction.Account.BankAccountBranch;
+                    worksheet.Cells[count_row_header, 6].Value = transaction.TotalCashOut.ToPriceText();
+
+                    if(transaction.Wallet.Balance < transaction.TotalCashOut)
+                    {
+                        worksheet.Cells[count_row_header, 7].Value = "Ví không đủ để thực hiện việc tất toán";
+                    }
+                    else
+                    {
+                        worksheet.Cells[count_row_header, 7].Value = "";
+                    }
+                    
 
 
                     number_stt++;
@@ -582,40 +600,19 @@ namespace BackOffice.Controllers
 
 
                 byte[] reportBytes = new byte[] { };
-
-                var lastDateTime = DateTime.Now.AddMonths(-1);
-                DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
-                DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-                try
-                {
-                    
+                try {
                     reportBytes = package.GetAsByteArray();
-
-
-
-                    bool isexist = _IPayoutExportRepository.IsExist(startDate, endDate, type);
-                    if (!isexist)
-                    {
-                        _IPayoutExportRepository.Add(new PayoutExport() {
-                            AccountType = type,
-                            CreatedDate = DateTime.Now,
-                            CreatedUser = HttpContext.User.Identity.Name,
-                            IsExport = true,
-                            IsUpdateWallet = false,
-                            StartDateExport = startDate,
-                            EndDateExport = endDate
-                        });
-                    }
-
                 }
                 catch { }
-
-                return File(reportBytes, XlsxContentType, string.Format("{0}{1}{2}_{3}{4}{5}_{6}.xlsx", startDate.Day, startDate.Month, startDate.Year, endDate.Day, endDate.Month, endDate.Year, type.ToString()));
+                
+                return File(reportBytes, XlsxContentType, string.Format("{0}{1}{2}_{3}{4}{5}_{6}.xlsx", PayoutExport.StartDateExport.Day, PayoutExport.StartDateExport.Month, 
+                    PayoutExport.StartDateExport.Year, PayoutExport.EndDateExport.Day,
+                    PayoutExport.EndDateExport.Month, PayoutExport.EndDateExport.Year, type.ToString()));
                
 
             }
 
-            return RedirectToAction("AccountPayback", "Transaction", new { type = type });
+            return RedirectToAction("AccountPayback", "Transaction", new { type = type , payoutid = payoutid });
         }
 
 
