@@ -463,18 +463,10 @@ namespace BackOffice.Controllers
                         }
 
                     }
-                }
-
-
-
-
-
-               
-
-
+                }               
             }
 
-            return RedirectToAction("AccountPayback", "Transaction", new { type = type });
+            return RedirectToAction("AccountPayback", "Transaction", new { type = type , payoutid  = payoutid });
 
         }
 
