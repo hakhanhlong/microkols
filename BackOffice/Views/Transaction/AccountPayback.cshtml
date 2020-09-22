@@ -94,7 +94,7 @@
                                 var PayoutExport = (WebServices.ViewModels.PayoutExportViewModel)ViewBag.PayoutExport;
                                 if (PayoutExport.IsExport && PayoutExport.IsUpdateWallet == false)
                                 {
-                                    <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
+                                    <a href="/transaction/accountsubtractwallet?type=@(Context.Request.Query["type"].ToString()==""?"All":Context.Request.Query["type"].ToString())&payoutid=@(PayoutExport.Id)" class="btn btn-danger m-btn--wide">Subtract Wallet Cashout Done</a>
                                 }
                                 else
                                 {

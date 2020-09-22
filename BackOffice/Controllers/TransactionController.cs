@@ -359,7 +359,7 @@ namespace BackOffice.Controllers
 
 
 
-        public async Task<IActionResult> AccountSubtractWallet(AccountType type = AccountType.All)
+        public async Task<IActionResult> AccountSubtractWallet(AccountType type = AccountType.All, int payoutid = 0)
         {
             AccountType[] _accounttype;
 
@@ -378,102 +378,100 @@ namespace BackOffice.Controllers
                 _accounttype[0] = type;
             }
 
-            var lastDateTime = DateTime.Now.AddMonths(-1);
-            DateTime startDate = new DateTime(lastDateTime.Year, lastDateTime.Month, 1);
-            DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-
-            var PayoutExport = _IPayoutExportRepository.GetPayoutExport(startDate, endDate, type);
-
-            var _listTransaction = await _ITransactionBussiness.GetPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList());
+            
             int count_fail = 0;
 
-            if(_listTransaction.Count() > 0)
+            var PayoutExport = await _IPayoutExportService.GetPayoutExport(payoutid);
+            var _listTransaction = await _ITransactionBussiness.GetTotalPayoutTransactions(TransactionType.CampaignAccountPayback, TransactionStatus.Completed, _accounttype.ToList(), PayoutExport.StartDateExport.Date, PayoutExport.EndDateExport.Date);
+
+
+
+            if (_listTransaction.Transactions.Count > 0)
             {
-                foreach(var transaction in _listTransaction)
+
+                foreach(var item in _listTransaction.Transactions)
                 {
-                    foreach(var item in transaction.Transactions)
+
+                    if (item.Wallet.Balance == 0 || item.Wallet.Balance < item.TotalCashOut)
+                        continue;
+
+                    int senderid = item.Wallet.Id;
+                    int receiverid = 1; //walletid of system
+                    long money_number = item.TotalCashOut;
+                    int campaignid = 0;
+                    int accountid = item.Account.Id;
+
+                    string txt_note = string.Format("Hệ thống thực hiện trừ tiền {0} đ trên ví walletid = {1},{2}, " +
+                        "vì hệ thống đã chuyển {3} đ đến tài khoản ngân hàng của thành viên {4} thuộc walletid={5}. Và cộng {6} đ vào ví walletid={7}",
+                        money_number, senderid, item.Account.Name, money_number, item.Account.Name, senderid, money_number, receiverid);
+
+                    int transactionid = await _ITransactionRepository.CreateTransaction(senderid, receiverid, money_number, TransactionType.ExcecutedPaymentToAccountBanking, txt_note, string.Format("Campaign ID = {0}", campaignid), HttpContext.User.Identity.Name, campaignid);
+
+                    if (transactionid > 0) // nếu tạo transaction thành công
                     {
+                        int retResult = await _ITransactionBussiness.CalculateBalance(transactionid, money_number, senderid, receiverid, "[Chuyển tiền đến tài khoản ngân hàng của thành viên][ExcecutedPaymentToAccountBanking]", HttpContext.User.Identity.Name);
+                        /*
+                        * 09: success
+                        * 10: wallet do not exist
+                        * 11: wallet balance sender or receiver less then zero or amount could be abstract
+                        * 
+                        */
 
-
-                        if(item.IsCashOut.HasValue == false || (item.IsCashOut.HasValue && item.IsCashOut.Value == false))
+                        try
                         {
-                            int senderid = item.ReceiverId;
-                            int receiverid = item.SenderId;
-                            long money_number = item.Amount;
-                            int campaignid = item.RefId.Value;
-                            int accountid = transaction.Account.Id;
-
-                            string txt_note = string.Format("Hệ thống thực hiện trừ tiền {0} đ trên ví walletid = {1}, vì hệ thống đã chuyển {2} đ đến tài khoản ngân hàng của thành viên thuộc walletid={3}. Và cộng {4} đ vào ví walletid={5}",
-                                money_number, senderid, money_number, senderid, money_number, receiverid);
-
-
-
-                            int transactionid = await _ITransactionRepository.CreateTransaction(senderid, receiverid, money_number, TransactionType.ExcecutedPaymentToAccountBanking, txt_note, string.Format("Campaign ID = {0}", campaignid), HttpContext.User.Identity.Name, campaignid);
-
-                            if (transactionid > 0) // nếu tạo transaction thành công
+                            switch (retResult)
                             {
-                                int retResult = await _ITransactionBussiness.CalculateBalance(transactionid, item.Amount, senderid, receiverid, "[Chuyển tiền đến tài khoản ngân hàng của thành viên][ExcecutedPaymentToAccountBanking]", HttpContext.User.Identity.Name);
-                                /*
-                                * 09: success
-                                * 10: wallet do not exist
-                                * 11: wallet balance sender or receiver less then zero or amount could be abstract
-                                * 
-                                */
-
-                                try
-                                {
-                                    switch (retResult)
-                                    {
-                                        case 9:
-                                            int retValue = _ITransactionBussiness.UpdateCashOut(item.Id);
-                                            await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);//
-                                            await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            NotificationType notificationType = NotificationType.ExcecutedPaymentToAccountBanking;
-                                            string msg = string.Format("Hệ thống đã chuyển tiền {0} đ tới tài khoản ngân hàng của bạn và tự động trừ tiền trong ví tương ứng với số tiền {1}, từ chiến dịch bạn đã tham gia.", money_number, money_number);
-                                            await _INotificationBusiness.CreateNotificationExcecutedPaymentToAccountBanking(campaignid, accountid, notificationType, msg, "");
-                                            break;
-                                        case 10:
-                                            await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            count_fail++;
-                                            break;
-                                        case 11:
-                                            await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            count_fail++;
-                                            break;
-                                        case 12:
-                                            await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet balance sender do not enought balance", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet balance sender do not enought balance", HttpContext.User.Identity.Name);// delete transaction if case error
-                                            count_fail++;
-                                            break;
+                                case 9:
+                                    //int retValue = _ITransactionBussiness.UpdateCashOut(item.Id);
+                                    await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);//
+                                    //await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Success", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    NotificationType notificationType = NotificationType.ExcecutedPaymentToAccountBanking;
+                                    string msg = string.Format("Hệ thống đã chuyển tiền {0} đ tới tài khoản ngân hàng của bạn và tự động trừ tiền trong ví tương ứng với số tiền {1}, " +
+                                        "từ chiến dịch bạn đã hoàn thành.", money_number, money_number);
+                                    await _INotificationBusiness.CreateNotificationExcecutedPaymentToAccountBanking(campaignid, accountid, notificationType, msg, "");
+                                    try {
+                                        var payoutexportEntity = _IPayoutExportRepository.GetById(payoutid);
+                                        payoutexportEntity.IsUpdateWallet = true;
+                                        payoutexportEntity.PayoutPayDate = DateTime.Now;
+                                        _IPayoutExportRepository.Update(payoutexportEntity);
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    TempData["MessageError"] = ex.Message;
-                                }
+                                    catch
+                                    {}
+                                    
 
+                                    break;
+                                case 10:
+                                    await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    //await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet do not exist", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    count_fail++;
+                                    break;
+                                case 11:
+                                    await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    //await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet balance sender or receiver less then zero or amount could be abstract", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    count_fail++;
+                                    break;
+                                case 12:
+                                    await _ITransactionRepository.UpdateTransactionStatus(transactionid, TransactionStatus.Error, "Wallet balance sender do not enought balance", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    //await _ITransactionRepository.UpdateTransactionStatus(item.Id, TransactionStatus.Completed, "Wallet balance sender do not enought balance", HttpContext.User.Identity.Name);// delete transaction if case error
+                                    count_fail++;
+                                    break;
                             }
                         }
-                        
+                        catch (Exception ex)
+                        {
+                            TempData["MessageError"] = ex.Message;
+                        }
 
-
-                                                                   
                     }
                 }
 
-                if(count_fail == 0)
-                {
-                    if (PayoutExport != null)
-                    {
-                        PayoutExport.IsUpdateWallet = true;
-                        _IPayoutExportRepository.Update(PayoutExport);
-                        TempData["MessageSuccess"] = "Substract Wallet CashOut Success!";
-                    }
-                }
+
+
+
 
                
+
+
             }
 
             return RedirectToAction("AccountPayback", "Transaction", new { type = type });
@@ -602,6 +600,14 @@ namespace BackOffice.Controllers
                 byte[] reportBytes = new byte[] { };
                 try {
                     reportBytes = package.GetAsByteArray();
+                    if(reportBytes.Length > 0)
+                    {
+                        var payoutexportEntity = _IPayoutExportRepository.GetById(payoutid);
+                        payoutexportEntity.IsExport = true;
+                        payoutexportEntity.PayoutExportFileDate = DateTime.Now;
+                        _IPayoutExportRepository.Update(payoutexportEntity);
+
+                    }                    
                 }
                 catch { }
                 
